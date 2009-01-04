@@ -26,11 +26,11 @@ static void create() {
     SetDamageType(BLADE);
     SetWeaponType("blade");
     SetItems( ([
-        ({"rune","runes"}) : (: CheckOrc :),
-      ]) );
+                ({"rune","runes"}) : (: CheckOrc :),
+                ]) );
     SetRead( ([
-        ({"rune","runes"}) : "You do not understand them."
-      ]) );
+                ({"rune","runes"}) : "You do not understand them."
+                ]) );
 }
 
 void init(){

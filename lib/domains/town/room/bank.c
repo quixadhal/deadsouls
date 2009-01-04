@@ -24,28 +24,28 @@ static void create() {
 }
 int ReadSign(){
     write( @EndText
-    - This bank requires a minimum balance to open an account.
-      To use any of the bank's services, you must first open an
-      account (see below as to how).
+- This bank requires a minimum balance to open an account.
+To use any of the bank's services, you must first open an
+account (see below as to how).
 
-    - This bank charges for certain transactions, such as
-      currency exchange.
+- This bank charges for certain transactions, such as
+currency exchange.
 
-      To conduct business here:
+To conduct business here:
 
-      request account from TELLER
-      request balance from TELLER
-      ask TELLER to deposit AMOUNT CURRENCY
-      ask TELLER to withdraw AMOUNT CURRENCY
-      ask TELLER to exchange AMOUNT CURRENCY for CURRENCY
+request account from TELLER
+request balance from TELLER
+ask TELLER to deposit AMOUNT CURRENCY
+ask TELLER to withdraw AMOUNT CURRENCY
+ask TELLER to exchange AMOUNT CURRENCY for CURRENCY
 
-      examples:
+examples:
 
-      request account from zoe
-      request balance from zoe
-      ask zoe to deposit 100 silver
-      ask zoe to withdraw 10 silver
-      ask zoe to exchange 10 gold for silver
+request account from zoe
+request balance from zoe
+ask zoe to deposit 100 silver
+ask zoe to withdraw 10 silver
+ask zoe to exchange 10 gold for silver
 
 EndText
     );

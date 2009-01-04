@@ -9,15 +9,15 @@ static void create(){
     SetKeyName("pajamas");
     SetId(({"pj","pjs", "peejays"}));
     SetAdjectives(({"small","tiny","pair of","set of",
-      "bloodstained", "blood stained", "stained"}));
+                "bloodstained", "blood stained", "stained"}));
     SetShort("tiny, bloodstained pajamas");
     SetLong("This is a set of very small pajamas, stained with old, "
-      "crusted blood.");
+            "crusted blood.");
     SetItems( ([
-    ({"blood","crusted blood", "old, crusted blood"}) : "It seems "+
-      "that whoever was wearing these pajamas suffered some terrible "+
-      "injuries.",
-    ]) );
+                ({"blood","crusted blood", "old, crusted blood"}) : "It seems "+
+                "that whoever was wearing these pajamas suffered some terrible "+
+                "injuries.",
+                ]) );
     SetMass(2);
     SetBaseCost("silver",1);
     SetArmorType(A_BODY_ARMOR);

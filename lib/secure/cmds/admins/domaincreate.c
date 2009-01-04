@@ -16,7 +16,7 @@ mixed cmd(string args) {
     }
 
     if(!args || args == "" || args == "/domains" || args == "/domains/" ||
-      args == "domain"){
+            args == "domain"){
         write(this_object()->GetHelp());
         return 1;
     }
@@ -64,8 +64,8 @@ mixed cmd(string args) {
 
 string GetHelp(string args) {
     return ("Syntax: domaincreate DOMAIN\n\n"
-      "This command creates a new directory in the /domains dir, "
-      "and adds the appropriate subdirs needed by a domain."
-      "\n\n"
-      "See also: domainadmin, admintool");
+            "This command creates a new directory in the /domains dir, "
+            "and adds the appropriate subdirs needed by a domain."
+            "\n\n"
+            "See also: domainadmin, admintool");
 }

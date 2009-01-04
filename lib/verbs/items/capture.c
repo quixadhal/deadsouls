@@ -17,10 +17,10 @@ static void create() {
     SetSynonyms("catch", "trap");
     SetErrorMessage("Capture what with what?");
     SetHelp("Syntax: <capture OBJECT with OBJECT>\n\n"
-      "Some objects can be used to trap living things.  This command "
-      "therefore allows you to capture those things.\n\n"
-      "Synonyms: catch, trap\n\n"
-      "See also: free");
+            "Some objects can be used to trap living things.  This command "
+            "therefore allows you to capture those things.\n\n"
+            "Synonyms: catch, trap\n\n"
+            "See also: free");
 }
 
 mixed can_capture_liv_word_obj() {

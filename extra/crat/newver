@@ -15,6 +15,15 @@ mkdir new
 cd ~/ds
 tar cfp - . |(cd /tmp/foo/new;tar xfp -)
 
+rm -rf /tmp/foo/new/lib/secure/daemon/i3router/bak
+rm -rf /tmp/foo/next/lib/secure/daemon/i3router/bak
+rm -rf /tmp/foo/new/lib/secure/daemon/imc2server/bak
+rm -rf /tmp/foo/next/lib/secure/daemon/imc2server/bak
+rm -rf /tmp/foo/new/lib/upgrades.txt
+rm -rf /tmp/foo/next/lib/upgrades.txt
+chmod -R a+r /tmp/foo/next/lib
+chmod -R a+r /tmp/foo/new/lib
+
 rm -rf /tmp/foo/new/lib/daemon/tmp
 rm -rf /tmp/foo/new/lib/secure/upgrades
 rm -rf /tmp/foo/new/lib/tmp
@@ -64,6 +73,12 @@ cd /tmp/foo
 \rm -f next/lib/lib/remote.c
 \rm -f new/lib/lib/remote.c
 
+cd new/lib
+/contrib/indentall
+cd ../../next/lib
+/contrib/indentall
+cd ../../
+
 #/opt/sfw/bin/gdiff -rq new/lib next/lib > diff.txt
 gdiff -rq new/lib next/lib > diff.txt
 
@@ -82,7 +97,7 @@ perl -pi -e s/"Only\ in\ "/"\\\\cp\ \-rf\ "/g diff.txt
 perl -pi -e s/"Files\ "/"diff\ "/g diff.sh.1
 
 
-cat diff.txt | grep -v "lib/core" |grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff2.txt
+cat diff.txt | grep -v "lib/core" |grep -v "\.o"|grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff2.txt
 cat diff.sh.1 | grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff.sh
 
 chmod 755 diff.sh
@@ -104,11 +119,13 @@ done
 
 echo "mkdir next/lib/secure/log/intermud" >> copyfiles3
 echo "cp -f next/lib/log/open/foo.txt next/lib/secure/log/intermud/" >> copyfiles3
-echo "cp -f new/lib/save/rooms.o next/lib/save/" >> copyfiles3
-echo "cp -f new/lib/save/map.o next/lib/save/" >> copyfiles3
+#echo "cp -f new/lib/save/rooms.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/races.o next/lib/save/" >> copyfiles3
+#echo "cp -f new/lib/save/map.o next/lib/save/" >> copyfiles3
 #echo "cp -f new/lib/save/portal.o next/lib/save/" >> copyfiles3
 echo "cp -f /contrib/newver next/extra/crat/" >> copyfiles3
 echo "cp -f /contrib/newpatch next/extra/crat/" >> copyfiles3
+echo "cp -f /contrib/indentall next/extra/crat/" >> copyfiles3
 
 #BLAH BLAH COPY COPY
 

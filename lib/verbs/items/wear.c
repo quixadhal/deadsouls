@@ -16,15 +16,15 @@ static void create() {
     SetVerb("wear");
     SetRules("OBS", "OBJ on STR");
     SetErrorMessage("Wear what?  When in doubt, specify a limb to "
-      "wear it on.");
+            "wear it on.");
     SetHelp("Syntax: <wear ARMOR>\n"
-      "        <wear ARMOR on LIMB>\n\n"
-      "Allows you to take an article of clothing and wear it.  Some "
-      "bits of clothing may be worn in a variety of places, and thus "
-      "require you to specify where it is they should be worn.  For "
-      "example, a shield could be worn with either the right hand or "
-      "left hand.  So you would type, \"wear shield on right hand\".\n\n"
-      "See also: wield");
+            "        <wear ARMOR on LIMB>\n\n"
+            "Allows you to take an article of clothing and wear it.  Some "
+            "bits of clothing may be worn in a variety of places, and thus "
+            "require you to specify where it is they should be worn.  For "
+            "example, a shield could be worn with either the right hand or "
+            "left hand.  So you would type, \"wear shield on right hand\".\n\n"
+            "See also: wield");
 }
 
 mixed can_wear_obj() {
@@ -44,7 +44,7 @@ mixed do_wear_obj(object ob) {
 
 mixed do_wear_obj_on_str(object ob, string str) {
     return ob->eventEquip(this_player(),
-      ({ remove_article(lower_case(str)) }));
+            ({ remove_article(lower_case(str)) }));
 }
 
 mixed do_wear_obs(object array armors) {

@@ -7,10 +7,9 @@ string dump_socket_status() {
     }
     finalsocks = sock_array;
 
-    ret = @END
-Fd    State      Mode       Local Address          Remote Address
---  ---------  --------  ---------------------  ---------------------
-END;
+    ret = "";
+    ret += "        Fd    State      Mode       Local Address          Remote Address";
+    ret += "        --  ---------  --------  ---------------------  ---------------------";
 
     foreach (array item in finalsocks) {
         int memb = member_array(item, finalsocks);

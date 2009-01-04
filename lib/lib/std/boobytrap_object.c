@@ -52,12 +52,12 @@ void init(){
     item::init();
 }
 
-varargs mixed CanBoobytrap(object who, mixed what){
-    if(!environment() || environment() != who) 
-        return "#You don't have that.";
-    //return 0;
-    return 1;
-}
+    varargs mixed CanBoobytrap(object who, mixed what){
+        if(!environment() || environment() != who) 
+            return "#You don't have that.";
+        //return 0;
+        return 1;
+    }
 
 varargs int eventBoobytrap(object who, mixed target, mixed trap){
     object shadowtrap;

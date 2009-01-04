@@ -1,7 +1,7 @@
 /*
 // File: path_file.c
 // From the wonderful people at Portals.
-*/
+ */
 
 mixed *path_file(mixed full_path) {
     mixed *tmp, *dirs;

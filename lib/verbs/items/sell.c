@@ -16,11 +16,11 @@ static void create() {
     SetRules("OBS to LIV", "LIV OBS");
     SetErrorMessage("Sell what to whom?");
     SetHelp("Syntax: <sell ITEM to LIVING>\n\n"
-      "When in the presence of vendors, you may buy and sell goods "
-      "which match the type of goods the vendor in question trades in.  "
-      "The \"sell\" command naturally allows you to sell an item "
-      "to an interested vendor.\n\n"
-      "See also: ask, sell, vendors");
+            "When in the presence of vendors, you may buy and sell goods "
+            "which match the type of goods the vendor in question trades in.  "
+            "The \"sell\" command naturally allows you to sell an item "
+            "to an interested vendor.\n\n"
+            "See also: ask, sell, vendors");
 }
 
 mixed can_sell_obj_to_liv() {

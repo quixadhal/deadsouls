@@ -23,20 +23,20 @@ void create() {
     SetProperties( (["light" :2 , "indoors" :1 , "castle" : 1 ]) );
     SetShort( "the hospital of Praxis");
     SetLong(
-      "You are in the hospital of Praxis. It basically consists "
-      "of one large single room, with several crude beds placed in rows. "
-      "The hospital doesn't look to be to clean, you might want to think "
-      "twice before engaging their services. A list of all the services "
-      "that can be performed is posted on the far wall. The exit back to the "
-      "main road is east.");
+            "You are in the hospital of Praxis. It basically consists "
+            "of one large single room, with several crude beds placed in rows. "
+            "The hospital doesn't look to be to clean, you might want to think "
+            "twice before engaging their services. A list of all the services "
+            "that can be performed is posted on the far wall. The exit back to the "
+            "main road is east.");
     SetItems(
-      (["list" : "You can read all the services by typing <read list>.",
-        "hospital" : "The clerics here specialize in regenerating "
-        "lost limbs.",
-        "clerics" : "They are mending the wounds of patients.",
-        "cleric" : "He is mending a patient's wounds."]));
+            (["list" : "You can read all the services by typing <read list>.",
+             "hospital" : "The clerics here specialize in regenerating "
+             "lost limbs.",
+             "clerics" : "They are mending the wounds of patients.",
+             "cleric" : "He is mending a patient's wounds."]));
     SetExits( 
-      (["east" : "/domains/Praxis/n_centre2"]) );
+            (["east" : "/domains/Praxis/n_centre2"]) );
     blood = ([ "who": ([]), "hp":200, "mp":200 ]);
     SetProperty("no teleport", 1);
 }
@@ -71,27 +71,27 @@ int read(string str) {
     }
     message("info", "Welcome to the Cleric's Hospital of Praxis!",this_player());
     message("Ninfo",
-      "The clerics perform the following services:\n"
-      "------------------------------------------------------------------\n"
-      "<renew body>: This is a charity service the clerics perform for\n"
-      "	novice adventurers who have lost limbs while adventuring.\n"
-      "	All limbs are replaced.\n"
-      "<regenerate [limb]>: This service is for the experienced adventurer\n"
-      "	who has lost limbs.  The limb is replaced and acts like new.\n"
-      "	Tithe schedule for regeneration:\n"
-      "            from "+currency_value(320, "gold")+" gold for minor limbs (non-clerics)\n"
-      "            to "+currency_value(800, "gold")+" gold for major limbs (non-clerics)\n"
-      "            "+currency_value(240, "gold")+" to "+currency_value(600, "gold")+" gold for clerics\n"
-      "<clean poison>: Helps remove some of the poison from your body.\n"
-      "\ttithe: "+currency_value(50, "gold")+" gold\n"
-      "<donate # (hp or mp) of blood>: Donates some of your blood in\n"
-      "\texchange for gold.\n"
-      "<transfuse # (hp or mp)>: Transfuse some blood int hp or mp into your body\n"
-      "\ttithe: amount times "+currency_value(3, "gold")+" gold.\n"
-      "Currently: "+blood["hp"]+" hp blood and "+blood["mp"]+" mp blood free.\n"
-      "------------------------------------------------------------------\n"
-      "Half off all regenerations with the severed limb!\n"
-      "Your tithe is used only toward good causes.\n", this_player());
+            "The clerics perform the following services:\n"
+            "------------------------------------------------------------------\n"
+            "<renew body>: This is a charity service the clerics perform for\n"
+            "	novice adventurers who have lost limbs while adventuring.\n"
+            "	All limbs are replaced.\n"
+            "<regenerate [limb]>: This service is for the experienced adventurer\n"
+            "	who has lost limbs.  The limb is replaced and acts like new.\n"
+            "	Tithe schedule for regeneration:\n"
+            "            from "+currency_value(320, "gold")+" gold for minor limbs (non-clerics)\n"
+            "            to "+currency_value(800, "gold")+" gold for major limbs (non-clerics)\n"
+            "            "+currency_value(240, "gold")+" to "+currency_value(600, "gold")+" gold for clerics\n"
+            "<clean poison>: Helps remove some of the poison from your body.\n"
+            "\ttithe: "+currency_value(50, "gold")+" gold\n"
+            "<donate # (hp or mp) of blood>: Donates some of your blood in\n"
+            "\texchange for gold.\n"
+            "<transfuse # (hp or mp)>: Transfuse some blood int hp or mp into your body\n"
+            "\ttithe: amount times "+currency_value(3, "gold")+" gold.\n"
+            "Currently: "+blood["hp"]+" hp blood and "+blood["mp"]+" mp blood free.\n"
+            "------------------------------------------------------------------\n"
+            "Half off all regenerations with the severed limb!\n"
+            "Your tithe is used only toward good causes.\n", this_player());
     return 1;
 }
 
@@ -127,11 +127,11 @@ int regenerate(string limb) {
     else bonus = 1;
     there = (string *)tp->query_limbs();
     missing = (string *)this_player()->query_severed_limbs() +
-    (string *)RACES_D->query_limbs((string)this_player()->query_race());
+        (string *)RACES_D->query_limbs((string)this_player()->query_race());
     /*
        checking with the race_d is allowing compatibility with old
        versions of the mudlib
-    */
+     */
     if(!missing) {
         notify_fail("You aren't missing any limbs!\n");
         return 0;
@@ -156,12 +156,12 @@ int regenerate(string limb) {
         }
     }
     if(strsrch(limb, "hand") != -1 || strsrch(limb, "foot") != -1 || 
-      strsrch(limb, "hoof") != -1) {
+            strsrch(limb, "hoof") != -1) {
         money = ((string)this_player()->query_class() == "cleric" ? 
-          currency_value(240, "gold") : currency_value(320, "gold"));
+                currency_value(240, "gold") : currency_value(320, "gold"));
     }
     else money = ((string)this_player()->query_class() == "cleric" ? 
-          currency_value(600, "gold") : currency_value(800, "gold"));
+            currency_value(600, "gold") : currency_value(800, "gold"));
     if((int)tp->query_money("gold") < COST) {
         notify_fail("The cleric tells you:  You do not have enough gold.\n");
         return 0;
@@ -171,7 +171,7 @@ int regenerate(string limb) {
         tp->add_wielding_limb(limb);
     this_player()->AddCurrency("gold", -COST);
     say(sprintf("%s asks the clerics for some help with %s missing %s.",
-        this_player()->query_cap_name(), possessive(this_player()), limb));
+                this_player()->query_cap_name(), possessive(this_player()), limb));
     write("The clerics restore your "+limb+"!");
     return 1;
 }

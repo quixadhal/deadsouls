@@ -5,6 +5,7 @@
  */
 
 #include <dirs.h>
+private string gnom;
 
 object domain_master(mixed val) {
     if(!val) return 0;
@@ -25,16 +26,40 @@ int domain_exists(string dmn) {
     return (file_size(DOMAINS_DIRS+"/"+dmn+"/") == -2);
 }
 
-string domain(mixed val) {
-    string nom, tmp;
+varargs string domain(mixed val, int path) {
+    string nom, tmp, foo;
+    int hits;
 
-    if(objectp(val) && domain_exists(tmp=(string)val->query_domain())) 
-        return tmp;
-    else if(stringp(val) && val=load_object(val) &&
-      domain_exists(tmp=(string)val->query_domain())) return tmp;
+    if(objectp(val) && domain_exists(tmp=(string)val->GetDomain())){ 
+        if(!path) return tmp;
+        if(val->GetDomainPath()) return val->GetDomainPath();
+        else return tmp;
+    }
+    if(stringp(val) && val=load_object(val) &&
+            domain_exists(tmp=(string)val->GetDomain())){
+        if(!path) return tmp;
+        if(val->GetDomainPath()) return val->GetDomainPath();
+        else return tmp;
+    }
     nom = (objectp(val) ? file_name(val) : (string)val);
-    if(sscanf(nom, DOMAINS_DIRS+"/%s/%*s", tmp) == 1) return tmp;
-    if(sscanf(nom, REALMS_DIRS+"/%*s/%s/%*s", tmp) == 1 &&
-      domain_exists(tmp)) return tmp;
+    if((hits = (sscanf(nom, DOMAINS_DIRS+"/%s/%*s", tmp)))){
+        //tc("5: "+tmp+" hits: "+hits);
+        if(path) return DOMAINS_DIRS+"/"+tmp;
+        return tmp;
+    }
+    gnom = nom;
+    if((hits = sscanf(nom, REALMS_DIRS+"/%s/%s/%*s", foo, tmp)) > 1 &&
+            unguarded( (: directory_exists(path_prefix(gnom)) :)) ){
+        string ret = foo+"/"+tmp;
+        //tc("6: "+tmp+" hits: "+hits);
+        if(path) return REALMS_DIRS+"/"+ret;
+        return ret;
+    }
+    if((hits = sscanf(nom, ESTATES_DIRS+"/%s/%s/area/%*s", foo, tmp)) > 1 &&
+            unguarded( (: directory_exists(path_prefix(gnom)) :) )){
+        //tc("7: "+tmp+" hits: "+hits);
+        if(path) return ESTATES_DIRS+"/"+foo+"/"+tmp+"/area";
+        return tmp;
+    }
     return 0;
 }

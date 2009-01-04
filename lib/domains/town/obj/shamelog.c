@@ -15,6 +15,7 @@ void create(){
     SetVendorType(VT_TREASURE);
     SetTitle("The Sample Book");
 }
+
 void init(){
     ::init();
 }

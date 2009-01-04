@@ -9,20 +9,20 @@ void create() {
     SetProperty("no teleport", 1);
     SetShort( "A dark tunnel under the mountains");
     SetLong(
-      "There is a weak light coming from up this descending tunnel, "
-      "but it is not enough to illuminate this passage.  Chambers "
-      "branch off of the main tunnel east and west.");
+            "There is a weak light coming from up this descending tunnel, "
+            "but it is not enough to illuminate this passage.  Chambers "
+            "branch off of the main tunnel east and west.");
     SetItems(
-      (["light" : "What light?",
-        "tunnel" : "It is very dark.",
-        "chamber" : "You cannot see it very well.",
-        "chambers" : "There is one east, and one west, but you "
-        "cannot make out anything in them."]) );
+            (["light" : "What light?",
+             "tunnel" : "It is very dark.",
+             "chamber" : "You cannot see it very well.",
+             "chambers" : "There is one east, and one west, but you "
+             "cannot make out anything in them."]) );
     SetExits( 
-      (["east" : "/domains/Praxis/mountains/chamber1",
-        "west" : "/domains/Praxis/mountains/chamber2",
-        "down" : "/domains/Praxis/mountains/tunnel2",
-        "up" : "/domains/Praxis/mountains/entrance"]) );
+            (["east" : "/domains/Praxis/mountains/chamber1",
+             "west" : "/domains/Praxis/mountains/chamber2",
+             "down" : "/domains/Praxis/mountains/tunnel2",
+             "up" : "/domains/Praxis/mountains/entrance"]) );
 }
 
 void reset() {
@@ -36,17 +36,17 @@ void reset() {
         mon->SetLevel(4);
         mon->SetShort( "Goblin guard");
         mon->SetLong( "An ugly monster who has likely never seen "
-          "the light of day.");
+                "the light of day.");
         mon->SetRace( "goblin");
         mon->set_stats("strength", 5);
         mon->SetAggressive( 10);
         mon->set_languages( ({ "goeblesque" }) );
         mon->set_speech(10, "goeblesque",
-          ({ "Get the hell out of here, asshole!", "You will never get that "
-            "damn crystal ball!", "I will freaking kill you!"}), 0);
+                ({ "Get the hell out of here, asshole!", "You will never get that "
+                 "damn crystal ball!", "I will freaking kill you!"}), 0);
         mon->set_speech(20, "goeblesque", ({ "You are dead!", 
-            "Shouldn't have picked a fight with me!", "I will body slam you!",
-            "%&$*!head!" }), 1);
+                    "Shouldn't have picked a fight with me!", "I will body slam you!",
+                    "%&$*!head!" }), 1);
         mon->SetMorality(-120);
         mon->SetHealthPoints(400);
         mon->SetGender("male");
@@ -71,7 +71,7 @@ void reset() {
 int CanReceive() {
     if((int)previous_object()->query_level() > 10) {
         message("my_action", "A magic force prevents you from going "
-          "further into the mountain.", this_player());
+                "further into the mountain.", this_player());
         return 0;
     }
     return 1;

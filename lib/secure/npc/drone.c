@@ -16,11 +16,11 @@ void doPrint(string str1, string str2);
 
 void validate(){
     if(base_name(previous_object()) != "/secure/obj/control" || 
-      previous_object()->GetControlCode() != control_code){
+            previous_object()->GetControlCode() != control_code){
         if(ownerob){
             tell_object(ownerob,"%^RED%^Security violation. Someone is attempting to "+
-              "hijack your drone. Guilty object stack: %^YELLOW%^"+
-              identify(previous_object(-1))+"%^RESET%^");
+                    "hijack your drone. Guilty object stack: %^YELLOW%^"+
+                    identify(previous_object(-1))+"%^RESET%^");
         }
         error("Illegal control attempt by: "+identify(previous_object(-1))+", "+get_stack());
     }
@@ -38,7 +38,7 @@ int doCheckLiving(object ob){
 int doCheckItem(object ob){
     string s1;
     if(!living(ob)
-      && !sscanf(file_name(ob),"/lib/std/dummy#%s",s1) ){
+            && !sscanf(file_name(ob),"/lib/std/dummy#%s",s1) ){
         if(itemcheck==0){
             desc+="Here you see:\n";
             itemcheck=1;
@@ -64,7 +64,7 @@ void receive_message(string s1, string s2){
 }
 
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,
-  string msg, string lang) {
+        string msg, string lang) {
     ww=who;
     vv=verb;
     mm=msg;
@@ -136,8 +136,8 @@ int SetControlCode(string str){
     if(sizeof(control_code) && GetOwner() != "NONE" ){
         if(ownerob){
             tell_object(ownerob,"%^RED%^Security violation. Someone is attempting to "
-              "hijack your drone. Guilty object stack: %^YELLOW%^"+
-              identify(previous_object(-1))+"%^RESET%^");
+                    "hijack your drone. Guilty object stack: %^YELLOW%^"+
+                    identify(previous_object(-1))+"%^RESET%^");
         }
         error("Illegal control attempt by: "+identify(previous_object(-1))+", "+get_stack());
     }
@@ -162,7 +162,7 @@ string eDE(int brief) {
     }
     desc = (string)env->GetObviousExits() || "";
     desc = capitalize(env->GetInternalShort() || env->GetShort() || "")
-    + " [" + desc + "]\n";
+        + " [" + desc + "]\n";
     desc += (env->GetInternalLong() || env->GetLong() || "");
     smell = env->GetSmell();
     sound = env->GetListen();

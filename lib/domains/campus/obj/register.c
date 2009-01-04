@@ -14,8 +14,8 @@ void create() {
     SetMaxCarry(10);
     SetPreventPut("You cannot put this in there!");
     SetMoney( ([
-        "dollars" : random(200),
-      ]) );
+                "dollars" : random(200),
+                ]) );
     SetCanClose(1);
     SetClosed(1);
 }

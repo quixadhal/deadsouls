@@ -12,7 +12,6 @@ static void create() {
     SetId( ({ "glove" }) );
     SetShort("a leather work glove");
     SetLong("A thick, brown leather work glove, designed for wear on the left hand.");
-    SetDamagePoints(75);
     SetVendorType(VT_ARMOR);
     SetMass(10);
     SetBaseCost("silver",7);
@@ -25,6 +24,7 @@ static void create() {
     SetFingers(5);
     SetRestrictLimbs(({"left hand"}));
 }
+
 void init(){
     ::init();
 }

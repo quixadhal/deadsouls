@@ -10,7 +10,7 @@ static void create() {
     SetRules("from OBJ into OBJ","from OBJ in OBJ", "OBJ in OBJ","OBJ into OBJ","OBJ on OBJ","OBJ onto OBJ","OBJ out","out OBJ");
     SetErrorMessage("Pour what into what?");
     SetHelp("Syntax: pour <substance> into <vessel>\n\n"
-      "Allows you to pour into a vessel designed for containing a substance.");
+            "Allows you to pour into a vessel designed for containing a substance.");
 }
 
 mixed can_pour_obj_into_obj(string verb) { return this_player()->CanManipulate(); }

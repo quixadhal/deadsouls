@@ -58,138 +58,138 @@ void Setup(){
     set_heart_beat(1);
 
     add_feed("lpmuds-forum", ([
-        "name": "LPMuds.net",
-        "ip_port": "204.209.44.12 80",
-        "host": "lpmuds.net",
-        "req": "GET /forum/index.php?type=rss;action=.xml HTTP/1.0",
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 15,
-        "timer": -1,
-        "userid": "LPMuds",
-      ]) );
+                "name": "LPMuds.net",
+                "ip_port": "204.209.44.12 80",
+                "host": "lpmuds.net",
+                "req": "GET /forum/index.php?type=rss;action=.xml HTTP/1.0",
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 15,
+                "timer": -1,
+                "userid": "LPMuds",
+                ]) );
 
     add_feed("tmc-forums", ([
-        "name": "Mudconnect.com Forums",
-        "ip_port": "66.150.96.119 80",
-        "host": "feeds.feedburner.com",
-        "req": "GET /TMCForums HTTP/1.0",
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 20,
-        "timer": -1,
-        "userid": "TMC",
-      ]) );
+                "name": "Mudconnect.com Forums",
+                "ip_port": "66.150.96.119 80",
+                "host": "feeds.feedburner.com",
+                "req": "GET /TMCForums HTTP/1.0",
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 20,
+                "timer": -1,
+                "userid": "TMC",
+                ]) );
     add_feed("tmc-mudconnect", ([
-        "name": "Mudconnect.com",
-        "ip_port": "66.150.96.119 80",
-        "host": "feeds.feedburner.com",
-        "req": "GET /Mudconnect HTTP/1.0",
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 30,
-        "timer": -1,
-        "userid": "TMC",
-      ]) );
+                "name": "Mudconnect.com",
+                "ip_port": "66.150.96.119 80",
+                "host": "feeds.feedburner.com",
+                "req": "GET /Mudconnect HTTP/1.0",
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 30,
+                "timer": -1,
+                "userid": "TMC",
+                ]) );
 
     add_feed("mudbytes-forum", ([
-        "name": "MudBytes",
-        "ip_port": "209.190.9.170 80",
-        "host": "www.mudbytes.net",
-        "req": "GET /index.php?a=rssfeed HTTP/1.0",
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 15,
-        "timer": -1,
-        "userid": "MudBytes",
-      ]) );
+                "name": "MudBytes",
+                "ip_port": "209.190.9.170 80",
+                "host": "www.mudbytes.net",
+                "req": "GET /index.php?a=rssfeed HTTP/1.0",
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 15,
+                "timer": -1,
+                "userid": "MudBytes",
+                ]) );
 
     add_feed("smaugmuds-forum", ([
-        "name": "SmaugMuds.org",
-        "ip_port": "66.218.49.113 80",
-        "host": "www.smaugmuds.org",
-        "req": "GET /index.php?a=rssfeed HTTP/1.0",
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 15,
-        "timer": -1,
-        "userid": "SmaugMuds",
-      ]) );
+                "name": "SmaugMuds.org",
+                "ip_port": "66.218.49.113 80",
+                "host": "www.smaugmuds.org",
+                "req": "GET /index.php?a=rssfeed HTTP/1.0",
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 15,
+                "timer": -1,
+                "userid": "SmaugMuds",
+                ]) );
 
     add_feed("topmudsites-forum", ([
-        "name": "Top Mud Sites Forum",
-        "ip_port": "72.232.233.194 80",
-        "host": "www.topmudsites.com",
-        "req": "GET /forums/external.php?type=RSS2&lastpost=true HTTP/1.0",
-        "append": ([ "ext": ".html", "string": "-new-post" ]),
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 15,
-        "timer": -1,
-        "userid": "TMS",
-      ]) );
+                "name": "Top Mud Sites Forum",
+                "ip_port": "72.232.233.194 80",
+                "host": "www.topmudsites.com",
+                "req": "GET /forums/external.php?type=RSS2&lastpost=true HTTP/1.0",
+                "append": ([ "ext": ".html", "string": "-new-post" ]),
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 15,
+                "timer": -1,
+                "userid": "TMS",
+                ]) );
 
     add_feed("arthmoor-forum", ([
-        "name": "Arthmoor Internet Services: MUD Hosting",
-        "ip_port": "66.218.49.113 80",
-        "host": "www.arthmoor.com",
-        "req": "GET /forum/index.php?a=rssfeed HTTP/1.0",
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 3 * 60,
-        "timer": -1,
-        "userid": "Arthmoor",
-      ]) );
+                "name": "Arthmoor Internet Services: MUD Hosting",
+                "ip_port": "66.218.49.113 80",
+                "host": "www.arthmoor.com",
+                "req": "GET /forum/index.php?a=rssfeed HTTP/1.0",
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 3 * 60,
+                "timer": -1,
+                "userid": "Arthmoor",
+                ]) );
 
     add_feed("mudmagic-lpc", ([
-        "name": "Mud Magic: LPC Lounge",
-        "ip_port": "67.19.238.52 80",
-        "host": "www.mudmagic.com",
-        "req": "GET /rss/boards/26 HTTP/1.0",
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 3 * 60,
-        "timer": -1,
-        "userid": "MudMagic",
-      ]) );
+                "name": "Mud Magic: LPC Lounge",
+                "ip_port": "67.19.238.52 80",
+                "host": "www.mudmagic.com",
+                "req": "GET /rss/boards/26 HTTP/1.0",
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 3 * 60,
+                "timer": -1,
+                "userid": "MudMagic",
+                ]) );
     add_feed("mudmagic-staff", ([
-        "name": "Mud Magic: Staff Wanted",
-        "ip_port": "67.19.238.52 80",
-        "host": "www.mudmagic.com",
-        "req": "GET /rss/boards/5 HTTP/1.0",
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 60,
-        "timer": -1,
-        "userid": "MudMagic",
-      ]) );
+                "name": "Mud Magic: Staff Wanted",
+                "ip_port": "67.19.238.52 80",
+                "host": "www.mudmagic.com",
+                "req": "GET /rss/boards/5 HTTP/1.0",
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 60,
+                "timer": -1,
+                "userid": "MudMagic",
+                ]) );
 
     add_feed("metaplace-news", ([
-        "name": "Metaplace.com Developer's Blog",
-        "ip_port": "66.150.96.119 80",
-        "host": "feeds.feedburner.com",
-        "req": "GET /metaplace HTTP/1.0",
-        "char-encoding": "utf8",
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 60,
-        "timer": -1,
-        "userid": "Metaplace",
-      ]) );
+                "name": "Metaplace.com Developer's Blog",
+                "ip_port": "66.150.96.119 80",
+                "host": "feeds.feedburner.com",
+                "req": "GET /metaplace HTTP/1.0",
+                "char-encoding": "utf8",
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 60,
+                "timer": -1,
+                "userid": "Metaplace",
+                ]) );
 
     add_feed("theonion", ([
-        "name": "The Onion",
-        "ip_port": "66.150.96.119 80",
-        "host": "feeds.theonion.com",
-        "req": "GET /theonion/daily HTTP/1.0",
-        "sortBy": "pubDate",
-        "char-encoding": "utf8",
-        "wait": 15,
-        "min_wait": 2,
-        "max_wait": 24 * 60,
-        "timer": -1,
-        "userid": "TheOnion",
-      ]) );
+                "name": "The Onion",
+                "ip_port": "66.150.96.119 80",
+                "host": "feeds.theonion.com",
+                "req": "GET /theonion/daily HTTP/1.0",
+                "sortBy": "pubDate",
+                "char-encoding": "utf8",
+                "wait": 15,
+                "min_wait": 2,
+                "max_wait": 24 * 60,
+                "timer": -1,
+                "userid": "TheOnion",
+                ]) );
 }
 
 
@@ -240,10 +240,10 @@ void close_callback( int fd )
 void sendHTTPGet()
 {
     string str =Feeds[args_list]["req"]+CARRIAGE_RETURN+"\n"+
-    "Host: "+Feeds[args_list]["host"]+CARRIAGE_RETURN"\n" +
-    "User-Agent: RSS_D@" + mud_name() + " " +
-    mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
-    version() + CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
+        "Host: "+Feeds[args_list]["host"]+CARRIAGE_RETURN"\n" +
+        "User-Agent: RSS_D@" + mud_name() + " " +
+        mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
+        version() + CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
     int result = 0;
     results = "";
 #ifdef _DEBUG
@@ -271,35 +271,35 @@ int openHTTPConnection()
     if (sock < 0) { 
         switch( sock )
         {
-        case EEMODENOTSUPP :
-            error = "Socket mode not supported.\n" ;
-            break ;
-        case EESOCKET :
-            error = "Problem creating socket.\n" ;
-            break ;
-        case EESETSOCKOPT :
-            error = "Problem with setsockopt.\n" ;
-            break ;
-        case EENONBLOCK :
-            error = "Problem with setting non-blocking mode.\n" ;
-            break ;
-        case EENOSOCKS :
-            error = "No more available efun sockets.\n" ;
-            break ;
-        case EESECURITY :
-            error = "Security violation attempted.\n" ;
-            break ;
-        default :
-            error = "Unknown error code: " + sock + ".\n" ;
-            break ;
+            case EEMODENOTSUPP :
+                error = "Socket mode not supported.\n" ;
+                break ;
+            case EESOCKET :
+                error = "Problem creating socket.\n" ;
+                break ;
+            case EESETSOCKOPT :
+                error = "Problem with setsockopt.\n" ;
+                break ;
+            case EENONBLOCK :
+                error = "Problem with setting non-blocking mode.\n" ;
+                break ;
+            case EENOSOCKS :
+                error = "No more available efun sockets.\n" ;
+                break ;
+            case EESECURITY :
+                error = "Security violation attempted.\n" ;
+                break ;
+            default :
+                error = "Unknown error code: " + sock + ".\n" ;
+                break ;
         }
         notify_fail( "Unable to connect, problem with socket_create.\n"
-          "Reason: " + error ) ;
+                "Reason: " + error ) ;
         return 0 ;
     }
     write("Attempting to connect to "+HTTP_HOST+ " on port "+ HTTP_PORT + "\n");
     sc_result = socket_connect( sock, Feeds[args_list]["ip_port"],
-      "read_callback", "write_callback" ) ;
+            "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS )
     {
         status = SOCK_DISCONNECTED;
@@ -357,8 +357,8 @@ string GetErorMessage() {
 
 string GetHelp() {
     return ("Syntax: dsversion [version]\n\n" +
-      "Shows the latest version of Dead Souls and release notes.\n"+
-      "e.g. dsversion, dsversion r1, dsversion 2.0r1");
+            "Shows the latest version of Dead Souls and release notes.\n"+
+            "e.g. dsversion, dsversion r1, dsversion 2.0r1");
 }
 
 

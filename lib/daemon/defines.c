@@ -17,13 +17,13 @@ static void create() {
     header += "#ifndef $S\n#define $S \"DEFINED_D: undefined\"\n";
     header += "#endif\n";
     program = "\nmixed defcheck(){"+
-    "\nint err;"+
-    "\nmixed ret;"+
-    "\nerr = catch( ret = $S );"+
-    "\nif(err) ret = \"DEFINED_D: error\";"+
-    "\nelse if(undefinedp(ret)) ret = \"DEFINED_D: undefined\";"+
-    "\nreturn ret;"+
-    "\n}";
+        "\nint err;"+
+        "\nmixed ret;"+
+        "\nerr = catch( ret = $S );"+
+        "\nif(err) ret = \"DEFINED_D: error\";"+
+        "\nelse if(undefinedp(ret)) ret = \"DEFINED_D: undefined\";"+
+        "\nreturn ret;"+
+        "\n}";
     write_file("/open/prog.c",header+program,1);
 }
 

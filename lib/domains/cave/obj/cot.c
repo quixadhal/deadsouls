@@ -10,7 +10,7 @@ static void create() {
     SetAdjectives( ({ "simple"}) );
     SetShort("a simple cot");
     SetLong("This is a simple cot designed for "
-      "sleepers that do not require a comfortable bed.");
+            "sleepers that do not require a comfortable bed.");
     SetMass(500);
     SetBaseCost("silver",15);
     SetMaxSitters(2);

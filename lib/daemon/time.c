@@ -27,7 +27,7 @@ static void create() {
     else x = 0;
     if( file_size(CFG_TIME) < 1 ) return;
     i = sizeof(lines = filter(explode(read_file(CFG_TIME), "\n"),
-        (: $1 && $1 != "" && $1[0] != '#' :)));
+                (: $1 && $1 != "" && $1[0] != '#' :)));
     foreach(string line in lines) {
         string *words;
         if( sizeof(words = explode(line, ":")) != 3 ) continue;

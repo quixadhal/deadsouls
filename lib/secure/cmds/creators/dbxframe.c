@@ -28,12 +28,12 @@ int cmd(string str) {
     frame = frame["trace"][num];
 
     ret += sprintf("------\n%s:%i - %s(%s)\n", frame["program"], frame["line"],
-      frame["function"],frame["arguments"]);
+            frame["function"],frame["arguments"]);
     ret += sprintf("----------------------------------------------------------------\n");
     ret += sprintf("%s=>%s%s",
-      unguarded( (: read_file(frame["program"], frame["line"]-5, 5) :) ),
-      unguarded( (: read_file(frame["program"], frame["line"], 1) :) ),
-      unguarded( (: read_file(frame["program"], frame["line"]+1, 5) :) ));
+            unguarded( (: read_file(frame["program"], frame["line"]-5, 5) :) ),
+            unguarded( (: read_file(frame["program"], frame["line"], 1) :) ),
+            unguarded( (: read_file(frame["program"], frame["line"]+1, 5) :) ));
     tell_object(this_player(),ret);
     return 1;
 }

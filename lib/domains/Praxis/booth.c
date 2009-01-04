@@ -17,10 +17,10 @@ void create() {
     SetProperty("light", 2);
     SetProperty("indoors", 1);
     SetLong(
-      "This is the referendum room of Nightmare.  Players come here to vote "+
-      "on issues that the wizards desire input on.  The current voting "+
-      "question is posted on the wall <read question> will display it."
-    );
+            "This is the referendum room of Nightmare.  Players come here to vote "+
+            "on issues that the wizards desire input on.  The current voting "+
+            "question is posted on the wall <read question> will display it."
+           );
 
     SetExits( (["down" : "/domains/Praxis/adv_main"]) );
     vote=([]);

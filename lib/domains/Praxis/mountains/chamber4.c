@@ -10,13 +10,13 @@ void create() {
     SetProperty("no castle", 1);
     SetShort( "A dark underground chamber");
     SetLong(
-      "You are in a very dark chamber, illuminated only by your "
-      "light source.");
+            "You are in a very dark chamber, illuminated only by your "
+            "light source.");
     SetSmell("default", "The stench in here is foul and trapped.");
     SetItems(
-      (["light" : "What light?",
-        "tunnel" : "It is very dark.",
-        "chamber" : "You cannot see it very well."]) );
+            (["light" : "What light?",
+             "tunnel" : "It is very dark.",
+             "chamber" : "You cannot see it very well."]) );
     SetExits( (["east" : "/domains/Praxis/mountains/tunnel2"]) );
 }
 
@@ -30,7 +30,7 @@ void reset() {
         mon->SetId( ({ "general", "goblin", "goblin general" }) );
         mon->SetShort( "Goblin general");
         mon->SetLong( "An ugly monster who has likely never "
-          "seen the light of day.");
+                "seen the light of day.");
         mon->SetLevel(5);
         mon->SetRace( "goblin");
         mon->SetAggressive( 10);
@@ -44,7 +44,7 @@ void reset() {
         arm->SetId( ({ "shield", "goblin shield" }) );
         arm->SetShort( "Goblin shield");
         arm->SetLong( "A huge, heavy shield whose metal was mined "
-          "from the Darow Mountains.");
+                "from the Darow Mountains.");
         arm->set_type("shield");
         arm->set_limbs( ({ "left hand", "left arm", "torso" }) );
         arm->set_ac(3);

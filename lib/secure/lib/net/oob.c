@@ -66,12 +66,12 @@ static void create(mixed alpha, mixed beta, mixed gamma, mixed delta){
     if(client) {
         whoami = "CLIENT";
         trr("LIB_OOB "+file_name()+": I think I am a "
-          "%^YELLOW%^%^BOLD%^client%^RESET%^",mcolor,MSG_OOB);
+                "%^YELLOW%^%^BOLD%^client%^RESET%^",mcolor,MSG_OOB);
     }
     else {
         whoami = "SOCKET";
         trr("LIB_OOB "+file_name()+": I think I am a "
-          "%^CYAN%^%^BOLD%^server%^RESET%^",mcolor,MSG_OOB);
+                "%^CYAN%^%^BOLD%^server%^RESET%^",mcolor,MSG_OOB);
     }
 }
 
@@ -124,7 +124,7 @@ int eventRead(mixed data) {
     }
 
     if((data[0] == "oob-file-end" || data[0] == "oob-reply" || data[0] == "oob-file-error") 
-      && globalvar && arrayp(globalvar)){
+            && globalvar && arrayp(globalvar)){
         if(globalvar[0] == "oob-file-req"){
             if(stringp(globalvar[1])) {
                 client::eventWrite(globalvar);

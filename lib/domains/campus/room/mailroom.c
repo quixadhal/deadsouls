@@ -12,19 +12,19 @@ static void create(){
     SetAmbientLight(40);
     SetShort("the campus mail room");
     SetLong("This is a small office containing rows of mailboxes and "+
-      "various other postal implements. There is a sign on the wall behind the "+
-      "counter, outlining instructions for how to mail other users.");
+            "various other postal implements. There is a sign on the wall behind the "+
+            "counter, outlining instructions for how to mail other users.");
     SetItems( ([ 
-        ({"box","boxes","mailboxes","mailbox"}) : "Rows of mailboxes for "+
-        "the denizens of LPC University.",
-        "sign" : "This is a sign on the wall describing how to mail messages.",
-        ({"wall","walls"}) : "Gray-painted institutional walls of the kind you'd "+
-        "expect in a post office.",
-        "implements" : "Ink, paper, etc.",
-        "instructions" : "Try reading them.",
-        "counter" : "A counter folks use to lean on while writing messages." ]) );
+                ({"box","boxes","mailboxes","mailbox"}) : "Rows of mailboxes for "+
+                "the denizens of LPC University.",
+                "sign" : "This is a sign on the wall describing how to mail messages.",
+                ({"wall","walls"}) : "Gray-painted institutional walls of the kind you'd "+
+                "expect in a post office.",
+                "implements" : "Ink, paper, etc.",
+                "instructions" : "Try reading them.",
+                "counter" : "A counter folks use to lean on while writing messages." ]) );
     SetExits( ([ 
-      ]) );
+                ]) );
     SetProperty("no attack", 1);
 }
 void init(){
@@ -34,10 +34,10 @@ void init(){
 int instr(string str){
     if(str=="instructions"||str=="sign"){
         write("To mail someone, type mail <person's name here>.\n"+
-          "Enter a subject line.\n"+
-          "Enter your message.\n"+
-          "Once you've finished, enter a period (.) on a blank line.\n"+
-          "Hit x, then s to send it. You're done!\n");
+                "Enter a subject line.\n"+
+                "Enter your message.\n"+
+                "Once you've finished, enter a period (.) on a blank line.\n"+
+                "Hit x, then s to send it. You're done!\n");
         return 1;
     }
 }

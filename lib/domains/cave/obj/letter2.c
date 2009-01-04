@@ -6,12 +6,12 @@ inherit LIB_READ;
 string ReadFun(){
     string ret = "Commander Kurogane,\n";
     ret += "We cannot assist you at this time. Azusa coast is "+
-    "under concentrated attack by an invasion force. All our "+
-    "soldiers are needed here. You are ordered to maintain your "+
-    "garrison in place and continue to observe and report on "+
-    "humanoid activity at the eastern frontiers. Notify us "+
-    "at once if you observe unusual lights in the sky.\n\n"+
-    "-General Ikomo"; 
+        "under concentrated attack by an invasion force. All our "+
+        "soldiers are needed here. You are ordered to maintain your "+
+        "garrison in place and continue to observe and report on "+
+        "humanoid activity at the eastern frontiers. Notify us "+
+        "at once if you observe unusual lights in the sky.\n\n"+
+        "-General Ikomo"; 
     return ret;
 }
 

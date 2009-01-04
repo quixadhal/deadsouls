@@ -3,9 +3,9 @@
 inherit LIB_SENTIENT;
 
 void create(){
-sentient::create();
+    sentient::create();
 }
 
 void init(){
-sentient::init();
+    sentient::init();
 }

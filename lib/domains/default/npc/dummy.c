@@ -9,21 +9,21 @@ static void create(){
     SetId( ({"dummy","mokujin"}) );
     SetShort("a training dummy");
     SetLong("This is a magical sparring partner. It is made of "+
-      "logs, cut to the proportions of a human's "+
-      "head, torso, and limbs. The logs are held "+
-      "together by joints made of chains.");
+            "logs, cut to the proportions of a human's "+
+            "head, torso, and limbs. The logs are held "+
+            "together by joints made of chains.");
     SetPacifist(1);
     SetBodyComposition("wood");
     SetInventory(([
-      ]));
+                ]));
     SetLevel(10);
-    SetRace("golem");
-    SetNativeLanguage("english");
+    SetRace("dummy");
     SetClass("fighter");
     SetGender("neuter");
     SetMaxHealthPoints(9000);
     SetHealthPoints(9000);
 }
+
 varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixed limbs) {
     int hp, damage, damdiff;
     string evidence, limb_string;
@@ -80,11 +80,11 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
 
 int RemoveLimb(string limb, object agent){
     if(query_verb() == "eval" || query_verb() == "amputate" ||
-      query_verb() == "call"){
+            query_verb() == "call"){
         return ::RemoveLimb(limb, agent);
     }
     eventForce("say My "+limb+" has received enough damage to sever it. "
-      "However, since I am a training dummy, I'll be keeping it.");
+            "However, since I am a training dummy, I'll be keeping it.");
     return 1;
 }
 

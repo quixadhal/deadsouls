@@ -9,19 +9,19 @@ static void create() {
     SetShort("The Magic Shop");
     SetLong("This is the local magic shop. Magical items can be bought and sold here. The storeroom is upstairs and the town Mages' Guild is south.");
     SetItems(([
-        ({"store","shop","place"}) : "This is the local magic shop.",
-        ({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
-      ]));
+                ({"store","shop","place"}) : "This is the local magic shop.",
+                ({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
+                ]));
     SetExits( ([
-        "south" : "/domains/town/room/magic_guild",
-        "east" : "/domains/town/room/south_road1",
-        "up" : "/domains/town/room/magic_shop2.c",
-      ]) );
+                "south" : "/domains/town/room/magic_guild",
+                "east" : "/domains/town/room/south_road1",
+                "up" : "/domains/town/room/magic_shop2.c",
+                ]) );
     SetRead("sign", (: read_sign :) );
     SetInventory( ([
-        "/domains/town/npc/oana" : ({60, 1}),
-        "/domains/town/obj/bbucket" : 1,
-      ]) );
+                "/domains/town/npc/oana" : ({60, 1}),
+                "/domains/town/obj/bbucket" : 1,
+                ]) );
 }
 int read_sign(){
     write("HOW TO CONDUCT BUSINESS HERE\n");

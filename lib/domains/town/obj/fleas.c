@@ -46,7 +46,7 @@ void bonuses(){
     }
     else if(victim) {
         foreach( string stat in ({"intelligence", "strength",
-            "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+                    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
             victim->RemoveStatBonus(stat);
         }
     }
@@ -99,7 +99,7 @@ int damage2(){
 
 int damage3(){
     tell_room(environment(victim),victimname+" scratches at "+reflexive(victim)+" in a frenzy, ripping "+
-      possessive(victim)+" flesh and drawing blood.", ({victim}) );
+            possessive(victim)+" flesh and drawing blood.", ({victim}) );
     tell_object(victim,"You scratch at yourself in a mad frenzy, ripping flesh and drawing blood.");
     if(DangerLevel() != 100) victim->eventReceiveDamage(this_object(),DISEASE,random(5)+4,0,"torso");
     return 1;

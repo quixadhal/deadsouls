@@ -17,13 +17,13 @@ static void create() {
     SetRules("LIV STR", "STR", "LIV to STR", "LIV for STR", "LIV about STR");
     SetErrorMessage("Ask what?  Or ask whom to do what?");
     SetHelp("Syntax: <ask LIVING SOMETHING>\n"
-      "        <ask SOMETHING>\n"
-      "        <ask LIVING about SOMETHING>\n"
-      "        <ask LIVING to DO SOMETHING>\n"
-      "        <ask LIVING for SOMETHING>\n\n"
-      "Some npcs and perhaps some inanimate objects will respond "
-      "when you query the target with a specific question.\n\n"
-      "See also: reply, say, shout, speak, tell, whisper, yell");
+            "        <ask SOMETHING>\n"
+            "        <ask LIVING about SOMETHING>\n"
+            "        <ask LIVING to DO SOMETHING>\n"
+            "        <ask LIVING for SOMETHING>\n\n"
+            "Some npcs and perhaps some inanimate objects will respond "
+            "when you query the target with a specific question.\n\n"
+            "See also: reply, say, shout, speak, tell, whisper, yell");
 }
 
 mixed can_ask_liv_to_str(string str) { return 1; }
@@ -49,37 +49,37 @@ mixed can_ask_str(string str) {
 
 mixed do_ask_liv_to_str(object ob, string str) {
     message("my_action", "You ask "+(string)ob->GetName()+" to "+str+".",
-      this_player() );
+            this_player() );
     message("other_action", (string)this_player()->GetName()+" asks "
-      "you to "+str+".", ob);
+            "you to "+str+".", ob);
     message("other_action", (string)this_player()->GetName()+" asks "+
-      (string)ob->GetName()+" to "+str+".",
-      environment(ob), ({ ob, this_player() }) );
+            (string)ob->GetName()+" to "+str+".",
+            environment(ob), ({ ob, this_player() }) );
     ob->eventAsk(this_player(), str);
     return 1;
 }
 
 mixed do_ask_liv_for_str(object ob, string str) {
     message("my_action", "You ask "+(string)ob->GetName()+" for "+str+".",
-      this_player() );
+            this_player() );
     message("other_action", (string)this_player()->GetName()+" asks "+
-      (string)ob->GetName()+" for "+str+".",
-      environment(ob), ({ ob, this_player() }) );
+            (string)ob->GetName()+" for "+str+".",
+            environment(ob), ({ ob, this_player() }) );
     if( !((int)ob->eventRequest(this_player(), str)) )
         message("other_action", (string)this_player()->GetName()+" asks "
-          "you for "+str+".", ob);
+                "you for "+str+".", ob);
     return 1;
 }
 
 mixed do_ask_liv_about_str(object ob, string str) {
     message("my_action", "You ask "+(string)ob->GetName()+" about "+str+".",
-      this_player() );
+            this_player() );
     message("other_action", (string)this_player()->GetName()+" asks "+
-      (string)ob->GetName()+" about "+str+".",
-      environment(ob), ({ ob, this_player() }) );
+            (string)ob->GetName()+" about "+str+".",
+            environment(ob), ({ ob, this_player() }) );
     if( !((int)ob->eventConsult(this_player(), str)) )
         message("other_action", (string)this_player()->GetName()+" asks "
-          "you about "+str+".", ob);
+                "you about "+str+".", ob);
     return 1;
 }
 

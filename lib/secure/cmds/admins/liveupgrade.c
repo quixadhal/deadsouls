@@ -61,9 +61,9 @@ int eventBackup(string file){
         mkdir(reverts_prefix+"/"+revert_name);
     }
     filename = reverts_prefix+"/"+revert_name+
-    "/"+short_name+"."+time_str;
+        "/"+short_name+"."+time_str;
     write_file(reverts_prefix+"/"+revert_name+"/"+
-      "/bk.db",short_name+"."+time_str+" : "+file+"\n");
+            "/bk.db",short_name+"."+time_str+" : "+file+"\n");
     cp(file,filename);
     return 1;
 }
@@ -171,7 +171,7 @@ mixed cmd(string str) {
 
     foreach(mixed element in socks){
         if(element[1] == "DATA_XFER" && element[4] == WEB_SOURCE_IP+"."+WEB_SOURCE_PORT &&
-          str != "cancel"){
+                str != "cancel"){
             player->eventPrint("A download is still in progress. Please wait until it is complete.");
             return 1;
         }
@@ -216,11 +216,11 @@ mixed cmd(string str) {
                     string current_ver = mudlib_version();
                     vers = thingy->mudlib_version();
                     if(((grepp(vers,"a") && !grepp(current_ver, "a")) ||
-                        (!grepp(vers,"a") && grepp(current_ver, "a"))) &&
-                      !transver){
+                                (!grepp(vers,"a") && grepp(current_ver, "a"))) &&
+                            !transver){
                         write("This upgrade would cross stable/alpha "
-                          "boundaries, but that has not been enabled "
-                          "with \"liveupgrade alpha\" yet.");
+                                "boundaries, but that has not been enabled "
+                                "with \"liveupgrade alpha\" yet.");
                         return 1;
                     }
                 }
@@ -230,7 +230,7 @@ mixed cmd(string str) {
         foreach(string element in files){
             string contents = "";
             NewFiles[element] = replace_string(replace_string(element,"0^0","/"),
-              upgrades_files+"/","");
+                    upgrades_files+"/","");
             contents = read_file(element);
             if(!contents) contents = "";
             if(last(contents,1) != "\n") contents += "\n";
@@ -274,9 +274,9 @@ mixed cmd(string str) {
             player->eventPrint("Starting INET_D.");
             if(member_array(INET_D,preload_file) == -1)
                 player->eventPrint("When you complete the upgrade by using the \"apply\" keyword, the "
-                  "inet daemon will be shut down, since you do not have it enabled by "
-                  "default. Please remember to either apply the upgrades when the downloading "
-                  "is complete, or manually shut down INET_D with the command: mudconfig inet stop\n");
+                        "inet daemon will be shut down, since you do not have it enabled by "
+                        "default. Please remember to either apply the upgrades when the downloading "
+                        "is complete, or manually shut down INET_D with the command: mudconfig inet stop\n");
         }
         if(!inet){
             player->eventPrint("There is a problem with INET_D. The upgrade will not proceed.");
@@ -340,7 +340,7 @@ mixed cmd(string str) {
             }
             else {
                 WGET_D->GetFile(WEB_SOURCE_IP, upgrade_prefix+"/upgrades.txt",WEB_SOURCE_NAME,
-                  "/secure/upgrades/txt/list.txt",WEB_SOURCE_PORT);
+                        "/secure/upgrades/txt/list.txt",WEB_SOURCE_PORT);
             }
             call_out( (: cmd :), 5, orig_str);
             return 1;
@@ -361,12 +361,12 @@ mixed cmd(string str) {
         rm(upgrades_txt+"/list.txt");
         player->eventPrint("Full upgrade begun.");
         player->eventPrint("Please wait until you receive a completion message,  "+
-          "then issue the command: liveupgrade apply\n\n");
+                "then issue the command: liveupgrade apply\n\n");
         player->eventPrint("%^FLASH%^RED%^WARNING! %^BLACK%^WARNING! %^YELLOW%^WARNING! %^RESET%^WARNING!");
         player->eventPrint("You must *always* do a full backup before applying the liveupgrade. "+
-          "If the liveupgrade screwed up, and you get garbage files because of connection "+
-          "problems, it may be necessary for you to restore from backup to be able to "+
-          "start the mud again. You've been warned.");
+                "If the liveupgrade screwed up, and you get garbage files because of connection "+
+                "problems, it may be necessary for you to restore from backup to be able to "+
+                "start the mud again. You've been warned.");
         return 1;
     }
     if(oob){
@@ -386,26 +386,26 @@ void eventReceiveReport(string str){
 
 string GetHelp() {
     return ("Syntax: liveupgrade all\n"
-      "        liveupgrade apply\n"
-      "        liveupgrade cancel\n"
-      "        liveupgrade revert\n"
-      "        liveupgrade alpha\n"
-      //"To use oob updates (not recommended), use the -o flag. The default "
-      //"is currently an http connection to dead-souls.net, which is vastly "
-      //"faster and more secure than oob.\n"
-      "To upgrade all files to the next appropriate level for your lib version:\n"
-      "liveupgrade all\n"
-      "Wait until you receive the completion message before finalizing the upgrade. "
-      "You can finalize the upgrade by typing:\n"
-      "liveupgrade apply\n"
-      "This will delete your old copies of files and copy the newly downloaded "
-      "ones in their place.\n"
-      "NEVER EVER do a liveupgrade without a full backup first.\n"
-      "To cancel the liveupgrade process:\n"
-      "liveupgrade cancel\n"
-      "To restore your mud to the condition it was in prior to the last liveupgrade.\n"
-      "liveupgrade revert\n"
-      "To enable liveupgrading between alpha and stable versions:\n"
-      "liveupgrade alpha\n\n"
-      "Web proxies are *NOT* supported. OOB is no longer supported.\n");
+            "        liveupgrade apply\n"
+            "        liveupgrade cancel\n"
+            "        liveupgrade revert\n"
+            "        liveupgrade alpha\n"
+            //"To use oob updates (not recommended), use the -o flag. The default "
+            //"is currently an http connection to dead-souls.net, which is vastly "
+            //"faster and more secure than oob.\n"
+            "To upgrade all files to the next appropriate level for your lib version:\n"
+            "liveupgrade all\n"
+            "Wait until you receive the completion message before finalizing the upgrade. "
+            "You can finalize the upgrade by typing:\n"
+            "liveupgrade apply\n"
+            "This will delete your old copies of files and copy the newly downloaded "
+            "ones in their place.\n"
+            "NEVER EVER do a liveupgrade without a full backup first.\n"
+            "To cancel the liveupgrade process:\n"
+            "liveupgrade cancel\n"
+            "To restore your mud to the condition it was in prior to the last liveupgrade.\n"
+            "liveupgrade revert\n"
+            "To enable liveupgrading between alpha and stable versions:\n"
+            "liveupgrade alpha\n\n"
+            "Web proxies are *NOT* supported. OOB is no longer supported.\n");
 }

@@ -76,7 +76,10 @@ string GetItemCondition(){
     if( GetMaxClass() ){
         float i = to_float(GetClass()) / GetMaxClass() * 100.0;
 
-        if( i > 95.0 ){
+        if(i >= 99){
+            return "";
+        }
+        else if( i > 95.0 ){
             return " It is as good as new.";
         }
         else if( i > 80.0 ){
@@ -171,8 +174,8 @@ void eventRemoveBlessing(){
     SetProperty("blessed", 0);
     if( living(environment()) ){
         environment()->eventPrint("%^YELLOW%^"
-          + capitalize((string)GetDefiniteShort()) +
-          " returns to its normal state.");
+                + capitalize((string)GetDefiniteShort()) +
+                " returns to its normal state.");
     }
 }
 
@@ -195,32 +198,32 @@ mixed eventThrow(object who, object target){
         int skill;
 
         who->eventPrint("You throw " + GetShort() + " at " +
-          target->GetName() + ".");
+                target->GetName() + ".");
         target->eventPrint(who->GetName() + " throws " + GetShort() +" at you.");
         environment(who)->eventPrint(who->GetName() + " throws " +
-          GetShort() + " at " + target->GetName() +
-          ".", ({ who, target }) );
+                GetShort() + " at " + target->GetName() +
+                ".", ({ who, target }) );
         skill = (who->GetSkillLevel("projectile attack") +
-          who->GetStatLevel("coordination"));
+                who->GetStatLevel("coordination"));
         skill -= (target->GetSkillLevel("projectile defense") +
-          target->GetStatLevel("agility"))/2;
+                target->GetStatLevel("agility"))/2;
         if( GetWeaponType() != "projectile" ){
             skill = skill/2;
         }
         if( skill > random(100) + 1 ){
             who->AddSkillPoints("projectile attack",
-              target->GetSkillLevel("projectile defense") *
-              target->GetLevel() + 10);
+                    target->GetSkillLevel("projectile defense") *
+                    target->GetLevel() + 10);
             target->AddSkillPoints("projectile defense", 10);
             target->eventReceiveThrow(who, this_object());
         }
         else {
             target->AddSkillPoints("projectile defense",
-              who->GetSkillLevel("projectile attack") *
-              who->GetLevel() + 10);
+                    who->GetSkillLevel("projectile attack") *
+                    who->GetLevel() + 10);
             who->AddSkillPoints("projectile attack", 10);
             environment(who)->eventPrint(capitalize(GetShort()) + " does not "
-              "hit "+target->GetName() + ".",({ target, who }));
+                    "hit "+target->GetName() + ".",({ target, who }));
             write("Your throw misses its mark.");
             tell_object(target, capitalize(GetShort()) + " does not hit you.");
             eventMove(environment(who));
@@ -229,12 +232,12 @@ mixed eventThrow(object who, object target){
     }
     else if( target ){
         who->eventPrint("You throw " + GetShort() + " at " +
-          target->GetShort() + ".");
+                target->GetShort() + ".");
         environment(who)->eventPrint(who->GetName() + " throws " +
-          GetShort() + " at " + target->GetShort() +
-          ".", ({ who, target }));	
+                GetShort() + " at " + target->GetShort() +
+                ".", ({ who, target }));	
         tell_object(target, capitalize(GetShort()) + " throws " +
-          GetShort() + " at you.");
+                GetShort() + " at you.");
         return target->eventReceiveThrow(who, this_object());
     }
     if( !eventMove(environment(who)) ){
@@ -243,7 +246,7 @@ mixed eventThrow(object who, object target){
     }
     who->eventPrint("You throw " + GetShort() + ".");
     environment(who)->eventPrint(who->GetName() + " throws " +
-      GetShort() + ".", who);
+            GetShort() + ".", who);
     return 1;
 }
 
@@ -277,7 +280,7 @@ mixed eventShow(object who, string component){
 /* ***************** item.c driver applies ****************** */
 static void create(){
     AddSave(weapon::GetSave() + value::GetSave() + mass::GetSave() +
-      deterioration::GetSave());
+            deterioration::GetSave());
     steal::create();
     object::create();
 }
@@ -319,11 +322,11 @@ mixed indirect_judge_obj_to_obj(){
     return 1;
 }
 
-mixed direct_use_obj_to_str(){
-    if( environment() != this_player() )
-        return "#You need better access to it.";
-    else return 1;
-}
+    mixed direct_use_obj_to_str(){
+        if( environment() != this_player() )
+            return "#You need better access to it.";
+        else return 1;
+    }
 
 mixed direct_use_obj(){
     return direct_use_obj_to_str();

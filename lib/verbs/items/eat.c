@@ -19,9 +19,9 @@ static void create() {
     SetErrorMessage("Eat what?");
     SetRules("OBJ");
     SetHelp("Syntax: <eat FOOD>\n\n"
-      "Allows you to munch on some food.  Keeping yourself well fed "
-      "helps you heal faster from wounds and have greater stamina.\n\n"
-      "See also: bait, cast, drink, fish");
+            "Allows you to munch on some food.  Keeping yourself well fed "
+            "helps you heal faster from wounds and have greater stamina.\n\n"
+            "See also: bait, cast, drink, fish");
 }
 
 
@@ -42,7 +42,7 @@ mixed can_eat_obj() {
 mixed do_eat_obj(object ob) {
     if( this_player()->GetInCombat() ) {
         this_player()->SetAttack(0, (: eventEat, this_player(), ob :),
-          ROUND_OTHER);
+                ROUND_OTHER);
     }
     else {
         eventEat(this_player(), ob);

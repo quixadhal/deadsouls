@@ -11,19 +11,19 @@ string get_female(int lev);
 string previous_title(object tp);
 int get_cost(string which, int lev);
 
-int CanReceive(object ob) {
-    if(!(int)VOTING_D->is_time_to_vote())
+    int CanReceive(object ob) {
+        if(!(int)VOTING_D->is_time_to_vote())
+            return ::CanReceive(ob);
+        if((int)VOTING_D->query_voted((string)this_player()->query_name(),this_player()->query_class()))
+            return ::CanReceive(ob);
+        if(creatorp(this_player()) || (int)this_player()->query_level() < 2)
+            return ::CanReceive(ob);
+        else {
+            message("my_action", "You have not yet voted for you class leader.  Please do so now.", this_player());
+            call_out("move_me", 5, this_player());
+        }
         return ::CanReceive(ob);
-    if((int)VOTING_D->query_voted((string)this_player()->query_name(),this_player()->query_class()))
-        return ::CanReceive(ob);
-    if(creatorp(this_player()) || (int)this_player()->query_level() < 2)
-        return ::CanReceive(ob);
-    else {
-        message("my_action", "You have not yet voted for you class leader.  Please do so now.", this_player());
-        call_out("move_me", 5, this_player());
     }
-    return ::CanReceive(ob);
-}
 
 void move_me(object who) {
     who->eventMoveLiving("/domains/Praxis/"+who->query_class()+"_vote");
@@ -37,19 +37,19 @@ void create() {
     SetProperties( (["no attack": 1, "no castle":1,"light":2,"indoors":1]) );
     SetShort( "the inner sanctum of the fighters");
     SetLong(
-      "Welcome to the inner sanctum of the Hall of Fighters!\n"
-      "Fighters come here to learn about the art of combat. "
-      "You are in what appears to be a large training hall. Large mats are "
-      "on the floor and weapons hang on the walls, in various shapes and forms. "
-      "In this mighty hall, a fighter may <advance>, <cost>, "
-      "<list (number)>, <improve stat>, <train skill amount>, and <roll stats>. "
-      "Down through a stairway guarded by a shimmering %^BLUE%^blue%^RESET%^ "
-      "light is the entrance to the hall.");
+            "Welcome to the inner sanctum of the Hall of Fighters!\n"
+            "Fighters come here to learn about the art of combat. "
+            "You are in what appears to be a large training hall. Large mats are "
+            "on the floor and weapons hang on the walls, in various shapes and forms. "
+            "In this mighty hall, a fighter may <advance>, <cost>, "
+            "<list (number)>, <improve stat>, <train skill amount>, and <roll stats>. "
+            "Down through a stairway guarded by a shimmering %^BLUE%^blue%^RESET%^ "
+            "light is the entrance to the hall.");
     SetExits( ([ 
-        "council" : "/domains/Praxis/council_hall",
-        "east" : "/domains/Praxis/fighter_vote",
-        "down" : "/domains/Praxis/fighter_join",
-      ]) );
+                "council" : "/domains/Praxis/council_hall",
+                "east" : "/domains/Praxis/fighter_vote",
+                "down" : "/domains/Praxis/fighter_join",
+                ]) );
 
     ob = new("/lib/bboard");
     ob->SetKeyName("board");
@@ -60,8 +60,8 @@ void create() {
     ob->move("/domains/Praxis/fighter_hall");
     ob->SetShort( "Glory Board of Fighters");
     ob->SetLong(
-      "The Fighters of our reality post tales of their glorious "
-      "adventures here, as well as info on the dangers out there.\n");
+            "The Fighters of our reality post tales of their glorious "
+            "adventures here, as well as info on the dangers out there.\n");
     //new("/realms/grumpy/fighter/obj/box.c")->move(this_object());
 }
 
@@ -182,21 +182,21 @@ int improve(string str) {
     this_player()->SetStat(str, (int)this_player()->query_base_stats(str) + 1);
     this_player()->add_exp(-stat_cost);
     adj = (str == "strength" ? "stronger" : (str == "intelligence" ? "more intelligent" :
-        (str == "wisdom" ? "wiser" : (str == "dexterity" ? "more nimble" :
-            (str == "constitution" ? "sturdier" : "more attractive")))));
+                (str == "wisdom" ? "wiser" : (str == "dexterity" ? "more nimble" :
+                                              (str == "constitution" ? "sturdier" : "more attractive")))));
     message("my_action", sprintf("You look %s.", adj), this_player());
     message("other_action", sprintf("%s looks much %s",
-        (string)this_player()->query_cap_name(), adj), environment(this_player()),
-      ({ this_player() }));
+                (string)this_player()->query_cap_name(), adj), environment(this_player()),
+            ({ this_player() }));
     return 1;
 }
 
 int get_cost(string stat, int lev) {
     switch(stat) {
-    case "strength": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-    case "constitution": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-    case "dexterity": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-    default: return (int)ADVANCE_D->get_stat_cost(2, lev); break;
+        case "strength": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
+        case "constitution": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
+        case "dexterity": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
+        default: return (int)ADVANCE_D->get_stat_cost(2, lev); break;
     }
 }
 
@@ -208,36 +208,36 @@ int cost(string str) {
     if(bing < 1) write("level:\t\tIt will cost you nothing to advance.");
     else write("level:\t\t"+bing+"\n");
     write("skills: You train by spending the amount of experience you
-desire.");
+            desire.");
     write("strength:\t\t" + get_cost("strength",
-(int)this_player()->query_base_stats("strength")) +
-"\t\tconstitution:\t\t" + get_cost("constitution",
-(int)this_player()->query_base_stats("constitution")) );
+                (int)this_player()->query_base_stats("strength")) +
+            "\t\tconstitution:\t\t" + get_cost("constitution",
+                (int)this_player()->query_base_stats("constitution")) );
     write("intelligence:\t\t" + get_cost("intelligence",
-(int)this_player()->query_base_stats("intelligence")) +
-"\t\tdexterity:\t\t" + get_cost("dexterity",
-(int)this_player()->query_base_stats("dexterity")) );
+                (int)this_player()->query_base_stats("intelligence")) +
+            "\t\tdexterity:\t\t" + get_cost("dexterity",
+                (int)this_player()->query_base_stats("dexterity")) );
     write("wisdom:\t\t" + get_cost("wisdom",
-(int)this_player()->query_base_stats("wisdom")) +
-"\t\tcharisma:\t\t" + get_cost("charisma",
-(int)this_player()->query_base_stats("charisma")) );
+                (int)this_player()->query_base_stats("wisdom")) +
+            "\t\tcharisma:\t\t" + get_cost("charisma",
+                (int)this_player()->query_base_stats("charisma")) );
     return 1;
 }
 
 int list(string str) {
-  int x;
-  
-  if(!str) "/domains/Praxis/quest_room"->list_quests(this_player(), 0);
-  else {
-    if(sscanf(str, "%d", x) != 1) {
-    notify_fail("You must give the number of the quest you want listed.\n");
-  return 0;
-  }
-  if(x<1) {
-    notify_fail("No such quest.\n");
-  return 0;
-  }
-  "/domains/Praxis/quest_room"->list_quests(this_player(), x);
-  }
-  return 1;
+    int x;
+
+    if(!str) "/domains/Praxis/quest_room"->list_quests(this_player(), 0);
+    else {
+        if(sscanf(str, "%d", x) != 1) {
+            notify_fail("You must give the number of the quest you want listed.\n");
+            return 0;
+        }
+        if(x<1) {
+            notify_fail("No such quest.\n");
+            return 0;
+        }
+        "/domains/Praxis/quest_room"->list_quests(this_player(), x);
+    }
+    return 1;
 }

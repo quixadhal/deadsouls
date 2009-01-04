@@ -26,18 +26,18 @@ mixed cmd(string args) {
     if( !((int)this_player()->SetMessage(type, msg)) )
         return "Invalid message type.";
     message("system", "Message " + type + " changed to:\n" + msg, 
-      this_player());
+            this_player());
     return 1;
 }
 
 void help() {
     message("help", "Syntax: <message [msg type] [message]>\n\n"
-      "Allows you to modify standard " + mud_name() + " messages.  "
-      "The message types are come, leave, telin, telout, home, "
-      "clone, dest, login, logout, say, ask, exclaim.  Not that "
-      "with say, ask, and exclaim you only may enter in the verbs.  "
-      "Depending on the message class, you may place such placeholders "
-      "as:\n$M\t" + mud_name() + "\n$N\tYour name\n$D\tdirection\n"
-      "$O\tobject",
-      this_player());
+            "Allows you to modify standard " + mud_name() + " messages.  "
+            "The message types are come, leave, telin, telout, home, "
+            "clone, dest, login, logout, say, ask, exclaim.  Not that "
+            "with say, ask, and exclaim you only may enter in the verbs.  "
+            "Depending on the message class, you may place such placeholders "
+            "as:\n$M\t" + mud_name() + "\n$N\tYour name\n$D\tdirection\n"
+            "$O\tobject",
+            this_player());
 }

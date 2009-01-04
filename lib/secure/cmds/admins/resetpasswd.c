@@ -38,7 +38,7 @@ mixed cmd(string args) {
 
     if(find_player(args)){
         write("That player is currently logged on. Please use "
-          "the passwd command to reset their password.");
+                "the passwd command to reset their password.");
         return 1;
     }
 
@@ -63,8 +63,8 @@ mixed cmd(string args) {
 static void NewPass(string pass) {
     if( !pass || strlen(pass) < 5 ) {
         this_player()->eventPrint("Password must be at least 5 "
-          "characters, password change failed.",
-          MSG_SYSTEM);
+                "characters, password change failed.",
+                MSG_SYSTEM);
         return;
     }
     this_player()->eventPrint("\nConfirm: ", MSG_PROMPT);
@@ -92,7 +92,7 @@ static void ConfirmPass(string str, string newpass) {
 
 void help() {
     message("help", "Syntax: resetpasswd <player>\n\n"
-      "Allows you to change someone's password if they "
-      "are not logged on.\n\n"
-      "See also: passwd", this_player());
+            "Allows you to change someone's password if they "
+            "are not logged on.\n\n"
+            "See also: passwd", this_player());
 }

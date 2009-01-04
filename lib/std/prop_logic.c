@@ -7,44 +7,44 @@
 
 static nomask mixed _query( mapping map, string *parts )
 {
-  mixed value;
-  int i, s;
+    mixed value;
+    int i, s;
 
-  value = map;
-  s = sizeof( parts );
-  for( i = 0 ; i < s ; i++ )
-  {
-    if( undefinedp( value = value[parts[i]] ) )
-      break;
-    if( !mapp( value ) )
-      break;
-  }
-  return value;
+    value = map;
+    s = sizeof( parts );
+    for( i = 0 ; i < s ; i++ )
+    {
+        if( undefinedp( value = value[parts[i]] ) )
+            break;
+        if( !mapp( value ) )
+            break;
+    }
+    return value;
 }
 
 static nomask int _delete( mapping map, string *parts )
 {
-  if( sizeof( parts ) == 1 )
-  {
-    map_delete( map, parts[0] );
-    return 1;
-  }
-  if( !map[parts[0]] || !mapp( map[parts[0]] ) )
-    return 0;
-  return _delete( map[parts[0]], parts[1..sizeof( parts )-1] );
+    if( sizeof( parts ) == 1 )
+    {
+        map_delete( map, parts[0] );
+        return 1;
+    }
+    if( !map[parts[0]] || !mapp( map[parts[0]] ) )
+        return 0;
+    return _delete( map[parts[0]], parts[1..sizeof( parts )-1] );
 }
 
 static nomask mixed _set( mapping map, string *parts, mixed value )
 {
-  mixed old_value;
+    mixed old_value;
 
-  if( sizeof( parts ) == 1 )
-  {
-    old_value = map[parts[0]];
-    map[parts[0]] = value;
-    return old_value;
-  }
-  if( !map[parts[0]] || !mapp( map[parts[0]] ) )
-    map[parts[0]] = ([ parts[1] : 0 ]);
-  return _set( map[parts[0]], parts[1..sizeof( parts )-1], value );
+    if( sizeof( parts ) == 1 )
+    {
+        old_value = map[parts[0]];
+        map[parts[0]] = value;
+        return old_value;
+    }
+    if( !map[parts[0]] || !mapp( map[parts[0]] ) )
+        map[parts[0]] = ([ parts[1] : 0 ]);
+    return _set( map[parts[0]], parts[1..sizeof( parts )-1], value );
 }

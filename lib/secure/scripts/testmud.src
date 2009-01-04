@@ -1,3 +1,6 @@
+mudconfig maxip 0
+death
+connections
 unalias shutdown
 mudconfig pk on
 mudconfig autoadvance on
@@ -11,5 +14,4 @@ mudconfig fastcombat on
 mudconfig questrequired on
 mudconfig logremote on
 mudconfig selectclass on
-mudconfig maxip 0
 #mudconfig monitor 1

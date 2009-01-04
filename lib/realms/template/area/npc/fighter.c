@@ -1,5 +1,5 @@
 #include <lib.h>
-#include "../../customdefs.h"
+#include "../customdefs.h"
 
 inherit LIB_NPC;
 string privs;
@@ -11,7 +11,7 @@ int AllowPass(object who, object what){
 
 int CheckVisitor(object who){
     eventForce("say I'm sorry, "+remove_article(who->GetShort())+
-      ". Only "+capitalize(privs)+" is allowed there.");
+            ". Only "+capitalize(privs)+" is allowed there.");
     return 1;
 }
 
@@ -27,11 +27,11 @@ static void create(){
     SetClass("fighter");
     SetGender("male");
     SetInventory(([
-	MY_ARMOR "/chainmail.c" : "wear chainmail",
-	MY_ARMOR "/leather_boot_r.c" : "wear boot",
-	MY_ARMOR "/leather_boot_l.c" : "wear boot",
-	MY_WEAP "/sword.c" : "wield sword",
-      ]));
+                MY_ARMOR "/chainmail.c" : "wear chainmail",
+                MY_ARMOR "/leather_boot_r.c" : "wear boot",
+                MY_ARMOR "/leather_boot_l.c" : "wear boot",
+                MY_WEAP "/sword.c" : "wield sword",
+                ]));
     SetStat("strength",40);
     SetGuard("west", (: CheckVisitor :));
     SetGuard("east", "The fighter blocks your travel in that direction.");

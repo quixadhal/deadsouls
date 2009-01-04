@@ -24,16 +24,16 @@ static void create() {
     SetAdjectives(({"dirty"}));
     SetShort("a dirty orc");
     SetLong("This orc is typical of its breed: nasty, brutish, and short. It appears "
-      "to be a juvenile or adolescent, making it somewhat less "
-      "dangerous but more hostile. ");
+            "to be a juvenile or adolescent, making it somewhat less "
+            "dangerous but more hostile. ");
     SetLevel(1);
     SetRace("orc");
     SetGender("male");
     SetMaxHealthPoints(100);
     SetEncounter(  (: CheckOrc :) );
     SetInventory(([
-        "/domains/town/weap/dagger":"wield dagger",
-      ]) );
+                "/domains/town/weap/dagger":"wield dagger",
+                ]) );
     SetGuard("west", "An orc bars your way!" );
     SetGuard("north", "An orc bars your way!");
 }

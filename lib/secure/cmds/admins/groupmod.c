@@ -106,7 +106,7 @@ mixed cmd(mixed args) {
         if(member_array(str,cles) != -1 && !sizeof(GroupsMap[str])) GroupsMap[str] = ({});
         GroupsMap[str] += ({ dudename });
         write("The group "+str+" now contains the following:\n "+
-          implode(GroupsMap[str],":"));
+                implode(GroupsMap[str],":"));
     }
 
     if(action == -1){
@@ -120,7 +120,7 @@ mixed cmd(mixed args) {
         }
         GroupsMap[str] -= ({ dudename });
         write("The group "+str+" now contains the following:\n "+
-          implode(GroupsMap[str],":"));
+                implode(GroupsMap[str],":"));
     }
 
     if(action == -2){
@@ -158,9 +158,9 @@ mixed cmd(mixed args) {
 
 void help() {
     message("help", "Syntax: groupmod [-a|-r] GROUP NAME \n"
-      "        groupmod [-c|-d] GROUP\n\n"
-      "Modifies /secure/cfg/groups.cfg with the desired information.\n"
-      "To create a group called MUDKIPZ: groupmod -c mudkipz\n"
-      "To add Yotsuba as member of that group: groupmod -a mudkipz yotsuba"
-      "", this_player());
+            "        groupmod [-c|-d] GROUP\n\n"
+            "Modifies /secure/cfg/groups.cfg with the desired information.\n"
+            "To create a group called MUDKIPZ: groupmod -c mudkipz\n"
+            "To add Yotsuba as member of that group: groupmod -a mudkipz yotsuba"
+            "", this_player());
 }

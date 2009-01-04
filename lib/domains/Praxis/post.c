@@ -17,22 +17,22 @@ void create() {
     ::create();
     SetShort( "Praxis post office");
     SetLong(
-      "Welcome to the Praxis Post Office!\n"
-      "The Praxis post office is a quaint whitewashed building. The floor "
-      "is a worn wood, due to all the customers that walk upon its floors. "
-      "Red trim lines the walls, and a window in the far corner lets in "
-      "a slight breeze. "
-      "People come here to read and post mail.  Type <mail> to access "
-      "your mailbox, or <mail name> to send mail to player name.  "
-      "The Nightmare post office runs on the intermud system, meaning "
-      "that you can send mails to players on any other mud on the system.  "
-      "Type <muds> to find out who is on the system.  The groups available "
-      "can be accessed by typing <g> at the % prompt."    );
+            "Welcome to the Praxis Post Office!\n"
+            "The Praxis post office is a quaint whitewashed building. The floor "
+            "is a worn wood, due to all the customers that walk upon its floors. "
+            "Red trim lines the walls, and a window in the far corner lets in "
+            "a slight breeze. "
+            "People come here to read and post mail.  Type <mail> to access "
+            "your mailbox, or <mail name> to send mail to player name.  "
+            "The Nightmare post office runs on the intermud system, meaning "
+            "that you can send mails to players on any other mud on the system.  "
+            "Type <muds> to find out who is on the system.  The groups available "
+            "can be accessed by typing <g> at the % prompt."    );
     SetProperty("no castle", 1);
     SetProperty("light", 2);
     SetProperty("indoors", 1);
     SetItems( ([ "list" : "A list of commands you may use at the "
-        "post office."]) );
+                "post office."]) );
     //exit changed by drakken 17.aug
     AddExit("north","/domains/Praxis/alley1",(: this_object(),"more" :) );
     SetProperty("no attack", 1);

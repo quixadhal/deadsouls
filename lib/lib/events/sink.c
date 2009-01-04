@@ -12,7 +12,7 @@ mixed eventSink(){
     if(!living(this_object())) name = this_object()->GetShort();
 
     if(!env || ( !(rumbo = env->GetExit("down")) && 
-        !(sizeof(rumbo = env->GetSinkRoom())))) return 0;
+                !(sizeof(rumbo = env->GetSinkRoom())))) return 0;
     if(env == rumbo) return 0;
     if(this_object()->GetPosition() == POSITION_SWIMMING){
         return 2;
@@ -23,7 +23,7 @@ mixed eventSink(){
     if(stringp(rumbo)) err = catch(rumbo = load_object(rumbo));
     if(err || !rumbo){
         log_file("runtime","\n"+timestamp()+" "+identify(this_object())+
-          " could not load "+identify(rumbo)+" to sink into.\n");
+                " could not load "+identify(rumbo)+" to sink into.\n");
         err = catch(rumbo = load_object(ROOM_VOID));
     }
     if(err || !rumbo){
@@ -33,9 +33,9 @@ mixed eventSink(){
     tell_object(this_object(),"You sink downward!");
     if(this_object()->eventMove(rumbo)){
         tell_room(env,capitalize(name)+" continues "+
-          "to sink.", ({ this_object() }));
+                "to sink.", ({ this_object() }));
         tell_room(rumbo,capitalize(name)+" floats in from above.",
-          ({ this_object() }));
+                ({ this_object() }));
 
         if(rumbo || sizeof(rumbo->GetSinkRoom())){ 
             call_out( "eventSink", 2);

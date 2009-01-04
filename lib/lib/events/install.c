@@ -1,15 +1,15 @@
 varargs mixed CanInstall(object who, object what){
     if(who && environment() && environment() != environment(who) &&
-      environment() != who && environment(environment()) != environment(who)
-      && environment(environment()) != who )
+            environment() != who && environment(environment()) != environment(who)
+            && environment(environment()) != who )
         return "#That's not accessible to you.";
     else return 1;
 }
 
 varargs mixed CanUninstall(object who, object what){
     if(who && environment() && environment() != environment(who) &&
-      environment() != who && environment(environment()) != environment(who)
-      && environment(environment()) != who )
+            environment() != who && environment(environment()) != environment(who)
+            && environment(environment()) != who )
         return "#That's not accessible to you.";
     else return 1;
 }

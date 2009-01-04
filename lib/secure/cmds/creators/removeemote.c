@@ -14,7 +14,7 @@ inherit LIB_DAEMON;
 mixed cmd(string args){
     string verb, rule;
     if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
-      !member_group(this_player(), "EMOTES") ){
+            !member_group(this_player(), "EMOTES") ){
         write("You are not admin, nor a member of the EMOTES group.");
         return 1;
     }
@@ -45,9 +45,9 @@ mixed cmd(string args){
 
 string GetHelp(string args) {
     return ("Syntax: <removeemote EMOTE (RULE)>\n\n"
-      "Allows you to remove an emote or a rule for an emote from "
-      "the soul.  If you specify a rule, only that rule gets removed.  "
-      "If you fail to specify a rule, the entire emote is removed.\n\n"
-      "You must be admin or member of the EMOTES group to use this command.\n\n"
-      "See also: addadverb, addemote, removeadverb");
+            "Allows you to remove an emote or a rule for an emote from "
+            "the soul.  If you specify a rule, only that rule gets removed.  "
+            "If you fail to specify a rule, the entire emote is removed.\n\n"
+            "You must be admin or member of the EMOTES group to use this command.\n\n"
+            "See also: addadverb, addemote, removeadverb");
 }

@@ -16,15 +16,15 @@ static void create() {
     SetRules("OBJ with OBJ", "OBJ with STR");
     SetErrorMessage("Unlock what with what?");
     SetHelp("Syntax: <unlock OBJ with OBJ>\n\n"
-      "The first object is something you wish to unlock, like a "
-      "door or a chest.  The second is the key you wish to use to "
-      "unlock it with.  If your key is the right key, then "
-      "unlock allows you to unlock it.\n\n"
-      "See also: close, lock, open, pick");
+            "The first object is something you wish to unlock, like a "
+            "door or a chest.  The second is the key you wish to use to "
+            "unlock it with.  If your key is the right key, then "
+            "unlock allows you to unlock it.\n\n"
+            "See also: close, lock, open, pick");
 }
 
 varargs mixed can_unlock_obj_with_obj(object foo, object bar,
-  mixed words...) {
+        mixed words...) {
     if( this_player()->GetParalyzed() ) {
         return "You cannot do anything.";
     }

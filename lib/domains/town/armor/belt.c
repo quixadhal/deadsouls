@@ -12,12 +12,12 @@ static void create(){
     SetLong("A belt made of leather.");
     SetMass(5);
     SetBaseCost("silver",10);
-    SetDamagePoints(1);
     SetProtection(BLUNT,1);
     SetProtection(BLADE,1);
     SetProtection(KNIFE,1);
     SetArmorType(A_BELT);
 }
+
 void init(){
     ::init();
 }

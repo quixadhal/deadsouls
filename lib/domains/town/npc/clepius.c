@@ -12,19 +12,19 @@ static void create() {
     SetAdjectives(({"a.s.", "A.S.", "doctor","dr","Dr.","dr."}));
     SetShort("Clepius the healer");
     SetLong("Clepius is a kindly old man, legendary for his "
-      "nearly superhuman powers of healing. He is even "
-      "rumored capable of resurrecting the dead. He runs "
-      "a medical care service in town, and can be asked to "
-      "help when needed, though his help is not free.");
+            "nearly superhuman powers of healing. He is even "
+            "rumored capable of resurrecting the dead. He runs "
+            "a medical care service in town, and can be asked to "
+            "help when needed, though his help is not free.");
     SetLevel(50);
     SetRace("human");
     SetClass("mage");
     SetGender("male");
     SetInventory(([
-        "/domains/town/weap/rod":1,
-        "/domains/town/obj/medbag":1,
-        "/domains/town/armor/toga":"wear toga",
-      ]) );
+                "/domains/town/weap/rod":1,
+                "/domains/town/obj/medbag":1,
+                "/domains/town/armor/toga":"wear toga",
+                ]) );
     slips = ({});
     busy=0;
     SetPolyglot(1);
@@ -79,12 +79,12 @@ int ejectRabble(string str){
     }
     foreach(object bum in riffraff){
         if( bum->GetKeyName() != patient->GetKeyName() &&
-          bum->GetKeyName() != "clepius" ){
+                bum->GetKeyName() != "clepius" ){
             tell_object(bum,"The doctor ejects you from his office in order to "+
-              "treat "+patient->GetName()+".\n\n");
+                    "treat "+patient->GetName()+".\n\n");
             bum->eventMoveLiving("/domains/town/room/healer");
             tell_object(patient,"The doctor ejects "+bum->GetName()+" from "+
-              "his office in order to treat you.");
+                    "his office in order to treat you.");
         }
     }
     return 1;
@@ -94,9 +94,9 @@ int NextPatient(){
     eventForce("put my first slip in bin");
     environment()->SetProperty("busy",0);
     tell_room(load_object("/domains/town/room/healer"),"From the back room "+
-      "you hear the doctor holler: \"%^BOLD%^CYAN%^NEXT!%^RESET%^\"");
+            "you hear the doctor holler: \"%^BOLD%^CYAN%^NEXT!%^RESET%^\"");
     tell_room(environment(),"The doctor leans into the east doorway "+
-      "and hollers: \"%^BOLD%^CYAN%^NEXT!%^RESET%^\"");
+            "and hollers: \"%^BOLD%^CYAN%^NEXT!%^RESET%^\"");
     busy = 0;
     environment()->SetProperty("busy",0);
     return 1;

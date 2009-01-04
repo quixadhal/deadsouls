@@ -19,11 +19,11 @@ void create() {
     SetDollarCost(50);
     SetMaxCarry(500);
     SetInventory(([
-        "/domains/campus/weap/9mil" : 5,
-        //"/domains/campus/weap/m16rifle" : 5,
-        //"/domains/campus/weap/50rifle" : 5,
-        "/domains/campus/weap/357pistol" : 5,
-      ]));
+                "/domains/campus/weap/9mil" : 5,
+                //"/domains/campus/weap/m16rifle" : 5,
+                //"/domains/campus/weap/50rifle" : 5,
+                "/domains/campus/weap/357pistol" : 5,
+                ]));
     SetCanClose(1);
     SetClosed(0);
     SetCanLock(1);

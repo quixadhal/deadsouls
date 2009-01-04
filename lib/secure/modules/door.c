@@ -26,64 +26,64 @@ mapping GetDoorKeys(string str){
     foreach(string line in lines){
         if(grepp(line, "SetKeys")){
             sscanf(line,"%sKeys(%s,%s",junk1, dir, junk2);
-            dir = this_object()->eventCleanString(dir);
-            KeyMap[dir] = line;
-        }
-    }
+                    dir = this_object()->eventCleanString(dir);
+                    KeyMap[dir] = line;
+                    }
+                    }
 
-    return copy(KeyMap);
-}
+                    return copy(KeyMap);
+                    }
 
-varargs mixed eventChangeDoor(mixed door, string property, mixed value, string cote){
-    object porte;
-    string *sides, *props;
-    string map_string = "";
-    int lockable;
-    mapping KeyMap = this_object()->GetDoorKeys(door);
+                    varargs mixed eventChangeDoor(mixed door, string property, mixed value, string cote){
+                    object porte;
+                    string *sides, *props;
+                    string map_string = "";
+                    int lockable;
+                    mapping KeyMap = this_object()->GetDoorKeys(door);
 
-    if(stringp(door)) porte = load_object(door);
-    else if(objectp(door)) porte = door;
+                    if(stringp(door)) porte = load_object(door);
+                    else if(objectp(door)) porte = door;
 
-    if(!porte) return 0;
+                    if(!porte) return 0;
 
-    sides = porte->GetSides();
+                    sides = porte->GetSides();
 
-    foreach(string side in sides){
-        mapping TmpMap1 = ([]);
-        TmpMap1 = porte->GetSide(side);
-        props = keys(TmpMap1);
+                    foreach(string side in sides){
+                        mapping TmpMap1 = ([]);
+                        TmpMap1 = porte->GetSide(side);
+                        props = keys(TmpMap1);
 
-        switch(property){
-        case "SetId" : property = "id";break;
-        case "SetLong" : property = "long";break;
-        case "SetShort" : property = "short";break;
-        case "SetCanLock" : property = "lockable";break;
-        case "SetKey" : property = "key";break;
-        }
-        if(member_array(property, props) != -1 ){
-            if(!cote) TmpMap1[property] = value;
-            else if(cote && cote == side && property == "id")
-                TmpMap1[property] = explode(value,":");
-            else if(cote && cote == side) TmpMap1[property] = value;
-        }
+                        switch(property){
+                            case "SetId" : property = "id";break;
+                            case "SetLong" : property = "long";break;
+                            case "SetShort" : property = "short";break;
+                            case "SetCanLock" : property = "lockable";break;
+                            case "SetKey" : property = "key";break;
+                        }
+                        if(member_array(property, props) != -1 ){
+                            if(!cote) TmpMap1[property] = value;
+                            else if(cote && cote == side && property == "id")
+                                TmpMap1[property] = explode(value,":");
+                            else if(cote && cote == side) TmpMap1[property] = value;
+                        }
 
-        if(!TmpMap1["lockable"]) lockable = 0;
-        else lockable = TmpMap1["lockable"];
-        map_string += "SetSide(\""+side+"\", ([\"id\" : "+identify(TmpMap1["id"])+",\n";
-        map_string += "\"short\" : \""+TmpMap1["short"]+"\",\n";
-        map_string += "\"long\" : \""+TmpMap1["long"]+"\",\n";
-        map_string +="\"lockable\" : "+lockable+" ]) );\n";
-        if(property == "key") {
-            if(!cote || cote == side) map_string += "SetKeys(\""+side+"\", ({\""+value+"\"}) );\n\n";
-            else if(KeyMap[side])  map_string += KeyMap[side] + "\n\n";
-        }
-        if(property != "key" && KeyMap[side]){
-            map_string += KeyMap[side] + "\n\n";
-        }
-    }
+                        if(!TmpMap1["lockable"]) lockable = 0;
+                        else lockable = TmpMap1["lockable"];
+                        map_string += "SetSide(\""+side+"\", ([\"id\" : "+identify(TmpMap1["id"])+",\n";
+                        map_string += "\"short\" : \""+TmpMap1["short"]+"\",\n";
+                        map_string += "\"long\" : \""+TmpMap1["long"]+"\",\n";
+                        map_string +="\"lockable\" : "+lockable+" ]) );\n";
+                        if(property == "key") {
+                            if(!cote || cote == side) map_string += "SetKeys(\""+side+"\", ({\""+value+"\"}) );\n\n";
+                            else if(KeyMap[side])  map_string += KeyMap[side] + "\n\n";
+                        }
+                        if(property != "key" && KeyMap[side]){
+                            map_string += KeyMap[side] + "\n\n";
+                        }
+                    }
 
-    return map_string;
-}
+                    return map_string;
+                    }
 
 varargs int eventProcessDoor(mixed door, string property, mixed value, string cote){
     object porte;

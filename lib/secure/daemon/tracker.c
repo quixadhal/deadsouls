@@ -24,7 +24,7 @@ int AddTrack(object trackee, object tracker){
     if(!Tracked[trackee]) TrackLiving(trackee);
     //tc("Tracked["+identify(trackee)+"]: "+identify(Tracked[trackee]));
     Tracked[trackee]["trackers"] = 
-    singular_array(Tracked[trackee]["trackers"] + ({ tracker }));
+        singular_array(Tracked[trackee]["trackers"] + ({ tracker }));
     return 1;
 }
 
@@ -33,15 +33,15 @@ int RemoveTrack(object trackee, object tracker){
     if(!Tracked[trackee]) TrackLiving(trackee);
     //tc("Tracked["+identify(trackee)+"]: "+identify(Tracked[trackee]));
     Tracked[trackee]["trackers"] =
-    singular_array(Tracked[trackee]["trackers"] - ({ tracker }));
+        singular_array(Tracked[trackee]["trackers"] - ({ tracker }));
     return 1;
 }
 
 static int NotifyTrackers(object ob){
     Tracked[ob]["trackers"]->ReceiveTrackingData( 
-      ([ "object" : ob, "x" : Tracked[ob]["coords"]["x"],
-        "y" : Tracked[ob]["coords"]["y"],
-        "z" : Tracked[ob]["coords"]["z"], ]) );
+            ([ "object" : ob, "x" : Tracked[ob]["coords"]["x"],
+             "y" : Tracked[ob]["coords"]["y"],
+             "z" : Tracked[ob]["coords"]["z"], ]) );
     return 1;
 }
 

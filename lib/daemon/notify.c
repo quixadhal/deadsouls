@@ -19,7 +19,7 @@ static void create() {
     SetNoClean(1);
     Notes = ({});
     if( unguarded((: file_size(SAVE_NOTIFY __SAVE_EXTENSION__) :)) > 0 )
-        unguarded((: restore_object(SAVE_NOTIFY) :));
+                                                                     unguarded((: restore_object(SAVE_NOTIFY) :));
     x = sizeof(Notes);
     while( sizeof(Notes) && (time() - Notes[0][Date]) > MaxTime )
         Notes -= ({ Notes[0] });
@@ -56,8 +56,8 @@ int eventPrintNotices(object who, int start_time) {
     if( x < 0 || start_time > Notes[x][Date] ) return 0;
     while( x > 0 && Notes[x - 1][Date] > start_time ) x--;
     do str += ({ sprintf("%sAdded %s by %s [id #%d]:\n\t%s%s",
-            "%^RESET%^", ctime(Notes[x][Date]), Notes[x][Author], x,
-            "%^CYAN%^", Notes[x][Message]), "" });
+                "%^RESET%^", ctime(Notes[x][Date]), Notes[x][Author], x,
+                "%^CYAN%^", Notes[x][Message]), "" });
     while( ++x < y );
     who->eventPage(str);
     return 1;
@@ -72,6 +72,6 @@ int eventWriteNotices(string file, int start_time) {
     while( x > 0 && Notes[x - 1][Date] > start_time ) x--;
     foreach(var in Notes[x..])
         str += sprintf("Added %s by %s\n\t%s\n\n", ctime(var[Date]),
-          var[Author], var[Message]);
+                var[Author], var[Message]);
     return write_file(file, str);
 }

@@ -10,13 +10,13 @@ void create() {
     SetProperty("no teleport", 1);
     SetShort( "A chamber underneath the Daroq Mountains");
     SetLong(
-      "You are in a very dark chamber, illuminated only by your "
-      "light source.");
+            "You are in a very dark chamber, illuminated only by your "
+            "light source.");
     SetSmell("default", "The stench of decay is all around.");
     SetItems(
-      (["light" : "What light?",
-        "tunnel" : "It is very dark.",
-        "chamber" : "You cannot see it very well."]) );
+            (["light" : "What light?",
+             "tunnel" : "It is very dark.",
+             "chamber" : "You cannot see it very well."]) );
     SetExits( (["west" : "/domains/Praxis/mountains/tunnel2"]) );
 }
 
@@ -30,7 +30,7 @@ void reset() {
         mon->SetId( ({ "colonel", "goblin", "goblin colonel" }) );
         mon->SetShort( "Goblin colonel");
         mon->SetLong( "An ugly monster who has likely never seen "
-          "the light of day.");
+                "the light of day.");
         mon->SetLevel(4);
         mon->SetRace( "goblin");
         mon->SetAggressive( 10);
@@ -45,7 +45,7 @@ void reset() {
         arm->SetId( ({ "visor", "goblin visor" }) );
         arm->SetShort( "Goblin visor");
         arm->SetLong( "A metallic visor with opening just "
-          "large enough to see through.");
+                "large enough to see through.");
         arm->set_type("visor");
         arm->set_limbs( ({ "head" }) );
         arm->set_ac(1);

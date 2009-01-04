@@ -84,6 +84,7 @@
 #define LIB_MEAL           DIR_LIB        "/meal"
 #define LIB_MEAL_POISON    DIR_LIB        "/poison"
 #define LIB_MESSAGES       DIR_LIB        "/messages"
+#define LIB_MISSILE        DIR_LIB        "/missile"
 #define LIB_MONEY          DIR_LIB        "/money"
 #define LIB_MOUNT          DIR_LIB        "/mount"
 #define LIB_NMSH           DIR_LIB        "/nmsh"

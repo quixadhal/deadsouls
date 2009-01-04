@@ -14,20 +14,20 @@ static void create() {
     verb::create();
     SetVerb("get");
     SetRules("OBS OBJ", "WRD from OBJ", "WRD out of OBJ", "WRD WRD from OBJ", "WRD WRD out of OBJ",
-      "OBS", "OBS out of OBJ", "OBS from OBJ");
+            "OBS", "OBS out of OBJ", "OBS from OBJ");
     SetSynonyms("take");
     SetErrorMessage("Get what?  Or perhaps get something from somewhere?");
     SetHelp("Syntax: <get ITEM>\n"
-      "        <get ITEM from OBJECT>\n"
-      "        <get ITEM out of OBJECT>\n"
-      "        <get AMOUNT CURRENCY from pile>\n"
-      "        <get AMOUNT CURRENCY out of pile>\n\n"
-      "This allows you to get items in the same room as you, or "
-      "contained inside other items so that you are carrying them.  "
-      "In addition, you can specify partial amounts of currency to "
-      "pick up from a pile lying around.\n\n"
-      "Synonyms: take\n\n"
-      "See also: drop, give, put");
+            "        <get ITEM from OBJECT>\n"
+            "        <get ITEM out of OBJECT>\n"
+            "        <get AMOUNT CURRENCY from pile>\n"
+            "        <get AMOUNT CURRENCY out of pile>\n\n"
+            "This allows you to get items in the same room as you, or "
+            "contained inside other items so that you are carrying them.  "
+            "In addition, you can specify partial amounts of currency to "
+            "pick up from a pile lying around.\n\n"
+            "Synonyms: take\n\n"
+            "See also: drop, give, put");
 }
 
 mixed eventCheckLight(object who) {
@@ -86,10 +86,10 @@ mixed can_get_wrd_wrd_out_of_obj(mixed args...) {
         if(args[5]) ob = to_object(args[5]);
         else if(args[3]) ob = to_object(args[3]);
 
-    if(ob && ob->GetClosed()){
-        return "The "+remove_article(ob->GetShort())+" is closed." ;
-    }
-    return ret;
+        if(ob && ob->GetClosed()){
+            return "The "+remove_article(ob->GetShort())+" is closed." ;
+        }
+        return ret;
 }
 
 //mixed can_get_wrd_wrd_from_obj(string num, string curr) {

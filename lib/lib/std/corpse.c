@@ -34,28 +34,28 @@ int eventDecay(){
     Fresh = 0;
     if(environment()->GetMedium() == MEDIUM_LAND) smell = 1;
     switch(Count){
-    case 10:
-        if(smell){
-            environment()->eventPrint(possessive_noun(Owner) + " corpse " +
-              "is starting to stink.", MSG_ROOMDESC);
-            SetId(GetId()..., "corpse", "remains","flesh","pile","pile of flesh");
-            SetAdjectives(GetAdjectives()..., "stinky", "rotting");
-            SetShort("the stinky remains of a rotting corpse");
-            SetSmell("This corpse is beginning to stink up the entire area.");
-        }
-        break;
-    case 20:
-        if(smell){
-            environment()->eventPrint("A rotting stench fills the entire "
-              "area.", MSG_ROOMDESC);
-            SetId(GetId()..., "flesh", "pile", "pile of flesh");
-            SetShort("a pile of rotting flesh");
-            SetSmell("Its smell is nearly unbearable.");
-        }
-        break;
-    case 30:
-        Destruct();
-        return 0;
+        case 10:
+            if(smell){
+                environment()->eventPrint(possessive_noun(Owner) + " corpse " +
+                        "is starting to stink.", MSG_ROOMDESC);
+                SetId(GetId()..., "corpse", "remains","flesh","pile","pile of flesh");
+                SetAdjectives(GetAdjectives()..., "stinky", "rotting");
+                SetShort("the stinky remains of a rotting corpse");
+                SetSmell("This corpse is beginning to stink up the entire area.");
+            }
+            break;
+        case 20:
+            if(smell){
+                environment()->eventPrint("A rotting stench fills the entire "
+                        "area.", MSG_ROOMDESC);
+                SetId(GetId()..., "flesh", "pile", "pile of flesh");
+                SetShort("a pile of rotting flesh");
+                SetSmell("Its smell is nearly unbearable.");
+            }
+            break;
+        case 30:
+            Destruct();
+            return 0;
     }
     if(slowdecay){
         if(random(100) > slowdecay) Count++;
@@ -80,8 +80,8 @@ void SetCorpse(object who){
     Fresh = 1;
     SetShort("the corpse of "+tmpshort);
     SetLong("As you look closely at " + who->GetCapName() +
-      ", you notice that " +  nominative(who) +
-      " does not appear to be moving.");
+            ", you notice that " +  nominative(who) +
+            " does not appear to be moving.");
     Skills = who->GetSkillsMap();
     Stats = who->GetStatsMap();
     Level = who->GetLevel();
@@ -102,8 +102,8 @@ void SetCorpse(object who){
         if(!thing || !objectp(thing)) continue;
         if(Equipped[file_name(thing)]) continue;
         Equipped[file_name(thing)] = 
-        ([ "object" : thing, "where" : thing->GetWorn() ]); 
-}
+            ([ "object" : thing, "where" : thing->GetWorn() ]); 
+    }
 }
 
 int isPlayer(){

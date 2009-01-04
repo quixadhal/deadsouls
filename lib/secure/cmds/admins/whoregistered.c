@@ -43,11 +43,11 @@ int order_sites(string alpha, string beta) {
 
 void help() {
     write("Syntax: <whoregistered ([site])>\n\n"
-      "Without an argument, it lists all sites which need to register\n"
-      "in order to create a character on the mud.  Given with a site\n"
-      "as an argument, it will confirm if that site must register.\n"
-      "Sites must be in ip numeric format.\n\nSee also:\n"
-      "register, unregister, banish, unbanish, whobanished, letin, unletin\n"
-      "wholetin, watch, unwatch, whowatched\n"
-    );
+            "Without an argument, it lists all sites which need to register\n"
+            "in order to create a character on the mud.  Given with a site\n"
+            "as an argument, it will confirm if that site must register.\n"
+            "Sites must be in ip numeric format.\n\nSee also:\n"
+            "register, unregister, banish, unbanish, whobanished, letin, unletin\n"
+            "wholetin, watch, unwatch, whowatched\n"
+         );
 }

@@ -26,12 +26,12 @@ mixed eventSpreadPoison(object who, object target){
     PoisonUses--;
     if( random(50) > (int)who->GetStatLevel("coordination") ){
         this_player()->eventPrint("You fumble around with the poison, "
-          "spilling it on yourself.");
+                "spilling it on yourself.");
         environment(this_player())->eventPrint((string)who->GetName() +
-          " fumbles around with some "
-          "poison, spilling it on " +
-          reflexive(who) + ".",
-          this_player());
+                " fumbles around with some "
+                "poison, spilling it on " +
+                reflexive(who) + ".",
+                this_player());
         who->AddPoison(random(10));
         return 1;
     }

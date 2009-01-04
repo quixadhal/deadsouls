@@ -11,14 +11,14 @@ void create() {
     SetAdjectives(({"knife","metal","fancy","steel","stainless","stainless-steel"}));
     SetShort("a weapons rack");
     SetLong("This is a bladed weapons rack here for your combat "+
-      "testing convenience.");
+            "testing convenience.");
     SetNoCondition(1);
     SetMass(274);
     SetBaseCost("silver",50);
     SetMaxCarry(5000);
     SetInventory(([
-        "/domains/default/weap/sharpsword" : ({ 10, 5 }),
-      ]));
+                "/domains/default/weap/sharpsword" : ({ 10, 5 }),
+                ]));
     SetCanClose(0);
     SetPreventGet("The rack does not budge.");
 }

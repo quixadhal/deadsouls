@@ -15,7 +15,7 @@ static void create() {
     SetBaseCost("silver",10);
     SetMealType(MEAL_FOOD);
     SetMealMessages("You eat a ham sandwich. Mmm!",
-      "$N eats $P ham sandwich.");
+            "$N eats $P ham sandwich.");
 }
 void init(){
     ::init();

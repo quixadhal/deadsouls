@@ -12,23 +12,23 @@ string file_privs(string file) {
 
     if(!sizeof(path = explode(file, "/"))) return 0;
     switch(path[0]) {
-    case "adm": return PRIV_SECURE;
-    case "cmds": return PRIV_CMDS;
-    case "daemon": return PRIV_MUDLIB;
-    case "estates": return PRIV_GENERAL;
-    case "lib": return PRIV_GENERAL;
-    case "obj": return PRIV_GENERAL;
-    case "secure": return PRIV_SECURE;
-    case "shadows": return PRIV_GENERAL;
-    case "verbs": return PRIV_CMDS;
-    case "www": return PRIV_GENERAL;
-    case "realms":
-        if(sizeof(path) > 1) return lower_case(path[1]);
-        else return 0;
-    case "domains":
-        if(sizeof(path) > 1) return capitalize(lower_case(path[1]));
-        else return 0;
-    default: return 0;
+        case "adm": return PRIV_SECURE;
+        case "cmds": return PRIV_CMDS;
+        case "daemon": return PRIV_MUDLIB;
+        case "estates": return PRIV_GENERAL;
+        case "lib": return PRIV_GENERAL;
+        case "obj": return PRIV_GENERAL;
+        case "secure": return PRIV_SECURE;
+        case "shadows": return PRIV_GENERAL;
+        case "verbs": return PRIV_CMDS;
+        case "www": return PRIV_GENERAL;
+        case "realms":
+            if(sizeof(path) > 1) return lower_case(path[1]);
+            else return 0;
+            case "domains":
+                if(sizeof(path) > 1) return capitalize(lower_case(path[1]));
+                else return 0;
+        default: return 0;
     }
 }
 
@@ -78,7 +78,7 @@ int check_privs(mixed pretender, mixed target){
     if(first_string_element(target,"/",1) == "tmp" ) x= 15;
     else if(first_string_element(target,"/",1) == "open") x= 16;
     else if(first_string_element(target,"/",1) == "realms" &&
-      grepp(target,homedir(pretender)) ) x= 17;
+            grepp(target,homedir(pretender)) ) x= 17;
     else if(archp(pretender)) x= 18;
     else x= 9;
 

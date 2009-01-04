@@ -88,7 +88,7 @@ int eventStealth(object caster, string args, int skill) {
         if(caster->GetProperty("stealthy")) {
             caster->SetProperty("stealthy",0);
             caster->eventPrint("%^BOLD%^%^CYAN%^You stop your sneaky ways.",
-              environment(caster));
+                    environment(caster));
             return 1;
         }
         else caster->eventPrint("You are not currently sneaking around!");

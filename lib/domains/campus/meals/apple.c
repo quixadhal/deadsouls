@@ -14,7 +14,7 @@ static void create() {
     SetDollarCost(1);
     SetMealType(MEAL_FOOD);
     SetMealMessages("You wolf down your apple with gusto.",
-      "$N wolfs down $P apple hungrily.");
+            "$N wolfs down $P apple hungrily.");
 }
 void init(){
     ::init();

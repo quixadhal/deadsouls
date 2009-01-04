@@ -103,6 +103,7 @@ call me->AddChannel("dgd")
 call me->AddChannel("dutch")
 call me->AddChannel("ibuild")
 call me->AddChannel("ichat")
+call me->AddChannel("imudnews")
 call me->AddChannel("ivent")
 call me->AddChannel("pchat")
 call me->AddChannel("i2chat")
@@ -122,12 +123,15 @@ alias crat3 source -q /secure/scripts/crat3.src
 alias testmud source -q /secure/scripts/testmud.src
 alias mayhem source -q /secure/scripts/mayhem.src
 alias indentall source /secure/scripts/indent.src
+alias resetgrid source -q /secure/scripts/resetgrid.src
 alias distclean source -q /secure/scripts/distclean.src
 alias shutdown say wat
 alias 1 dest bots
 alias 2 update /secure/obj/robot
 alias 3 clone /secure/obj/robot
 alias 4 bot
+alias 9 charmode on
+alias 0 charmode off
 unmuff mudbytes
 unmuff smaugmuds
 earmuff reuters

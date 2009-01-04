@@ -30,7 +30,7 @@ private string array Adverbs = ({});
 static private void validate() {
     if(!this_player()) return 0;
     if( !((int)master()->valid_apply(({ "ASSIST" }))) && 
-      !member_group(this_player(), "EMOTES") )
+            !member_group(this_player(), "EMOTES") )
         error("Illegal attempt to access SOUL_D: "+get_stack()+" "+identify(previous_object(-1)));
 }
 
@@ -42,7 +42,7 @@ varargs int AddAdverbs(string array advs...) {
 }
 
 varargs int AddRule(string verb, string rle, mixed array msg,
-  string array advs) {
+        string array advs) {
     class emote e = Emotes[verb];
     class rule r;
     validate();
@@ -131,12 +131,12 @@ varargs mixed array GetChannelEmote(string emote, string parse, string args) {
                 return 0;
             }
             adverb = ([ "$adverb" : matches[0] ]);
+        }
+        else {
+            adverb = ([ "$adverb" : args ]);
+        }
     }
-    else {
-        adverb = ([ "$adverb" : args ]);
-    }
-}
-return ({ r->Message, adverb });
+    return ({ r->Message, adverb });
 }
 
 string array GetEmotes() {
@@ -159,19 +159,19 @@ string GetHelp(string arg) {
 
     if( arg == "soul" ) {
         str = "Your \"soul\" is a system of expressions you can use "
-        "to express how you are feeling.  Though it does not really "
-        "cause anything to happen, other people, including NPC's, may "
-        "react to your emotions, especially when they are violent or "
-        "negative.\n\n"
-        "Some soul commands allow you to express an adverb to give some "
-        "sort of emphasis to the expression.  Some commands are limited "
-        "to a certain set of adverbs, while most commands will allow you "
-        "to choose from the list of system wide adverbs given below.  "
-        "You may always use your racial adverb in any expression "
-        "allowing an adverb.  A racial adverb is simply a way of "
-        "emoting unique to your race, like \"smile gnomishly\".\n\n"
-        "For a list of soul commands, try <help feelings>.\n\n"
-        "The list of system adverbs are:\n";
+            "to express how you are feeling.  Though it does not really "
+            "cause anything to happen, other people, including NPC's, may "
+            "react to your emotions, especially when they are violent or "
+            "negative.\n\n"
+            "Some soul commands allow you to express an adverb to give some "
+            "sort of emphasis to the expression.  Some commands are limited "
+            "to a certain set of adverbs, while most commands will allow you "
+            "to choose from the list of system wide adverbs given below.  "
+            "You may always use your racial adverb in any expression "
+            "allowing an adverb.  A racial adverb is simply a way of "
+            "emoting unique to your race, like \"smile gnomishly\".\n\n"
+            "For a list of soul commands, try <help feelings>.\n\n"
+            "The list of system adverbs are:\n";
         str += format_page(sort_array(Adverbs, 1), 5);
         return str;
     }
@@ -258,10 +258,10 @@ string GetHelp(string arg) {
     str += capitalize(arg) + " is a soul command and affects nothing.\n";
     str += "System adverbs are listed in <help soul>.\n";
     str += "SINGLE_LIVING: You can target a single living thing\n"
-    "ONE_OR_MORE_LIVINGS: You can target multiple people using \"all\"\n"
-    "PHRASE: Any random phrase\n"
-    "ADVERB: Any adverb from the list of supported adverbs, or your "
-    "racial adverb.";
+        "ONE_OR_MORE_LIVINGS: You can target multiple people using \"all\"\n"
+        "PHRASE: Any random phrase\n"
+        "ADVERB: Any adverb from the list of supported adverbs, or your "
+        "racial adverb.";
     return str;
 }
 
@@ -289,12 +289,12 @@ string GetRaceAdverb(mixed who) {
         return "godly";
     }
     switch(res) {
-    case "gnome": return "gnomishly";
-    case "elf": return "elvenly";
-    case "half-elf": return "half-elvenly";
-    case "orc": return "orcishly";
-    case "half-orc": return "half-orcishly";
-    default: return res + "ly";
+        case "gnome": return "gnomishly";
+        case "elf": return "elvenly";
+        case "half-elf": return "half-elvenly";
+        case "orc": return "orcishly";
+        case "half-orc": return "half-orcishly";
+        default: return res + "ly";
     }
 }
 
@@ -309,7 +309,7 @@ mapping GetRules(string emote) {
         m[rle] = ({ r->Adverbs, r->Message });
     }
     if( !master()->valid_apply(({ PRIV_ASSIST }))  
-      || (this_player() && !member_group(this_player(), "EMOTES"))){
+            || (this_player() && !member_group(this_player(), "EMOTES"))){
         return copy(m);
     }
     return m;
@@ -345,48 +345,48 @@ varargs mixed do_verb_rule(string verb, string rle, mixed args...) {
     string adv = 0;
 
     switch( rle ) {
-    case "":
-        args = 0;
+        case "":
+            args = 0;
         adv = 0;
         break;
 
-    case "LIV": case "at LIV": case "with LIV": case "to LIV":
-    case "around LIV": case "on LIV":
-    case "OBJ": case "at OBJ": case "with OBJ": case "to OBJ":
-    case "LVS": case "at LVS": case "with LVS": case "to LVS":
-    case "around LVS": case "on LVS":
-        args = args[0];
+        case "LIV": case "at LIV": case "with LIV": case "to LIV":
+            case "around LIV": case "on LIV":
+            case "OBJ": case "at OBJ": case "with OBJ": case "to OBJ":
+            case "LVS": case "at LVS": case "with LVS": case "to LVS":
+            case "around LVS": case "on LVS":
+            args = args[0];
         adv = 0;
         break;
 
-    case "STR": case "for STR": case "about STR":
-        adv = args[0];
+        case "STR": case "for STR": case "about STR":
+            adv = args[0];
         args = 0;
         break;
 
-    case "STR LIV": case "STR at LIV": case "STR with LIV":
-    case "STR around LIV": case "STR on LIV":
-    case "for STR LIV": case "for STR to LIV":
-    case "STR OBJ": case "STR at OBJ": case "STR with OBJ":
-    case "STR LVS": case "STR at LVS": case "STR with LVS":
-    case "STR around LVS": case "STR on LVS":
-    case "for STR LVS": case "for STR to LVS":
-        adv = args[0];
+        case "STR LIV": case "STR at LIV": case "STR with LIV":
+            case "STR around LIV": case "STR on LIV":
+            case "for STR LIV": case "for STR to LIV":
+            case "STR OBJ": case "STR at OBJ": case "STR with OBJ":
+            case "STR LVS": case "STR at LVS": case "STR with LVS":
+            case "STR around LVS": case "STR on LVS":
+            case "for STR LVS": case "for STR to LVS":
+            adv = args[0];
         args = args[1];
         break;
 
-    case "LIV STR": case "at LIV STR": case "LIV of STR": case "with LIV STR":
-    case "around LIV STR": case "on LIV STR":
-    case "LIV for STR": case "to LIV for STR":
-    case "OBJ STR": case "at OBJ STR": case "OBJ of STR": case "with OBJ STR":
-    case "LVS STR": case "at LVS STR": case "LVS of STR": case "with LVS STR":
-    case "around LVS STR": case "on LVS STR":
-    case "LVS for STR": case "to LVS for STR":
-        adv = args[1];
+        case "LIV STR": case "at LIV STR": case "LIV of STR": case "with LIV STR":
+            case "around LIV STR": case "on LIV STR":
+            case "LIV for STR": case "to LIV for STR":
+            case "OBJ STR": case "at OBJ STR": case "OBJ of STR": case "with OBJ STR":
+            case "LVS STR": case "at LVS STR": case "LVS of STR": case "with LVS STR":
+            case "around LVS STR": case "on LVS STR":
+            case "LVS for STR": case "to LVS for STR":
+            adv = args[1];
         args = args[0];
         break;
 
-    default:
+        default:
         this_player()->eventPrint("Unknown soul syntax.");
         return 1;
     }
@@ -405,13 +405,13 @@ varargs mixed do_verb_rule(string verb, string rle, mixed args...) {
 
             if( !sizeof(matches) ) {
                 this_player()->eventPrint("You cannot " + verb + " " + adv +
-                  "!");
+                        "!");
                 return 1;
             }
             adv = matches[0];
         }
         send_messages(r->Message[0], r->Message[1], this_player(), args, env,
-          ([ "$adverb" : adv ]));
+                ([ "$adverb" : adv ]));
         if( args ) {
             args->eventReceiveEmote(this_player(), verb, adv);
         }

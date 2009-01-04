@@ -17,18 +17,18 @@ static void create() {
     SetAdjectives(({"orc","armored","professional","chieftain"}));
     SetShort("an orc chieftain");
     SetLong("This is a large orc, covered in ornate tattoos and "+
-      "markings of power and prestige. His powerful frame is "+
-      "clearly accustomed to physically establishing authority.");
+            "markings of power and prestige. His powerful frame is "+
+            "clearly accustomed to physically establishing authority.");
     SetInventory(([
-        "/domains/cave/weap/longsword" : "wield sword",
-        "/domains/cave/armor/platemail" : "wear platemail",
-        "/domains/cave/armor/orc_helmet" : "wear helmet",
-        "/domains/cave/armor/chainmail_collar" : "wear collar",
-        "/domains/cave/armor/armored_boot_l" : "wear left boot",
-        "/domains/cave/armor/armored_boot_r" : "wear right boot",
-        "/domains/cave/armor/armored_glove_r" : "wear right glove",
-        "/domains/cave/armor/armored_glove_l" : "wear left glove",
-      ]));
+                "/domains/cave/weap/longsword" : "wield sword",
+                "/domains/cave/armor/platemail" : "wear platemail",
+                "/domains/cave/armor/orc_helmet" : "wear helmet",
+                "/domains/cave/armor/chainmail_collar" : "wear collar",
+                "/domains/cave/armor/armored_boot_l" : "wear left boot",
+                "/domains/cave/armor/armored_boot_r" : "wear right boot",
+                "/domains/cave/armor/armored_glove_r" : "wear right glove",
+                "/domains/cave/armor/armored_glove_l" : "wear left glove",
+                ]));
     SetRace("orc");
     SetLevel(10);
     SetClass("fighter");

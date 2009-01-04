@@ -17,20 +17,20 @@ void create() {
     SetTerrainType(T_MIDAIR);
     SetMedium(MEDIUM_AIR);
     SetItems( ([
-        ({ "sea", "ocean" }) : "A seemingly endless body of water.",
-      ]) );
+                ({ "sea", "ocean" }) : "A seemingly endless body of water.",
+                ]) );
     SetExits( ([
-        "north" : "/domains/town/virtual/sky/22,10,1",
-        "south" : "/domains/town/virtual/sky/22,8,1",
-        "east" : "/domains/town/virtual/sky/23,9,1",
-        "southeast" : "/domains/town/virtual/sky/23,8,1",
-        "northeast" : "/domains/town/virtual/sky/23,10,1",
-        "west" : "/domains/town/virtual/sky/21,9,1",
-        "southwest" : "/domains/town/virtual/sky/21,8,1",
-        "northwest" : "/domains/town/virtual/sky/21,10,1",
-        "up" : "/domains/town/virtual/sky/22,9,2",
-        "down" : "/domains/fort/room/bpath3.c",
-      ]) );
+                "north" : "/domains/town/virtual/sky/22,10,1",
+                "south" : "/domains/town/virtual/sky/22,8,1",
+                "east" : "/domains/town/virtual/sky/23,9,1",
+                "southeast" : "/domains/town/virtual/sky/23,8,1",
+                "northeast" : "/domains/town/virtual/sky/23,10,1",
+                "west" : "/domains/town/virtual/sky/21,9,1",
+                "southwest" : "/domains/town/virtual/sky/21,8,1",
+                "northwest" : "/domains/town/virtual/sky/21,10,1",
+                "up" : "/domains/town/virtual/sky/22,9,2",
+                "down" : "/domains/fort/room/bpath3.c",
+                ]) );
 }
 void init(){
     ::init();

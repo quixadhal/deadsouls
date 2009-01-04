@@ -17,14 +17,14 @@ static void create() {
     SetRules("STR", "OBJ STR");
     SetErrorMessage("Copy what?");
     SetHelp("Syntax: <copy [OBJ] [NAME]>\n"
-      "        <copy [FILENAME]\n\n"
-      "With a room's filename as an argument, this command "
-      "copies everything about that room (except exits) into "
-      "your current room.\n\n"
-      "When you specify an object and provide a filename, this "
-      "command makes a copy of the object's file and gives it "
-      "the name you provide.\n\n"
-      "\nSee also: create, delete, modify, reload, initfix, add" );
+            "        <copy [FILENAME]\n\n"
+            "With a room's filename as an argument, this command "
+            "copies everything about that room (except exits) into "
+            "your current room.\n\n"
+            "When you specify an object and provide a filename, this "
+            "command makes a copy of the object's file and gives it "
+            "the name you provide.\n\n"
+            "\nSee also: create, delete, modify, reload, initfix, add" );
 }
 
 mixed can_copy_obj_str(object ob, string str) { return 1; }
@@ -58,8 +58,8 @@ mixed do_copy_obj_str(object ob, string str) {
     sourcefile = base_name(ob)+".c";
     targetfile = str;
     if(!check_privs(this_player(),str) || 
-      (!check_privs(this_player(),sourcefile) && 
-        strsrch(sourcefile,"/obj/"))){
+            (!check_privs(this_player(),sourcefile) && 
+             strsrch(sourcefile,"/obj/"))){
         write("You lack sufficient privileges for this operation. Copy failed.");
         return 0;
     }
@@ -114,7 +114,7 @@ mixed do_copy_str(string str) {
     }
 
     if((!check_privs(this_player(),str) && strsrch(str,"/obj/") ) || 
-      !check_privs(this_player(),base_name(environment(this_player()))+".c")){
+            !check_privs(this_player(),base_name(environment(this_player()))+".c")){
         write("You lack sufficient privileges for this operation. Copy failed.");
         return 1;
     }

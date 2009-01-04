@@ -68,7 +68,7 @@ mixed cmd(string args) {
         coord = coord + (s3 ? "" : ",0");
         ROOMS_D->SetRoom(room, this_player(), coord);
         write("Coordinates for "+file+" are: "+
-          ROOMS_D->GetCoordinates(room));
+                ROOMS_D->GetCoordinates(room));
         return 1;
     }
     if(sscanf(args,"%s %s",s1,s2) == 2){
@@ -90,7 +90,7 @@ mixed cmd(string args) {
         }
         ROOMS_D->SetRoom(room, this_player(), "0,0,0");
         write("Coordinates for "+file+" are: "+
-          ROOMS_D->GetCoordinates(room));
+                ROOMS_D->GetCoordinates(room));
         return 1;
     }
     write("You fail to use this command properly.");
@@ -99,9 +99,9 @@ mixed cmd(string args) {
 
 string GetHelp(string args) {
     return ("Syntax: gridconfig set <room> <coordinates>\n"
-      "        gridconfig unset <room>\n\n"
-      "Modifies the grid coordinate table in ROOMS_D for the "
-      "specified room.\nSee also: mudconfig, admintool"
-      "\n\n"
-      "");
+            "        gridconfig unset <room>\n\n"
+            "Modifies the grid coordinate table in ROOMS_D for the "
+            "specified room.\nSee also: mudconfig, admintool"
+            "\n\n"
+            "");
 }

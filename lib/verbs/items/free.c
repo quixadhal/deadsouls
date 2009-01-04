@@ -17,9 +17,9 @@ static void create() {
     SetSynonyms("release", "liberate", "emancipate");
     SetErrorMessage("Free what from what?");
     SetHelp("Syntax: <free OBJECT from OBJECT>\n\n"
-      "Frees an object from a trap.\n\n"
-      "Synonyms: emancipate, liberate, release\n\n"
-      "See also: capture");
+            "Frees an object from a trap.\n\n"
+            "Synonyms: emancipate, liberate, release\n\n"
+            "See also: capture");
 }
 
 mixed can_free_liv_from_obj() {

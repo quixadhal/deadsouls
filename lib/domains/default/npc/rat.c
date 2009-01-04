@@ -27,9 +27,9 @@ static void create() {
     SetMessage("come","$N scurries in.");
     SetMessage("leave","$N scurries $D.");
     SetAction(5, ({ 
-        "The rat squeaks.", "You hear a rat scuttling about.", 
-        "A scruffy little rat brushes against your leg.",
-        "You hear tiny munching sounds."}));
+                "The rat squeaks.", "You hear a rat scuttling about.", 
+                "A scruffy little rat brushes against your leg.",
+                "You hear tiny munching sounds."}));
 }
 void init(){
     ::init();

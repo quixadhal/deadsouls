@@ -8,8 +8,8 @@ static void create() {
     SetRules("OBJ WRD OBJ", "OBJ OBJ");
     SetErrorMessage("Apply what to what?");
     SetHelp("Syntax: apply ITEM to OBJECT\n\n"
-      "Allows you to put one thing up against another.\n\n"
-      "See also: turn, activate, install");
+            "Allows you to put one thing up against another.\n\n"
+            "See also: turn, activate, install");
 }
 
 mixed can_apply_obj_word_obj() {

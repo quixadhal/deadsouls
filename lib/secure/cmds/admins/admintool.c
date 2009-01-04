@@ -102,13 +102,13 @@ varargs int Menu(string str){
     if(!menu) menu = "main";
 
     switch (menu){
-    case "main" : MainMenu(); break;
-    case "general" : GeneralMenu(); break;
-    case "daemon" : DaemonMenu();break;
-    case "users" : UsersMenu();break;
-    case "driver" : DriverMenu();break;
-    case "groups" : GroupsMenu();break;
-    default : menu = "main"; MainMenu(); break;
+        case "main" : MainMenu(); break;
+        case "general" : GeneralMenu(); break;
+        case "daemon" : DaemonMenu();break;
+        case "users" : UsersMenu();break;
+        case "driver" : DriverMenu();break;
+        case "groups" : GroupsMenu();break;
+        default : menu = "main"; MainMenu(); break;
     }
     return 1;
 }
@@ -116,37 +116,37 @@ varargs int Menu(string str){
 string process_input(string str){
     validate();
     switch (str) {
-    case "q" : write("Ok, quitting admintool.\nBye.\n");return " ";
-    case "x" : write("Ok, quitting admintool.\nBye.\n");return " ";
-    case "y" : write("Ok, quitting admintool.\nBye.\n");return " ";
-    case "z" : Menu("main"); break;
-    case "1" : Menu("general"); break;
-    case "2" : Menu("daemon");break;
-    case "3" : Menu("users");break;
-    case "4" : Menu("driver");break;
-    case "5" : Menu("groups");break;
-    case "a" : ToggleMudLock();break;
-    case "b" : ShowLock();break;
-    case "c" : SetTZ();break;
-    case "d" : ChangeEmail();break;
-    case "e" : SetReboot();break;
-    case "f" : AddClass();break;
-    case "g" : RemoveClass();break;
-    case "h" : AddRace();break;
-    case "i" : RemoveRace();break;
-    case "j" : AddCurrency();break;
-    case "k" : RemoveCurrency();break;
-    case "n" : RidUser();break;
-    case "o" : BanishUser();break;
-    case "p" : UnBanishUser();break;
-    case "r" : ChangeName();break;
-    case "s" : ChangePort();break;
-    case "t" : AddGroup();break;
-    case "u" : RemoveGroup();break;
-    case "v" : ModGroup();break;
-    case "w" : ShowGroups();break;
-    case "SD": ShutDownMud();break;
-    default : InvalidChoice();
+        case "q" : write("Ok, quitting admintool.\nBye.\n");return " ";
+        case "x" : write("Ok, quitting admintool.\nBye.\n");return " ";
+        case "y" : write("Ok, quitting admintool.\nBye.\n");return " ";
+        case "z" : Menu("main"); break;
+        case "1" : Menu("general"); break;
+        case "2" : Menu("daemon");break;
+        case "3" : Menu("users");break;
+        case "4" : Menu("driver");break;
+        case "5" : Menu("groups");break;
+        case "a" : ToggleMudLock();break;
+        case "b" : ShowLock();break;
+        case "c" : SetTZ();break;
+        case "d" : ChangeEmail();break;
+        case "e" : SetReboot();break;
+        case "f" : AddClass();break;
+        case "g" : RemoveClass();break;
+        case "h" : AddRace();break;
+        case "i" : RemoveRace();break;
+        case "j" : AddCurrency();break;
+        case "k" : RemoveCurrency();break;
+        case "n" : RidUser();break;
+        case "o" : BanishUser();break;
+        case "p" : UnBanishUser();break;
+        case "r" : ChangeName();break;
+        case "s" : ChangePort();break;
+        case "t" : AddGroup();break;
+        case "u" : RemoveGroup();break;
+        case "v" : ModGroup();break;
+        case "w" : ShowGroups();break;
+        case "SD": ShutDownMud();break;
+        default : InvalidChoice();
     }
     return "(process_input fun finished.)";
 }
@@ -268,10 +268,10 @@ int GroupsMenu(){
 
 string GetHelp(string str) {
     return ("Syntax: <admintool>\n\n"
-      "Menu-driven tool used to edit the MUD's configuration.\n"
-      "To change mud name or port number, choose the Driver menu.\n"
-      "Use the Users menu for promoting a player to creator status.\n"
-      "Use the Groups menu to make someone an assistant admin.\n");
+            "Menu-driven tool used to edit the MUD's configuration.\n"
+            "To change mud name or port number, choose the Driver menu.\n"
+            "Use the Users menu for promoting a player to creator status.\n"
+            "Use the Groups menu to make someone an assistant admin.\n");
 }
 
 int ToggleMudLock(){
@@ -292,7 +292,7 @@ int ToggleMudLock(){
     }
     if(sscanf(lockline,"%s%d",junk, num) < 2) {
         write("Operation failed. You need to hand-"+
-          "edit /secure/include/config.h immediately.");
+                "edit /secure/include/config.h immediately.");
         return 0;
     }
     if(num == 0) {
@@ -372,7 +372,7 @@ varargs int eventChangeEmail(string str, int auto){
     }
     if(sscanf(lockline,"%s\"%s\"",junk, email) < 2) {
         write("Operation failed. You need to hand-"+
-          "edit /secure/include/config.h immediately.");
+                "edit /secure/include/config.h immediately.");
         if(!auto) Menu();
         return 0;
     }
@@ -411,7 +411,7 @@ int eventSetReboot(mixed i){
         write("Reboot interval set to "+EVENTS_D->GetRebootInterval()+" hours.");
     else
         write("Reboot interval could not be set. Current interval is: "+
-          check + " hours.");
+                check + " hours.");
     Menu();
     return 1;
 }
@@ -670,7 +670,7 @@ int RemoveCurrency(){
     if(sizeof(currencies) == 1) {
         write("Please add a currency before removing this last one.");
         write("Removing the last currency would cause the mud to "+
-          "behave unexpectedly.");
+                "behave unexpectedly.");
         return 1;
     }
     write("Available currencies: "+ identify(currencies) +".");
@@ -732,7 +732,7 @@ int DoRid(string who) {
     if( ob = find_player(ridded)) {
         who = (string)ob->GetCapName();
         message("system", "You are being ridded from " + mud_name() + ".",
-          ob);
+                ob);
         ob->eventForce("quit");
     }
     file = save_file(ridded) + __SAVE_EXTENSION__;
@@ -819,7 +819,7 @@ varargs int eventChangeName(string newname, int automated){
 
     if(automated){
         if(mud_name() != "DeadSoulsNew" &&
-          mud_name() != "DeadSoulsWin")
+                mud_name() != "DeadSoulsWin")
             return 0;
     }
 
@@ -841,14 +841,14 @@ varargs int eventChangeName(string newname, int automated){
 
     if(!nameline || sscanf(nameline,"%s : %s",junk, name) < 2) {
         write("Operation failed. You need to copy over "+
-          "/secure/cfg/mudos.cfg immediately with an original.");
+                "/secure/cfg/mudos.cfg immediately with an original.");
         if(!automated) Menu();
         return 0;
     }
 
     if(automated){
         if(name != "DeadSoulsWin" && name != "DeadSouls" &&
-          name != "Dead Souls" && name != "DeadSoulsNew") newname = name;
+                name != "Dead Souls" && name != "DeadSoulsNew") newname = name;
         cp("/secure/cfg/mudos.cfg","/secure/cfg/mudos.orig");
     }
 
@@ -905,7 +905,7 @@ varargs int eventChangePort(string newport, int automated){
 
     if(!nameline || sscanf(nameline,"%s : %s",junk, name) < 2) {
         write("Operation failed. You need to copy over "+
-          "/secure/cfg/mudos.cfg immediately with an original.");
+                "/secure/cfg/mudos.cfg immediately with an original.");
         if(!automated) Menu();
         return 0;
     }
@@ -916,7 +916,7 @@ varargs int eventChangePort(string newport, int automated){
     if(!automated)  {
         write("\nMUD's port changed. Reboot the MUD to activate new port.");
         write("NOTE: If the port you selected is 1024 or below, your OS "+
-          "may require the MUD to run as a privileged user.");
+                "may require the MUD to run as a privileged user.");
         write("\n Do you want to shut down the MUD now to activate the change?\n");
         input_to( (: eventShutDownMud :) );
     }
@@ -946,7 +946,7 @@ int eventShutDownMud(string str){
 
     shout("Game is shut down by " + this_player()->GetKeyName() + ".\n");
     log_file("game_log", ctime(time())+" Game shutdown by "+
-      this_player()->GetKeyName()+"(admintool)\n");
+            this_player()->GetKeyName()+"(admintool)\n");
     foreach(object dude in users()){
         if(sizeof(base_name(dude)) && !archp(dude)) dude->eventForce("quit");
     }
@@ -1002,32 +1002,32 @@ int eventAddGroup(string str){
 
     foreach(string line in line_array){
         if(strsrch(line,"(") != -1 && 
-          first(line,1) != "#"){
-            bottom_array += ({ line });
-        }
-        else top_array += ({ line });
-    }
+                    first(line,1) != "#"){
+                bottom_array += ({ line });
+                }
+                else top_array += ({ line });
+                }
 
-    bottom_array += ({"("+str+") "});
+                bottom_array += ({"("+str+") "});
 
-    new_config_file = implode(top_array,"\n");
-    new_config_file += "\n";
-    new_config_file += implode(bottom_array,"\n");
-    write_file("/secure/cfg/groups.cfg",new_config_file,1);
-    write("\nGroup "+str+" added.\n");
-    load_object("/secure/cmds/creators/update")->cmd("/secure/daemon/master");
-    load_object("/secure/cmds/creators/update")->cmd("/secure/lib/connect");
-    Menu();
-    return 1;
-}
+                new_config_file = implode(top_array,"\n");
+                new_config_file += "\n";
+                new_config_file += implode(bottom_array,"\n");
+                write_file("/secure/cfg/groups.cfg",new_config_file,1);
+                write("\nGroup "+str+" added.\n");
+                load_object("/secure/cmds/creators/update")->cmd("/secure/daemon/master");
+                load_object("/secure/cmds/creators/update")->cmd("/secure/lib/connect");
+                Menu();
+                return 1;
+                }
 
-int RemoveGroup(){
-    validate();
-    write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
-    write("\nWhat is the name of the group you'd like to remove?\n");
-    input_to( (: eventRemoveGroup :) );
-    return 1;
-}
+                int RemoveGroup(){
+                validate();
+                write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
+                write("\nWhat is the name of the group you'd like to remove?\n");
+                input_to( (: eventRemoveGroup :) );
+                return 1;
+                }
 
 int eventRemoveGroup(string str){
     string config_file, new_config_file;
@@ -1060,9 +1060,9 @@ int eventRemoveGroup(string str){
 
     if(str == "SECURE" || str == "ASSIST"){
         write("\nThis is a configured administrative group. You "+
-          "can't remove it with admintool. If you really, really, really "+
-          "know what you're doing and you want to remove that group, you'll "+
-          "have to do it manually with an editor.\n");
+                "can't remove it with admintool. If you really, really, really "+
+                "know what you're doing and you want to remove that group, you'll "+
+                "have to do it manually with an editor.\n");
         Menu();
         return 1;
     }
@@ -1076,29 +1076,29 @@ int eventRemoveGroup(string str){
 
     foreach(string line in line_array){
         if(strsrch(line,"(") != -1 && first(line,1) != "#"){
-            if(strsrch(line,"("+str+")") == -1 ) bottom_array += ({ line });
-        }
-        else if(strsrch(line,"("+str+")") == -1 ) top_array += ({ line });
-    }
+                if(strsrch(line,"("+str+")") == -1 ) bottom_array += ({ line });
+                }
+                else if(strsrch(line,"("+str+")") == -1 ) top_array += ({ line });
+                }
 
-    new_config_file = implode(top_array,"\n");
-    new_config_file += "\n";
-    new_config_file += implode(bottom_array,"\n");
-    write_file("/secure/cfg/groups.cfg",new_config_file,1);
-    load_object("/secure/cmds/creators/update")->cmd("/secure/daemon/master");
-    load_object("/secure/cmds/creators/update")->cmd("/secure/lib/connect");
-    write("\nGroup "+str+" removed.\n");
-    Menu();
-    return 1;
-}
+                new_config_file = implode(top_array,"\n");
+                new_config_file += "\n";
+                new_config_file += implode(bottom_array,"\n");
+                write_file("/secure/cfg/groups.cfg",new_config_file,1);
+                load_object("/secure/cmds/creators/update")->cmd("/secure/daemon/master");
+                load_object("/secure/cmds/creators/update")->cmd("/secure/lib/connect");
+                write("\nGroup "+str+" removed.\n");
+                Menu();
+                return 1;
+                }
 
-int ModGroup(){
-    validate();
-    write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
-    write("\nWhat is the name of the group you'd like to modify?\n");
-    input_to( (: eventModGroup :) );
-    return 1;
-}
+                int ModGroup(){
+                validate();
+                write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
+                write("\nWhat is the name of the group you'd like to modify?\n");
+                input_to( (: eventModGroup :) );
+                return 1;
+                }
 
 int eventModGroup(string str){
     string config_file;
@@ -1184,30 +1184,30 @@ int eventEditGroup(string members){
 
     foreach(string line in line_array){
         if(strsrch(line,"(") != -1 && first(line,1) != "#"){
-            if(strsrch(line,"("+str+")") == -1 ) bottom_array += ({ line });
-        }
-        else if(strsrch(line,"("+str+")") == -1 ) top_array += ({ line });
-    }
+                if(strsrch(line,"("+str+")") == -1 ) bottom_array += ({ line });
+                }
+                else if(strsrch(line,"("+str+")") == -1 ) top_array += ({ line });
+                }
 
-    new_config_file = implode(top_array,"\n");
-    new_config_file += "\n";
-    new_config_file += implode(bottom_array,"\n");
-    new_config_file += "\n";
-    new_config_file += "("+str+") "+members;
-    write_file("/secure/cfg/groups.cfg",new_config_file,1);
-    load_object("/secure/cmds/creators/update")->cmd("/secure/daemon/master");
-    load_object("/secure/cmds/creators/update")->cmd("/secure/lib/connect");
-    write("\nGroup "+str+" modified.\n");
-    Menu();
-    return 1;
-}
+                new_config_file = implode(top_array,"\n");
+                new_config_file += "\n";
+                new_config_file += implode(bottom_array,"\n");
+                new_config_file += "\n";
+                new_config_file += "("+str+") "+members;
+                write_file("/secure/cfg/groups.cfg",new_config_file,1);
+                load_object("/secure/cmds/creators/update")->cmd("/secure/daemon/master");
+                load_object("/secure/cmds/creators/update")->cmd("/secure/lib/connect");
+                write("\nGroup "+str+" modified.\n");
+                Menu();
+                return 1;
+                }
 
-int ShowGroups(){
-    validate();
-    write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
-    Menu();
-    return 1;
-}
+                int ShowGroups(){
+                validate();
+                write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
+                Menu();
+                return 1;
+                }
 
 mixed cmd(string args) {
     validate();

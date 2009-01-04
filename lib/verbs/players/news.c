@@ -15,8 +15,8 @@ static void create() {
     SetRules("", "STR");
     SetErrorMessage("See \"help news\" for more info on this command.");
     SetHelp("Syntax: news [<classname>|general]\n"    
-      "\n"
-      "This command allows you to replay the login news.");
+            "\n"
+            "This command allows you to replay the login news.");
 }
 
 mixed can_news() { return can_news_str("general"); }

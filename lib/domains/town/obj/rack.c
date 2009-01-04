@@ -11,15 +11,15 @@ void create() {
     SetAdjectives(({"knife","metal","fancy","steel","stainless","stainless-steel"}));
     SetShort("a knife rack");
     SetLong("This is a fancy stainless steel knife rack, "+
-      "for keeping expensive super-sharp knives.");
+            "for keeping expensive super-sharp knives.");
     SetMass(274);
     SetBaseCost("silver",50);
     SetMaxCarry(5);
     SetInventory(([
-        //"/domains/town/weap/paring_knife" : 1,
-        "/domains/town/weap/butcher_knife" : 1,
-        "/domains/town/weap/carving_knife" : 1,
-      ]));
+                //"/domains/town/weap/paring_knife" : 1,
+                "/domains/town/weap/butcher_knife" : 1,
+                "/domains/town/weap/carving_knife" : 1,
+                ]));
     SetCanClose(0);
 }
 mixed CanGet(object ob) { return "The rack does not budge.";}

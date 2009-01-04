@@ -111,11 +111,11 @@ int eventDrive(string direction){
     }
 
     if(!s1 || s1 == "") switch(this_object()->GetPosition()){
-    case POSITION_STANDING : travel_cmd = "go";break;
-    case POSITION_SITTING : travel_cmd = "crawl";break;
-    case POSITION_LYING : travel_cmd = "crawl";break;
-    case POSITION_FLYING : travel_cmd = "fly";break;
-    default : travel_cmd = "go";
+        case POSITION_STANDING : travel_cmd = "go";break;
+        case POSITION_SITTING : travel_cmd = "crawl";break;
+        case POSITION_LYING : travel_cmd = "crawl";break;
+        case POSITION_FLYING : travel_cmd = "fly";break;
+        default : travel_cmd = "go";
     }
     else direction = s2;
     this_object()->eventForce(travel_cmd+" "+direction);
@@ -232,7 +232,7 @@ mapping SetItems(mixed items){
     }
     else {
         error("Bad argument 1 to SetItems(), expected object array or "
-          "mapping.\n");
+                "mapping.\n");
     }
     return copy(ItemsMap);
 }
@@ -306,7 +306,7 @@ mixed GetVehicleInterior(){
 
 varargs int CanFly(mixed who, mixed where){
     if(where && !(environment(this_object())->GetExit(where)) &&
-      !(environment(this_object())->GetEnter(where))) return 0;
+            !(environment(this_object())->GetEnter(where))) return 0;
 
     if(this_object()->GetPosition() == POSITION_FLYING) return 1;
     return 0;

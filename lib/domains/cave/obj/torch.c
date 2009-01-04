@@ -9,7 +9,7 @@ static void create() {
     SetAdjectives( ({ "old", "wooden" }) );
     SetShort("an old wooden torch");
     SetLong("An old, wooden torch with a bit of cloth wrapped around "
-      "one end and dipped into a flamable substance.");
+            "one end and dipped into a flamable substance.");
     SetRadiantLight(15);
     SetFuelRequired(1);
     SetMaxFuel(1000);

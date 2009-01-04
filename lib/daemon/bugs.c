@@ -79,7 +79,7 @@ int eventReport(string who, string type, string bug, string data) {
 
     x = NextID++;
     Bugs[x] = ([ "who" : who, "type" : type, "bug" : bug, "data" : data, 
-      "assigned" : 0, "date fixed" : 0, "resolution" : 0 ]);
+            "assigned" : 0, "date fixed" : 0, "resolution" : 0 ]);
     if( unguarded( (: save_object, SAVE_BUGS :) ) ) return x;
     else {
         map_delete(Bugs, x);
@@ -93,7 +93,7 @@ int GetAssignedBugs(string who) {
 
     foreach( id, rep in Bugs) 
         if( rep["assigned"] && !rep["date fixed"] &&
-          (convert_name(rep["assigned"]) == who) ) x++;
+                (convert_name(rep["assigned"]) == who) ) x++;
     return x;
 }
 

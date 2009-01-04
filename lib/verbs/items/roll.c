@@ -10,8 +10,8 @@ static void create() {
     SetRules("OBS","OBS on OBJ","OBS on STR","OBS here","STR","STR on OBJ");
     SetErrorMessage("Roll something?");
     SetHelp("Syntax: roll THING\n"
-      "roll THING on THING        \n"
-      "");  
+            "roll THING on THING        \n"
+            "");  
 }
 
 mixed can_roll() {

@@ -20,11 +20,11 @@ static void create() {
     SetRules("", "STR", "into STR");
     SetErrorMessage("Fly in which direction?");
     SetHelp("Syntax: <fly DIRECTION>\n"
-      "        <fly into PLACE>\n\n"
-      "Moves you towards the direction you specify, or into the place "
-      "you specify.  The command \"fly into\" is synonymous with the "
-      "\"enter\" command.\n\n"  
-      "See also: climb, enter, go, jump");
+            "        <fly into PLACE>\n\n"
+            "Moves you towards the direction you specify, or into the place "
+            "you specify.  The command \"fly into\" is synonymous with the "
+            "\"enter\" command.\n\n"  
+            "See also: climb, enter, go, jump");
 }
 
 int StaminaCost(){
@@ -67,7 +67,7 @@ mixed can_fly_str(string str) {
         return this_player()->CanFly();
     }
     if(this_player()->GetPosition() != POSITION_FLYING &&
-      envpos != POSITION_FLYING){
+            envpos != POSITION_FLYING){
         return "You are not flying.";
     }
     return 0;
@@ -86,7 +86,7 @@ mixed can_fly_into_str(string str) {
         return this_player()->CanFly();
     }
     if(this_player()->GetPosition() != POSITION_FLYING &&
-      envpos != POSITION_FLYING){
+            envpos != POSITION_FLYING){
         return "You are not flying.";
     }
 

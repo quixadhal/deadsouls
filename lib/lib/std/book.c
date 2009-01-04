@@ -51,7 +51,7 @@ void create(){
     ::create();
     call_out( (: LoadBook :), 1);
     SetDefaultRead("Try \"read chapter 1 in book\" or "
-      "\"read index in book\"");
+            "\"read index in book\"");
 }
 
 void init(){

@@ -47,10 +47,10 @@ void create() {
 
 static private int valid_access() {
     switch(base_name(previous_object(0))) {
-    case OBJ_POST: case LETTERS_D: case FOLDERS_D:
-    case LOCALPOST_D: case REMOTEPOST_D: case OPTIONS_D:
-        return 1;
-    default: return 0;
+        case OBJ_POST: case LETTERS_D: case FOLDERS_D:
+        case LOCALPOST_D: case REMOTEPOST_D: case OPTIONS_D:
+            return 1;
+        default: return 0;
     }
 }
 
@@ -106,7 +106,7 @@ string query_letter(string id) {
     string base;
 
     if((base = base_name(previous_object(0))) != OBJ_POST &&
-      base != FOLDERS_D) return "Illegal access.";
+            base != FOLDERS_D) return "Illegal access.";
     if(!restore_letter(id)) return "Invalid message.\n"; 
     return __Letter; 
 } 
@@ -125,7 +125,7 @@ void delete_folder(string who, string folder, string id) {
     i = sizeof(tmp = keys(__Folders)); 
     while(i--) { 
         file = DIR_POSTAL+"/"+tmp[i][0..0]+"/"+tmp[i]+"/postalrc"+
-        __SAVE_EXTENSION__;
+            __SAVE_EXTENSION__;
         if(!user_exists(tmp[i])) {
             FOLDERS_D->delete_user(tmp[i]);
             restore_letter(id);

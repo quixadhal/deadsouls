@@ -8,5 +8,5 @@ static void create() {
     SetId("lamp on a post","post","lamp post","lamppost");
     SetShort("a lamp on a post");
     SetLong("This is a lamp on a post which is lit at night so townsfolk "
-      "can find their way around.");
+            "can find their way around.");
 }

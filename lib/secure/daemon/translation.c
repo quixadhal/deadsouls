@@ -21,7 +21,7 @@ string *eventCompileList(string str){
     if(!str) return ({});
 
     if(strsrch(str,"/domains/") != 0 &&
-      strsrch(str,"/realms/") != 0){
+            strsrch(str,"/realms/") != 0){
         write("Don't be stupid.");
         return ({});
     }

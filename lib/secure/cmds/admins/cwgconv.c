@@ -11,14 +11,14 @@ mapping RawMap = ([]);
 string array source_dirs = ({ "zon", "mob", "obj", "shp", "trg", "wld", "gld" });
 mapping Genders = ([ 0 : "neutral", 1 : "male", 2 : "female" ]);
 mapping Directions = ([ 0 : "north", 1 : "east", 2 : "south",
-  3 : "west", 4 : "up", 5 : "down", 6 : "northwest", 7 : "northeast",
-  8 : "southeast", 9 : "southwest", 10 : "in", 11 : "out" ]);
+        3 : "west", 4 : "up", 5 : "down", 6 : "northwest", 7 : "northeast",
+        8 : "southeast", 9 : "southwest", 10 : "in", 11 : "out" ]);
 mapping Types = ([ 1 : "LIB_ITEM", 2 : "LIB_ITEM", 3 : "LIB_ITEM", 4 : "LIB_ITEM",
-  5 : "LIB_ITEM", 6 : "LIB_ITEM", 7 : "LIB_ITEM", 8 : "LIB_ITEM", 9 : "LIB_ARMOR", 10 : "LIB_POTION",
-  11 : "LIB_ITEM", 12 : "LIB_ITEM", 13 : "LIB_ITEM", 14 : "LIB_ITEM", 15 : "LIB_STORAGE", 
-  16 : "LIB_ITEM", 17 : "LIB_MEAL", 18 : "LIB_ITEM", 19 : "LIB_MEAL", 20 : "LIB_PILE",
-  21 : "LIB_ITEM", 22 : "LIB_ITEM", 23 : "LIB_ITEM", 24 : "LIB_ITEM", 25 : "LIB_ITEM", 
-  26 : "LIB_ITEM", 44 : "LIB_ITEM" ]);
+        5 : "LIB_ITEM", 6 : "LIB_ITEM", 7 : "LIB_ITEM", 8 : "LIB_ITEM", 9 : "LIB_ARMOR", 10 : "LIB_POTION",
+        11 : "LIB_ITEM", 12 : "LIB_ITEM", 13 : "LIB_ITEM", 14 : "LIB_ITEM", 15 : "LIB_STORAGE", 
+        16 : "LIB_ITEM", 17 : "LIB_MEAL", 18 : "LIB_ITEM", 19 : "LIB_MEAL", 20 : "LIB_PILE",
+        21 : "LIB_ITEM", 22 : "LIB_ITEM", 23 : "LIB_ITEM", 24 : "LIB_ITEM", 25 : "LIB_ITEM", 
+        26 : "LIB_ITEM", 44 : "LIB_ITEM" ]);
 string gdirection, cle, val;
 int item_type;
 mixed com,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13;
@@ -26,11 +26,11 @@ int weight, cost, material,ok,ok2;
 int lock, key, room, direction;
 
 mapping ObjectType = ([
-  "zon" : "ZONE",
-  "obj" : "OBJECTS",
-  "mob" : "MOBILES",
-  "wld" : "ROOMS",
-]);
+        "zon" : "ZONE",
+        "obj" : "OBJECTS",
+        "mob" : "MOBILES",
+        "wld" : "ROOMS",
+        ]);
 
 mixed cmd(string args){
     if(args == "clear"){
@@ -144,12 +144,12 @@ int ConvertArea(string arg){
             for(i=2;i < sizeof(lines);i++){
                 int num = i;
                 if(sscanf(lines[i],"%d %s %s %s %s %s %s %s %s %s %s %s %s",
-                    v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13) == 13) {
+                            v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13) == 13) {
                     item_type = v1;
                     continue;
                 }
                 if(sscanf(lines[i],"%d %d %d %d %d %d %d %d",v1,v2,v3,v4,v5,
-                    v6,v7,v8) == 8){
+                            v6,v7,v8) == 8){
                     material = v8;
                     continue;
 
@@ -225,7 +225,7 @@ int ConvertArea(string arg){
                     ok =1;
                 }
                 if( ok == 1 && sizeof(explode(lines[i]," ")) == 3 && 
-                  sscanf(lines[i],"%d %d %d",v2, v3, v4) == 3){
+                        sscanf(lines[i],"%d %d %d",v2, v3, v4) == 3){
                     ok++;
                 }
                 if(!ok2 && i > 3){
@@ -343,10 +343,10 @@ int ConvertArea(string arg){
 
 void help() {
     message("help", "Syntax: cwgconv <source path> <areaname> <domain name>\n\n"
-      "Tries to convert a CWG area into a Dead Souls domain.\n"
-      "Example: cconv /tmp/areadir 3 newdomain\n"
-      "This would try to create /domains/newdomain and convert the area described\n"
-      "in /tmp/areadir/3 into LPC files in the new DS domain."
-      "\n", this_player());
+            "Tries to convert a CWG area into a Dead Souls domain.\n"
+            "Example: cconv /tmp/areadir 3 newdomain\n"
+            "This would try to create /domains/newdomain and convert the area described\n"
+            "in /tmp/areadir/3 into LPC files in the new DS domain."
+            "\n", this_player());
 }
 

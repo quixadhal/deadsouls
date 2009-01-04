@@ -23,14 +23,14 @@ static void create(){
     SetAdjectives(({"military"}));
     SetShort("a military gate guard");
     SetLong("This is a military policeman. He has "+
-      "spent months in arduous training, and by the looks of him, has seen "+
-      "plenty of action in his lifetime.  He is large, looks very "+
-      "tough, and whatever he is guarding is probably very safe.");
+            "spent months in arduous training, and by the looks of him, has seen "+
+            "plenty of action in his lifetime.  He is large, looks very "+
+            "tough, and whatever he is guarding is probably very safe.");
     SetInventory(([
-        "/domains/town/armor/bdu" : "wear bdu",
-        "/domains/town/armor/helmet2" : "wear helmet",
-        "/domains/town/weap/m16rifle_mp" : "wield rifle",
-      ]));
+                "/domains/town/armor/bdu" : "wear bdu",
+                "/domains/town/armor/helmet2" : "wear helmet",
+                "/domains/town/weap/m16rifle_mp" : "wield rifle",
+                ]));
     SetLevel(20);
     SetRace("human");
     SetClass("fighter");

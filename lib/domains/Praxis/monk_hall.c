@@ -9,20 +9,20 @@ string get_male(int lev);
 string get_female(int lev);
 int get_cost(string which, int lev);
 
-int CanReceive(object ob) {
-    if(!(int)VOTING_D->is_time_to_vote())
+    int CanReceive(object ob) {
+        if(!(int)VOTING_D->is_time_to_vote())
+            return ::CanReceive(ob);
+        if(creatorp(this_player()) || (int)this_player()->query_level() < 2)
+            return ::CanReceive(ob);
+        if((int)VOTING_D->query_voted((string)this_player()->query_name(),
+                    this_player()->query_class()))
+            return ::CanReceive(ob);
+        else {
+            message("my_action", "You have not yet voted for class leader.  Please do so now.", this_player());
+            call_out("move_me", 5, this_player());
+        }
         return ::CanReceive(ob);
-    if(creatorp(this_player()) || (int)this_player()->query_level() < 2)
-        return ::CanReceive(ob);
-    if((int)VOTING_D->query_voted((string)this_player()->query_name(),
-        this_player()->query_class()))
-        return ::CanReceive(ob);
-    else {
-        message("my_action", "You have not yet voted for class leader.  Please do so now.", this_player());
-        call_out("move_me", 5, this_player());
     }
-    return ::CanReceive(ob);
-}
 
 void move_me(object ob) {
     ob->eventMoveLiving("/domains/Praxis/"+ob->query_class()+"_vote");
@@ -40,17 +40,17 @@ void create() {
     SetProperty("no castle", 1);
     SetShort( "inside the hall of monks");
     SetLong(
-      "Welcome to the Monastary of Eternal Holiness.\n"
-      "All monks come here to advance in life and study.  The "
-      "available commands are <cost>, <advance>, <list (number)>, "
-      "<improve stat>, <train skill amount>, and <roll stats>.  West "
-      "through a passage guarded by a shimmering %^BLUE%^blue%^RESET%^ "
-      "light is the entrance to the monastery. Type <help skills> to "
-      "get a list of the full names of skills.");
+            "Welcome to the Monastary of Eternal Holiness.\n"
+            "All monks come here to advance in life and study.  The "
+            "available commands are <cost>, <advance>, <list (number)>, "
+            "<improve stat>, <train skill amount>, and <roll stats>.  West "
+            "through a passage guarded by a shimmering %^BLUE%^blue%^RESET%^ "
+            "light is the entrance to the monastery. Type <help skills> to "
+            "get a list of the full names of skills.");
     SetExits( 
-      (["west" : "/domains/Praxis/monk_join",
-        "council" : "/domains/Praxis/council_hall",
-        "east" : "/domains/Praxis/monk_vote"]) );
+            (["west" : "/domains/Praxis/monk_join",
+             "council" : "/domains/Praxis/council_hall",
+             "east" : "/domains/Praxis/monk_vote"]) );
 
     ob = new(LIB_BOARD);
     ob->SetKeyName("tableau");
@@ -197,7 +197,7 @@ int improve(string str) {
     this_player()->add_exp(-stat_cost);
     message("Nmy_action", "You feel much ", this_player());
     message("Nother_action", (string)this_player()->query_cap_name()+
-      " looks much ", this_object(), ({ this_player() }) );
+            " looks much ", this_object(), ({ this_player() }) );
     if(str == "strength") tell_room(this_object(), "stronger.\n");
     else if(str == "intelligence") tell_room(this_object(), "more intelligent.\n");
     else if(str == "wisdom") tell_room(this_object(), "wiser.\n");
@@ -209,10 +209,10 @@ int improve(string str) {
 
 int get_cost(string stat, int lev) {
     switch(stat) {
-    case "intelligence": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-    case "dexterity": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-    case "wisdom": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-    default: return (int)ADVANCE_D->get_stat_cost(2, lev); break;
+        case "intelligence": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
+        case "dexterity": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
+        case "wisdom": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
+        default: return (int)ADVANCE_D->get_stat_cost(2, lev); break;
     }
 }
 
@@ -224,19 +224,19 @@ int cost(string str) {
     if(bing < 1) write("level:\t\tIt will cost you nothing to advance.");
     else write("level:\t\t"+bing+"\n");
     write("skills: You train by spending the amount of experience you
-desire.\n");
+            desire.\n");
     write("strength:\t\t" + get_cost("strength",
-(int)this_player()->query_base_stats("strength")) +
-"\t\tconstitution:\t\t" + get_cost("constitution",
-(int)this_player()->query_base_stats("constitution")) );
+                (int)this_player()->query_base_stats("strength")) +
+            "\t\tconstitution:\t\t" + get_cost("constitution",
+                (int)this_player()->query_base_stats("constitution")) );
     write("intelligence:\t\t" + get_cost("intelligence",
-(int)this_player()->query_base_stats("intelligence")) +
-"\t\tdexterity:\t\t" + get_cost("dexterity",
-(int)this_player()->query_base_stats("dexterity")) );
+                (int)this_player()->query_base_stats("intelligence")) +
+            "\t\tdexterity:\t\t" + get_cost("dexterity",
+                (int)this_player()->query_base_stats("dexterity")) );
     write("wisdom:\t\t" + get_cost("wisdom",
-(int)this_player()->query_base_stats("wisdom")) +
-"\t\tcharisma:\t\t" + get_cost("charisma",
-(int)this_player()->query_base_stats("charisma")) );
+                (int)this_player()->query_base_stats("wisdom")) +
+            "\t\tcharisma:\t\t" + get_cost("charisma",
+                (int)this_player()->query_base_stats("charisma")) );
     return 1;
 }
 
@@ -245,15 +245,15 @@ int list(string str) {
 
     if(!str) "/domains/Praxis/quest_room"->list_quests(this_player(), 0);
     else {
-	if(sscanf(str, "%d", x) != 1) {
-	    notify_fail("You must give the number of the quest you want listed.\n");
-	    return 0;
-	}
-	if(x <1) {
-	    notify_fail("No such quest.\n");
-	    return 0;
-	}
-	"/domains/Praxis/quest_room"->list_quests(this_player(), x);
+        if(sscanf(str, "%d", x) != 1) {
+            notify_fail("You must give the number of the quest you want listed.\n");
+            return 0;
+        }
+        if(x <1) {
+            notify_fail("No such quest.\n");
+            return 0;
+        }
+        "/domains/Praxis/quest_room"->list_quests(this_player(), x);
     }
     return 1;
 }

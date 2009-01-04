@@ -15,18 +15,18 @@ static void create() {
     SetLong("This small office is where people come to perform their civic duty of voting. Here you may also 'nominate CANDIDATE'. There is a list of candidates here. The main area of the town hall is southwest.");
     SetItems( ([ "list" : "This is the list of candidates." ]) );
     SetExits( ([ 
-        "southwest" : "/domains/town/room/thall",
-      ]) );
+                "southwest" : "/domains/town/room/thall",
+                ]) );
     SetRead( "list", (: ReadList :) );
     SetProperties (([
-        "no attack":1, 
-        "no bump":1, 
-        "no steal":0, 
-        "no magic":0, 
-        "no paralyze":0, 
-        "no teleport":0]));
+                "no attack":1, 
+                "no bump":1, 
+                "no steal":0, 
+                "no magic":0, 
+                "no paralyze":0, 
+                "no teleport":0]));
     SetInventory(([
-      ]));
+                ]));
 }
 
 mixed ReadList() {
@@ -78,28 +78,28 @@ mixed eventNominate( object who, string str ) {
     iErr = VOTING_D->eventAddCandidate( who->GetClass(), str );
 
     switch( iErr ) {
-    case VOTE_NOT_RUNNING :
-        this_player()->eventPrint("The elections are not running now!");
-        break;
+        case VOTE_NOT_RUNNING :
+            this_player()->eventPrint("The elections are not running now!");
+            break;
 
-    case VOTE_MODE_VOTING :
-        this_player()->eventPrint("The time for nominating "
-          "candidates is past, cast your vote instead.");
-        break;
+        case VOTE_MODE_VOTING :
+            this_player()->eventPrint("The time for nominating "
+                    "candidates is past, cast your vote instead.");
+            break;
 
-    case VOTE_ERROR :
-        this_player()->eventPrint("There was an error, you cannot "
-          "nominate someone at this time.");
-        break;
+        case VOTE_ERROR :
+            this_player()->eventPrint("There was an error, you cannot "
+                    "nominate someone at this time.");
+            break;
 
-    case VOTE_NOT_CLASS_MEMBER :
-        this_player()->eventPrint( capitalize(str) + " is not a member of "
-          "the " + pluralize( who->GetClass() ) + ".");
-        break;
+        case VOTE_NOT_CLASS_MEMBER :
+            this_player()->eventPrint( capitalize(str) + " is not a member of "
+                    "the " + pluralize( who->GetClass() ) + ".");
+            break;
 
-    case VOTE_ALREADY_RUNNING :
-        this_player()->eventPrint( capitalize(str) + " is already running." );
-        break;
+        case VOTE_ALREADY_RUNNING :
+            this_player()->eventPrint( capitalize(str) + " is already running." );
+            break;
     }
     return 1;
 }
@@ -112,32 +112,32 @@ mixed eventVote( object who, string str ) {
     iErr = VOTING_D->eventCastVote( sClass, who->GetName(), str );
 
     switch( iErr ) {
-    case VOTE_NOT_RUNNING :
-        this_player()->eventPrint("The elections are not running now!");
-        break;
+        case VOTE_NOT_RUNNING :
+            this_player()->eventPrint("The elections are not running now!");
+            break;
 
-    case VOTE_MODE_CANDIDATES :
-        this_player()->eventPrint("Voting has not yet started. We are "
-          "still nominating candidates. Please nominate a candidate "
-          "instead.");
-        break;
+        case VOTE_MODE_CANDIDATES :
+            this_player()->eventPrint("Voting has not yet started. We are "
+                    "still nominating candidates. Please nominate a candidate "
+                    "instead.");
+            break;
 
-    case VOTE_NOT_PRIMARY :
-        this_player()->eventPrint("Only your primary character can vote.");
-        break;
+        case VOTE_NOT_PRIMARY :
+            this_player()->eventPrint("Only your primary character can vote.");
+            break;
 
-    case VOTE_NOT_CLASS_MEMBER :
-        this_player()->eventPrint( str + " is not a candidate for "
-          "the " + pluralize(who->GetClass()) + ".");
-        break;
+        case VOTE_NOT_CLASS_MEMBER :
+            this_player()->eventPrint( str + " is not a candidate for "
+                    "the " + pluralize(who->GetClass()) + ".");
+            break;
 
-    case VOTE_ALREADY_VOTED :
-        this_player()->eventPrint("You have already cast your vote!");
-        break;
+        case VOTE_ALREADY_VOTED :
+            this_player()->eventPrint("You have already cast your vote!");
+            break;
 
-    case VOTE_SUCCESS :
-        this_player()->eventPrint("You cast your vote!");
-        break;        
+        case VOTE_SUCCESS :
+            this_player()->eventPrint("You cast your vote!");
+            break;        
     }
 
     return 1;
@@ -147,21 +147,21 @@ mixed eventWithdraw( object who ) {
     int iErr;
 
     iErr = VOTING_D->eventRemoveCandidate( who->GetClass(), who->GetName()
-    );
+            );
 
     switch( iErr ) {
-    case VOTE_NOT_RUNNING :
-        this_player()->eventPrint("The elections are not running now!");
-        break;
+        case VOTE_NOT_RUNNING :
+            this_player()->eventPrint("The elections are not running now!");
+            break;
 
-    case VOTE_MODE_VOTING :
-        this_player()->eventPrint("The elections have begun, it is "
-          "too late to withdraw.");
-        break;
+        case VOTE_MODE_VOTING :
+            this_player()->eventPrint("The elections have begun, it is "
+                    "too late to withdraw.");
+            break;
 
-    case VOTE_NOT_CANDIDATE :
-        this_player()->eventPrint("You are not a candidate.");
-        break;
+        case VOTE_NOT_CANDIDATE :
+            this_player()->eventPrint("You are not a candidate.");
+            break;
     }
 
     return 1;

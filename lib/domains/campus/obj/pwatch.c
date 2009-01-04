@@ -12,9 +12,9 @@ static void create(){
     SetId(({"watch","pocketwatch","pocket watch","timepiece"}));
     SetShort("a gold pocket watch");
     SetLong("This is a beautifully decorated and intricately carved "+
-      "pocket watch made of gold. It glows with an almost surreal, deep golden "+
-      "luster. It is quietly ticking the seconds, and it looks like you can get the "+
-      "accurate time by checking the watch.");
+            "pocket watch made of gold. It glows with an almost surreal, deep golden "+
+            "luster. It is quietly ticking the seconds, and it looks like you can get the "+
+            "accurate time by checking the watch.");
     SetMass(10);
     SetDollarCost(1);
     SetProtection(BLUNT,1);
@@ -40,7 +40,7 @@ int check_time(string str){
             l_time="/daemon/current_time"->GetCurrentTime(tzone);
             write("Checking the pocket watch, you see it is "+l_time+".\n");
             say(this_player()->GetName()+" checks "+possessive(this_player())+
-              " pocket watch.\n");
+                    " pocket watch.\n");
             return 1;
         }
         write("You cannot read the watch face from here.\n");

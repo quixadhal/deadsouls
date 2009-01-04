@@ -81,7 +81,7 @@ varargs void SetLongAndItems(int x, int y, int z) {
     else str+= " The sun seems oddly dim in the sky.";
 
     SetItems( ([ ({"sea","ocean"}) : "It is vast.",
-      ]) );
+                ]) );
     SetLong(str);
     SetDayLight(30);
     SetNightLight(30);
@@ -89,6 +89,6 @@ varargs void SetLongAndItems(int x, int y, int z) {
     SetTerrainType(T_SURFACE);
     SetMedium(MEDIUM_SURFACE);
     SetInventory( ([
-        "/domains/town/obj/seawater" : 1,
-      ]) );
+                "/domains/town/obj/seawater" : 1,
+                ]) );
 }

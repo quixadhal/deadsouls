@@ -21,7 +21,7 @@ static void AddRule(string rule, string emote);
 static private void validate() {
     if(!this_player()) return 0;
     if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
-      !member_group(this_player(), "EMOTES") )
+            !member_group(this_player(), "EMOTES") )
         error("Illegal attempt to access addemote: "+get_stack()+" "+identify(previous_object(-1)));
 }
 
@@ -77,7 +77,7 @@ static void EnterEditChoice(string str, string array rules, string emote) {
 }
 
 static void AddAdverbs(string adv, string emote, string array rules,
-  string array verbs, string msg) {
+        string array verbs, string msg) {
     string array adverbs;
     validate();
     if( !adv || adv == "" ) {
@@ -93,7 +93,7 @@ static void AddAdverbs(string adv, string emote, string array rules,
 }
 
 static void AddMessage(string msg, string emote, string array rules,
-  string array verbs) {
+        string array verbs) {
     validate();
     if( !msg || msg == "" ) {
         this_player()->eventPrint("Which message? [q to quit] ", MSG_PROMPT);
@@ -146,7 +146,7 @@ static void AddErrorMessage(string msg, string emote) {
     }
     SOUL_D->AddVerb(emote, msg);
     this_player()->eventPrint("Enter a parser rule for " + emote + ": ",
-      MSG_PROMPT);
+            MSG_PROMPT);
     input_to((: AddRule :), emote);
 }
 
@@ -188,11 +188,11 @@ static void EditErrorMessage(string emote) {
     validate();
     this_player()->eventPrint("Enter new error message: ", MSG_PROMPT);
     input_to(function(string str, string emote) {
-          if( str && str != "" ) {
-              SOUL_D->SetErrorMessage(emote, str);
-          }
-          ShowEmote(emote);
-      }, emote);
+            if( str && str != "" ) {
+            SOUL_D->SetErrorMessage(emote, str);
+            }
+            ShowEmote(emote);
+            }, emote);
 }
 
 static void ShowEmote(string emote) {
@@ -223,7 +223,7 @@ static void ShowEmote(string emote) {
 
 mixed cmd(string args) {
     if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
-      !member_group(this_player(), "EMOTES") ){
+            !member_group(this_player(), "EMOTES") ){
         write("You are not admin, nor a member of the EMOTES group.");
         return 1;
     }
@@ -257,73 +257,73 @@ mixed cmd(string args) {
 
 string GetHelp(string str) {
     return ("Syntax: <addemote>\n"
-      "        <addemote EMOTE>\n"
-      "        <addemote -edit>\n"
-      "        <addemote -add>\n\n"
-      "You must be admin or member of the EMOTES group to use this command.\n\n"
-      "Used to add and edit emotes in the soul daemon using complex "
-      "rules and the Dead Souls V messaging system.  In order to add "
-      "a new emote using this command, you need to know the following "
-      "information:\n"
-      "\t* Verb parse rule\n"
-      "\t* Verbs to be conjugated in the message\n"
-      "\t* The messaging system generic format for the message\n"
-      "\t* Any adverbs supported specially for the message\n\n"
-      "The verb parse rule is a set of tokens governing how the "
-      "command should be entered. The only tokens supported by the "
-      "soul are LIV (for one living thing), LVS (for one to many living "
-      "things), and STR (for any arbitrary string).  In addition, the "
-      "rule can contains prepositions like to, at, on, about, etc.  "
-      "For example, to allow a player to do <smile at descartes>, you "
-      "need the parse rule <at LIV> or <at LVS>.  <smile oddly at "
-      "descartes> would be <STR at LIV> or <STR at LVS>.\n"
-      "In general, you should allow players to enter in commands using "
-      "correct English and a syntax without prepositions.  For "
-      "example, since we have <at LVS>, we should also allow "
-      "<LVS>.  To support identical rules like this, when the "
-      "<addemote> command asks for a parser rule, you can enter in "
-      "multiple identical rules on the same line, separated by "
-      "commas:\n"
-      "Enter parser rule: at LVS,LVS\n\n"
-      "The next step is defining which verbs need conjugating in your "
-      "message for the emote.  With the smile emote, the only verb is "
-      "\"smile\".  However, for more complex emotes, you may have "
-      "multiple verbs which need conjugating.  Just enter them as a "
-      "comma separated list.  For example, if you have an emote that "
-      "should print the message \"Descartes rants and raves.\", then "
-      "you will need to enter the verbs rant and rave:\n"
-      "Enter verbs: rant,rave\n\n"
-      "The next step is specifying the message that gets shown.  Your "
-      "message uses place holders, also called tokens, to stand in "
-      "for bits of the message that change depending on point of "
-      "view.  In the rant and rave example, Descartes would see:\n"
-      "You rant and rave.\n"
-      "Everyone else sees:\n"
-      "Descartes rants and raves.\n"
-      "The only thing that stays the same is the word \"and\".  You "
-      "need tokens to stand for the rest.  A full list of tokens is "
-      "specified in <help messaging> and they all begin with a $ sign.  "
-      "One extremely important thing to remember is that you need "
-      "the exact same number of $agent_verb or $target_verb tokens in "
-      "your message as the number of verbs you specified for "
-      "conjugation.  In the rant and rave example, I need two verb "
-      "tokens to match up with my two verbs I am conjugating.  They "
-      "will be handled in the order they appear.  In other words, the "
-      "rant verb will match to the first verb token, and the rave "
-      "verb will match to the second verb token.  Verb tokens count "
-      "as any combination of $agent_verb and $target_verb:\n"
-      "Enter message: $agent_name $agent_verb and $agent_verb.\n\n"
-      "The last thing you need to enter is a list of adverbs.  "
-      "As with other lists, this list is comma separated.  And as with "
-      "other bits of this system, it has a little complexity to it.  "
-      "If you do not enter anything, then no adverbs are used for this "
-      "rule.  In fact, you must specify a STR token in the rule for "
-      "adverbs to be relevant.  If you do specify an STR rule, you "
-      "should specify something on the adverb line.  Any adverbs you "
-      "enter are considered special adverbs just for this rule.  If "
-      "you wish the general list of adverbs to be available as well, "
-      "you can enter a - as one of the adverbs.  If you wish the "
-      "player to be able to add anything that comes to mind, enter "
-      "a *:\n"
-      "Enter adverbs: -");
+            "        <addemote EMOTE>\n"
+            "        <addemote -edit>\n"
+            "        <addemote -add>\n\n"
+            "You must be admin or member of the EMOTES group to use this command.\n\n"
+            "Used to add and edit emotes in the soul daemon using complex "
+            "rules and the Dead Souls V messaging system.  In order to add "
+            "a new emote using this command, you need to know the following "
+            "information:\n"
+            "\t* Verb parse rule\n"
+            "\t* Verbs to be conjugated in the message\n"
+            "\t* The messaging system generic format for the message\n"
+            "\t* Any adverbs supported specially for the message\n\n"
+            "The verb parse rule is a set of tokens governing how the "
+            "command should be entered. The only tokens supported by the "
+            "soul are LIV (for one living thing), LVS (for one to many living "
+        "things), and STR (for any arbitrary string).  In addition, the "
+            "rule can contains prepositions like to, at, on, about, etc.  "
+            "For example, to allow a player to do <smile at descartes>, you "
+            "need the parse rule <at LIV> or <at LVS>.  <smile oddly at "
+            "descartes> would be <STR at LIV> or <STR at LVS>.\n"
+            "In general, you should allow players to enter in commands using "
+            "correct English and a syntax without prepositions.  For "
+            "example, since we have <at LVS>, we should also allow "
+            "<LVS>.  To support identical rules like this, when the "
+            "<addemote> command asks for a parser rule, you can enter in "
+            "multiple identical rules on the same line, separated by "
+            "commas:\n"
+            "Enter parser rule: at LVS,LVS\n\n"
+            "The next step is defining which verbs need conjugating in your "
+            "message for the emote.  With the smile emote, the only verb is "
+            "\"smile\".  However, for more complex emotes, you may have "
+            "multiple verbs which need conjugating.  Just enter them as a "
+            "comma separated list.  For example, if you have an emote that "
+            "should print the message \"Descartes rants and raves.\", then "
+            "you will need to enter the verbs rant and rave:\n"
+            "Enter verbs: rant,rave\n\n"
+            "The next step is specifying the message that gets shown.  Your "
+            "message uses place holders, also called tokens, to stand in "
+            "for bits of the message that change depending on point of "
+            "view.  In the rant and rave example, Descartes would see:\n"
+            "You rant and rave.\n"
+            "Everyone else sees:\n"
+            "Descartes rants and raves.\n"
+            "The only thing that stays the same is the word \"and\".  You "
+            "need tokens to stand for the rest.  A full list of tokens is "
+            "specified in <help messaging> and they all begin with a $ sign.  "
+            "One extremely important thing to remember is that you need "
+            "the exact same number of $agent_verb or $target_verb tokens in "
+            "your message as the number of verbs you specified for "
+            "conjugation.  In the rant and rave example, I need two verb "
+            "tokens to match up with my two verbs I am conjugating.  They "
+            "will be handled in the order they appear.  In other words, the "
+            "rant verb will match to the first verb token, and the rave "
+            "verb will match to the second verb token.  Verb tokens count "
+            "as any combination of $agent_verb and $target_verb:\n"
+            "Enter message: $agent_name $agent_verb and $agent_verb.\n\n"
+            "The last thing you need to enter is a list of adverbs.  "
+            "As with other lists, this list is comma separated.  And as with "
+            "other bits of this system, it has a little complexity to it.  "
+            "If you do not enter anything, then no adverbs are used for this "
+            "rule.  In fact, you must specify a STR token in the rule for "
+            "adverbs to be relevant.  If you do specify an STR rule, you "
+            "should specify something on the adverb line.  Any adverbs you "
+            "enter are considered special adverbs just for this rule.  If "
+            "you wish the general list of adverbs to be available as well, "
+            "you can enter a - as one of the adverbs.  If you wish the "
+            "player to be able to add anything that comes to mind, enter "
+            "a *:\n"
+            "Enter adverbs: -");
 }

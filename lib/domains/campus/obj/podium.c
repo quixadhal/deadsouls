@@ -25,12 +25,12 @@ static void create() {
     storage::create();
     SetShort("a podium");
     SetLong("This is the speaker's podium. It is about four feet tall "+
-      "and made of some expensive-looking, deep grain wood. This podium "+
-      "facilitates the running of meetings by giving the speaker the power "+
-      "to recognize individual people to speak at a time. There is "+
-      "some space in the podium to store things in, perhaps there is something "+
-      "in there now. For more "+
-      "details on running a meeting with the podium, type: help podium.");
+            "and made of some expensive-looking, deep grain wood. This podium "+
+            "facilitates the running of meetings by giving the speaker the power "+
+            "to recognize individual people to speak at a time. There is "+
+            "some space in the podium to store things in, perhaps there is something "+
+            "in there now. For more "+
+            "details on running a meeting with the podium, type: help podium.");
     SetMass(10);
     SetId( ({"podium", "speaker's podium", "podium.c"}) );
     SetDollarCost(-110);
@@ -42,7 +42,7 @@ static void create() {
     SetMaxCarry(20);
 
     SetInventory(([
-      ]));
+                ]));
 
     mc = "";
     x = 0;
@@ -150,9 +150,9 @@ int eventRaise() {
     dude=this_player()->GetKeyName();
     if(dude != mc && dude != speaker) {
         tell_room(environment(this_player()),
-          this_player()->GetName()+" raises "+
-          possessive(this_player())+
-          " hand.", ({this_player()}) );
+                this_player()->GetName()+" raises "+
+                possessive(this_player())+
+                " hand.", ({this_player()}) );
         this_player()->eventPrint("%^CYAN%^You raise your hand.");
         return 1;
     }
@@ -177,10 +177,10 @@ int help(string args) {
     }
     else {
         write("%^GREEN%^This is the speakers podium, it is where the "
-          "speaker stands during a speech.  This podium "
-          "has special properties, it can prevent others "
-          "from speaking out of turn, if you are the "+
-          "speaker.%^RESET%^");
+                "speaker stands during a speech.  This podium "
+                "has special properties, it can prevent others "
+                "from speaking out of turn, if you are the "+
+                "speaker.%^RESET%^");
         if (this_player()->GetKeyName() == mc) {
             write("%^RED%^Available commands:");
             write("%^YELLOW%^recognize %^RESET%^: Calls on another to speak.");		
@@ -196,11 +196,11 @@ int help(string args) {
             write("%^YELLOW%^reset clock%^RESET%^: Clear the clock.");
             write("%^YELLOW%^step down%^RESET%^: Step down as head speaker.");
             write("%^YELLOW%^rollcall <num> [minutes/seconds] <subject>%^RESET%^: Call for a roll call vote,\n"
-              "\tlasting num minutes or seconds, on <subject>.");
+                    "\tlasting num minutes or seconds, on <subject>.");
             write("%^YELLOW%^add after <int> <string>%^RESET%^: Add agenda item <string> after agenda item #<int>.\n"
-              "\tadd after 0 <string> adds to the top of the list.");
+                    "\tadd after 0 <string> adds to the top of the list.");
             write("%^YELLOW%^call <num> [minutes/seconds] <subject>%^RESET%^: Call for a vote, lasting num minutes\n"
-              "\tor seconds, on <subject>.");
+                    "\tor seconds, on <subject>.");
             return 1;
         }
         else {
@@ -284,7 +284,7 @@ int SetMc(string args) {
     if(!member_group(ob, "MODERATORS")){
         write("That person is not a member of the moderators group.");
         write("An admin should use the admintool command to add the "+
-          "appropriate people to that user group.");
+                "appropriate people to that user group.");
         return 1;
     }
     if (x==0) {
@@ -435,7 +435,7 @@ varargs int localtime (string str) {
     // You must reset the clock first. See below.
     if (endtime!=0) {
         write ("The clock is running. You must reset the clock first.\n"
-        ) ;
+              ) ;
         return 1 ;
     }
     if (sscanf(str, "%d min%s", i, foo) == 2) {
@@ -549,7 +549,7 @@ int add_items (string str) {
     if (post==0) agenda = ({ prop }) + agenda ; else
         agenda = agenda[0..post-1] + ({ prop }) + agenda[post..sizeof(agenda)] ;
     write ("Added the following agenda item after item "+post+":\n"+
-      prop+"\n") ;
+            prop+"\n") ;
     return 1 ;
 }
 
@@ -718,8 +718,8 @@ int expire_vote() {
     tell_room (environment(this_object()), "The clock runs out. Voting is over.\n") ;
     endtime = 0 ;
     tell_room (environment(this_object()), "The results of the vote were:\n"+
-      "Yes:  "+votes["yes"]+"     No:   "+votes["no"]+"       Abstain:  "+
-      votes["abstain"]+"\n") ;
+            "Yes:  "+votes["yes"]+"     No:   "+votes["no"]+"       Abstain:  "+
+            votes["abstain"]+"\n") ;
     voters = ({ }) ;
     votes["yes"] = 0 ;
     votes["no"] = 0 ;

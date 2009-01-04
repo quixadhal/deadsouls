@@ -23,7 +23,7 @@ int GetArmorType(){
 int SetArmorType(int x){
     if( !intp(x) ){
         error("Bad argument to SetArmorType().\n\tExpected value from "
-          "/include/armor_types.h, Got: " + typeof(x) + "\n");
+                "/include/armor_types.h, Got: " + typeof(x) + "\n");
     }
     return (ArmorType = x);
 }

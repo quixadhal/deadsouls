@@ -34,27 +34,27 @@ void create() {
     SetPreventDrop( (: Destruct :) );    
     SetPreventPut( (: Destruct :) );    
     __PostalOptions = ({     
-      ([ "key":"askcc", "value":({"N","Y"}), "desc":"Prompt for cc when "    
-        "sending mail:" ]),     
-      (["key":"quit", "value":({"N","Y"}), "desc":"Confirm quit from mail:"]),
-      (["key":"metoo", "value":({"N","Y"}),"desc":"Send mail to yourself "
-        "with you in alias:"]),
-      (["key":"delete", "value":({"N","Y"}), "desc":"Confirm deletion of "    
-        "letters:" ]),    
-      (["key":"notify", "value":({"N","Y"}), "desc":"Notify me when new mail "    
-        "is received:" ]),    
-      ([ "key":"message", "value":"New mail has arrived from $N\n"    
-        "Subject: $S", "desc":"Mail message when notify occurs:" ]),    
-      ([ "key": "content", "value":({"message only", "header and message"}),    
-        "desc":"Content of letters when reading mail:" ]),    
-      ([ "key":"forward", "value":"none", "desc":"Address to forward "    
-        "incoming mail to:" ]),    
-      ([ "key":"sig file", "value":"none", "desc":"Signature file:" ]),    
-      ([ "key":"commands", "value":({"N","Y"}), "desc":"Exclude command "    
-        "listing from menus:" ]),    
-      ([ "key":"read", "value":({"N","Y"}), "desc":"Read letter when you make "    
-        "it current:" ])    
-    });    
+            ([ "key":"askcc", "value":({"N","Y"}), "desc":"Prompt for cc when "    
+             "sending mail:" ]),     
+            (["key":"quit", "value":({"N","Y"}), "desc":"Confirm quit from mail:"]),
+            (["key":"metoo", "value":({"N","Y"}),"desc":"Send mail to yourself "
+             "with you in alias:"]),
+            (["key":"delete", "value":({"N","Y"}), "desc":"Confirm deletion of "    
+             "letters:" ]),    
+            (["key":"notify", "value":({"N","Y"}), "desc":"Notify me when new mail "    
+             "is received:" ]),    
+            ([ "key":"message", "value":"New mail has arrived from $N\n"    
+             "Subject: $S", "desc":"Mail message when notify occurs:" ]),    
+            ([ "key": "content", "value":({"message only", "header and message"}),    
+             "desc":"Content of letters when reading mail:" ]),    
+            ([ "key":"forward", "value":"none", "desc":"Address to forward "    
+             "incoming mail to:" ]),    
+            ([ "key":"sig file", "value":"none", "desc":"Signature file:" ]),    
+            ([ "key":"commands", "value":({"N","Y"}), "desc":"Exclude command "    
+             "listing from menus:" ]),    
+            ([ "key":"read", "value":({"N","Y"}), "desc":"Read letter when you make "    
+             "it current:" ])    
+            });    
 }    
 
 string tmpmail(){
@@ -70,7 +70,7 @@ void init() {
         return;    
     }    
     __Options = (mapping)OPTIONS_D->query_options(__Owner =
-      (string)this_player()->GetKeyName());
+            (string)this_player()->GetKeyName());
     if(!(__Lines = to_int((string)this_player()->GetEnvVar("LINES"))))   
         __Lines = 24;   
     if(!(__Screen = to_int((string)this_player()->GetEnvVar("SCREEN"))))   
@@ -136,32 +136,32 @@ void start_post(string str) {
         maxi = sizeof(args = explode(str, ","));    
         if(args[0][0] == '-' && strlen(args[0]) == 2) {    
             switch(args[0][1]) {    
-            case 'r':    
-                restore_box("new");    
-                index_cmd("");    
-                return;    
-            case 'f':    
-                if(maxi < 2) {    
-                    message("mail", "No folder named.", this_player());    
-                    this_object()->eventDestruct();    
+                case 'r':    
+                    restore_box("new");    
+                    index_cmd("");    
                     return;    
-                }    
-                else if(maxi>2 || (!valid_folder(args[1]) &&     
-                    args[1] != "new")) {    
-                    message("mail", "Illegal folder name.", this_player());    
-                    this_object()->eventDestruct();    
+                case 'f':    
+                    if(maxi < 2) {    
+                        message("mail", "No folder named.", this_player());    
+                        this_object()->eventDestruct();    
+                        return;    
+                    }    
+                    else if(maxi>2 || (!valid_folder(args[1]) &&     
+                                args[1] != "new")) {    
+                        message("mail", "Illegal folder name.", this_player());    
+                        this_object()->eventDestruct();    
+                        return;    
+                    }    
+                    else {    
+                        restore_box(args[1]);    
+                        indices(0);    
+                        return;    
+                    }    
+                case 'a':    
+                    __CommandLine = 1;    
+                    if(maxi < 2) index_cmd("a");    
+                    else index_cmd(implode(args[1..maxi-1], " "));    
                     return;    
-                }    
-                else {    
-                    restore_box(args[1]);    
-                    indices(0);    
-                    return;    
-                }    
-            case 'a':    
-                __CommandLine = 1;    
-                if(maxi < 2) index_cmd("a");    
-                else index_cmd(implode(args[1..maxi-1], " "));    
-                return;    
             }    
         }    
         __CommandLine = 1; 
@@ -180,8 +180,8 @@ static private void primary_prompt() {
 
 static private void secondary_prompt() {    
     message("prompt", sprintf("\nCommand (%s for %s menu): \n",   
-        __CurrentMenu[0..0],  __CurrentMenu),    
-      this_player());    
+                __CurrentMenu[0..0],  __CurrentMenu),    
+            this_player());    
 }    
 
 varargs static private void postal_error(string str, string ind, mixed args) {
@@ -209,13 +209,13 @@ varargs static void indices(int x, string str) {
     __Begin = x;    
     __FromMenu = 1;    
     message("mail", "\n%^INITTERM%^Imaginary Intermud Postal Service "    
-      "(IIPS) 3.1     Descartes of Borg 1993, 1994", this_player());    
+            "(IIPS) 3.1     Descartes of Borg 1993, 1994", this_player());    
     message("mail", sprintf("\n%%^CYAN%%^%s", center(sprintf("Folder is %s "
-            "with %s.\n",__Folder,consolidate(maxi=sizeof(__BoxInfo),"one letter\n")),
-          __Screen)), this_player());
+                        "with %s.\n",__Folder,consolidate(maxi=sizeof(__BoxInfo),"one letter\n")),
+                    __Screen)), this_player());
     if(!maxi) __Current = -1;    
     else for(i=x; i<maxi && i < x+__NumLetters; i++)    
-            message("mail", sprintf("%s%s) %s %s %s %s %s\n",    
+        message("mail", sprintf("%s%s) %s %s %s %s %s\n",    
                 (__Current == i ? "%^YELLOW%^BOLD%^*" : " "),    
                 ((i+1 > 99) ? (""+(i+1)) : ((i+1 > 9) ? (" "+(i+1)) : ("  "+(i+1)))),
                 (__BoxInfo[i]["read"] ? " " : "N"),    
@@ -233,12 +233,12 @@ varargs static void aliases(string str) {
         return;    
     }    
     message("mail", "\n%^INITTERM%^Imaginary Intermud Postal Service "    
-      "(IIPS) 3.1     Descartes of Borg 1993, 1994", this_player());    
+            "(IIPS) 3.1     Descartes of Borg 1993, 1994", this_player());    
     message("mail", sprintf("\n%%^CYAN%%^%s", center(sprintf("%s and "
-            "Personal Alias Menu", mud_name()))), this_player());
+                        "Personal Alias Menu", mud_name()))), this_player());
     message("mail", sprintf("\n%s\n",    
-        format_page(keys((mapping)OPTIONS_D->query_groups(__Owner) +    
-            (mapping)LOCALPOST_D->query_mud_groups()),__Screen/20)),this_player());
+                format_page(keys((mapping)OPTIONS_D->query_groups(__Owner) +    
+                        (mapping)LOCALPOST_D->query_mud_groups()),__Screen/20)),this_player());
     alias_menu();    
 }    
 
@@ -252,9 +252,9 @@ varargs static void options(string str) {
         return;    
     }    
     message("mail", "\n%^INITTERM%^Imaginary Intermud Postal Service "    
-      "(IIPS) 3.1     Descartes of Borg 1993, 1994", this_player());    
+            "(IIPS) 3.1     Descartes of Borg 1993, 1994", this_player());    
     message("mail", sprintf("\n%%^CYAN%%^%s", center("IIPS 3.1 Options Menu\n",   
-          __Screen)), this_player());    
+                    __Screen)), this_player());    
     maxi = sizeof(__PostalOptions);    
     for(i=0; i<maxi; i++) {    
         if(pointerp(__PostalOptions[i]["value"]))    
@@ -262,8 +262,8 @@ varargs static void options(string str) {
         else if(!(tmp = __Options[__PostalOptions[i]["key"]]))    
             tmp = __PostalOptions[i]["value"];    
         message("mail", sprintf("%s) %-45s %s\n", (i+1>9) ? (i+1)+"" :" "+(i+1),
-            __PostalOptions[i]["desc"], tmp),    
-          this_player());    
+                __PostalOptions[i]["desc"], tmp),    
+            this_player());    
     }    
     option_menu();    
 }    
@@ -275,9 +275,9 @@ static private void help(string arg, string ind) {
         return;    
     }    
     message("mail", "\n%^INITTERM%^Imaginary Intermud Postal Service "    
-      "(IIPS) 3.1     Descartes of Borg 1993, 1994", this_player());    
+            "(IIPS) 3.1     Descartes of Borg 1993, 1994", this_player());    
     message("mail",sprintf("\n%%^CYAN%%^%s\n",center("IIPS 3.1 Help Menu",   
-          __Screen)), this_player());    
+                    __Screen)), this_player());    
     help_menu(ind);    
 }    
 
@@ -294,7 +294,7 @@ static private void index_menu() {
     message("mail", center("s)ave to folder, S)ave to file, "    
         "u)ndelete", __Screen), this_player());    
     message("mail", center("<return> to read selected letter\n", __Screen), 
-      this_player());
+            this_player());
     primary_prompt();
     input_to("index_cmd");    
 }    
@@ -321,7 +321,7 @@ static private void option_menu() {
         return;
     }
     message("mail", "\n"+center("Enter the number of an option to "    
-        "change it.", __Screen), this_player());    
+                "change it.", __Screen), this_player());    
     message("mail", center("a)lias menu, h)elp, i)ndex menu, "    
         "q)uit, Q)uit without saving,", __Screen), this_player());    
     message("mail", center("s)ave option changes\n", __Screen), this_player()); 
@@ -333,14 +333,14 @@ static private void help_menu(string ind) {
     int i, maxi;
 
     message("help", "\n\n\tEnter one of the following to visit "  
-      "another menu:", this_player());  
+            "another menu:", this_player());  
     message("help", center("a)lias menu, i)ndex menu, o)ptions menu",  
         __Screen), this_player());  
     message("help", "\n\tOr enter one of the following for detailed help:",  
-      this_player());    
+            this_player());    
     switch(ind) {  
-    case "index":  
-        message("help", center("c)hange folder, d)elete, f)orward, "  
+        case "index":  
+            message("help", center("c)hange folder, d)elete, f)orward, "  
             "m)ail letter, n)ext letter,", __Screen), this_player());  
         message("help", center("p)revious letter, q)uit, "  
             "Q)uit without saving, r)eply,", __Screen), this_player());  
@@ -349,24 +349,24 @@ static private void help_menu(string ind) {
         message("help", center("x) help from another menu, y) detailed "  
             "IIPS user manual\n", __Screen), this_player());  
         break;  
-    case "alias":  
-        message("help", center("d)elete from an alias, e)nter into "  
+        case "alias":  
+            message("help", center("d)elete from an alias, e)nter into "  
             "an alias, m)ake an alias, q)uit,", __Screen), this_player());  
         message("help", center("Q)uit without saving, r)emove "  
             "an alias,", __Screen), this_player());  
         message("help", center("x) help from another menu, y) detailed "  
             "IIPS user manual\n", __Screen), this_player());  
         break;  
-    case "option":  
-        for(i=0, maxi = sizeof(__PostalOptions); i<maxi;i++)  
-            message("help", center(sprintf("%d) %s", (i+1),   
-                  __PostalOptions[i]["desc"]), __Screen), this_player());   
+        case "option":  
+            for(i=0, maxi = sizeof(__PostalOptions); i<maxi;i++)  
+                message("help", center(sprintf("%d) %s", (i+1),   
+                            __PostalOptions[i]["desc"]), __Screen), this_player());   
         message("help", sprintf("\n%s",center("Also: q)uit, Q)uit without " 
-              "saving, s)ave option changes,", __Screen)), this_player());  
+                "saving, s)ave option changes,", __Screen)), this_player());  
         message("help", center("x) help from another menu, y) detailed "  
             "IIPS user manual\n", __Screen), this_player());  
         break;  
-    default:   
+        default:   
         postal_error("Invalid postal menu.");  
         return;  
     }  
@@ -415,27 +415,27 @@ static void index_cmd(string str) {
         tmp = ({});
     }
     switch(cmd) {    
-    case "a": aliases(args); return;    
-    case "c": change_folder(args); return;    
-    case "d": case "u": delete_letter(cmd, args); return;    
-    case "f": forward_letter(args, 0); return;    
-    case "h": help(args, "index"); return;    
-    case "i":     
-        indices(__Current < __Begin+__NumLetters ? __Begin :    
-          __Current-(__NumLetters-1), args);    
+        case "a": aliases(args); return;    
+        case "c": change_folder(args); return;    
+        case "d": case "u": delete_letter(cmd, args); return;    
+        case "f": forward_letter(args, 0); return;    
+        case "h": help(args, "index"); return;    
+        case "i":     
+            indices(__Current < __Begin+__NumLetters ? __Begin :    
+                    __Current-(__NumLetters-1), args);    
         return;    
-    case "m": 
-        __FwdRply = 0; 
+        case "m": 
+            __FwdRply = 0; 
         __TmpPost = ([]);  
         send_letter(tmp);  
         return;    
-    case "n": index_cmd(""+(__Current+2)); return;    
-    case "o": options(args); return;    
-    case "p": index_cmd(""+(__Current)); return;    
-    case "q": case "Q": quit_box(cmd); return;    
-    case "r": reply(args); return;    
-    case "s": case "S": save_letter(cmd, args); return;    
-    default:  
+        case "n": index_cmd(""+(__Current+2)); return;    
+        case "o": options(args); return;    
+        case "p": index_cmd(""+(__Current)); return;    
+        case "q": case "Q": quit_box(cmd); return;    
+        case "r": reply(args); return;    
+        case "s": case "S": save_letter(cmd, args); return;    
+        default:  
         postal_error("Invalid postal command.");  
         return;    
     }    
@@ -455,19 +455,19 @@ static void alias_cmd(string str) {
     if(sizeof(tmp) > 1) args = implode(tmp[1..sizeof(tmp)-1], " ");    
     else args = "";    
     switch(cmd) {    
-    case "a": aliases(args); return;
-    case "d": case "e": alias_members(cmd, args); return;    
-    case "m": case "r": alias_creation(cmd, args); return;    
-    case "h": help(args, "alias"); return;    
-    case "i":     
-        indices(__Current < __Begin+__NumLetters ? __Begin :    
-          __Current-(__NumLetters-1), args);    
+        case "a": aliases(args); return;
+        case "d": case "e": alias_members(cmd, args); return;    
+        case "m": case "r": alias_creation(cmd, args); return;    
+        case "h": help(args, "alias"); return;    
+        case "i":     
+            indices(__Current < __Begin+__NumLetters ? __Begin :    
+                    __Current-(__NumLetters-1), args);    
         return;    
-    case "l": list_alias(args); return;    
-    case "o": options(args); return;    
-    case "q": case "Q": quit_box(cmd); return;    
-    case "s": aliases(args); return;    
-    default: alias_cmd(0); return;    
+        case "l": list_alias(args); return;    
+        case "o": options(args); return;    
+        case "q": case "Q": quit_box(cmd); return;    
+        case "s": aliases(args); return;    
+        default: alias_cmd(0); return;    
     }    
 }    
 
@@ -489,16 +489,16 @@ static void option_cmd(string str) {
     if(sizeof(tmp) > 1) args = implode(tmp[1..sizeof(tmp)-1], " ");    
     else args = "";    
     switch(cmd) {    
-    case "a": aliases(args); return;    
-    case "h": help(args, "option"); return;    
-    case "i":     
-        indices(__Current < __Begin+__NumLetters ? __Begin :    
-          __Current-(__NumLetters-1), args);    
+        case "a": aliases(args); return;    
+        case "h": help(args, "option"); return;    
+        case "i":     
+            indices(__Current < __Begin+__NumLetters ? __Begin :    
+                    __Current-(__NumLetters-1), args);    
         return;    
-    case "o": options(args); return;    
-    case "q": case "Q": quit_box(cmd); return;    
-    case "s": save_options(); return;    
-    default: option_cmd(0); return;    
+        case "o": options(args); return;    
+        case "q": case "Q": quit_box(cmd); return;    
+        case "s": save_options(); return;    
+        default: option_cmd(0); return;    
     }    
 }    
 
@@ -508,10 +508,10 @@ static void help_cmd(string str, string ind) {
         return;    
     }    
     switch(str = str[0..0]) {  
-    case "a": aliases(""); return;
-    case "i": indices(__Begin); return;
-    case "o": options(""); return;
-    case "q": case "Q": file = "quitting"; break;
+        case "a": aliases(""); return;
+        case "i": indices(__Begin); return;
+        case "o": options(""); return;
+        case "q": case "Q": file = "quitting"; break;
     }
     if(!(tmp = read_file(DIR_POSTAL_HELP+"/"+file))) tmp = "Not found.\n";
     this_player()->eventPage(explode(tmp, "\n"), "help", (: end_help :)); 
@@ -538,12 +538,12 @@ static private string header(mapping borg) {
     int x;
 
     return sprintf("%s from %%^GREEN%%^%s%%^RESET%%^\nTo: %s%s"    
-      "Subject: %%^GREEN%%^%s",     
-      (stringp(borg["date"]) ? ((x=to_int(borg["date"])) ? ctime(x) :     
-          borg["date"]) : ctime(borg["date"])), capitalize(borg["from"]),    
-      wrap(implode(borg["to"], ",  "), __Screen),    
-      (sizeof(borg["cc"]) ? sprintf("Cc: %s",wrap(implode(borg["cc"], ",  "),
-            __Screen)) : ""), borg["subject"]);    
+            "Subject: %%^GREEN%%^%s",     
+            (stringp(borg["date"]) ? ((x=to_int(borg["date"])) ? ctime(x) :     
+                                      borg["date"]) : ctime(borg["date"])), capitalize(borg["from"]),    
+            wrap(implode(borg["to"], ",  "), __Screen),    
+            (sizeof(borg["cc"]) ? sprintf("Cc: %s",wrap(implode(borg["cc"], ",  "),
+                                                        __Screen)) : ""), borg["subject"]);    
 }    
 
 static void change_folder(string str) {    
@@ -561,7 +561,7 @@ static void change_folder(string str) {
         next_folder("", str);
     else {
         message("prompt", "Delete marked letters (default 'y')? \n",
-          this_player());
+                this_player());
         input_to("next_folder", str);
     }
 }
@@ -612,9 +612,9 @@ static private void delete_letter(string cmd, string args) {
         else if(cmd == "d" && __Delete[i])  
             postal_error(sprintf("Letter %d is already marked for deletion!",i+1));  
         else if(!__BoxInfo[i]["read"] && cmd == "d" &&    
-          !__Options["unread delete"]) {    
+                !__Options["unread delete"]) {    
             message("mail", sprintf("\n%%^RED%%^Letter %d is still unread!",   
-                i+1), this_player());  
+                        i+1), this_player());  
             message("prompt","Delete it anyways (default n): \n",this_player());   
             input_to("unread_delete", ({ i+1, to+1 }));    
             return;    
@@ -631,7 +631,7 @@ static private void delete_letter(string cmd, string args) {
                 }    
                 else {    
                     indices(__Current < __Begin+__NumLetters ? __Begin :    
-                      __Current-(__NumLetters-1));    
+                            __Current-(__NumLetters-1));    
                     return;    
                 }    
             }    
@@ -639,13 +639,13 @@ static private void delete_letter(string cmd, string args) {
     }    
     if(__FromMenu) {    
         indices(__Current < __Begin+__NumLetters ? __Begin :    
-          __Current-(__NumLetters-1));    
+                __Current-(__NumLetters-1));    
         return;    
     }  
     if(to == from) postal_success(sprintf("Letter %d %s",from+1,  
-            (cmd == "d" ? "marked for deletion" : "undeleted")));    
+                (cmd == "d" ? "marked for deletion" : "undeleted")));    
     else postal_error(sprintf("Letters %d through %d %s.",    
-            (from+1), (to+1), (cmd == "d" ? "marked for deletion" : "undeleted")));  
+                (from+1), (to+1), (cmd == "d" ? "marked for deletion" : "undeleted")));  
 }    
 
 static void unread_delete(string str, int *milk) {    
@@ -666,7 +666,7 @@ static private void quit_box(string cmd) {
 
     if(__Options["quit"]) {   
         message("prompt", "Do you really wish to quit (default 'n')? \n",    
-          this_player());
+                this_player());
         input_to("confirm_quit", cmd);   
         return;   
     }   
@@ -678,7 +678,7 @@ static private void really_quit(string cmd) {
 
     if(cmd == "Q") {   
         message("mail", "\nExiting from IIPS without saving deletions.\n",   
-          this_player());   
+                this_player());   
         this_object()->eventDestruct();   
         return;   
     }   
@@ -692,13 +692,13 @@ static private void really_quit(string cmd) {
     while(i--) {   
         if(__Delete[i]) {   
             message("prompt", "Delete marked letters (default 'y')? \n",   
-              this_player());   
+                    this_player());   
             input_to("confirm_delete");   
             return;   
         }   
     }   
     message("mail", "\nExiting from IIPS.\n",   
-      this_player());   
+            this_player());   
     this_object()->eventDestruct();   
 }   
 
@@ -711,7 +711,7 @@ static void confirm_quit(string str, string cmd) {
     }
     else if(str == "n") {   
         indices(__Current < __Begin+__NumLetters ? __Begin :   
-          __Current - (__Lines-1));   
+                __Current - (__Lines-1));   
         return;   
     }   
     message("prompt", "Answer 'y' or 'n': \n", this_player());   
@@ -729,7 +729,7 @@ static void confirm_delete(string str) {
     }   
     else if(str == "n") {   
         message("mail", "\nMarked letters will remain undeleted.\n"   
-          "Exiting from IIPS.\n", this_player());   
+                "Exiting from IIPS.\n", this_player());   
         this_object()->eventDestruct();   
         return;   
     }   
@@ -762,8 +762,8 @@ static private void save_letter(string cmd, string args) {
     if(!folder) {   
         if(cmd == "S") message("prompt","Save to which file? \n",this_player());   
         else message("prompt", sprintf("Save to which folder (default %s)? \n",   
-                sprintf("=%s", convert_name(__BoxInfo[letter]["from"]))),   
-              this_player());   
+                    sprintf("=%s", convert_name(__BoxInfo[letter]["from"]))),   
+                this_player());   
         input_to("get_save_location", ({ letter, cmd }));   
         return;   
     }   
@@ -780,14 +780,14 @@ static private void save_letter(string cmd, string args) {
     else if(cmd == "S") {   
         folder = absolute_path((string)this_player()->get_path(), folder);   
         if(!creatorp(this_player()) ||  
-          !((int)master()->valid_write(folder, this_player()))) {   
+                !((int)master()->valid_write(folder, this_player()))) {   
             postal_error("Access denied.");  
             return;   
         }   
         write_file(folder,   
-          (string)LETTERS_D->query_letter(__BoxInfo[letter]["id"]));   
+                (string)LETTERS_D->query_letter(__BoxInfo[letter]["id"]));   
         message("mail", sprintf("Letter saved to %s.\n", folder),    
-          this_player());   
+                this_player());   
         set_current(letter);
         __Delete[__Current] = 1;   
     }   
@@ -819,7 +819,7 @@ static private void read_letter(int x) {
 
     if(__Options["content"])
         message("Nmail", sprintf("\n%%^INITTERM%%^Letter %d%s\n", (x+1),   
-            (__Delete[x] ? " [DELETED]:" : ":")), this_player());   
+                    (__Delete[x] ? " [DELETED]:" : ":")), this_player());   
     else message("Nmail", "\n%^INITTERM%^\n", this_player());
     if(__Options["content"]) tmp = header(__BoxInfo[x])+"\n";
     else tmp = "";
@@ -841,13 +841,13 @@ static private void alias_members(string cmd, string args) {
 
     if(args == "" || !args) {   
         message("prompt", sprintf("%s which alias? \n",    
-            (cmd == "e" ? "Enter into" : "Delete from")), this_player());   
+                    (cmd == "e" ? "Enter into" : "Delete from")), this_player());   
         input_to("get_alias", cmd);   
         return;   
     }   
     if(sizeof(members = explode(args, " ")) == 1) {   
         message("prompt", sprintf("%s which members? \n",    
-            (cmd == "e" ? "Enter" : "Delete")), this_player());   
+                    (cmd == "e" ? "Enter" : "Delete")), this_player());   
         input_to("get_members", ({ cmd, args }));   
         return;   
     }   
@@ -857,7 +857,7 @@ static private void alias_members(string cmd, string args) {
         return;   
     }   
     if(user_exists(grp = lower_case(grp)) ||    
-      (string *)LOCALPOST_D->query_mud_group(grp)) {   
+            (string *)LOCALPOST_D->query_mud_group(grp)) {   
         if(__CommandLine) destruct_box("Invalid alias.");
         else postal_error("Invalid alias.");  
         return;   
@@ -874,10 +874,10 @@ static private void alias_members(string cmd, string args) {
         if(!members)    
             message("mail", "\n%^GREEN%^All members deleted.\n", this_player());   
         else message("mail", "\n%^GREEN%^Members deleted from alias.\n",   
-              this_player());   
+                this_player());   
     }   
     else message("mail", "\n%^GREEN%^Members entered into alias.\n",
-          this_player());   
+            this_player());   
     if(__CommandLine) this_object()->eventDestruct();
     else {
         secondary_prompt();   
@@ -908,7 +908,7 @@ static private void alias_creation(string cmd, string args) {
 
     if(args == "" || !args) {  
         message("prompt", sprintf("Name of alias to %s: \n",   
-            (cmd == "m" ? "make" : "remove")), this_player());  
+                    (cmd == "m" ? "make" : "remove")), this_player());  
         input_to("get_alias_name", cmd);  
         return;  
     }  
@@ -978,7 +978,7 @@ static private void list_alias(string str) {
         return;  
     }  
     message("mail", "\n%^INITTERM%^"+center(sprintf("Alias: %s", str),  
-        __Screen), this_player());  
+                __Screen), this_player());  
     message("mail", "\n\n"+implode(who, ",   "), this_player());
     if(__CommandLine) this_object()->eventDestruct();
     else {
@@ -1007,7 +1007,7 @@ static private void change_option(int x) {
         message("mail", sprintf("%s\n\t0) %s\n\t1) %s\n", 
             __PostalOptions[x]["desc"],
             __PostalOptions[x]["value"][0], __PostalOptions[x]["value"][1]),  
-          this_player());  
+            this_player());  
     }
     else message("mail", __PostalOptions[x]["desc"], this_player());  
     message("prompt", "Enter in a proper value: \n", this_player());  
@@ -1040,10 +1040,10 @@ static private void reply(string str) {
     }
     set_current(x);
     __TmpPost = ([ "date":time(), "from": (string)this_player()->GetKeyName()]);
-if((__TmpPost["subject"] = __BoxInfo[x]["subject"])[0..2] != "Re:") 
-    __TmpPost["subject"] = sprintf("Re: %s", __TmpPost["subject"]);
-message("prompt", "Include original text (default 'n'): \n", this_player());
-input_to("get_reply_confirm");
+    if((__TmpPost["subject"] = __BoxInfo[x]["subject"])[0..2] != "Re:") 
+        __TmpPost["subject"] = sprintf("Re: %s", __TmpPost["subject"]);
+    message("prompt", "Include original text (default 'n'): \n", this_player());
+    input_to("get_reply_confirm");
 }
 
 static void get_reply_confirm(string str) {
@@ -1057,7 +1057,7 @@ static void get_reply_confirm(string str) {
     }
     else __FwdRply = 0;
     message("mail", sprintf("\n%s", center("Reply to: a)ll, c)c list and "
-          "sender, s)ender only, t)o list and sender",__Screen)), this_player());
+            "sender, s)ender only, t)o list and sender",__Screen)), this_player());
     message("prompt", "\nEnter choice (default 's'): \n", this_player());
     input_to("get_reply_list");
 }
@@ -1069,17 +1069,17 @@ static void get_reply_list(string str) {
     else str = lower_case(str)[0..0];
     __TmpPost["to"] = ({ convert_name(__BoxInfo[__Current]["from"]) });
     switch(str) {
-    case "a": 
-        __TmpPost["to"] += __BoxInfo[__Current]["to"];
+        case "a": 
+            __TmpPost["to"] += __BoxInfo[__Current]["to"];
         __TmpPost["cc"] = __BoxInfo[__Current]["cc"];
         break;
-    case "c": __TmpPost["cc"] = __BoxInfo[i]["cc"]; break;
-    case "s": __TmpPost["cc"] = ({}); break;
-    case "t":
-        __TmpPost["to"] += __BoxInfo[__Current]["to"];
+        case "c": __TmpPost["cc"] = __BoxInfo[i]["cc"]; break;
+        case "s": __TmpPost["cc"] = ({}); break;
+        case "t":
+            __TmpPost["to"] += __BoxInfo[__Current]["to"];
         __TmpPost["cc"] = ({});
         break;
-    default:
+        default:
         message("prompt","Invalid choice.  Choose again: \n", this_player());
         input_to("get_reply_list");
         return;
@@ -1136,18 +1136,18 @@ static private void forward_letter(string str, int flag) {
     set_current(x);
     __TmpPost["to"] = args;
     if((__TmpPost["subject"]=__BoxInfo[__Current]["subject"])[0..4] !=
-      "(fwd)") __TmpPost["subject"] = sprintf("(fwd) %s",__TmpPost["subject"]);
+            "(fwd)") __TmpPost["subject"] = sprintf("(fwd) %s",__TmpPost["subject"]);
     __TmpPost["from"] = (string)this_player()->GetKeyName();
     __TmpPost["date"] = time();
     message("prompt", "Comment on original letter (default 'n')? \n", 
-      this_player());
+            this_player());
     input_to("confirm_comments");
 }
 
 static void get_forward_list(string str) {
     if(str == "" || !str) {
         message("prompt","Invalid recipients.  Abort forward (default 'y')? \n",
-          this_player());
+                this_player());
         input_to("confirm_forward_abort");
         return;
     }
@@ -1180,9 +1180,9 @@ static private string query_forward_text() {
     tmp = (string)LETTERS_D->query_letter(__BoxInfo[__Current]["id"]);
     tmp = ">"+replace_string(tmp, "\n", "\n>");
     return sprintf("Original letter sent by %s %s:\n%s\n%s\n", 
-      capitalize(__BoxInfo[__Current]["from"]), 
-      postal_time(__BoxInfo[__Current]["date"]),
-      center("---  ---    Begin Forwarded Text    ---  ---"), tmp);
+            capitalize(__BoxInfo[__Current]["from"]), 
+            postal_time(__BoxInfo[__Current]["date"]),
+            center("---  ---    Begin Forwarded Text    ---  ---"), tmp);
 }
 
 static void confirm_forward_abort(string str) {
@@ -1212,93 +1212,93 @@ static private void send_letter(string *args) {
     } 
     __FwdRply = 0;
     __TmpPost = ([ "from": (string)this_player()->GetKeyName(),"date":time()]);
-for(i=0, maxi = sizeof(args); i<maxi; i++) { 
-    if(args[i] == "" || !args[i]) continue; 
-    if(!flag && i < maxi-1 && args[i][0] == '-' && strlen(args[i]) > 1) { 
-        if(member_array(args[i][1..1], ({"c","s","i"})) == -1)  
-            continue; 
-        else flag = args[i][1..1]; 
-    } 
-    else if(!flag && args[i][0] == '\\' && strlen(args[i]) > 1)  
-        args[i] = args[i][1..strlen(args[1])-1];  
-    else if(flag) { 
-        if(args[i][0] != '\'') tmp = args[i]; 
-        else if(args[i][x=strlen(args[i])-1] =='\'') tmp =args[i][1..x-1]; 
-        else { 
-            tmp = args[j=i][1..x]; 
-            while(++j < maxi && args[j][x=strlen(args[j])-1] != '\'') 
-                if(x > 0) tmp += " "+args[j][0..x-1]; 
-            if(args[j][x] == '\'' && x > 1) tmp += " "+args[j][0..x-1]; 
-            i = j; 
+    for(i=0, maxi = sizeof(args); i<maxi; i++) { 
+        if(args[i] == "" || !args[i]) continue; 
+        if(!flag && i < maxi-1 && args[i][0] == '-' && strlen(args[i]) > 1) { 
+            if(member_array(args[i][1..1], ({"c","s","i"})) == -1)  
+                continue; 
+            else flag = args[i][1..1]; 
         } 
-        switch(flag) { 
-        case "c":  
-            if(!__TmpPost["cc"]) __TmpPost["cc"] = ({}); 
-            __TmpPost["cc"] += ({ convert_name(tmp) });  
-            break; 
-        case "s": __TmpPost["subject"] = tmp; break; 
-        case "i":  
-            tmp=absolute_path((string)this_player()->get_path(),tmp); 
-            if(sscanf(tmp,user_path(this_player())+"%s", flag) != 1 || 
-              !((int)master()->valid_read(tmp,this_player()))) { 
-                if(__CommandLine) { 
-                    this_object()->eventDestruct(); 
+        else if(!flag && args[i][0] == '\\' && strlen(args[i]) > 1)  
+            args[i] = args[i][1..strlen(args[1])-1];  
+        else if(flag) { 
+            if(args[i][0] != '\'') tmp = args[i]; 
+            else if(args[i][x=strlen(args[i])-1] =='\'') tmp =args[i][1..x-1]; 
+            else { 
+                tmp = args[j=i][1..x]; 
+                while(++j < maxi && args[j][x=strlen(args[j])-1] != '\'') 
+                    if(x > 0) tmp += " "+args[j][0..x-1]; 
+                if(args[j][x] == '\'' && x > 1) tmp += " "+args[j][0..x-1]; 
+                i = j; 
+            } 
+            switch(flag) { 
+                case "c":  
+                    if(!__TmpPost["cc"]) __TmpPost["cc"] = ({}); 
+                __TmpPost["cc"] += ({ convert_name(tmp) });  
+                break; 
+                case "s": __TmpPost["subject"] = tmp; break; 
+                case "i":  
+                    tmp=absolute_path((string)this_player()->get_path(),tmp); 
+                if(sscanf(tmp,user_path(this_player())+"%s", flag) != 1 || 
+                        !((int)master()->valid_read(tmp,this_player()))) { 
+                    if(__CommandLine) { 
+                        this_object()->eventDestruct(); 
+                        return; 
+                    } 
+                    __TmpPost = ([]); 
+                    postal_error("Access denied."); 
                     return; 
                 } 
-                __TmpPost = ([]); 
-                postal_error("Access denied."); 
-                return; 
-            } 
-            if(!file_exists(tmp)) { 
-                if(__CommandLine) { 
-                    this_object()->eventDestruct(); 
+                if(!file_exists(tmp)) { 
+                    if(__CommandLine) { 
+                        this_object()->eventDestruct(); 
+                        return; 
+                    } 
+                    __TmpPost = ([]); 
+                    postal_error(sprintf("File %s does not exist.",tmp)); 
                     return; 
                 } 
-                __TmpPost = ([]); 
-                postal_error(sprintf("File %s does not exist.",tmp)); 
-                return; 
+                if(!(__TmpPost["message"] = read_file(tmp))) 
+                    __TmpPost["message"] = "EMPTY FILE"; 
+                break; 
             } 
-            if(!(__TmpPost["message"] = read_file(tmp))) 
-                __TmpPost["message"] = "EMPTY FILE"; 
-            break; 
+            flag = 0; 
         } 
-        flag = 0; 
-    } 
-    else {
-        if(!grepp(args[i],"@")){
-            if(!__TmpPost["to"]) __TmpPost["to"] = ({ trim(convert_name(args[i])) });
-            else __TmpPost["to"] += ({ trim(convert_name(args[i])) });
-        }
         else {
-            if(!__TmpPost["to"]) __TmpPost["to"] = ({ trim(args[i]) });
-            else __TmpPost["to"] += ({ trim(args[i]) });
-        }
+            if(!grepp(args[i],"@")){
+                if(!__TmpPost["to"]) __TmpPost["to"] = ({ trim(convert_name(args[i])) });
+                else __TmpPost["to"] += ({ trim(convert_name(args[i])) });
+            }
+            else {
+                if(!__TmpPost["to"]) __TmpPost["to"] = ({ trim(args[i]) });
+                else __TmpPost["to"] += ({ trim(args[i]) });
+            }
+        } 
+    }
+    if(!__TmpPost["to"]) { 
+        message("prompt", "To: \n", this_player()); 
+        input_to("get_to"); 
+        return; 
     } 
-}
-if(!__TmpPost["to"]) { 
-    message("prompt", "To: \n", this_player()); 
-    input_to("get_to"); 
-    return; 
-} 
-if(!__TmpPost["subject"]) { 
-    message("prompt", "Subject:\n ", this_player()); 
-    input_to("get_subject"); 
-    return; 
-} 
-else message("mail", sprintf("Subject: %s", __TmpPost["subject"]), 
-      this_player()); 
-if(!__TmpPost["cc"] && __Options["askcc"]) { 
-    message("prompt", "Copies to: \n", this_player()); 
-    input_to("get_cc"); 
-    return; 
-} 
-else if(!__TmpPost["cc"]) __TmpPost["cc"] = ({}); 
-if(!__TmpPost["message"]) get_cc("");
-else {
-    __TmpPost["message"] = sprintf("%s%s", __TmpPost["message"],
-      query_signature());
-    confirm_send(); 
-} 
+    if(!__TmpPost["subject"]) { 
+        message("prompt", "Subject:\n ", this_player()); 
+        input_to("get_subject"); 
+        return; 
+    } 
+    else message("mail", sprintf("Subject: %s", __TmpPost["subject"]), 
+            this_player()); 
+    if(!__TmpPost["cc"] && __Options["askcc"]) { 
+        message("prompt", "Copies to: \n", this_player()); 
+        input_to("get_cc"); 
+        return; 
+    } 
+    else if(!__TmpPost["cc"]) __TmpPost["cc"] = ({}); 
+    if(!__TmpPost["message"]) get_cc("");
+    else {
+        __TmpPost["message"] = sprintf("%s%s", __TmpPost["message"],
+                query_signature());
+        confirm_send(); 
+    } 
 } 
 
 static void get_to(string str) { 
@@ -1318,7 +1318,7 @@ static void get_subject(string str) {
 
     if(str == "" || !str) { 
         message("prompt", "No subject given.  Continue (default 'n')? \n", 
-          this_player()); 
+                this_player()); 
         input_to("confirm_subject"); 
         return; 
     } 
@@ -1332,7 +1332,7 @@ static void get_subject(string str) {
     if(!__TmpPost["message"]) get_cc("");
     else {
         __TmpPost["message"] = sprintf("%s%s", __TmpPost["message"],
-          query_signature());
+                query_signature());
         confirm_send(); 
     } 
 } 
@@ -1364,7 +1364,7 @@ static void get_cc(string str) {
     if(str && str != "") __TmpPost["cc"] += explode(str, ",");
     if(__TmpPost["message"]) {
         __TmpPost["message"] = sprintf("%s%s", __TmpPost["message"],
-          query_signature()); 
+                query_signature()); 
         confirm_send();
         return; 
     }
@@ -1372,13 +1372,13 @@ static void get_cc(string str) {
         rm(tmp);
     if(!__FwdRply || __FwdRply[0] == "f") { 
         message("mail",sprintf("\n%%^INITTERM%%^%s", header(__TmpPost)), 
-          this_player()); 
+                this_player()); 
         this_player()->eventEdit(tmp, (: complete_send :));
         return; 
     } 
     write_file(tmp, __FwdRply[1]); 
     message("mail", sprintf("\n%%^INITTERM%%^%s", header(__TmpPost)),
-      this_player());
+            this_player());
     this_player()->eventEdit(tmp, (: complete_send :));
 } 
 
@@ -1402,7 +1402,7 @@ static private string query_signature() {
     if(strsrch(__Options["sig file"], " ") != -1) 
         return sprintf("\n%s", __Options["sig file"]);     
     tmp = absolute_path(homedir(this_player()), 
-      __Options["sig file"]); 
+            __Options["sig file"]); 
     if(!((int)master()->valid_read(tmp, this_player())) || !file_exists(tmp)) {
         return sprintf("\n%s", __Options["sig file"]); 
     } 
@@ -1421,20 +1421,20 @@ static void handle_send_choice(string str) {
     if(str == "" || !str) str = "s";
     else str = lower_case(str)[0..0];
     switch(str) {
-    case "s":
-        notify_send((string *)LOCALPOST_D->send_post(copy(__TmpPost)));
+        case "s":
+            notify_send((string *)LOCALPOST_D->send_post(copy(__TmpPost)));
         break;
-    case "f":
-        __TmpPost = ([]);
+        case "f":
+            __TmpPost = ([]);
         postal_error("Mail aborted!");
         break;
-    case "e":
-        if(file_exists(tmp)) rm(tmp); 
+        case "e":
+            if(file_exists(tmp)) rm(tmp); 
         write_file(tmp, __TmpPost["message"]);
         map_delete(__TmpPost, "message");
         this_player()->eventEdit(tmp, (: complete_send :));
         break;
-    default:
+        default:
         message("prompt", "Invalid command.  Command: \n", this_player());
         input_to("handle_send_choice");
         break;
@@ -1449,19 +1449,19 @@ static private void notify_send(string *failures) {
         message("mail", "\n\t%^GREEN%^Mail successfully sent!", this_player()); 
     else { 
         message("mail", sprintf("\nFailed to send to: %s", 
-            implode(failures, ",  ")), this_player()); 
+                    implode(failures, ",  ")), this_player()); 
         if(creatorp(this_player())) { 
             write_file(tmp=homedir()+"/tmp/dead.letter", 
-              __TmpPost["message"]);
+                    __TmpPost["message"]);
         } 
         else write_file(tmp = sprintf("%s/%s.letter", homedir()+"/tmp", 
-                (string)this_player()->GetKeyName()), __TmpPost["message"]); 
+                    (string)this_player()->GetKeyName()), __TmpPost["message"]); 
         message("mail", sprintf("A copy of the letter was saved to %s", tmp), 
-          this_player()); 
+                this_player()); 
     } 
     if(sizeof(arr=distinct_array(__TmpPost["to"]+__TmpPost["cc"])-failures)) 
         message("mail", sprintf("Mail sent to: %s", implode(arr,",  ")), 
-          this_player()); 
+                this_player()); 
     if(__CommandLine) { 
         this_object()->eventDestruct(); 
         return; 
@@ -1479,7 +1479,7 @@ void incoming_post() {
     if(file_name(previous_object()) != FOLDERS_D) return;
     id = (__Current < 0 ? 0 : __BoxInfo[__Current]["id"]);
     delete =map_array(tmp=(mapping)FOLDERS_D->query_box_info(__Owner,"new"), 
-      "order_box", this_object());
+            "order_box", this_object());
     __BoxInfo = copy(tmp);
     set_current(id);
     __Delete = copy(delete);

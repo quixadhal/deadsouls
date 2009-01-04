@@ -9,7 +9,7 @@ static void create() {
     SetKeyName("battle axe");
     SetId(({"axe","battleaxe"}));
     SetAdjectives( ({ "huge","large","heavy","montrously","battle",
-      "two handed" }) ); 
+                "two handed" }) ); 
     SetShort("a huge battle axe");
     SetLong("A monstrously large and heavy battle axe.");
     SetMass(1000);

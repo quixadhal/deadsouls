@@ -9,7 +9,7 @@ string gfile;
 
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
-      strsrch(base_name(previous_object()), SOCKET_HTTP)){
+            strsrch(base_name(previous_object()), SOCKET_HTTP)){
         string offender = identify(previous_object(-1));
         debug("showlog.c SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" showlog.c breach: "+offender+" "+get_stack());
@@ -34,7 +34,7 @@ string *eventLinkify(string *arg){
             if(junk1){
                 str = replace_string(str,url,"1010011101001110100111010011",1);
                 ret += ({ replace_string(str,"1010011101001110100111010011",
-                    "<a href=\"http://"+url+"\">"+url+"</a>",1) });
+                            "<a href=\"http://"+url+"\">"+url+"</a>",1) });
             }
             else ret += ({ str });
         }
@@ -66,7 +66,7 @@ string gateway(mixed args) {
 
         i = sscanf(args,"%s+%s", gfile, line_str); 
         if(i != 2 || !(lines = atoi(line_str)) || 
-          !(log_contents = read_file(DIR_CHANNEL_LOGS +"/"+ gfile))){
+                !(log_contents = read_file(DIR_CHANNEL_LOGS +"/"+ gfile))){
             ret += "Bad request.<br>"; 
             ret += "<a href=\"/index.html\">Home</a><br>";        
             ret += "<a href=\"http://dead-souls.net\">Dead Souls Home</a><br>";
@@ -87,7 +87,7 @@ string gateway(mixed args) {
             if(sizeof(Archives)){
                 mixed *order = sort_array(keys(Archives),-1);
                 log_contents = (read_file(DIR_CHANNEL_LOGS+"/archive/"+
-                    Archives[order[0]]) || "") + log_contents;
+                            Archives[order[0]]) || "") + log_contents;
             }
         }              
 

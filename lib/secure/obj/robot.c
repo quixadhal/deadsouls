@@ -9,7 +9,7 @@ inherit LIB_ITEM;
 static int observing = 0;
 static int counter = 0, attempting, connected, socket ;
 static int dud_count = 0, spawning, last_action, loop_count = 0;
-static int maxbox = 50;
+static int maxbox = 80;
 static int newbot = 1;
 static object person, player;
 static string preset, name, passwd, gender;
@@ -27,14 +27,14 @@ static mixed *socks_array = ({});
 
 mapping AnsiMap1 =
 ([ "RESET":ANSI("0"), "BOLD":ANSI(1), "FLASH":ANSI(5),
-  "BLACK":ANSI(30), "RED":ANSI(31), "GREEN":ANSI(32),
-  "ORANGE":ANSI(33),     "YELLOW":ANSI(1)+ANSI(33), "BLUE": ANSI(34),
-  "CYAN":ANSI(36), "MAGENTA":ANSI(35), "BLACK":ANSI(30),
-  "WHITE": ANSI(37), "B_RED":ANSI(41), "B_GREEN":ANSI(42),
-  "B_ORANGE":ANSI(43), "B_YELLOW":ANSI(1)+ANSI(43), "B_BLUE":ANSI(44),
-  "B_CYAN":ANSI(46), "B_BLACK":ANSI(40), "B_WHITE": ANSI(47),
-  "CLEARLINE":ESC("[L")+ESC("[G"), "B_MAGENTA":ANSI(45), "STATUS":"",
-  "WINDOW":"", "INITTERM":ESC("[H")+ESC("[2J"), "ENDTERM":"" ]); 
+ "BLACK":ANSI(30), "RED":ANSI(31), "GREEN":ANSI(32),
+ "ORANGE":ANSI(33),     "YELLOW":ANSI(1)+ANSI(33), "BLUE": ANSI(34),
+ "CYAN":ANSI(36), "MAGENTA":ANSI(35), "BLACK":ANSI(30),
+ "WHITE": ANSI(37), "B_RED":ANSI(41), "B_GREEN":ANSI(42),
+ "B_ORANGE":ANSI(43), "B_YELLOW":ANSI(1)+ANSI(43), "B_BLUE":ANSI(44),
+ "B_CYAN":ANSI(46), "B_BLACK":ANSI(40), "B_WHITE": ANSI(47),
+ "CLEARLINE":ESC("[L")+ESC("[G"), "B_MAGENTA":ANSI(45), "STATUS":"",
+ "WINDOW":"", "INITTERM":ESC("[H")+ESC("[2J"), "ENDTERM":"" ]); 
 mapping AnsiMap2 = ([]);
 
 int parse_comm( string str );
@@ -157,45 +157,47 @@ int Setup(){
 
 string random_act(){
     string ret;
-    int randy = random(29);
+    int randy = random(31);
     if(!newbot){
         switch(randy){
-        case 0 : ret = "inventory";break;
-        case 1 : ret = "score";break;
-        case 2 : ret = "who";break;
-        case 3 : ret = "stat";break;
-        case 4 : ret = "uptime";break;
-        case 5 : ret = "hist";break;
-        case 6 : ret = "env";break;
-        case 7 : ret = "money";break;
-        case 8 : ret = "hist newbie";break;
-        case 9 : ret = "hist gossip";break;
-        case 10 : ret = "mudlist";break;
-        case 11 : ret = "version";break;
-        case 12 : ret = "open door";break;
-        case 13 : ret = "cast buffer";break;
-        case 14 : ret = "cast meditate";break;
-        case 15 : ret = "search";break;
-        case 16 : ret = "put all in my bag";break;
-        case 17 : ret = "put all in my box";break;
-        case 18 : ret = "put all in my chest";break;
-        case 19 : ret = "wear all";break;
-        case 20 : ret = "wield a sword in right hand";break;
-        case 21 : ret = "wield a knife in right hand";break;
-        case 22 : ret = "wield a club in right hand";break;
-        case 23 : ret = "kill all";break;
-        case 24 : ret = "wimpy 30";break;
-        case 25 : in_combat = 0;ret = "look";break;
-        case 26 : ret = "position";break;
-        case 27 : ret = "click heels";break;
-        case 28 : ret = "push button on omni";break;
-        default : ret = "reply :)";break;
+            case 0 : ret = "inventory";break;
+            case 1 : ret = "score";break;
+            case 2 : ret = "who";break;
+            case 3 : ret = "stat";break;
+            case 4 : ret = "uptime";break;
+            case 5 : ret = "hist";break;
+            case 6 : ret = "env";break;
+            case 7 : ret = "money";break;
+            case 8 : ret = "hist newbie";break;
+            case 9 : ret = "hist gossip";break;
+            case 10 : ret = "mudlist";break;
+            case 11 : ret = "version";break;
+            case 12 : ret = "open door";break;
+            case 13 : ret = "cast buffer";break;
+            case 14 : ret = "cast meditate";break;
+            case 15 : ret = "search";break;
+            case 16 : ret = "put all in my bag";break;
+            case 17 : ret = "put all in my box";break;
+            case 18 : ret = "put all in my chest";break;
+            case 19 : ret = "wear all";break;
+            case 20 : ret = "wield a sword in right hand";break;
+            case 21 : ret = "wield a knife in right hand";break;
+            case 22 : ret = "wield a club in right hand";break;
+            case 23 : ret = "kill all";break;
+            case 24 : ret = "wimpy 30";break;
+            case 25 : in_combat = 0;ret = "look";break;
+            case 26 : ret = "position";break;
+            case 27 : ret = "click heels";break;
+            case 28 : ret = "push button on omni";break;
+            case 29 : ret = "pull pin on grenade";break;
+            case 30 : ret = "env";break;
+            default : ret = "reply :)";break;
         }
     }
     else {
         switch(newbot){
-        case 1 : ret = "terminal unknown";break;
-        default : ret = "customize strength 15";break;
+            case 1 : ret = "terminal unknown";break;
+            default : ret = "customize strength 15";break;
         }
         if(newbot > 2) newbot = 0;
         else newbot++;
@@ -208,10 +210,10 @@ string eventStargate(string str){
     if(grepp(str,"idle stargate")){
         int which = random(4);
         switch(which){
-        case 0 : parse_comm("dial stargate lab");break;
-        case 1 : parse_comm("dial tower");break;
-        case 2 : parse_comm("dial campus lab");break;
-        case 3 : parse_comm("dial praxis");break;
+            case 0 : parse_comm("dial stargate lab");break;
+            case 1 : parse_comm("dial tower");break;
+            case 2 : parse_comm("dial campus lab");break;
+            case 3 : parse_comm("dial praxis");break;
         }
     }
     if(grepp(str,"outbound stargate")){
@@ -238,7 +240,9 @@ int think(string str){
 
     if(enable) eventBolo(str);
     if(sizeof(watching) < 1){
-        if(grepp(str, "You bump into ") && grepp(lower_case(str), "door")) DoorHandler(str);
+        if(grepp(str, "You bump into ") && grepp(lower_case(str), "door")){
+            DoorHandler(str);
+        }
         if(grepp(str, "A great sea")){
             travel = "swim ";
             ret = "swim west";
@@ -278,6 +282,7 @@ int think(string str){
         }
         if(grepp(str, "You may choose to regenerate into a new body here.")) ret = "regenerate";
         if(grepp(str, "press enter:")) ret = "";
+        if(grepp(str, "press <spacebar>:")) ret = "q";
         if(grepp(str, "%:")) ret = "";
         if(grepp(str, "Press <return> to continue:")) ret = "";
         if(grepp(str, "stargate")){
@@ -301,6 +306,24 @@ int think(string str){
 string eventBolo(string str){
     string ret = "";
     wander = 0;
+
+    if(grepp(str, "To enter a sample set of rooms")){
+        parse_comm("env");
+    }
+
+    if(grepp(str, "Wimpy mode:") && grepp(str, "off")){
+        parse_comm("wimpy 30");
+    }
+
+    if(grepp(str, "Reprompt mode:") && grepp(str, "off")){
+        parse_comm("reprompt on");
+    }
+    if(grepp(str, "Charmode:") && grepp(str, "off")){
+        parse_comm("charmode on");
+    }
+    if(grepp(str, "Keepalive mode:") && grepp(str, "off")){
+        parse_comm("keepalive 1");
+    }
 
     if(grepp(str, "You can't crawl in your current position")){
         parse_comm("position");
@@ -347,7 +370,7 @@ string eventBolo(string str){
     }
 
     if(grepp(str, "press enter:") || grepp(str, "%:") ||
-      grepp(str,"Press <return> to continue:" )){
+            grepp(str,"Press <return> to continue:" )){
         parse_comm("");
     }
 
@@ -409,12 +432,16 @@ string eventBolo(string str){
             }
         }
 
-        if(grepp(str, " little rat ") ){
+        if(grepp(str, " rat ") ){
             parse_comm("kill a rat");
         }
 
         if(grepp(str, "newt")){
             parse_comm("kill a newt");
+        }
+
+        if(grepp(str, "gecko")){
+            parse_comm("kill a gecko");
         }
 
         if(grepp(str, " orc") && ( grepp(str, "is standing here") || grepp(str, "are standing here")) ){
@@ -470,7 +497,7 @@ string eventBolo(string str){
     }
 
     if(grepp(str, "and open an account with") ||
-      grepp(str,"You already have an account with") )
+            grepp(str,"You already have an account with") )
         open_account = 1;
 
     if(grepp(str, "Your last transaction:")){
@@ -493,7 +520,7 @@ void heart_beat(){
     if(!adminp(environment(this_object()))) return;
     if(!clonep(this_object())) return;
     bots = sizeof(filter(all_inventory(environment()),
-        (: base_name($1) == base_name(this_object()) :)));
+                (: base_name($1) == base_name(this_object()) :)));
 
     if((!spent || bots < 2) && enable && bots < maxbox) 
     {
@@ -527,7 +554,10 @@ int do_observe(string str){
 
 int DoorHandler(string str){
     string s1;
-    if(!sscanf(str,"You bump into %s.",s1)) return 0;
+    if(!sscanf(str,"You bump into %s.",s1)){
+        parse_comm("open first door");
+        return 0;
+    }
     parse_comm("unlock first door with first key");
     parse_comm("unlock first door with second key");
     parse_comm("open "+s1);
@@ -542,7 +572,7 @@ int eventScanExits(string str){
     string *dirs = ({});
     str = strip_colours(str);
     if(grepp(str,"too dark to see") || grepp(str,"too bright to see") ||
-      grepp(str,"go nowhere at all")){
+            grepp(str,"go nowhere at all")){
         exits = ({});
     }
     if(!sizeof(exits) && grepp(str," leaves ")){
@@ -551,9 +581,9 @@ int eventScanExits(string str){
         }
     }
     if(sscanf(str,"%sObvious exit: %s\n%s",s1,s2,s3) == 3 ||
-      sscanf(str,"%sObvious exits: %s\n%s",s1,s2,s3) == 3 ||    
-      sscanf(str,"%sObvious exit: %s",s1,s2) == 2 ||
-      sscanf(str,"%sObvious exits: %s",s1,s2) == 2){
+            sscanf(str,"%sObvious exits: %s\n%s",s1,s2,s3) == 3 ||    
+            sscanf(str,"%sObvious exit: %s",s1,s2) == 2 ||
+            sscanf(str,"%sObvious exits: %s",s1,s2) == 2){
         dirs = explode(s2,", ");
     }
     else if(sscanf(str,"%s [%s]%s", s1, s2, s3) ){
@@ -570,17 +600,17 @@ int eventScanExits(string str){
             if(!dir || !sizeof(dir)) continue;
             dir = trim(dir);
             switch(dir){
-            case "u" : dir = "up";break;
-            case "d" : dir = "down";break;
-            case "o" : dir = "out";break;
-            case "n" : dir = "north";break;
-            case "s" : dir = "south";break;
-            case "e" : dir = "east";break;
-            case "w" : dir = "west";break;
-            case "ne" : dir = "northeast";break;
-            case "nw" : dir = "northwest";break;
-            case "se" : dir = "southeast";break;
-            case "sw" : dir = "southwest";break;
+                case "u" : dir = "up";break;
+                case "d" : dir = "down";break;
+                case "o" : dir = "out";break;
+                case "n" : dir = "north";break;
+                case "s" : dir = "south";break;
+                case "e" : dir = "east";break;
+                case "w" : dir = "west";break;
+                case "ne" : dir = "northeast";break;
+                case "nw" : dir = "northwest";break;
+                case "se" : dir = "southeast";break;
+                case "sw" : dir = "southwest";break;
             }
             if(grepp(dir,"enter ")) newexits += ({ dir });
             else newexits += ({ travel+dir });
@@ -703,34 +733,34 @@ int do_connect(string args)
     {
         switch( new_socket )
         {
-        case EEMODENOTSUPP :
-            error = "Socket mode not supported.\n" ;
-            break ;
-        case EESOCKET :
-            error = "Problem creating socket.\n" ;
-            break ;
-        case EESETSOCKOPT :
-            error = "Problem with setsockopt.\n" ;
-            break ;
-        case EENONBLOCK :
-            error = "Problem with setting non-blocking mode.\n" ;
-            break ;
-        case EENOSOCKS :
-            error = "No more available efun sockets.\n" ;
-            break ;
-        case EESECURITY :
-            error = "Security violation attempted.\n" ;
-            break ;
-        default :
-            error = "Unknown error code: " + new_socket + ".\n" ;
-            break ;
+            case EEMODENOTSUPP :
+                error = "Socket mode not supported.\n" ;
+                break ;
+            case EESOCKET :
+                error = "Problem creating socket.\n" ;
+                break ;
+            case EESETSOCKOPT :
+                error = "Problem with setsockopt.\n" ;
+                break ;
+            case EENONBLOCK :
+                error = "Problem with setting non-blocking mode.\n" ;
+                break ;
+            case EENOSOCKS :
+                error = "No more available efun sockets.\n" ;
+                break ;
+            case EESECURITY :
+                error = "Security violation attempted.\n" ;
+                break ;
+            default :
+                error = "Unknown error code: " + new_socket + ".\n" ;
+                break ;
         }
         notify_fail( "Unable to connect, problem with socket_create.\n"
-          "Reason: " + error ) ;
+                "Reason: " + error ) ;
         return 0 ;
     }
     sc_result = socket_connect( new_socket, ip_address + " " + port,
-      "read_callback", "write_callback" ) ;
+            "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS )
     {
         notify_fail( "Failed to connect.\n" ) ;
@@ -741,7 +771,7 @@ int do_connect(string args)
     person = (object)previous_object() ;
     player=this_object();
     tell_object(environment(),"I am "+name+" , a.k.a "+file_name(this_object())+
-      " and I am connected to "+ip+" on socket"+socket+"\n");
+            " and I am connected to "+ip+" on socket"+socket+"\n");
     spent = 0;
     return 1 ;
 }

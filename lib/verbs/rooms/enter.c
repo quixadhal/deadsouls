@@ -16,11 +16,11 @@ static void create() {
     SetRules("into OBJ", "OBJ");
     SetErrorMessage("Enter what?");
     SetHelp("Syntax: <enter PLACE>\n"
-      "        <enter into PLACE>\n\n"
-      "Moves you into the place you specify.  Whereas the \"go\" "
-      "command is designed for motion towards something, the "
-      "\"enter\" command is designed for motion into something.\n\n"
-      "See also: go");
+            "        <enter into PLACE>\n\n"
+            "Moves you into the place you specify.  Whereas the \"go\" "
+            "command is designed for motion towards something, the "
+            "\"enter\" command is designed for motion into something.\n\n"
+            "See also: go");
 }
 
 mixed can_enter_obj() {

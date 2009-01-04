@@ -17,7 +17,7 @@ static void create() {
     SetId( ({ "jar" }) );
     SetShort("a jar");
     SetLong("A jar with lid.  The lid has holes poked in "
-      "the top.  It would be perfect to catch bugs in.");
+            "the top.  It would be perfect to catch bugs in.");
     SetDestroyOnSell(1);
     SetMass(100);
     SetValue(30);
@@ -42,7 +42,7 @@ int direct_light_obj() { // They cannot use the light command
 mixed CanCapture(object who, object target) {
     if( !target->id("lightning bug") ) {
         return "The jar has a fit as you try to capture something other "
-        "than a lightning bug!";
+            "than a lightning bug!";
     }
     if( GetLit() ) {
         return "You already have a lightning bug in there!";
@@ -62,7 +62,7 @@ mixed eventCapture(object who, object target) {
     target->eventDestruct();
     who->eventPrint("You capture a lightning bug in your jar!");
     environment(who)->eventPrint(who->GetName() + " captures a lightning bug "
-      "with " + possessive(who) + " jar.", who);
+            "with " + possessive(who) + " jar.", who);
     SetLit(1);
     BugDies = 360;
     set_heart_beat(2);
@@ -76,8 +76,8 @@ mixed eventDarken() {
     }
     if( living(env) && (env = environment(env)) ) {
         env->eventPrint(possessive_noun(environment()->GetName()) +
-          " lightning bug dies and " + possessive(environment()) +
-          " jar goes dark.", environment());
+                " lightning bug dies and " + possessive(environment()) +
+                " jar goes dark.", environment());
     }
     capture::eventFree("lightning bug");
     SetLit(0);

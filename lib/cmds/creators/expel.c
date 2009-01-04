@@ -24,7 +24,7 @@ mixed cmd(string args) {
         }
         else {
             obs = filter(get_livings(environment(this_player())), 
-              (: $1 != this_player() && !archp($1) :) );
+                    (: $1 != this_player() && !archp($1) :) );
         }
     }
 
@@ -48,6 +48,6 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: expel <living> \n\n"
-      "Forces the specified living thing to leave your environment.\n\n"
-      "See also: return, goto, move, trans", this_player());
+            "Forces the specified living thing to leave your environment.\n\n"
+            "See also: return, goto, move, trans", this_player());
 }

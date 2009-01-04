@@ -28,13 +28,13 @@ void create()
     SetAmbientLight(30);
     SetShort( "Lever Pull" );
     SetLong("This is an example room for a simple add_action which changes "+
-      "a description.  There's a lever to pull."
-    );
+            "a description.  There's a lever to pull."
+           );
 
     SetExits( ([
-        "north" : EXPATH + "exroom2",
-        "south" : EXPATH + "entrance",
-      ]));
+                "north" : EXPATH + "exroom2",
+                "south" : EXPATH + "entrance",
+                ]));
 
     //   Here, take a look at how I set the lever item.  It is different
     //     that you saw in the entrance room.  What I am doing here is
@@ -43,8 +43,8 @@ void create()
     //     I'll explain later in this file.
 
     SetItems( ([
-        "lever" : ((: lever_pulled :))
-      ]) );
+                "lever" : ((: lever_pulled :))
+                ]) );
 
 }
 

@@ -27,7 +27,7 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: <flushobs>\n\n"+
-      "Immediately incinerates anything in the furnace and "+
-      "destructs all cloned non-interactive objects that "+
-      "lack an environment.\n");
+            "Immediately incinerates anything in the furnace and "+
+            "destructs all cloned non-interactive objects that "+
+            "lack an environment.\n");
 }

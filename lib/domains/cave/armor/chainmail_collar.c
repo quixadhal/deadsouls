@@ -10,7 +10,7 @@ static void create(){
     SetAdjectives( ({"neck","collar","chainmail"}) );
     SetShort("a chainmail collar");
     SetLong("This is a simple collar made of chainmail "+
-      "to protect the neck from weapons.");
+            "to protect the neck from weapons.");
     SetMass(50);
     SetArmorType(A_COLLAR);
     SetProtection(BLUNT,4);

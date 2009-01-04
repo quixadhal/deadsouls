@@ -22,7 +22,7 @@ inherit LIB_SHOOT;
 
 mixed CanDest(){
     if(environment() && environment() != environment(this_player()) &&
-      environment() != this_player())
+            environment() != this_player())
         return "#That's not accessible to you.";
     else return 1;
 }

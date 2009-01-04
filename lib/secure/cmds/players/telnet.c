@@ -15,9 +15,9 @@ mixed cmd(string args) {
     }
 
     if(sscanf(ip_string,"%d.%d.%d.%d",d1,d2,d3,d4) != 4 && 
-      !RESOLV_D->GetResolving()){
+            !RESOLV_D->GetResolving()){
         write("This mud is not using name resolution. Use a "+
-          "numerical ip address, like 11.22.33.44");
+                "numerical ip address, like 11.22.33.44");
         return 1;
     }
 
@@ -32,7 +32,7 @@ mixed cmd(string args) {
     }
 
     write("Attempting to resolve \""+ip_string+"\". If this fails, "+
-      "try using a numerical ip address, like 1.2.3.4");
+            "try using a numerical ip address, like 1.2.3.4");
     NamesMap[ip_string] = ([ "dude": this_player(), "port" : port_string ]);
     RESOLV_D->eventResolve(ip_string, "resolve_callback");
     return 1;
@@ -64,7 +64,7 @@ int eventStartConnection(object who, string where){
 
     if(!telnet_privp(who)){
         who->eventPrint("You are not a member of the group of users permitted "
-          "to use this mud's telnet facility.");
+                "to use this mud's telnet facility.");
         return 1;
     }
     client->SetConnection(where);
@@ -75,6 +75,6 @@ int eventStartConnection(object who, string where){
 
 void help() {
     message("help", "Syntax: telnet <ip address> <port>\n\n"
-      "If you are in the TELNET group, this connects you to another "
-      "computer or mud on the ip and port specified.\n\n", this_player());
+            "If you are in the TELNET group, this connects you to another "
+            "computer or mud on the ip and port specified.\n\n", this_player());
 }

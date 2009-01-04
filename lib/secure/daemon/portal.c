@@ -22,7 +22,7 @@ void CheckPortals(){
     }
     if(!bportal){
         tmp = objects( (: base_name($1) == "/secure/obj/portal_blue" &&
-            clonep($1) :) );
+                    clonep($1) :) );
         if(sizeof(tmp)){
             bportal = tmp[0];
             tmp -= ({ bportal });
@@ -34,7 +34,7 @@ void CheckPortals(){
     }
     if(!oportal){
         tmp = objects( (: base_name($1) == "/secure/obj/portal_orange" &&
-            clonep($1) :) );
+                    clonep($1) :) );
         if(sizeof(tmp)){
             oportal = tmp[0];
             tmp -= ({ oportal });
@@ -64,7 +64,7 @@ void CheckPortals(){
 
 void PurgePortals(){
     mixed *tmp = objects( (: base_name($1) == "/secure/obj/portal_orange" &&
-        clonep($1) :) );
+                clonep($1) :) );
     if(sizeof(tmp)){
         foreach(object foo in tmp){
             if(foo != oportal){
@@ -74,7 +74,7 @@ void PurgePortals(){
         }
     }
     tmp = objects( (: base_name($1) == "/secure/obj/portal_blue" &&
-        clonep($1) :) );
+                clonep($1) :) );
     if(sizeof(tmp)){
         foreach(object foo in tmp){
             if(foo != bportal){

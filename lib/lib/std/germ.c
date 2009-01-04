@@ -18,12 +18,13 @@ private static function Infect        = 0;
 private static int      LastHeartBeat = time();
 private mixed           LifeSpan      = 60;
 private int             CannotInfect  = 0;
+private int             debug         = 0;
 private string          Type          = "cold";
 private string          GermName      = "generic germ";
 private string array    ImmuneRaces   = ({ "android", "tree", 
-  "plant", "elemental", "fish", "gargoyle", "god", "golem", "insect", 
-  "slug", "snake", "wraith", "zombie", "bot", "strider", "vehicle",
-  "mech" }); 
+        "plant", "elemental", "fish", "gargoyle", "god", "golem", "insect", 
+        "slug", "snake", "wraith", "zombie", "bot", "strider", "vehicle",
+        "mech" }); 
 
 mixed eventMultiply();
 
@@ -217,13 +218,25 @@ mixed eventInfect(object ob){
     object *presbane;
     string race;
     string *bane = ({});
-    if(!ob) return;
+    if(!ob){
+        return 0;
+    }
 
-    if(RELOAD_D->GetWarmBootInProgress()) return 0;
-    if(environment() && base_name(environment()) == ROOM_VOID) return 0;
-    if(!this_object()) return 0;
-    if(!ob) return 0;
-    if(!ob->CanReceive(this_object())) return 0;
+    if(RELOAD_D->GetWarmBootInProgress()){
+        return 0;
+    }
+    if(environment() && base_name(environment()) == ROOM_VOID){
+        return 0;
+    }
+    if(!this_object()){
+        return 0;
+    }
+    if(!ob){
+        return 0;
+    }
+    if(!ob->CanReceive(this_object())){
+        return 0;
+    }
     race = ob->GetRace();
 
     //presbane = present("bane",ob);
@@ -249,7 +262,9 @@ mixed eventInfect(object ob){
     if(ob->GetNonCarbonBased() == 1) return 0;
 
     if( functionp(Infect) ){
-        if(!this_object()) return 0;
+        if(!this_object()){
+            return 0;
+        }
         tmp = evaluate(Infect, ob);
         if( tmp == 1 ){
             eventMove(ob);
@@ -261,7 +276,6 @@ mixed eventInfect(object ob){
             return tmp;
         }
     }
-
     if(!eventMove(ob)) eventMove(ROOM_FURNACE);
     set_heart_beat(5);
     return 1;

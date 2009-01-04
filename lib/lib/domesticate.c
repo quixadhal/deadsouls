@@ -89,12 +89,12 @@ int eventBefriend(object who){
     if(!CanBefriend(who)){
         write("You fail to befriend "+this_object()->GetName()+".");
         say(who->GetName()+" fails to befriend "+this_object()->GetName()+
-          ". "+capitalize(nominative(who))+" looks very silly!");
+                ". "+capitalize(nominative(who))+" looks very silly!");
         return 1;
     }
     write("You befriend "+this_object()->GetName()+".");
     say(who->GetName()+" befriends "+this_object()->GetName()+
-      ". Awwww, it's such a cute sight to see!");
+            ". Awwww, it's such a cute sight to see!");
     Owner = who;
     return 1;
 }
@@ -106,7 +106,7 @@ int eventAbandon(object who){
     }
     write("You abandon "+this_object()->GetName()+".");
     say(who->GetName()+" abandons "+this_object()->GetName()+
-      ". How sad!");
+            ". How sad!");
     Owner = 0;
     return 1;
 }
@@ -126,7 +126,7 @@ varargs int eventTrainLiving(object who, string what){
     else {
         tell_player(who,"You train "+this_object()->GetShort()+"."); 
         tell_room(environment(who),who->GetName()+" trains "+
-          this_object()->GetShort()+".", ({ who,this_object() }) );
+                this_object()->GetShort()+".", ({ who,this_object() }) );
         TrainedSkills += ({ what });
     }
     return 1;
@@ -147,7 +147,7 @@ varargs int eventUnTrainLiving(object who, string what){
     }
     tell_player(who,"You untrain "+this_object()->GetShort()+".");
     tell_room(environment(who),who->GetName()+" untrains "+
-      this_object()->GetShort()+".", ({ who,this_object() }) );
+            this_object()->GetShort()+".", ({ who,this_object() }) );
     return 1;
 }
 

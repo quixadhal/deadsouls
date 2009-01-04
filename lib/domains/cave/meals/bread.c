@@ -14,7 +14,7 @@ static void create() {
     SetBaseCost("silver", 1);
     SetMealType(MEAL_FOOD);
     SetMealMessages("You eat your black bread.",
-      "$N eats $P loaf of black bread.");
+            "$N eats $P loaf of black bread.");
 }
 
 void init(){

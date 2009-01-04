@@ -2131,6 +2131,18 @@ void add_predefines()
 #ifdef M64     
     add_predefine("__M64__", -1, "");
 #endif
+#ifdef PACKAGE_DB
+    add_predefine("__PACKAGE_DB__", -1, "");
+#endif
+#ifdef GET_CHAR_IS_BUFFERED
+    add_predefine("__GET_CHAR_IS_BUFFERED__", -1, "");
+#endif
+#ifdef PACKAGE_DSLIB
+    add_predefine("__DSLIB__", -1, "");
+#endif
+#ifdef PACKAGE_DWLIB
+    add_predefine("__DWLIB__", -1, "");
+#endif
     get_version(save_buf);
     add_quoted_predefine("__VERSION__", save_buf);
     sprintf(save_buf, "%d", external_port[0].port);

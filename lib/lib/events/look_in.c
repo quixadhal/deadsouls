@@ -51,7 +51,7 @@ varargs mixed CanShowInterior(object who, object target){
     if(!who) who = this_player();
 
     if( environment() != this_player()  && environment(this_player()) !=
-      environment()){
+            environment()){
         return "#You don't have that!";
     }
 
@@ -94,7 +94,7 @@ varargs mixed eventShowInterior(object who, object target){
         return 0;
     }
     if(!inherits("/lib/comp/surface",this_object())) environment(who)->eventPrint(who->GetName() + " looks inside " +
-          GetShort() + ".", who);
+            GetShort() + ".", who);
     who->eventPrint(str);
 
 }

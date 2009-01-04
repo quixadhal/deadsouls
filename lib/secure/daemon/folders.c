@@ -62,9 +62,9 @@ void add_post(string who, string folder, mapping borg) {
 
     tmp = base_name(previous_object(0));
     if(previous_object(0) != this_object() && tmp != OBJ_POST &&
-      tmp != LOCALPOST_D) return;
+            tmp != LOCALPOST_D) return;
     if(folder=="new" && (fwd=(string)OPTIONS_D->query_option(who, "forward")) &&
-      strsrch(borg["subject"], "[FORWARD]") == -1) {
+            strsrch(borg["subject"], "[FORWARD]") == -1) {
         borg["subject"] += " [FORWARD]";
         if(sscanf(fwd, "%s@%s", a, b) == 2) {
             borg["message"] = (string)LETTERS_D->query_letter(borg["id"]);
@@ -87,7 +87,7 @@ void add_post(string who, string folder, mapping borg) {
         msg = (string)OPTIONS_D->query_option(who, "message");
         if( !stringp(msg) ) msg = "%^RED%^%^BOLD%^New mail from $N!%^RESET%^\n";
         msg = replace_string(replace_string(msg, "$S", borg["subject"]),
-          "$N", capitalize(borg["from"]));
+                "$N", capitalize(borg["from"]));
         message("system", msg, pl);
     }
     if(pl && ob = present(POSTAL_ID, pl)) {
@@ -108,7 +108,7 @@ void delete_posts(string who, string folder, int *del) {
         }
     }
     __BoxInfo = sort_array(filter(__BoxInfo, "filter_folder", 
-        this_object()), "sort_folder", this_object());
+                this_object()), "sort_folder", this_object());
     save_folder();
 }
 

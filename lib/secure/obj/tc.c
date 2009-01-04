@@ -15,11 +15,11 @@ static void create()
     SetShort( "a telnet client" ) ;
     SetId(({"client","telnet client"}));
     SetLong( "It's a small pocket sized telnet terminal.\n"
-      "It appears customized to connect to Dead Souls MUD only.\n"
-      "Use 'telnet' or 'connect' to begin.\n\nCommands:\n"
-      "[connect|telnet] : start telnet session.\nreset [client]"
-      " : reset the telnet client.\nreconnect : reconnect to session"
-      " (if you go netdead)\n");
+            "It appears customized to connect to Dead Souls MUD only.\n"
+            "Use 'telnet' or 'connect' to begin.\n\nCommands:\n"
+            "[connect|telnet] : start telnet session.\nreset [client]"
+            " : reset the telnet client.\nreconnect : reconnect to session"
+            " (if you go netdead)\n");
     SetMass( 5 ) ;
     attempting = 0 ;
     connected = 0 ;
@@ -31,11 +31,11 @@ static void create()
 void heart_beat(){
     if(!this_object() || !clonep(this_object())) return;
     if(!environment() || !living(environment()) 
-      || !environment(environment())) 
+            || !environment(environment())) 
         eventDestruct();
     if(this_object() && environment() && environment(environment())){
         if(!connected && base_name(environment(environment())) 
-          != "/domains/default/room/telnet_room")
+                != "/domains/default/room/telnet_room")
             eventDestruct();
     }
 }
@@ -94,11 +94,11 @@ int do_reset( string args )
 string help()
 {
     return "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n"
-    "  Usage : connect [ip_address] [port]\n"
-    "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n"
-    "Note: use telnet port number 23 if you \n"
-    "      are connecting to a normal site. \n"
-    "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n" ;
+        "  Usage : connect [ip_address] [port]\n"
+        "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n"
+        "Note: use telnet port number 23 if you \n"
+        "      are connecting to a normal site. \n"
+        "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n" ;
 }
 
 varargs int do_connect(string args, object whom)
@@ -113,7 +113,7 @@ varargs int do_connect(string args, object whom)
         if(!this_player()) return 1;
         if(!telnet_privp(this_player())){
             this_player()->eventPrint("You aren't a member of the group of users permitted "
-              "to use this mud's telnet facility.");
+                    "to use this mud's telnet facility.");
             return 1;
         }
     }
@@ -143,34 +143,34 @@ varargs int do_connect(string args, object whom)
     {
         switch( new_socket )
         {
-        case EEMODENOTSUPP :
-            error = "Socket mode not supported.\n" ;
-            break ;
-        case EESOCKET :
-            error = "Problem creating socket.\n" ;
-            break ;
-        case EESETSOCKOPT :
-            error = "Problem with setsockopt.\n" ;
-            break ;
-        case EENONBLOCK :
-            error = "Problem with setting non-blocking mode.\n" ;
-            break ;
-        case EENOSOCKS :
-            error = "No more available efun sockets.\n" ;
-            break ;
-        case EESECURITY :
-            error = "Security violation attempted.\n" ;
-            break ;
-        default :
-            error = "Unknown error code: " + new_socket + ".\n" ;
-            break ;
+            case EEMODENOTSUPP :
+                error = "Socket mode not supported.\n" ;
+                break ;
+            case EESOCKET :
+                error = "Problem creating socket.\n" ;
+                break ;
+            case EESETSOCKOPT :
+                error = "Problem with setsockopt.\n" ;
+                break ;
+            case EENONBLOCK :
+                error = "Problem with setting non-blocking mode.\n" ;
+                break ;
+            case EENOSOCKS :
+                error = "No more available efun sockets.\n" ;
+                break ;
+            case EESECURITY :
+                error = "Security violation attempted.\n" ;
+                break ;
+            default :
+                error = "Unknown error code: " + new_socket + ".\n" ;
+                break ;
         }
         notify_fail( "Unable to connect, problem with socket_create.\n"
-          "Reason: " + error ) ;
+                "Reason: " + error ) ;
         return 0 ;
     }
     sc_result = socket_connect( new_socket, ip_address + " " + port,
-      "read_callback", "write_callback" ) ;
+            "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS )
     {
         notify_fail( "Failed to connect.\n" ) ;
@@ -235,7 +235,7 @@ int parse_comm( string str )
         if( attempting )
         {
             write("Please wait, still attempting connection, "
-              "type 'dcon' to exit.\n");
+                    "type 'dcon' to exit.\n");
             input_to( "parse_comm", 0 ) ;
             return 1 ;
         }

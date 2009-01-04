@@ -13,7 +13,6 @@ int TestFunc(object ob,string str){
     return 1;
 }
 
-
 void create(){
     ::create();
     SetKeyName("leaflet");
@@ -21,8 +20,8 @@ void create(){
     SetAdjectives(({"small"}));
     SetShort("a small leaflet");
     SetLong("This is a single sheet of paper with a message printed on it. ");
-    SetMass(0);
-    SetDollarCost(0);
+    SetMass(1);
+    SetDollarCost(1);
     SetVendorType(VT_TREASURE);
     SetRead((: TestFunc :));
 }

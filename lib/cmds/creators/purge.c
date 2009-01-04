@@ -20,7 +20,7 @@ mixed cmd(string args) {
     this_player()->eventPrint(sprintf("Cleaning %O", ob), MSG_SYSTEM);
     say(this_player()->GetName()+" purges "+ob->GetShort()+".");
     obs = filter(all_inventory(ob), (: !userp($1) && 
-        !inherits(LIB_DUMMY, $1) && base_name($1) != LIB_DUMMY :) );
+                !inherits(LIB_DUMMY, $1) && base_name($1) != LIB_DUMMY :) );
     users = filter(deep_inventory(ob), (: userp($1) :) );
     foreach(object user in users){
         if(environment(user) != ob){
@@ -43,7 +43,7 @@ mixed cmd(string args) {
 
 string GetHelp() {
     return ("Syntax: purge\n"
-      "        purge <OBJECT>\n\n"
-      "This command destroys non-dummy, non-user objects in the inventory "
-      "of the specified object.");
+            "        purge <OBJECT>\n\n"
+            "This command destroys non-dummy, non-user objects in the inventory "
+            "of the specified object.");
 }

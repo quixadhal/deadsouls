@@ -9,7 +9,7 @@ inherit LIB_COMMAND;
 int cmd(string str){
     write("You snap your fingers, and permit hostilities to resume.");
     say(this_player()->GetCapName()+" snaps "+possessive()+" fingers "+
-      "and permits hostilities to resume.");
+            "and permits hostilities to resume.");
     foreach(object combatant in get_livings(environment(this_player()))){
         combatant->eventUnQuell();
         if(combatant->GetInCombat()) tell_object(combatant,"You resume fighting.");
@@ -22,6 +22,6 @@ int cmd(string str){
 
 string GetHelp(string str) {
     return "Syntax: <unquell>\n"
-    "Allows quelled combat to resume.\n"
-    "See also: quell\n";
+        "Allows quelled combat to resume.\n"
+        "See also: quell\n";
 }

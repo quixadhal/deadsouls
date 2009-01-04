@@ -26,7 +26,7 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <screen [width] [height]>\n\n"
-      "Sets the dimensions of your computer screen so that " +
-      mud_name() + " knows how to send information to your screen.\n\n"
-      "See also: brief, terminal", this_player());
+            "Sets the dimensions of your computer screen so that " +
+            mud_name() + " knows how to send information to your screen.\n\n"
+            "See also: brief, terminal", this_player());
 }

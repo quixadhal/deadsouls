@@ -2,6 +2,9 @@
 #include <rooms.h>
 #include <vendor_types.h>
 #include <damage_types.h>
+
+#define PLAYER_INFECTABLE 0
+
 inherit LIB_GERM;
 int damage1();
 int damage2();
@@ -26,17 +29,15 @@ int MakeHostile(object ob){
 int InfectMess(object ob){
     victim=ob;
     victimname=victim->GetName();
-    if(interactive(victim)) {
+    if(interactive(victim) && !PLAYER_INFECTABLE) {
         eventDestruct();
         return 1;
     }
     tell_room(environment(victim), "%^BOLD%^RED%^"+victimname+" suddenly lets out a bloodcurdling scream!%^RESET%^",({victim}) );
     tell_object(victim, "%^BOLD%^RED%^You scream as you are suddenly possessed by an uncontrollable rage!%^RESET%^");
-    if(!interactive(ob)) {
-        ob->SetEncounter(100);
-        ob->SetMelee(1);
-        if(ob->GetRace() != "human" && ob->GetRace() != "orc") MakeHostile(ob);
-    }
+    ob->SetEncounter(100);
+    ob->SetMelee(1);
+    if(ob->GetRace() != "human" && ob->GetRace() != "orc") MakeHostile(ob);
     return 1;
 }
 
@@ -67,7 +68,7 @@ void bonuses(){
     }
     else if(victim) {
         foreach( string stat in ({"intelligence", "strength",
-            "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+                    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
             victim->RemoveStatBonus(stat);
         }
     }
@@ -191,9 +192,9 @@ int damage4(){
 int damage5(){
     if(victim){
         tell_room(environment(victim),victimname+" makes a horrible, gurgling, coughing noise and hacks up "+
-          "a huge glob of phlegm.", ({victim}) );
+                "a huge glob of phlegm.", ({victim}) );
         tell_object(victim,"You cough up a huge glob of phlegm, accidentally inhale it, and choke while coughing it "+
-          "back up.");
+                "back up.");
         //Fix below courtesy of Jonez
         victim->AddStaminaPoints(random(80)+50);
         victim->AddStatBonus("strength", 50);

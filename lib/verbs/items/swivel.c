@@ -9,11 +9,11 @@ static void create() {
     SetSynonyms("spin");
     SetErrorMessage("Swivel what? Or swivel what on what?");
     SetHelp("Syntax: <swivel OBJECT>\n"
-      "        <swivel THING on OBJECT>\n\n"
-      "Allows you to swivel an object, or perhaps a thing on the "
-      "object.  For example, you might want to "
-      "\"swivel the gimbal\", or simply \"swivel in chair\".\n\n"
-      "Synonyms: spin");
+            "        <swivel THING on OBJECT>\n\n"
+            "Allows you to swivel an object, or perhaps a thing on the "
+            "object.  For example, you might want to "
+            "\"swivel the gimbal\", or simply \"swivel in chair\".\n\n"
+            "Synonyms: spin");
 }
 
 mixed can_swivel(){

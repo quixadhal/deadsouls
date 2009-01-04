@@ -11,16 +11,16 @@ static void create() {
     SetRules("","LIV", "from LIV");
     SetErrorMessage("Dismount something?");
     SetHelp("Syntax: <dismount CREATURE>\n"
-      "\n"
-      "This command allows you to get off a  "
-      "creature you are riding.\n\n"
-      "See also: mount, befriend, abandon");
+            "\n"
+            "This command allows you to get off a  "
+            "creature you are riding.\n\n"
+            "See also: mount, befriend, abandon");
 }
 
-mixed can_dismount_liv() {
-    if(this_player()->CanManipulate()) 
-        return bool_reverse(this_player()->GetParalyzed());
-}
+    mixed can_dismount_liv() {
+        if(this_player()->CanManipulate()) 
+            return bool_reverse(this_player()->GetParalyzed());
+    }
 
 mixed can_dismount_from_liv() {
     return can_dismount_liv();
@@ -47,7 +47,7 @@ mixed do_dismount() {
         else {
             write("You get off your dead mount.");
             say(this_player()->GetName()+" gets off "+possessive(this_player())+
-              " dead mount.");
+                    " dead mount.");
         }
         this_player()->eventMoveLiving(new_env);
     }

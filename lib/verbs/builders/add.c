@@ -14,15 +14,15 @@ static void create() {
     SetRules("OBJ", "OBJ to OBJ", "OBJ to here", "OBJ to room");
     SetErrorMessage("Add what?");
     SetHelp("Syntax: <add [OBJ] to [OBJ]>\n"
-      "        <add [OBJ]>\n"
-      "This command adds the first object to the permanent "
-      "inventory of the second object, if you have access "
-      "privileges to both files. You will be prompted for input. "
-      "If the taget is an NPC, you can input a command for the "
-      "NPC to execute when it is created, such as: wear shirt\n"
-      "Otherwise, enter the number of these items you want when "
-      "prompted.\n"
-      "\nSee also: copy, create, delete, modify, reload, initfix ");
+            "        <add [OBJ]>\n"
+            "This command adds the first object to the permanent "
+            "inventory of the second object, if you have access "
+            "privileges to both files. You will be prompted for input. "
+            "If the taget is an NPC, you can input a command for the "
+            "NPC to execute when it is created, such as: wear shirt\n"
+            "Otherwise, enter the number of these items you want when "
+            "prompted.\n"
+            "\nSee also: copy, create, delete, modify, reload, initfix ");
 }
 
 
@@ -67,9 +67,9 @@ mixed do_add_obj_to_obj(object ob, object ob2) {
     }
 
     if(!living(ob2) &&
-      !inherits(LIB_STORAGE,ob2) &&
-      !inherits(LIB_WORN_STORAGE,ob2) &&
-      !inherits(LIB_ROOM,ob2)){
+            !inherits(LIB_STORAGE,ob2) &&
+            !inherits(LIB_WORN_STORAGE,ob2) &&
+            !inherits(LIB_ROOM,ob2)){
         write("That object is not intended to contain other objects. Addition halted.");
         write("If you are sure this is incorrect, then the target object may be ");
         write("missing a working init function. Fix it with the initfix command.");

@@ -16,7 +16,7 @@ static void create() {
     SetAdjectives("wooden");
     SetShort("a shovel");
     SetLong("A plain, wooden shovel.  You probably can dig things with "
-      "it.");
+            "it.");
     SetMass(87);
     SetValue(50);
 }

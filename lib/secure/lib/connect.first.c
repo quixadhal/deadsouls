@@ -15,29 +15,29 @@ static void InputName(string str);
 
 static void logon() {
     receive("Welcome to the Dead Souls " + mudlib_version() +
-      " installation process!!\n\n");
+            " installation process!!\n\n");
     receive("You will be asked a series of questions for creating an "
-      "admin character.\n\n");
+            "admin character.\n\n");
     receive("What is your MUD admin username?\n ");
     input_to((: InputName :), I_NOESC);
 }
 
 static void InputPassword(string str);
 
-static void InputName(string str) {
-    if( !((int)BANISH_D->valid_name(Name = convert_name(CapName = str))) 
-      || lower_case(str) == "guest") {
-        receive("That is not a valid name.\n");
-        receive("Name:\n ");
-        input_to((: InputName :));
-        return;
+    static void InputName(string str) {
+        if( !((int)BANISH_D->valid_name(Name = convert_name(CapName = str))) 
+                || lower_case(str) == "guest") {
+            receive("That is not a valid name.\n");
+            receive("Name:\n ");
+            input_to((: InputName :));
+            return;
+        }
+        Admin = (object)master()->player_object(Name);
+        Admin->SetKeyName(Name);
+        mkdir(DIR_PLAYERS "/" + Name[0..0]);
+        receive("\nPassword:\n ");
+        input_to((: InputPassword :), I_NOECHO | I_NOESC);
     }
-    Admin = (object)master()->player_object(Name);
-    Admin->SetKeyName(Name);
-    mkdir(DIR_PLAYERS "/" + Name[0..0]);
-    receive("\nPassword:\n ");
-    input_to((: InputPassword :), I_NOECHO | I_NOESC);
-}
 
 static void ConfirmPassword(string str);
 
@@ -86,7 +86,7 @@ static void InputRealName(string str);
 static void InputGender(string str) {
     if( str ) str = lower_case(str);
     if( !str || str == "" || ((str[0] != 'f' && str[0] != 'm') &&
-        member_array(str, ({"male","female","neutral","none"})) == -1)){
+                member_array(str, ({"male","female","neutral","none"})) == -1)){
         receive("\nPlease choose a gender (male, female, neutral, or none): \n");
         receive("Male, female, neutral or none?\n ");
         input_to((: InputGender :));
@@ -118,7 +118,7 @@ static void InputEmail(string str) {
     load_object("secure/cmds/admins/admintool")->eventChangeEmail(str,1);
     Admin->SetEmail(str);
     Admin->SetRace("human");
-
+    Admin->SetPrompt("cwd");
     Admin->AddCurrency("silver",random(100)+57);
     Admin->SetTown("FirstAdmin");
     Admin->eventForce("cd");
@@ -159,7 +159,7 @@ static void InputEmail(string str) {
     destruct(Admin);
     mkdir(DIR_CRES "/" + Name[0..0]);
     rename(DIR_PLAYERS "/" + Name[0..0] + "/" + Name + __SAVE_EXTENSION__,
-      DIR_CRES "/" + Name[0..0] + "/" + Name + __SAVE_EXTENSION__);
+            DIR_CRES "/" + Name[0..0] + "/" + Name + __SAVE_EXTENSION__);
     destruct(master());
     receive("\nYou will be disconnected and the MUD will shut down.\n");
     receive("Restart the MUD and login again as the admin character.\n");

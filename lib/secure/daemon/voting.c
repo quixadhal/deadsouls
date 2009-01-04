@@ -48,28 +48,28 @@ mixed eventSave() {
     return VOTE_SUCCESS;
 }
 
-mixed eventStartVoting() {
-    if( GetStatus() == VOTE_RUNNING )
-        return VOTE_ALREADY_RUNNING;
+    mixed eventStartVoting() {
+        if( GetStatus() == VOTE_RUNNING )
+            return VOTE_ALREADY_RUNNING;
 
-    mapVoting["candidates"] = ([]);
-    mapVoting["votes"] = ([]);
-    mapVoting["voted"] = ({});
-    foreach( string sClass in CLASSES_D->GetClasses() ) {
-        mapVoting["candidates"][sClass] = ({});
-        mapVoting["votes"][sClass] = ([]);
+        mapVoting["candidates"] = ([]);
+        mapVoting["votes"] = ([]);
+        mapVoting["voted"] = ({});
+        foreach( string sClass in CLASSES_D->GetClasses() ) {
+            mapVoting["candidates"][sClass] = ({});
+            mapVoting["votes"][sClass] = ([]);
+        }
+
+        mapVoting["status"] = VOTE_RUNNING;
+        mapVoting["mode"] = VOTE_MODE_CANDIDATES;
+        mapVoting["daycount"] = VOTE_DAY_COUNT;
+        call_out( (: eventNextDay :), DAY );
+        message("shout", "%^YELLOW%^Election announcement:%^RESET%^ " +
+                "Class elections have now begun! Go to the voting booth " +
+                "and nominate candidates.", users() );
+        eventSave();
+        return VOTE_SUCCESS;
     }
-
-    mapVoting["status"] = VOTE_RUNNING;
-    mapVoting["mode"] = VOTE_MODE_CANDIDATES;
-    mapVoting["daycount"] = VOTE_DAY_COUNT;
-    call_out( (: eventNextDay :), DAY );
-    message("shout", "%^YELLOW%^Election announcement:%^RESET%^ " +
-      "Class elections have now begun! Go to the voting booth " +
-      "and nominate candidates.", users() );
-    eventSave();
-    return VOTE_SUCCESS;
-}
 
 mixed eventEndVoting() {
     mapVoting["status"] = VOTE_NOT_RUNNING;
@@ -99,8 +99,8 @@ mixed eventAddCandidate( string sClass, string sWho ) {
     mapVoting["candidates"][sClass] += ({ sWho });
     mapVoting["votes"][sClass][sWho] = 0;
     message("shout", "%^YELLOW%^Election announcement:%^RESET%^ " + 
-      ob->GetName() + " has been nominated for the leader of the " +
-      pluralize(capitalize(sClass)) + ".", users() );
+            ob->GetName() + " has been nominated for the leader of the " +
+            pluralize(capitalize(sClass)) + ".", users() );
     eventSave();
     return VOTE_SUCCESS;
 }
@@ -118,8 +118,8 @@ mixed eventRemoveCandidate( string sClass, string sWho ) {
     mapVoting["candidates"][sClass] -= ({ sWho });
     map_delete( mapVoting["votes"][sClass], sWho );
     message("shout", "%^YELLOW%^Election announcement:%^RESET%^ " + 
-      find_player(sWho)->GetName() + " has withdrawn from the " +
-      "elections!", users() );
+            find_player(sWho)->GetName() + " has withdrawn from the " +
+            "elections!", users() );
     eventSave();
     return VOTE_SUCCESS;
 }
@@ -163,7 +163,7 @@ mixed eventNextDay() {
             mapVoting["daycount"] = VOTE_DAY_COUNT;
             call_out( (: eventNextDay :), DAY );
             message("shout", "%^YELLOW%^Election announcement:%^RESET%^ " +
-              "Nominations are closed, go vote for the candidates!!", users() );
+                    "Nominations are closed, go vote for the candidates!!", users() );
             eventSave();
             return VOTE_SUCCESS;
         }
@@ -265,16 +265,16 @@ int GetVoteStatus( object ob ) {
 
 string GetVoteRoom() { return VOTE_ROOM; }
 
-int IsCouncilMember( object ob ) {
-    foreach( string sClass in CLASSES_D->GetClasses() )
-        if( mapCouncil[sClass] == convert_name(ob->GetName()) )
-            return 1;
-    return 0;
-}
+    int IsCouncilMember( object ob ) {
+        foreach( string sClass in CLASSES_D->GetClasses() )
+            if( mapCouncil[sClass] == convert_name(ob->GetName()) )
+                return 1;
+        return 0;
+    }
 
-mixed GetTest() {
-    foreach( string sClass in CLASSES_D->GetClasses() )
-        this_player()->eventPrint( sClass + " : " + mapCouncil[sClass] );
-    return 1;
-}
+    mixed GetTest() {
+        foreach( string sClass in CLASSES_D->GetClasses() )
+            this_player()->eventPrint( sClass + " : " + mapCouncil[sClass] );
+        return 1;
+    }
 

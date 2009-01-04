@@ -21,16 +21,16 @@ static void create() {
     SetClass("fighter");
     SetLevel(15);
     SetLong("Bizarrely large, fit, and alert, this orc cook would "+
-      "seem more in place in a uniform than serving food in a "+
-      "commissary. You can: ask cook for menu");
+            "seem more in place in a uniform than serving food in a "+
+            "commissary. You can: ask cook for menu");
     SetMelee(1);
     SetInventory(([
-        "/domains/cave/armor/foodsmock" : "wear smock",
-      ]));
+                "/domains/cave/armor/foodsmock" : "wear smock",
+                ]));
     SetMenuItems(([
-        ({ "roast beast", "beast" }) : "/domains/cave/meals/bread",
-        ({ "black bread", "bread" }) : "/domains/cave/meals/beast",
-      ]));
+                ({ "roast beast", "beast" }) : "/domains/cave/meals/bread",
+                ({ "black bread", "bread" }) : "/domains/cave/meals/beast",
+                ]));
     SetGender("male");
     AddCurrency("electrum", random(200));
     SetSkill("bargaining", 1);
@@ -47,7 +47,7 @@ int eventList(object who, string cmd, string args){
     int ret = ::eventList(who, cmd, args);
     if(ret){
         eventForce("speak Help yourself to the grog and water. They're "+
-          "free of charge.");
+                "free of charge.");
     }
     return ret;
 }

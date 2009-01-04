@@ -13,7 +13,7 @@ void create(){
     SetAdjectives( ({"persian","ornamental"}) );
     SetShort("a Persian rug");
     SetLong("This is a beautiful, intricately patterned Persian "
-      "rug, covering the center of the floor. ");
+            "rug, covering the center of the floor. ");
     SetMass(100);
     SetBaseCost("silver",500);
     SetManipulate( ([ "default" : (: MoveRug :) ]) );
@@ -23,13 +23,13 @@ void create(){
 mixed CanGet(object ob) { return "The rug appears attached to the floor.";}
 int MoveRug(){
     send_messages("move", "$agent_name $agent_verb the Persian rug.",
-      this_player(), 0, environment(this_player()));
+            this_player(), 0, environment(this_player()));
     environment(this_object())->RevealDoor();
     return 1;
 }
 int PushRug(){
     send_messages("move", "$agent_name $agent_verb the Persian rug.",
-      this_player(), 0, environment(this_player()));
+            this_player(), 0, environment(this_player()));
     environment(this_object())->RevealDoor();
     return 1;
 }

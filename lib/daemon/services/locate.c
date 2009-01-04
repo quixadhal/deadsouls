@@ -33,7 +33,7 @@ void eventReceiveLocateRequest(mixed array packet) {
     //tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has issued a locate request for %^BOLD%^YELLOW%^"+capitalize(packet[6])+".%^RESET%^\"");
     tn("Locate request received: "+identify(packet),"white");
     CHAT_D->eventSendChannel("SYSTEM","intermud","[" + capitalize(packet[3])+"@"+packet[2]+
-      " seeks "+packet[6]+ "]",0);
+            " seeks "+packet[6]+ "]",0);
     if( !(ob = find_player(packet[6])) || ob->GetInvis()) return;
     if( interactive(ob) ) {
         string array tmp = ({ });
@@ -46,8 +46,8 @@ void eventReceiveLocateRequest(mixed array packet) {
     }
     else status = "link-dead";
     INTERMUD_D->eventWrite( ({ "locate-reply", 5, mud_name(), 0, packet[2], 
-        packet[3], mud_name(),
-        (string)ob->GetName(), idl, status }) );
+                packet[3], mud_name(),
+                (string)ob->GetName(), idl, status }) );
 }
 
 void eventReceiveLocateReply(mixed array packet) {

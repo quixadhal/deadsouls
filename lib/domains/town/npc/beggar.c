@@ -12,22 +12,22 @@ static void create() {
     SetAdjectives(({"dirty"}));
     SetShort("a dirty beggar");
     SetLong("This beggar has something strangely noble about his aspect. "
-      "He certainly doesn't look like he has always been a beggar.");
+            "He certainly doesn't look like he has always been a beggar.");
     SetCanBite(0);
     SetWimpy(90);
     SetPacifist(1);
     SetInventory(([
-        "/domains/town/obj/map" : 1,
-      ]));
+                "/domains/town/obj/map" : 1,
+                ]));
     SetLevel(1);
     SetAutoStand(0);
     SetRace("human");
     SetGender("male");
     SetConsultResponses( ([
-        "map" : "It's so you have an idea how to get around.",
-        ({ "levels", "leveling", "level" }) : "I don't know such stuff. "+
-        "Ask Dirk in the Adventurers' Guild."
-      ]) );
+                "map" : "It's so you have an idea how to get around.",
+                ({ "levels", "leveling", "level" }) : "I don't know such stuff. "+
+                "Ask Dirk in the Adventurers' Guild."
+                ]) );
     SetPosition(POSITION_SITTING);
     SetPolyglot(1);
     SetLanguage("common", 100);
@@ -42,10 +42,10 @@ string GetLong(string str){
 int GiveMap(object ob){
     object map;
     if(ob && present(ob->GetKeyName(),environment(this_object()))
-      && !this_object()->GetInCombat() &&
-      member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1 &&
-      !creatorp(ob) &&
-      !stringp(ob->CanManipulate()) ){
+            && !this_object()->GetInCombat() &&
+            member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1 &&
+            !creatorp(ob) &&
+            !stringp(ob->CanManipulate()) ){
         eventForce("say here, you might need this");
         eventForce("give my first map to "+ob->GetKeyName());
     }
@@ -58,9 +58,9 @@ int GiveMap(object ob){
 
 int SayHi(object ob){
     if(this_object() && ob &&
-      present(ob->GetKeyName(),environment(this_object()))
-      && !this_object()->GetInCombat() &&
-      member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1)
+            present(ob->GetKeyName(),environment(this_object()))
+            && !this_object()->GetInCombat() &&
+            member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1)
         eventForce("say Hi, "+ob->GetName());
     return 1;
 }

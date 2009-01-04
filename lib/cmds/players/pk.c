@@ -39,12 +39,12 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: pk [ on | off ]\n\n"
-      "\tUnless you are set as a player killer, you cannot engage " +
-      "in player versus player combat. This command toggles your " +
-      "player killer setting. Once they are set as PK, players cannot "+
-      "unset it without the intervention of a creator.\n"
-      "\tPlayer killing also requires the mud to have its global PK "+
-      "setting enabled in its config file, and the room you are in "+
-      "must be PK enabled as well.\n"
-      "", this_player());
+            "\tUnless you are set as a player killer, you cannot engage " +
+            "in player versus player combat. This command toggles your " +
+            "player killer setting. Once they are set as PK, players cannot "+
+            "unset it without the intervention of a creator.\n"
+            "\tPlayer killing also requires the mud to have its global PK "+
+            "setting enabled in its config file, and the room you are in "+
+            "must be PK enabled as well.\n"
+            "", this_player());
 }

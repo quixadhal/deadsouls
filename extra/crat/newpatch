@@ -58,6 +58,12 @@ mkdir $OLDLIB/lib/domains/cave/txt
 mkdir $OLDLIB/lib/domains/cave/virtual
 mkdir $OLDLIB/lib/domains/cave/weap
 
+cd $NEWLIB/lib
+/contrib/indentall
+cd ../../$OLDLIB/lib
+/contrib/indentall
+cd ../../
+
 gdiff -rq $OLDLIB/lib $NEWLIB/lib > diff.txt
 
 perl -pi -e s/"\:\ "/"\/"/g diff.txt

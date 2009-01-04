@@ -31,7 +31,7 @@ mixed get( string property )
         // Allows default values.  Eg: if we are trying to find the density of lead
         // but that hasn't been set, it will use the default metal density instead
         if( undefinedp( tmp = value[parts[loop]] ) &&
-          undefinedp( tmp = value["default"]   )   )
+                undefinedp( tmp = value["default"]   )   )
             return mapp( value ) ? tmp : value;
         value = tmp;
     }
@@ -55,9 +55,9 @@ void init_properties()
 
     properties = ([]);
     if( ( 0    > file_size( save_file+".t" ) ) ||
-      !( file = read_file( save_file+".t" ) ) ||
-      !( lines = explode( file, "\n" )      ) ||
-      !( size = sizeof( lines )             )   ) return;
+            !( file = read_file( save_file+".t" ) ) ||
+            !( lines = explode( file, "\n" )      ) ||
+            !( size = sizeof( lines )             )   ) return;
     properties = allocate_mapping( size );
     for( loop = 0 ; loop < size ; loop++ )
     {
@@ -118,7 +118,7 @@ void setup_object( object ob, object pobj )
     ob-> set( "volume", 1000 * mass / ( (int)ob-> query( "density" ) ) );
     if( !pobj ) return;
     if( !function_exists( "query", pobj ) ||
-      undefinedp( temperature = pobj-> query( "temperature" ) ) )
+            undefinedp( temperature = pobj-> query( "temperature" ) ) )
         temperature = query( "temperature/default" );
     ob-> set( "temperature", temperature );
 }

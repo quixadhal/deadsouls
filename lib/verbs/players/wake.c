@@ -9,7 +9,7 @@ static void create() {
     SetErrorMessage("Wake?");
     SetSynonyms(({"wake up","awaken"}));
     SetHelp("Syntax: wake\n"
-      "If asleep, you become less so.");
+            "If asleep, you become less so.");
 }
 
 mixed can_wake() {
@@ -30,15 +30,15 @@ mixed do_wake() {
         this_player()->SetSleeping(0);
         tell_player(this_player(),"You rouse from your slumber.");
         tell_room(environment(this_player()), this_player()->GetName()+
-          " rouses from "+possessive(this_player())+
-          " slumber.", ({this_player()}) );
+                " rouses from "+possessive(this_player())+
+                " slumber.", ({this_player()}) );
         return 1;
     }
     if(this_player()->GetSleeping() > 1){
         tell_player(this_player(),"You become somewhat more wakeful.");
         tell_room(environment(this_player()), this_player()->GetName()+ 
-          " appears to rouse somewhat from "+possessive(this_player())+
-          " slumber.", ({this_player()}) );
+                " appears to rouse somewhat from "+possessive(this_player())+
+                " slumber.", ({this_player()}) );
         return (mixed)this_player()->SetSleeping(this_player()->GetSleeping() - 1);
     }
     else tell_player(this_player(),"You are nearing full wakefulness...");

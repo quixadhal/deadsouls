@@ -52,7 +52,7 @@ void post_change(mixed *args) {
     maxi = sizeof(tmp = explode(wrap(str, 60), "\n"));
     str = "-  "+ change+"\n";
     str += "   "+ctime(time())+" by "+(string)previous_object()->GetCapName()+
-    "("+(string)previous_object()->query_rname()+"):\n";
+        "("+(string)previous_object()->query_rname()+"):\n";
     for(i=0; i<maxi; i++) str += "     * "+tmp[i]+"\n";
     if(str2 = read_file(file)) str2 = str+"\n\n"+str2;
     else str2 = str;
@@ -66,9 +66,9 @@ void post_change(mixed *args) {
 void help()
 {
     message( "help",
-      "Syntax: changelog <directory>\n"
-      "Lets you enter documentation on changes you have made to files in "
-      "directory <directory>\n"
-      , this_player()
-    );
+            "Syntax: changelog <directory>\n"
+            "Lets you enter documentation on changes you have made to files in "
+            "directory <directory>\n"
+            , this_player()
+           );
 }

@@ -4,12 +4,20 @@
 //      created in pats by Sulam@TMI, Plura@Dead Souls, and Descartes of Borg
 
 #include <lib.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
 object downer;
 
 void ShutDown(){
     shutdown();
+}
+
+void DoSaves(){
+    object *persists = objects( (: $1->GetPersistent() :) );
+    foreach(object persist in persists){
+        persist->eventDestruct();
+    }
 }
 
 int cmd(string str) {
@@ -26,9 +34,24 @@ int cmd(string str) {
         write("You must give a shutdown reason as argument.\n");
         return 1;
     }
+    if(str == "cancel"){
+        int cancel = EVENTS_D->eventCancelShutdown();
+        //tc("cancel: "+cancel);
+        if(cancel == -1){
+            write("There was no shutdown in progress.");
+        }
+        else if(cancel > -1){
+            write("Shutdown cancelled.");
+            shout("Shutdown cancelled by " + downer->GetKeyName() + ".\n");
+        }
+        else {
+            write("Something odd happened. Shutdown may not be cancelled.");
+        }
+        return 1;
+    }
     shout("Game is shut down by " + downer->GetKeyName() + ".\n");
     log_file("game_log", ctime(time())+" Game shutdown by "+
-      downer->GetKeyName()+"("+str+")\n");
+            downer->GetKeyName()+"("+str+")\n");
     foreach(object dude in users()){
         if(dude && sizeof(base_name(dude))){
             if(!archp(dude)) dude->eventForce("quit");
@@ -39,12 +62,15 @@ int cmd(string str) {
             }
         }
     }
-    call_out( (: shutdown :), 1);
+    call_out( (: DoSaves :), 0);
+    call_out( (: shutdown :), 2);
     return 1;
 }
 
 void help() {
-    write("Syntax: <shutdown [reason]>\n\n"
-      "This will shut down the game immediately.\n\nSee also:\nend\n"
-    );
+    write("Syntax:  shutdown cancel\n"
+            "         shutdown [reason]\n\n"
+            "This will shut down the game immediately, or cancel "
+            "a scheduled shutdown. Use with great care.\n\nSee also: end"
+         );
 }

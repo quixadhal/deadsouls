@@ -28,9 +28,9 @@ varargs void reap_other(string s1){
     int fail;
     object *garbage = ({});
     object *others = objects((: $1 && clonep($1) && !userp($1) &&
-        !inherits(LIB_ROOM, $1) && !environment($1) &&
-        !inherits(LIB_SHADOW, $1) &&
-        member_array(base_name($1), ExemptArray) == -1 :))[0..6300];
+                !inherits(LIB_ROOM, $1) && !environment($1) &&
+                !inherits(LIB_SHADOW, $1) &&
+                member_array(base_name($1), ExemptArray) == -1 :))[0..6300];
 #ifdef __FLUFFOS__
     garbage = get_garbage()[0..63000];
 #endif

@@ -44,8 +44,8 @@ string WoundLong(){
     }
 
     ret = noun + " " + verb + " been wounded by gunfire. There "+ 
-    being + " " + cardinal(this_player()->GetLead())+" bullet hole"+
-    plural + " in " + poss + " body.";
+        being + " " + cardinal(this_player()->GetLead())+" bullet hole"+
+        plural + " in " + poss + " body.";
 
     return ret;
 }
@@ -81,11 +81,11 @@ void heart_beat(){
         return;
     } 
     if(!RACES_D->GetNonMeatRace(ob->GetRace()) && interactive(ob)
-      && !(ob->GetUndead())){
+            && !(ob->GetUndead())){
         tell_object(ob,"You bleed heavily from your gunshot wounds.");
         tell_room(environment(ob), ob->GetName()+
-          " bleeds heavily from "+possessive(ob)+" gunshot "+
-          "wounds.",environment());
+                " bleeds heavily from "+possessive(ob)+" gunshot "+
+                "wounds.",environment());
     }
 }
 

@@ -70,12 +70,12 @@ varargs void SetLongAndItems(int x, int y, int z) {
     str = "This is the bottom of a vast sea.";
 
     SetItems( ([ ({"sea","ocean"}) : "It is vast.",
-      ]) );
+                ]) );
     SetLong(str);
     SetInventory(inv);
     SetTerrainType(T_SEAFLOOR);
     SetMedium(MEDIUM_WATER);
     SetInventory( ([
-        "/domains/town/obj/seawater" : 1,
-      ]) );
+                "/domains/town/obj/seawater" : 1,
+                ]) );
 }

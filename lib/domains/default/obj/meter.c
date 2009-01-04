@@ -9,15 +9,15 @@ varargs string translate_vision(object ob){
     if(!ob) vision = this_player()->GetEffectiveVision();
     else vision = ob->GetEffectiveVision();
     switch(vision){
-    case 0 : ret = "level 0: blindness.";break; 
-    case 1 : ret = "level 1: too dark.";break; 
-    case 2 : ret = "level 2: dark.";break; 
-    case 3 : ret = "level 3: dim.";break; 
-    case 4 : ret = "level 4: clear.";break; 
-    case 5 : ret = "level 5: light.";break; 
-    case 6 : ret = "level 6: bright.";break; 
-    case 7 : ret = "level 7: too bright.";break; 
-    default : ret = "a mystery.";
+        case 0 : ret = "level 0: blindness.";break; 
+        case 1 : ret = "level 1: too dark.";break; 
+        case 2 : ret = "level 2: dark.";break; 
+        case 3 : ret = "level 3: dim.";break; 
+        case 4 : ret = "level 4: clear.";break; 
+        case 5 : ret = "level 5: light.";break; 
+        case 6 : ret = "level 6: bright.";break; 
+        case 7 : ret = "level 7: too bright.";break; 
+        default : ret = "a mystery.";
     }
     return ret;
 }
@@ -34,7 +34,7 @@ varargs mixed EvaluateRadiantLight(object ob, int report){
             x += item->GetRadiantLight();
             if(item->GetRadiantLight()){
                 subrep += guy->GetName()+"'s "+item->GetName()+"'s radiant light is: "+
-                item->GetRadiantLight()+".\n";
+                    item->GetRadiantLight()+".\n";
             }
         }
     }
@@ -44,7 +44,7 @@ varargs mixed EvaluateRadiantLight(object ob, int report){
 
 string DefaultReading(){
     write("This small device is a portable light meter. It tells "+
-      "you what the available light is.");
+            "you what the available light is.");
     write("The ambient light here is: "+environment(this_player())->GetAmbientLight());
     write("Total radiant light here is: "+EvaluateRadiantLight());
     write("Your vision range is: "+this_player()->GetEffectiveVision(environment(this_player()),1));
@@ -65,8 +65,8 @@ void create(){
     SetShort("a light meter");
     SetLong( (: DefaultReading :) );
     SetProperties(([
-        "no steal" : 1,
-      ]));
+                "no steal" : 1,
+                ]));
     SetNoCondition(1);
     SetMass(20);
     SetVendorType(VT_TREASURE);

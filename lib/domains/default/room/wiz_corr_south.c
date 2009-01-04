@@ -10,12 +10,12 @@ static void create() {
     SetShort("Menagerie Corridor");
     SetLong("This short corridor leads down to the menagerie. This corridor has been specially created to repel NPC's, so that the creatures  below do not escape. The main test lab corridor is north.");
     SetExits( ([
-        "north" : "/domains/default/room/wiz_corr_east",
-        "down" : "/domains/default/room/menagerie.c",
-      ]) );
+                "north" : "/domains/default/room/wiz_corr_east",
+                "down" : "/domains/default/room/menagerie.c",
+                ]) );
 
     SetInventory(([
-      ]));
+                ]));
 
 }
 int CanReceive(object ob) {

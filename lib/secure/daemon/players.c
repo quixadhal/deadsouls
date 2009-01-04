@@ -48,51 +48,51 @@ mapping Currency, Bank, SpellBook;
 
 mapping Levels = ([]);
 static mapping LevelTitles = ([
-  1:"the utter novice",
-  2:"the simple novice",
-  3:"the beginner",
-  4:"the adventurer",
-  5:"the experienced adventurer",
-  6:"the expert adventurer",
-  7:"the great adventurer",
-  8:"the master adventurer",
-  9:"the Freeman",
-  10:"the Citizen",
-  11:"the Knight",
-  12:"the Baron",
-  13:"the Count",
-  14:"the Earl",
-  15:"the Marquis",
-  16:"the Duke",
-  17:"the Arch Duke",
-  18:"the Praetor",
-  19:"the Quaestor",
-  20:"the Caesar"
-]);
+        1:"the utter novice",
+        2:"the simple novice",
+        3:"the beginner",
+        4:"the adventurer",
+        5:"the experienced adventurer",
+        6:"the expert adventurer",
+        7:"the great adventurer",
+        8:"the master adventurer",
+        9:"the Freeman",
+        10:"the Citizen",
+        11:"the Knight",
+        12:"the Baron",
+        13:"the Count",
+        14:"the Earl",
+        15:"the Marquis",
+        16:"the Duke",
+        17:"the Arch Duke",
+        18:"the Praetor",
+        19:"the Quaestor",
+        20:"the Caesar"
+        ]);
 
 static mapping QuestLevels = ([
-  10:5,
-  12:12,
-  14:21,
-  16:32,
-  18:45,
-  20:60,
-  22:77,
-  24:96,
-  26:117,
-  28:140,
-  30:165,
-  32:192,
-  34:221,
-  36:252,
-  38:285,
-  40:450,
-]);
+        10:5,
+        12:12,
+        14:21,
+        16:32,
+        18:45,
+        20:60,
+        22:77,
+        24:96,
+        26:117,
+        28:140,
+        30:165,
+        32:192,
+        34:221,
+        36:252,
+        38:285,
+        40:450,
+        ]);
 
 
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) &&
-      base_name(previous_object()) != "/www/cgi/login"){
+            base_name(previous_object()) != "/www/cgi/login"){
         string offender = identify(previous_object(-1));
         debug("PLAYERS_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" PLAYERS_D breach: "+offender+" "+get_stack());
@@ -153,7 +153,7 @@ string *CompileCreList(){
     }
     foreach(string cre in cres){
         if(member_array(cre, user_list) == -1 ||
-          member_array(cre, creators) == -1) 
+                member_array(cre, creators) == -1) 
             this_object()->AddPlayerInfo(replace_string(cre, ".o",""));
     }
     return cres;
@@ -167,7 +167,7 @@ string *CompilePlayerList(){
     }
     foreach(string play in plays){
         if(member_array(play, user_list) == -1 ||
-          member_array(play, players) == -1)
+                member_array(play, players) == -1)
             this_object()->AddPlayerInfo(replace_string(play, ".o",""));
     }
     return plays;
@@ -211,7 +211,7 @@ static int AutoAdvance(object ob, int level){
     ret = ob->GetLevel();
     if(ret >= level){
         ob->eventPrint("%^RED%^%^B_BLACK%^You automatically advance to "+
-          "level "+level+". Congratulations!%^RESET%^");
+                "level "+level+". Congratulations!%^RESET%^");
         ob->AddTrainingPoints(level);
         if(Levels[level]["title"]){
             ob->AddTitle(Levels[level]["title"]);

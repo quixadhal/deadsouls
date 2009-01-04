@@ -29,8 +29,8 @@ static void create(){
     light::create();
     this_object()->AddSave(({ "Heat" }));
     call_out(function(){
-          if( GetBurning() ) set_heart_beat(BurnRate);
-      }, 0);
+            if( GetBurning() ) set_heart_beat(BurnRate);
+            }, 0);
 }
 
 int GetBurning(){
@@ -137,7 +137,7 @@ mixed indirect_light_obs_with_obj(object *targets, object source){
 
 mixed CanExtinguish(object who){
     if( environment() != this_player() &&
-      environment() != environment(this_player()) ){
+            environment() != environment(this_player()) ){
         return "#That is not within your reach!";
     }
     if( !GetBurning() ) return "It is not burning!";

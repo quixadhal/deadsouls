@@ -17,16 +17,16 @@ void create() {
     SetProperty("light", 2);
     SetProperty("indoors", 1);
     SetLong(
-      "You are in a small box of both infinite and no dimensions.  "
-      "Reality is black and without material.  You are being created. "
-      "You intuit a list of possible races you might become, and even "
-      "read it. Once you pick your race, you can begin your journey "
-      "through the reality of Nightmare!  Type <read list> to see "
-      "the list of races.");
+            "You are in a small box of both infinite and no dimensions.  "
+            "Reality is black and without material.  You are being created. "
+            "You intuit a list of possible races you might become, and even "
+            "read it. Once you pick your race, you can begin your journey "
+            "through the reality of Nightmare!  Type <read list> to see "
+            "the list of races.");
     SetItems(
-      (["room" : "The nothingness from which you will be born "
-        "into Nightmare.",
-        "list" : "A list of races that exist in the world of Nightmare."]) );
+            (["room" : "The nothingness from which you will be born "
+             "into Nightmare.",
+             "list" : "A list of races that exist in the world of Nightmare."]) );
 }
 
 void init() {
@@ -35,9 +35,9 @@ void init() {
     add_action("pick","pick");
     if (this_player()->query_exp() != 0) {
         write("\nWelcome to Nightmare!\n"
-          "Please choose a race for yourself.  Your race determines your main "
-          "genetic attributes, strength, intelligence, dexterity, constitution, "
-          "and charisma.");
+                "Please choose a race for yourself.  Your race determines your main "
+                "genetic attributes, strength, intelligence, dexterity, constitution, "
+                "and charisma.");
         this_player()->set_rolls(0); 
     }
 }
@@ -54,12 +54,12 @@ int pick(string str) {
     }
     str = lower_case(str);
     if(str == "satyr" &&
-      (string)this_player()->query_gender() != "male") {
+            (string)this_player()->query_gender() != "male") {
         write("You must be a male to be a satyr!\nPick again.");
         return 1;
     }
     else if(str == "nymph" && (string)this_player()->query_gender()
-      != "female") {
+            != "female") {
         write("You must be a female to be a nymph!\nPick again.");
         return 1;
     }
@@ -111,7 +111,7 @@ int read(string str) {
     write("These are the following races available in our reality:");
     write("-----------------------------------------------------------");
     message("Ninfo", format_page((string *)RACES_D->query_races(), 4),
-      this_player());
+            this_player());
     write("----------------------------------------------------------");
     write("Only males may be satyrs, and only females may be nymphs.");
     write("pick <race> will forever make you one of these races");

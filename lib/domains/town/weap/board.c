@@ -11,8 +11,8 @@ static void create() {
     SetAdjectives(({"ed","education"}));
     SetShort("the board of education");
     SetLong("A long, wide wooden board with a handle at one "+
-      "end. Inscribed along its length are the words: "+
-      "'Board of Education'.");
+            "end. Inscribed along its length are the words: "+
+            "'Board of Education'.");
     SetMass(50);
     SetBaseCost("silver",20);
     SetVendorType(VT_WEAPON);

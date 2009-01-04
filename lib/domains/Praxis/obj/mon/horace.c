@@ -9,7 +9,7 @@ create() {
     SetAggressive( 0);
     SetLevel(12);
     SetLong("He buys and sells goods for adventuring.\n"+
-      "<help shop> will get you a list of shop commands.\n");
+            "<help shop> will get you a list of shop commands.\n");
     SetNativeLanguage( "eltherian" );
     SetGender("male");
     SetMorality(40);
@@ -28,6 +28,6 @@ create() {
 int is_invincible() {
     SetStaminaPoints(GetMaxStaminaPoints());
     this_object()->eventForce("shout in eltherian Help!! I am being attacked by "+
-      (string)previous_object()->query_cap_name());
+            (string)previous_object()->query_cap_name());
     return 0;
 }

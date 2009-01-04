@@ -86,7 +86,7 @@ void end_post(string subj, string mail) {
     else rm(file);
     if( !mail )
         BBOARD_D->add_post(query_board_id(),
-          (string)this_player()->GetCapName(), subj, msg);
+                (string)this_player()->GetCapName(), subj, msg);
     message("system", "Message posted!", this_player());
 }
 
@@ -107,7 +107,7 @@ int cmd_read(string str) {
         if(!str) {
             for(i=0, x = -1; i<maxi; i++)
                 if(member_array((string)this_player()->GetKeyName(),
-                    posts[i]["read"]) == -1) {
+                            posts[i]["read"]) == -1) {
                     x = i;
                     break;
                 }
@@ -118,8 +118,8 @@ int cmd_read(string str) {
         if(x < 0 || x >= sizeof(posts))
             return notify_fail("Invalid post number.\n");
         str = "Post #%^YELLOW%^" + (x+1) + "%^RESET%^ by %^YELLOW%^" +
-        posts[x]["author"] + "%^RESET%^\nSubject: %^CYAN%^" +
-        posts[x]["subject"] + "%^RESET%^\n\n";
+            posts[x]["author"] + "%^RESET%^\nSubject: %^CYAN%^" +
+            posts[x]["subject"] + "%^RESET%^\n\n";
         str += posts[x]["post"];
 
         BBOARD_D->mark_read(query_board_id(),x,(string)this_player()->GetKeyName());
@@ -135,11 +135,11 @@ int cmd_followup_and_respond(string str) {
     int x;
 
     if(!str) return notify_fail(capitalize(verb=query_verb())+" which
-post?\n");
+            post?\n");
     if((x=to_int(str)) < 1 ||
-x>(int)BBOARD_D->query_number_posts(query_board_id()))
+            x>(int)BBOARD_D->query_number_posts(query_board_id()))
 
-      return notify_fail("Invalid post number.\n");
+        return notify_fail("Invalid post number.\n");
     x--;
     post = (mapping)BBOARD_D->query_post(query_board_id(), x);
     if((verb = query_verb()) == "respond") f = (: continue_mail, post :);
@@ -168,7 +168,7 @@ void continue_mail(mapping post, string subj, string file) {
 }
 
 static void check_include_text(string ans, string subj, string file, mapping
-post, int mail) {
+        post, int mail) {
 
     string msg;
 
@@ -177,9 +177,9 @@ post, int mail) {
     if(ans == "y") {
         msg = post["author"] + " once wrote...\n>";
         msg += implode(explode(post["post"], "\n"), "\n> ")+"\n";
-globalstr = msg;
-globalfile = file;
-unguarded( (: write_file(globalfile, globalstr) :) );
+        globalstr = msg;
+        globalfile = file;
+        unguarded( (: write_file(globalfile, globalstr) :) );
     }
     this_player()->eventEdit(file, (: end_post, subj, (mail ? post : 0) :));
 }
@@ -189,11 +189,11 @@ int cmd_remove(string str) {
     int x;
 
     if((x = to_int(str)) < 1 ||
-      x > (int)BBOARD_D->query_number_posts(query_board_id()))
+            x > (int)BBOARD_D->query_number_posts(query_board_id()))
         return notify_fail("Invalid post number.\n");
     post = (mapping)BBOARD_D->query_post(query_board_id(), x-1);
     if(!valid_edit(convert_name(post["author"])))
-      return notify_fail("You do not have permission to remove that!\n");
+        return notify_fail("You do not have permission to remove that!\n");
     BBOARD_D->remove_post(query_board_id(), x-1);
     message("system", "Post "+x+" removed.", this_player());
     return 1;
@@ -205,15 +205,15 @@ int cmd_edit(string str) {
     int x;
 
     if((x = to_int(str)) < 1 ||
-      x > (int)BBOARD_D->query_number_posts(query_board_id()))
+            x > (int)BBOARD_D->query_number_posts(query_board_id()))
         return notify_fail("Invalid post number.\n");
     post = (mapping)BBOARD_D->query_post(query_board_id(), x-1);
     if(!valid_edit(convert_name(post["author"])))
-      return notify_fail("You do not have permission to edit that post!\n");
+        return notify_fail("You do not have permission to edit that post!\n");
     file = DIR_TMP+"/"+(string)this_player()->GetKeyName()+".bb";
     if(file_exists(file)) rm(file);
-globalstr = post["post"];
-globalfile = file;
+    globalstr = post["post"];
+    globalfile = file;
     unguarded( (: write_file(globalfile, globalstr) :) );
     this_player()->edit(file, (: end_edit, post["subject"], x-1 :) );
     return 1;
@@ -230,7 +230,7 @@ void end_edit(string subj, int num) {
     else rm(file);
     BBOARD_D->remove_post(query_board_id(), num);
     BBOARD_D->add_post(query_board_id(),
-      (string)this_player()->GetCapName(), subj, msg);
+            (string)this_player()->GetCapName(), subj, msg);
     message("system", "Message posted!", this_player());
 }
 
@@ -248,11 +248,11 @@ string GetExternalDesc() {
 
         if(!this_player()) lu = 1;
         else if(member_array((string)this_player()->GetKeyName(),
-          posts[i]["read"]) == -1) lu = 0;
+                    posts[i]["read"]) == -1) lu = 0;
         else lu = 1;
         msg += sprintf("[%:-3d] %s %:-17s \"%:-27s %s\n",
-          (i+1), (lu ? "     " : "(new)"), posts[i]["author"]+":",
-          posts[i]["subject"]+"\"", query_board_time(posts[i]["time"]));
+                (i+1), (lu ? "     " : "(new)"), posts[i]["author"]+":",
+                posts[i]["subject"]+"\"", query_board_time(posts[i]["time"]));
     }
     return msg;
 }

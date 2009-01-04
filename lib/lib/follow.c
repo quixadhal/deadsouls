@@ -11,11 +11,11 @@ private static object Leader;
 
 static void create(){ Leader = 0; }
 
-mixed direct_follow_liv(){
-    if( this_object() == this_player() )
-        return "It doesn't quite work that way.";
-    return this_player()->CanFollow(this_object());
-}
+    mixed direct_follow_liv(){
+        if( this_object() == this_player() )
+            return "It doesn't quite work that way.";
+        return this_player()->CanFollow(this_object());
+    }
 
 object SetLeader(object leader){
     if( leader == this_object() ) return 0;

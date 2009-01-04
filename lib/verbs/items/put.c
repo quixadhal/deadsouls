@@ -18,13 +18,13 @@ static void create() {
     SetVerb("put");
     SetSynonyms("place", "stick");
     SetRules("OBS in OBJ", "OBS into OBJ", "OBS on OBJ", "OBS onto OBJ", "OBS OBJ",
-      "WRD WRD in OBJ", "WRD WRD into OBJ", "WRD WRD on OBJ", "WRD WRD onto OBJ");
+            "WRD WRD in OBJ", "WRD WRD into OBJ", "WRD WRD on OBJ", "WRD WRD onto OBJ");
     SetErrorMessage("Put what where?");
     SetHelp("Syntax: <put ITEM into CONTAINER>\n"
-      "Syntax: <put ITEM onto SURFACE>\n\n"
-      "Allows you to stick objects into other objects.\n\n"
-      "Synonyms: place, stick\n\n"
-      "See also: get, give, drop");
+            "Syntax: <put ITEM onto SURFACE>\n\n"
+            "Allows you to stick objects into other objects.\n\n"
+            "Synonyms: place, stick\n\n"
+            "See also: get, give, drop");
 }
 
 
@@ -177,7 +177,7 @@ mixed do_put_wrd_wrd_word_obj(mixed args...) {
     }
 
     if((inherits(LIB_SIT,ob) && sizeof(ob->GetSitters())) ||
-      (inherits(LIB_LIE,ob) && sizeof(ob->GetLiers()))){
+            (inherits(LIB_LIE,ob) && sizeof(ob->GetLiers()))){
         write("There appears to be someone blocking your access.");
         return 0;
     }
@@ -188,17 +188,17 @@ mixed do_put_wrd_wrd_word_obj(mixed args...) {
     pile = new(LIB_PILE);
     pile->SetPile(curr, amt);
     if( !((int)pile->eventMove(ob)) ||
-      (int)this_player()->AddCurrency(curr, -amt) == -1 ) {
+            (int)this_player()->AddCurrency(curr, -amt) == -1 ) {
         this_player()->eventPrint("Something prevents your action.");
         pile->eventDestruct();
         return 1;
     }
     this_player()->eventPrint("You put " + amt + " " + curr + 
-      " "+wort+" "+ob->GetShort()+".");
+            " "+wort+" "+ob->GetShort()+".");
 
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " puts some " + curr + " "+wort+" "+ob->GetShort()+".",
-      this_player());
+            " puts some " + curr + " "+wort+" "+ob->GetShort()+".",
+            this_player());
     return 1;
 }
 

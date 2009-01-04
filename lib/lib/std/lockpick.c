@@ -34,7 +34,7 @@ varargs mixed CanPick(mixed who, mixed what){
 
 
 mixed indirect_pick_str_on_obj_with_obj(string str, object target, object tool,
-  string str2, string targ_id){
+        string str2, string targ_id){
     if( remove_article(lower_case(str)) != "lock" ){
         return "Pick the what?";
     }

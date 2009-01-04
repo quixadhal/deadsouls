@@ -16,11 +16,11 @@ static void create() {
     SetRules("", "OBJ", "on OBJ", "off OBJ", "OBJ on", "OBJ off");
     SetErrorMessage("Turn on or turn off something?");
     SetHelp("Syntax: <turn>\n"
-      "        <turn on ITEM>\n"
-      "        <turn off ITEM>\n"
-      "        <turn on THING on ITEM>\n"
-      "        <turn off THING on ITEM>\n\n"
-      "");  
+            "        <turn on ITEM>\n"
+            "        <turn off ITEM>\n"
+            "        <turn on THING on ITEM>\n"
+            "        <turn off THING on ITEM>\n\n"
+            "");  
 }
 
 mixed can_turn() {
@@ -49,7 +49,7 @@ mixed can_turn_obj_off(mixed foo) {
 
 mixed do_turn() {
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " turns around.", this_player());
+            " turns around.", this_player());
     this_player()->eventPrint("You turn around.");
     return 1;
 }

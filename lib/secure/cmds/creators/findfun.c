@@ -26,8 +26,8 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <findfun FUNCTION_NAME>\n\n"
-      "Tells you which lib file a function is defined in.\n"
-      "Example: findfun AddHP\n"
-      "\n\n"
-      "See also: doctool, showfuns", this_player());
+            "Tells you which lib file a function is defined in.\n"
+            "Example: findfun AddHP\n"
+            "\n\n"
+            "See also: doctool, showfuns", this_player());
 }

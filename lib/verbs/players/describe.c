@@ -15,18 +15,18 @@ static void create() {
     SetRules("LIV","STR");
     SetErrorMessage("Describe syntax: describe <message>");
     SetHelp("Syntax: describe MESSAGE\n"
-      "\n"
-      "Provides a player with a description. You must include "
-      "an instance of $N at least once in your description to "
-      "denote your name. Example: If I typed 'describe $N is "
-      "nondescript.', my description would be 'Rush is "
-      "nondescript.'\n");
+            "\n"
+            "Provides a player with a description. You must include "
+            "an instance of $N at least once in your description to "
+            "denote your name. Example: If I typed 'describe $N is "
+            "nondescript.', my description would be 'Rush is "
+            "nondescript.'\n");
 }
 
 mixed can_describe_str(string str) {
     if(strsrch(str, "$N") == -1)
         return("Your description must include a minimum of one '$N' "
-          + "to specify your name.");
+                + "to specify your name.");
     return 1;
 }
 

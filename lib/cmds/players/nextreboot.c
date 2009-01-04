@@ -28,7 +28,7 @@ mixed cmd(string form) {
         x += offset * 3600;
     str = query_tz()+ " " + ctime(x);
     message("system", "Current "+query_tz()+" system time is "+timestamp(),
-      this_player());
+            this_player());
     if(form && form == "string") return "The next reboot will occur " + str + ".";
     else message("system", "The next reboot will occur " + str + ".",this_player());
     return 1;
@@ -36,6 +36,6 @@ mixed cmd(string form) {
 
 string GetHelp(string str) {
     return ("Syntax: <nextreboot>\n\n"
-      "Tells you when the next regularly scheduled reboot for " +
-      mud_name() + " will occur.");
+            "Tells you when the next regularly scheduled reboot for " +
+            mud_name() + " will occur.");
 }

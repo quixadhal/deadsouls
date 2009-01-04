@@ -18,3 +18,7 @@ void create(){
     SetDrainable(1);
     SetDrainRate(1);
 }
+
+void init(){
+    ::init();
+}

@@ -15,11 +15,11 @@ static void create() {
     SetRules("LIV");
     SetErrorMessage("Whom would you like to lead?");
     SetHelp("Syntax: lead LIVING\n"    
-      "\n"
-      "Allows one to assist a living being who is "
-      "attempting to follow.\n"
-      "\n"
-      "See also: evade, follow, tracking, stealth\n");
+            "\n"
+            "Allows one to assist a living being who is "
+            "attempting to follow.\n"
+            "\n"
+            "See also: evade, follow, tracking, stealth\n");
 }
 
 mixed can_lead_liv() { return 1; }

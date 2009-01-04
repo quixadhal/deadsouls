@@ -55,7 +55,7 @@ varargs int eventDie(mixed agent){
     death_annc = killer + " has destroyed "+ this_object()->GetName()+".";
     //tc("death_annc: "+death_annc,"yellow");
     if(env) tell_room(env,this_object()->GetName()+" breaks down!",
-          ({ this_object() }) ); 
+            ({ this_object() }) ); 
     CHAT_D->eventSendChannel("SYSTEM","death",death_annc,0);
 
     this_object()->eventMove(ROOM_FURNACE);

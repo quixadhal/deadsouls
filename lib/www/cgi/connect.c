@@ -8,7 +8,7 @@ mapping UploadsMap = ([]);
 
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
-      strsrch(base_name(previous_object()), SOCKET_HTTP)){
+            strsrch(base_name(previous_object()), SOCKET_HTTP)){
         string offender = identify(previous_object(-1));
         debug("upload.c SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" upload.c breach: "+offender+" "+get_stack());
@@ -16,11 +16,15 @@ void validate(){
     }
 }
 
-string gateway(mixed args) {
+varargs string gateway(mixed args, mixed args2) {
     object ob = previous_object();
     string host = ob->GetHost();
     string port = ob->GetPort();
     string ret = "";
+    if(args2){
+        host = args;
+        port = args2;
+    }
 
     if(ENABLE_CREWEB){
         //validate();

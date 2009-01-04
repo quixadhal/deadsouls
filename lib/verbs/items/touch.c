@@ -17,10 +17,10 @@ static void create() {
     SetRules("OBJ", "STR on OBJ", "STR of OBJ");
     SetErrorMessage("Touch something?");
     SetHelp("Syntax: <touch ITEM>\n"
-      "        <touch THING on ITEM>\n\n"
-      "This command allows you to touch an object to get an idea "
-      "of any special textural properties it may have.\n\n"
-      "See also: listen, look, read, search, smell");
+            "        <touch THING on ITEM>\n\n"
+            "This command allows you to touch an object to get an idea "
+            "of any special textural properties it may have.\n\n"
+            "See also: listen, look, read, search, smell");
 }
 
 mixed can_touch_obj() {

@@ -6,14 +6,14 @@ static void create() {
     door::create();
 
     SetSide("east", ([ "id" : ({"pressure door leading east", "door", "pressure door", "east door"}),
-        "short" : "a pressure door leading east",
-        "long" : "This is the west side of a pressure door leading east. It is huge and heavy and designed to withstand and deflect great water pressure.",
-        "lockable" : 1 ]) );
+                "short" : "a pressure door leading east",
+                "long" : "This is the west side of a pressure door leading east. It is huge and heavy and designed to withstand and deflect great water pressure.",
+                "lockable" : 1 ]) );
 
     SetSide("west", ([ "id" : ({"pressure door leading west", "door", "pressure door", "west door"}),
-        "short" : "a pressure door leading west",
-        "long" : "This is the east side of a pressure door leading west. It is huge and heavy and designed to withstand and deflect great water pressure.",
-        "lockable" : 1 ]) );
+                "short" : "a pressure door leading west",
+                "long" : "This is the east side of a pressure door leading west. It is huge and heavy and designed to withstand and deflect great water pressure.",
+                "lockable" : 1 ]) );
 
     SetClosed(1);
     SetLocked(1);

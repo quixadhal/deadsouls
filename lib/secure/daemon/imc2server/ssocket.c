@@ -21,15 +21,15 @@ varargs static void validate(int i){
     if(i){
         if(!socket_status(i) || !socket_status(i)[5]){
             server_log("%^RED%^BAD SOCKET ALERT. fd "+i+":  "+
-              identify(socket_status(i)),"ssocket");
+                    identify(socket_status(i)),"ssocket");
             error("Bad socket, fd "+i);
         }
     }
     if( previous_object() != cmd && previous_object() != router &&
-      previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
+            previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
         server_log("%^RED%^SECURITY ALERT: validation failure in SSOCKET_D.","ssocket");
         error("Illegal attempt to access router socket daemon: "+get_stack()+
-          " "+identify(previous_object(-1)));
+                " "+identify(previous_object(-1)));
     }
 }
 
@@ -49,9 +49,9 @@ void close_connection(int fd){
     if(!sockstat || !sizeof(sockstat)) return;
     if(sockstat[1] == "LISTEN") return;
     server_log("%^YELLOW%^About to try closing socket: "+fd
-      //+" (aka: "+(ROUTER_D->query_connected_fds()[fd] ||
-      //  identify(sockstat))+")","ssocket"
-    );
+            //+" (aka: "+(ROUTER_D->query_connected_fds()[fd] ||
+            //  identify(sockstat))+")","ssocket"
+            );
     yenta("%^YELLOW%^Pre-closing state: "+sockstat[1],"ssocket");
     sockerr = socket_close(fd);
     if(sockerr > -1) map_delete(sockets,fd);
@@ -93,7 +93,7 @@ static void listen_callback(int fd){
     }
     else {
         server_log("socket_accepted: "+fdstat+
-          ", "+identify(socket_status(fdstat)),"ssocket");
+                ", "+identify(socket_status(fdstat)),"ssocket");
     }
 }
 
@@ -147,29 +147,29 @@ static void write_data_retry(int fd, mixed data, int counter){
     }
     sockets[fd]["write_status"] = rc;
     switch (rc) {
-    case EESUCCESS:
-        break;
-    case EEALREADY:
-        sockets[fd]["pending"] = data;
-        break;
-    case EECALLBACK:
-        break;
-    case EESECURITY:
-        break;
-    case EEFDRANGE:
-        break;
-    case EENOTCONN:
-        break;
-    case EEBADF:
-        break;
-    default:
-        if (counter < maxtry) {
-            if(counter < 2 || counter > maxtry-1)
-                trr("SSOCKET_D write_data_retry "+counter+" to "+
-                  IMC2_SERVER_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
-            call_out( (: write_data_retry :), 2 , fd, data, counter + 1 ); 
-            return;
-        }
+        case EESUCCESS:
+            break;
+        case EEALREADY:
+            sockets[fd]["pending"] = data;
+            break;
+        case EECALLBACK:
+            break;
+        case EESECURITY:
+            break;
+        case EEFDRANGE:
+            break;
+        case EENOTCONN:
+            break;
+        case EEBADF:
+            break;
+        default:
+            if (counter < maxtry) {
+                if(counter < 2 || counter > maxtry-1)
+                    trr("SSOCKET_D write_data_retry "+counter+" to "+
+                            IMC2_SERVER_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
+                call_out( (: write_data_retry :), 2 , fd, data, counter + 1 ); 
+                return;
+            }
     }
 }
 

@@ -17,14 +17,14 @@ void create() {
     SetProperties( ([ "light":2, "indoors":1 ]) );
     SetShort("Praxis Realty");
     SetLong(
-      "Welcome to Praxis Realty!\n"
-      "People come here to buy deeds to build estates, as well as work "
-      "orders for making changes to those estates.  The office is built "
-      "up in all kinds of dreary colours, with a desk at the far end of the "
-      "office being the spot where all business is done."
-    );
+            "Welcome to Praxis Realty!\n"
+            "People come here to buy deeds to build estates, as well as work "
+            "orders for making changes to those estates.  The office is built "
+            "up in all kinds of dreary colours, with a desk at the far end of the "
+            "office being the spot where all business is done."
+           );
     SetItems( ([ "colours": "Mostly puce.", "desk": (: "at_desk" :),
-        "office":"A nice little space with a desk in it." ]) );
+                "office":"A nice little space with a desk in it." ]) );
     SetExits( ([ "north" : "/"+__DIR__+"unnamed1" ]) );
 }
 
@@ -43,7 +43,7 @@ void reset() {
     ob->SetKeyName("atmos");
     ob->SetProperties( (["no paralyze":1, "no steal":1]));
     ob->SetId( ({ "atmos", "atmos the patron of high mortals", "patron",
-        "realtor" }) );
+                "realtor" }) );
     ob->SetShort("Atmos, the Patron of High Mortals");
     ob->SetLong("Atmos is a geek.");
     ob->SetLevel(66);
@@ -83,14 +83,14 @@ void reset() {
     arm->SetAdjectives( ({ "heavy", "the" }) );
     arm->SetShort("the plate of Atmos");
     arm->SetLong("A beautifully crafted, fake-silver plate armour once "
-      "owned by Atmos the Geek.");
+            "owned by Atmos the Geek.");
     arm->SetAC(10);
     arm->true(1);
     arm->SetValue(1000);
     arm->SetMass(1500);
     arm->SetType("armour");
     arm->SetRestrictLimbs( ({ "torso", "first arm", "second arm", "third arm",
-        "fourth arm" }) );
+                "fourth arm" }) );
     arm->set_illuminate(20);
     arm->move(ob);
     ob->eventForce("wear plate");
@@ -103,40 +103,40 @@ static int cmd_buy(string str) {
         return notify_fail("Atmos is missing!\n");
     if(str == "deed") {
         if((int)this_player()->query_money("gold") <
-          currency_value(DEED_COST, "gold")) {
+                currency_value(DEED_COST, "gold")) {
             message("my_action", "You do not have enough gold.",this_player());
             return 1;
         }
         message("my_action", "You purchase a deed.", this_player());
         message("other_action", (string)this_player()->query_cap_name()+
-          " purchases a deed.", this_object(), ({ this_player() }));
+                " purchases a deed.", this_object(), ({ this_player() }));
         this_player()->AddCurrency("gold", -currency_value(DEED_COST, "gold"));
         ob = new(OB_DEED);
         if((int)ob->move(this_player())) {
             message("my_action", "You drop your deed.", this_player());
             message("other_action", (string)this_player()->query_cap_name()+
-              " drops "+possessive(this_player())+" deed.", this_object(),
-              ({ this_player() }));
+                    " drops "+possessive(this_player())+" deed.", this_object(),
+                    ({ this_player() }));
             ob->move(this_object());
         }
         return 1;
     }
     else if(str == "order" || str == "work order" ) {
         if((int)this_player()->query_money("gold") <
-          currency_value(ORDER_COST, "gold")) {
+                currency_value(ORDER_COST, "gold")) {
             ob->eventForce("speak You are too low on gold!");
             return 1;
         }
         message("my_action", "You purchase a work order.", this_player());
         message("other_action", (string)this_player()->query_cap_name()+
-          " purchases a work order.", this_object(), ({ this_player() }));
+                " purchases a work order.", this_object(), ({ this_player() }));
         this_player()->AddCurrency("gold", -currency_value(ORDER_COST, "gold"));
         ob = new(OB_ORDER);
         if((int)ob->move(this_player())) {
             message("my_action", "You drop the work order!", this_player());
             message("other_action", (string)this_player()->query_cap_name()+
-              " drops "+possessive(this_player())+" work order.",
-              this_object(), ({ this_player() }));
+                    " drops "+possessive(this_player())+" work order.",
+                    this_object(), ({ this_player() }));
             ob->move(this_object());
         }
         return 1;
@@ -157,11 +157,11 @@ static int read_list(string str) {
 
     if(str != "list") return 0;
     tmp = "Welcome to Praxis Realty!\n"
-    "You may purchase any of the following items:\n"
-    "    deed- an estate deed for creating an estate:  "+
-    currency_value(DEED_COST, "gold")+" gold.\n"
-    "    order- a work order for adding rooms:         "+
-    currency_value(ORDER_COST, "gold")+" gold.\n";
+        "You may purchase any of the following items:\n"
+        "    deed- an estate deed for creating an estate:  "+
+        currency_value(DEED_COST, "gold")+" gold.\n"
+        "    order- a work order for adding rooms:         "+
+        currency_value(ORDER_COST, "gold")+" gold.\n";
     message("info", tmp, this_player());
     return 1;
 }

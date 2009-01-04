@@ -12,8 +12,8 @@ static void create() {
     SetErrorMessage("Kneel down?");
     SetSynonyms("genuflect");
     SetHelp("Syntax: <kneel down>\n"
-      "Allows you to kneel down on the ground.  "
-      "See also: sit, stand, lie");
+            "Allows you to kneel down on the ground.  "
+            "See also: sit, stand, lie");
 }
 
 mixed can_kneel_down() {

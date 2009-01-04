@@ -67,7 +67,7 @@ void add_post(string id, string who, string subj, string msg) {
     if(!subj || subj == "") subj = "[No Subject]";
     if(!msg || msg == "") return;
     __Posts += ({ ([ "author" : who, "subject" : subj, "time" : time(),
-        "post" : msg, "read" : ({ convert_name(who) }) ]) });
+                "post" : msg, "read" : ({ convert_name(who) }) ]) });
     save_board();
 }
 
@@ -138,13 +138,13 @@ string list_new_posts(string id){
 
     for(i = 0; i < sizeof(__Posts); i++){
         if(member_array(convert_name(this_player()->GetKeyName()),
-            __Posts[i]["read"]) == -1) count++;
+                    __Posts[i]["read"]) == -1) count++;
     }
 
     id = replace_string(id, "_", " ");
     mag = "";
     mag += capitalize(id) + " has "+(count ? count : "no") + " new message"+
-    (count == 1 ? "" : "s")+ " posted.";
+        (count == 1 ? "" : "s")+ " posted.";
     return mag;
 }
 

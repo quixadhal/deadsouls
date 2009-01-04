@@ -828,6 +828,7 @@ static void copy_chars (interactive_t * ip, char * from, int num_bytes)
                 break;
 
             case TS_WILL:
+                //debug_message("crat -1\n");
                 ip->iflags |= USING_TELNET;
                 switch ((unsigned char)from[i]) {
                     case TELOPT_TTYPE:
@@ -837,6 +838,7 @@ static void copy_chars (interactive_t * ip, char * from, int num_bytes)
                     case TELOPT_LINEMODE:
                         /* Do linemode and set the mode: EDIT + TRAPSIG */
                         ip->iflags |= USING_LINEMODE;
+                        //debug_message("crat 0\n");
                         set_linemode(ip);
                         break;
 
@@ -848,6 +850,7 @@ static void copy_chars (interactive_t * ip, char * from, int num_bytes)
                     case TELOPT_MXP :
                         /* Mxp is enabled, tell the mudlib about it. */
                         apply(APPLY_MXP_ENABLE, ip->ob, 0, ORIGIN_DRIVER);
+                        //debug_message("crat -2\n");
                         ip->iflags |= USING_MXP;
                         break;
 
@@ -860,12 +863,14 @@ static void copy_chars (interactive_t * ip, char * from, int num_bytes)
                 break;
 
             case TS_WONT:
+                //debug_message("crat -3\n");
                 ip->iflags |= USING_TELNET;
                 switch ((unsigned char)from[i]) {
                     case TELOPT_LINEMODE:
                         /* If we're in single char mode, we just requested for
                          * linemode to be disabled, so don't remove our flag.
                          */
+                        //debug_message("crat 1\n");
                         if (!(ip->iflags & SINGLE_CHAR))
                             ip->iflags &= ~USING_LINEMODE;
                         break;
@@ -881,6 +886,7 @@ static void copy_chars (interactive_t * ip, char * from, int num_bytes)
 
                     case TELOPT_SGA:
                         if (ip->iflags & USING_LINEMODE) {
+                            //debug_message("crat -4\n");
                             ip->iflags |= SUPPRESS_GA;
                             add_binary_message(ip->ob, telnet_yes_single, sizeof(telnet_yes_single));
                         } else {
@@ -918,6 +924,7 @@ static void copy_chars (interactive_t * ip, char * from, int num_bytes)
                 switch ((unsigned char)from[i]) {
                     case TELOPT_SGA:
                         if (ip->iflags & USING_LINEMODE) {
+                            //debug_message("crat -5\n");
                             ip->iflags &= ~SUPPRESS_GA;
                             add_binary_message(ip->ob, telnet_no_single, sizeof(telnet_no_single));
                         }
@@ -1163,6 +1170,7 @@ static void get_user_data (interactive_t * ip)
 
                 if (text_space < MAX_TEXT / 16) {
                     /* the user is sending too much data.  flush it */
+                    //debug_message("crat -6\n");
                     ip->iflags |= SKIP_COMMAND;
                     ip->text_start = ip->text_end = 0;
                     text_space = MAX_TEXT;
@@ -1189,6 +1197,7 @@ static void get_user_data (interactive_t * ip)
     if (!num_bytes) {
       //if (ip->iflags & CLOSING)
       //    debug_message("get_user_data: tried to read from closing fd.\n");
+        //debug_message("crat -7\n");
         ip->iflags |= NET_DEAD;
         remove_interactive(ip->ob, 0);
         return;
@@ -1203,6 +1212,7 @@ static void get_user_data (interactive_t * ip)
 #endif
         //      debug_message("get_user_data: read on fd %d\n", ip->fd);
         //      socket_perror("get_user_data: read", 0);
+        //debug_message("crat -8\n");
         ip->iflags |= NET_DEAD;
         remove_interactive(ip->ob, 0);
         return;
@@ -1222,6 +1232,7 @@ static void get_user_data (interactive_t * ip)
             copy_chars(ip, buf, num_bytes);
             if (cmd_in_buf(ip))
                 ip->iflags |= CMD_IN_BUF;
+                //debug_message("crat -9\n");
             break;
 
         case PORT_MUD:
@@ -1318,6 +1329,7 @@ static int clean_buf (interactive_t * ip)
         for (p = ip->text + ip->text_start;  p < ip->text + ip->text_end;  p++) {
             if (*p == '\r' || *p == '\n') {
                 ip->text_start += p - (ip->text + ip->text_start) + 1;
+                //debug_message("crat -10\n");
                 ip->iflags &= ~SKIP_COMMAND;
                 return clean_buf(ip);
             }
@@ -1368,12 +1380,14 @@ static char *first_cmd_in_buf (interactive_t * ip)
             *p = 0;
 #ifndef GET_CHAR_IS_BUFFERED
         ip->text_start++;
+        //debug_message("crat -11\n");
         if (!clean_buf(ip))
             ip->iflags &= ~CMD_IN_BUF;
         return p;
 #else
         tmp[0] = *p;
         ip->text[ip->text_start++] = 0;
+        //debug_message("crat -12\n");
         if (!clean_buf(ip))
             ip->iflags &= ~CMD_IN_BUF;
         return tmp;
@@ -1392,6 +1406,7 @@ static char *first_cmd_in_buf (interactive_t * ip)
     }
 
     ip->text[ip->text_start++] = 0;
+    //debug_message("crat -13\n");
     if (!cmd_in_buf(ip))
         ip->iflags &= ~CMD_IN_BUF;
 
@@ -1739,6 +1754,7 @@ static void new_user_handler (int which)
      * assume the existance of write_prompt and process_input in user.c
      * until proven wrong (after trying to call them).
      */
+    //debug_message("crat -14\n");
     ob->interactive->iflags |= (HAS_WRITE_PROMPT | HAS_PROCESS_INPUT);
 
     free_object(&master, "new_user");
@@ -1822,6 +1838,7 @@ static char *get_user_command()
 #endif
         /* must not enable echo before the user input is received */
         add_binary_message(command_giver, telnet_no_echo, sizeof(telnet_no_echo));
+        //debug_message("crat -15\n");
         ip->iflags &= ~NOECHO;
     }
 
@@ -1863,6 +1880,7 @@ static void process_input (interactive_t * ip, char * user_command)
     if (!IP_VALID(ip, command_giver))
         return;
     if (!ret) {
+        //debug_message("crat -16\n");
         ip->iflags &= ~HAS_PROCESS_INPUT;
         parse_command(user_command, command_giver);
         return;
@@ -1923,15 +1941,18 @@ int process_user_command()
     if (escape_command(ip, user_command)) {
         if (ip->iflags & SINGLE_CHAR) {
             /* only 1 char ... switch to line buffer mode */
+            //debug_message("crat -17\n");
             ip->iflags |= WAS_SINGLE_CHAR;
             ip->iflags &= ~SINGLE_CHAR;
 #ifdef GET_CHAR_IS_BUFFERED
             ip->text_start = ip->text_end = *ip->text = 0;
 #endif
+            //debug_message("crat 2\n");
             set_linemode(ip);
         } else {
             if (ip->iflags & WAS_SINGLE_CHAR) {
                 /* we now have a string ... switch back to char mode */
+                //debug_message("crat -18\n");
                 ip->iflags &= ~WAS_SINGLE_CHAR;
                 ip->iflags |= SINGLE_CHAR;
                 set_charmode(ip);
@@ -2064,6 +2085,7 @@ void remove_interactive (object_t * ob, int dested)
                         inet_ntoa(ip->addr.sin_addr)));
 
     flush_message(ip);
+    //debug_message("crat -19\n");
     ip->iflags |= CLOSING;
 
 #ifdef OLD_ED
@@ -2144,9 +2166,12 @@ static int call_function_interactive (interactive_t * i, char * str)
     int was_noecho = 0;
 #endif
 
+    //debug_message("crat SUSPISION!!!\n");
     i->iflags &= ~NOESC;
-    if (!(sent = i->input_to))
+    if (!(sent = i->input_to)){
+        //debug_message("crat OMG\n");
         return (0);
+    }
 
     /*
      * Special feature: input_to() has been called to setup a call to a
@@ -2161,6 +2186,25 @@ static int call_function_interactive (interactive_t * i, char * str)
             free_some_svalues(i->carryover, i->num_carry);
         i->carryover = NULL;
         i->num_carry = 0;
+        i->input_to = 0;
+        if (i->iflags & SINGLE_CHAR) {
+            /*
+             * clear single character mode
+             */
+            //debug_message("crat -21\n");
+            i->iflags &= ~SINGLE_CHAR;
+#ifndef GET_CHAR_IS_BUFFERED
+            //debug_message("crat 3\n");
+            set_linemode(i);
+#else
+            was_single = 1;
+            if (i->iflags & NOECHO) {
+                was_noecho = 1;
+                //debug_message("crat -22\n");
+                i->iflags &= ~NOECHO;
+            }
+#endif
+        }
         return (0);
     }
     /*
@@ -2203,13 +2247,16 @@ static int call_function_interactive (interactive_t * i, char * str)
         /*
          * clear single character mode
          */
+        //debug_message("crat -23\n");
         i->iflags &= ~SINGLE_CHAR;
 #ifndef GET_CHAR_IS_BUFFERED
+        //debug_message("crat 4\n");
         set_linemode(i);
 #else
         was_single = 1;
         if (i->iflags & NOECHO) {
             was_noecho = 1;
+            //debug_message("crat -24\n");
             i->iflags &= ~NOECHO;
         }
 #endif
@@ -2237,10 +2284,13 @@ static int call_function_interactive (interactive_t * i, char * str)
 
 #ifdef GET_CHAR_IS_BUFFERED
     if (IP_VALID(i, ob)) {
+        //debug_message("crat: hmm\n");
         if (was_single && !(i->iflags & SINGLE_CHAR)) {
             i->text_start = i->text_end = 0;
             i->text[0] = '\0';
+            //debug_message("crat -25\n");
             i->iflags &= ~CMD_IN_BUF;
+            //debug_message("crat 5\n");
             set_linemode(i);
         }
         if (was_noecho && !(i->iflags & NOECHO))
@@ -2258,6 +2308,7 @@ int set_call (object_t * ob, sentence_t * sent, int flags)
     if (ob->interactive == 0 || ob->interactive->input_to)
         return (0);
     ob->interactive->input_to = sent;
+    //debug_message("crat -26\n");
     ob->interactive->iflags |= (flags & (I_NOECHO | I_NOESC | I_SINGLE_CHAR));
     if (flags & I_NOECHO)
         add_binary_message(ob, telnet_yes_echo, sizeof(telnet_yes_echo));
@@ -2293,6 +2344,7 @@ static void print_prompt (interactive_t* ip)
 #endif
         else if (!apply(APPLY_WRITE_PROMPT, ip->ob, 0, ORIGIN_DRIVER)) {
             if (!IP_VALID(ip, ob)) return;
+            //debug_message("crat -27\n");
             ip->iflags &= ~HAS_WRITE_PROMPT;
             tell_object(ip->ob, ip->prompt, strlen(ip->prompt));
         }
@@ -2707,6 +2759,7 @@ int replace_interactive (object_t * ob, object_t * obfrom)
      * assume the existance of write_prompt and process_input in user.c until
      * proven wrong (after trying to call them).
      */
+    //debug_message("crat -28\n");
     ob->interactive->iflags |= (HAS_WRITE_PROMPT | HAS_PROCESS_INPUT);
     obfrom->interactive = 0;
     ob->interactive->ob = ob;

@@ -38,7 +38,7 @@ void list_quests(object tp, int x) {
     }
     if(!x) {
         tell_object(tp, "There are "+sizeof(quest_list)+" quests you "
-          "have not solved. They are these quests:\n");
+                "have not solved. They are these quests:\n");
         for(i=0; i<sizeof(quest_list); i++) {
             tell_object(tp, (i+1)+": "+(string)present(quest_list[i], this_object())->GetShort()+"\n");
         }
@@ -67,9 +67,9 @@ int check_quests(object tp, int lev) {
 
     qp= (int)tp->query_quest_points();
     if(lev>=5) if(qp < POINTS_NEEDED/4) return 0;
-        else if(lev >= 10) if(qp < POINTS_NEEDED/2) return 0;
-            else if(lev >= 15) if(qp < (3*POINTS_NEEDED)/4) return 0;
-                else if(lev > 19) if(qp < POINTS_NEEDED) return 0;
+    else if(lev >= 10) if(qp < POINTS_NEEDED/2) return 0;
+    else if(lev >= 15) if(qp < (3*POINTS_NEEDED)/4) return 0;
+    else if(lev > 19) if(qp < POINTS_NEEDED) return 0;
     return 1;
 }
 

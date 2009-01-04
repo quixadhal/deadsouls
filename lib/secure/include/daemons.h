@@ -16,6 +16,7 @@
 #define CHAT_D               DIR_SECURE_DAEMONS "/chat"
 #define CLASSES_D            DIR_DAEMONS "/classes"
 #define CMD_D                DIR_DAEMONS "/command"
+#define COMMAND_D            DIR_DAEMONS "/command"
 #define CONFIG_D             DIR_SECURE_DAEMONS "/config"
 #define DECAY_D              DIR_DAEMONS "/decay"
 #define DEFINES_D            DIR_DAEMONS "/defines"

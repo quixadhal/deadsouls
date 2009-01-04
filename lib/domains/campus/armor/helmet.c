@@ -9,8 +9,8 @@ static void create(){
     SetAdjectives(({"kevlar","battle","hard"}));
     SetShort("a camouflaged kevlar helmet");
     SetLong("This is a military helmet made of a very tough "+
-      "polymer fiber that provides excellent ballistic protection. It bears a "+
-      "mottled camouflage design to aid in woodland concealment.");
+            "polymer fiber that provides excellent ballistic protection. It bears a "+
+            "mottled camouflage design to aid in woodland concealment.");
     SetMass(50);
     SetDollarCost(500);
     SetDamagePoints(100);

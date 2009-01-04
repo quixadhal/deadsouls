@@ -43,20 +43,20 @@
  */
 
 /*
-Cratylus@Dead Souls <ds> but let me give you a quick outline
-Cratylus@Dead Souls <ds> i type dial thing
-Cratylus@Dead Souls <ds> the thing inherits LIB_DIAL
-Cratylus@Dead Souls <ds> which is in /lib/events/dial.c
-Cratylus@Dead Souls <ds> and all that contains is like direct_dial_ob() return 1; this kind of thing
-Cratylus@Dead Souls <ds> take a look at LIB_TURN
-Cratylus@Dead Souls <ds> what LIB_DIAL does is provide the object with hooks, so it *can* be dialed
-Cratylus@Dead Souls <ds> so, when i type dial thing, the thing goes, yeah i
-    can be dialed, and then the parser enters the can_dial and do_dial funcs
-    in the verb
-Cratylus@Dead Souls <ds> tellya what. i'd like to work with you on this one. i think it's less straightforward than it
-    seems, and i need to test some ideas before i can say "do it this way"
+   Cratylus@Dead Souls <ds> but let me give you a quick outline
+   Cratylus@Dead Souls <ds> i type dial thing
+   Cratylus@Dead Souls <ds> the thing inherits LIB_DIAL
+   Cratylus@Dead Souls <ds> which is in /lib/events/dial.c
+   Cratylus@Dead Souls <ds> and all that contains is like direct_dial_ob() return 1; this kind of thing
+   Cratylus@Dead Souls <ds> take a look at LIB_TURN
+   Cratylus@Dead Souls <ds> what LIB_DIAL does is provide the object with hooks, so it *can* be dialed
+   Cratylus@Dead Souls <ds> so, when i type dial thing, the thing goes, yeah i
+   can be dialed, and then the parser enters the can_dial and do_dial funcs
+   in the verb
+   Cratylus@Dead Souls <ds> tellya what. i'd like to work with you on this one. i think it's less straightforward than it
+   seems, and i need to test some ideas before i can say "do it this way"
 
-*/
+ */
 
 #include <this is here on purpose to prevent this from loading>
 #include <lib.h>

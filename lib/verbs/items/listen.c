@@ -17,13 +17,13 @@ static void create() {
     SetRules("", "OBJ", "to OBJ", "to STR on OBJ", "to STR of OBJ");
     SetErrorMessage("Listen to something?");
     SetHelp("Syntax: <listen>\n"
-      "        <listen to ITEM>\n\n"
-      "Without any arguments, this command allowed you to listen "
-      "to your general surroundings.  You may, however, concentrate "
-      "your listening on any target.  If it is making noise and you "
-      "can hear well, then you will hear any relevant noise it is "
-      "making.\n\n"
-      "See also: look, search, smell, touch");
+            "        <listen to ITEM>\n\n"
+            "Without any arguments, this command allowed you to listen "
+            "to your general surroundings.  You may, however, concentrate "
+            "your listening on any target.  If it is making noise and you "
+            "can hear well, then you will hear any relevant noise it is "
+            "making.\n\n"
+            "See also: look, search, smell, touch");
 }
 
 mixed can_listen() {
@@ -60,8 +60,8 @@ mixed do_listen() {
         val = "You don't hear a thing.";
     }
     environment(this_player())->eventPrint(this_player()->GetName() +
-      " puts an ear to the air.",
-      this_player());
+            " puts an ear to the air.",
+            this_player());
     this_player()->eventPrint(val);
     return 1;
 }

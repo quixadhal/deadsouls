@@ -9,10 +9,10 @@ string SearchCrap(){
     if(!searched){
         if(!random(1000)){
             result="Rummaging through the disgusting pile, you "+
-            "discover a beautiful gold ring mixed in with the "+
-            "crap.";
+                "discover a beautiful gold ring mixed in with the "+
+                "crap.";
             say(this_player()->GetName()+" searches a pile of debris "+
-              "and seems to have found something of value.");
+                    "and seems to have found something of value.");
             if(!new("/domains/campus/armor/ring")->eventMove(this_player()))
                 new("/domains/campus/armor/ring")->eventMove(environment(this_object()));
             searched=1;
@@ -21,9 +21,9 @@ string SearchCrap(){
     }
 
     result="You rummage through the disgusting pile "+
-    "and find nothing.";
+        "and find nothing.";
     say(this_player()->GetName()+" searches a pile of debris "+
-      "with no results.");
+            "with no results.");
     searched=1;
     return result; 
 }

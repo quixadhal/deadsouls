@@ -45,8 +45,8 @@ varargs mixed eventOpen(object who, object tool){
     }
     if( GetLocked() ){
         send_messages(({ "attempt", "find" }), "$agent_name $agent_verb to "
-          "open $target_name, but $agent_nominative $agent_verb "
-          "it locked.", who, this_object(), environment(who));
+                "open $target_name, but $agent_nominative $agent_verb "
+                "it locked.", who, this_object(), environment(who));
         return 1;
     }
     return close::eventOpen(who, tool);

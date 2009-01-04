@@ -242,14 +242,14 @@ varargs mixed eventPick(object who, string str, object tool){
 }
 
 mixed direct_pick_str_on_obj(string str, object target, string str2,
-  string id){
+        string id){
     object ob = GetShadowedObject();
     if(!ob) return 0;
     return ob->direct_pick_str_on_obj(str,target,str2,id);
 }
 
 mixed direct_pick_str_on_obj_with_obj(string str, object target, object tool,
-  string str2, string targ_id){
+        string str2, string targ_id){
     object ob = GetShadowedObject();
     if(!ob) return 0;
     return ob->direct_pick_str_on_obj_with_obj(str,target,tool,str2,targ_id);

@@ -16,7 +16,7 @@ static void create() {
     SetMealType(MEAL_DRINK);
     SetStrength(1);
     SetMealMessages("You drink the vial of poison.",
-      "$N drinks a vial of poison.");
+            "$N drinks a vial of poison.");
     SetEmptyName("vial");
     SetEmptyShort("an empty vial");
     SetEmptyLong("It is an empty brown bottle that once held some liquid.");

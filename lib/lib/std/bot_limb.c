@@ -21,21 +21,21 @@ int eventDecay(){
         return 0;
     }
     switch(Count){
-    case 10:
-        if(stank)
-            message("smell", "The "+Limb+" rapidly corrodes.", environment());
-        SetShort("the corroding remnant of a " + Limb);
-        break;
-    case 20:
-        if(stank)
-            message("smell", "An acrid chemical odor fills the area.",
-              environment());
-        SetShort("some corroded chemicals");
-        break;
-    case 30:
-        CallOut = -1;
-        Destruct();
-        return 0;
+        case 10:
+            if(stank)
+                message("smell", "The "+Limb+" rapidly corrodes.", environment());
+            SetShort("the corroding remnant of a " + Limb);
+            break;
+        case 20:
+            if(stank)
+                message("smell", "An acrid chemical odor fills the area.",
+                        environment());
+            SetShort("some corroded chemicals");
+            break;
+        case 30:
+            CallOut = -1;
+            Destruct();
+            return 0;
     }
     Count++;
     return Count;

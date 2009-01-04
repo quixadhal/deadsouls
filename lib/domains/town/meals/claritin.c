@@ -19,7 +19,7 @@ static void create() {
     SetMealType(MEAL_FOOD);
     SetMealAction((: MealCure :));
     SetMealMessages("You swallow the pill.",
-      "$N swallows a pill.");
+            "$N swallows a pill.");
 }
 void init(){
     ::init();

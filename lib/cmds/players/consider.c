@@ -41,20 +41,20 @@ int eventConsider(object whom, object opponent){
         object *qual_armor = ({});
 
         switch(Type){
-        case "blade" : DamType = BLADE; break;
-        case "blunt" : DamType = BLUNT; break;
-        case "knife" : DamType = KNIFE; break;
-        case "water" : DamType = WATER; break;
-        case "shock" : DamType = SHOCK; break;
-        case "cold" : DamType = COLD; break;
-        case "heat" : DamType = HEAT; break;
-        case "gas" : DamType = GAS; break;
-        case "acid" : DamType = ACID; break;
-        case "magic" : DamType = MAGIC; break;
-        case "poison" : DamType = POISON; break;
-        case "disease" : DamType = DISEASE; break;
-        case "trauma" : DamType = TRAUMA; break;
-        default : DamType = BLUNT; break;
+            case "blade" : DamType = BLADE; break;
+            case "blunt" : DamType = BLUNT; break;
+            case "knife" : DamType = KNIFE; break;
+            case "water" : DamType = WATER; break;
+            case "shock" : DamType = SHOCK; break;
+            case "cold" : DamType = COLD; break;
+            case "heat" : DamType = HEAT; break;
+            case "gas" : DamType = GAS; break;
+            case "acid" : DamType = ACID; break;
+            case "magic" : DamType = MAGIC; break;
+            case "poison" : DamType = POISON; break;
+            case "disease" : DamType = DISEASE; break;
+            case "trauma" : DamType = TRAUMA; break;
+            default : DamType = BLUNT; break;
         }
 
         foreach(object armor in enemy_armor){
@@ -115,15 +115,15 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: consider <creature>\n"
-      "Gives you an idea of how tough a creature would be to defeat "
-      "in combat. Gauges relative strengths, skills, weapons, "
-      "armor, levels, health, and so on. The resulting comparison "
-      "may not be very useful, because a change during combat (such "
-      "as the opponent changing weapons) or items of unusual class "
-      "or protection (such as magical armor) may not be taken into "
-      "account."
-      "\n",
-      this_player() );
+            "Syntax: consider <creature>\n"
+            "Gives you an idea of how tough a creature would be to defeat "
+            "in combat. Gauges relative strengths, skills, weapons, "
+            "armor, levels, health, and so on. The resulting comparison "
+            "may not be very useful, because a change during combat (such "
+        "as the opponent changing weapons) or items of unusual class "
+            "or protection (such as magical armor) may not be taken into "
+            "account."
+            "\n",
+            this_player() );
 }
 

@@ -22,24 +22,24 @@ static void create() {
     SetVerb("wield");
     SetRules("OBS", "OBS in STR", "OBS with STR");
     SetErrorMessage("Wield what?  Perhaps you mean to specify in which "
-      "limbs?");
+            "limbs?");
     SetHelp(
-      "Syntax: <wield all>\n"
-      "        <wield OBJ>\n"
-      "        <wield OBJ in LIMB>\n"
-      "        <wield OBJ with LIMB>\n"
-      "\n"
-      "This command sets the weapon you name to be wielded in the "
-      "limb you specify.\n\n"
-      "Note that a limb can be a single limb, or a list of limbs "
-      "separated by a comma, or the word \"and\", depending on "
-      "how many limbs are required for wielding the weapon.  For "
-      "example:\n"
-      "\twield the rusty sword with my right hand and left hand\n"
-      "\twield the artrell sword with first hand, second hand, and "
-      "third hand\n"
-      "\n"
-      "See also: wear");
+            "Syntax: <wield all>\n"
+            "        <wield OBJ>\n"
+            "        <wield OBJ in LIMB>\n"
+            "        <wield OBJ with LIMB>\n"
+            "\n"
+            "This command sets the weapon you name to be wielded in the "
+            "limb you specify.\n\n"
+            "Note that a limb can be a single limb, or a list of limbs "
+            "separated by a comma, or the word \"and\", depending on "
+            "how many limbs are required for wielding the weapon.  For "
+            "example:\n"
+            "\twield the rusty sword with my right hand and left hand\n"
+            "\twield the artrell sword with first hand, second hand, and "
+            "third hand\n"
+            "\n"
+            "See also: wear");
 }
 
 mixed can_wield_obj() { 
@@ -98,7 +98,7 @@ mixed do_wield_obs(mixed array targs) {
 
         if( sizeof(limbs) < hands ) {
             this_player()->eventPrint("You don't have anywhere to wield " +
-              item->GetDefiniteShort() + ".");
+                    item->GetDefiniteShort() + ".");
         }
         else {
             mixed tmp;
@@ -110,7 +110,7 @@ mixed do_wield_obs(mixed array targs) {
             if( tmp != 1 ) {
                 if( !tmp ) {
                     this_player()->eventPrint("You cannot wield " +
-                      item->GetDefiniteShort() + ".");
+                            item->GetDefiniteShort() + ".");
                 }
                 else {
                     this_player()->eventPrint(tmp);

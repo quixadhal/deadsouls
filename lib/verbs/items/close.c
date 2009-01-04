@@ -18,9 +18,9 @@ static void create() {
     SetSynonyms("shut");
     SetErrorMessage("Close what?");
     SetHelp("Syntax: <close OBJECT>\n\n"
-      "Closes a door or chest or some other such object.\n\n"
-      "Synonyms: shut\n\n"
-      "See also: lock, open, pick, unlock");
+            "Closes a door or chest or some other such object.\n\n"
+            "Synonyms: shut\n\n"
+            "See also: lock, open, pick, unlock");
 }
 
 mixed can_close_obj(string verb) {

@@ -22,8 +22,8 @@ mixed cmd(string str) {
     foreach(string name in names) {
         mapping foo = Stats[name];
         text += ({ sprintf("%-14s %-8d %-8d %-8d %-6d %d", name, 
-            foo["moves"], foo["array_size"], foo["errors"], 
-            foo["objects"], foo["heart_beats"]) });
+                    foo["moves"], foo["array_size"], foo["errors"], 
+                    foo["objects"], foo["heart_beats"]) });
     }
     this_player()->eventPage(text);
     return 1;
@@ -31,8 +31,8 @@ mixed cmd(string str) {
 
 string GetHelp(string str) {
     return ("Syntax: <realms>\n\n"
-      "A creator command that displays individual author "
-      "statistics relative to the \"areas\" found within "
-      "their directories.\n\n"
-      "See also: man author_stats");
+            "A creator command that displays individual author "
+            "statistics relative to the \"areas\" found within "
+            "their directories.\n\n"
+            "See also: man author_stats");
 }

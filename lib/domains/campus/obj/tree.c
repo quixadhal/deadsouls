@@ -12,8 +12,8 @@ void create(){
     SetAdjectives( ({"huge","large","big","old","great"}) );
     SetShort("a large tree");
     SetLong("This is a very large tree. It has been around since long "+
-      "before the Virtual Campus, and looks like it will be around long "+
-      "after, as well.");
+            "before the Virtual Campus, and looks like it will be around long "+
+            "after, as well.");
     SetMass(20000);
     SetDollarCost(10);
     SetVendorType(VT_TREASURE);

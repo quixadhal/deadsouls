@@ -15,7 +15,7 @@ static void create() {
     SetMealType(MEAL_DRINK);
     SetStrength(5);
     SetMealMessages("You drink from the vial.",
-      "$N drinks from a vial.");
+            "$N drinks from a vial.");
     SetBaseCost("silver",200);
     SetPoints( ([ "poison" : -10 ]) );
     SetEmptyName("vial");

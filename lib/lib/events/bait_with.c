@@ -29,11 +29,11 @@ mixed eventBait(object who, object pole){
     }
     if( !pole->eventBait(who, this_object()) ){
         who->eventPrint(capitalize(pole->GetDefiniteShort()) +
-          "remains unbaited.");
+                "remains unbaited.");
         return 1;
     }
     send_messages("bait", "$agent_name $agent_verb $target_name with " +
-      GetShort() + ".", who, pole, environment(who));
+            GetShort() + ".", who, pole, environment(who));
     Destruct();
     return 1;
 }

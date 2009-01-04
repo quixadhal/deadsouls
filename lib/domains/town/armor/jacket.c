@@ -7,17 +7,17 @@ static void create(){
     armor::create();
     SetKeyName("leather jacket");
     SetId(({"jacket"}));
-    SetAdjectives(({"strong","leather","black","tough"}));
+    SetAdjectives(({"black","leather"}));
     SetShort("a black leather jacket");
-    SetLong("This is a jacket made of strong, tough leather. ");
-    SetMass(150);
+    SetLong("This is a black jacket made of leather. ");
+    SetMass(50);
     SetBaseCost("silver",100);
-    SetDamagePoints(10);
     SetProtection(BLUNT,1);
-    SetProtection(BLADE,5);
+    SetProtection(BLADE,2);
     SetProtection(KNIFE,5);
     SetArmorType(A_ARMOR);
 }
+
 void init(){
     ::init();
 }

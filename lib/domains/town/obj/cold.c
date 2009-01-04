@@ -47,7 +47,7 @@ void bonuses(){
     }
     else if(victim) {
         foreach( string stat in ({"intelligence", "strength",
-            "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+                    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
             victim->RemoveStatBonus(stat);
         }
     }
@@ -140,9 +140,9 @@ int damage4(){
 int damage5(){
     if(victim){
         tell_room(environment(victim),victimname+" makes a horrible, gurgling, coughing noise and hacks up "+
-          "a huge glob of phlegm.", ({victim}) );
+                "a huge glob of phlegm.", ({victim}) );
         tell_object(victim,"You cough up a huge glob of phlegm, accidentally inhale it, and choke while coughing it "+
-          "back up.");
+                "back up.");
         if(DangerLevel() != 100) victim->AddHP(-(random(20)+10));
         if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-15)-15);
     }

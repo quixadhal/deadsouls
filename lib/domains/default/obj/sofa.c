@@ -9,7 +9,7 @@ static void create() {
     SetAdjectives( ({ "black", "small", "tasteful", "upholstered" }) );
     SetShort("a sofa");
     SetLong("This is a small, plush sofa tastefully upholstered "+
-      "in black. It appears designed for sitting on.");
+            "in black. It appears designed for sitting on.");
     SetMass(1500);
     SetDollarCost(15);
     SetMaxSitters(2);

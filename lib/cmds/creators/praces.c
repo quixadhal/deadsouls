@@ -1,7 +1,7 @@
 /*  /cmds/creator/mraces.c
  *  A tool for cres which displays a listing of all available player races
  *  Blitz@NM-IVD
-*/
+ */
 
 #include <lib.h>
 #include <daemons.h>
@@ -20,8 +20,8 @@ mixed cmd(string str) {
 
 void help() {
     message("info",
-      "Syntax: praces\n"
-      "A simple tool for creators which will list available player races.",
-      this_player() );
+            "Syntax: praces\n"
+            "A simple tool for creators which will list available player races.",
+            this_player() );
 }
 

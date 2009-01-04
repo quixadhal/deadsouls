@@ -11,12 +11,13 @@ void create(){
 
     SetKeyName("pinger");
     SetId( ({"pinger"}) );
-    SetAdjectives( ({"keepalive"}) );
-    SetShort("a keepalive pinger");
+    SetShort("a pinger");
     SetLong("This thing can be set to periodically output a string, "
-      "with the purpose of keeping fickle telnet connections up. "
-      "\nTo set the interval: interval <heartbeats> \n"
-      "To set the string: keepalive <string>");
+            "with the purpose of keeping fickle telnet connections up. "
+            "\nTo set the interval: interval <heartbeats> \n"
+            "To set the string: vassily <string>"
+            "\n\nNote: This object is deprecated. Use the command "
+            "'keepalive' instead.");
     SetNoCondition(1);
     SetMass(20);
     AddSave( ({ "count", "interval", "keepalive" }) );
@@ -44,7 +45,7 @@ int SetKeepalive(string str){
 void init(){
     ::init();
     add_action("SetInterval","interval");
-    add_action("SetKeepalive","keepalive");
+    add_action("SetKeepalive","vassily");
 }
 
 void heart_beat(){
@@ -52,9 +53,12 @@ void heart_beat(){
     if(interval > 0 && count > interval){
         count = 0;
         if(living(environment(this_object())) &&
-          true()){
-            //query_idle(environment(this_object())) > 240){
+                true()){
+#ifndef __DSLIB__
             tell_object(environment(this_object()),keepalive);
+#else
+            send_nullbyte(environment(this_object()));
+#endif
         }
     }
 }

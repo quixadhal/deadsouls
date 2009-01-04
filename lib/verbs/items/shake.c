@@ -9,11 +9,11 @@ static void create() {
     SetSynonyms("jiggle");
     SetErrorMessage("Shake what? Or shake what on what?");
     SetHelp("Syntax: <shake OBJECT>\n"
-      "        <shake THING on OBJECT>\n\n"
-      "Allows you to shake an object, or perhaps a thing on the "
-      "object.  For example, you might want to "
-      "\"shake my magic 8 ball\", or simply \"shake ball\".\n\n"
-      "Synonyms: jiggle");
+            "        <shake THING on OBJECT>\n\n"
+            "Allows you to shake an object, or perhaps a thing on the "
+            "object.  For example, you might want to "
+            "\"shake my magic 8 ball\", or simply \"shake ball\".\n\n"
+            "Synonyms: jiggle");
 }
 
 mixed can_shake_obj() {

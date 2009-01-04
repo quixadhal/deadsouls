@@ -28,7 +28,7 @@ int ReceiveObs(object ob){
 string ReadScreen(){
     string *base_names = ({});
     string ret = "Top loaded objects:\n";
-    int rooms, npcs, meminf;
+    int hbs, hbs2, rooms, npcs, meminf;
     mixed *foo = ({});
     validate();
     ulist = ({});
@@ -52,21 +52,25 @@ string ReadScreen(){
     }
     rooms = sizeof(objects( (: inherits(LIB_ROOM, $1) :) ) );
     npcs = sizeof(objects( (: inherits(LIB_NPC, $1) && clonep($1):) ) );
+    hbs = sizeof(filter( heart_beats(), (: !living($1) :) ));
+    hbs2 = sizeof(filter( heart_beats(), (: !living($1) &&
+                    !inherits(LIB_ROOM, $1) :) ));
     ret += "\nTotal number of loaded objects: "+sizeof(objects())+"\n";
     ret += "Loaded rooms: "+rooms+"\n";
     ret += "Cloned NPC's: "+npcs+"\n\n";
     ret += "Total number of connected users: "+sizeof(users())+"\n";
     ret += "Pending callouts: "+sizeof(call_out_info())+"\n";
     ret += "File descriptors in use: "+
-    (sizeof(explode(dump_file_descriptors(),"\n"))-3)+"\n";
-    if(!strsrch(mud_name(),"Dead Souls")){
+        (sizeof(explode(dump_file_descriptors(),"\n"))-3)+"\n";
+    ret += "Nonlivings with heartbeats: "+hbs+", !rooms: "+hbs2+"\n";
+    if(true()){
         string tmp;
         meminf = memory_info()/1000000;
         if(!meminf) tmp = "less than 1 meg";
         else tmp = meminf+" megs";
         if(meminf){
             ret += "Memory in use (allocated memory will be higher): "+
-            tmp+"\n";
+                tmp+"\n";
         }
     }
     return ret;
@@ -101,39 +105,39 @@ string SignRead(){
     else ret +=  "\"I3 connection: %^BOLD%^RED%^OFFLINE%^RESET%^, ";
 
     switch (IMC2_D->getonline()) {
-    case 1:
-        ret += "IMC2: %^BOLD%^GREEN%^ONLINE%^RESET%^\"";
-        break;
-    case 2:
-        if(!IMC2_D->GetEnabled()){
-            ret += "IMC2: %^BOLD%^WHITE%^DISABLED%^RESET%^\"";
-        }
-        else {
-            ret += "IMC2: %^BOLD%^YELLOW%^WAITING FOR ACCEPTANCE%^RESET%^\"";
-        }
-        break;
-    case 3:
-        ret += "IMC2: %^BOLD%^RED%^OFFLINE: CONNECT ERROR%^RESET%^\"";
-        break;
-    case 4:
-        ret += "IMC2: %^BOLD%^RED%^OFFLINE: HUB DOWN%^RESET%^\"";
-        break;
-    case 5:
-        ret += "IMC2: %^BOLD%^RED%^OFFLINE: BANNED%^RESET%^\"";
-        break;
-    default:
-        ret += "IMC2: %^BOLD%^RED%^OFFLINE%^RESET%^\"";
-        break;
+        case 1:
+            ret += "IMC2: %^BOLD%^GREEN%^ONLINE%^RESET%^\"";
+            break;
+        case 2:
+            if(!IMC2_D->GetEnabled()){
+                ret += "IMC2: %^BOLD%^WHITE%^DISABLED%^RESET%^\"";
+            }
+            else {
+                ret += "IMC2: %^BOLD%^YELLOW%^WAITING FOR ACCEPTANCE%^RESET%^\"";
+            }
+            break;
+        case 3:
+            ret += "IMC2: %^BOLD%^RED%^OFFLINE: CONNECT ERROR%^RESET%^\"";
+            break;
+        case 4:
+            ret += "IMC2: %^BOLD%^RED%^OFFLINE: HUB DOWN%^RESET%^\"";
+            break;
+        case 5:
+            ret += "IMC2: %^BOLD%^RED%^OFFLINE: BANNED%^RESET%^\"";
+            break;
+        default:
+            ret += "IMC2: %^BOLD%^RED%^OFFLINE%^RESET%^\"";
+            break;
     }
     return ret;
 }
 
 string LongDesc(){
     string desc = "This is a polished antiseptic room composed of some "+
-    "white gleaming material. There is a viewscreen on a wall here, "+
-    "with a control panel alongside it. "+
-    "A long printout hangs from the panel."
-    "\nThe network troubleshooting room is down from here.";
+        "white gleaming material. There is a viewscreen on a wall here, "+
+        "with a control panel alongside it. "+
+        "A long printout hangs from the panel."
+        "\nThe network troubleshooting room is down from here.";
     desc += "\nA sign on the wall reads: "+SignRead();
     return desc;
 }
@@ -146,38 +150,38 @@ static void create() {
     SetShort("Arch Room");
     SetLong( (: LongDesc :) );
     SetItems( ([ ({"wall","walls"}) : "The walls seem composed "
-        "of some advanced polymer. They are extremely clean and highly "
-        "polished.",
-        "room" : "This looks like it might be the control room "
-        "for the mud.",
-        //({"screen","viewscreen"}) : "This is a display screen of some sort.",
-        ({"screen","viewscreen"}) : (: eventReadScreen :) ,
-        ({"printout"}) : (: eventReadPrintout :) ,
-        ({"sign"}) : "A sign you can read.",
-        ({"panel","control panel"}): "This seems to be the main control "
-        "panel for the mud. It contains a bewildering array of "
-        "keypads, but the most prominent feature of the control panel "
-        "is a metallic plate in its center, shaped in the form of a "
-        "human hand.",
-        ({"camera","hal","HAL"}) : "This is the rectangular faceplate of "
-        "a camera mounted within the wall. On the upper end of the "
-        "rectangle is a stamped label. On the lower end is the lens, "
-        "which has at its center a glowing red light.",
-        ({"label","stamped label"}) : "A stamped metal label. The label "
-        "reads: 'HAL 9000'.",
-        ({"plate","metallic plate","identification plate"}) : "This "
-        "appears to be an identification plate of some sort, designed "
-        "to accomodate a human hand.",
-        "portal" : "A portal to another place." ]) );
+                "of some advanced polymer. They are extremely clean and highly "
+                "polished.",
+                "room" : "This looks like it might be the control room "
+                "for the mud.",
+                //({"screen","viewscreen"}) : "This is a display screen of some sort.",
+                ({"screen","viewscreen"}) : (: eventReadScreen :) ,
+                ({"printout"}) : (: eventReadPrintout :) ,
+                ({"sign"}) : "A sign you can read.",
+                ({"panel","control panel"}): "This seems to be the main control "
+                "panel for the mud. It contains a bewildering array of "
+                "keypads, but the most prominent feature of the control panel "
+                "is a metallic plate in its center, shaped in the form of a "
+                "human hand.",
+                ({"camera","hal","HAL"}) : "This is the rectangular faceplate of "
+                "a camera mounted within the wall. On the upper end of the "
+                "rectangle is a stamped label. On the lower end is the lens, "
+                "which has at its center a glowing red light.",
+                ({"label","stamped label"}) : "A stamped metal label. The label "
+                "reads: 'HAL 9000'.",
+                ({"plate","metallic plate","identification plate"}) : "This "
+                "appears to be an identification plate of some sort, designed "
+                    "to accomodate a human hand.",
+                                                                       "portal" : "A portal to another place." ]) );
     SetExits( ([
-        "north" : "/domains/default/room/wiz_hall",
-        "down" : "/secure/room/network.c",
-      ]) );
+                "north" : "/domains/default/room/wiz_hall",
+                "down" : "/secure/room/network.c",
+                ]) );
     SetEnters( ([
-      ]) );
+                ]) );
     SetProperties(([
-        "no peer" : 1,
-      ]));
+                "no peer" : 1,
+                ]));
     SetRead("screen", (: eventReadScreen :) );
     SetRead("printout", (: eventReadPrintout :) );
     SetRead("sign", (: SignRead :) );
@@ -185,13 +189,13 @@ static void create() {
     SetListen("default", "You can faintly hear a low hum coming from the walls.");
     SetListen( ({"wall","walls"}), "You hear a low throbbing sound, as if from machinery.");
     SetInventory( ([
-        "/secure/obj/arch_board" : 1,
-      ]) );
+                "/secure/obj/arch_board" : 1,
+                ]) );
 }
 int CanReceive(object ob) {
     if( !archp(ob)  && base_name(ob) != "/secure/obj/arch_board"){
         message("info","The arch room is available only to "+
-          "admins, sorry.",ob);
+                "admins, sorry.",ob);
         return 0;
     }
     return 1;

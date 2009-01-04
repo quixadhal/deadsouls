@@ -76,18 +76,18 @@ static void Setup(){
     if( SocketStat < 0 ) return;
     tn("INTERMUD_D: SocketStat: "+SocketStat);
     eventWrite( ({ "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
-        Password, MudList["ID"], ChannelList["ID"], query_host_port(),
-        PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(), 
-        mudlib() + " " + mudlib_version(), version(), "LPMud",
-        MUD_STATUS, ADMIN_EMAIL,
-        (mapping)SERVICES_D->GetServices(), ExtraInfo() }) );
+                Password, MudList["ID"], ChannelList["ID"], query_host_port(),
+                PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(), 
+                mudlib() + " " + mudlib_version(), version(), "LPMud",
+                MUD_STATUS, ADMIN_EMAIL,
+                (mapping)SERVICES_D->GetServices(), ExtraInfo() }) );
     tn("INTERMUD_D setup: "+identify( ({
-          "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
-          Password, MudList["ID"], ChannelList["ID"], query_host_port(),
-          PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(),
-          mudlib() + " " + mudlib_version(), version(), "LPMud",
-          MUD_STATUS, ADMIN_EMAIL,
-          (mapping)SERVICES_D->GetServices(), ([]) }) ), "red");;
+                    "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
+                    Password, MudList["ID"], ChannelList["ID"], query_host_port(),
+                    PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(),
+                    mudlib() + " " + mudlib_version(), version(), "LPMud",
+                    MUD_STATUS, ADMIN_EMAIL,
+                    (mapping)SERVICES_D->GetServices(), ([]) }) ), "red");;
     call_out( (: FirstPing :), 5);
     call_out( (: load_object :), 5, IMC2_D);
 }
@@ -96,18 +96,18 @@ int GetConnectedStatus(){
     return Online;
 }
 
-void eventClearVars(){
-    if( !((int)master()->valid_apply(({ PRIV_ASSIST, INTERMUD_D }))) )
-        error("Illegal attempt to reset intermud: "+get_stack()+" "+identify(previous_object(-1)));
-    Tries = 0;
-    MudList = ([]);
-    ChannelList = ([]);
-    MudList["ID"] = -1;
-    MudList["List"] = ([]);
-    ChannelList["ID"] = -1;
-    ChannelList["List"] = ([]);
-    save_object(SAVE_INTERMUD);
-}
+    void eventClearVars(){
+        if( !((int)master()->valid_apply(({ PRIV_ASSIST, INTERMUD_D }))) )
+            error("Illegal attempt to reset intermud: "+get_stack()+" "+identify(previous_object(-1)));
+        Tries = 0;
+        MudList = ([]);
+        ChannelList = ([]);
+        MudList["ID"] = -1;
+        MudList["List"] = ([]);
+        ChannelList["ID"] = -1;
+        ChannelList["List"] = ([]);
+        save_object(SAVE_INTERMUD);
+    }
 
 static void eventRead(mixed *packet){
     mixed val;
@@ -118,15 +118,15 @@ static void eventRead(mixed *packet){
     if( Banned[packet[2]] ){
 
         eventWrite(({ "error", 5, mud_name(), 0, packet[2],
-            packet[3], "unk-user", 
-            "Your mud is not allowed to send to "+mud_name()+".",
-            packet }));
+                    packet[3], "unk-user", 
+                    "Your mud is not allowed to send to "+mud_name()+".",
+                    packet }));
 
         return;
     }
     switch(packet[0]){
-    case "startup-reply":
-        log_file(LOG_I3,identify(packet));
+        case "startup-reply":
+            log_file(LOG_I3,identify(packet));
         tn("INTERMUD_D: "+identify(packet),"red");
         if( sizeof(packet) != 8 ){
             //tn("We don't like the mudlist packet size.","red");
@@ -152,8 +152,8 @@ static void eventRead(mixed *packet){
             Setup();
         }
         return;
-    case "mudlist":
-        tn("INTERMUD_D mudlist received.","red");
+        case "mudlist":
+            tn("INTERMUD_D mudlist received.","red");
         //log_file(LOG_I3,identify(packet),1);
         if( sizeof(packet) != 8 ){
             //tn("We don't like the mudlist packet size.","red");
@@ -174,8 +174,9 @@ static void eventRead(mixed *packet){
             if(cle){
                 string lib = "unknown";
                 if(val && sizeof(val) > 5 && arrayp(val)) lib = val[5];
+                MUDINFO_D->ReceiveMudInfo(cle, val);
                 tmp += "%^BOLD%^CYAN%^Processing mud: "+identify(cle)+
-                ", lib: "+lib;
+                    ", lib: "+lib;
                 if(val){
                     if(!val[0]) tmp += " %^RED%^BOLD%^offline%^RESET%^";
                     else tmp += " %^GREEN%^BOLD%^ONLINE%^RESET%^";
@@ -185,7 +186,7 @@ static void eventRead(mixed *packet){
                 //tn(tmp,"cyan",ROOM_ARCH);
                 if(val && sizeof(val) > 5 && arrayp(val))
                     tmp = (val[0] ? "%^GREEN%^online" : "%^RED%^offline")+ 
-                    "%^RESET%^, lib: "+lib+", driver: "+val[7];
+                        "%^RESET%^, lib: "+lib+", driver: "+val[7];
                 else tmp = "removed from mudlist.";
                 CHAT_D->eventSendChannel(cle+"@i3","muds",tmp,0);
             }
@@ -195,38 +196,38 @@ static void eventRead(mixed *packet){
         }
         save_object(SAVE_INTERMUD);
         return;
-    case "ping-req":
-        SERVICES_D->eventReceiveAuthRequest(packet);
+        case "ping-req":
+            SERVICES_D->eventReceiveAuthRequest(packet);
         break;
-    case "ping-reply":
-        SERVICES_D->eventReceiveAuthReply(packet);
+        case "ping-reply":
+            SERVICES_D->eventReceiveAuthReply(packet);
         break;
-    case "auth-mud-req":
-        SERVICES_D->eventReceiveAuthRequest(packet);
+        case "auth-mud-req":
+            SERVICES_D->eventReceiveAuthRequest(packet);
         break;
-    case "auth-mud-reply":
-        SERVICES_D->eventReceiveAuthReply(packet);
+        case "auth-mud-reply":
+            SERVICES_D->eventReceiveAuthReply(packet);
         break;
-    case "channel-t":
-        SERVICES_D->eventReceiveChannelTargettedEmote(packet);
+        case "channel-t":
+            SERVICES_D->eventReceiveChannelTargettedEmote(packet);
         break;
-    case "channel-e":
-        SERVICES_D->eventReceiveChannelEmote(packet);
+        case "channel-e":
+            SERVICES_D->eventReceiveChannelEmote(packet);
         break;
-    case "channel-m":
-        SERVICES_D->eventReceiveChannelMessage(packet);
+        case "channel-m":
+            SERVICES_D->eventReceiveChannelMessage(packet);
         break;
-    case "chan-who-reply":
-        SERVICES_D->eventReceiveChannelWhoReply(packet);
+        case "chan-who-reply":
+            SERVICES_D->eventReceiveChannelWhoReply(packet);
         break;
-    case "chan-who-req":
-        SERVICES_D->eventReceiveChannelWhoRequest(packet);
+        case "chan-who-req":
+            SERVICES_D->eventReceiveChannelWhoRequest(packet);
         break;
-    case "chan-user-req":
-        SERVICES_D->eventReceiveChannelUserRequest(packet);
+        case "chan-user-req":
+            SERVICES_D->eventReceiveChannelUserRequest(packet);
         break;
-    case "chanlist-reply":
-        tn("chanlist reply: "+identify(packet), "blue");
+        case "chanlist-reply":
+            tn("chanlist reply: "+identify(packet), "blue");
         if( packet[2] != Nameservers[0][0] ) return;
         ChannelList["ID"] = packet[6];
         foreach(cle, val in packet[7]){ 
@@ -242,51 +243,51 @@ static void eventRead(mixed *packet){
         save_object(SAVE_INTERMUD);
         SERVICES_D->eventRegisterChannels(packet[7]);
         return;
-    case "emoteto":
-        SERVICES_D->eventReceiveEmote(packet);
+        case "emoteto":
+            SERVICES_D->eventReceiveEmote(packet);
         break;
-    case "finger-req":
-        SERVICES_D->eventReceiveFingerRequest(packet);
+        case "finger-req":
+            SERVICES_D->eventReceiveFingerRequest(packet);
         break;
-    case "finger-reply":
-        SERVICES_D->eventReceiveFingerReply(packet);
+        case "finger-reply":
+            SERVICES_D->eventReceiveFingerReply(packet);
         break;
-    case "locate-req":
-        SERVICES_D->eventReceiveLocateRequest(packet);
+        case "locate-req":
+            SERVICES_D->eventReceiveLocateRequest(packet);
         break;
-    case "locate-reply":
-        SERVICES_D->eventReceiveLocateReply(packet);
+        case "locate-reply":
+            SERVICES_D->eventReceiveLocateReply(packet);
         break;
-    case "tell":
-        SERVICES_D->eventReceiveTell(packet);
+        case "tell":
+            SERVICES_D->eventReceiveTell(packet);
         break;
-    case "chan-user-reply":
-        tn("INTERMUD_D: chan-user-reply received.","red");
-    case "ucache-update":
-        SERVICES_D->eventReceiveUcacheUpdate(packet);
+        case "chan-user-reply":
+            tn("INTERMUD_D: chan-user-reply received.","red");
+        case "ucache-update":
+            SERVICES_D->eventReceiveUcacheUpdate(packet);
         break;
-    case "who-req":
-        SERVICES_D->eventReceiveWhoRequest(packet);
+        case "who-req":
+            SERVICES_D->eventReceiveWhoRequest(packet);
         break;
-    case "who-reply":
-        SERVICES_D->eventReceiveWhoReply(packet);
+        case "who-reply":
+            SERVICES_D->eventReceiveWhoReply(packet);
         break;
-    case "news":
-        SERVICES_D->eventReceiveNews(packet);
+        case "news":
+            SERVICES_D->eventReceiveNews(packet);
         break;
-    case "mail":
-        SERVICES_D->eventReceiveMail(packet);
+        case "mail":
+            SERVICES_D->eventReceiveMail(packet);
         break;
-    case "mail-ok":
-        SERVICES_D->eventReceiveMailOk(packet);
+        case "mail-ok":
+            SERVICES_D->eventReceiveMailOk(packet);
         break;
-    case "file":
-        tn("INTERMUD_D: file packet received.","red");
+        case "file":
+            tn("INTERMUD_D: file packet received.","red");
         break;
-    case "error":
-        SERVICES_D->eventReceiveError(packet);
+        case "error":
+            SERVICES_D->eventReceiveError(packet);
         break;
-    default:
+        default:
         break;
     }
 }
@@ -319,129 +320,129 @@ string GetMudName(string mud){
 
     if( MudList["List"][mud] ) return mud;
     lc = map(uc = keys(MudList["List"]), function(string str){
-          if( !str ) return "";
-          else return lower_case(str);
-        });
-      x = member_array(lower_case(mud), lc);
-      if( x < 0 ){
-          foreach(string name in GetMuds()){
-              if(mudses[name][1] +" "+mudses[name][2] == mud) return name;
-          }
-          return 0;
-      }
-      else return uc[x];
-  }
-
-    mapping GetMudList(){ 
-        if(sizeof(MudList) && MudList["List"])
-            return copy(MudList["List"]); 
-        else return ([]);
-    }
-
-    string *GetMuds(){
-        if(sizeof(MudList) && MudList["List"])
-            return keys(MudList["List"]);
-        else return ({});
-    }
-
-    string *GetLCMuds(){
-        string *orig_arr, *new_arr;
-        orig_arr = GetMuds();
-        new_arr = ({});
-        foreach(string namen in orig_arr){
-            new_arr += ({ lower_case(namen) });
+            if( !str ) return "";
+            else return lower_case(str);
+            });
+    x = member_array(lower_case(mud), lc);
+    if( x < 0 ){
+        foreach(string name in GetMuds()){
+            if(mudses[name][1] +" "+mudses[name][2] == mud) return name;
         }
-        return new_arr;
+        return 0;
+    }
+    else return uc[x];
+}
+
+mapping GetMudList(){ 
+    if(sizeof(MudList) && MudList["List"])
+        return copy(MudList["List"]); 
+    else return ([]);
+}
+
+string *GetMuds(){
+    if(sizeof(MudList) && MudList["List"])
+        return keys(MudList["List"]);
+    else return ({});
+}
+
+string *GetLCMuds(){
+    string *orig_arr, *new_arr;
+    orig_arr = GetMuds();
+    new_arr = ({});
+    foreach(string namen in orig_arr){
+        new_arr += ({ lower_case(namen) });
+    }
+    return new_arr;
+}
+
+mapping GetChannelList(){ return copy(ChannelList["List"]); }
+
+string *GetChannels(){ return keys(ChannelList["List"]); }
+
+string *GetMatch(string mud){
+    string *uc, *lc;
+
+    mud = lower_case(mud);
+    lc = map(uc = keys(MudList["List"]), (: lower_case :));
+    return map(filter(regexp(lc, "^"+mud, 1), (: intp :)), (: $(uc)[$1] :));
+}
+
+string GetNameserver(){ return Nameservers[0][0]; }
+
+mixed *GetNameservers(){ return copy(Nameservers); }
+
+int AddBanned(string mud, string reason){
+    if( !master()->valid_apply(({})) ){
+        return 0;
+    }
+    if( !(mud = GetMudName(mud)) ){
+        return 0;
+    }
+    Banned[mud] = reason;
+    save_object(SAVE_INTERMUD);
+    return 1;
+}
+
+mapping GetBanned(){ return copy(Banned); }
+
+int RawSend(string *packet){
+    if(!this_player() || !archp(this_player())) return 0;
+    eventWrite(packet);
+    return 1;
+}
+
+string nextboot(){
+    string str;
+    int x, offset;
+
+    if(DISABLE_REBOOTS){
+        return "never";
     }
 
-    mapping GetChannelList(){ return copy(ChannelList["List"]); }
+    offset = (int)TIME_D->GetOffset(local_time()[9]);
+    offset += EXTRA_TIME_OFFSET;
 
-    string *GetChannels(){ return keys(ChannelList["List"]); }
+    x = (int)EVENTS_D->GetRebootInterval() * 3600;
+    x = (time() - uptime()) + x;
+    if(!LOCAL_TIME) 
+        x += offset * 3600;
+    str = query_tz()+ " " + ctime(x);
+    return str;
+}
 
-    string *GetMatch(string mud){
-        string *uc, *lc;
+//This new packet element data added to be able
+//to handle liveupgrade stuff more sensibly.
+mapping ExtraInfo(){
+    return ([
+            "native version" : native_version(),
+            "os build" : query_os_type(),
+            "architecture" : architecture(),
+            "upsince" : ctime(time() - uptime()),
+            "next boot" : nextboot(),
+            "ip" : HOST_IP,
+            "oob port" : PORT_OOB,
+            ]);
+}
 
-        mud = lower_case(mud);
-        lc = map(uc = keys(MudList["List"]), (: lower_case :));
-        return map(filter(regexp(lc, "^"+mud, 1), (: intp :)), (: $(uc)[$1] :));
-    }
-
-    string GetNameserver(){ return Nameservers[0][0]; }
-
-    mixed *GetNameservers(){ return copy(Nameservers); }
-
-    int AddBanned(string mud, string reason){
-        if( !master()->valid_apply(({})) ){
-            return 0;
-        }
-        if( !(mud = GetMudName(mud)) ){
-            return 0;
-        }
-        Banned[mud] = reason;
+void ConvertLists(){
+    if(classp(MudList)){
+        mapping TmpMap = ([]);
+        MudList = TmpMap;
+        MudList["ID"] = -1;
+        MudList["List"] = ([]);
         save_object(SAVE_INTERMUD);
-        return 1;
     }
-
-    mapping GetBanned(){ return copy(Banned); }
-
-    int RawSend(string *packet){
-        if(!this_player() || !archp(this_player())) return 0;
-        eventWrite(packet);
-        return 1;
+    if(classp(ChannelList)){
+        mapping TmpMap = ([]);
+        ChannelList = TmpMap;
+        ChannelList["ID"] = -1;
+        ChannelList["List"] = ([]);
+        save_object(SAVE_INTERMUD);
     }
+}
 
-    string nextboot(){
-        string str;
-        int x, offset;
-
-        if(DISABLE_REBOOTS){
-            return "never";
-        }
-
-        offset = (int)TIME_D->GetOffset(local_time()[9]);
-        offset += EXTRA_TIME_OFFSET;
-
-        x = (int)EVENTS_D->GetRebootInterval() * 3600;
-        x = (time() - uptime()) + x;
-        if(!LOCAL_TIME) 
-            x += offset * 3600;
-        str = query_tz()+ " " + ctime(x);
-        return str;
-    }
-
-    //This new packet element data added to be able
-    //to handle liveupgrade stuff more sensibly.
-    mapping ExtraInfo(){
-        return ([
-          "native version" : native_version(),
-          "os build" : query_os_type(),
-          "architecture" : architecture(),
-          "upsince" : ctime(time() - uptime()),
-          "next boot" : nextboot(),
-          "ip" : HOST_IP,
-          "oob port" : PORT_OOB,
-        ]);
-    }
-
-    void ConvertLists(){
-        if(classp(MudList)){
-            mapping TmpMap = ([]);
-            MudList = TmpMap;
-            MudList["ID"] = -1;
-            MudList["List"] = ([]);
-            save_object(SAVE_INTERMUD);
-        }
-        if(classp(ChannelList)){
-            mapping TmpMap = ([]);
-            ChannelList = TmpMap;
-            ChannelList["ID"] = -1;
-            ChannelList["List"] = ([]);
-            save_object(SAVE_INTERMUD);
-        }
-    }
-
-    int GetEnabled(){
-        return !(DISABLE_INTERMUD);
-    }
+int GetEnabled(){
+    return !(DISABLE_INTERMUD);
+}
 
 #endif /* __PACKAGE_SOCKETS__ */

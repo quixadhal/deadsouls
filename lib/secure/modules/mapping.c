@@ -43,7 +43,7 @@ varargs int eventStartMappingQuestions(mapping oldmap, object ob, string tmpfile
     else NewMap = ([]);
     key_arr = ({});
     write("If you don't understand these questions, type the letter q on a blank "+
-      "line and hit enter.\n");
+            "line and hit enter.\n");
     write("Please enter the first key element for this mapping:\n");
     input_to( (: GetKey :) );
     return 1;
@@ -72,7 +72,7 @@ int GetKey(string str){
     else {
         key_arr += ({ str });
         write("Please enter the next key element, or enter a single dot to "
-          "finish entering key elements.");
+                "finish entering key elements.");
         input_to( (: GetKey :) );
         return 1;
     }
@@ -233,7 +233,7 @@ int eventSpecialMapHandler(object ob, string func, mixed mode, mixed value){
 
     if(stringp(value) && !grepp(lower_case(func),"prop") ){
         if(sscanf(value,"%d",integer) != 1 && 
-          sscanf(value,"%d %s",integer,junk) != 2) {
+                sscanf(value,"%d %s",integer,junk) != 2) {
             sscanf(value,"%s %s",tmp,junk);
             if(!tmp || !junk) value = 0;
             else if(sscanf(junk,"%d",integer) != 1) sscanf(junk,"%d %s",integer,junk2);
@@ -266,9 +266,9 @@ int eventSpecialMapHandler(object ob, string func, mixed mode, mixed value){
 
 
     switch(func){
-    case "SetProperties" : func2 = "SetProperty";break;
-    case "SetSkills" : func2 = "SetSkill";break;
-    case "SetStats" : func2 = "SetStat";break;
+        case "SetProperties" : func2 = "SetProperty";break;
+        case "SetSkills" : func2 = "SetSkill";break;
+        case "SetStats" : func2 = "SetStat";break;
     }
 
     FirstMap = this_object()->eventReadPair(filename, func2, 1);

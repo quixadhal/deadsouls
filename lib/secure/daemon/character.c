@@ -20,7 +20,7 @@ static void create() {
     SetNoClean(1);
     Links = ([]);
     if( unguarded( (: file_size(SAVE_CHARACTER __SAVE_EXTENSION__) :)) > 0 )
-        unguarded((: restore_object, SAVE_CHARACTER :));
+                                                                         unguarded((: restore_object, SAVE_CHARACTER :));
 }
 
 mixed eventConnect(string who) {
@@ -60,8 +60,8 @@ mixed eventConnect(string who) {
         else tmp = consolidate(x/60, "a minute");
         if( !(member_group(who, PRIV_SECURE) || member_group(who,PRIV_ASSIST)))
             return "\nYour character " + capitalize(c->LastOnWith) +
-            " recently logged in at " + ctime(c->LastOnDate) + ".\n" +
-            "You must wait another " + tmp + ".\n";
+                " recently logged in at " + ctime(c->LastOnDate) + ".\n" +
+                "You must wait another " + tmp + ".\n";
     }
     c->LastOnDate = time();
     c->LastOnWith = who;
@@ -188,5 +188,5 @@ mapping GetLink(string who) {
         if( !ch ) return 0;
     }
     return ([ "primary" : who, "last char" : ch->LastOnWith,
-      "secondaries" : ch->Secondaries, "last on" : ch->LastOnDate ]);
+            "secondaries" : ch->Secondaries, "last on" : ch->LastOnDate ]);
 }

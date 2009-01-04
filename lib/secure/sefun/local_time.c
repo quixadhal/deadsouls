@@ -1,6 +1,6 @@
 /* This file cleane dup by Jonez,
  * 21Mar06
-*/
+ */
 
 #ifndef LOCAL_TIME
 #define LOCAL_TIME 1

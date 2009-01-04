@@ -32,7 +32,7 @@ mixed cmd(string args) {
         who = this_player();
         previous_object()->eventPrint("You heal thyself.");
         say(this_player()->GetCapName() + " heals "+
-          objective(this_player())+"self.",who);
+                objective(this_player())+"self.",who);
     }
     mhp = who->GetMaxHealthPoints();
     msp = who->GetMaxStaminaPoints();
@@ -73,6 +73,6 @@ mixed cmd(string args) {
 
 string GetHelp(string topic) {
     return ("Syntax: <heal LIVING>\n\n"
-      "Allows you to restore a living being's health, stamina, "
-      "magic, and severed limbs.\n\n");
+            "Allows you to restore a living being's health, stamina, "
+            "magic, and severed limbs.\n\n");
 }

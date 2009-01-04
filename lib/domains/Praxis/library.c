@@ -16,20 +16,20 @@ void create() {
     SetProperties((["light":2, "no castle" : 1, "indoors" :1 ]) );
     SetShort( "Praxis Library");
     SetLong(
-      "Welcome to the Praxis Library of higher learning!\n"
-      "The library is filled with shelves and shelves full of books, "
-      "reaching up towards the ceiling. The leather bound books are "
-      "waiting to be read.  East Road is west of the library. "
-      "The command <read books> will show you what books are available and "
-      "type <read [title]> to read a particular book.");
+            "Welcome to the Praxis Library of higher learning!\n"
+            "The library is filled with shelves and shelves full of books, "
+            "reaching up towards the ceiling. The leather bound books are "
+            "waiting to be read.  East Road is west of the library. "
+            "The command <read books> will show you what books are available and "
+            "type <read [title]> to read a particular book.");
     SetItems(
-      (["library" : "The laws of reality are explained in here.",
-        "shelf" : "It has books on it.",
-        "shelves" : "Books fill them.",
-        "book" : "One of many.",
-        "books" : "They are everywhere on the shelves."]) );
+            (["library" : "The laws of reality are explained in here.",
+             "shelf" : "It has books on it.",
+             "shelves" : "Books fill them.",
+             "book" : "One of many.",
+             "books" : "They are everywhere on the shelves."]) );
     SetExits( 
-      (["west" : "/domains/Praxis/east_road1"]) );
+            (["west" : "/domains/Praxis/east_road1"]) );
 
 }
 
@@ -52,7 +52,7 @@ int read(string str) {
         dir = get_dir(DIR_LIBRARY + "/");
         for(i=0; i<sizeof(dir); i++) dir[i] = replace_string(dir[i], "_", " ");
         message("info", replace_string(format_page(dir, 3), "\n", " "),
-          this_player());
+                this_player());
         message("info", "Type <read [book name]> to read a particular book.", this_player());
     }
     else {

@@ -15,13 +15,13 @@ static void create() {
     SetAmbientLight(30);
     SetShort("The roof of the Bank of Ylsrim");
     SetDayLong("From your perfect vantage point atop the hot adobe of "
-      "the Bank of Ylsrim you can see nearly the entire desert "
-      "town.  On the south side of the bank, the wall is rough "
-      "enough to get a foothold down into Kaliid Road.  The wall "
-      "on the other sides of the building are simply too smooth to "
-      "climb down. You might be able to jump into the road, as well."); 
+            "the Bank of Ylsrim you can see nearly the entire desert "
+            "town.  On the south side of the bank, the wall is rough "
+            "enough to get a foothold down into Kaliid Road.  The wall "
+            "on the other sides of the building are simply too smooth to "
+            "climb down. You might be able to jump into the road, as well."); 
     SetNightLong("The lights of Ylsrim look beautiful from this vantage "
-      "on the bank roof.");
+            "on the bank roof.");
     AddItem("adobe", "The walls and roof are made of this substance.");
     // this is the wall that can be climbed down
     AddItem(new("/domains/Ylsrim/etc/roof_wall"));

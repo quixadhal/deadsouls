@@ -15,17 +15,17 @@ static void create() {
     SetRules("", "LIV");
     SetErrorMessage("Whom would you like to follow?");
     SetHelp("Syntax: follow\n"
-      "        follow LIV\n"
-      "\n"
-      "If a living object is specified, this command allows "
-      "you to begin trailing the living being as it moves "
-      "through Dead Souls.\n"
-      "Otherwise, your following status is reported.\n"
-      "If the living being is interested in having you "
-      "follow them, they can issue the \"lead\" command "
-      "in order to avoid accidentally evading you.\n"
-      "\n"
-      "See also: evade, lead, tracking, stealth\n");
+            "        follow LIV\n"
+            "\n"
+            "If a living object is specified, this command allows "
+            "you to begin trailing the living being as it moves "
+            "through Dead Souls.\n"
+            "Otherwise, your following status is reported.\n"
+            "If the living being is interested in having you "
+            "follow them, they can issue the \"lead\" command "
+            "in order to avoid accidentally evading you.\n"
+            "\n"
+            "See also: evade, lead, tracking, stealth\n");
 }
 
 mixed can_follow() { return 1; }
@@ -53,8 +53,8 @@ mixed do_follow() {
     // Format lead string.
     tmp += "You are leading ";
     obs = map(
-      filter(followers, (:this_player()->GetFollowed($1):)),
-      (:$1->GetName():));
+            filter(followers, (:this_player()->GetFollowed($1):)),
+            (:$1->GetName():));
     size = sizeof(obs);
     if(size) tmp += conjunction(obs);
     else tmp += "no one";
@@ -63,8 +63,8 @@ mixed do_follow() {
     // Format evasion string.
     tmp += "You are evading ";
     obs = map(
-      filter(followers, (:!this_player()->GetFollowed($1):)),
-      (:$1->GetName():));
+            filter(followers, (:!this_player()->GetFollowed($1):)),
+            (:$1->GetName():));
     size = sizeof(obs);
     if(size) tmp += conjunction(obs);
     else tmp += "no one";

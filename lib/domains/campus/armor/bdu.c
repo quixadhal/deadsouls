@@ -9,8 +9,8 @@ static void create(){
     SetAdjectives(({"camouflage","battle","dress","combat"}));
     SetShort("a battle dress uniform");
     SetLong("This uniform consists of a camouflage blouse and "+
-      "pants. It is green with mottled brown and black camouflage patterns, "+
-      "and probably provides excellent concealment in a wooded environment.");
+            "pants. It is green with mottled brown and black camouflage patterns, "+
+            "and probably provides excellent concealment in a wooded environment.");
     SetMass(10);
     SetDollarCost(100);
     SetDamagePoints(100);

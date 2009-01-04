@@ -15,8 +15,8 @@ static void create() {
     SetAdjectives("wicked", "ugly");
     SetShort("a wicked balrog");
     SetLong("Balrogs are an ugly sort that hide out among the many "
-      "crevices and canyons in the mountains.  This one is "
-      "extremely tall, and evidently not all too pleased to see you.");
+            "crevices and canyons in the mountains.  This one is "
+            "extremely tall, and evidently not all too pleased to see you.");
     SetLevel(8);         // level, race, and class determine NPC's power
     SetRace("balrog");   // must be some valid race from mraces command
     SetClass("fighter"); // needs a class!

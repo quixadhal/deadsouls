@@ -15,7 +15,7 @@ void create() {
     SetAdjectives(({"metal","ammo","ammunition","large"}));
     SetShort("an ammo box");
     SetLong("This is a large metal box containing various kinds "+
-      "of ammunition. ");
+            "of ammunition. ");
     SetMass(200);
     SetDollarCost(50);
     SetMaxCarry(5000);
@@ -23,10 +23,10 @@ void create() {
     SetClosed(0);
 
     SetInventory( ([
-        "/domains/campus/obj/9mmclip": 10,
-        "/domains/campus/obj/223clip": 10,
-        "/domains/campus/obj/357case": 10
-      ]) );
+                "/domains/campus/obj/9mmclip": 10,
+                "/domains/campus/obj/223clip": 10,
+                "/domains/campus/obj/357case": 10
+                ]) );
 
 }
 

@@ -8,24 +8,24 @@ static void create() {
     SetShort("a generic room");
     SetLong("This is an utterly plain, blank room.");
     SetExits( ([
-        "down" : "/domains/campus/room/bookstore.c",
-      ]) );
+                "down" : "/domains/campus/room/bookstore.c",
+                ]) );
     SetInventory(([
-        "/domains/campus/obj/diamond" : 1,
-        "/domains/default/obj/handbook" : 5,
-        "/domains/campus/obj/pack" : 30,
-        "/domains/campus/obj/bag" : 3,
-        "/domains/default/obj/manual" : 5,
-        "/domains/default/obj/guide" : 5,
-        "/domains/campus/armor/coat" : 1,
-      ]));
+                "/domains/campus/obj/diamond" : 1,
+                "/domains/default/obj/handbook" : 5,
+                "/domains/campus/obj/pack" : 30,
+                "/domains/campus/obj/bag" : 3,
+                "/domains/default/obj/manual" : 5,
+                "/domains/default/obj/guide" : 5,
+                "/domains/campus/armor/coat" : 1,
+                ]));
 }
 int CanReceive(object sneak) {
     object *living_stack = get_livings(sneak);
     if(!living_stack || !arrayp(living_stack)) living_stack = ({ sneak });
     foreach(object ob in living_stack){
         if(living(ob) && !creatorp(ob) &&
-          !member_group(ob,"TEST")) {
+                !member_group(ob,"TEST")) {
             message("info","The storeroom is for authorized personnel only.", ob);
             return 0;
         }

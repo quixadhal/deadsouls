@@ -132,18 +132,18 @@ varargs mixed eventPrepareCast(string verb, mixed array args...){
         send_to = 0;
     }
     send_messages(({ "close", "begin" }),
-      "$agent_name $agent_verb $agent_possessive eyes and "
-      "$agent_verb uttering " + special + ".", this_object(),
-      send_to, environment());
+            "$agent_name $agent_verb $agent_possessive eyes and "
+            "$agent_verb uttering " + special + ".", this_object(),
+            send_to, environment());
     type = spell->GetSpellType();
     if( GetInCombat() || (type == SPELL_COMBAT) ){
         if( type == SPELL_COMBAT ){
             SetAttack(targets, (: eventCast($(spell), $(arg), $(targets)) :),
-              ROUND_MAGIC);
+                    ROUND_MAGIC);
         }
         else {
             SetAttack(0, (: eventCast($(spell), $(arg), $(targets)) :),
-              ROUND_MAGIC);
+                    ROUND_MAGIC);
         }
     }
     else {

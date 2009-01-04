@@ -16,11 +16,11 @@ static void create() {
     SetShort("Yulia, the clinic assistant");
     SetLevel(12);
     SetLong("Yulia is typical of office assistants: she is a bit "+
-      "arrogant, officious, and brusque; but she appears "+
-      "to be a competent enough secretary. "+
-      "She is the person you will buy a treatment slip "+
-      "from. Read the list on the wall for the slips "+
-      "available.");
+            "arrogant, officious, and brusque; but she appears "+
+            "to be a competent enough secretary. "+
+            "She is the person you will buy a treatment slip "+
+            "from. Read the list on the wall for the slips "+
+            "available.");
     SetGender("female");
     SetMorality(40);
     SetRace("human");

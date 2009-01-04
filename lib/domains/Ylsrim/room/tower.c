@@ -21,20 +21,20 @@ void create() {
     SetAmbientLight(28);
     SetShort("Ylsrim Tower");
     SetLong("The tower looks out over Kaliid Road.  South of the road is "
-      "the always busy Ylsrim bazaar.  A spiraling staircase leads "
-      "down into the heart of the adventurer's hall."
-      "\n%^RED%^There is a sign here you can read.%^RESET%^");
+            "the always busy Ylsrim bazaar.  A spiraling staircase leads "
+            "down into the heart of the adventurer's hall."
+            "\n%^RED%^There is a sign here you can read.%^RESET%^");
     SetItems( ([ ({ "road", "kaliid road" }) :
-        "You could probably jump down into the road from here.",
-        "bazaar" : "It looks like it is bustling.",
-        "sign":"A sign. To read it, 'read sign'.",
-        "tower" : "The tower you are on.",
-        ({ "stairs", "staircase" }) : "They lead down into the "
-        "heart of the hall." ]) );
+                "You could probably jump down into the road from here.",
+                "bazaar" : "It looks like it is bustling.",
+                "sign":"A sign. To read it, 'read sign'.",
+                "tower" : "The tower you are on.",
+                ({ "stairs", "staircase" }) : "They lead down into the "
+                "heart of the hall." ]) );
     SetExits( ([ "down" : "/domains/Ylsrim/room/"+ "adv_hall" ]) );
     SetInventory(([
-        "/domains/Ylsrim/obj/stargate" : 1,
-      ]));
+                "/domains/Ylsrim/obj/stargate" : 1,
+                ]));
     SetRead("sign", (: ReadSign :) );
 } 
 void init(){

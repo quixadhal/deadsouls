@@ -14,39 +14,39 @@
  */
 
 /* 
-** First draft / quickly hacked FTPD.
-**
-** Rust (rust@lima.mudlib.org) July 12, 1996
-**
-** There are commands this doesn't support.  If your client
-** Seems to want some other command to work for some weird reason,
-** and this FTPD won't do it, let me know and I'll add it in.
-**
-** Myth@Icon of Sin - Jan 19, 1997
-**  o Fixed STOR:
-**    o ascii: removed carriage returns
-**    o binary: added a fileposition flag
-**  o Added the SYST command.
-**  o Added line checking to the read callback.
-**  o Fixed send so that larger files can be handled without difficulty.
-** Jan 21, 1997
-**  o Fixed the mkd command.
-** 
-** Tigran Sept 16, 1997
-**  o Fixed nlst and list (which are now identicle) so that they accept
-**    flags.  This ftp server should now be able to be used by most 
-**    GUI based clients, and should also work w/ ange-ftp and efs (from 
-**    emacs and Xemacs.  Note there is still work that can be done here.
-**    Acceptable flags are -a -l -C and -F
-**
-** Naebator (sgt@israel.ru) Jan 9, 1998
-**  o Fixed LIST and NLST:
-**    o Added -1 flag
-**    o unless specified otherwize, forces -l flag on LIST and -1 flag on NLST.
-**    o directories report size 0.
-**  o If home directory does not exist, it defaults to "/".
-**
-*/
+ ** First draft / quickly hacked FTPD.
+ **
+ ** Rust (rust@lima.mudlib.org) July 12, 1996
+ **
+ ** There are commands this doesn't support.  If your client
+ ** Seems to want some other command to work for some weird reason,
+ ** and this FTPD won't do it, let me know and I'll add it in.
+ **
+ ** Myth@Icon of Sin - Jan 19, 1997
+ **  o Fixed STOR:
+ **    o ascii: removed carriage returns
+ **    o binary: added a fileposition flag
+ **  o Added the SYST command.
+ **  o Added line checking to the read callback.
+ **  o Fixed send so that larger files can be handled without difficulty.
+ ** Jan 21, 1997
+ **  o Fixed the mkd command.
+ ** 
+ ** Tigran Sept 16, 1997
+ **  o Fixed nlst and list (which are now identicle) so that they accept
+ **    flags.  This ftp server should now be able to be used by most 
+ **    GUI based clients, and should also work w/ ange-ftp and efs (from 
+ **    emacs and Xemacs.  Note there is still work that can be done here.
+ **    Acceptable flags are -a -l -C and -F
+ **
+ ** Naebator (sgt@israel.ru) Jan 9, 1998
+ **  o Fixed LIST and NLST:
+ **    o Added -1 flag
+ **    o unless specified otherwize, forces -l flag on LIST and -1 flag on NLST.
+ **    o directories report size 0.
+ **  o If home directory does not exist, it defaults to "/".
+ **
+ */
 
 #define LIB_FTP_CLIENT	"/secure/lib/net/ftp_client"
 
@@ -64,18 +64,18 @@ private        mixed       outfile   = ([]);
 private static int         MaxBuffer = get_config(__MAX_BYTE_TRANSFER__);
 private static int         MaxFile   = get_config(__MAX_READ_FILE_SIZE__);
 private static mapping     dispatch  = ([
-  "user" : (: eventCmdUser :), "pass" : (: eventCmdPass :),
-  "retr" : (: eventCmdRetr :), "stor" : (: eventCmdStor :),
-  "nlst" : (: eventCmdNlst :), "list" : (: eventCmdList :),
-  "cdup" : (: eventCmdCdup :), "quit" : (: eventCmdQuit :),
-  "type" : (: eventCmdType :), "port" : (: eventCmdPort :),
-  "noop" : (: eventCmdNoop :), "dele" : (: eventCmdDele :),
-  "syst" : (: eventCmdSyst :), "rnfr" : (: eventCmdRnfr :),
-  "rnto" : (: eventCmdRnto :), "stou" : (: eventCmdStou :),
-  "cwd"  : (: eventCmdCwd  :), "mkd"  : (: eventCmdMkd  :),
-  "pwd"  : (: eventCmdPwd  :), "rmd"  : (: eventCmdRmd  :),
+        "user" : (: eventCmdUser :), "pass" : (: eventCmdPass :),
+        "retr" : (: eventCmdRetr :), "stor" : (: eventCmdStor :),
+        "nlst" : (: eventCmdNlst :), "list" : (: eventCmdList :),
+        "cdup" : (: eventCmdCdup :), "quit" : (: eventCmdQuit :),
+        "type" : (: eventCmdType :), "port" : (: eventCmdPort :),
+        "noop" : (: eventCmdNoop :), "dele" : (: eventCmdDele :),
+        "syst" : (: eventCmdSyst :), "rnfr" : (: eventCmdRnfr :),
+        "rnto" : (: eventCmdRnto :), "stou" : (: eventCmdStou :),
+        "cwd"  : (: eventCmdCwd  :), "mkd"  : (: eventCmdMkd  :),
+        "pwd"  : (: eventCmdPwd  :), "rmd"  : (: eventCmdRmd  :),
 
-]);
+        ]);
 
 static void create(int fd, object owner){
     socket::create(fd, owner); 
@@ -105,7 +105,7 @@ nomask static int check_privs(string file, string oper) {
         return 0;
     }
     catch(x = call_other(nom, "check_access", this_object(), "foo", 
-        file, oper));
+                file, oper));
     return x;
 }
 
@@ -174,11 +174,11 @@ private void idle_time_out(){
 
 private string GetFtpWelcomeMsg(){
     return sprintf("220- %s FTP server ready.\n%s"
-      "220 Please login with your creator name or anonymous.\n",
-      mud_name(),
-      file_exists(FTP_WELCOME) ? "220- " +
-      replace_string(read_file(FTP_WELCOME), "\n", "\n220- ") 
-      +"\n": "");
+            "220 Please login with your creator name or anonymous.\n",
+            mud_name(),
+            file_exists(FTP_WELCOME) ? "220- " +
+            replace_string(read_file(FTP_WELCOME), "\n", "\n220- ") 
+            +"\n": "");
 
 }
 
@@ -242,7 +242,7 @@ private void eventCmdUser(string arg){
 #ifdef ALLOW_ANON_FTP
     if(member_array(arg, ({"anonymous", "ftp"})) != -1){
         eventWrite("331 Guest login ok, send your complete e-mail "
-          "address as password.\n",0);
+                "address as password.\n",0);
         return;
     }
 #endif
@@ -268,15 +268,15 @@ private void eventCmdPswd(string arg){
         Session->priv = 0;
         Session->pwd = ANON_PREFIX;
         log_file("reports/network_connect", "Anomymous login "
-          "(email = %s)\n", arg); 
+                "(email = %s)\n", arg); 
         return;
     }
 #endif
     restore_object(DIR_CRES "/" + Session->user[0..0] + "/" +
-      Session->user, 1 );
+            Session->user, 1 );
     if(!Password || Password != crypt(arg, Password) ) {
         log_file("reports/network_connect", "Attempted login as %s\n",
-          Session->user);
+                Session->user);
         eventWrite("530 Login incorrect.\n", 1);
         return;
     }
@@ -315,16 +315,16 @@ string RetrieveCmdCallback(object ob){
 
 private void eventReadFtpData(mixed text){
     switch(Session->binary){
-    case 0:
-        text=replace_string(text, CARRIAGE_RETURN, "");
-        write_file(Session->targetFile, text);
-        return;
-    case 1:
-        write_buffer(Session->targetFile, Session->filepos, text);
-        Session->filepos += sizeof(text);
-        return;
-    default:
-        error(sprintf("Assertion failed: \"##x\" (File: %s)\n",  __FILE__));
+        case 0:
+            text=replace_string(text, CARRIAGE_RETURN, "");
+            write_file(Session->targetFile, text);
+            return;
+        case 1:
+            write_buffer(Session->targetFile, Session->filepos, text);
+            Session->filepos += sizeof(text);
+            return;
+        default:
+            error(sprintf("Assertion failed: \"##x\" (File: %s)\n",  __FILE__));
     }
 }
 
@@ -378,176 +378,176 @@ private void do_list( string arg, int ltype){
 
 #ifdef ALLOW_ANON_FTP
     if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
-      && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
+            && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
         eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):); 
-          return; 
-      }
+                return; 
+                }
 #endif
-        if(file_size(arg) == -2) {      
-            arg = (arg[<1] != '/')? arg+"/"+"*":arg+"*";
-        }
-        if(file_size(FindPrevDir(arg)) == -1){
-            eventWrite(sprintf("550 %s: No such file OR directory.\n", arg),0);
-            eventDestructDataPipe(0);
-            return;
-        }
-        if(!(files = get_dir(arg, -1))){
-            eventWrite(sprintf("550 %s: Permission denied.\n",arg),0);
-            eventDestructDataPipe(0);
-            return;
-        }
-        if(flags){
-            if(strsrch(flags,'a') == -1)
+                if(file_size(arg) == -2) {      
+                arg = (arg[<1] != '/')? arg+"/"+"*":arg+"*";
+                }
+                if(file_size(FindPrevDir(arg)) == -1){
+                eventWrite(sprintf("550 %s: No such file OR directory.\n", arg),0);
+                eventDestructDataPipe(0);
+                return;
+                }
+                if(!(files = get_dir(arg, -1))){
+                eventWrite(sprintf("550 %s: Permission denied.\n",arg),0);
+                eventDestructDataPipe(0);
+                return;
+                }
+                if(flags){
+                if(strsrch(flags,'a') == -1)
                 files = filter(files, (: member_array($1[0], ({".",".."})) == -1 :));
-        }
-        if(!sizeof(files)){
-            eventWrite("550 No files found.\n",0);
-            eventDestructDataPipe(0);
-            return;
-        }
-
-        /* in case of LIST imply -l */
-        /* in case of NLST imply -1 */
-        if (ltype == LTYPE_LIST){
-            if (flags){
-                if ( (strsrch(flags, 'l') == -1) &&
-                  (strsrch(flags, 'C') == -1) &&
-                  (strsrch(flags, '1') == -1) )
-                    flags += "l"; 
-            }
-            else
-                flags = "l";
-        }
-        else{
-            if (flags){
-                if ( (strsrch(flags, 'l') == -1) &&
-                  (strsrch(flags, 'C') == -1) &&
-                  (strsrch(flags, '1') == -1) )
-                    flags += "1";
-            }
-            else flags = "1";
-        }
-        if(strsrch(flags,'F') > -1){
-            foreach(mixed array file in files)
-                if(file[1]==-2) file[0]=sprintf("%s/",file[0]);
-        }
-        if(strsrch(flags,'C')>-1){
-            int lines;
-            int size;
-            int i;
-
-            if((strsrch(flags,'l') > -1 ) || (strsrch(flags,'1') > -1)){
-                eventWrite("550: LIST -C flag is incompatible with -1 or -l.\n",0);
-                eventDestructDataPipe(0);
-                return;
-            }
-            lines=((size = sizeof(files)) / 3 ) + 1;
-            output="";
-            for(i=0;i<lines;i++){
-                mixed array these_files;
-
-                if((i*3+2) < size){
-                    these_files=files[(i*3)..(i*3+2)];
                 }
-                else if(i*3 < size){
-                    these_files = files[(i*3)..];
-                    while(sizeof(these_files)<3)
-                        these_files += ({ ({"",0,0}) });
+                if(!sizeof(files)){
+                    eventWrite("550 No files found.\n",0);
+                    eventDestructDataPipe(0);
+                    return;
                 }
-                else break;
-                output = sprintf("%s%-=25s %-=25s %-=25s\n",
-                  output, these_files[0][0],
-                  these_files[1][0], these_files[2][0] );
-            }
-        }
-        if(strsrch(flags,'l') > -1){
-            if(strsrch(flags,'1')>-1){
-                eventWrite("550: LIST -l and -1 flags incompatible.\n",0);
-                eventDestructDataPipe(0);
+
+                /* in case of LIST imply -l */
+                /* in case of NLST imply -1 */
+                if (ltype == LTYPE_LIST){
+                    if (flags){
+                        if ( (strsrch(flags, 'l') == -1) &&
+                                (strsrch(flags, 'C') == -1) &&
+                                (strsrch(flags, '1') == -1) )
+                            flags += "l"; 
+                    }
+                    else
+                        flags = "l";
+                }
+                else{
+                    if (flags){
+                        if ( (strsrch(flags, 'l') == -1) &&
+                                (strsrch(flags, 'C') == -1) &&
+                                (strsrch(flags, '1') == -1) )
+                            flags += "1";
+                    }
+                    else flags = "1";
+                }
+                if(strsrch(flags,'F') > -1){
+                    foreach(mixed array file in files)
+                        if(file[1]==-2) file[0]=sprintf("%s/",file[0]);
+                }
+                if(strsrch(flags,'C')>-1){
+                    int lines;
+                    int size;
+                    int i;
+
+                    if((strsrch(flags,'l') > -1 ) || (strsrch(flags,'1') > -1)){
+                        eventWrite("550: LIST -C flag is incompatible with -1 or -l.\n",0);
+                        eventDestructDataPipe(0);
+                        return;
+                    }
+                    lines=((size = sizeof(files)) / 3 ) + 1;
+                    output="";
+                    for(i=0;i<lines;i++){
+                        mixed array these_files;
+
+                        if((i*3+2) < size){
+                            these_files=files[(i*3)..(i*3+2)];
+                        }
+                        else if(i*3 < size){
+                            these_files = files[(i*3)..];
+                            while(sizeof(these_files)<3)
+                                these_files += ({ ({"",0,0}) });
+                        }
+                        else break;
+                        output = sprintf("%s%-=25s %-=25s %-=25s\n",
+                                output, these_files[0][0],
+                                these_files[1][0], these_files[2][0] );
+                    }
+                }
+                if(strsrch(flags,'l') > -1){
+                    if(strsrch(flags,'1')>-1){
+                        eventWrite("550: LIST -l and -1 flags incompatible.\n",0);
+                        eventDestructDataPipe(0);
+                        return;
+                    }
+                    output = implode(map(files, 
+                                (:sprintf("%s %3i %=9s %=8s %=7s %s%5s %s",
+                                          $1[1]==-2?"drwxrwxr-x":"-rw-rw-r--",
+                                          1,
+                                          lower_case(replace_string(mud_name(), " ", "_"))[0..7],
+                                          lower_case(replace_string(mud_name(), " ", "_"))[0..7],
+                                          $1[1]==-2?"0":sprintf("%d",$1[1]),
+                                          ctime($1[2])[4..10],
+                                          (time()-$1[2])>31536000?ctime($1[2])[20..]:ctime($1[2])[11..15],
+                                          $1[0]) :)),"\n");
+                }
+                if(strsrch(flags,'1') > -1)
+                    output=implode(map(files,(:sprintf("%s",$1[0]) :)),"\n");
+                eventWrite("150 Opening ASCII mode data connection for file list."+CARRIAGE_RETURN+"\n",0);
+                Session->dataPipe->eventWrite(implode(explode(output,"\n"), CARRIAGE_RETURN+"\n")+CARRIAGE_RETURN+"\n");
                 return;
-            }
-            output = implode(map(files, 
-                (:sprintf("%s %3i %=9s %=8s %=7s %s%5s %s",
-                    $1[1]==-2?"drwxrwxr-x":"-rw-rw-r--",
-                    1,
-                    lower_case(replace_string(mud_name(), " ", "_"))[0..7],
-                    lower_case(replace_string(mud_name(), " ", "_"))[0..7],
-                    $1[1]==-2?"0":sprintf("%d",$1[1]),
-                    ctime($1[2])[4..10],
-                    (time()-$1[2])>31536000?ctime($1[2])[20..]:ctime($1[2])[11..15],
-                    $1[0]) :)),"\n");
-        }
-        if(strsrch(flags,'1') > -1)
-            output=implode(map(files,(:sprintf("%s",$1[0]) :)),"\n");
-        eventWrite("150 Opening ASCII mode data connection for file list."+CARRIAGE_RETURN+"\n",0);
-        Session->dataPipe->eventWrite(implode(explode(output,"\n"), CARRIAGE_RETURN+"\n")+CARRIAGE_RETURN+"\n");
+}
+
+private void eventCmdList(string arg){
+    if(!check_privs(absolute_path(Session->pwd, arg), "read")){
+        eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
         return;
     }
+    do_list(arg, LTYPE_LIST); 
+}
 
-    private void eventCmdList(string arg){
-        if(!check_privs(absolute_path(Session->pwd, arg), "read")){
-            eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
-            return;
-        }
-        do_list(arg, LTYPE_LIST); 
+private void eventCmdNlst(string arg){
+    if(!check_privs(absolute_path(Session->pwd, arg), "read")){
+        eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
+        return;
     }
+    do_list(arg, LTYPE_NLST); 
+}
 
-    private void eventCmdNlst(string arg){
-        if(!check_privs(absolute_path(Session->pwd, arg), "read")){
-            eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
-            return;
-        }
-        do_list(arg, LTYPE_NLST); 
+private void eventCmdRetr(string arg){
+    string target_file;
+    int i;
+
+    if(!arg){ 
+        eventDestructDataPipe((:eventWrite("500 command not understood.\n",0):)); 
+        return; 
     }
-
-    private void eventCmdRetr(string arg){
-        string target_file;
-        int i;
-
-        if(!arg){ 
-            eventDestructDataPipe((:eventWrite("500 command not understood.\n",0):)); 
-            return; 
-        }
-        target_file = absolute_path(Session->pwd, arg);
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
-          && target_file[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
-            eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
-            return; 
-        }
-        i = file_size(target_file);
-        switch(i){
+    target_file = absolute_path(Session->pwd, arg);
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
+            && target_file[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
+        eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
+        return; 
+    }
+    i = file_size(target_file);
+    switch(i){
         case -2:
             eventWrite(sprintf("550 %s: Can't retrieve (it's a directory).\n",
-                target_file),0);
+                        target_file),0);
             eventDestructDataPipe(0);
             return;
         case -1:
             eventWrite(sprintf("550 %s: No such file OR directory.\n", 
-                target_file),0);
+                        target_file),0);
             eventDestructDataPipe(0);
             return;
         case 0:
             eventWrite(sprintf("550 %s: File contains nothing.\n",
-                target_file),0);
+                        target_file),0);
             eventDestructDataPipe(0);
             return;
         default:
             if(i > MaxFile){ 
                 eventWrite(sprintf("550 %s: File size too large.\n",
-                    target_file),0);
+                            target_file),0);
                 eventDestructDataPipe(0);
                 return;
             }
-        }
-        if(!check_privs(target_file, "read")){
-            eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
-            return;
-        }
-        switch(Session->binary){
+    }
+    if(!check_privs(target_file, "read")){
+        eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
+        return;
+    }
+    switch(Session->binary){
         case 0:	
             outfile[Session->dataPipe]=({target_file,0,0,Session->cmdPipe, i});
             eventWrite(sprintf("150 Opening ascii mode data connection for "
-                "%s (%d bytes).\n", target_file, i),0);
+                        "%s (%d bytes).\n", target_file, i),0);
             Session->dataPipe->SetWrite((: RetrieveCmdCallback :));
 
             Session->dataPipe->eventWrite(RetrieveCmdCallback(Session->dataPipe));
@@ -555,358 +555,358 @@ private void do_list( string arg, int ltype){
         case 1:
             outfile[Session->dataPipe]=({target_file,1,0,Session->cmdPipe, i});
             eventWrite(sprintf("150 Opening binary mode data connection "
-                "for %s (%d bytes).\n", target_file, i),0);
+                        "for %s (%d bytes).\n", target_file, i),0);
             Session->dataPipe->SetWrite((: RetrieveCmdCallback :));
 
             Session->dataPipe->eventWrite(RetrieveCmdCallback(Session->dataPipe));
             break;
         default:
             error(sprintf("Assertion failed: \"##x\" (File: %s)\n",  __FILE__));
-        }
     }
+}
 
-    void eventCmdPwd(string arg){
-        eventWrite(sprintf("257 \"%s\" is current directory.\n", Session->pwd),0);
+void eventCmdPwd(string arg){
+    eventWrite(sprintf("257 \"%s\" is current directory.\n", Session->pwd),0);
+}
+
+void eventCmdNoop(string arg){
+    eventWrite("221 NOOP command successful.\n",0);
+}
+
+private void eventCmdStor(string arg){
+    if(!arg){ 
+        eventDestructDataPipe((:eventWrite("500 command not understood.\n",0):)); 
+        return; 
     }
-
-    void eventCmdNoop(string arg){
-        eventWrite("221 NOOP command successful.\n",0);
-    }
-
-    private void eventCmdStor(string arg){
-        if(!arg){ 
-            eventDestructDataPipe((:eventWrite("500 command not understood.\n",0):)); 
-            return; 
-        }
-        arg = absolute_path(Session->pwd, arg);
+    arg = absolute_path(Session->pwd, arg);
 #ifndef ANON_CAN_PUT
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1){
-            eventDestructDataPipe((:eventWrite, "550 Pemission denied.\n", 0:)); 
-            return;
-        }
-#else
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
-          && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
-            eventDestructDataPipe((:eventWrite, "550 Pemission denied.\n", 0:)); 
-            return; 
-        }
-#endif
-        if(file_size(FindPrevDir(arg)) != -2 ){
-            eventDestructDataPipe((:eventWrite, 
-                "553 No such directory to store into.\n", 0:));
-            return;
-        }
-        if(!check_privs(arg, "write")){
-            eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
-            return;
-        }
-        Session->targetFile = arg;
-        if( file_exists(arg) ){
-            if( !rm( arg ) ){
-                eventWrite(sprintf("550 %s: Permission denied.\n", arg),0);
-                eventDestructDataPipe(0);
-                return;
-            }
-        }
-        else if(!write_file( arg, "") ){
-            eventWrite(sprintf("550 %s: Permission denied.\n", arg),0);
-            eventDestructDataPipe(0);
-            return;
-        }
-        Session->filepos = 0;
-        eventWrite(sprintf("150 Opening %s mode data connection for %s.\n",
-            Session->binary ? "binary" : "ascii", arg),0);    
-    }
-
-    private void eventCmdStou(string arg){
-        if(!arg){ 
-            eventDestructDataPipe((:eventWrite("500 command not understood.\n",0):)); 
-            return; 
-        }
-        arg = absolute_path(Session->pwd, arg);
-#ifndef ANON_CAN_PUT
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1){
-            eventDestructDataPipe((:eventWrite, "550 Pemission denied.\n", 0:)); 
-            return;
-        }
-#else
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
-          && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
-            eventDestructDataPipe((:eventWrite, "550 Pemission denied.\n", 0:)); 
-            return; 
-        }
-#endif
-        if(file_size(FindPrevDir(arg)) != -2 ){
-            eventDestructDataPipe((:eventWrite, 
-                "553 No such directory to store into.\n", 0:));
-            return;
-        }
-        if(!check_privs(arg, "write")){
-            eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
-            return;
-        }
-        if( file_exists(arg)){
-            arg = GetUniqueFileName(arg);
-        }
-        Session->targetFile = arg;
-        if(!write_file( arg, "") ){
-            eventWrite(sprintf("550 %s: Permission denied.\n", arg),0);
-            eventDestructDataPipe(0);
-            return;
-        }
-        Session->filepos = 0;
-        eventWrite(sprintf("150 Opening %s mode data connection for %s.\n",
-            Session->binary ? "binary" : "ascii", arg),0);    
-    }
-
-    private void eventCmdCwd(string arg){
-        string newpath;
-        if(!arg){ 
-            eventWrite("500 command not understood.\n",0); 
-            return; 
-        }
-        newpath = absolute_path(Session->pwd, arg);
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
-          && newpath[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
-            eventWrite("550 Pemission denied.\n",0); 
-            return; 
-        }
-        if(!check_privs(newpath, "read")){
-            eventWrite("550 Pemission denied.\n",0);
-            return;
-        }
-        if( file_size(newpath) != -2 ){
-            eventWrite(sprintf("550 %s: No such directory.\n", newpath),0);
-            return;
-        }
-        Session->pwd = newpath;
-        eventWrite("250 CWD command successful.\n",0);
-    }
-
-    private void eventCmdCdup(string arg){ eventCmdCwd(".."); }
-
-    private void eventCmdMkd(string arg){
-        if(!arg){ 
-            eventWrite("500 command not understood.\n",0); 
-            return; 
-        }
-        arg = absolute_path(Session->pwd, arg);
-#ifndef ANON_CAN_PUT
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1){
-            eventWrite("550 Permission denied.\n",0);
-            return;
-        }
-#else
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
-          && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
-            eventWrite("550 Pemission denied.\n",0); 
-            return; 
-        }
-#endif
-        if( file_size(FindPrevDir(arg)) != -2 ){
-            eventWrite(sprintf("550 %s: No such directory.\n",
-                FindPrevDir(arg)),0);
-            return;
-        }
-        if(unguarded((:file_size($(arg)):)) != -1){
-            eventWrite(sprintf("550 %s: File exists.\n", arg),0);
-            return;
-        }
-        if(!check_privs(arg, "write")){
-            eventWrite("550 Pemission denied.\n",0);
-            return;
-        }
-        if( !mkdir(arg) ){
-            eventWrite(sprintf("550 %s: Permission denied.\n", arg),0);
-            return;
-        }
-        eventWrite("257 MKD command successful.\n",0);
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1){
+        eventDestructDataPipe((:eventWrite, "550 Pemission denied.\n", 0:)); 
         return;
     }
-
-    private void eventCmdType(string arg){
-        if(!arg){ 
-            eventWrite("500 command not understood.\n",0); 
-            return; 
+#else
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
+            && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
+        eventDestructDataPipe((:eventWrite, "550 Pemission denied.\n", 0:)); 
+        return; 
+    }
+#endif
+    if(file_size(FindPrevDir(arg)) != -2 ){
+        eventDestructDataPipe((:eventWrite, 
+                    "553 No such directory to store into.\n", 0:));
+        return;
+    }
+    if(!check_privs(arg, "write")){
+        eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
+        return;
+    }
+    Session->targetFile = arg;
+    if( file_exists(arg) ){
+        if( !rm( arg ) ){
+            eventWrite(sprintf("550 %s: Permission denied.\n", arg),0);
+            eventDestructDataPipe(0);
+            return;
         }
-        arg = lower_case(arg);
-        switch(arg){
+    }
+    else if(!write_file( arg, "") ){
+        eventWrite(sprintf("550 %s: Permission denied.\n", arg),0);
+        eventDestructDataPipe(0);
+        return;
+    }
+    Session->filepos = 0;
+    eventWrite(sprintf("150 Opening %s mode data connection for %s.\n",
+                Session->binary ? "binary" : "ascii", arg),0);    
+}
+
+private void eventCmdStou(string arg){
+    if(!arg){ 
+        eventDestructDataPipe((:eventWrite("500 command not understood.\n",0):)); 
+        return; 
+    }
+    arg = absolute_path(Session->pwd, arg);
+#ifndef ANON_CAN_PUT
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1){
+        eventDestructDataPipe((:eventWrite, "550 Pemission denied.\n", 0:)); 
+        return;
+    }
+#else
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
+            && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
+        eventDestructDataPipe((:eventWrite, "550 Pemission denied.\n", 0:)); 
+        return; 
+    }
+#endif
+    if(file_size(FindPrevDir(arg)) != -2 ){
+        eventDestructDataPipe((:eventWrite, 
+                    "553 No such directory to store into.\n", 0:));
+        return;
+    }
+    if(!check_privs(arg, "write")){
+        eventDestructDataPipe((:eventWrite("550 Pemission denied.\n",0):));
+        return;
+    }
+    if( file_exists(arg)){
+        arg = GetUniqueFileName(arg);
+    }
+    Session->targetFile = arg;
+    if(!write_file( arg, "") ){
+        eventWrite(sprintf("550 %s: Permission denied.\n", arg),0);
+        eventDestructDataPipe(0);
+        return;
+    }
+    Session->filepos = 0;
+    eventWrite(sprintf("150 Opening %s mode data connection for %s.\n",
+                Session->binary ? "binary" : "ascii", arg),0);    
+}
+
+private void eventCmdCwd(string arg){
+    string newpath;
+    if(!arg){ 
+        eventWrite("500 command not understood.\n",0); 
+        return; 
+    }
+    newpath = absolute_path(Session->pwd, arg);
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
+            && newpath[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
+        eventWrite("550 Pemission denied.\n",0); 
+        return; 
+    }
+    if(!check_privs(newpath, "read")){
+        eventWrite("550 Pemission denied.\n",0);
+        return;
+    }
+    if( file_size(newpath) != -2 ){
+        eventWrite(sprintf("550 %s: No such directory.\n", newpath),0);
+        return;
+    }
+    Session->pwd = newpath;
+    eventWrite("250 CWD command successful.\n",0);
+}
+
+private void eventCmdCdup(string arg){ eventCmdCwd(".."); }
+
+private void eventCmdMkd(string arg){
+    if(!arg){ 
+        eventWrite("500 command not understood.\n",0); 
+        return; 
+    }
+    arg = absolute_path(Session->pwd, arg);
+#ifndef ANON_CAN_PUT
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1){
+        eventWrite("550 Permission denied.\n",0);
+        return;
+    }
+#else
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
+            && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
+        eventWrite("550 Pemission denied.\n",0); 
+        return; 
+    }
+#endif
+    if( file_size(FindPrevDir(arg)) != -2 ){
+        eventWrite(sprintf("550 %s: No such directory.\n",
+                    FindPrevDir(arg)),0);
+        return;
+    }
+    if(unguarded((:file_size($(arg)):)) != -1){
+        eventWrite(sprintf("550 %s: File exists.\n", arg),0);
+        return;
+    }
+    if(!check_privs(arg, "write")){
+        eventWrite("550 Pemission denied.\n",0);
+        return;
+    }
+    if( !mkdir(arg) ){
+        eventWrite(sprintf("550 %s: Permission denied.\n", arg),0);
+        return;
+    }
+    eventWrite("257 MKD command successful.\n",0);
+    return;
+}
+
+private void eventCmdType(string arg){
+    if(!arg){ 
+        eventWrite("500 command not understood.\n",0); 
+        return; 
+    }
+    arg = lower_case(arg);
+    switch(arg){
         case "a":
             Session->binary = 0;
-            eventWrite("200 Type set to A.\n",0);
-            return;
+        eventWrite("200 Type set to A.\n",0);
+        return;
         case "i":
             Session->binary = 1;
-            eventWrite("200 Type set to I.\n",0);
-            return;
+        eventWrite("200 Type set to I.\n",0);
+        return;
         default:
-            eventWrite("550 Unknown file type.\n",0);
-            return;
-        }
-    }
-
-    private void eventCmdDele(string arg){
-        if(!arg){ 
-            eventWrite("500 command not understood.\n",0); 
-            return; 
-        }
-        arg = absolute_path( Session->pwd, arg);
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
-          && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
-            eventWrite("550 Pemission denied.\n",0); 
-            return; 
-        }
-        if( !file_exists(arg) ){
-            eventWrite(sprintf("550 %s: No such file OR directory.\n", arg),0);
-            return;
-        }
-        if(!check_privs(arg, "write")){
-            eventWrite("550 Pemission denied.\n",0);
-            return;
-        }
-        if( !rm(arg) ){
-            eventWrite(sprintf("550 %s: Permission denied.\n",arg),0);
-            return;
-        }
-        eventWrite("250 DELE command successful.\n",0);
-    }
-
-    private void eventCmdSyst(string arg) {
-        eventWrite("215 UNIX Mud Name: "+mud_name()+"\n",0);
-    }
-
-    private void eventCmdRnfr(string arg) {
-        if(!arg){ 
-            eventWrite("500 command not understood.\n",0); 
-            return; 
-        }
-        arg = absolute_path( Session->pwd, arg);
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
-          && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
-            eventWrite("550 Pemission denied.\n",0); 
-            return; 
-        }
-        if( !file_exists(arg) ){
-            eventWrite(sprintf("550 %s: No such file OR directory.\n", arg),0);
-            return;
-        }
-        if(!check_privs(arg, "write")){
-            eventWrite("550 Pemission denied.\n",0);
-            return;
-        }
-        Session->renamefrom = arg;
-        eventWrite("350 Input new name for " + arg + ".\n",0);
-    }
-
-    private void eventCmdRnto(string arg) {
-        if(!arg){ 
-            eventWrite("500 command not understood.\n",0); 
-            return; 
-        }
-        arg = absolute_path( Session->pwd, arg);
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
-          && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
-            eventWrite("550 Pemission denied.\n",0); 
-            return; 
-        }
-        if( !Session->renamefrom ){
-            eventWrite(sprintf("550 You must first specify a file to rename.\n", 
-                arg),0);
-            return;
-        }
-        if( !file_exists(Session->renamefrom) ){
-            eventWrite(sprintf("550 %s: No such file OR directory.\n", arg),0);
-            Session->renamefrom = 0;
-            return;
-        }
-        if(!check_privs(Session->renamefrom, "write")){
-            eventWrite("550 Pemission denied.\n",0);
-            Session->renamefrom = 0;
-            return;
-        }
-        if(!check_privs(FindPrevDir(arg), "write")){
-            eventWrite("550 Pemission denied.\n",0);
-            Session->renamefrom = 0;
-            return;
-        }
-        if(rename(Session->renamefrom, arg)){
-            eventWrite(sprintf("553 %s: Invalid desitination name.\n", arg),0);
-        }
-        eventWrite(sprintf("250 RNTO %s --> %s.\n", Session->renamefrom, arg),0);
-        Session->renamefrom = 0;
-    }
-
-    private void eventCmdRmd(string arg) {
-        if(!arg){ 
-            eventWrite("500 command not understood.\n",0); 
-            return; 
-        }
-        arg = absolute_path( Session->pwd, arg);
-        if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
-          && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
-            eventWrite("550 Pemission denied.\n",0); 
-            return; 
-        }
-        if( file_size(arg) != -2 ){
-            eventWrite(sprintf("550 %s: No such file OR directory.\n", arg),0);
-            return;
-        }
-        if(!check_privs(arg, "write")){
-            eventWrite("550 Pemission denied.\n",0);
-            return;
-        }
-        if( !rmdir(arg) ){
-            eventWrite(sprintf("550 %s: Directory not empty.\n",arg),0);
-            return;
-        }
-        eventWrite("250 RMD command successful.\n",0);
-    }
-    void eventRead(string data){
-        string cmd, arg;
-        function dispatchTo;
-        int i;
-
-        if (!(Session->command)) Session->command = "";
-
-        data = replace_string(data, CARRIAGE_RETURN, "");
-        Session->command += data;
-        if ((i = strsrch(Session->command, "\n")) == -1) return;
-        data=Session->command[0..i-1];
-        Session->command=Session->command[i+1..];
-        Session->command = trim(Session->command);
-        if (!sscanf(data, "%s %s", cmd, arg)) cmd = data;
-        cmd = lower_case(cmd);
-
-        if (!Session->connected){
-            switch(cmd){
-            case "user":
-                eventCmdUser(arg);
-                return;
-            case "pass":
-                eventCmdPswd(arg);
-                return;
-            case "quit":
-                eventCmdQuit(arg);
-                return;
-            case "noop":
-                eventCmdNoop(arg);
-                return;
-            default:
-                eventWrite("503 Log in with USER first.\n",0);
-                return;
-            }    
-        }
-        Session->idleTime = 0;
-        dispatchTo = dispatch[cmd];
-        if (!dispatchTo){
-            log_file("reports/network_error",
-              sprintf("ftp - unknown command: %s\n",cmd)); 
-            eventWrite(sprintf("502 Unknown command %s.\n", cmd),0);
-            return;
-        }
-        if(catch(evaluate(dispatchTo, arg))){
-            eventWrite("550 Unknown failure.  Please report what you were doing "
-              "to the mud admin.\n",0);
-        }
+        eventWrite("550 Unknown file type.\n",0);
         return;
     }
+}
+
+private void eventCmdDele(string arg){
+    if(!arg){ 
+        eventWrite("500 command not understood.\n",0); 
+        return; 
+    }
+    arg = absolute_path( Session->pwd, arg);
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
+            && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
+        eventWrite("550 Pemission denied.\n",0); 
+        return; 
+    }
+    if( !file_exists(arg) ){
+        eventWrite(sprintf("550 %s: No such file OR directory.\n", arg),0);
+        return;
+    }
+    if(!check_privs(arg, "write")){
+        eventWrite("550 Pemission denied.\n",0);
+        return;
+    }
+    if( !rm(arg) ){
+        eventWrite(sprintf("550 %s: Permission denied.\n",arg),0);
+        return;
+    }
+    eventWrite("250 DELE command successful.\n",0);
+}
+
+private void eventCmdSyst(string arg) {
+    eventWrite("215 UNIX Mud Name: "+mud_name()+"\n",0);
+}
+
+private void eventCmdRnfr(string arg) {
+    if(!arg){ 
+        eventWrite("500 command not understood.\n",0); 
+        return; 
+    }
+    arg = absolute_path( Session->pwd, arg);
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
+            && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
+        eventWrite("550 Pemission denied.\n",0); 
+        return; 
+    }
+    if( !file_exists(arg) ){
+        eventWrite(sprintf("550 %s: No such file OR directory.\n", arg),0);
+        return;
+    }
+    if(!check_privs(arg, "write")){
+        eventWrite("550 Pemission denied.\n",0);
+        return;
+    }
+    Session->renamefrom = arg;
+    eventWrite("350 Input new name for " + arg + ".\n",0);
+}
+
+private void eventCmdRnto(string arg) {
+    if(!arg){ 
+        eventWrite("500 command not understood.\n",0); 
+        return; 
+    }
+    arg = absolute_path( Session->pwd, arg);
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
+            && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
+        eventWrite("550 Pemission denied.\n",0); 
+        return; 
+    }
+    if( !Session->renamefrom ){
+        eventWrite(sprintf("550 You must first specify a file to rename.\n", 
+                    arg),0);
+        return;
+    }
+    if( !file_exists(Session->renamefrom) ){
+        eventWrite(sprintf("550 %s: No such file OR directory.\n", arg),0);
+        Session->renamefrom = 0;
+        return;
+    }
+    if(!check_privs(Session->renamefrom, "write")){
+        eventWrite("550 Pemission denied.\n",0);
+        Session->renamefrom = 0;
+        return;
+    }
+    if(!check_privs(FindPrevDir(arg), "write")){
+        eventWrite("550 Pemission denied.\n",0);
+        Session->renamefrom = 0;
+        return;
+    }
+    if(rename(Session->renamefrom, arg)){
+        eventWrite(sprintf("553 %s: Invalid desitination name.\n", arg),0);
+    }
+    eventWrite(sprintf("250 RNTO %s --> %s.\n", Session->renamefrom, arg),0);
+    Session->renamefrom = 0;
+}
+
+private void eventCmdRmd(string arg) {
+    if(!arg){ 
+        eventWrite("500 command not understood.\n",0); 
+        return; 
+    }
+    arg = absolute_path( Session->pwd, arg);
+    if(member_array(Session->user, ({"anonymous", "ftp"})) != -1 
+            && arg[0..(strlen(ANON_PREFIX)-1)] != ANON_PREFIX) { 
+        eventWrite("550 Pemission denied.\n",0); 
+        return; 
+    }
+    if( file_size(arg) != -2 ){
+        eventWrite(sprintf("550 %s: No such file OR directory.\n", arg),0);
+        return;
+    }
+    if(!check_privs(arg, "write")){
+        eventWrite("550 Pemission denied.\n",0);
+        return;
+    }
+    if( !rmdir(arg) ){
+        eventWrite(sprintf("550 %s: Directory not empty.\n",arg),0);
+        return;
+    }
+    eventWrite("250 RMD command successful.\n",0);
+}
+void eventRead(string data){
+    string cmd, arg;
+    function dispatchTo;
+    int i;
+
+    if (!(Session->command)) Session->command = "";
+
+    data = replace_string(data, CARRIAGE_RETURN, "");
+    Session->command += data;
+    if ((i = strsrch(Session->command, "\n")) == -1) return;
+    data=Session->command[0..i-1];
+    Session->command=Session->command[i+1..];
+    Session->command = trim(Session->command);
+    if (!sscanf(data, "%s %s", cmd, arg)) cmd = data;
+    cmd = lower_case(cmd);
+
+    if (!Session->connected){
+        switch(cmd){
+            case "user":
+                eventCmdUser(arg);
+            return;
+            case "pass":
+                eventCmdPswd(arg);
+            return;
+            case "quit":
+                eventCmdQuit(arg);
+            return;
+            case "noop":
+                eventCmdNoop(arg);
+            return;
+            default:
+            eventWrite("503 Log in with USER first.\n",0);
+            return;
+        }    
+    }
+    Session->idleTime = 0;
+    dispatchTo = dispatch[cmd];
+    if (!dispatchTo){
+        log_file("reports/network_error",
+                sprintf("ftp - unknown command: %s\n",cmd)); 
+        eventWrite(sprintf("502 Unknown command %s.\n", cmd),0);
+        return;
+    }
+    if(catch(evaluate(dispatchTo, arg))){
+        eventWrite("550 Unknown failure.  Please report what you were doing "
+                "to the mud admin.\n",0);
+    }
+    return;
+}

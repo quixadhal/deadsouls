@@ -55,10 +55,10 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal, mixed
         if(!limbs) limbs = "";
 
         if(x > this_object()->GetHealthPoints() &&
-          !(this_object()->GetGodMode()) ){
+                !(this_object()->GetGodMode()) ){
             this_object()->eventPrint("%^RED%^This could have been a fatal hit. "+
-              "The ring's safety protocol prevents \"actual damage\" calculation "+
-              "from proceeding.%^RESET%^");
+                    "The ring's safety protocol prevents \"actual damage\" calculation "+
+                    "from proceeding.%^RESET%^");
             return 1;
         }
 
@@ -84,7 +84,7 @@ int RemoveLimb(string limb, object agent){
     if(!ob) return 0;
     if(protecting){
         this_object()->eventPrint("you have received enough damage to sever it. "+
-          "However, The ring's protection prevents that.");
+                "However, The ring's protection prevents that.");
         return 1;
     }
     else return ob->RemoveLimb(limb, agent);
@@ -95,14 +95,14 @@ int AddHP(int hp){
     if(protecting && hp < 0){
         if(reporting)
             this_object()->eventPrint(identify(previous_object())+" tried to "+
-              "deduct "+abs(hp)+" health. The ring's protection prevents it.");
+                    "deduct "+abs(hp)+" health. The ring's protection prevents it.");
         return 1;
     }
     if(reporting){
         string operation = "add";
         if(hp < 0) operation = "subtract";
         this_object()->eventPrint(identify(previous_object())+" tried to "+
-          operation+" "+abs(hp)+" health.");
+                operation+" "+abs(hp)+" health.");
     }
     if(ob) return ob->AddHP(hp);
     else return 1;

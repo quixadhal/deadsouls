@@ -87,7 +87,7 @@ int eventDie(){
     tell_object(environment(this_object()),"The "+me+" flickers and dies.");
     if(living(environment())){
         tell_room(environment(environment()),environment()->GetName()+"'s "+me+
-          " flickers and dies.",({ environment() }) );
+                " flickers and dies.",({ environment() }) );
     }
     set_heart_beat(0);
     return 1;
@@ -100,7 +100,7 @@ int flicker(){
         return 1;
     }
     tell_room(environment(environment()),environment()->GetName()+"'s "+me+
-      " flickers and shines less brightly than before.",({ environment() }) );
+            " flickers and shines less brightly than before.",({ environment() }) );
     tell_object(environment(),"The "+me+" flickers and shines less brightly.");
     return 1;
 }

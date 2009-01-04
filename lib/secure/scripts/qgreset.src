@@ -1,0 +1,10 @@
+eval return objects( (: base_name($1) == "/secure/obj/floodmapper" :) )->eventDestruct()
+eval return ROOMS_D->zero()
+eval return MAP_D->zero()
+goto /domains/campus/room/start
+gridconfig set here 0,0,0
+#clone /domains/default/npc/drone
+open door
+#goto /domains/town/room/vill_road1
+#gridconfig set here -3,6,0
+

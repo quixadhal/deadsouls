@@ -25,7 +25,7 @@ mixed buryHole(object who, object shovel) {
         return 1;
     }
     send_messages("bury", "$agent_name $agent_verb a deep, gaping "
-      "hole in the sand.", who, 0, environment(who));
+            "hole in the sand.", who, 0, environment(who));
     "/domains/Ylsrim/etc/dug_hole"->SetClosed(1);
     return 1;
 }
@@ -40,7 +40,7 @@ mixed digHole(object who, object shovel) {
         return 1;
     }
     send_messages("dig", "$agent_name $agent_verb up a deep, gaping "
-      "hole in the sand.", who, 0, environment(who));
+            "hole in the sand.", who, 0, environment(who));
     "/domains/Ylsrim/etc/dug_hole"->SetClosed(0);
     return 1;
 }
@@ -49,13 +49,13 @@ mixed digHole(object who, object shovel) {
 // when the hole is open.
 string describeRoom() {
     string str = "You are just outside the western edge of Ylsrim.  You now "
-    "stand in the open desert with a dry, arid wind draining you "
-    "of all strength.  Nothing at all exists here besides endless "
-    "sand.  About all you could possibly do is sit and dig.";
+        "stand in the open desert with a dry, arid wind draining you "
+        "of all strength.  Nothing at all exists here besides endless "
+        "sand.  About all you could possibly do is sit and dig.";
     SetExits( ([ 
-        "east" : "/domains/Ylsrim/room/kaliid7",
-        "down" : "/domains/Ylsrim/room/sand_hole",
-      ]) );
+                "east" : "/domains/Ylsrim/room/kaliid7",
+                "down" : "/domains/Ylsrim/room/sand_hole",
+                ]) );
 
     if( "/domains/Ylsrim/etc/dug_hole"->GetClosed() ) {
         return str;  // no hole to see

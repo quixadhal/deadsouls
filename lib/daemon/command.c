@@ -19,8 +19,8 @@ void create() {
     Commands = ([]);
     Paths = ({});
     eventRehash( ({ DIR_PLAYER_CMDS, DIR_CREATOR_CMDS, 
-        DIR_SECURE_PLAYER_CMDS, DIR_SECURE_CREATOR_CMDS, 
-        DIR_ADMIN_CMDS, DIR_SECURE_ADMIN_CMDS }) );
+                DIR_SECURE_PLAYER_CMDS, DIR_SECURE_CREATOR_CMDS, 
+                DIR_ADMIN_CMDS, DIR_SECURE_ADMIN_CMDS }) );
 }
 
 void eventRehash(mixed paths) {

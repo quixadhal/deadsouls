@@ -18,10 +18,10 @@ mixed cmd(string str) {
         return 1;
     }
     if(creatorp(target) && !archp(this_player()) &&
-      target != this_player()){
+            target != this_player()){
         write("That's impolite.");
         tell_player(target,capitalize(this_player()->GetKeyName())+
-          " just tried to anglicize you.");
+                " just tried to anglicize you.");
         return 1;
     }
 
@@ -36,6 +36,6 @@ mixed cmd(string str) {
 
 void help() {
     message("help", "Syntax: anglicize <target>\n\n"
-      "Make the target's native language English.\n\n",
-      this_player());
+            "Make the target's native language English.\n\n",
+            this_player());
 }                                                    

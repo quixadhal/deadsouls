@@ -123,13 +123,13 @@ mixed eventFill(object who, object from){
     int howmuch_me = CanFillMe();
     int howmuch_them = from->CanFillOther();
     if(!from->isDummy() && !from->GetTapped() &&
-      environment(from) != this_player()){
+            environment(from) != this_player()){
         write("You aren't holding the "+from->GetKeyName()+".");
         return 1;
     }
 
     if(from->isDummy() &&
-      environment(this_object()) != this_player()){
+            environment(this_object()) != this_player()){
         write("You aren't holding the "+this_object()->GetKeyName()+".");
         return 1;
     }
@@ -148,8 +148,8 @@ mixed eventFill(object who, object from){
         return 1;
     }
     if((from->GetFlaskContents() != GetFlaskContents() 
-        || from->GetMealType() != GetMealType())
-      && GetFlaskContents() != "empty"){
+                || from->GetMealType() != GetMealType())
+            && GetFlaskContents() != "empty"){
         write("Those are incompatible fluids, and you cannot mix them.");
         return 1;
     }
@@ -162,7 +162,7 @@ mixed eventFill(object who, object from){
     if(!EverFill) from->SetFlaskUses(from->GetFlaskUses() - howmuch_me);
     write("You pour from "+from->GetShort()+" into "+this_object()->GetShort()+".");
     say(who->GetName()+" pours from "+from->GetShort()+
-      " into "+this_object()->GetShort()+".");
+            " into "+this_object()->GetShort()+".");
     SetMealType(from->GetMealType());
     FlaskContents = from->GetFlaskContents();
     FlaskStrength = from->GetStrength();

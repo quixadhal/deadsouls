@@ -33,7 +33,7 @@ mixed cmd(string str) {
         filename = REALMS_DIRS + "/" + this_player()->GetKeyName();
         filename += "/bak/"+file_arr[sizeof(file_arr)-1]+"."+time;
         write_file(REALMS_DIRS + "/" + this_player()->GetKeyName()+
-          "/bak/bk.db",file_arr[sizeof(file_arr)-1]+"."+time+" : "+str+"\n");
+                "/bak/bk.db",file_arr[sizeof(file_arr)-1]+"."+time+" : "+str+"\n");
         load_object("/secure/cmds/creators/cp")->cmd(str + " " +filename);
     }
     return 1;
@@ -41,7 +41,7 @@ mixed cmd(string str) {
 
 int help() {
     message("help", "Syntax: <bk [file]>\n\n"
-      "Copies the specified file into your bak/ directory, and "
-      "appends a unique identifying number to the backup file name.",
-      this_player());
+            "Copies the specified file into your bak/ directory, and "
+            "appends a unique identifying number to the backup file name.",
+            this_player());
 }

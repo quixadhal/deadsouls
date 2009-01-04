@@ -19,8 +19,8 @@ static private void validate() {
         error("Illegal attempt access FUNCTIONS_D: "+get_stack()+" "+identify(previous_object(-1)));
     if(query_os_type() == "windows"){
         error("The functions daemon has been disabled for your mud "+
-          "because it is running on windows. Intensive file operations "+
-          "in windows are not yet supported on Dead Souls.");
+                "because it is running on windows. Intensive file operations "+
+                "in windows are not yet supported on Dead Souls.");
     }
 }
 
@@ -62,8 +62,8 @@ mixed ReadFuns(string str){
     globaltmp = str;
     files = filter(files, (: (!strsrch($1, globaltmp) && last($1,2) == ".c" ) :) );
     files = filter(files, (: (!sizeof(FunctionCache[$1]) || 
-          ((sizeof(stat($1)) > 1) ? stat($1)[0] : FileSize[$1]) 
-          != FileSize[$1]) :) ); 
+                    ((sizeof(stat($1)) > 1) ? stat($1)[0] : FileSize[$1]) 
+                    != FileSize[$1]) :) ); 
     foreach(string file in files){
     }
     while(sizeof(files) > 0){

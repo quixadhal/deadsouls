@@ -101,15 +101,15 @@ mixed cmd(string args) {
 
 string GetHelp(string args) {
     return ("Syntax: domainadmin [-a | -d] <domain> <person>\n\n"
-      "This command manages the write permissions to a specified "
-      "domain. For example, to give a creator named Snuffy write "
-      "privileges to /domains/SnuffLand, you would type: "
-      "\ndomainadmin -a SnuffLand snuffy\n"
-      "To revoke those privileges:\n"
-      "\domainadmin -d SnuffLand snuffy\n"
-      "This permits the creator to use QCS within the domain's "
-      "directories. "
-      "Write privileges are listed in /secure/cfg/write.cfg"
-      "\n\n"
-      "See also: domaincreate, admintool");
+            "This command manages the write permissions to a specified "
+            "domain. For example, to give a creator named Snuffy write "
+            "privileges to /domains/SnuffLand, you would type: "
+            "\ndomainadmin -a SnuffLand snuffy\n"
+            "To revoke those privileges:\n"
+            "\domainadmin -d SnuffLand snuffy\n"
+            "This permits the creator to use QCS within the domain's "
+            "directories. "
+            "Write privileges are listed in /secure/cfg/write.cfg"
+            "\n\n"
+            "See also: domaincreate, admintool");
 }

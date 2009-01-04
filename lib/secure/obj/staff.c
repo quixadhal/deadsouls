@@ -21,11 +21,11 @@ static void create(){
     SetAdjectives( ({ "wood","wooden","creator","creator's","creation" }) );
     SetShort("a wooden staff");
     SetLong("This staff is old, weathered, "+
-      "and lumpy. However, it feels quite sturdy "+
-      "and solid. For more info: help staff");
+            "and lumpy. However, it feels quite sturdy "+
+            "and solid. For more info: help staff");
     SetProperties(([
-        "no steal" : 1,
-      ]));
+                "no steal" : 1,
+                ]));
     SetDamagePoints(50);
     SetClass(100);
     SetMass(100);

@@ -53,7 +53,7 @@ varargs mixed CanManipulate(object who, string component){
         }
         else {
             return "#There is no " + component + " on " +
-            GetDefiniteShort() + ".";
+                GetDefiniteShort() + ".";
         }
     }
     else return 1;
@@ -78,11 +78,11 @@ varargs mixed eventManipulate(object who, string component){
         who->eventPrint(val);
         if( component ){
             env->eventPrint(who->GetName() + " moves the " + component +
-              " on " + GetDefiniteShort() + ".", who);
+                    " on " + GetDefiniteShort() + ".", who);
         }
         else {
             env->eventPrint(who->GetName() + " moves " +
-              GetDefiniteShort() + ".", who);
+                    GetDefiniteShort() + ".", who);
         }
         return 1;
     }

@@ -8,22 +8,26 @@ static void create() {
     SetShort("the campus bookstore");
     SetLong("This is the Virtual Campus Bookstore. It is a fairly small place, and in fact has few books available, since the campus is not open for classes yet. There is, however, a wide assortment of useful items available, which you can browse by typing the 'list' comamnd. The storeroom is above. There is a sign on the wall behind the counter.");
     SetItems(([
-        ({"store","bookstore","place"}) : "This is the Virtual Campus bookstore.",
-        "books" : "There aren't any yet. Weren't you paying attention?",
-        ({"assortment","items","stuff"}) : "To browse what you can buy, type: list.",
-        "counter" : "A cheap wood-textured counter designed to make the surrender "+
-        "of your money more convenient.",
-        "sign" : "A sign on the wall, meant for reading.",
-      ]));
+                ({"store","bookstore","place"}) : "This is the Virtual Campus bookstore.",
+                "books" : "There aren't any yet. Weren't you paying attention?",
+                ({"assortment","items","stuff"}) : "To browse what you can buy, type: list.",
+                "counter" : "A cheap wood-textured counter designed to make the surrender "+
+                "of your money more convenient.",
+                "sign" : "A sign on the wall, meant for reading.",
+                ]));
     SetExits( ([
-        "south" : "/domains/campus/room/corridor4",
-        "up" : "/domains/campus/room/bookstore2.c",
-      ]) );
+                "south" : "/domains/campus/room/corridor4",
+                "up" : "/domains/campus/room/bookstore2.c",
+                ]) );
     SetInventory(([
-        "/domains/campus/npc/kim" : 1,
-        "/domains/campus/obj/bbucket" : 1,
-        "/domains/campus/obj/register" : 1,
-      ]));
+                "/domains/campus/obj/bbucket" : 1,
+                "/domains/campus/obj/register" : 1,
+                /*
+                 * Note: kim has to load *after* the cash register
+                 * in order to guard it!
+                 */
+                "/domains/campus/npc/kim" : 1,
+                ]));
     SetRead("sign", (: read_sign :) );
     SetProperty("no attack", 1);
 }

@@ -16,21 +16,21 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Sitting Room");
     SetLong("You are in a luxurious sitting room, decorated "
-      "and furnished with the same excellent taste and "
-      "attention to detail as the rest of the "
-      "mansion.");
+            "and furnished with the same excellent taste and "
+            "attention to detail as the rest of the "
+            "mansion.");
     SetItems( ([
-        ({"furniture","furnishings","decorations"}) :
-        "You see evidence of a refined aesthetic "
-        "sensibility."
-      ]) );
+                ({"furniture","furnishings","decorations"}) :
+                "You see evidence of a refined aesthetic "
+                "sensibility."
+                ]) );
     SetExits( ([
-        "west" : "/domains/town/room/mansion_int.c",
-      ]) );
+                "west" : "/domains/town/room/mansion_int.c",
+                ]) );
     SetInventory( ([
-        "/domains/town/obj/rug" :1,
-        "/domains/town/npc/thief" :1
-      ]) );
+                "/domains/town/obj/rug" :1,
+                "/domains/town/npc/thief" :1
+                ]) );
     revealed = 0;
 }
 int TellRevealed(){

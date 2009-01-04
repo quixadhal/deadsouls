@@ -123,7 +123,7 @@ string array GetPrimarySkills(){
 varargs int AddSkill(string skill, int cls, int level){
     if( !stringp(skill) ){
         error("Bad argument 1 to AddSkill().\n\tExpected: string, Got: " +
-          typeof(skill) + "\n");
+                typeof(skill) + "\n");
     }
     if( !nullp(Skills[skill]) ){
         return 0;
@@ -175,7 +175,7 @@ varargs void SetSkill(string skill, int level, mixed cls){
     }
     if( !stringp(skill) ){
         error("Bad argument 1 to SetSkill().\n\tExpected: string, Got: " +
-          typeof(skill) + "\n");
+                typeof(skill) + "\n");
     }
     if( !cls ){
         if( Skills[skill] ){
@@ -299,7 +299,7 @@ int AddSkillPoints(string name, int x){
         }
         else {
             eventPrint("%^YELLOW%^You are a bit more adept with your " +
-              name + ".");
+                    name + ".");
             Skills[name]["level"]++;
             Skills[name]["points"] -= y;
             if( Skills[name]["class"] == 1 ){

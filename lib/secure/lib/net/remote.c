@@ -52,7 +52,7 @@ static private void eventProcess(int fd, string str) {
         if( !(len = strlen(Connections[fd]["buffer"])) ) return;
         if( len == Connections[fd]["in edit"] ) {
             tmp =  Connections[fd]["object"]->eventWriteFile(Connections[fd]["file"],
-              Connections[fd]["buffer"]);
+                    Connections[fd]["buffer"]);
             eventWrite(tmp + "\n");
             Connections[fd]["in edit"] = 0;
             Connections[fd]["file"] = "";
@@ -102,16 +102,16 @@ static private void eventProcess(int fd, string str) {
             return;
         }
         unguarded( (: restore_object, DIR_CRES "/" + username[0..0] + "/" +
-            username :) );
+                    username :) );
         if( Password != crypt(password, Password) ) {
             log_file("remote", "Failed attempt to login as " + username 
-              + "\n");
+                    + "\n");
             eventWrite("50 Login failed.\n", 1);
             map_delete(Connections, fd);	     
             return;
         }
         if( !(Connections[fd]["object"] = 
-            load_object(user_path(username) + "adm/remote")) ) {
+                    load_object(user_path(username) + "adm/remote")) ) {
             eventWrite("50 Failed to load remote object.\n", 1);
             map_delete(Connections, fd);
             return;
@@ -129,24 +129,24 @@ static private void eventProcess(int fd, string str) {
         }
     }
     else switch( cmd ) {
-    case "edit":
-        file = (string)Connections[fd]["object"]->eventReadFile(arg);
+        case "edit":
+            file = (string)Connections[fd]["object"]->eventReadFile(arg);
         if( file[<1] != '\n' ) file += "\n";
         tmp = sprintf( "%-14s\n", "100 " + strlen(file));
         eventWrite(tmp[0..15]);
         eventWrite(file);
         break;
-    case "ls":
-        val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
+        case "ls":
+            val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
         if( val ) eventWrite("500 " + val + "\n");
         else eventWrite("50 " +cmd+ " " +arg+ ": Permission denied.\n");
         break;
-    case "update":
-        val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
+        case "update":
+            val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
         if( val ) eventWrite("510 " + val + "\n");
         else eventWrite("50 Update attempt went off into nowhere.\n");
         break;
-    default:
+        default:
         val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
         if( val ) eventWrite("400 " + val + "\n");
         else eventWrite("50 "+cmd+" "+arg+": Command not supported.\n");

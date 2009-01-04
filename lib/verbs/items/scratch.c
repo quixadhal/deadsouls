@@ -8,11 +8,11 @@ static void create() {
     SetRules("OBJ", "on OBJ", "STR on OBJ");
     SetErrorMessage("Scratch on what? Or scratch what on what?");
     SetHelp("Syntax: <scratch on OBJECT>\n"
-      "        <scratch THING on OBJECT>\n\n"
-      "Allows you to scratch on an object, or perhaps a thing on the "
-      "object.  For example, you might want to "
-      "\"scratch on the window on the wall\", or simply \"scratch on door\".\n\n"
-      "Synonyms: rap");
+            "        <scratch THING on OBJECT>\n\n"
+            "Allows you to scratch on an object, or perhaps a thing on the "
+            "object.  For example, you might want to "
+            "\"scratch on the window on the wall\", or simply \"scratch on door\".\n\n"
+            "Synonyms: rap");
 }
 
 mixed can_scratch_obj() {

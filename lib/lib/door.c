@@ -143,7 +143,7 @@ varargs mixed eventClose(object who){
         if(who){
             who->eventPrint("You close " + GetShort(tmp) + ".");
             room->eventPrint((string)who->GetName() + " closes " + GetShort(tmp) + ".",
-              who);
+                    who);
         }
     }
     return 1;
@@ -171,17 +171,17 @@ varargs mixed eventLock(object who, mixed key, mixed foo){
             tmp = GetShort(side);
             if( !(sizeof(key->GetId() & GetKeys(side))) ){
                 who->eventPrint("You fail to lock " + tmp +
-                  " with " + (string)key->GetShort()+".");
+                        " with " + (string)key->GetShort()+".");
                 room->eventPrint((string)who->GetName() + " attempts to " 
-                  "lock " + tmp + " with " +
-                  (string)key->GetShort() + ", but fails.",who);
+                        "lock " + tmp + " with " +
+                        (string)key->GetShort() + ", but fails.",who);
                 return 1;
             }
             SetLocked(1);
             who->eventPrint("You lock " + tmp +
-              " with " + (string)key->GetShort()+".");
+                    " with " + (string)key->GetShort()+".");
             room->eventPrint((string)who->GetName() + " locks " + tmp +
-              " with " + (string)key->GetShort() + ".", who);
+                    " with " + (string)key->GetShort() + ".", who);
             return 1;
         }
     }
@@ -218,7 +218,7 @@ varargs int eventOpen(object who, object tool){
         if(who){
             who->eventPrint("You open " + GetShort(tmp) + ".");
             room->eventPrint((string)who->GetName() + " opens " + GetShort(tmp) + ".",
-              who);
+                    who);
         }
     }
     return 1;
@@ -238,8 +238,8 @@ varargs int eventOpen(object who, object tool){
 int eventRegisterSide(string side){
     string array id = GetId(side);
     Sides[side]["Rooms"] = 
-    distinct_array(Sides[side]["Rooms"] +
-      ({ previous_object() }));
+        distinct_array(Sides[side]["Rooms"] +
+                ({ previous_object() }));
     previous_object()->AddItem(id, (: GetLong($(side)) :));
     foreach(object ob in all_inventory(previous_object())){
         if( !ob->isDummy() ){
@@ -274,16 +274,16 @@ mixed eventUnlock(object who, object key){
             tmp = GetShort(side);
             if(!sizeof((key_id & (GetKeys(side) || ({}))))){
                 who->eventPrint("You fail to unlock " + tmp +
-                  " with " + (string)key->GetShort()+".");
+                        " with " + (string)key->GetShort()+".");
                 room->eventPrint((string)who->GetName() + " attempts to "
-                  "unlock " + tmp + " with " +
-                  (string)key->GetShort() + ", but fails.",who);
+                        "unlock " + tmp + " with " +
+                        (string)key->GetShort() + ", but fails.",who);
                 return 1;
             }
             SetLocked(0);
             who->eventPrint("You unlock " + tmp + ".");
             room->eventPrint((string)who->GetName() + " unlocks " + tmp +
-              " with " + (string)key->GetShort() + ".", who);
+                    " with " + (string)key->GetShort() + ".", who);
             return 1;
         }
     }
@@ -316,11 +316,11 @@ mapping GetSide(string side){
     return copy(RetMap);
 }
 
-int SetLockable(string side, int x){
-    if( !Sides[side] )
-        Sides[side] = ([ "Rooms" : ({}) ]);
-    return Sides[side]["Lockable"] = x; 
-}
+    int SetLockable(string side, int x){
+        if( !Sides[side] )
+            Sides[side] = ([ "Rooms" : ({}) ]);
+        return Sides[side]["Lockable"] = x; 
+    }
 
 int GetLockable(string side){
     return Sides[side]["Lockable"];
@@ -341,11 +341,11 @@ string *GetId(string side){
     return Sides[side]["Ids"];
 }
 
-mixed SetShort(string side, mixed short){
-    if( !Sides[side] )
-        Sides[side] = ([ "Rooms" : ({}) ]);
-    return Sides[side]["Short"] = short;
-}
+    mixed SetShort(string side, mixed short){
+        if( !Sides[side] )
+            Sides[side] = ([ "Rooms" : ({}) ]);
+        return Sides[side]["Short"] = short;
+    }
 
 varargs string GetShort(string side){
     if( !side){ /* let's hack a side */
@@ -369,11 +369,11 @@ string GetDefiniteShort(){
     return add_article(tmp, 1);
 }
 
-mixed SetLong(string side, mixed long){
-    if( !Sides[side] )
-        Sides[side] = ([ "Rooms" : ({}) ]);
-    return Sides[side]["Long"] = long;
-}
+    mixed SetLong(string side, mixed long){
+        if( !Sides[side] )
+            Sides[side] = ([ "Rooms" : ({}) ]);
+        return Sides[side]["Long"] = long;
+    }
 
 string GetLong(string side){
     string tmp;
@@ -413,14 +413,14 @@ varargs mixed eventKnock(object who, mixed what){
             if( member_array(environment(whom), val["Rooms"]) != -1 ) tmp = side;
             if(who)
                 filter(val["Rooms"], (: $1 && ($1 != $(room)):))->eventPrint(
-                  "There is a knock at the "+remove_article(GetShort(side)) + ".");
+                        "There is a knock at the "+remove_article(GetShort(side)) + ".");
             else (val["Rooms"])->eventPrint(
-                  "There is a knock at the "+remove_article(GetShort(side)) + ".");
+                    "There is a knock at the "+remove_article(GetShort(side)) + ".");
         }
         if(who){
             who->eventPrint("You knock on the " + remove_article(GetShort(tmp)) + ".");
             room->eventPrint((string)who->GetName() + " knocks on the " + remove_article(GetShort(tmp)) + ".",
-              who);
+                    who);
         }
     }
     else write("It isn't closed!");
@@ -439,14 +439,14 @@ varargs mixed eventScratch(object who, mixed what){
             if( member_array(environment(whom), val["Rooms"]) != -1 ) tmp = side;
             if(who)
                 filter(val["Rooms"], (: $1 && ($1 != $(room)):))->eventPrint(
-                  "There is a scratch at the "+remove_article(GetShort(side)) + ".");
+                        "There is a scratch at the "+remove_article(GetShort(side)) + ".");
             else (val["Rooms"])->eventPrint(
-                  "There is a scratch at the "+remove_article(GetShort(side)) + ".");
+                    "There is a scratch at the "+remove_article(GetShort(side)) + ".");
         }
         if(who){
             who->eventPrint("You scratch on the " + remove_article(GetShort(tmp)) + ".");
             room->eventPrint((string)who->GetName() + " scratches on the " + remove_article(GetShort(tmp)) + ".",
-              who);
+                    who);
         }
     }
     else write("It isn't closed!");

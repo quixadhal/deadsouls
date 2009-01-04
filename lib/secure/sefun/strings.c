@@ -11,16 +11,16 @@
 string global_temp_file = "";
 
 mapping Morse = ([ "a" : ".-", "b" : "-...", "c" : "-.-.",
-  "d" : "-..", "e" : ".", "f" : "..-.", "g" : "--.", "h" : "....", "i" : "..",
-  "j" : ".---", "k" : "-.-", "l" : ".-..", "m" : "--", "n" : "-.", "o" : "---",
-  "p" : ".--.", "q" : "--.-", "r" : ".-.", "s" : "...", "t" : "-", "u" : "..-",
-  "v" : "...-", "w" : ".--", "x" : "-..-", "y" : "-.--", "z" : "--..",
-  "1" : ".----", "2" : "..---", "3" : "...--", "4" : "....-", "5" : ".....",
-  "6" : " -....", "7" : "--...", "8" : "---..", "9" : "----.","0" : " -----",
-  "." : ".-.-.-", "," : "--..--", "?" : "..--..", "'" : ".----.", "!" : "-.-.--",
-  "/" : "-..-.", "(" : "-.--.", ")" : "-.--.-", "&" : ".-...", ":" : "---...",
-  ";" : "-.-.-.", "=" : "-...-", "+" : ".-.-.", "-" : "-....-", "_" : "..--.-",
-  "\"" : ".-..-.", "$" : "...-..-", "@" : ".--.-." ]);
+        "d" : "-..", "e" : ".", "f" : "..-.", "g" : "--.", "h" : "....", "i" : "..",
+        "j" : ".---", "k" : "-.-", "l" : ".-..", "m" : "--", "n" : "-.", "o" : "---",
+        "p" : ".--.", "q" : "--.-", "r" : ".-.", "s" : "...", "t" : "-", "u" : "..-",
+        "v" : "...-", "w" : ".--", "x" : "-..-", "y" : "-.--", "z" : "--..",
+        "1" : ".----", "2" : "..---", "3" : "...--", "4" : "....-", "5" : ".....",
+        "6" : " -....", "7" : "--...", "8" : "---..", "9" : "----.","0" : " -----",
+        "." : ".-.-.-", "," : "--..--", "?" : "..--..", "'" : ".----.", "!" : "-.-.--",
+        "/" : "-..-.", "(" : "-.--.", ")" : "-.--.-", "&" : ".-...", ":" : "---...",
+        ";" : "-.-.-.", "=" : "-...-", "+" : ".-.-.", "-" : "-....-", "_" : "..--.-",
+        "\"" : ".-..-.", "$" : "...-..-", "@" : ".--.-." ]);
 
 varargs string center(string str, int x) {
     int y;
@@ -105,25 +105,25 @@ varargs mixed convert_string(string str, int flag) {
 
     if( (str = trim(str)) == "" ) return 0;
     if( str[0] == '(' ) {
-        switch(str[1]) {
+            switch(str[1]) {
 
-        case '{':
+            case '{':
 
             ret[0] = ({});
             str = str[2..];
             while(str[0] != '}') {
-                mixed *tmp;
+            mixed *tmp;
 
-                tmp = convert_string(str, 1);
-                ret[0] += ({ tmp[0] });
-                str = tmp[1];
-                while(str[0] == ' ' || str[0] == '\t') str = str[1..];
-                if( str[0] != ',' && str[0] != '}' )
-                    error("Improperly formatted array: " + str + "\n");
-                else if( str[0] == ',') {
-                    str = str[1..];
-                    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
-                }
+            tmp = convert_string(str, 1);
+            ret[0] += ({ tmp[0] });
+            str = tmp[1];
+            while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+            if( str[0] != ',' && str[0] != '}' )
+            error("Improperly formatted array: " + str + "\n");
+            else if( str[0] == ',') {
+            str = str[1..];
+            while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+            }
             }
             if( str[1] != ')' ) {
                 str = str[2..];
@@ -171,70 +171,70 @@ varargs mixed convert_string(string str, int flag) {
             if( !flag ) return ret[0];
             while(ret[1][0] == ' ' || ret[1][0] == '\t') ret[1] = ret[1][1..];
             return ret;
-        }
     }
-    else if( str[0] == '"' ) {
-        string tmp;
+}
+else if( str[0] == '"' ) {
+    string tmp;
 
-        tmp = "";
-        while( str[1] != '"' || (str[1] == '"' && str[0] == '\\') ) {
-            if( str[1] == '"' ) tmp = tmp[0..<2] + "\"";
-            else tmp += str[1..1];
-            str = str[1..];
-        }
-        if( !flag ) return tmp;
-        if( strlen(str) > 2 ) str = trim(str[2..]);
-        return ({ tmp, str });
+    tmp = "";
+    while( str[1] != '"' || (str[1] == '"' && str[0] == '\\') ) {
+        if( str[1] == '"' ) tmp = tmp[0..<2] + "\"";
+        else tmp += str[1..1];
+        str = str[1..];
     }
-    else if( str[0] >= '0' && str[0] <= '9' || str[0] == '-' ) {
-        string tmp;
-        int y;
+    if( !flag ) return tmp;
+    if( strlen(str) > 2 ) str = trim(str[2..]);
+    return ({ tmp, str });
+}
+else if( str[0] >= '0' && str[0] <= '9' || str[0] == '-' ) {
+    string tmp;
+    int y;
 
-        if( strlen(str) > 1 && str[0] == '-' ) {
-            tmp = str[0..0];
-            str = str[1..];
-        }
-        else {
-            tmp = "";
-        }
-        if( strlen(str) > 1 && str[0..1] == "0x" ) {
-            tmp = "0x";
-            str = str[2..];
-            while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
-                tmp += str[0..0];
-                if( strlen(str) > 1 ) str = str[1..];
-                else str = "";
-            }
-            sscanf(tmp, "%x", y);
-        }
-        else {
-            while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
-                tmp += str[0..0];
-                if( strlen(str) > 1 ) str = str[1..];
-                else str = "";
-            }
-            sscanf(tmp, "%d", y);
-        }
-        if( !flag ) return y;
-        if( str != "" ) str = trim(str);
-        return ({ y, str });
+    if( strlen(str) > 1 && str[0] == '-' ) {
+        tmp = str[0..0];
+        str = str[1..];
     }
     else {
-        string tmp;
-
         tmp = "";
-        while(strlen(str) && ((str[0] >= 'a' && str[0] <= 'z') ||
-            (str[0] >= 'A' && str[0] <= 'Z') ||
-            (str[0] >= '0' && str[0] <= '9') ||
-            (str[0] == '_'))) {
+    }
+    if( strlen(str) > 1 && str[0..1] == "0x" ) {
+        tmp = "0x";
+        str = str[2..];
+        while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
             tmp += str[0..0];
             if( strlen(str) > 1 ) str = str[1..];
             else str = "";
         }
-        if( !flag ) return to_object(tmp);
-        else return ({ to_object(tmp), str });
+        sscanf(tmp, "%x", y);
     }
-    error("Gobbledygook in string.\n");
+    else {
+        while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
+            tmp += str[0..0];
+            if( strlen(str) > 1 ) str = str[1..];
+            else str = "";
+        }
+        sscanf(tmp, "%d", y);
+    }
+    if( !flag ) return y;
+    if( str != "" ) str = trim(str);
+    return ({ y, str });
+}
+else {
+    string tmp;
+
+    tmp = "";
+    while(strlen(str) && ((str[0] >= 'a' && str[0] <= 'z') ||
+                (str[0] >= 'A' && str[0] <= 'Z') ||
+                (str[0] >= '0' && str[0] <= '9') ||
+                (str[0] == '_'))) {
+        tmp += str[0..0];
+        if( strlen(str) > 1 ) str = str[1..];
+        else str = "";
+    }
+    if( !flag ) return to_object(tmp);
+    else return ({ to_object(tmp), str });
+}
+error("Gobbledygook in string.\n");
 }
 
 //this sefun courtesy of Duuk@Haven
@@ -608,7 +608,7 @@ int alphap(mixed arg){
     if(!stringp(arg)) return 0;
     foreach(int element in arg){
         if(!((element >= 65 && element <= 90) ||
-            (element >= 97 && element <= 122))) return 0;
+                    (element >= 97 && element <= 122))) return 0;
     }
     return 1;
 }
@@ -769,9 +769,9 @@ string web_translate(string str){
 string dbz_colors(string str, int annoying){
     string ret = "";
     string *colors = ({ "RED", "BLUE", "CYAN", "MAGENTA", "ORANGE",
-      "YELLOW", "GREEN", "WHITE%^B_BLACK", "BLACK%^B_WHITE" });
+            "YELLOW", "GREEN", "WHITE%^B_BLACK", "BLACK%^B_WHITE" });
     string *b_colors = ({ "B_RED", "B_BLUE", "B_CYAN", "B_MAGENTA", "B_ORANGE",
-      "B_YELLOW", "B_GREEN" });
+            "B_YELLOW", "B_GREEN" });
 
     foreach(mixed element in str){
         int close;
@@ -807,8 +807,8 @@ int query_common_ascii(string str){
     foreach(mixed element in check_arr){
         if(intp(element)){
             if((element >31 && element < 127)
-              || element == 10 || element == 9 ||
-              (element >160 && element < 256)){
+                    || element == 10 || element == 9 ||
+                    (element >160 && element < 256)){
                 ret_arr += ({ element });
             }
         }

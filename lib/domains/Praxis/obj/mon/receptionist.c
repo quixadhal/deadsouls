@@ -10,16 +10,16 @@ inherit LIB_NPC;
 
 #define ROOMS ([\
 101: ([ "name": "regular", "cost":8 ]),\
-102: ([ "name": "regular", "cost":8 ]),\
-103:([ "name":"regular", "cost":8 ]),\
-104:([ "name":"regular", "cost":8 ]),\
-105:(["name":"deluxe", "cost":12 ]),\
-106:(["name":"deluxe", "cost":12 ]),\
-107:([ "name":"deluxe", "cost":12]),\
-108:(["name":"deluxe", "cost":12]),\
-109:(["name":"honeymoon suite", "cost":20]),\
-110:(["name":"honeymoon suite", "cost":20]),\
-])
+        102: ([ "name": "regular", "cost":8 ]),\
+        103:([ "name":"regular", "cost":8 ]),\
+        104:([ "name":"regular", "cost":8 ]),\
+        105:(["name":"deluxe", "cost":12 ]),\
+        106:(["name":"deluxe", "cost":12 ]),\
+        107:([ "name":"deluxe", "cost":12]),\
+        108:(["name":"deluxe", "cost":12]),\
+        109:(["name":"honeymoon suite", "cost":20]),\
+        110:(["name":"honeymoon suite", "cost":20]),\
+        ])
 
 void create() {
     npc::create();
@@ -27,10 +27,10 @@ void create() {
     SetId( ({ "linfield", "receptionist" }) );
     SetShort( "Linfield, the receptionist" );
     SetLong( "Linfield is the dignified receptionist for the "
-      "Nightmare Inn. He stands tall behind the counter, "
-      "waiting to help the next customer. He wears dark "
-      "pants and blazer, with a white shirt and a blue "
-      "and red striped cravate.");
+            "Nightmare Inn. He stands tall behind the counter, "
+            "waiting to help the next customer. He wears dark "
+            "pants and blazer, with a white shirt and a blue "
+            "and red striped cravate.");
     SetLevel(15);
     SetGender( "male" );
     SetRace( "human" );
@@ -69,7 +69,7 @@ int cmd_rent(string str) {
     x = -1;
     while(i--) {
         if(ROOMS[arr[i]]["name"] == str &&
-          !((int)environment(this_object())->query_occupied(arr[i]))) {
+                !((int)environment(this_object())->query_occupied(arr[i]))) {
             x = arr[i];
             break;
         }
@@ -79,16 +79,16 @@ int cmd_rent(string str) {
     cost = currency_value(ROOMS[x]["cost"], "gold");
     if(cost > (int)this_player()->query_money("gold")) {
         this_object()->eventForce("speak You do not have enough money "
-          "for one of those rooms!");
+                "for one of those rooms!");
         return 1;
     }
     this_player()->AddCurrency(-cost, "gold");
     environment(this_object())->set_occupied(x);
     message("my_action", sprintf("You rent room %d of the Nightmare Inn.",
-        x), this_player());
+                x), this_player());
     message("other_action", sprintf("%s rents a room at the Nightmare Inn.",
-        (string)this_player()->query_cap_name()), environment(this_object()),
-      ({ this_player() }) );
+                (string)this_player()->query_cap_name()), environment(this_object()),
+            ({ this_player() }) );
     ob = new(LIB_ITEM);
     ob->SetKeyName("hotel key");
     ob->SetShort("a hotel key");
@@ -97,12 +97,12 @@ int cmd_rent(string str) {
     ob->SetValue(100);
     ob->SetRead(sprintf("The Nightmare Inn.\nRoom %d.\n", x));
     ob->SetId( ({ "key", "hotel key", 
-        (string)environment(this_object())->query_key_id(x) }) );
+                (string)environment(this_object())->query_key_id(x) }) );
     if((int)ob->move(this_player())) {
         message("my_action", "You drop your key!", this_player());
         message("other_action", sprintf("%s drops %s key!",
-            (string)this_player()->query_cap_name(), possessive(this_player())),
-          environment(this_object()), ({ this_player() }) );
+                    (string)this_player()->query_cap_name(), possessive(this_player())),
+                environment(this_object()), ({ this_player() }) );
         ob->move(environment(this_object()));
     }
     return 1;

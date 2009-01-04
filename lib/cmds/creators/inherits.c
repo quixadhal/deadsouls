@@ -20,31 +20,31 @@ varargs int cmd(string str)
 
     if(!strsrch(file,"LIB_") || !strsrch(file,"lib_")){
         string tmpfile =
-        ""+
-        "#include <lib.h>\n"+
-        "#include <privs.h>\n"+
-        "#include <cfg.h>\n"+
-        "#include <save.h>\n"+
-        "#include <rooms.h>\n"+
-        "#include <config.h>\n"+
-        "#include <daemons.h>\n"+
-        "#include <objects.h>\n"+
-        "#include <commands.h>\n"+
-        "#include <armor_types.h>\n"+
-        "#include <damage_types.h>\n"+
-        "#include <position.h>\n"+
-        "#include <runtime_config.h>\n"+
-        "#include <terrain_types.h>\n"+
-        "#include <body_types.h>\n"+
-        "#include <size_types.h>\n"+
-        "#include <respiration_types.h>\n"+
-        "#include <message_class.h>\n"+
-        "#ifndef "+upper_case(file)+"\n"+
-        "#define "+upper_case(file)+" 0\n"+
-        "#endif\n"+
-        "inherit LIB_ITEM;\n"+
-        "string GetInheritable() { return " + upper_case(file) + "; }\n"+
-        "";
+            ""+
+            "#include <lib.h>\n"+
+            "#include <privs.h>\n"+
+            "#include <cfg.h>\n"+
+            "#include <save.h>\n"+
+            "#include <rooms.h>\n"+
+            "#include <config.h>\n"+
+            "#include <daemons.h>\n"+
+            "#include <objects.h>\n"+
+            "#include <commands.h>\n"+
+            "#include <armor_types.h>\n"+
+            "#include <damage_types.h>\n"+
+            "#include <position.h>\n"+
+            "#include <runtime_config.h>\n"+
+            "#include <terrain_types.h>\n"+
+            "#include <body_types.h>\n"+
+            "#include <size_types.h>\n"+
+            "#include <respiration_types.h>\n"+
+            "#include <message_class.h>\n"+
+            "#ifndef "+upper_case(file)+"\n"+
+            "#define "+upper_case(file)+" 0\n"+
+            "#endif\n"+
+            "inherit LIB_ITEM;\n"+
+            "string GetInheritable() { return " + upper_case(file) + "; }\n"+
+            "";
         string filename = "/open/"+this_player()->GetKeyName()+"_inherits.c"; 
         write_file( filename, tmpfile,1 );
         reload(filename);
@@ -64,7 +64,7 @@ varargs int cmd(string str)
     }
     if(!sizeof(inheriteds)){
         write("No matches found. "+ thing +
-          " does not appear to inherit that file.");
+                " does not appear to inherit that file.");
         return 1;
     }
     write("Exact match not found, but here are some possible matches: ");

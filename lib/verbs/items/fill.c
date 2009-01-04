@@ -8,7 +8,7 @@ static void create() {
     SetRules("OBJ with OBJ","OBJ from OBJ");
     SetErrorMessage("Fill what with what?");
     SetHelp("Syntax: fill <vessel> with <substance>\n\n"
-      "Allows you to fill a vessel designed for containing a substance.");
+            "Allows you to fill a vessel designed for containing a substance.");
 }
 
 mixed can_fill_obj_with_obj(string verb) { return this_player()->CanManipulate(); }

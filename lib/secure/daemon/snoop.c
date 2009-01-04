@@ -37,14 +37,14 @@ static void create() {
 void RegisterSnooper(){
     object registrant = previous_object();
     if(base_name(registrant) == "/secure/obj/snooper" &&
-      member_array(registrant,snoopers) == -1) snoopers += ({ registrant });
+            member_array(registrant,snoopers) == -1) snoopers += ({ registrant });
     unguarded( (: save_object, SAVE_SNOOP, 1 :) );
 }
 
 void UnregisterSnooper(){
     object registrant = previous_object();
     if(base_name(registrant) == "/secure/obj/snooper" &&
-      member_array(registrant,snoopers) != -1) snoopers -= ({ registrant });
+            member_array(registrant,snoopers) != -1) snoopers -= ({ registrant });
     unguarded( (: save_object, SAVE_SNOOP, 1 :) );
 }
 
@@ -111,7 +111,7 @@ int SnoopClean(){
                 string dude = snoopbox->GetSnooped();
                 if(dude) subject = find_player(dude);
                 if(!dude || !subject || !query_snooping(snoopbox) || 
-                  (member_array(dude,snooped) == -1 && member_array(dude,monitored) == -1 && GLOBAL_MONITOR < 1 )){
+                        (member_array(dude,snooped) == -1 && member_array(dude,monitored) == -1 && GLOBAL_MONITOR < 1 )){
                     snoopbox->eventDestruct();
                     snoopers -= ({snoopbox});
                 }
@@ -200,7 +200,7 @@ int RemoveWatcher(string watcher, mixed target){
         else if(member_array(watcher, Watchers[subtarg]) != -1) 
             Watchers[subtarg] -= ({ watcher });
         if((!Watchers[subtarg] || !sizeof(Watchers[subtarg])) &&
-          member_array(subtarg, monitored) == -1) {
+                member_array(subtarg, monitored) == -1) {
             foreach(object snoopbox in snoopers){
                 if(snoopbox->GetSnooped() == subtarg) snoopbox->eventDestruct(); 
             }

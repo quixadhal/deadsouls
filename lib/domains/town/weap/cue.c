@@ -11,7 +11,7 @@ static void create(){
     SetAdjectives( ({ "wood","wooden", "pool", "billiards", "billiard"}) );
     SetShort("a billiards cue");
     SetLong("This is a long stick of highly polished wood, used "
-      "in the game of billiards.");
+            "in the game of billiards.");
     SetVendorType(VT_WEAPON);
     SetDamagePoints(50);
     SetClass(10);

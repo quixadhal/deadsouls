@@ -4,7 +4,7 @@
 // 94-07-02 :  Pallando @ Nightmare wrote it
 // 94-07-06 :  Manny @ Nightmare added descriptions
 // 94-08-18 :  Forlock @ Nightmare added descriptions of plaque & law book
-*/
+ */
 #include <lib.h>
 #include <dirs.h>
 #include <objects.h>
@@ -25,66 +25,66 @@ void create()
     ::create();
     enable_commands(); // Used to echo tells to the Town Hall
     SetProperties( ([
-        "mountable" : 1,
-        "indoors" : 1,
-        "light" : 2,
-        "no castle" : 1,
-        "no teleport" : 1,
-        "no bump" : 1,
-        "no attack" : 1,
-        "no steal" : 1,
-        "no magic" : 1,
-      ]) );
+                "mountable" : 1,
+                "indoors" : 1,
+                "light" : 2,
+                "no castle" : 1,
+                "no teleport" : 1,
+                "no bump" : 1,
+                "no attack" : 1,
+                "no steal" : 1,
+                "no magic" : 1,
+                ]) );
     SetShort( "The Chambers of the High Council" );
     SetLong(
-      "The lights are darkened in this room, a set of 12 candles set along a "
-      "long, narrow table are the only light.  The table is constructed of the "
-      "purest black obsidian, and is surrounded at all sides by wooden chairs, "
-      "each covered in a bright pattern of rubies.  On the walls of the room hang "
-      "the flags of each of the classes of Nightmare, each created by the best "
-      "artists in the land.  The ceiling is covered in 4 ornate patterns, each "
-      "a picture of one of the Head Archwizards of the land.  The pictures give "
-      "the appearance of watching all that occurs within this chamber.  "
-      "Sitting on a pedestal made completely of platinum is the Book of Law.  "
-      "A plaque is attached to the west wall. "
-    );
+            "The lights are darkened in this room, a set of 12 candles set along a "
+            "long, narrow table are the only light.  The table is constructed of the "
+            "purest black obsidian, and is surrounded at all sides by wooden chairs, "
+            "each covered in a bright pattern of rubies.  On the walls of the room hang "
+            "the flags of each of the classes of Nightmare, each created by the best "
+            "artists in the land.  The ceiling is covered in 4 ornate patterns, each "
+            "a picture of one of the Head Archwizards of the land.  The pictures give "
+            "the appearance of watching all that occurs within this chamber.  "
+            "Sitting on a pedestal made completely of platinum is the Book of Law.  "
+            "A plaque is attached to the west wall. "
+           );
     SetExits( ([
-        "down"  : "/domains/Praxis/town_hall",
-      ]) );
+                "down"  : "/domains/Praxis/town_hall",
+                ]) );
     SetItems( ([
-        "view" : "A magnificent panorama of all Praxis.",
-        ({ "candles", "candle" }) : "Tall, thin white candles on a "+
-        "long, narrow table.",
-        "table" : "A brightly polished table of deep black obsidian",
-        "obsidian" : "The obsidian is of the purest in the land.",
-        ({ "chair", "chairs" }) : "Each of the chairs have a unique pattern of "+
-        "rubies engrained within the body of the chair.",
-        "rubies" : "Large rubies of the rarest kind.",
-        "flags" : "6 flags, each representing the individual classes "
-        "of the land.",
-        "ceiling" : "A vast mural of the Four greatest in "
-        "all the land, Forlock, Descartes, Lassondra, "
-        "and Shadowwolf.",
-        "plaque" : "A discreet piece of granite with finly etched words.",
-        "book"   : "The Book of Law.  Its cover is made of pure solid gold "
-        "and the pages of the finest leather.  Inside, one can find "
-        "details of the Laws of the Land.",
-        "forlock" : "The Great Enforcer, donning a great black robe "
-        "lined with a deep red sheath.  The deep stare of "
-        "Forlock fills you with all that is good and just.",
-        "descartes" : "Descartes of Borg, in his most noble position "
-        "upon a great white horse, is the embodiment of "
-        "great wisdom and knowlege.",
-        "lassondra" : "Long, black wavy hair drape down upon a "
-        "great green cloak upon her broad sholders.  "
-        "The warm smile and loving eyes depict equality "
-        "and fairness for all.",
-        "shadowwolf" : "Donning a long hooded robe, Shadowwolf is "
-        "perhaps the most mysterious of the four.  "
-        "Shadowwolf's eyes faintly pierce the darkness "
-        "that surrounds him, seemingly staring "
-        "directly at you."
-      ]) );
+                "view" : "A magnificent panorama of all Praxis.",
+                ({ "candles", "candle" }) : "Tall, thin white candles on a "+
+                "long, narrow table.",
+                "table" : "A brightly polished table of deep black obsidian",
+                "obsidian" : "The obsidian is of the purest in the land.",
+                ({ "chair", "chairs" }) : "Each of the chairs have a unique pattern of "+
+                "rubies engrained within the body of the chair.",
+                "rubies" : "Large rubies of the rarest kind.",
+                "flags" : "6 flags, each representing the individual classes "
+                "of the land.",
+                "ceiling" : "A vast mural of the Four greatest in "
+                "all the land, Forlock, Descartes, Lassondra, "
+                "and Shadowwolf.",
+                "plaque" : "A discreet piece of granite with finly etched words.",
+                "book"   : "The Book of Law.  Its cover is made of pure solid gold "
+                "and the pages of the finest leather.  Inside, one can find "
+                "details of the Laws of the Land.",
+                "forlock" : "The Great Enforcer, donning a great black robe "
+                "lined with a deep red sheath.  The deep stare of "
+                "Forlock fills you with all that is good and just.",
+                "descartes" : "Descartes of Borg, in his most noble position "
+                    "upon a great white horse, is the embodiment of "
+                    "great wisdom and knowlege.",
+                                           "lassondra" : "Long, black wavy hair drape down upon a "
+                                               "great green cloak upon her broad sholders.  "
+                                               "The warm smile and loving eyes depict equality "
+                                               "and fairness for all.",
+                                           "shadowwolf" : "Donning a long hooded robe, Shadowwolf is "
+                                               "perhaps the most mysterious of the four.  "
+                                               "Shadowwolf's eyes faintly pierce the darkness "
+                                               "that surrounds him, seemingly staring "
+                                               "directly at you."
+                                               ]) );
 }
 
 void init()
@@ -109,13 +109,13 @@ int quorum()
 int votes_needed( string title )
 {
     return PASSES + sizeof( policies[title]["Nay"] ) -
-    sizeof( policies[title]["Aye"] );
+        sizeof( policies[title]["Aye"] );
 }
 
 int vetos_needed( string title )
 {
     return PASSES + sizeof( policies[title]["Aye"] ) -
-    sizeof( policies[title]["Nay"] );
+        sizeof( policies[title]["Nay"] );
 }
 
 varargs void display_policy( mapping policy, int as_law )
@@ -126,16 +126,16 @@ varargs void display_policy( mapping policy, int as_law )
     {
         then = policy["Time"];
         printf( "As of %s, %d %s, %d NM;  at the urging of %s\n\n\t\t\%s\n\n%s",
-          day( then ), date( then ), month( then ), year( then ),
-          capitalize( policy["Proposer"] ), policy["Title"], policy["Text"] );
+                day( then ), date( then ), month( then ), year( then ),
+                capitalize( policy["Proposer"] ), policy["Title"], policy["Text"] );
         return;
     }
     printf(
-      "Title: %s\nProposer: %s\n\n%s",
-      policy["Title"],
-      capitalize( policy["Proposer"] ),
-      policy["Text"],
-    );
+            "Title: %s\nProposer: %s\n\n%s",
+            policy["Title"],
+            capitalize( policy["Proposer"] ),
+            policy["Text"],
+          );
     if( sizeof( policy["Aye"] ) )
         write( wrap( "In favour: " + implode( policy["Aye"], ", " ) ) );
     if( sizeof( policy["Nay"] ) )
@@ -156,8 +156,8 @@ int cmd_law( string arg )
             display_policy( policy, 1 );
     } else {
         printf( "The book of law contains the following:\n  %s\n",
-          wrap( implode( sort_array( keys(
-                  POLITICS_D-> query_policies() ), 1 ), "\n  " ) ) );
+                wrap( implode( sort_array( keys(
+                                POLITICS_D-> query_policies() ), 1 ), "\n  " ) ) );
     }
     return 1;
 }
@@ -181,7 +181,7 @@ int cmd_read( string arg )
             write( "There are no proposals waiting to be passed.\n" );
         else
             write( "The following proposals are waiting to be passed:\n" +
-              wrap( implode( keys( policies ), ", " ) ) );
+                    wrap( implode( keys( policies ), ", " ) ) );
     }
     return 1;
 }
@@ -196,10 +196,10 @@ int cmd_propose( string title )
         return notify_fail( "There are not " + QUORUM + " voters present.\n" );
     write( "Enter your proposal:\n" );
     this_player()-> edit( TMP_FILE,
-      (: "callback_propose" :),
-      (: "abort_propose" :),
-      title,
-    );
+            (: "callback_propose" :),
+            (: "abort_propose" :),
+            title,
+            );
     return 1;
 }
 
@@ -218,15 +218,15 @@ void callback_propose( string title )
     }
 
     policies[title] = ([
-      "Title" : title,
-      "Proposer" : this_player()-> query_name(),
-      "Time" : time(),
-      "Text" : proposal,
-      "Voted" : ([]),
-      "Aye" : ({}),
-      "Nay" : ({}),
-      "Abs" : ({}),
-    ]);
+            "Title" : title,
+            "Proposer" : this_player()-> query_name(),
+            "Time" : time(),
+            "Text" : proposal,
+            "Voted" : ([]),
+            "Aye" : ({}),
+            "Nay" : ({}),
+            "Abs" : ({}),
+            ]);
     display_policy( policies[title] );
     write( "You have 1/2 hr to get " + votes_needed( title ) + "\n" );
     call_out( "last_warning", 1500, title );
@@ -240,9 +240,9 @@ void last_warning( string title )
     call_out( "delete_proposal", 300, title );
     if( !proposer = find_player( policies[title]["Proposer"] ) ) return;
     tell_object( proposer,
-      "***** LAST WARNING *****\n"+
-      "Proposal " + title + " will be deleted in 5 minutes\nunless "+
-      "you can find " + votes_needed( title ) + " votes before then.\n" );
+            "***** LAST WARNING *****\n"+
+            "Proposal " + title + " will be deleted in 5 minutes\nunless "+
+            "you can find " + votes_needed( title ) + " votes before then.\n" );
 }
 
 void delete_proposal( string title )
@@ -265,7 +265,7 @@ int cmd_repeal( string title )
     policies[title] = policy;
     call_out( "delete_proposal", 1800, title );
     write( "You have 1/2 hour to get the votes needed to repeal " +
-      title + ".\n" );
+            title + ".\n" );
     return 1;
 }
 
@@ -274,8 +274,8 @@ int cmd_cast( string arg )
     string vote, title, name;
 
     if( !arg ||
-      ( ( 2 != sscanf( arg, "%s on %s", vote, title ) ) &&
-        ( 2 != sscanf( arg, "%s %s", vote, title ) )      ) )
+            ( ( 2 != sscanf( arg, "%s on %s", vote, title ) ) &&
+              ( 2 != sscanf( arg, "%s %s", vote, title ) )      ) )
         return notify_fail( "Syntax: cast <vote> on <title>\n" );
     if( !policies[title] )
         return notify_fail( "There is no proposal: " + title + ".\n" );
@@ -285,13 +285,13 @@ int cmd_cast( string arg )
     vote = lower_case( vote[0..2] );
     switch( vote )
     {
-    case "aye":
-        policies[title]["Aye"] += ({ name }); break;
-    case "nay":
-        policies[title]["Nay"] += ({ name }); break;
-    case "abs":
-        policies[title]["Abs"] += ({ name }); break;
-    default:
+        case "aye":
+            policies[title]["Aye"] += ({ name }); break;
+        case "nay":
+            policies[title]["Nay"] += ({ name }); break;
+        case "abs":
+            policies[title]["Abs"] += ({ name }); break;
+        default:
         return notify_fail( "You vote must be 'aye', 'nay' or 'abs'.\n" );
     }
     policies[title]["Voted"][name] = capitalize( vote );
@@ -319,8 +319,8 @@ int cmd_cast( string arg )
 void receive_message( string msg_class, string msg )
 {
     /*
-    write( "class = " + msg_class + "\n" );
-    */
+       write( "class = " + msg_class + "\n" );
+     */
     message( msg_class, msg, all_inventory( this_object() ), ({ this_player() }) );
     TOWN_HALL-> receive_message( msg_class, msg );
 }

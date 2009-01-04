@@ -30,10 +30,10 @@ int cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: <reply [(message)]>\n\n"
-      "With a message, it replies to the person who last told or replied "
-      "to you.  Without a message, it shows who the current object of "
-      "your reply would be.\n\nSee also: "
-      "finger, idle, muds, say, shout, tell, yell", this_player()
-    );
+            "Syntax: <reply [(message)]>\n\n"
+            "With a message, it replies to the person who last told or replied "
+            "to you.  Without a message, it shows who the current object of "
+            "your reply would be.\n\nSee also: "
+            "finger, idle, muds, say, shout, tell, yell", this_player()
+           );
 }

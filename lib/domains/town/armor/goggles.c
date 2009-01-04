@@ -10,15 +10,22 @@ static void create(){
     SetAdjectives(({"thick","driving","protective","eyewear"}));
     SetShort("driving goggles");
     SetLong("A set of protective goggles for wearing during "+
-      "high-speed travel.");
+            "high-speed travel.");
     SetMass(5);
     SetBaseCost("silver",30);
-    SetDamagePoints(1);
-    SetProtection(BLUNT,1);
-    SetProtection(BLADE,1);
-    SetProtection(KNIFE,1);
     SetArmorType(A_VISOR);
 }
+
 void init(){
     ::init();
 }
+
+int eventReceiveDamage(mixed agent, int type, int amt, int i, mixed array l){
+    if(GetWorn()){
+        tell_object(environment(this_object()), "The goggles! They "+
+                "do nothing!");
+    }
+    return ::eventReceiveDamage(agent, type, amt, i, l);          
+}
+
+

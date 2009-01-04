@@ -18,7 +18,7 @@ static void create() {
     SetRules("for STR");
     SetErrorMessage("For whom would you like to vote?");
     SetHelp("Syntax: <vote for STR>\n"
-      "Casts your vote for a candidate");
+            "Casts your vote for a candidate");
 }
 
 mixed can_vote_for_str() {

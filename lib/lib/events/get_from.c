@@ -34,7 +34,7 @@ mixed CanGetFrom(object who, object item){
     }
 
     if( (environment() != environment(this_player())) &&
-      (environment() != this_player()) ){
+            (environment() != this_player()) ){
         return "#" + capitalize(GetShort()) + " is not in reach.";
     }
     return 1;
@@ -44,7 +44,7 @@ mixed CanPutInto(object who, object item){
     object env;
 
     if((inherits(LIB_SIT,item) && sizeof(item->GetSitters())) ||
-      (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
+            (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
         write("There appears to be someone in your way.");
         return 0;
     }
@@ -67,7 +67,7 @@ mixed CanPutOnto(object who, object item){
     object env;
 
     if((inherits(LIB_SIT,item) && sizeof(item->GetSitters())) ||
-      (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
+            (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
         write("There appears to be someone preventing your access.");
         return 0;
     }
@@ -95,7 +95,7 @@ mixed eventGetFrom(object who, object array what){
     mixed tmp;
 
     if((inherits(LIB_SIT,this_object()) && sizeof(this_object()->GetSitters())) || 
-      (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
+            (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
         write("There appears to be someone on there.");
         return 0;
     }
@@ -107,7 +107,7 @@ mixed eventGetFrom(object who, object array what){
         if( (tmp = ob->CanGet(who)) != 1 ){
             if(stringp(tmp)) write(tmp);
             else write("It would appear you can't get "+
-                  (ob->GetShort() || "that") +" right now.");
+                    (ob->GetShort() || "that") +" right now.");
             continue;
         }
         if( !who->CanCarry(ob->GetMass()) ){
@@ -116,7 +116,7 @@ mixed eventGetFrom(object who, object array what){
         }
         if( !ob->eventMove(who) ){
             who->eventPrint("You have a problem getting " +
-              ob->GetShort() + ".");
+                    ob->GetShort() + ".");
             continue;
         }
         AddCarriedMass( -(ob->GetMass()) );
@@ -146,7 +146,7 @@ mixed eventGetFrom(object who, object array what){
         }
     }
     send_messages("get", "$agent_name $agent_verb " + msg +
-      " from $target_name.", who, this_object(), environment(who));
+            " from $target_name.", who, this_object(), environment(who));
     return 1;
 }
 
@@ -156,7 +156,7 @@ mixed eventPutInto(object who, object what){
 
 mixed eventPutOnto(object who, object what){
     if((inherits(LIB_SIT,this_object()) && sizeof(this_object()->GetSitters())) ||
-      (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
+            (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
         write("There appears to be someone in the way of that.");
         return 0;
     }

@@ -10,7 +10,7 @@
 //  user's more pager system, and made the headlines stand out a bit better.
 // Pallando (93-05-28) Added this command to Dead Souls's mudlib.
 //                     Changed its name from "compare" to "diff"
-*/
+ */
 
 #include <lib.h>
 #include <message_class.h>
@@ -29,11 +29,11 @@ mixed get_lines( string file_name )
     file_name = absolute_path( "cwd", file_name );
     switch( file_size( file_name ) ) 
     {
-    case -2: { write( file_name + " is a directory.\n" ); return 0; }
-    case -1: { write( file_name + " is not a file.\n" ); return 0; }
+        case -2: { write( file_name + " is a directory.\n" ); return 0; }
+        case -1: { write( file_name + " is not a file.\n" ); return 0; }
     }
     if( !master()-> valid_read( file_name,
-        previous_object(), "diff" ) )
+                previous_object(), "diff" ) )
     {
         write( file_name + " : Permission denied.\n" );
         return 0;
@@ -78,9 +78,9 @@ int cmd( string a )
         return 1;
     }
     output = "[In " + file_name1 + " but not in " + file_name2 + ":]\n" +
-    implode( ONEnotTWO, "\n" ) + "\n" +
-    "\n[In " + file_name2 + " but not in " + file_name1 + ":]\n" +
-    implode( TWOnotONE, "\n" ) + "\n";
+        implode( ONEnotTWO, "\n" ) + "\n" +
+        "\n[In " + file_name2 + " but not in " + file_name1 + ":]\n" +
+        implode( TWOnotONE, "\n" ) + "\n";
 
     this_player()->eventPage( explode(output, "\n"), MSG_SYSTEM | MSG_NOCOLOUR);
 
@@ -90,9 +90,9 @@ int cmd( string a )
 int help()
 {
     write( ""+
-      "Syntax: diff <file1> <file2>\n"+
-      "Effect: Finds the differences between two files.\n"+
-      "" );
+            "Syntax: diff <file1> <file2>\n"+
+            "Effect: Finds the differences between two files.\n"+
+            "" );
     return 1;
 }
 

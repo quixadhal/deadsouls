@@ -74,15 +74,15 @@ static void create(){
     Students = ([]);
     SetNoClean(1);
     SetCommandResponses( ([
-        "teach" : (: eventTeachLanguage :),
-        "teach" : (: eventTeachLanguage :),
-        "default" : (: eventHelp :),
-        "help" : (: eventHelp :),
-      ]) );
+                "teach" : (: eventTeachLanguage :),
+                "teach" : (: eventTeachLanguage :),
+                "default" : (: eventHelp :),
+                "help" : (: eventHelp :),
+                ]) );
     SetRequestResponses( ([
-        "default" : (: eventHelp :),
-        "help" : (: eventHelp :),
-      ]) );
+                "default" : (: eventHelp :),
+                "help" : (: eventHelp :),
+                ]) );
 }
 
 static void init(){
@@ -92,7 +92,7 @@ static void init(){
     str = (string)this_player()->GetKeyName();
     if( Students[str] ){
         eventForce("speak You will have to start your "             
-          "studies anew, "+(string)this_player()->GetName());
+                "studies anew, "+(string)this_player()->GetName());
         map_delete(Students, str);
     }
 }
@@ -109,12 +109,12 @@ mixed AddTeachingLanguages(string *args){
     return (TeachingLanguages = distinct_array(TeachingLanguages + tmp_array));
 }
 
-mixed RemoveTeachingLanguages(string *args...){
-    if( !args || !arrayp(args) ) 
-        error("Bad argument 1 to RemoveTeachingLanguages.");
-    TeachingLanguages -= args;
-    return TeachingLanguages;
-}
+    mixed RemoveTeachingLanguages(string *args...){
+        if( !args || !arrayp(args) ) 
+            error("Bad argument 1 to RemoveTeachingLanguages.");
+        TeachingLanguages -= args;
+        return TeachingLanguages;
+    }
 
 string array GetTeachingLanguages(){ return copy(TeachingLanguages); }
 
@@ -141,12 +141,12 @@ mapping GetStudents(){ return copy(Students); }
 
 int eventHelp(object who, string unused){
     eventForce("speak I am not sure of what you are "
-      "asking, " + (string)who->GetName() + ".");
+            "asking, " + (string)who->GetName() + ".");
     if(sizeof( GetTeachingLanguages() )){
         eventForce("speak My area of expertise covers " +
-          Expertise() + ".");
+                Expertise() + ".");
         eventForce("speak You can \"ask "+GetKeyName()+" to teach "
-          "<LANGUAGE>\" if you have training points.");
+                "<LANGUAGE>\" if you have training points.");
     }
     return 1;
 }
@@ -165,7 +165,7 @@ int eventTeachLanguage(object who, string verb, string language){
             return 0;
         }
         if( !GetAllLanguages() &&
-          member_array(language, this_object()->GetTeachingLanguages()) == -1 ){
+                member_array(language, this_object()->GetTeachingLanguages()) == -1 ){
             eventForce("speak I know nothing about the " +capitalize(language)+" language.");
             return 0;
         }
@@ -175,7 +175,7 @@ int eventTeachLanguage(object who, string verb, string language){
         }
         if(commercial && this_player()->GetCurrency(GetLocalCurrency()) < teaching_fee){
             eventForce("speak I charge "+teaching_fee+" "+GetLocalCurrency()+" per lesson. "+
-              "You don't seem to have the right amount of the right currency.");
+                    "You don't seem to have the right amount of the right currency.");
             return 0;
         }
         Students[ (string)who->GetKeyName() ] = language;
@@ -213,22 +213,22 @@ static int ContinueTeaching(object who, string language, int x){
 
 int eventStart(object who, string language){
     who->eventPrint(GetName() + " begins teaching you "
-      "about the " + language + " language.");
+            "about the " + language + " language.");
     environment()->eventPrint(GetName() + " begins teaching " +
-      (string)who->GetName() + "...", who);
+            (string)who->GetName() + "...", who);
     return 1;
 }
 
 int eventContinue(object who, string language, int x){
     who->eventPrint("You listen intently as " + GetName()
-      + " continues " + possessive(this_object())
-      + " dissertation on " + language + ".");
+            + " continues " + possessive(this_object())
+            + " dissertation on " + language + ".");
     return 1;
 }
 
 int eventComplete(object who, string language){
     who->eventPrint("You feel somewhat more competent in " + language + ".");
     eventForce("speak I can teach you no more for now, " +
-      (string)who->GetName() + ".");
+            (string)who->GetName() + ".");
     return 1;
 }

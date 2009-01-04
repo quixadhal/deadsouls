@@ -21,6 +21,6 @@ mixed cmd(string args) {
 
 string GetHelp(string args) {
     return ("Syntax: unpause <PLAYER>\n\n"
-      "Causes the player to be able to run commands after being paused.\n\n"
-      "");
+            "Causes the player to be able to run commands after being paused.\n\n"
+            "");
 }

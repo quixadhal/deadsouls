@@ -20,6 +20,6 @@ mixed cmd(string str) {
 
 void help() {
     message("help", "Syntax: debug [on | off]\n\n"
-      "Allows you to receive debugging information\n\n",
-      this_player());
+            "Allows you to receive debugging information\n\n",
+            this_player());
 }                                                    

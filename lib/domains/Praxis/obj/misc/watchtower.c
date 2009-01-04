@@ -7,10 +7,10 @@
 #include <config.h>
 #include <daemons.h>
 #define DONATORS_LIST ({ "Kalinash", "Kazmandu", "Ariel", "Mikla", "Ninja",\
-"Shambere", "Cair", "Drittz", "Beorn", "Vilesilencer", "Elwin", "Silenus",\
-"Corvar", "Lassondra", "Bohemund", "Maria", "Arugess", "Drakken", "Dana",\
-"Soong", "Slade", "Rearden", "Stonehenge", "Shadowwolf", "Descartes",\
-})
+        "Shambere", "Cair", "Drittz", "Beorn", "Vilesilencer", "Elwin", "Silenus",\
+        "Corvar", "Lassondra", "Bohemund", "Maria", "Arugess", "Drakken", "Dana",\
+        "Soong", "Slade", "Rearden", "Stonehenge", "Shadowwolf", "Descartes",\
+        })
 
 inherit LIB_ITEM;
 
@@ -22,14 +22,14 @@ void create() {
     SetKeyName("monument");
     SetId( ({ "monument", "tower", "clock" }) );
     SetLong(
-      "This monument stands at the centre of Praxis to remind "
-      "everyone of those who have made this reality possible for "
-      "everyone to enjoy.  On one face of the monument is a clock "
-      "which shows the time in Praxis.  All other sides are "
-      "engraved with the names of those who have contributed "
-      "in money to this world.  <read clock> will tell you the time.  "
-      "<read names> to see who all has donated, and do thank them."
-    );    SetMass( 0);
+            "This monument stands at the centre of Praxis to remind "
+            "everyone of those who have made this reality possible for "
+            "everyone to enjoy.  On one face of the monument is a clock "
+            "which shows the time in Praxis.  All other sides are "
+            "engraved with the names of those who have contributed "
+            "in money to this world.  <read clock> will tell you the time.  "
+            "<read names> to see who all has donated, and do thank them."
+           );    SetMass( 0);
 
     SetNoClean(1);
 }
@@ -45,8 +45,8 @@ int read(string str) {
     }
     else if (str == "names") {
         message("Ninfo", "These people have donated money and made Nightmare possible:\n"+
-          format_page(sort_array(DONATORS_LIST, "alpha", this_object()), 5)
-          ,this_player());
+                format_page(sort_array(DONATORS_LIST, "alpha", this_object()), 5)
+                ,this_player());
         return 1;
     }
     notify_fail("Read what?\n");
@@ -55,9 +55,9 @@ int read(string str) {
 
 void GetLong_time() {
     write(capitalize(season(time()))+" hovers over "+mud_name()+" on the "+
-      date(time())+ordinal(date(time()))+" day of "+
-      month(time())+" in year "+year(time())+" NM.\n"
-    );
+            date(time())+ordinal(date(time()))+" day of "+
+            month(time())+" in year "+year(time())+" NM.\n"
+         );
     write("The clock face reads "+query_hour()+".\n");
 }
 

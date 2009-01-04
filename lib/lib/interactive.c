@@ -111,15 +111,15 @@ int Setup(){
     if( VOTING_D->GetStatus() == VOTE_RUNNING ){
         if( VOTING_D->GetMode() == VOTE_MODE_CANDIDATES )
             eventPrint("%^YELLOW%^Class Elections are in progress!  "
-              "Go nominate candidates!%^RESET%^");
+                    "Go nominate candidates!%^RESET%^");
         if( VOTING_D->GetMode() == VOTE_MODE_VOTING )
             eventPrint("%^YELLOW%^Class Elections are in progress!  "
-              "Go vote for the candidates!%^RESET%^");
+                    "Go vote for the candidates!%^RESET%^");
     } 
 
     if( VOTING_D->GetVoteStatus( this_object() ) != VOTE_ALREADY_VOTED ){
         eventPrint("%^YELLOW%^You have not yet voted!  "
-          "Please vote now.%^RESET%^");
+                "Please vote now.%^RESET%^");
         eventMove( VOTING_D->GetVoteRoom() );
     } else {
         object room;
@@ -130,8 +130,8 @@ int Setup(){
         if( room && room->GetMedium() == MEDIUM_AIR ){
         }
         if(!sizeof(LoginSite) || 
-          (!room && !file_exists(LoginSite) && !file_exists(LoginSite+".c")) || 
-          !eventMove(LoginSite) || RescueBit ){ 
+                (!room && !file_exists(LoginSite) && !file_exists(LoginSite+".c")) || 
+                !eventMove(LoginSite) || RescueBit ){ 
             LoginSite = ROOM_START;
             eventMove(ROOM_START);
             SetRescueBit(0);
@@ -142,16 +142,16 @@ int Setup(){
         tmp = GetName() + " enters " + mud_name() + ".";
     if(!(archp(this_object()) && this_object()->GetInvis())){
         log_file("enter", GetCapName()+" (enter): "+ctime(time())+
-          " : "+query_ip_name(this_object())+"\n");
+                " : "+query_ip_name(this_object())+"\n");
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
     }
 
     if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))){
         if(mp["unread"]){
             eventPrint("\n%^RED%^%^BOLD%^>>> " + mp["unread"] + " of your " +
-              (mp["total"] == 1 ? mp["total"] + " letter is" :
-                mp["total"] + " letters remain") + " unread. <<<%^RESET%^\n",
-              MSG_SYSTEM);
+                    (mp["total"] == 1 ? mp["total"] + " letter is" :
+                     mp["total"] + " letters remain") + " unread. <<<%^RESET%^\n",
+                    MSG_SYSTEM);
         }
     }
     NEWS_D->GeneralNews();
@@ -167,14 +167,14 @@ static void net_dead(){
     if(!(archp(this_object()) && this_object()->GetInvis())){
         log_file("enter", GetCapName() + " (net-dead): " + ctime(time()) + "\n");
         environment()->eventPrint(GetName() + " suddenly disappears into "
-          "a sea of irreality.", MSG_ENV, this_object());
+                "a sea of irreality.", MSG_ENV, this_object());
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
     }
     SNOOP_D->ReportLinkDeath(this_object()->GetKeyName());
     eventMove(ROOM_FREEZER);
     if(query_snoop(this_object()))
         query_snoop(this_object())->eventPrint(GetCapName() + " has gone "
-          "net-dead.", MSG_SYSTEM);
+                "net-dead.", MSG_SYSTEM);
 }
 
 void eventReconnect(){
@@ -185,7 +185,7 @@ void eventReconnect(){
     if(!(archp(this_object()) && this_object()->GetInvis())){
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);
         environment()->eventPrint(GetCapName() + " has rejoined this reality.",
-          MSG_ENV, this_object());
+                MSG_ENV, this_object());
     }
     if( NetDiedHere ) eventMove(NetDiedHere);
     else eventMove(ROOM_START);
@@ -250,11 +250,11 @@ int cmdQuit(){
     if(!env) env = load_object(ROOM_FURNACE);
 
     if( previous_object() && !
-      ((int)master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
+            ((int)master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
     if( env->GetProperty("no quit") &&
-      ! sizeof(previous_object(-1)) ){
+            ! sizeof(previous_object(-1)) ){
         message("system", "You are unable to escape this reality!",
-          this_object());
+                this_object());
         return 0;
     }
     tell_object(this_object(),"Please come back another time!");
@@ -268,7 +268,7 @@ int cmdQuit(){
     }
     this_object()->AddCarriedMass(-(this_object()->GetCarriedMass()));
     tmp = GetMessage("logout") || (this_object()->GetName() + 
-      " is gone from this reality!");
+            " is gone from this reality!");
     save_player(GetKeyName());
     if(!(archp(this_object()) && this_object()->GetInvis())){
         log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
@@ -431,7 +431,12 @@ mapping GetLastError(){
 }
 
 string SetCapName(string str){
-    if( base_name(previous_object(0)) != LIB_CONNECT ) return str;
+    if(base_name(previous_object(0)) != LIB_CONNECT){
+        if(this_player()){
+            if(!adminp(this_player())) return str;
+        }
+        else return str;
+    }
     return object::SetCapName(str);
 }
 

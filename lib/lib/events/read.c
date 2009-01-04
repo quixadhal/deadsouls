@@ -113,7 +113,7 @@ varargs mixed eventRead(object who, mixed str){
         if(!stringp(ret)) return 1;
     }
     environment(who)->eventPrint(who->GetName() + " reads " + GetShort() + ".",
-      who);
+            who);
     if(ret) val = ret;
     if( !val ){
         who->eventPrint("There is nothing to read.");
@@ -130,7 +130,7 @@ varargs mixed eventRead(object who, mixed str){
     } 
 
     if(Language && (this_player()->GetLanguageLevel(Language) < 100 &&
-        !(this_player()->GetPolyglot()))){
+                !(this_player()->GetPolyglot()))){
         if(sizeof(val) > 4800){
             val = "It is too long and you are too unfamiliar with the language to make sense of it.";
 
@@ -150,7 +150,7 @@ mixed direct_read_obj(){
     }
     else {
         if( environment() != this_player()  && environment(this_player()) !=
-          environment()){
+                environment()){
             return "#You don't have that!";
         }
         else return 1;
@@ -165,7 +165,7 @@ mixed direct_read_str_word_obj(string str){
     }
     else {
         if( environment() != this_player()  && environment(this_player()) !=
-          environment()){
+                environment()){
             return "#You don't have that!";
         }
         else return 1;
@@ -179,7 +179,7 @@ mixed direct_read_obj_at_obj(object reader, object readee){
     }
     else {
         if( environment() != this_player()  && environment(this_player()) !=
-          environment()){
+                environment()){
             return "#You don't have that!";
         }
         else return 1;

@@ -9,8 +9,8 @@ static void create(){
     SetAdjectives(({"pillbox"}));
     SetShort("a light blue pillbox hat");
     SetLong("A cute little pillbox hat, light blue in "+
-      "color. The inside appears to be lined with leopard "+
-      "skin. Looks uncomfortable.");
+            "color. The inside appears to be lined with leopard "+
+            "skin. Looks uncomfortable.");
     SetMass(50);
     SetDollarCost(50);
     SetDamagePoints(10);

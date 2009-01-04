@@ -10,7 +10,7 @@ static void create() {
     SetAdjectives( ({ "swivel", "small", "black" }) );
     SetShort("a swivel chair");
     SetLong("This is a small swivel chair, with tasteful and understated "+
-      "black covers.");
+            "black covers.");
     SetMass(1500);
     SetDollarCost(15);
     SetMaxSitters(1);
@@ -32,7 +32,7 @@ int swivel(string str){
         if( hit == 7) {
             write("You swivel around in your swivel chair! Whee!");
             say(this_player()->GetName()+" swivels around in "+possessive(this_player())+" "+
-              "swivel chair, yelling \"WHEEEE!!!\"");
+                    "swivel chair, yelling \"WHEEEE!!!\"");
             return 1;
         }
         else { write("You are not sitting in a swivel chair."); }

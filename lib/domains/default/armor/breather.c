@@ -9,9 +9,9 @@ int maxcharge = 1000;
 
 string LongD(){
     string ret = "This remarkably small device fits over the "+
-    "wearer's mouth, and provides a long supply of oxygenated "+
-    "air. Its current charge level is "+
-    to_int(percent(charge,maxcharge))+" percent.";
+        "wearer's mouth, and provides a long supply of oxygenated "+
+        "air. Its current charge level is "+
+        to_int(percent(charge,maxcharge))+" percent.";
     return ret;
 }
 

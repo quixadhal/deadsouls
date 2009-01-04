@@ -63,7 +63,7 @@ int eventMove(mixed dest){
     if( objectp(me) && LastEnvironment = environment() ){
         environment()->eventReleaseObject(me);
         if(!undefinedp(me->GetRecurseDepth()) && 
-          !undefinedp(environment()->GetRecurseDepth())){
+                !undefinedp(environment()->GetRecurseDepth())){
             depth = me->GetRecurseDepth();
             depth += 1;
             if(depth) environment()->AddRecurseDepth(-depth);
@@ -71,10 +71,12 @@ int eventMove(mixed dest){
         }
     }
     if(!objectp(me) ) return 0; 
-    prev = environment(ob);
+    prev = environment(me);
+    //tc("prev: "+identify(prev),"cyan");
     move_object(ob);
     ob->eventReceiveObject(me);
     if(environment() == prev) return 0;
+    if(prev) prev->eventPostRelease(me);
     if( environment() ){
         foreach(object peer in all_inventory(environment())){
             if( peer != me ){
@@ -93,28 +95,28 @@ int eventMove(mixed dest){
         if(objectp(furn)) furn->eventReleaseStand(me);
 
     if(living(me) && !living(environment(me)) 
-      && furn = me->GetProperty("mount"))
+            && furn = me->GetProperty("mount"))
         if(objectp(furn)){
             me->RemoveProperty("mount");
             furn->eventDismount(me);
         }
     if(environment()->GetMedium() == MEDIUM_AIR &&
-      me->GetPosition() != POSITION_FLYING){
+            me->GetPosition() != POSITION_FLYING){
         if(!(me->CanFly())) call_out("eventFall", 1);
         else me->eventFly();
     }
     if(environment()->GetMedium() == MEDIUM_LAND &&
-      (me->GetPosition() == POSITION_FLOATING ||
-        me->GetPosition() == POSITION_SWIMMING)){
+            (me->GetPosition() == POSITION_FLOATING ||
+             me->GetPosition() == POSITION_SWIMMING)){
         call_out("eventCollapse", 1, 1);
     }
     else if((environment()->GetMedium() == MEDIUM_WATER ||
-        environment()->GetMedium() == MEDIUM_SURFACE) &&
-      me->GetPosition() != POSITION_SWIMMING &&
-      me->GetPosition() != POSITION_FLOATING){
+                environment()->GetMedium() == MEDIUM_SURFACE) &&
+            me->GetPosition() != POSITION_SWIMMING &&
+            me->GetPosition() != POSITION_FLOATING){
         if(living(me)){
             if(!(me->GetPosition() == POSITION_FLYING &&
-                environment()->GetMedium() == MEDIUM_SURFACE)){
+                        environment()->GetMedium() == MEDIUM_SURFACE)){
                 if(!(environment()->GetTerrainType() & (T_SEAFLOOR)) && me->CanSwim()){
                     if(me->GetPosition() != POSITION_FLOATING){
                         me->eventSwim();

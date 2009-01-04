@@ -15,5 +15,5 @@ static void create() {
     SetNoClean(1);
 }
 void init(){
-::init();
+    ::init();
 }

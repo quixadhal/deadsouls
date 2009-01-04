@@ -13,5 +13,5 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <map>\n\n"
-      "Displays a simple map of your location.\n\n", this_player());
+            "Displays a simple map of your location.\n\n", this_player());
 }

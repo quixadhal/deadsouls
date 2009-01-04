@@ -8,13 +8,13 @@ static void create() {
     SetShort("Corridor");
     SetLong("You are in an east-west corridor on the first floor of the Virtual Campus administrative building. There is a door south of here, leading into the Admissions office.");
     SetItems( (["corridor" : "This is a carpeted corridor, leading west.",
-        "floor" : "The carpet is purple, and somewhat institutional.",
-        "carpet" : "The carpet is purple, and somewhat institutional."]) );
+                "floor" : "The carpet is purple, and somewhat institutional.",
+                "carpet" : "The carpet is purple, and somewhat institutional."]) );
     SetExits( ([ 
-        "south" : "/domains/campus/room/start",
-        "east" : "/domains/campus/room/corridor2",
-        "west" : "/domains/campus/room/corridor3",
-      ]) );
+                "south" : "/domains/campus/room/start",
+                "east" : "/domains/campus/room/corridor2",
+                "west" : "/domains/campus/room/corridor3",
+                ]) );
     SetProperty("no attack", 1);
     SetDoor("south", "/domains/campus/doors/plain_door");
 }

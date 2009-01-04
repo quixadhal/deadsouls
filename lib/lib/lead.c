@@ -30,7 +30,7 @@ object *AddFollower(object follower){
 
     if( !objectp(follower) ) error("Bad argument 1 to AddFollower().\n");
     if( follower != this_object() && !Followers[follower]
-      && !follower->GetProperty("no follow") ){
+            && !follower->GetProperty("no follow") ){
         if( !follower->IsFollowing(this_object()) ){
             if( follower->SetLeader(this_object()) ){
                 tmp["followed"] = 0;
@@ -96,11 +96,11 @@ varargs mixed CanLead(object ob){
     return 1;
 }
 
-varargs mixed CanEvade(object ob){
-    if( ob && !ob->IsFollowing(this_object()) )
-        return ob->GetName() + " is not following you.";
-    return 1;
-}
+    varargs mixed CanEvade(object ob){
+        if( ob && !ob->IsFollowing(this_object()) )
+            return ob->GetName() + " is not following you.";
+        return 1;
+    }
 
 int eventMoveFollowers(object dest){
     mapping follower;

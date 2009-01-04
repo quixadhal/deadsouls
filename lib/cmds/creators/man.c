@@ -20,21 +20,21 @@ int cmd(string str) {
     pages = ({});
     while(i--) 
         if(file_exists(tmp = sprintf("%s/%s/%s", DIR_DOCS, MAN_PAGES[i],
-              str))) pages += ({ tmp });
+                        str))) pages += ({ tmp });
     if(!(i = sizeof(pages))) return notify_fail("No such man page.\n");
     else if(i > 1) 
         message("system", "Showing only the first of "+i+" man pages.",
-          this_player());
+                this_player());
     this_player()->eventPage(pages[0]);
     return 1;
 }
 
 void help() {
     message("help", "Syntax: man FUNCTION\n\n"
-      "This command provides information on the function specified, "
-      "if it has a help file in the /doc/efun/all, /doc/sefun, or "
-      "/doc/lfun/all directories. "
-      "\n\n",
-      this_player());
+            "This command provides information on the function specified, "
+            "if it has a help file in the /doc/efun/all, /doc/sefun, or "
+            "/doc/lfun/all directories. "
+            "\n\n",
+            this_player());
 }
 

@@ -10,8 +10,8 @@ void create() {
     SetShort("a tall metal bin");
     SetLong("This tall container is meant to hold javelins.");
     SetInventory(([
-        "/domains/town/weap/javelin" : ({ 60, 10 }),
-      ]));
+                "/domains/town/weap/javelin" : ({ 60, 10 }),
+                ]));
     SetNoCondition(1);
     SetCanClose(0);
     SetMass(274);

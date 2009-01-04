@@ -5,11 +5,13 @@ object gdude;
 
 
 int nasty(object dude){
+    if(!dude) return 0;
     gdude = dude;
     eventForce("look at "+gdude->GetKeyName());
     eventForce("drool");
     return 1;
 }
+
 int CheckHuman(mixed val){
     if(!val) return 0;
     if(!objectp(val)) return 0;
@@ -27,8 +29,8 @@ static void create() {
     SetAdjectives(({"dirty"}));
     SetShort("a mean-looking troll");
     SetLong("This is the dreaded creature of legend: a slimy, "
-      "green, putrid-looking fiend with long, razor-"
-      "sharp claws and fangs.");
+            "green, putrid-looking fiend with long, razor-"
+            "sharp claws and fangs.");
     SetLevel(3);
     SetRace("troll");
     SetClass("fighter");

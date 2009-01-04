@@ -10,9 +10,9 @@ void create() {
     SetShort("a wooden table");
     SetLong("It is a simple, medium-sized table made of wood.");
     SetInventory(([
-        "/domains/cave/obj/cup" : 1,
-        "/domains/cave/obj/letter" : 1,
-      ]));
+                "/domains/cave/obj/cup" : 1,
+                "/domains/cave/obj/letter" : 1,
+                ]));
     SetMass(274);
     SetBaseCost("silver",1);
     SetBaseCost("silver",1);

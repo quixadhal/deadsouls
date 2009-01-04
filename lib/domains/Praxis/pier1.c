@@ -11,25 +11,25 @@ void create() {
     SetChance(10);
     SetShort( "Pier 1 of the Port of Praxis");
     SetLong(
-      "Welcome to the Port of Praxis!\n"
-      "The Pier 1 port is virtually bustling with activity. Ships from "
-      "all over the reality dock here to deliver their goods to Praxis "
-      "and its surrounding regions. The pier is made out of solid wood "
-      "which has become weathered due to the rain and salty air. Torches "
-      "line each side of the dockss, lighting the way at night. All along "
-      "the pier you can see people fishing, talking and enjoying the weather.");
+            "Welcome to the Port of Praxis!\n"
+            "The Pier 1 port is virtually bustling with activity. Ships from "
+            "all over the reality dock here to deliver their goods to Praxis "
+            "and its surrounding regions. The pier is made out of solid wood "
+            "which has become weathered due to the rain and salty air. Torches "
+            "line each side of the dockss, lighting the way at night. All along "
+            "the pier you can see people fishing, talking and enjoying the weather.");
     SetSmell("default", "Rotting fish offend your nostrils.");
     SetSmell("fish", "They smell as if they have been out for days.");
     SetItems(
-      (["port" : "Ships from all over Nightmare dock here to "
-        "do business in Praxis.",
-        "pier" : "Pier 1 of the port.",
-        "goods" : "Merchandise from exotic places.",
-        "torch" : "It lights up the pier at night.",
-        "torches" : "They light up the pier at night."]) );
+            (["port" : "Ships from all over Nightmare dock here to "
+             "do business in Praxis.",
+             "pier" : "Pier 1 of the port.",
+             "goods" : "Merchandise from exotic places.",
+             "torch" : "It lights up the pier at night.",
+             "torches" : "They light up the pier at night."]) );
     SetExits( 
-      (["north" : "/domains/Praxis/s_centre4" 	
-      ]) );
+            (["north" : "/domains/Praxis/s_centre4" 	
+             ]) );
 }
 
 void reset() {

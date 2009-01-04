@@ -145,7 +145,7 @@ mixed eventSell(object who, string args){
         return 1;
     }
     eventForce("give " + (string)ob->GetKeyName() + " to " +
-      (string)who->GetKeyName());
+            (string)who->GetKeyName());
     if( environment(ob) == this_object() ){
         eventForce("speak heh, you cannot carry that.  I will drop it.");
         eventForce("drop " + (string)ob->GetKeyName());
@@ -155,7 +155,7 @@ mixed eventSell(object who, string args){
     }
     who->AddCurrency(GetLocalCurrency(), -x);
     eventForce("speak Thank you for your business, " +
-      (string)who->GetName());
+            (string)who->GetName());
     return 1;
 }
 
@@ -184,10 +184,10 @@ int eventList(object who, string cmd, string args){
 static void create(){
     sentient::create();
     SetCommandResponses( ([
-        ({ "list", "show", "browse" }) : (: eventList :),
-        ({ "sell", "serve" }) : (: eventBuyItem :),
-      ]) );
+                ({ "list", "show", "browse" }) : (: eventList :),
+                ({ "sell", "serve" }) : (: eventBuyItem :),
+                ]) );
     SetRequestResponses( ([
-        ({ "menu" }) : (: eventList :),
-      ]) );
+                ({ "menu" }) : (: eventList :),
+                ]) );
 }

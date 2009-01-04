@@ -27,13 +27,11 @@ inherit LIB_LIVING;
 inherit LIB_MESSAGES;
 inherit LIB_MOVE;
 inherit LIB_OBJECT;
-inherit LIB_SAVE;
 inherit LIB_DOMESTICATE;
 inherit LIB_GUARD;
 inherit LIB_UNIQUENESS;
 
 private int CustomXP, ActionChance, CombatActionChance, AutoStand;
-private int MaximumHealth = 0;
 private mixed Encounter;
 private string *EnemyNames;
 private static int NPCLevel, Unique;
@@ -120,10 +118,10 @@ static void heart_beat(){
     position = GetPosition();
     if( position == POSITION_LYING || position == POSITION_SITTING ){
         if(AutoStand && 
-          !RACES_D->GetLimblessRace(this_object()->GetRace())) 
+                !RACES_D->GetLimblessRace(this_object()->GetRace())) 
             eventForce("stand up");
         if(GetInCombat() && 
-          !RACES_D->GetLimblessRace(this_object()->GetRace()) ) 
+                !RACES_D->GetLimblessRace(this_object()->GetRace()) ) 
             eventForce("stand up");
     }
     if( !GetInCombat() && actions_enabled && ActionChance > random(100) ){
@@ -211,7 +209,7 @@ int eventCompleteMove(mixed dest){
                 if( ob ) ob->eventMove(this_object());
             }
             else while(val--)
-                    if( ob = new(file) ) ob->eventMove(this_object());
+                if( ob = new(file) ) ob->eventMove(this_object());
         }
         else if( stringp(val) )  {
             if( !(ob = new(file)) ) continue;
@@ -237,6 +235,8 @@ varargs int eventDie(mixed agent){
     string death_descriptor = "dead";
     object env = (environment() || load_object(ROOM_POD));
 
+    //tc("npc::eventDie("+identify(agent)+"), stack: "+get_stack(1));
+
     if(RACES_D->GetNonMeatRace(GetRace())){
         death_verb = "breaks down completely";
         death_action = "destroy";
@@ -257,7 +257,7 @@ varargs int eventDie(mixed agent){
         else message("other_action", "%^BOLD%^%^RED%^"+ GetName() + " "+death_verb+".", env, ({ this_object() }) );
         if( agent )
             message("my_action", "You "+death_action+" " + GetName() + ".",
-              (objectp(agent) ? agent : load_object(CATCH_TELL_ROOM)) );
+                    (objectp(agent) ? agent : load_object(CATCH_TELL_ROOM)) );
     }
     set_heart_beat(0);
     call_out( (: Destruct :), 0);
@@ -326,10 +326,10 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
             i1 = sizeof(previous_object(-1)) -1;
             if(i1 < 0) i1 = 0;
             if(sizeof(previous_object(-1)) &&
-              (member_array(previous_object(),riders) != -1 ||
-                member_array(previous_object(-1)[i1],riders) != -1) &&
-              (!intp(arg2) || (!(arg2 & MSG_CONV) && !(arg2 & MSG_ENV))) && 
-              member_array(this_object(),previous_object(-1)) == -1){ 
+                    (member_array(previous_object(),riders) != -1 ||
+                     member_array(previous_object(-1)[i1],riders) != -1) &&
+                    (!intp(arg2) || (!(arg2 & MSG_CONV) && !(arg2 & MSG_ENV))) && 
+                    member_array(this_object(),previous_object(-1)) == -1){ 
                 if(objectp(arg2)) targs = riders - ({ arg2 });
                 else if(arrayp(arg2)) targs = riders - arg2;
                 else targs = riders;
@@ -455,42 +455,24 @@ int GetCustomXP(){
     return CustomXP;
 }
 
-int SetHealthPoints(int x){
-    if( x > GetMaxHealthPoints() )
-        SetStat("durability", (x-50)/10, GetStatClass("durability"));
-    AddHealthPoints( x - GetHealthPoints() );
-    return GetHealthPoints();
-}
-
-varargs int GetMaxHealthPoints(string limb){
-    if(!limb && MaximumHealth > 0) return MaximumHealth;
-    else return living::GetMaxHealthPoints(limb);
-}
-
-int SetMaxHealthPoints(int x){
-    if(x) MaximumHealth = x;
-    else SetStat("durability", to_int((x-50)/10), GetStatClass("durability"));
-    return GetMaxHealthPoints();
-}
-
-int SetMagicPoints(int x){
-    if( x > GetMaxMagicPoints() )
-        SetStat("intelligence", (x-50)/10, GetStatClass("intelligence"));
-    AddMagicPoints( x - GetMagicPoints() );
-    return GetMagicPoints();
-}
+    int SetMagicPoints(int x){
+        if( x > GetMaxMagicPoints() )
+            SetStat("intelligence", (x-50)/10, GetStatClass("intelligence"));
+        AddMagicPoints( x - GetMagicPoints() );
+        return GetMagicPoints();
+    }
 
 int SetMaxMagicPoints(int x){
     SetStat("intelligence", (x-50)/10, GetStatClass("intelligence"));
     return GetMaxMagicPoints();
 }
 
-float SetStaminaPoints(float x){
-    if( x > GetMaxStaminaPoints() )
-        SetStat("agility", to_int((x-50.0)/10.0), GetStatClass("agility"));
-    AddStaminaPoints( x - GetStaminaPoints() );
-    return to_float(GetStaminaPoints());
-}
+    float SetStaminaPoints(float x){
+        if( x > GetMaxStaminaPoints() )
+            SetStat("agility", to_int((x-50.0)/10.0), GetStatClass("agility"));
+        AddStaminaPoints( x - GetStaminaPoints() );
+        return to_float(GetStaminaPoints());
+    }
 
 float SetMaxStaminaPoints(float x){
     SetStat("agility", (x-50.0)/10.0, GetStatClass("agility"));
@@ -552,7 +534,7 @@ string GetShort(){
     object *riders = GetRiders();
     string *names = ({});
     if(sizeof(riders)) riders = filter(riders,
-          (: (!$1->GetInvis() || this_player()->GetWizVision()) :) );
+            (: (!$1->GetInvis() || this_player()->GetWizVision()) :) );
     if(riders && sizeof(riders) && VisibleRiders){
         foreach(object rider in riders){
             names += ({ rider->GetShort() });
@@ -577,7 +559,7 @@ varargs string GetLong(string str){
     what = "The "+GetGender()+" "+GetRace();
     str += living::GetLong(what);
     foreach(item in map(all_inventory(),
-        (: (string)$1->GetAffectLong(this_object()) :))){
+                (: (string)$1->GetAffectLong(this_object()) :))){
         if(item && member_array(item,affects) == -1) affects += ({ item });
     }
     if(sizeof(affects)) str += implode(affects,"\n")+"\n";
@@ -590,8 +572,8 @@ varargs string GetLong(string str){
     }
     counts = ([]);
     foreach(item in map(
-        filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
-        (: (string)$1->GetEquippedShort() :)))
+                filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
+                (: (string)$1->GetEquippedShort() :)))
         if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
@@ -654,7 +636,7 @@ string *GetEnemyNames(){ return EnemyNames; }
 
 int GetRadiantLight(int ambient){
     return (object::GetRadiantLight(ambient) +
-      container::GetRadiantLight(ambient));
+            container::GetRadiantLight(ambient));
 }
 
 int *GetScreen(){ return ({ 80, 24 }); }

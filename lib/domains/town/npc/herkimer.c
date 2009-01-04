@@ -13,7 +13,7 @@ int WieldStaff(){
     if(!present("staff",this_object())){
         new("/domains/town/weap/leostaff")->eventMove(this_object());
         tell_room(environment(),"Herkimer claps his hands and a large "+
-          "wooden staff materializes.");
+                "wooden staff materializes.");
         this_object()->eventForce("wield staff");
         this_object()->eventForce("say you poor fool!");
         this_object()->eventForce("cast buffer");
@@ -28,49 +28,49 @@ static void create() {
     SetAdjectives(({"old","gentle","kindly"}));
     SetShort("Herkimer the kind wizard");
     SetLong("This kindly old wizard is the master of the "+
-      "local magic shop, which doubles as the Mages' Guild. "+
-      "You can ask Herkimer to teach you a spell, and if "+
-      "you're capable of learning it, he will teach you, "+
-      "for a fee. His penetrating blue eyes seem to "+
-      "see right through you, but the smile from beneath "+
-      "his white beard is reassuring.");
+            "local magic shop, which doubles as the Mages' Guild. "+
+            "You can ask Herkimer to teach you a spell, and if "+
+            "you're capable of learning it, he will teach you, "+
+            "for a fee. His penetrating blue eyes seem to "+
+            "see right through you, but the smile from beneath "+
+            "his white beard is reassuring.");
     SetLevel(300);
     SetUnique(0);
     SetRace("human");
     SetGender("male");
     SetClass("mage");
     SetInventory(([
-        "/domains/town/armor/robe":"wear robe",
-        "/domains/town/armor/wizard_hat":"wear hat",
+                "/domains/town/armor/robe":"wear robe",
+                "/domains/town/armor/wizard_hat":"wear hat",
 
-      ]));
+                ]));
     SetSpellBook( ([ "buffer" : 100, "meditate" : 100, "missile" : 100, "fireball" : 100, "whip" : 100 ]) );
     SetAction(5, ({
-        "Herkimer scratches his beard thoughtfully.",
-        "Herkimer seems to be trying to remember something.", "Herkimer ponders.",
-        "Herkimer thinks.", "Herkimer thinks carefully.",
-        "Herkimer says, \"%^BOLD%^CYAN%^You don't have to be a mage to learn a spell, but it sure helps.%^RESET%^\"",
-        "Herkimer says, \"%^BOLD%^CYAN%^The more you use your magic skills, the more proficient you become.%^RESET%^\"",
-        "Herkimer says, \"%^BOLD%^CYAN%^Casting spells costs you mana points. Make sure you don't run out unexpectedly!%^RESET%^\"",
-        "Herkimer says, \"%^BOLD%^CYAN%^If you join us and then leave the guild, you will not be alowed to become a mage again.%^RESET%^\"",
-        "Herkimer says, \"%^BOLD%^CYAN%^Some spells require total concentration. If you move or if you are attacked, it may interrupt the casting.%^RESET%^\"",
-        "Herkimer says, \"%^BOLD%^CYAN%^All magical training is free of charge to guild members, of course.%^RESET%^\"",
-      }));
+                "Herkimer scratches his beard thoughtfully.",
+                "Herkimer seems to be trying to remember something.", "Herkimer ponders.",
+                "Herkimer thinks.", "Herkimer thinks carefully.",
+                "Herkimer says, \"%^BOLD%^CYAN%^You don't have to be a mage to learn a spell, but it sure helps.%^RESET%^\"",
+                "Herkimer says, \"%^BOLD%^CYAN%^The more you use your magic skills, the more proficient you become.%^RESET%^\"",
+                "Herkimer says, \"%^BOLD%^CYAN%^Casting spells costs you mana points. Make sure you don't run out unexpectedly!%^RESET%^\"",
+                "Herkimer says, \"%^BOLD%^CYAN%^If you join us and then leave the guild, you will not be alowed to become a mage again.%^RESET%^\"",
+                "Herkimer says, \"%^BOLD%^CYAN%^Some spells require total concentration. If you move or if you are attacked, it may interrupt the casting.%^RESET%^\"",
+                "Herkimer says, \"%^BOLD%^CYAN%^All magical training is free of charge to guild members, of course.%^RESET%^\"",
+                }));
     SetCombatAction(50, ({ (: WieldStaff :), "say what is your deal?",
-        "say don't make me destroy you","cast fireball", "cast missile", "cast buffer"}) );
+                "say don't make me destroy you","cast fireball", "cast missile", "cast buffer"}) );
     SetCommandResponses( ([
-        "join": (: JoinGuild :),
-        "teach" : (: TeachSpell :),
-        "learn" : "I have much to learn, young one, but not from you.",
-      ]) );
+                "join": (: JoinGuild :),
+                "teach" : (: TeachSpell :),
+                "learn" : "I have much to learn, young one, but not from you.",
+                ]) );
     AvailableSpells = ( ([
-        "fireball" : 1000,
-        "missile" : 500,
-        "buffer" : 200,
-        "meditate" : 500,
-        "inner strength" : 500,
-        "whip" : 10000,
-      ]) );
+                "fireball" : 1000,
+                "missile" : 500,
+                "buffer" : 200,
+                "meditate" : 500,
+                "inner strength" : 500,
+                "whip" : 10000,
+                ]) );
     SetPolyglot(1);
     SetLanguage("common", 100);
     SetDefaultLanguage("common");
@@ -125,7 +125,7 @@ int TeachSpell(object who, string verb, string spell){
         return 1;
     }
     if(who->GetClass() != "mage" &&
-      member_array(spell, keys(RestrictedSpells)) != -1){
+            member_array(spell, keys(RestrictedSpells)) != -1){
         eventForce("That spell is for guild members only.");
         return 1;
     }
@@ -144,7 +144,7 @@ int TeachSpell(object who, string verb, string spell){
     if(who->GetClass() != "mage" && onhand < cost) {
         eventForce("say You lack enough silver coins to pay for that spell.");
         eventForce("say "+spell+" costs "+cost+" silver and you "+
-          "only have "+onhand+".");
+                "only have "+onhand+".");
         eventForce("say I can only accept silver. It's a magic thing. If you want, you can try to exchange your other currency for silver at the bank across the street.");
         return 1;
     }

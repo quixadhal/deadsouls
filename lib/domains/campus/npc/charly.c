@@ -12,10 +12,10 @@ static void create() {
     SetId(({"charly"}));
     SetShort("Charly");
     SetLong("Charly is a test subject in unethical artificial "
-      "intelligence experiments. If he were smart "
-      "enough, he'd resent his forced servitude and "
-      "lack of rights. Dangerously, his overlords "
-      "are trying to make him smarter.");
+            "intelligence experiments. If he were smart "
+            "enough, he'd resent his forced servitude and "
+            "lack of rights. Dangerously, his overlords "
+            "are trying to make him smarter.");
     SetLevel(5);
     SetRace("human");
     SetGender("male");

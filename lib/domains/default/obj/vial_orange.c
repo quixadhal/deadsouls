@@ -22,7 +22,7 @@ varargs mixed eventInstall(object what, object where, int auto){
     if(ret){
         write("You install "+GetShort()+" into "+where->GetShort()+".");
         say(this_player()->GetName()+" installs "+GetShort()+" into "+
-          possessive(this_player())+" "+where->GetShort()+".");
+                possessive(this_player())+" "+where->GetShort()+".");
         return 1;
     }
     else {
@@ -39,8 +39,8 @@ varargs mixed eventUninstall(object what, mixed auto){
         return 0;
     }
     if(!environment(env) || environment(env) != this_player() ||
-      !environment(this_player()) || 
-      environment(env) !=  environment(this_player())){
+            !environment(this_player()) || 
+            environment(env) !=  environment(this_player())){
         write("That's not yours to uninstall.");
         return 0;
     }
@@ -52,7 +52,7 @@ varargs mixed eventUninstall(object what, mixed auto){
     else {
         write("You uninstall "+GetShort()+" from "+env->GetShort()+".");
         say(this_player()->GetName()+" uninstalls "+GetShort()+" from "+
-          possessive(this_player())+" "+env->GetShort()+".");
+                possessive(this_player())+" "+env->GetShort()+".");
         return 1;
     }
 }

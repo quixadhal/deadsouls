@@ -16,12 +16,12 @@ string GetLine(string skill) {
 
     if( !sizeof(mp) ) return 0;
     x = to_int(percent(mp["points"],
-        (int)this_player()->GetMaxSkillPoints(skill, mp["level"])));
+                (int)this_player()->GetMaxSkillPoints(skill, mp["level"])));
     max = ( mp["class"] == 1 ? 2 : 1 ) + (int)this_player()->GetLevel();
     max *= 2;
     if( max < mp["level"] ) max = mp["level"];
     return sprintf("%:-20s: %:-6s (%d%%)", skill,
-      (mp["level"] + "/" + max), x);
+            (mp["level"] + "/" + max), x);
 }
 
 mixed cmd(string args) {
@@ -30,7 +30,7 @@ mixed cmd(string args) {
     int x, scr;
 
     ret = "You are " +(string)this_player()->GetShort() + ", level " +
-    (int)this_player()->GetLevel();
+        (int)this_player()->GetLevel();
     if( (tmp = (string)this_player()->GetClass()) )
         ret += " " + capitalize(tmp);
     else ret += " Drifter";
@@ -44,9 +44,9 @@ mixed cmd(string args) {
         return 1;
     }
     skills = skills - (primes = filter(skills,
-        (: this_player()->GetSkillClass($1) == 1 :)));
+                (: this_player()->GetSkillClass($1) == 1 :)));
     skills = skills - (secs = filter(skills,
-        (: this_player()->GetSkillClass($1) == 2 :)));
+                (: this_player()->GetSkillClass($1) == 2 :)));
     skills = map(skills, (: GetLine :));
     primes = map(primes, (: GetLine :));
     secs   = map(secs, (: GetLine :));
@@ -67,7 +67,7 @@ mixed cmd(string args) {
 
 string GetHelp(string foo) {
     return "Syntax: <skills>\n\n"
-    "Lists all of your skills as well as how skilled you are "
-    "at the skill in question.\n\n"
-    "See also: stats, status";
+        "Lists all of your skills as well as how skilled you are "
+        "at the skill in question.\n\n"
+        "See also: stats, status";
 }

@@ -8,13 +8,13 @@ create() {
     SetProperties( (["no magic" : 1, "light" : 0, "no teleport" : 1]) );
     SetShort("Pit of Spiders");
     SetLong("You find yourself in the dreaded pit of spiders.  The ground "
-      "and walls surrounding you are completely smooth, except for the "
-      "crawling lumps of deadly spiders.  By the looks of it, your worst fears "
-      "crawling lumps of deadly spiders.  By the looks of it, your "
-      "worst fears have come true: there is no escape.");
+            "and walls surrounding you are completely smooth, except for the "
+            "crawling lumps of deadly spiders.  By the looks of it, your worst fears "
+            "crawling lumps of deadly spiders.  By the looks of it, your "
+            "worst fears have come true: there is no escape.");
     SetItems( ([ "spiders" : "Greusome spiders, both dead and alive, "
-        "completely cover the ground and walls of the pit.",
-        ({ "wall", "walls", "floor" }) : "More spiders." ]) );
+                "completely cover the ground and walls of the pit.",
+                ({ "wall", "walls", "floor" }) : "More spiders." ]) );
 }
 
 void reset() {

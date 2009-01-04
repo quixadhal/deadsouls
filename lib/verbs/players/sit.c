@@ -17,10 +17,10 @@ static void create() {
     SetRules("", "up","down", "down in OBJ", "down on OBJ", "in OBJ", "on OBJ");
     SetErrorMessage("Sit down?");
     SetHelp("Syntax: <sit down>\n"
-      "        <sit down in OBJ>\n\n"
-      "Allows you to sit down on the ground or in a chair-like object.  "
-      "It can be really exciting.\n\n"
-      "See also: lie, stand");
+            "        <sit down in OBJ>\n\n"
+            "Allows you to sit down on the ground or in a chair-like object.  "
+            "It can be really exciting.\n\n"
+            "See also: lie, stand");
 }
 
 mixed can_sit_down() {

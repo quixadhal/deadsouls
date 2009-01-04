@@ -15,9 +15,10 @@ static void create() {
     SetAdjectives( ({ "large","king-sized","king-size","four-poster","four poster","big","very big"}) );
     SetShort("a large four-poster bed");
     SetLong("This is a very big bed, with a large, decorative wooden "
-      "post at each corner. Though one might expect "
-      "a canopy over such a bed, it is absent here.");
+            "post at each corner. Though one might expect "
+            "a canopy over such a bed, it is absent here.");
     SetMass(4000);
+    SetMaxCarry(4000);
     SetBaseCost("silver",1500);
     SetMaxSitters(2);
     SetMaxLiers(1);
@@ -27,13 +28,13 @@ static void create() {
 mixed CanGet(object ob) { return "The bed is too heavy to pick up.";}
 int MoveBed(){
     send_messages("move", "$agent_name $agent_verb the bed.",
-      this_player(), 0, environment(this_player()));
+            this_player(), 0, environment(this_player()));
     environment(this_object())->OpenPassage();
     return 1;
 }
 int PushBed(){
     send_messages("move", "$agent_name $agent_verb the bed.",
-      this_player(), 0, environment(this_player()));
+            this_player(), 0, environment(this_player()));
     environment(this_object())->OpenPassage();
     return 1;
 }

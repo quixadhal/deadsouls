@@ -75,7 +75,7 @@ mixed direct_pick_str_on_obj(string str, object ob, string id1, string id2){
 }
 
 mixed direct_pick_str_on_obj_with_obj(string str, object ob, object w,
-  string id1, string id2, string id3){
+        string id1, string id2, string id3){
     return direct_pick_str_on_obj(str, ob, id1, id2);
 }
 
@@ -97,13 +97,13 @@ varargs mixed eventEnter(object who, string what, string verb){
     if( Door && Door->GetClosed() ){
         who->eventPrint("You bump into " + Door->GetShort(what) + ".");
         environment(who)->eventPrint(who->GetName() + " bumps into " +
-          Door->GetShort(what) + ".", who);
+                Door->GetShort(what) + ".", who);
         return 1;
     }
     if( who->GetPosition() != POSITION_STANDING ){
         if(verb != "crawl" && verb != "fly") who->eventStand();
         if( who->GetPosition() != POSITION_STANDING && verb != "crawl" 
-          && verb != "fly"){
+                && verb != "fly"){
             who->eventPrint("weird.");
             return 0;
         }

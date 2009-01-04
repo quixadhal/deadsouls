@@ -24,8 +24,8 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: language\n\n"
-      "This command reports which languages you speak and understand.\n\n",
-      this_player() );
+            "Syntax: language\n\n"
+            "This command reports which languages you speak and understand.\n\n",
+            this_player() );
 }
 

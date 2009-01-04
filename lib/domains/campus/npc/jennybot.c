@@ -11,9 +11,10 @@ static string save_file = "/domains/campus/save/jennybot.o";
 mixed GreetingResponse(object who, mixed foo, string message, mixed bar){
     int greet;
     message = lower_case(message);
-    if(!strsrch(message, "hi") || !strsrch(message, "hello")){
+    if(!strsrch(message, "hi") || !strsrch(message, "hello") ||
+            !strsrch(message, "hey") || !strsrch(message, "sup")){
         tell_player(who,"The woman does not respond to your greeting, "+
-          "but you sense that you can: \n%^BOLD%^look at woman%^RESET%^");
+                "but you sense that you can: \n%^BOLD%^look at woman%^RESET%^");
     }
     return 1;
 }
@@ -22,17 +23,17 @@ string LongDesc(){
     string ret;
     if(!active){
         ret = "On closer inspection, this attractive "+
-        "young lady is no lady at all...she's an android! "+
-        "She appears to be totally motionless and frozen "+
-        "in place, with a friendly smile. Perhaps you "+
-        "can make her do something by typing: %^RED%^activate bot%^RESET%^ ";
+            "young lady is no lady at all...she's an android! "+
+            "She appears to be totally motionless and frozen "+
+            "in place, with a friendly smile. Perhaps you "+
+            "can make her do something by typing: %^RED%^activate bot%^RESET%^ ";
     }
     else {
         ret = "On closer inspection, this attractive "+
-        "young lady is no lady at all...she's an android! "+
-        "She appears to be in the middle of giving an orientation "+
-        "on this mud, with bizarrely friendly mannerisms. Perhaps you "+
-        "can make her be quiet by typing: %^RED%^deactivate bot%^RESET%^ ";
+            "young lady is no lady at all...she's an android! "+
+            "She appears to be in the middle of giving an orientation "+
+            "on this mud, with bizarrely friendly mannerisms. Perhaps you "+
+            "can make her be quiet by typing: %^RED%^deactivate bot%^RESET%^ ";
     }
     return ret;
 }
@@ -50,28 +51,30 @@ static void create(){
     SetShort("a polite young woman");
     SetLong( (: LongDesc :) );
     SetInventory(([
-        "/domains/campus/armor/pillbox_hat" : "wear hat",
-        "/domains/campus/armor/wglove_r" : "wear white right glove",
-        "/domains/campus/armor/wglove_l" : "wear white left glove",
-        "/domains/campus/armor/necklace" : "wear necklace on neck",
-        "/domains/campus/armor/bluedress" : "wear dress",
-      ]));
+                "/domains/campus/armor/pillbox_hat" : "wear hat",
+                "/domains/campus/armor/wglove_r" : "wear white right glove",
+                "/domains/campus/armor/wglove_l" : "wear white left glove",
+                "/domains/campus/armor/necklace" : "wear necklace on neck",
+                "/domains/campus/armor/bluedress" : "wear dress",
+                ]));
     SetMelee(1);
     SetPolyglot(1);
     SetLevel(99);
     SetRace("android");
     SetAction(1, ({
-        "Jenny straightens her hair.",
-        "Jenny the guide bot touches up her rouge a bit.", 
-        "Jenny smiles."}));
+                "Jenny straightens her hair.",
+                "Jenny the guide bot touches up her rouge a bit.", 
+                "Jenny smiles."}));
     AddCommandResponse("shutdown", (: eventTurnOff :));
     AddCommandResponse("shut down", (: eventTurnOff :) );
     AddCommandResponse("shut up", (: eventTurnOff :));
     AddCommandResponse("go away", (: eventTurnOff :) );
     SetTalkResponses( ([
-        "hi" : (: GreetingResponse :),
-        "hello" : (: GreetingResponse :),
-      ]) );
+                "hi" : (: GreetingResponse :),
+                "hey" : (: GreetingResponse :),
+                "sup" : (: GreetingResponse :),
+                "hello" : (: GreetingResponse :),
+                ]) );
     set_heart_beat(1);
     ob=this_object();
     count=210;
@@ -94,14 +97,14 @@ varargs int eventGreet(string newbie){
     if(noob && newbie != "there") guy = noob->GetName();
     else guy = "there";
     tell_room(environment(this_object()),"The polite young "+
-      "lady springs to life!\n");
+            "lady springs to life!\n");
     prespiel = "Jennybot says, \"%^BOLD%^CYAN%^ Hello, "+guy;
     spiel = read_file("/domains/campus/txt/jenny/spiel.txt");
     tell_room(environment(this_object()),prespiel+spiel);
     tell_room(environment(this_object()),"\n\t%^RED%^activate bot%^RESET%^\n");
     eventForce("yell DEDDA SORUZE: GETTO DA ZE!");
     tell_room(environment(this_object()),"The polite young "+
-      "woman becomes totally motionless again.");
+            "woman becomes totally motionless again.");
     noob->SetProperty("greeted",1);
     return 1;
 }
@@ -163,8 +166,8 @@ int eventTurnOff(){
     if( active != 0) {
         eventForce("yell DEDDA SORUZE: GETTO DA ZE!");
         tell_room(environment(this_object()),"Jenny nods and becomes motionless again, "+
-          "her expression now fixed and staring out into "+
-          "space.");
+                "her expression now fixed and staring out into "+
+                "space.");
     }
     active=0;
     return 1;
@@ -184,14 +187,14 @@ int eventTurnOn(){
     hb=0;
     tip=1;
     write("The female android comes to life! She "+
-      "smiles at you and straightens her dress.");
+            "smiles at you and straightens her dress.");
     ob->eventForce("say Hello, "+name+"! I'm Jenny, the LPC University "+
-      "newbie guide bot. I'm an extremely simple android, so "+
-      "please don't expect a lot of interactivity.");
+            "newbie guide bot. I'm an extremely simple android, so "+
+            "please don't expect a lot of interactivity.");
     ob->eventForce("smile "+name);
     ob->eventForce("say I'm here to give you a few "+
-      "tips. To deactivate me, simply "+
-      "type: %^RED%^deactivate bot%^CYAN%^.");
+            "tips. To deactivate me, simply "+
+            "type: %^RED%^deactivate bot%^CYAN%^.");
     ob->eventForce("say To jump to the next tip, type: next tip");
     return 1;
 }
@@ -199,8 +202,8 @@ int eventTurnOn(){
 int eventAct4(){
     if(!new("/domains/campus/obj/note")->eventMove(this_object())){
         tell_room(environment(this_object()),"Oops! There's a bug, "+
-          "and I don't have a note for you. Let's pretend I gave you "+
-          "one and move on. Please email your admin about this, though.");
+                "and I don't have a note for you. Let's pretend I gave you "+
+                "one and move on. Please email your admin about this, though.");
         return 1;
     }
     if(player && environment(this_object()) == environment(player)) {
@@ -212,8 +215,8 @@ int eventAct4(){
 int eventAct6(){
     if(!new("/domains/campus/obj/map")->eventMove(this_object())){ 
         tell_room(environment(this_object()),"Oops! There's a bug, "+
-          "and I don't have a map for you. Let's pretend I gave you "+ 
-          "one and move on. Please email your admin about this, though."); 
+                "and I don't have a map for you. Let's pretend I gave you "+ 
+                "one and move on. Please email your admin about this, though."); 
         return 1;
     }
     if(player && environment(this_object()) == environment(player)) {
@@ -225,13 +228,13 @@ int eventAct6(){
 int eventAct8(){
     if(mooch || !new("/domains/campus/armor/newbie_cap")->eventMove(this_object())){
         tell_room(environment(this_object()),
-          "I don't have a hat for you. Let's pretend I gave you "+
-          "one and move on.");
+                "I don't have a hat for you. Let's pretend I gave you "+
+                "one and move on.");
     }
     if(mooch || !new("/domains/campus/obj/squirtbag")->eventMove(this_object())){
         tell_room(environment(this_object()),
-          "I don't have a bag for you. Let's pretend I gave you "+
-          "one and move on.");
+                "I don't have a bag for you. Let's pretend I gave you "+
+                "one and move on.");
     }
     if(player && environment(this_object()) == environment(player)) {
         eventForce("give cap to "+player->GetName());
@@ -246,13 +249,13 @@ int eventAct9(){
     eventForce("smile "+player->GetName());
     if(!new("/domains/campus/meals/badapple")->eventMove(this_object())){
         tell_room(environment(this_object()),"Oops! There's a bug, "+
-          "and I don't have a rotten apple for you. Let's pretend I gave you "+
-          "one and move on. Please email your admin about this, though.");
+                "and I don't have a rotten apple for you. Let's pretend I gave you "+
+                "one and move on. Please email your admin about this, though.");
     }
     if(!new("/domains/campus/meals/apple")->eventMove(this_object())){
         tell_room(environment(this_object()),"Oops! There's a bug, "+
-          "and I don't have an apple for you. Let's pretend I gave you "+
-          "one and move on. Please email your admin about this, though.");
+                "and I don't have an apple for you. Let's pretend I gave you "+
+                "one and move on. Please email your admin about this, though.");
     }
     if(player && environment(this_object()) == environment(player)) {
         eventForce("give first apple to "+player->GetName());
@@ -268,13 +271,13 @@ int eventAct11(){
 
 int eventSwitch(int arg){
     switch(arg){
-    case 4:eventAct4();break;
-    case 6:eventAct6();break;
-    case 8:eventAct8();break;
-    case 9:eventAct9();break;
-    case 11:eventAct11();break;
-    default:write("");break;
-        return 1;
+        case 4:eventAct4();break;
+        case 6:eventAct6();break;
+        case 8:eventAct8();break;
+        case 9:eventAct9();break;
+        case 11:eventAct11();break;
+        default:write("");break;
+                return 1;
     }
 }
 

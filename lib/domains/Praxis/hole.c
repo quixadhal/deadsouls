@@ -5,8 +5,8 @@ void create() {
     SetProperty("light", 0);
     SetShort( "A hole in the ground");
     SetLong(
-      "You are in a deep hole in the ground. The light is very poor "
-      "down here.");
+            "You are in a deep hole in the ground. The light is very poor "
+            "down here.");
     SetNoClean(1);
     SetExits( ([ ]) );
 }

@@ -43,7 +43,7 @@ If using SetTale(mapping tale) instead the mapping should be like the
 following
 SetTale( ([ 1 : ({"say this is the first part of the tale",5}),
 2 : ({"emote this is.....",4}), 3 : ({"speak last line",1}) ]) );
-*/
+ */
 
 string SetTalesDir(string dir){
     TalesDir = dir;

@@ -18,13 +18,13 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: earmuff\n"
-      "        earmuff <name>\n"
-      "        earmuff @<mud>\n\n"
-      "This command allows you to ignore channel messages from the name specified.\n"
-      "You can also earmuff all channel messages coming from a "
-      "specific mud, for example: earmuff @Spammy Mud II\n"
-      "See also: whomuffed, unmuff\n\n",
-      this_player() );
+            "Syntax: earmuff\n"
+            "        earmuff <name>\n"
+            "        earmuff @<mud>\n\n"
+            "This command allows you to ignore channel messages from the name specified.\n"
+            "You can also earmuff all channel messages coming from a "
+            "specific mud, for example: earmuff @Spammy Mud II\n"
+            "See also: whomuffed, unmuff\n\n",
+            this_player() );
 }
 

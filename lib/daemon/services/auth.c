@@ -19,7 +19,7 @@ void eventReceiveAuthReply(mixed array packet) {
     if(sizeof(pingers)){
         foreach(object dude in pingers){
             tell_player(dude, packet[2]+" has just replied to a ping request from "+
-              packet[4]+".");
+                    packet[4]+".");
             dude->SetProperty("pinging",0);
         }
     }
@@ -33,12 +33,12 @@ void eventReceiveAuthRequest(mixed array packet) {
     tn(packet[0]+" received from "+packet[2]+".","white");
     if(packet[0] == "ping-req") header = "ping-reply";
     INTERMUD_D->eventWrite( ({header, 5, mud_name(), 0, packet[2],
-        0, token }) );
+                0, token }) );
     OOB_D->SentToken(packet[2],token);
     if(file_exists("/tmp/muds.txt"))
         mudlist = read_file("/tmp/muds.txt");
     if((!grepp(mudlist,packet[2]) || packet[2] == "DeadSoulsNew" ||
-        packet[2] == "DeadSoulsWin") && packet[2] != mud_name()){
+                packet[2] == "DeadSoulsWin") && packet[2] != mud_name()){
         write_file("/tmp/muds.txt",packet[2]+"\n"); 
         tn("We have a new mud! "+packet[2]+" has joined intermud.","red");
     }

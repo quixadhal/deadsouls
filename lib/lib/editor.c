@@ -15,6 +15,9 @@ static void create(){
 
 varargs void eventEdit(string file, function callback){
     EditCallback = callback;
+#ifdef __DSLIB__
+    remove_get_char(this_object());
+#endif
     ed_start(file, !creatorp());
     if( !creatorp() || file_size(file) < 1 ) ed_cmd("$a");
 }

@@ -106,22 +106,22 @@ string query_time(){
 
     hour_string = cardinal(hour);
     switch(minutes){
-    case 0 : minute_string ="o'clock"; break;
-    case 1 : minute_string = hour_string;hour_string ="one minute past"; break;
-    case 2 : minute_string = hour_string;hour_string ="two minutes past"; break;
-    case 3 : minute_string = hour_string;hour_string ="three minutes past"; break;
-    case 4 : minute_string = hour_string;hour_string ="four minutes past"; break;
-    case 5 : minute_string = hour_string;hour_string ="five past"; break;
-    case 6 : minute_string = hour_string;hour_string ="six minutes past"; break;
-    case 7 : minute_string = hour_string;hour_string ="seven minutes past"; break;
-    case 8 : minute_string = hour_string;hour_string ="eight minutes past"; break;
-    case 9 : minute_string = hour_string;hour_string ="nine minutes past"; break;
-    case 10 : minute_string = hour_string;hour_string ="ten past"; break;
-    case 15 : minute_string = hour_string;hour_string ="quarter past"; break;
-    case 45 : minute_string = cardinal(hour+1);hour_string ="quarter of"; break;
-    case 50 : minute_string = cardinal(hour+1);;hour_string ="ten of"; break;
-    case 55 : minute_string = cardinal(hour+1);hour_string ="five of"; break;
-    default : minute_string = cardinal(minutes);break;
+        case 0 : minute_string ="o'clock"; break;
+        case 1 : minute_string = hour_string;hour_string ="one minute past"; break;
+        case 2 : minute_string = hour_string;hour_string ="two minutes past"; break;
+        case 3 : minute_string = hour_string;hour_string ="three minutes past"; break;
+        case 4 : minute_string = hour_string;hour_string ="four minutes past"; break;
+        case 5 : minute_string = hour_string;hour_string ="five past"; break;
+        case 6 : minute_string = hour_string;hour_string ="six minutes past"; break;
+        case 7 : minute_string = hour_string;hour_string ="seven minutes past"; break;
+        case 8 : minute_string = hour_string;hour_string ="eight minutes past"; break;
+        case 9 : minute_string = hour_string;hour_string ="nine minutes past"; break;
+        case 10 : minute_string = hour_string;hour_string ="ten past"; break;
+        case 15 : minute_string = hour_string;hour_string ="quarter past"; break;
+        case 45 : minute_string = cardinal(hour+1);hour_string ="quarter of"; break;
+        case 50 : minute_string = cardinal(hour+1);;hour_string ="ten of"; break;
+        case 55 : minute_string = cardinal(hour+1);hour_string ="five of"; break;
+        default : minute_string = cardinal(minutes);break;
     }
     if(minute_string == "thirteen") minute_string = "one";
     return hour_string+" "+minute_string;

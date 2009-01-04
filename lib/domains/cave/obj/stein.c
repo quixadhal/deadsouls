@@ -10,7 +10,7 @@ void create(){
     SetAdjectives( ({"grog","fancy"}) );
     SetShort("a stein");
     SetLong("A large mug for holding lots of grog. It is quite "+
-      "fancy and no doubt worth a great deal of money.");
+            "fancy and no doubt worth a great deal of money.");
     SetMass(30);
     SetBaseCost("silver",300);
     SetVendorType(VT_TREASURE);

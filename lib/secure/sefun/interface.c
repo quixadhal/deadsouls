@@ -5,11 +5,11 @@
  */
 
 mapping Uncolor = ([ "RESET": "\b", "BOLD": "", "FLASH":"", "BLACK":"", "RED":"",
-  "BLUE":"", "CYAN":"", "MAGENTA":"", "ORANGE":"", "YELLOW":"",
-  "GREEN":"", "WHITE":"", "BLACK":"", "B_RED":"", "B_ORANGE":"",
-  "B_YELLOW":"", "B_BLACK":"", "B_CYAN":"","B_WHITE":"", "B_GREEN":"",
-  "B_MAGENTA":"", "STATUS":"", "WINDOW":"", "INITTERM": "",
-  "ENDTERM":""]);
+        "BLUE":"", "CYAN":"", "MAGENTA":"", "ORANGE":"", "YELLOW":"",
+        "GREEN":"", "WHITE":"", "BLACK":"", "B_RED":"", "B_ORANGE":"",
+        "B_YELLOW":"", "B_BLACK":"", "B_CYAN":"","B_WHITE":"", "B_GREEN":"",
+        "B_MAGENTA":"", "STATUS":"", "WINDOW":"", "INITTERM": "",
+        "ENDTERM":""]);
 
 #include <daemons.h>
 

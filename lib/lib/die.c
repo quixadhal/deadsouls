@@ -27,7 +27,7 @@ static void create(){
     SetId(({"dado","bone", "alea"}));
     SetShort("a six-sided die");
     SetLong("A typical die used for games of chance. It is orange and marked "
-      "with numbers rather than dots.");
+            "with numbers rather than dots.");
     SetDenominator(6);
     SetNoCondition(1);
 }
@@ -76,7 +76,7 @@ varargs mixed eventRoll(object where){
     }
     write("You roll your "+strip_article(GetShort())+extrathing+", and the result is: "+Result);
     say(dude->GetName()+" rolls "+possessive(dude)+" "+strip_article(GetShort())+extrathing+", "
-      "and the result is: "+Result);
+            "and the result is: "+Result);
     return Result;
 }
 

@@ -58,12 +58,15 @@ mixed cmd(string args) {
         ob->eventDestruct();
         message("system", "You are now a creator.", cre_ob);
         message("shout", (string)cre_ob->GetName() + " is now a creator!",
-          users(), ({ this_player(), cre_ob }));
+                users(), ({ this_player(), cre_ob }));
         if( file_size(file+__SAVE_EXTENSION__) > -1 ) rm(file+__SAVE_EXTENSION__);
         make_workroom(cre_ob, 1);
-        rename(home_dir, homedir(cre_ob,1)+"/estate");
+        if(directory_exists(home_dir)){
+            rename(home_dir, homedir(cre_ob,1)+"/estate");
+        }
         cre_ob->eventForce("home");
         cre_ob->eventForce("cd");
+        cre_ob->SetPrompt("cwd");
         cre_ob->SetProperty("wizmapping",1);
         cre_ob->SetProperty("automapping",0);
         jeans = present("jeans",cre_ob);
@@ -94,11 +97,11 @@ string GetKeyName() { return PlayerName; }
 
 void help() {
     message("help",
-      "Syntax: encre <person>\n\n"
-      "Makes the target a creator. If the target is not "
-      "logged in, they will be made a creator when "
-      "they next log in."
-      "\n\n"
-      "See also: decre, rid", this_player()
-    );
+            "Syntax: encre <person>\n\n"
+            "Makes the target a creator. If the target is not "
+            "logged in, they will be made a creator when "
+            "they next log in."
+            "\n\n"
+            "See also: decre, rid", this_player()
+           );
 }

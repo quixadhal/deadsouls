@@ -9,8 +9,8 @@ static void create() {
     SetRules("OBJ","OBJ on OBJ");
     SetErrorMessage("Activate something?");
     SetHelp("Syntax: <activate> THING\n"
-      "        \n"
-      "");  
+            "        \n"
+            "");  
 }
 
 mixed can_activate() {

@@ -26,7 +26,7 @@ mixed cmd() {
     if(minutes < 10) nulle = "0";
 
     write("It is "+query_day_name()+", "+daynum+ordinal(daynum)+" day of "+
-      query_month()+", in "+query_season()+".");
+            query_month()+", in "+query_season()+".");
 
     write("In the MUD, the time is "+hours+":"+nulle+minutes+meridiem+"."); 
 
@@ -36,7 +36,7 @@ mixed cmd() {
 
 void help() {
     message("help", "Syntax: <mudtime>\n\n"
-      "Displays the time inside of the MUD. This is entirely "
-      "separate from what time it is anywhere in the real world."
-      "\n", this_player());
+            "Displays the time inside of the MUD. This is entirely "
+            "separate from what time it is anywhere in the real world."
+            "\n", this_player());
 }

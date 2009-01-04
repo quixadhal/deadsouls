@@ -2,6 +2,7 @@
 //      Part of the TMI distribution mudlib and now part of Dead Souls's
 //      allows wizards to execute LPC code without writing new objects.
 //      Created by Douglas Reay (Pallando @ TMI-2, Dead Souls, etc) 92-12-07
+//      evaldefs stuff by Raudhrskal, 2009-01-02
 
 #include <privs.h>
 #include <lib.h>
@@ -12,7 +13,7 @@ inherit LIB_DAEMON;
 
 int cmd( string a )
 {
-    string file, filename;
+    string file, filename, evaldefs;
     mixed ret;
 
     if(!member_group(previous_object(), PRIV_SECURE)) {
@@ -21,9 +22,20 @@ int cmd( string a )
     }
     if( !a ) { notify_fail( SYNTAX ); return 0; }
 
-    // The includes in the file arn't necessary (and can be removed if the
-    // include files on your mud are called something different).  They
-    // just to make things like   "eval return children( USER )"    possible.
+    evaldefs = "";
+
+    filename = user_path((string)previous_object()->GetKeyName());
+    if( file_size( filename ) != -2 && !securep(previous_object()) ) {
+        notify_fail( "You must have a valid home directory!\n" );
+        return 0;
+    }
+
+    if(file_exists(filename + "evaldefs.h"))
+        evaldefs = "#include \"" + filename + "evaldefs.h\"\n";
+
+    // The includes in the file aren't necessary (and can be removed if the
+    // include files on your mud are called something different). They're
+    // just to make things like "eval return children( USER )" possible.
     file =
     ""+
     "#include <lib.h>\n"+
@@ -47,15 +59,14 @@ int cmd( string a )
     "#include <respiration_types.h>\n"+
     "#include <message_class.h>\n"+
     "inherit LIB_ITEM;\n"+
+    evaldefs+
     "mixed eval() { " + a + "; }\n"+
     "";
-    filename = user_path((string)previous_object()->GetKeyName());
-    if( file_size( filename ) != -2 && !securep(previous_object()) ) {
-        notify_fail( "You must have a valid home directory!\n" );
-        return 0;
-    }
     filename += "CMD_EVAL_TMP_FILE.c";
-    if(securep(previous_object())) filename = "/secure/tmp/"+previous_object()->GetKeyName()+"_CMD_EVAL_TMP_FILE.c";
+    if(securep(previous_object())){
+        filename = "/secure/tmp/" + previous_object()->GetKeyName() +
+        "_CMD_EVAL_TMP_FILE.c";
+    }
     rm( filename );
     if( ret = find_object( filename ) ) destruct( ret );
     write_file( filename, file,1 );
@@ -70,11 +81,14 @@ int help()
     write( SYNTAX + @EndText
 Effect: calls a function containing <lpc commands>
 Example: If you type:
-  eval return 1 + cos( 0.0 )
+eval return 1 + cos( 0.0 )
 the command creates a temporary file in your home dir containing the line:
-  eval() { return 1 + cos( 0.0 ); }
+eval() { return 1 + cos( 0.0 ); }
 then does call_other on the files's eval() function, giving:
-  Result = 2.000000
+Result = 2.000000
+
+Note: You can add custom defines for yourself with the file 'evaldefs.h'
+in your home directory.
 EndText
     );
     return 1;

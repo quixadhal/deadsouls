@@ -13,6 +13,6 @@ mixed cmd(string str) {
 
 void help() {
     message("help", "Syntax: i3who\n\n"
-      "Queries each active mud for rwho information.\n\n",
-      this_player());
+            "Queries each active mud for rwho information.\n\n",
+            this_player());
 }                                                    

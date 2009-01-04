@@ -10,44 +10,44 @@ int x;
 void create() {
     room::create();
     SetProperties( ([ "light":2, "indoors":1, "no attack":1, 
-        "no teleport":1, "no steal":1, "no magic":1 ]) );
+                "no teleport":1, "no steal":1, "no magic":1 ]) );
     SetShort("%^MAGENTA%^%^BOLD%^In the volcano%^RESET%^");
     SetLong(
-      "You are standing on a wide, circular platform, surrounded on "
-      "all sides by %^RED%^bubbling lava%^RESET%^.  The platform floats "
-      "above the pool of lava at a safe distance, yet close enough for "
-      "you to feel the heat as the lava sometimes flares upward. " 
-      "The platform is decorated with %^MAGENTA%^floating lights "
-      "%^RESET%^of %^BLUE%^varying %^ORANGE%^hues and %^RESET%^size. " 
-      "Tables with refreshments have also been placed near the edges of "
-      "the platform. ");
+            "You are standing on a wide, circular platform, surrounded on "
+            "all sides by %^RED%^bubbling lava%^RESET%^.  The platform floats "
+            "above the pool of lava at a safe distance, yet close enough for "
+            "you to feel the heat as the lava sometimes flares upward. " 
+            "The platform is decorated with %^MAGENTA%^floating lights "
+            "%^RESET%^of %^BLUE%^varying %^ORANGE%^hues and %^RESET%^size. " 
+            "Tables with refreshments have also been placed near the edges of "
+            "the platform. ");
     SetItems( 
-      ([
-        ({"platform", "wide platform", "circular platform"}) :
-        "The platform floats "
-        "above the pool of lava at a safe distance, yet close enough for "
-        "you to feel the heat as the lava sometimes flares upward. " 
-        "The platform is decorated with %^MAGENTA%^floating lights "
-        "%^RESET%^of %^BLUE%^varying %^ORANGE%^hues and %^RESET%^size. " 
-        "Tables with refreshments have also been placed near the " 
-        "edges of the platform. ",
-        ({"sides", "side", "edges", "edge"}) : 
-        "The platform is surrounded on all sides by "    
-        "%^RED%^bubbling lava.%^RESET%^",
+            ([
+             ({"platform", "wide platform", "circular platform"}) :
+             "The platform floats "
+             "above the pool of lava at a safe distance, yet close enough for "
+             "you to feel the heat as the lava sometimes flares upward. " 
+             "The platform is decorated with %^MAGENTA%^floating lights "
+             "%^RESET%^of %^BLUE%^varying %^ORANGE%^hues and %^RESET%^size. " 
+             "Tables with refreshments have also been placed near the " 
+             "edges of the platform. ",
+             ({"sides", "side", "edges", "edge"}) : 
+             "The platform is surrounded on all sides by "    
+             "%^RED%^bubbling lava.%^RESET%^",
 
-        ({"pool", "pool of lava", "lava", "bubbling lava"}) : 
-        (:this_object(), "look_lava":),       
+             ({"pool", "pool of lava", "lava", "bubbling lava"}) : 
+             (:this_object(), "look_lava":),       
 
-        ({"lights", "light", "floating lights", "floating light"}) :
-        (:this_object(), "look_lights":),
-        ({"tables", "table"}) :
-        "The tables are covered with many delicious treats. "
-        "Bottles containing every conceivable combination "
-        "of drink possible are set up along the tables. As a matter-of-fact, you feel like pouring yourself a glass of frosty beverage right now. "
-        "You intuit that pour <drinkname> will provide you with a glass of your favorite "
-        "frosty beverage. ",
-        ({"treats", "treat"}) : (:this_object(), "look_treat":)
-      ]) );
+             ({"lights", "light", "floating lights", "floating light"}) :
+             (:this_object(), "look_lights":),
+             ({"tables", "table"}) :
+             "The tables are covered with many delicious treats. "
+             "Bottles containing every conceivable combination "
+             "of drink possible are set up along the tables. As a matter-of-fact, you feel like pouring yourself a glass of frosty beverage right now. "
+             "You intuit that pour <drinkname> will provide you with a glass of your favorite "
+             "frosty beverage. ",
+                 ({"treats", "treat"}) : (:this_object(), "look_treat":)
+                                           ]) );
     SetExits( ([ "square" : "/domains/Praxis/square" ]) );
 }
 
@@ -60,10 +60,10 @@ void start_party(string msg) {
     if(base_name(previous_object()) != "/cmds/mortal/_mudparty") return;
     if(query_party_time()) return;
     message("shout", sprintf("Party announcement from %s: A %s party is now "
-        "being held to celebrate %s!", (string)this_player()->query_cap_name(),
-        mud_name(), msg), users());
+                "being held to celebrate %s!", (string)this_player()->query_cap_name(),
+                mud_name(), msg), users());
     message("shout", "You have 2 minutes to type \"mudparty join\" in "
-      "order to join the party!", users());
+            "order to join the party!", users());
     __EntryAllowed = 1;
     __PartyTime = 1;
     call_out("deny_entry", 120);
@@ -82,37 +82,37 @@ string look_lava(string unused)
     if(x==1)
     {
         message("info",
-          "%^RED%^A magnificent geyser of lava explodes into the air and "
-          "parts before striking the platform, sparing you certain death. "
-          "%^RESET%^",
-          environment(this_player()));
+                "%^RED%^A magnificent geyser of lava explodes into the air and "
+                "parts before striking the platform, sparing you certain death. "
+                "%^RESET%^",
+                environment(this_player()));
     }
 
     if(x==2)
     {
         message("info",
-          "%^RED%^A jet of flame falres from the lava and casts the room "
-          "in red-hued light.%^RESET%^", environment(this_player()));
+                "%^RED%^A jet of flame falres from the lava and casts the room "
+                "in red-hued light.%^RESET%^", environment(this_player()));
     }
 
     if(x==3)
     {
         message("info",
-          "%^RED%^%^BOLD%^The platform shifts about as a large pillar of lava "
-          "gushes up from beneath it.%^RESET%^",
-          environment(this_player()));
+                "%^RED%^%^BOLD%^The platform shifts about as a large pillar of lava "
+                "gushes up from beneath it.%^RESET%^",
+                environment(this_player()));
     }
 
     if(x==4)
     {
         message("info",
-          "%^MAGENTA%^The lava changes hues and from %^RED%^red %^MAGENTA%^to "
-          "purple.%^RESET%^",
-          environment(this_player()));
+                "%^MAGENTA%^The lava changes hues and from %^RED%^red %^MAGENTA%^to "
+                "purple.%^RESET%^",
+                environment(this_player()));
     }
 
     return("The lava is constantly shifting and bubbling. You can see large "
-      "chunks of rock floating within it. ");
+            "chunks of rock floating within it. ");
 }
 
 
@@ -123,29 +123,29 @@ string look_lights(string unused)
     if(x==1)
     {
         return(
-          "A pretty %^YELLOW%^yellow%^RESET%^ orb drifts near to you and casts " 
-          "a cheery glow on you. ");
+                "A pretty %^YELLOW%^yellow%^RESET%^ orb drifts near to you and casts " 
+                "a cheery glow on you. ");
     }
 
     if(x==2)
     {
         return(
-          "A pretty %^BLUE%^blue%^RESET%^ orb drifts near to you and casts " 
-          "a mellow glow on you. ");
+                "A pretty %^BLUE%^blue%^RESET%^ orb drifts near to you and casts " 
+                "a mellow glow on you. ");
     }
 
     if(x==3)
     {
         return(
-          "A pretty %^MAGENTA%^purple%^RESET%^ orb drifts near to you and casts " 
-          "a purple glow over your body. "); 
+                "A pretty %^MAGENTA%^purple%^RESET%^ orb drifts near to you and casts " 
+                "a purple glow over your body. "); 
     }
 
     if(x==4)
     {
         return(
-          "A pretty %^RED%^red%^RESET%^ orb drifts near to you and casts " 
-          "a rosy glow over your body. "); 
+                "A pretty %^RED%^red%^RESET%^ orb drifts near to you and casts " 
+                "a rosy glow over your body. "); 
     }
 }
 
@@ -153,13 +153,13 @@ string look_lights(string unused)
 int look_treat()
 {
     message("other_action",
-      (string)this_player()->query_cap_name()+" eats and drinks "
-      "refreshments from the table after looking them over. ",
-      environment(this_player()), this_player());
+            (string)this_player()->query_cap_name()+" eats and drinks "
+            "refreshments from the table after looking them over. ",
+            environment(this_player()), this_player());
     message("my_action",
-      "After looking at the vast array of treats before you, you "
-      "decide to try and sample all of them! Punch, cookies, meats.."
-      "The sky is the limit!", this_player());
+            "After looking at the vast array of treats before you, you "
+            "decide to try and sample all of them! Punch, cookies, meats.."
+            "The sky is the limit!", this_player());
     return 1;
 }
 

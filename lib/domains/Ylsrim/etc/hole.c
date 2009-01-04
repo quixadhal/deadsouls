@@ -16,6 +16,6 @@ static void create() {
     SetId("hole", "bank");
     SetShort("a hole in the roof");
     SetLong("It is too dark to see inside the bank, but perhaps you could "
-      "jump into it?");
+            "jump into it?");
     AddJump("hole","/domains/Ylsrim/room/bank", JUMP_INTO);
 }

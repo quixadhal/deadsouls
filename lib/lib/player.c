@@ -23,6 +23,7 @@ private string *Titles;
 string *Muffed = ({});
 private mapping *Deaths;
 private int TrainingPoints, TitleLength;
+private static int heartcount;
 
 /* *****************  /lib/player.c driver applies  ***************** */
 
@@ -34,7 +35,10 @@ static void create(){
     TitleLength = 1;
 }
 
+
 static void heart_beat(){
+    mixed heartping = this_object()->GetProperty("keepalive");
+    heartcount++;
 
     if(!interactive(this_object())){
         set_heart_beat(0);
@@ -42,13 +46,20 @@ static void heart_beat(){
     }
     interactive::heart_beat();
     if( IDLE_TIMEOUT && query_idle(this_object()) >= IDLE_TIMEOUT 
-      && !builderp(this_object()) 
-      && !present("testchar badge",this_object()) 
-      && !present("idler_amulet",this_object()) 
-      && !testp(this_object()) ){
+            && !builderp(this_object()) 
+            && !present("testchar badge",this_object()) 
+            && !present("idler_amulet",this_object()) 
+            && !testp(this_object()) ){
         cmdQuit();
         return;
     }
+#ifdef __DSLIB__
+    if(heartping && intp(heartping) && heartcount > heartping){
+        if(!(heartcount % heartping)){
+            send_nullbyte(this_object());
+        }
+    }
+#endif
     living::heart_beat();
 }
 
@@ -91,7 +102,7 @@ varargs int eventShow(object who, string str){
 
 /* *****************  /lib/player.c events  *************** */
 
-int eventDisplayStatus(){
+varargs mixed eventDisplayStatus(int simple){
     string str;
     int qp, xp, hp, mp, sp, max_hp, max_mp, max_sp;
 
@@ -108,15 +119,20 @@ int eventDisplayStatus(){
         str = "%^YELLOW%^hp: %^RED%^" + hp + "%^RESET%^/" + max_hp;
     else str = "%^YELLOW%^hp: %^RESET%^" + hp + "/" + max_hp;
     if( percent(mp, max_mp) < 20.0 )
-        str += "   %^BLUE%^mp: %^RED%^" + mp + "%^RESET%^/" + max_mp;
-    else str += "   %^BLUE%^mp: %^RESET%^" + mp + "/" + max_mp;
+        str += "  %^BLUE%^mp: %^RED%^" + mp + "%^RESET%^/" + max_mp;
+    else str += "  %^BLUE%^mp: %^RESET%^" + mp + "/" + max_mp;
     if( percent(sp, max_sp) < 20.0 )
-        str += "   %^GREEN%^sp: %^RED%^" + sp + "%^RESET%^/" + max_sp;
-    else str += "   %^GREEN%^sp: %^RESET%^" + sp + "/" + max_sp;
-    str += "   %^MAGENTA%^xp: %^RESET%^" + xp;
-    str += "   %^CYAN%^qp: %^RESET%^" + qp;
-    message("status", str, this_object());
-    return 1;
+        str += "  %^GREEN%^sp: %^RED%^" + sp + "%^RESET%^/" + max_sp;
+    else str += "  %^GREEN%^sp: %^RESET%^" + sp + "/" + max_sp;
+    if(!simple){
+        str += "  %^MAGENTA%^xp: %^RESET%^" + xp;
+        str += "  %^CYAN%^qp: %^RESET%^" + qp;
+    }
+    if(!simple){
+        message("status", str, this_object());
+        return 1;
+    }
+    return str;
 }
 
 static void eventDestroyUndead(object agent){
@@ -142,19 +158,19 @@ varargs int eventDie(mixed agent){
     }
     else {
         message("my_action", "Consciousness passes from you after one last "
-          "gasp for air.", this_object());
+                "gasp for air.", this_object());
         message("my_action", "You awake, but you find your body feels "
-          "different, and the world about you is unfamiliar.",
-          this_object());
+                "different, and the world about you is unfamiliar.",
+                this_object());
         if( agent ){
             message("other_action", GetName() + " is killed by "
-              + agentname + ".",
-              environment(this_object()), ({ agent, this_object() }));
+                    + agentname + ".",
+                    environment(this_object()), ({ agent, this_object() }));
             message("other_action", "You send " + GetName() + " into the "
-              "Underworld.", agent);
+                    "Underworld.", agent);
         }
         else message("other_action", GetName() + " dies.",
-              environment(), ({ this_object() }) );
+                environment(), ({ this_object() }) );
 
         NewBody(GetRace());
 
@@ -206,8 +222,8 @@ varargs void eventRevive(int nopenalty){
             if( x > 0 ){
                 while( x-- ){
                     AddSkillPoints(skill,
-                      -GetMaxSkillPoints(skill,
-                        GetBaseSkillLevel(skill)));
+                            -GetMaxSkillPoints(skill,
+                                GetBaseSkillLevel(skill)));
                 }
             }
         }
@@ -393,20 +409,20 @@ int Setup(){
 
 /* ***************** /lib/player.c data functions  ***************** */
 
-int AddCurrency(string type, int amount){
-    if( currency_value(amount, type) > 999 )
-        log_file("currency", GetCapName() + " received "+amount+" "+type+
-          " "+ctime(time())+"\n"+identify(previous_object(-1))+"\n");
-    return living::AddCurrency(type, amount);
-}
+    int AddCurrency(string type, int amount){
+        if( currency_value(amount, type) > 999 )
+            log_file("currency", GetCapName() + " received "+amount+" "+type+
+                    " "+ctime(time())+"\n"+identify(previous_object(-1))+"\n");
+        return living::AddCurrency(type, amount);
+    }
 
-int AddBank(string bank, string type, int amount){
-    if( currency_value(amount, type) > 999 )
-        log_file("bank", GetCapName() + " deposited "+amount+" "+type+
-          " "+ctime(time())+" into bank: "+bank+"\n" +
-          identify(previous_object(-1))+"\n");
-    return living::AddBank(bank, type, amount);
-}
+    int AddBank(string bank, string type, int amount){
+        if( currency_value(amount, type) > 999 )
+            log_file("bank", GetCapName() + " deposited "+amount+" "+type+
+                    " "+ctime(time())+" into bank: "+bank+"\n" +
+                    identify(previous_object(-1))+"\n");
+        return living::AddBank(bank, type, amount);
+    }
 
 string *GetMuffed(){
     return Muffed;
@@ -518,15 +534,15 @@ varargs string GetLong(string str){
     str += interactive::GetLong() + "\n";
     str += living::GetLong(nominative(this_object()));
     foreach(item in map(all_inventory(),
-        (: (string)$1->GetAffectLong(this_object()) :))){
+                (: (string)$1->GetAffectLong(this_object()) :))){
         if(item && member_array(item,affects) == -1) affects += ({ item });
     }
     if(sizeof(affects)) str += implode(affects,"\n")+"\n";
     if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
     counts = ([]);
     foreach(item in map(
-        filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
-        (: (string)$1->GetEquippedShort() :)))
+                filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
+                (: (string)$1->GetEquippedShort() :)))
         if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
@@ -546,10 +562,10 @@ int ResetLevel(){
         if( x > y ) file = "decline";
         else file = "advance";
         log_file(file, GetCapName() + " went from level " + x + " to "
-          "level " + y + " (" + ctime(time()) + ")\n");
+                "level " + y + " (" + ctime(time()) + ")\n");
         if( x < y ){
             eventPrint("%^YELLOW%^You are now a more experienced " + 
-              GetClass() + ".");
+                    GetClass() + ".");
             TrainingPoints += ( (y-x) * 4 );
         }
         else TrainingPoints -= ( (x-y) * 4 );
@@ -605,8 +621,8 @@ mapping *GetDeaths(){
 
 int AddTrainingPoints(int x){
     log_file("TrainingPoints", GetName() + " received " + x + " training "
-      "points at " + ctime(time()) + "\ncall chain: " +
-      sprintf("%O\n", previous_object(-1)) );
+            "points at " + ctime(time()) + "\ncall chain: " +
+            sprintf("%O\n", previous_object(-1)) );
     return (TrainingPoints += x);
 }
 
@@ -626,11 +642,11 @@ varargs int eventTrain(string skill, int points){
     while( points-- ){
         int max = GetMaxSkillPoints(skill, mp["level"]);
         switch( mp["class"] ){
-        case 1: x = 50.0; break;
-        case 2: x = 40.0; break;
-        case 3: x = 30.0; break;
-        case 4: x = 20.0; break;
-        default: return 0;
+            case 1: x = 50.0; break;
+            case 2: x = 40.0; break;
+            case 3: x = 30.0; break;
+            case 4: x = 20.0; break;
+            default: return 0;
         }
         TrainingPoints--;
         AddSkillPoints(skill, to_int( (max * x) / 100 ));

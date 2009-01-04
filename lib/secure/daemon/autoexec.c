@@ -11,7 +11,7 @@ static void eventRun() {
     int t;
     mapping before, after;
     string *noobnames = ({ "Dead_Souls_"+DEBUGGER, "DeadSoulsNew",
-      "DeadSoulsWin" });
+            "DeadSoulsWin" });
     debug_message("\nRunning autoexec, please wait...");
 #ifdef __HAS_RUSAGE__
     before = rusage();

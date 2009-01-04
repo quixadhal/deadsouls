@@ -96,7 +96,7 @@ remove emotes?</a><br>
 <a href="#2.7">2.7 How can I find the
 filename of something?</a><br>
 <br>
-<a href="#2.9">2.8 What's the largest
+<a href="#2.8">2.8 What's the largest
 integer usable by the mud?</a><br>
 <br>
 <a href="#2.9">2.9 How can I find out
@@ -1501,7 +1501,12 @@ object's unique identifier.<br>
  style="font-weight: bold; text-decoration: underline;">What's
 the largest integer usable by the mud?</span><br>
 <br>
-2147483647<br>
+On a 32-bit compiled driver: 2147483647 (Two point one billion)<br>
+On a 64-bit compiled driver: 9223372036854775807 (Nine point two
+quintillion) <br>
+<br>
+To know which you're on, type: <span style="font-weight: bold;">eval
+return MAX_INT</span><br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span><a
@@ -2671,8 +2676,7 @@ a skill specification line, in
 the following<br>
 format:<br>
 <br>
-skill name:starting
-level:importance to the class (1 is highest)<br>
+skill name:importance to the class (1 is highest):starting level<br>
 <br>
 <br>
 <a name="2.47"></a><span

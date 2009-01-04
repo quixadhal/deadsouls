@@ -30,20 +30,20 @@ mixed CanJump(object who, string id, int type){
     }
     type = Jumps[keys(Jumps)[0]][1];
     switch(type){
-    case JUMP_INTO:
-        return "Perhaps you mean to jump into it?";
+        case JUMP_INTO:
+            return "Perhaps you mean to jump into it?";
 
-    case JUMP_FROM:
-        return "Perhaps you mean to jump from it?";
+        case JUMP_FROM:
+            return "Perhaps you mean to jump from it?";
 
-    case JUMP_THROUGH:
-        return "Perhaps you mean to jump through it?";
+        case JUMP_THROUGH:
+            return "Perhaps you mean to jump through it?";
 
-    case JUMP_OVER:
-        return "Perhaps you mean to jump over it?";
+        case JUMP_OVER:
+            return "Perhaps you mean to jump over it?";
 
-    case JUMP_ON:
-        return "Perhaps you mean to jump on it?";
+        case JUMP_ON:
+            return "Perhaps you mean to jump on it?";
     }
     return 0;
 }
@@ -61,25 +61,25 @@ mixed eventJump(object who, string id, int type){
         string omsg, imsg;
 
         switch(type){
-        case JUMP_INTO:
-            omsg = "$N jumps into the " + id + ".";
-            imsg = "$N comes landing in.";
-            break;
+            case JUMP_INTO:
+                omsg = "$N jumps into the " + id + ".";
+                imsg = "$N comes landing in.";
+                break;
 
-        case JUMP_FROM:
-            omsg = "$N jumps out of here.";
-            imsg = "$N comes landing in.";
-            break;
+            case JUMP_FROM:
+                omsg = "$N jumps out of here.";
+                imsg = "$N comes landing in.";
+                break;
 
-        case JUMP_THROUGH:
-            omsg = "$N jumps through the " + id + ".";
-            imsg = "$N comes landing in.";
-            break;
+            case JUMP_THROUGH:
+                omsg = "$N jumps through the " + id + ".";
+                imsg = "$N comes landing in.";
+                break;
 
-        case JUMP_OVER:
-            omsg = "$N jumps over the " + id + ".";
-            imsg = "$N comes landing in.";
-            break;
+            case JUMP_OVER:
+                omsg = "$N jumps over the " + id + ".";
+                imsg = "$N comes landing in.";
+                break;
         }
         who->eventMoveLiving(dest, omsg, imsg);
         return 1;
@@ -96,22 +96,22 @@ mixed direct_jump_word_obj(string prep, object target, string id){
     int type;
 
     switch(prep){
-    case "in": case "into":
-        type = JUMP_INTO;
+        case "in": case "into":
+            type = JUMP_INTO;
         break;
-    case "from": case "out": case "off":
-        type = JUMP_FROM;
+        case "from": case "out": case "off":
+            type = JUMP_FROM;
         break;
-    case "through": case "across":
-        type = JUMP_THROUGH;
+        case "through": case "across":
+            type = JUMP_THROUGH;
         break;
-    case "over":
-        type = JUMP_OVER;
+        case "over":
+            type = JUMP_OVER;
         break;
-    case "on": case "onto":
-        type = JUMP_ON;
+        case "on": case "onto":
+            type = JUMP_ON;
         break;
-    default:
+        default:
         return 0;
     }
     id = remove_article(lower_case(id));
@@ -124,9 +124,9 @@ varargs mixed direct_jump_word_word_obj(mixed args...){
     int type;
 
     switch(prep){
-    case "out of": case "off of":
-        type = JUMP_FROM;
-    default:
+        case "out of": case "off of":
+            type = JUMP_FROM;
+        default:
         return 0;
     }
     return CanJump(this_player(), id, type);

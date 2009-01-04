@@ -21,15 +21,15 @@ void eventReceiveError(mixed *packet) {
     //packet = packet[8];
     //tn("errorcode: "+error_code);
     switch(error_code) {
-    case "unk-src":
-        //update("/daemon/intermud");
-        return;
-    case "unk-dst": case "not-imp": case "unk-type":
-        return;
-    case "unk-user":
-        if( !ob ) return;
+        case "unk-src":
+            //update("/daemon/intermud");
+            return;
+        case "unk-dst": case "not-imp": case "unk-type":
+            return;
+        case "unk-user":
+            if( !ob ) return;
         message("system", (msg ? msg : "Unknown user reported from " + mud +
-            "."), ob);
+                    "."), ob);
         return;
     }
 }

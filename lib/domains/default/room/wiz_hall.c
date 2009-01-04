@@ -6,10 +6,10 @@ int ds;
 
 string LongDesc(){
     string desc = "Immortals come here to communicate with each other about "+
-    "the world they are building. The Builder's hall and Adventurer's Guild "+
-    "are north. The Arch Room is south."+(!(ds) ? " To visit the Dead Souls "+
-      "test and development mud, visit the upstairs annex." : "")+
-    " The test lab facilities are east.";
+        "the world they are building. The Builder's hall and Adventurer's Guild "+
+        "are north. The Arch Room is south."+(!(ds) ? " To visit the Dead Souls "+
+                "test and development mud, visit the upstairs annex." : "")+
+        " The test lab facilities are east.";
     desc += "\nA sign reads: "+load_object(ROOM_ARCH)->SignRead();
     return desc;
 }
@@ -34,17 +34,17 @@ static void create() {
     ob->SetShort("a dusty chalkboard");
     ob->eventMove(this_object());
     SetInventory(([
-        "/domains/default/npc/tree" : ({ 10, 1 }),
-        "/domains/default/obj/chest" : 1 ]));
+                "/domains/default/npc/tree" : ({ 10, 1 }),
+                "/domains/default/obj/chest" : 1 ]));
     SetItems( ([
-        ({"sign"}) : "A sign you can read.",
-      ]) );
+                ({"sign"}) : "A sign you can read.",
+                ]) );
     SetExits( ([
-        "south" : "/secure/room/arch",
-        "north" : "/domains/default/room/builder_hall",
-        "east" : "/domains/default/room/wiz_corr1",
-        "up" : "/domains/default/room/wiz_hall2.c",
-      ]) );
+                "south" : "/secure/room/arch",
+                "north" : "/domains/default/room/builder_hall",
+                "east" : "/domains/default/room/wiz_corr1",
+                "up" : "/domains/default/room/wiz_hall2.c",
+                ]) );
     SetRead("sign", (: load_object(ROOM_ARCH)->SignRead() :) );
 }
 
@@ -53,8 +53,9 @@ int CanReceive(object sneak) {
     if(!living_stack || !arrayp(living_stack)) living_stack = ({ sneak });
     foreach(object ob in living_stack){
         if(living(ob) && !creatorp(ob) && 
-          base_name(ob) != "/domains/default/npc/tree" &&
-          !member_group(ob,"TEST")) {
+                base_name(ob) != "/domains/default/npc/tree" &&
+                base_name(ob) != "/secure/obj/floodmapper" &&
+                !member_group(ob,"TEST")) {
             message("info","Creator staff only, sorry.", ob);
             return 0;
         }
@@ -71,9 +72,9 @@ int eventReceiveObject(object ob){
     }
     if(ob->GetInvis()){
         tell_room(this_object(), capitalize(ob->GetKeyName())+
-          " enters invisibly.", ({ ob }) );
+                " enters invisibly.", ({ ob }) );
         ob->eventPrint("%^BOLD%^%^RED%^Your invisible entry has "+
-          "been announced.%^RESET%^");
+                "been announced.%^RESET%^");
     }
     return ret;
 }
@@ -83,9 +84,9 @@ int eventReleaseObject(object ob){
     if(!ret) return 0;
     if(ob->GetInvis()){
         tell_room(this_object(), capitalize(ob->GetKeyName())+
-          " exits invisibly.", ({ ob }) );
+                " exits invisibly.", ({ ob }) );
         ob->eventPrint("%^BOLD%^%^RED%^Your invisible exit has "+
-          "been announced.%^RESET%^");
+                "been announced.%^RESET%^");
     }
     return ret;
 }

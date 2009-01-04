@@ -112,8 +112,8 @@ varargs void SetLongAndItems(int x, int y, int z) {
 
     inv = ([]);
     str = "You are on a large flat plain, bordered on all sides "
-    "by stone walls, forming a large arena for heavy weapons and "
-    "mounted combat.";
+        "by stone walls, forming a large arena for heavy weapons and "
+        "mounted combat.";
     if(query_night()) str += " The stars of the night sky glitter overhead.";
     if(x == 1 && y != 10) str += " A stone wall prevents further travel west.";
     if(x == 10) str += " A stone wall prevents further travel east.";
@@ -122,27 +122,27 @@ varargs void SetLongAndItems(int x, int y, int z) {
     if(x == 1 && y == 10) str += "\n%^GREEN%^There is a sign here you can read.%^RESET%^";
 
     SetItems( ([ "arena" : "A place of violent death and great destruction.",
-      ]) );
+                ]) );
 
     if(y == 10) {
         AddItem( ({ "rock wall","wall","stone wall"}), 
-          "This vast stone wall prevents further travel north." );
+                "This vast stone wall prevents further travel north." );
     }
     else if(y == 1) {
         AddItem( ({ "rock wall","wall","stone wall"}),
-          "This vast stone wall prevents further travel south." );
+                "This vast stone wall prevents further travel south." );
     }
 
     if(x == 10) {
         AddItem( ({ "rock wall","wall","stone wall"}),
-          "This vast stone wall prevents further travel east." );
+                "This vast stone wall prevents further travel east." );
     }
     if(x == 1) {
         AddItem( ({ "rock wall","wall","stone wall"}),
-          "This vast stone wall prevents further travel west." );
+                "This vast stone wall prevents further travel west." );
     }
     AddItem( ({ "walls","rock walls","stone walls" }),
-      "Large walls form the bounds of this killing field." );
+            "Large walls form the bounds of this killing field." );
     SetLong(str);
     SetDayLight(30);
     SetNightLight(30);

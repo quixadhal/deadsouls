@@ -42,14 +42,14 @@ varargs mixed eventRead(object reader, mixed str){
     }
 
     tell_player(this_player(),"You read the scroll, and with a flash "+
-      "of light, "+ob->GetCapName()+" comes back to life!");
+            "of light, "+ob->GetCapName()+" comes back to life!");
     tell_player(ob,capitalize(this_player()->GetKeyName())+" reads "+
-      possessive(this_player())+ " scroll at you, and "+
-      "you come back from the dead!");
+            possessive(this_player())+ " scroll at you, and "+
+            "you come back from the dead!");
     tell_room(environment(this_player()),this_player()->GetCapName()+" reads "+
-      possessive(this_player())+ " scroll at "+ob->GetCapName()+" and "+
-      nominative(ob)+" comes back to life!",
-      ({ob, this_player()}) );
+            possessive(this_player())+ " scroll at "+ob->GetCapName()+" and "+
+            nominative(ob)+" comes back to life!",
+            ({ob, this_player()}) );
     if(playerob){
         object *inv;
         playerob->eventRevive(1);
@@ -121,8 +121,8 @@ varargs mixed eventRead(object reader, mixed str){
 
 void create(){
     string message="To bring someone back to life, the way they were before "+ 
-    "death took them, and with no penalties to their experience or "+
-    "abilities, then go to their corpse, and: read scroll at person";
+        "death took them, and with no penalties to their experience or "+
+        "abilities, then go to their corpse, and: read scroll at person";
     ::create();
     SetKeyName("scroll");
     SetId(({"scroll of resurrection"}));
@@ -133,8 +133,8 @@ void create(){
     SetDollarCost(1000);
     SetVendorType(VT_TREASURE);
     SetReads( ([ "default" : message,
-        ({ "words", "words written" }) : message,
-      ]) );
+                ({ "words", "words written" }) : message,
+                ]) );
     SetLanguage("Edhellen");
 }
 

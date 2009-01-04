@@ -19,6 +19,7 @@ void create(){
     SetMaxFlask(3); 
     SetMealType(MEAL_DRINK);
 }
+
 void init(){
     ::init();
 }

@@ -93,17 +93,17 @@ mixed cmd(string args) {
                 int x, y, z;
 
                 switch(opt) {
-                case "a":
-                    all = 1;
+                    case "a":
+                        all = 1;
                     break;
-                case "m":
-                    x = 5;
+                    case "m":
+                        x = 5;
                     break;
-                case "d":
-                    x = 7;
+                    case "d":
+                        x = 7;
                     break;
-                case "n":
-                    x = 0;
+                    case "n":
+                        x = 0;
                     break;
                 }
                 tmpstr = (x ? info[x] : mud);
@@ -135,9 +135,9 @@ mixed cmd(string args) {
             mud = keys(borg)[0];
             msg = "\nDetailed information on %^GREEN%^" + mud + "%^RESET%^:\n";
             msg += sprintf("MUD Type: %:-6s Server: %:-20s Library: %s\n",
-              borg[mud]["mud_type"], borg[mud]["driver"], borg[mud]["base_mudlib"]);
+                    borg[mud]["mud_type"], borg[mud]["driver"], borg[mud]["base_mudlib"]);
             msg += "Status: " + borg[mud]["open_status"] + "\nAdmin email: " +
-            borg[mud]["admin_email"] + "\n";
+                borg[mud]["admin_email"] + "\n";
             msg += "Services: ";
             foreach(svc, val in borg[mud]["services"]) {
                 if( val == 1 ) {
@@ -184,15 +184,15 @@ mixed cmd(string args) {
         foreach(mud, info in borg){
             if(ipsort)
                 list += ({ sprintf("%:-15s %:-6s %:-15s %:-18s",
-                    info["ip"], itoa(info["player_port"]), replace_string(mud,"%^","%%^^"), info["base_mudlib"]) });
+                            info["ip"], itoa(info["player_port"]), replace_string(mud,"%^","%%^^"), info["base_mudlib"]) });
 
             else
                 list += ({ sprintf("%:-15s %:-6s %:-15s %:-18s %s %d",
-                    replace_string(mud,"%^","%%^^"), info["mud_type"], info["driver"], info["base_mudlib"], info["ip"], info["player_port"]) });
+                            replace_string(mud,"%^","%%^^"), info["mud_type"], info["driver"], info["base_mudlib"], info["ip"], info["player_port"]) });
         }
         list = sort_array(list, 1);
         list = ({ replace_string(mud_name(),"%^","%%^^") + " recognizes " + consolidate(sizeof(borg), "a mud")+
-          " matching your query: ", "" }) + list;
+                " matching your query: ", "" }) + list;
         this_player()->eventPage(list);
         return 1;
     }
@@ -430,7 +430,7 @@ mixed cmd(string args) {
     if(arg1 == "irn"){
         if(!arg2){
             write("Please specify an irn subcommand: enable, disable, "
-              "check, force.");
+                    "check, force.");
             return 1;
         }
         if(arg2 == "check"){
@@ -472,27 +472,27 @@ mixed cmd(string args) {
 
 string GetHelp(string args) {
     return ("Syntax: router [subcommand [arg]]\n\n"
-      "With no arguments, router status is displayed.\n"
-      "examples:\n" 
-      "router reload : bounces the router without dropping connections\n"
-      "router restart : bounces the router dropping all connections\n"
-      "router reset : like restart but also clears all saved mud info\n"
-      "router irn [enable|disable|check|force] : manages IRN subsystem\n"
-      "router ban : lists banned muds\n"
-      "router ban <mudname> : bans the mud with the name <mudname>\n"
-      "router unban <mudname> : the opposite of banning\n"
-      "router blacklist : lists blacklisted names and IP's\n"
-      "router blacklist [name | ip address] : a harsher kind of ban\n"
-      "router unblacklist [name | ip address] : the opposite of blacklisting\n"
-      "router config <name> <ip> <port> : config the router in one line\n"
-      "router port <portnum> : sets the router port\n"
-      "router ip <ip number> : sets the ip address, e.g. 11.22.33.44\n"
-      "router name <routername> : sets the router name\n"
-      "router mudlist : display information of known muds\n" 
-      "router mudlist -i : display muds sorted by ip\n" 
-      "router mudlist -f : display connected muds sorted by file descriptor\n" 
-      "\n"
-      "To bring the router online or offline, use the mudconfig command."
-      "\n\n"
-      "");
+            "With no arguments, router status is displayed.\n"
+            "examples:\n" 
+            "router reload : bounces the router without dropping connections\n"
+            "router restart : bounces the router dropping all connections\n"
+            "router reset : like restart but also clears all saved mud info\n"
+            "router irn [enable|disable|check|force] : manages IRN subsystem\n"
+            "router ban : lists banned muds\n"
+            "router ban <mudname> : bans the mud with the name <mudname>\n"
+            "router unban <mudname> : the opposite of banning\n"
+            "router blacklist : lists blacklisted names and IP's\n"
+            "router blacklist [name | ip address] : a harsher kind of ban\n"
+            "router unblacklist [name | ip address] : the opposite of blacklisting\n"
+            "router config <name> <ip> <port> : config the router in one line\n"
+            "router port <portnum> : sets the router port\n"
+            "router ip <ip number> : sets the ip address, e.g. 11.22.33.44\n"
+            "router name <routername> : sets the router name\n"
+            "router mudlist : display information of known muds\n" 
+            "router mudlist -i : display muds sorted by ip\n" 
+            "router mudlist -f : display connected muds sorted by file descriptor\n" 
+            "\n"
+            "To bring the router online or offline, use the mudconfig command."
+            "\n\n"
+            "");
 }

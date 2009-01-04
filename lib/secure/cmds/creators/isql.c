@@ -15,12 +15,12 @@ mixed cmd(string args) {
 
 string GetHelp(string str) {
     return ("Syntax: <isql DATABASE>\n\n"
-      "Allows you to interactively issue SQL statements.  Besides "
-      "SQL statements, you may also issue the following commands on "
-      "lines by themselves:\n"
-      "\tgo\n"
-      "\tSends the current buffer to the database engine for "
-      "interpretation.\n"
-      "\tquit\n"
-      "\tExits the ISQL interface.");
+            "Allows you to interactively issue SQL statements.  Besides "
+            "SQL statements, you may also issue the following commands on "
+            "lines by themselves:\n"
+            "\tgo\n"
+            "\tSends the current buffer to the database engine for "
+            "interpretation.\n"
+            "\tquit\n"
+            "\tExits the ISQL interface.");
 }

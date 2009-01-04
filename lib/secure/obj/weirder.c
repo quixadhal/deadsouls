@@ -12,37 +12,37 @@ inherit LIB_ITEM;
 static int numstress = 1;
 string savefile = "/secure/save/weirder.o";
 string *lib_dirs = ({ "/lib/comp","/lib/daemons","/lib/events/",
-  "/lib/lvs", "/lib/lvs", "/lib/props", "/lib/std", 
-  "/lib/user", "/lib/virtual", "/lib","/secure/lib","/secure/lib/net" });
+        "/lib/lvs", "/lib/lvs", "/lib/props", "/lib/std", 
+        "/lib/user", "/lib/virtual", "/lib","/secure/lib","/secure/lib/net" });
 string *daemon_dirs = ({ "/daemon", "/secure/daemon" });
 string *cmd_dirs = ({ "/cmds/admins", "/cmds/builders", "/cmds/common",
-  "/cmds/creators", "/cmds/hm", "/cmds/players", "/secure/cmds/admins",
-  "/secure/cmds/builders", "/secure/cmds/common", "/secure/cmds/creators",
-  "/secure/cmds/hm", "/secure/cmds/players" });
+        "/cmds/creators", "/cmds/hm", "/cmds/players", "/secure/cmds/admins",
+        "/secure/cmds/builders", "/secure/cmds/common", "/secure/cmds/creators",
+        "/secure/cmds/hm", "/secure/cmds/players" });
 string *verb_dirs = ({ "/secure/verbs/creators", "/verbs/admins",
-  "/verbs/builders", "/verbs/common", "/verbs/creators", "/verbs/items",
-  "/verbs/players", "/verbs/rooms", "/verbs/spells", "/verbs/undead" });
+        "/verbs/builders", "/verbs/common", "/verbs/creators", "/verbs/items",
+        "/verbs/players", "/verbs/rooms", "/verbs/spells", "/verbs/undead" });
 string *npc_dirs = ({ "/domains/default/npc", "/domains/town/npc",
-  "/domains/campus/npc", "/domains/cave/npc" });
+        "/domains/campus/npc", "/domains/cave/npc" });
 string *room_dirs = ({ "/domains/campus/room", "/domains/default/room",
-  "/domains/town/room", "/domains/Ylsrim/room", "/domains/Praxis",
-  "/domains/cave/room",
-  "/secure/room", "/domains/town/virtual/sub", "/domains/town/virtual/sky", 
-  "/domains/town/virtual/surface", "/domains/town/virtual/bottom",
-  "/domains/town/virtual/forest", "/domains/town/space"  });
+        "/domains/town/room", "/domains/Ylsrim/room", "/domains/Praxis",
+        "/domains/cave/room",
+        "/secure/room", "/domains/town/virtual/sub", "/domains/town/virtual/sky", 
+        "/domains/town/virtual/surface", "/domains/town/virtual/bottom",
+        "/domains/town/virtual/forest", "/domains/town/space"  });
 string *obj_dirs = ({ "/domains/campus/obj", "/domains/default/obj",
-  "/domains/town/obj", "/domains/Ylsrim/obj", "/obj", "/std", 
-  "/secure/obj", "/shadows", "/secure/modules", "/domains/cave/obj"  });
+        "/domains/town/obj", "/domains/Ylsrim/obj", "/obj", "/std", 
+        "/secure/obj", "/shadows", "/secure/modules", "/domains/cave/obj"  });
 string *weap_dirs = ({ "/domains/campus/weap", "/domains/default/weap",
-  "/domains/town/weap", "/domains/Ylsrim/weap", "/domains/cave/weap"  });
+        "/domains/town/weap", "/domains/Ylsrim/weap", "/domains/cave/weap"  });
 string *armor_dirs = ({ "/domains/campus/armor", "/domains/default/armor",
-  "/domains/town/armor", "/domains/Ylsrim/armor", "/domains/cave/armor"  });
+        "/domains/town/armor", "/domains/Ylsrim/armor", "/domains/cave/armor"  });
 string *meals_dirs = ({ "/domains/campus/meals", "/domains/default/meals",
-  "/domains/town/meals", "/domains/Ylsrim/meals", "/domains/cave/meals"  });
+        "/domains/town/meals", "/domains/Ylsrim/meals", "/domains/cave/meals"  });
 string *doors_dirs = ({ "/domains/campus/doors", "/domains/default/doors",
-  "/domains/town/doors", "/domains/Ylsrim/doors", "/domains/cave/doors"  });
+        "/domains/town/doors", "/domains/Ylsrim/doors", "/domains/cave/doors"  });
 string *powers_dirs = ({ "/powers/spells", "/powers/psionics",
-  "/powers/feats", "/powers/trades" });
+        "/powers/feats", "/powers/trades" });
 string *rooms = ({});
 string *obs = ({});
 string *npcs = ({});
@@ -103,15 +103,15 @@ int yeik(string str){
 
 void create(){
     ::create();
-    exceptions = ({ "monty.c","charles.c","charly.c","tree.c",
-      "wraith.c", "archwraith.c","drone2.c","beggar.c","drone.c"});
+    exceptions = ({ "monty.c","charles.c","charly.c","tree.c","lars.c",
+            "wraith.c", "archwraith.c","drone2.c","beggar.c","drone.c"});
     SetKeyName("weirding module");
     SetId( ({"module", "box", "weirder"}) );
     SetAdjectives( ({"small","featureless","black"}) );
     SetShort("a small black box");
     SetLong("A small, featureless black box. Whatever it is, "
-      "you are somehow deeply certain it is not your business, "
-      "and you must leave it alone.");
+            "you are somehow deeply certain it is not your business, "
+            "and you must leave it alone.");
     SetMass(20);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
@@ -369,7 +369,7 @@ int loadall(){
 int stressload(string arg){
     int i;
     if(arg) i = atoi(arg);
-    numstress = i;
+    numstress = (i || 1);
     tc("numnstress: "+numstress);
     if(!sizeof(rooms)) call_out("loadrooms", 0);
     if(!sizeof(npcs)) call_out("loadnpcs", 0);
@@ -381,8 +381,8 @@ int stressload(string arg){
 int startstress(){
     object *newbatch = ({});
     object *targetrooms = filter(rooms, 
-      (: last($1,2) == ".c" && last($1,9) != "furnace.c" &&
-        $1->GetMedium() < 2 && !$1->GetProperty("no attack") :) );
+            (: last($1,2) == ".c" && last($1,9) != "furnace.c" &&
+             $1->GetMedium() < 2 && !$1->GetProperty("no attack") :) );
     int victims;
     tc("Starting stresstest, multiplier: "+numstress);
     //tc("npcs: "+identify(npcs),"green");
@@ -411,15 +411,17 @@ int startstress(){
     }
     newbatch = filter(newbatch, (: objectp($1) :) );
     victims = to_int(to_float(sizeof(newbatch)) * 0.005)+1;
-    //tc("newbatch size: "+sizeof(newbatch));
+    tc("newbatch size: "+sizeof(newbatch));
     while(victims){
         object germ, who;
-        int err;
-        err = catch(germ = new("/domains/town/obj/rage"));
-        who = newbatch[abs(random(sizeof(newbatch))-1)];
-        //tc("Infecting "+identify(who)+" with "+identify(germ),"blue");
-        if(germ) germ->eventInfect(who);
-        victims--;
+        int err, batch = sizeof(newbatch);
+        if(batch){
+            err = catch(germ = new("/domains/town/obj/rage"));
+            who = newbatch[abs(random(batch))];
+            //tc("Infecting "+identify(who)+" with "+identify(germ),"blue");
+            if(who && germ) germ->eventInfect(who);
+            victims--;
+        }
     }
     npcs->SetWanderSpeed(1);
     npcs->SetPermitLoad(1);
@@ -475,8 +477,8 @@ int vargon(string str){
     if(!win || !waves) waves = 5;
     for(win=waves;win > 0;win--){
         INTERMUD_D->RawSend(({ "channel-m", 5, mud_name(),
-            this_player()->GetKeyName(), 0, 0, "coffee",
-            this_player()->GetKeyName(), win+" Yes have some." }));
+                    this_player()->GetKeyName(), 0, 0, "coffee",
+                    this_player()->GetKeyName(), win+" Yes have some." }));
     }
     return waves;
 }

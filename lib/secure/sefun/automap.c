@@ -31,17 +31,17 @@ varargs string simple_map(mixed arg){
 
     foreach(string element in exits){
         switch(element){
-        case "north" : line1[4..4] = query_door(arg, element); line2[4..4] = "|";break;
-        case "south" : line5[4..4] = query_door(arg, element); line4[4..4] = "|";break;
-        case "east" : line3[7..7] = query_door(arg, element); line3[5..5] = "-";line3[6..6] = "-";break;
-        case "west" : line3[1..1] = query_door(arg, element); line3[2..2] = "-";line3[3..3] = "-";break;
-        case "northeast" : line1[7..7] = query_door(arg, element); line2[6..6] = "/";break;
-        case "northwest" : line1[1..1] = query_door(arg, element); line2[2..2] = "\\";break;
-        case "southeast" : line5[7..7] = query_door(arg, element); line4[6..6] = "\\";break;
-        case "southwest" : line5[1..1] = query_door(arg, element); line4[2..2] = "/";break;
+            case "north" : line1[4..4] = query_door(arg, element); line2[4..4] = "|";break;
+            case "south" : line5[4..4] = query_door(arg, element); line4[4..4] = "|";break;
+            case "east" : line3[7..7] = query_door(arg, element); line3[5..5] = "-";line3[6..6] = "-";break;
+            case "west" : line3[1..1] = query_door(arg, element); line3[2..2] = "-";line3[3..3] = "-";break;
+            case "northeast" : line1[7..7] = query_door(arg, element); line2[6..6] = "/";break;
+            case "northwest" : line1[1..1] = query_door(arg, element); line2[2..2] = "\\";break;
+            case "southeast" : line5[7..7] = query_door(arg, element); line4[6..6] = "\\";break;
+            case "southwest" : line5[1..1] = query_door(arg, element); line4[2..2] = "/";break;
             //case "up" : extra_desc += ({ "up" });break;
             //case "down" : extra_desc += ({ "down" });break;
-        default : extra_desc += ({ element });break;
+            default : extra_desc += ({ element });break;
         }
     }
     if(sizeof(extra_desc)){

@@ -50,16 +50,16 @@ mixed cmd(string str) {
 string GetHelp(string foo) {
     string str;
     str =   "Syntax: notices\n"
-    "        notices <number of days back>\n\n"
-    "Without arguments, this command displays all notices "
-    "posted within the last 24 hours.  You may also "
-    "specify how many days back to search.  For example, "
-    "\"notices 7\" will display all notices posted within "
-    "the last week.\n\n";
+        "        notices <number of days back>\n\n"
+        "Without arguments, this command displays all notices "
+        "posted within the last 24 hours.  You may also "
+        "specify how many days back to search.  For example, "
+        "\"notices 7\" will display all notices posted within "
+        "the last week.\n\n";
     if( archp(this_player()) )
         str += "Arch Commands: notices -d <id number>\n"
-        "               notices -p <file name> <number of days back>\n\n"
-        "The d option deletes the specified notice id number.\n"
-        "the p option will dump the output into <file name>\n";
+            "               notices -p <file name> <number of days back>\n\n"
+            "The d option deletes the specified notice id number.\n"
+            "the p option will dump the output into <file name>\n";
     return str;
 }

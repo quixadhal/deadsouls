@@ -2,7 +2,6 @@
 
 inherit LIB_MATCH;
 
-
 static void create() {
     match::create();
     SetKeyName("match");
@@ -17,10 +16,11 @@ static void create() {
     SetMaxFuel(10);
     SetFuelAmount(10);
     SetRefuelable(0);
-    SetMass(5);
-    SetBaseCost("silver",2);
+    SetMass(1);
+    SetBaseCost("silver",1);
     SetBurntValue(1);
 }
+
 void init(){
     ::init();
 }

@@ -10,7 +10,7 @@ int RatEncounter(mixed val){
     if(val->GetRace() == "orc" || val->GetRace() == "rodent") return 0;
     else {
         if(!this_object()->GetLeader() && sizeof(filter(val->GetFollowers(),
-          (: base_name($1) == base_name(this_object()) :))) < 5){
+                        (: base_name($1) == base_name(this_object()) :))) < 5){
             eventForce("follow "+val->GetKeyName());
             SetWanderSpeed(1);
         }
@@ -23,7 +23,7 @@ static void create() {
     sentient::create();
     SetKeyName("rat");
     SetAdjectives( ({"ratlike","unusual","large","very","dangerous",
-      "dangerous looking","rat like"}) );
+                "dangerous looking","rat like"}) );
     SetId( ({"rat","rous","beast"}) );
     SetShort("a rodent of unusual size");
     SetLong("A very large, very dangerous-looking ratlike beast.");

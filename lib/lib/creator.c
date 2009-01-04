@@ -79,14 +79,14 @@ static void net_dead(){
     CreatorAge += time() - LastCreatorAge;
     LastCreatorAge = time();}
 
-void eventReconnect(){
-    string tmp;
+    void eventReconnect(){
+        string tmp;
 
-    player::eventReconnect();
-    LastCreatorAge = time();
-    if( file_exists(tmp = user_path(GetKeyName()) + "dead.edit") )
-        message("system", "\nYour edit file was saved as: "+tmp, this_object());
-}
+        player::eventReconnect();
+        LastCreatorAge = time();
+        if( file_exists(tmp = user_path(GetKeyName()) + "dead.edit") )
+            message("system", "\nYour edit file was saved as: "+tmp, this_object());
+    }
 
 varargs int eventShow(object who, string str, string on_id){
     player::eventShow(who, str);
@@ -141,8 +141,8 @@ int Setup(){
     if( archp() ) AddSearchPath( ({ DIR_ADMIN_CMDS, DIR_SECURE_ADMIN_CMDS }) );
     if( bugs = (int)BUGS_D->GetAssignedBugs(GetKeyName()) )
         message("system", "\n        >>>  You have " +
-          consolidate(bugs, "an incomplete bug") +
-          " assigned to you!!!!  <<<\n", this_object());
+                consolidate(bugs, "an incomplete bug") +
+                " assigned to you!!!!  <<<\n", this_object());
     NOTIFY_D->eventPrintNotices(this_object(), laston);
     return 1;
 }
@@ -235,7 +235,7 @@ int eventDie(mixed agent){
     if(this_object()->GetGodMode()) return 0;
     if(!grepp(tmpshort,"the ghost") && !grepp(tmpshort,"the reborn")){
         LivingShort = replace_string(tmpshort,this_object()->GetName(),
-          "$N");
+                "$N");
     }
     return ::eventDie(agent);
 }
@@ -244,7 +244,7 @@ int eventReceiveObject(object foo){
     int ret = ::eventReceiveObject(foo);
     if(ret && GetProperty("inventory_monitoring"))
         eventPrint("%^YELLOW%^NOTICE:%^RESET%^ "+identify(foo)+
-          " enters your inventory.");
+                " enters your inventory.");
     return ret;
 }
 
@@ -252,6 +252,6 @@ int eventReleaseObject(object foo2){
     int ret = ::eventReleaseObject(foo2);
     if(ret && GetProperty("inventory_monitoring"))
         eventPrint("%^YELLOW%^NOTICE:%^RESET%^ "+identify(foo2)+
-          " leaves your inventory.");
+                " leaves your inventory.");
     return ret;
 }

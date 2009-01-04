@@ -17,8 +17,8 @@ mixed cmd(string str) {
 
 string GetHelp(string str) {
     return ("Syntax: <more FILE>\n\n"
-      "Pages through the file you name.  While inside the pager, you "
-      "have access to the following commands:\n" +
-      (string)LIB_PAGER->GetHelp("pager") + "\n\n"
-      "See also: cat, ed, head, tail");
+            "Pages through the file you name.  While inside the pager, you "
+            "have access to the following commands:\n" +
+            (string)LIB_PAGER->GetHelp("pager") + "\n\n"
+            "See also: cat, ed, head, tail");
 }

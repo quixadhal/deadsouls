@@ -9,7 +9,7 @@ void create(){
     SetAdjectives( ({"plastic","small","cheap","rayovac","Rayovac"}) );
     SetShort("a small plastic flashlight");
     SetLong("This is a cheap Rayovac brand flashlight.");
-    SetMass(20);
+    SetMass(10);
     SetBaseCost("silver",10);
     SetLightLevel(16);
     SetMinCells(2);
@@ -18,8 +18,8 @@ void create(){
     Lit=0;
     SetVendorType(VT_TREASURE);
     SetInventory(([
-        "/domains/town/obj/dcell_crappy":2
-      ]));
+                "/domains/town/obj/dcell_crappy":2
+                ]));
 
 }
 void init(){

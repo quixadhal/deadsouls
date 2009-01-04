@@ -15,6 +15,7 @@ inherit LIB_HISTORY;
 
 #define DIRECTORY_STACK_SIZE     5
 #define MAX_CMD_ALIASES          192
+#define FAIL 0
 
 private string CurrentWorkingDirectory = "/";
 private string PreviousWorkingDirectory;
@@ -22,28 +23,37 @@ private mapping Nicknames, Aliases, Xverbs;
 private static int CWDCount, CWDBottom, CWDTop, CmdNumber; 
 private string Prompt; 
 private static string *Stack; 
+static int histmatch, charmode = 0; 
+static string charbuffer = ""; 
+static string recalled_command = ""; 
+static string recalled_command_sub = ""; 
+static int recalled_command_num = 0; 
 
 static void create(){
-    history::create();
+    //history::create();
     Nicknames = ([]); 
+    recalled_command_num = sizeof(this_object()->GetCommandHist()) - 1;
+    if(recalled_command_num > -1){
+        recalled_command=this_object()->GetCommandHist()[recalled_command_num];
+    }
     Aliases = ([ "l" : "look $*", "bio" : "biography", "i" : "inventory",
-      "n" : "go north", "s" : "go south", "e" : "go east", "w" : "go west",
-      "ne" : "go northeast", "nw" : "go northwest", "se" : "go southeast",
-      "sw" : "go southwest", "d" : "go down", "u" : "go up", "out": "go out",
-      "exa" : "look at $*", "p" : "people", "sc" : "status", "inf" : "score",
-      "eq" : "equipment", "prac" : "skills", 
-      "sco" : "score", "practice" : "skills", "trophy" : "kills",
-      "northwest" : "go northwest", "northeast" : "go northeast", 
-      "southwest" : "go southwest", "southeast" : "go southeast",
-      "north" : "go north", "south": "go south", "east" : "go east",
-      "west" : "go west", "up" : "go up", "down": "go down", 
-      "ig" : "intergossip $*", "c" : "cre $*", "lp" : "lpuni $*",
-      "inv" : "inventory", "x" : "look at $*", "examine" : "look at $*",
-      "ic" : "intercre $*", "loot" : "get all from $*", "chat" : "newbie $*",
-      "dc" : "dchat $*", "exit" : "go out", "t" : "tell $*", "k" : "kill $*",
-      "alist" : "ls /domains", "zlist" : "domains", "mwhere" : "findobj $*",
-      "owhere" : "findobj $*", "peace" : "quell", "vnum" : "help find",
-    ]);
+            "n" : "go north", "s" : "go south", "e" : "go east", "w" : "go west",
+            "ne" : "go northeast", "nw" : "go northwest", "se" : "go southeast",
+            "sw" : "go southwest", "d" : "go down", "u" : "go up", "out": "go out",
+            "exa" : "look at $*", "p" : "people", "sc" : "status", "inf" : "score",
+            "eq" : "equipment", "prac" : "skills", 
+            "sco" : "score", "practice" : "skills", "trophy" : "kills",
+            "northwest" : "go northwest", "northeast" : "go northeast", 
+            "southwest" : "go southwest", "southeast" : "go southeast",
+            "north" : "go north", "south": "go south", "east" : "go east",
+            "west" : "go west", "up" : "go up", "down": "go down", 
+            "ig" : "intergossip $*", "c" : "cre $*", "lp" : "lpuni $*",
+            "inv" : "inventory", "x" : "look at $*", "examine" : "look at $*",
+            "ic" : "intercre $*", "loot" : "get all from $*", "chat" : "newbie $*",
+            "dc" : "dchat $*", "exit" : "go out", "t" : "tell $*", "k" : "kill $*",
+            "alist" : "ls /domains", "zlist" : "domains", "mwhere" : "findobj $*",
+            "owhere" : "findobj $*", "peace" : "quell", "vnum" : "help find",
+            ]);
     Xverbs = (["]":"] $*", "'":"say $*",":":"emote $*","\"":"say $*",]);
 } 
 
@@ -56,6 +66,9 @@ int Setup(){
     add_action("cmd_alias", "alias",1); 
     add_action("cmd_unalias", "unalias",1); 
     add_action("cmd_nickname", "nickname",1); 
+#if FAIL
+    add_action("fail","fail");
+#endif
     if(creatorp(this_object())){ 
         Stack = allocate(DIRECTORY_STACK_SIZE); 
         CWDBottom = CWDTop = CWDCount = 0; 
@@ -105,7 +118,7 @@ nomask static int cmd_alias(string str){
     } 
     if(sizeof(Xverbs) + sizeof(Aliases) >= MAX_CMD_ALIASES){ 
         message("system", "You must remove an alias before adding another.", 
-          this_player()); 
+                this_player()); 
         return 1; 
     } 
     if(key == "alias") return notify_fail("That would be a bad idea.\n");
@@ -113,15 +126,15 @@ nomask static int cmd_alias(string str){
         key = key[1..strlen(key)]; 
         if(Xverbs[key])  
             message("system", sprintf("Alias for $%s altered to (%s).", 
-                key, thing), this_player()); 
+                        key, thing), this_player()); 
         else message("system", sprintf("Alias $%s (%s) added.", key, thing), 
-              this_player());      
+                this_player());      
         Xverbs[key] = thing; 
     } 
     else { 
         if(Aliases[key]) 
             message("system", sprintf("Alias for %s altered to (%s).", key, thing), 
-              this_player()); 
+                    this_player()); 
         else message("system", sprintf("Alias %s (%s) added.", key, thing),this_player()); 
         Aliases[key] = thing; 
     } 
@@ -169,7 +182,7 @@ nomask static int cmd_nickname(string str){
         i = sizeof(cles = keys(Nicknames));
         while(i--){
             cles[i] = sprintf("%s%s", arrange_string(cles[i], 15),
-              Nicknames[cles[i]]);
+                    Nicknames[cles[i]]);
         }
         this_player()->eventPage( cles + ({}) );
         return 1;
@@ -177,18 +190,18 @@ nomask static int cmd_nickname(string str){
     if(sscanf(str, "%s %s", key, thing) != 2){ 
         if(Nicknames[str]){ 
             message("system", sprintf("Nickname %s removed.", str), 
-              this_player()); 
+                    this_player()); 
             map_delete(Nicknames, str); 
         } 
         else message("system", sprintf("No such nickname %s.", str), 
-              this_player()); 
+                this_player()); 
     } 
     else { 
         if(Nicknames[key])  
             message("system", sprintf("Nickname %s altered to (%s).", key, thing), 
-              this_player()); 
+                    this_player()); 
         else message("system", sprintf("Nickname %s (%s) added.", key, thing), 
-              this_player()); 
+                this_player()); 
         Nicknames[key] = thing; 
     } 
     return 1; 
@@ -209,7 +222,7 @@ nomask static int cmd_nmsh(string str){
         if(lines[i][0] == '#') continue; 
         if(!command(lines[i])){ 
             message("system", sprintf("nmsh: error in executing %s.", str), 
-              this_player()); 
+                    this_player()); 
             return 1; 
         } 
     } 
@@ -257,29 +270,59 @@ nomask static int cmd_work(string str){
     set_cwd("/"+implode(tmp[0..sizeof(tmp)-2], "/"));
     if(flag){
         message("system", file+".c, "+file_size(file+".c")+" bytes:",
-          this_object());
+                this_object());
         this_object()->eventEdit(file+".c");
     }
     return 1;
 }
 
-nomask string write_prompt(){
-    string tmp, ret;
-    string ret2 = "";
+varargs int erase_prompt2(int x){
+    string ret;
+    int psize = this_object()->GetScreen()[0];
+    if(!x) x = 5;
+    ret = repeat_string(" ", psize);
+    receive(sprintf("%c",13));
+    receive(ret);
+    receive(sprintf("%c",13));
+    return x;
+} 
+
+varargs int erase_prompt(int x){
+    return receive("\r\e[K");
+    return x;
+}
+
+varargs nomask string GetPrompt(int withbuff){
+    string tmp, ret, ret2 = "";
     int x, y;
+
+    if(withbuff) ret2 = this_object()->GetCharbuffer();
 
     if( (y = query_ed_mode()) != -1 ){
         if( !y ){
-            ret = "\tQ)uit without saving, save and ex)it, h)elp\nCommand: ";
+            string n = "\n";
+            if(this_object()->GetProperty("reprompt")) n = ". ";
+            ret = "\tQ)uit without saving, save and ex)it, h)elp"+n+"Command: ";
         }
         else if( y == -2 ) ret = "Help: ";
         else ret = "*\b";
-        message("prompt", ret, this_object());
         return ret;
     }
     if((ret = Prompt) == DEFAULT_PROMPT){
-        message("prompt", ret, this_object());
+        return ret + ret2;
+    }
+    if((ret = Prompt) == "cwd"){
+        if(creatorp(this_object())){
+            ret = query_cwd() + " > " + ret2;
+        }
+        else {
+            ret = DEFAULT_PROMPT + ret2;
+        }
         return ret;
+    }
+    if((ret = Prompt) == "status"){
+        ret = this_object()->eventDisplayStatus(1) + " > ";
+        return ret + ret2;
     }
     if(grepp(ret,"$g")) ret = replace_string(ret,"$g",itoa(this_object()->GetMagicPoints()));
     if(grepp(ret,"$G")) ret = replace_string(ret,"$G",itoa(this_object()->GetMaxMagicPoints()));
@@ -301,7 +344,22 @@ nomask string write_prompt(){
     if(grepp(ret,"$I")) ret = replace_string(ret,"$I",itoa( to_int(this_object()->GetMaxStaminaPoints() )));
     if(grepp(ret,"")) ret = replace_string(ret,"",itoa( ));
     ret += " ";
+    return ret + ret2;
+}
+
+nomask string write_prompt(){
+    string ret = GetPrompt(this_object()->GetCharmode());
     message("prompt", ret, this_object());
+    return ret;
+}
+
+nomask string write_prompt2(){
+    string Terminal = this_object()->GetTerminal();
+    mapping TermInfo = TERMINAL_D->query_term_info(Terminal);
+    string ret = GetPrompt(this_object()->GetCharmode());
+    ret = terminal_colour(ret + "%^RESET%^", TermInfo);
+    //tc("WWWWWWWWTTTTTTTTTFFFFFFFFF","yellow");
+    receive(ret);
     return ret;
 }
 
@@ -310,43 +368,44 @@ string process_input(string str){
 
     if(!str || str == "") return ""; 
     else if(GetClient() &&
-      member_array(GetClient(), SUPPORTED_CLIENTS) != -1){
+            member_array(GetClient(), SUPPORTED_CLIENTS) != -1){
         if(sscanf(str, "<%s>%s", request, xtra)){
             process_request(request, xtra ? xtra : "");
             return "";
         }
         else return str;
     }
-    else if((tmp = eventHistory(str)) == "") return "";     if(tmp != str) message("system", tmp, this_object());
+    else if((tmp = eventHistory(str)) == "") return "";     
+    if(tmp != str) message("system", tmp, this_object());
     return do_alias(do_nickname(tmp));
 } 
 
 nomask static void process_request(string request, string xtra){
     switch(request){
-    case "ALIAS":
-        receive("<ALIAS>[n,go north] [s,go south] [e,go east] [w,go west] "
-          "[nw,go northwest] [ne,go northeast] [sw,go southwest] "
-          "[se,go southeast] [u,go up] [d,go down] [i,inventory] "
-          "[bio,biography] [exa,look at $*] [$',say $*] "
-          "[$:,emote $*] [l,look]\n");
+        case "ALIAS":
+            receive("<ALIAS>[n,go north] [s,go south] [e,go east] [w,go west] "
+                    "[nw,go northwest] [ne,go northeast] [sw,go southwest] "
+                    "[se,go southeast] [u,go up] [d,go down] [i,inventory] "
+                    "[bio,biography] [exa,look at $*] [$',say $*] "
+                    "[$:,emote $*] [l,look]\n");
         break;
-    case "NICKNAME": receive("<NICKNAME>\n"); break;
-    case "USERS":
-        receive("<USERS>"+implode(map_array(filter(users(), 
-                "request_vis", this_object()), "user_names", this_object()), 
-            ", ")+"\n");
+        case "NICKNAME": receive("<NICKNAME>\n"); break;
+        case "USERS":
+            receive("<USERS>"+implode(map_array(filter(users(), 
+                                "request_vis", this_object()), "user_names", this_object()), 
+                        ", ")+"\n");
         break;
-    case "ROOM":
-        receive("<ROOM>"+
-          (string)environment(this_object())->GetShort()+"\n");
+        case "ROOM":
+            receive("<ROOM>"+
+                    (string)environment(this_object())->GetShort()+"\n");
         break;
-    case "PRESENT":
-        receive("<PRESENT>"+
-          implode(map_array(filter(all_inventory(environment(this_object())),
-                "request_vis", this_object()), "user_names", this_object()),
-            ", ")+"\n");
+        case "PRESENT":
+            receive("<PRESENT>"+
+                    implode(map_array(filter(all_inventory(environment(this_object())),
+                                "request_vis", this_object()), "user_names", this_object()),
+                        ", ")+"\n");
         break;
-    default:
+        default:
         receive("<error>Request not supported.\n");
         break;
     }
@@ -444,8 +503,6 @@ string query_cwd(){ return CurrentWorkingDirectory; }
 
 string query_prev_wd(){ return PreviousWorkingDirectory; } 
 
-string GetPrompt(){ return DEFAULT_PROMPT; }
-
 string SetPrompt(string str){ return Prompt = str; }
 
 int query_mp(){ return 1; } 
@@ -465,3 +522,205 @@ string get_path(){ return query_cwd(); }
 varargs int GetInvis(){ return 0; }
 
 string GetKeyName(){ return 0; }
+
+#if FAIL
+string fail(){
+    string fale;
+    fale += "";
+    write("lol fail");
+    return fale;
+}
+#endif
+
+mixed RecalculateHist(int x){
+    mapping command_hist = this_object()->GetHistoryList();
+    int histsize = sizeof(command_hist);
+    //foreach(mixed foo in command_hist){
+    //    tc(member_array(foo,command_hist)+": "+foo);
+    //}
+    if(!histsize){
+        command_hist = ([ 0 : "" ]);
+        histsize = 1;
+    }
+    if(histmatch > 0 && sizeof(charbuffer) && !sizeof(recalled_command_sub)){
+        mixed tmpvals;
+        //tc("charbuffer: "+charbuffer,"cyan");
+        //tc("seeking matches: "+identify(values(command_hist)),"red");
+        tmpvals = filter(values(command_hist), (: !strsrch($1, charbuffer) :));
+        //tc("matches: "+identify(tmpvals),"green");
+        if(sizeof(tmpvals)){
+            recalled_command_sub = charbuffer;
+        }
+    }
+    if(x) recalled_command_num++;
+    else recalled_command_num--;
+    if(recalled_command_num < 0) recalled_command_num = (histsize - 1);
+    if(recalled_command_num > (histsize - 1)) recalled_command_num = 0;
+    recalled_command = command_hist[recalled_command_num];
+    if(sizeof(recalled_command_sub) && 
+            strsrch(recalled_command, recalled_command_sub)){
+        int hit = 0;
+        while(!hit){
+            //tc("loking for match for: "+recalled_command_sub);
+            if(x) recalled_command_num++;
+            else recalled_command_num--;
+            if(recalled_command_num < 0) recalled_command_num = (histsize - 1);
+            if(recalled_command_num > (histsize - 1)) recalled_command_num = 0;
+            if(!strsrch(command_hist[recalled_command_num], 
+                        recalled_command_sub)){
+                hit = 1;
+                recalled_command = command_hist[recalled_command_num];
+            }
+        }
+    } 
+
+    //tc("recalled_command "+recalled_command_num+": "+recalled_command);
+    return recalled_command;
+}
+
+static int ReceiveChars(string c){
+    string tmp;
+    if(!charbuffer) charbuffer = "";
+    //tc(charmode+" received: "+c+" aka "+c[0]);
+    if((!c[0] || c[0] == 8 || c[0] == 127) && sizeof(charbuffer)){
+        charbuffer = truncate(charbuffer,1);
+        recalled_command_sub = "";
+        histmatch = 0;
+        erase_prompt();
+        write_prompt2();
+    }    
+    else if(c[0] == 3){
+        charbuffer = "";
+        recalled_command_sub = "";
+        histmatch = 0;
+        erase_prompt();
+        write_prompt2();
+        recalled_command_num = 0;
+    }
+    else if(c[0] == 13 || c[0] == 10 ||sizeof(charmode) > 256){
+        tmp = process_input(charbuffer);
+        charbuffer = "";
+        histmatch = 0;
+        recalled_command_sub = "";
+        //tc("process_input("+tmp+"): "+identify(process_input(tmp)),"cyan");
+        if(sizeof(tmp)){
+            //this_object()->cmdAll(tmp);
+            if(!command(tmp)){
+                //tc("parse_sentence: "+identify(parse_sentence(tmp)),"green");
+                this_object()->cmdAll(tmp);
+                //parse_sentence(tmp);
+            }
+            //else tc("command parsed.","green");
+        }
+        else {
+            write("\n");
+            erase_prompt2();
+            write_prompt2();
+        }
+        //if(c[0] == 10) charmode = 0;
+        recalled_command_num = 0;
+    }
+    else if(c[0] > 31 && c[0] < 127){
+        charbuffer += c;
+        if(!histmatch) histmatch = 1;
+        //recalled_command_sub = "";
+    }
+    if(c[0] == 9){
+        mixed cmds;
+        if(!sizeof(charbuffer)){
+        }
+        else {
+            cmds = match_command(charbuffer,1);
+            if(!sizeof(cmds)){
+            }
+            else if(sizeof(cmds) == 1){
+                charbuffer = cmds[0];
+                erase_prompt();
+                write_prompt2();
+            }
+            else {
+                write(identify(sort_array(cmds,1)));
+            }
+            erase_prompt();
+            write_prompt2();
+        }
+    }
+
+    if(sizeof(charbuffer) > 2){
+        tmp = last(charbuffer,3);
+        if(tmp[0] == 32 && tmp[1] == 91 && tmp[2] == 65){
+            charbuffer = truncate(charbuffer,3);
+            charbuffer = RecalculateHist(0);
+            histmatch = -1;
+            erase_prompt();
+            write_prompt2();
+        }
+        if(tmp[0] == 32 && tmp[1] == 91 && tmp[2] == 66){
+            charbuffer = truncate(charbuffer,3);
+            charbuffer = RecalculateHist(1);
+            histmatch = -1;
+            erase_prompt();
+            write_prompt2();
+        }
+        if(tmp[0] == 32 && tmp[1] == 91 && tmp[2] == 68){
+            charbuffer = truncate(charbuffer,4);
+            recalled_command_sub = "";
+            erase_prompt();
+            write_prompt2();
+        }
+        if(tmp[0] == 32 && tmp[1] == 91 && tmp[2] == 67){
+            charbuffer = truncate(charbuffer,3);
+            recalled_command_sub = "";
+            erase_prompt();
+            write_prompt2();
+        }
+    }
+#ifdef __GET_CHAR_IS_BUFFERED__
+    if(charmode) get_char("ReceiveChars");
+#endif
+    return charmode;
+}
+
+int CancelCharmode(){
+    if(!charmode) return 0;
+    charbuffer = "";
+    recalled_command_sub = "";
+#ifdef __DSLIB__
+    remove_get_char(this_object());
+#else
+    ReceiveChars(sprintf("%c",13));
+#endif
+    charmode = 0;
+    return 1;
+}
+
+int SetCharmode(int x){
+    if(!x) charmode = 0;
+#ifdef __GET_CHAR_IS_BUFFERED__
+    else charmode = 1;
+    get_char("ReceiveChars");
+#endif
+    return charmode;
+}
+
+int GetCharmode(){
+    return charmode;
+}
+
+static string GetCharbuffer(){
+    return charbuffer;
+}
+
+void CheckCharmode(){
+    if(charmode && !query_charmode(this_object())){
+        SetCharmode(charmode);
+    }
+    if(!charmode && query_charmode(this_object()) > 0){
+        //SetCharmode(1);
+        CancelCharmode();
+    }
+}
+
+void heart_beat(){
+    CheckCharmode();
+}

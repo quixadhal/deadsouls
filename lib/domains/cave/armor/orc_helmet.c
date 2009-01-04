@@ -11,8 +11,8 @@ static void create(){
     SetAdjectives(({"bear","bone","skull","orc"}));
     SetShort("a bear skull helmet");
     SetLong("This is a helmet made of the hard bone of a bear, "+
-      "treated with some sort of thick resin to "+
-      "prevent shattering.");
+            "treated with some sort of thick resin to "+
+            "prevent shattering.");
     SetMass(180);
     SetBaseCost("silver",100);
     SetDamagePoints(100);

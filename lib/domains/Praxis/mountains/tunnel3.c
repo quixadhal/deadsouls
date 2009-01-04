@@ -10,8 +10,8 @@ void create() {
     SetProperty("no castle", 1);
     SetShort( "Deep inside a tunnel underneath the mountains");
     SetLong(
-      "The tunnel of goblins comes to an end here, deep inside "
-      "the evil Daroq Mountains.");
+            "The tunnel of goblins comes to an end here, deep inside "
+            "the evil Daroq Mountains.");
     SetExits( (["up" : "/domains/Praxis/mountains/tunnel2"]) );
 }
 
@@ -32,7 +32,7 @@ void ball() {
     if(ob->move(this_player())) {
         message("my_action", "You drop the crystal ball!", this_player());
         message("other_action", (string)this_player()->query_cap_name()+
-          " drops the crystal ball!", this_object(),({this_player()}));
+                " drops the crystal ball!", this_object(),({this_player()}));
         ob->move(this_object());
     }
 }

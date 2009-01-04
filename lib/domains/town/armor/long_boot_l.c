@@ -10,16 +10,16 @@ static void create(){
     SetAdjectives(({"long","riding","black","leather","left"}));
     SetShort("a long riding boot");
     SetLong("A long riding boot, made of black leather. It is "+
-      "designed for wear on the left foot and leg.");
-    SetMass(60);
+            "designed for wear on the left foot and leg.");
+    SetMass(40);
     SetBaseCost("silver",75);
-    SetDamagePoints(5);
     SetProtection(BLUNT,5);
     SetProtection(BLADE,5);
     SetProtection(KNIFE,5);
     SetArmorType(A_LONG_BOOT);
     SetRestrictLimbs(({"left foot","left leg"}));
 }
+
 void init(){
     ::init();
 }

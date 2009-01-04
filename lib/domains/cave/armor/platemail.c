@@ -9,10 +9,10 @@ static void create(){
     SetAdjectives(({"full","plate","plated","metal"}));
     SetShort("a full suit of armor");
     SetLong("This is a large, very heavy suit of armor, the kind "+
-      "one might expect a knight to wear. The thick "+
-      "metal plating promises extraordinary protection, "+
-      "yet the joints are so finely articulated as to "+
-      "permit great freedom of movement.");
+            "one might expect a knight to wear. The thick "+
+            "metal plating promises extraordinary protection, "+
+            "yet the joints are so finely articulated as to "+
+            "permit great freedom of movement.");
     SetMass(2500);
     SetBaseCost("silver",5000);
     SetProtection(BLUNT,20);

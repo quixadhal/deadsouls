@@ -39,7 +39,7 @@ mixed eventUnlockLock(object who, object what){
     if( GetDisableChance() > random(100) ){
         SetDisabled(1);
         who->eventPrint(capitalize(GetDefiniteShort()) + " gets twisted "
-          "slightly out of shape as you try to use it.");
+                "slightly out of shape as you try to use it.");
         return 1;
     }
     return 1;

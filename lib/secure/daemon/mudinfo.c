@@ -47,7 +47,7 @@ int PrintMudInfo(string str){
     int all = 0;
 
     if( unguarded( (: file_size( SAVE_MUDINFO __SAVE_EXTENSION__ ) :)) > 0 )
-        unguarded( (: restore_object, SAVE_MUDINFO, 1 :) );
+                                                                         unguarded( (: restore_object, SAVE_MUDINFO, 1 :) );
 
     if(!MudList) MudList = ([]);
     //tc("str: "+str);
@@ -109,6 +109,24 @@ int PrintMudInfo(string str){
     return 1;
 }
 
+int ReceiveMudInfo(string str,mapping info){
+    if(!MudList[str]) MudList[str] = info;
+    return sizeof(MudList[str]);
+}
+
+void GenerateConnectionPage(){
+    string ret = "<html>";
+    foreach(mixed key in sort_array(keys(MudList),1)){
+        mapping val = MudList[key];
+        if(val[0] < 0){
+            ret += key + " ";
+            ret += val[6] + " ";
+            ret += val[1]+" "+val[2]+"<br>";
+        }
+    }
+    write_file("/www/mudlist.html",ret,1);
+}
+
 void create(){
     mapping list = INTERMUD_D->GetMudList();
     attempting = 0 ;
@@ -118,7 +136,7 @@ void create(){
     set_heart_beat(1);
 
     if( unguarded( (: file_size( SAVE_MUDINFO __SAVE_EXTENSION__ ) :)) > 0 )
-        unguarded( (: restore_object, SAVE_MUDINFO, 1 :) );
+                                                                         unguarded( (: restore_object, SAVE_MUDINFO, 1 :) );
 
     if(mapp(list)){
         foreach(mixed key, mixed val in list){
@@ -136,9 +154,9 @@ int PrintUnconnectedInfo(){
         if(val[0] != -1){
             if(this_player()) write(key+": telnet "+val[1]+" "+val[2]);
             if(rebuild) Unconnected[key] = ([ "ip": val[1], "port" : val[2] ]);
+        }
     }
-}
-return 1;
+    return 1;
 }
 
 void heart_beat(){
@@ -154,7 +172,7 @@ void heart_beat(){
     else if(probing && !connected && !attempting && sizeof(Unconnected)){
         string target = keys(Unconnected)[0]; 
         this_object()->do_connect(Unconnected[target]["ip"]+
-          " "+Unconnected[target]["port"], target);
+                " "+Unconnected[target]["port"], target);
         map_delete(Unconnected, target);
     }
 }
@@ -202,34 +220,34 @@ varargs int do_connect(string args, string mud){
     new_socket = socket_create( STREAM, "read_callback", "close_callback" ) ;
     if( new_socket < 0 ){
         switch( new_socket ){
-        case EEMODENOTSUPP :
-            error = "Socket mode not supported.\n" ;
-            break ;
-        case EESOCKET :
-            error = "Problem creating socket.\n" ;
-            break ;
-        case EESETSOCKOPT :
-            error = "Problem with setsockopt.\n" ;
-            break ;
-        case EENONBLOCK :
-            error = "Problem with setting non-blocking mode.\n" ;
-            break ;
-        case EENOSOCKS :
-            error = "No more available efun sockets.\n" ;
-            break ;
-        case EESECURITY :
-            error = "Security violation attempted.\n" ;
-            break ;
-        default :
-            error = "Unknown error code: " + new_socket + ".\n" ;
-            break ;
+            case EEMODENOTSUPP :
+                error = "Socket mode not supported.\n" ;
+                break ;
+            case EESOCKET :
+                error = "Problem creating socket.\n" ;
+                break ;
+            case EESETSOCKOPT :
+                error = "Problem with setsockopt.\n" ;
+                break ;
+            case EENONBLOCK :
+                error = "Problem with setting non-blocking mode.\n" ;
+                break ;
+            case EENOSOCKS :
+                error = "No more available efun sockets.\n" ;
+                break ;
+            case EESECURITY :
+                error = "Security violation attempted.\n" ;
+                break ;
+            default :
+                error = "Unknown error code: " + new_socket + ".\n" ;
+                break ;
         }
         //tc( "Unable to connect, problem with socket_create.\n"
         //"Reason: " + error ) ;
         return 0 ;
     }
     sc_result = socket_connect( new_socket, ip_address + " " + port,
-      "read_callback", "write_callback" ) ;
+            "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS ){
         //tc( "Failed to connect.\n" ) ;
         return 0 ;

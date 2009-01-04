@@ -12,13 +12,9 @@ static void create(){
     SetLong("A simple cotton shirt with a design of a horse drawn on it, and the slogan: 'I'm a little horse girl!'");
     SetMass(5);
     SetBaseCost("silver",1);
-    SetDamagePoints(1);
-    SetProtection(BLUNT,1);
-    SetProtection(BLADE,1);
-    SetProtection(KNIFE,1);
     SetArmorType(A_SHIRT);
-    //SetRestrictLimbs(({"torso"}));
 }
+
 void init(){
     ::init();
 }

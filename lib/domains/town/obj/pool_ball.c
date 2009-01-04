@@ -9,11 +9,12 @@ void create(){
     SetAdjectives( ({"pool","billiards","billiard","heavy"}) );
     SetShort("a billiards ball");
     SetLong("This is a heavy ball, slighly smaller than palm-sized, "
-      "used in the game of billiards.");
-    SetMass(100);
+            "used in the game of billiards.");
+    SetMass(30);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
 }
+
 void init(){
     ::init();
 }

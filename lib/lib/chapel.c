@@ -43,15 +43,15 @@ mixed CanMarry(object who, object spouse1, object spouse2){
     return 1;
 }
 
-mixed CanSacrifice(object who, object what, string deus){
-    if( (string)who->GetReligion(1) != Religion[1] )
-        return "You must hold the beliefs of " + Religion[1] + " to do that.";
-    if( !((int)what->GetVendorType() & SacrificeType) )
-        return "You cannot sacrifice that here.";
-    if( member_array(deus, DeityIds) == -1 )
-        return "You do not worship anything called \"" + deus + "\".";
-    return AllowSacrifice;
-}
+    mixed CanSacrifice(object who, object what, string deus){
+        if( (string)who->GetReligion(1) != Religion[1] )
+            return "You must hold the beliefs of " + Religion[1] + " to do that.";
+        if( !((int)what->GetVendorType() & SacrificeType) )
+            return "You cannot sacrifice that here.";
+        if( member_array(deus, DeityIds) == -1 )
+            return "You do not worship anything called \"" + deus + "\".";
+        return AllowSacrifice;
+    }
 
 mixed eventMarry(object who, object spouse1, object spouse2){
     mixed tmp;
@@ -62,15 +62,15 @@ mixed eventMarry(object who, object spouse1, object spouse2){
         return tmp;
     }
     spouse1->eventPrint((string)who->GetName() + " weds you to " +
-      (string)spouse2->GetName() + ".");
+            (string)spouse2->GetName() + ".");
     spouse2->eventPrint((string)who->GetName() + " weds you to " +
-      (string)spouse1->GetName() + ".");
+            (string)spouse1->GetName() + ".");
     who->eventPrint("You join " + (string)spouse1->GetName() + " to " +
-      (string)spouse2->GetName() + " in marriage.");
+            (string)spouse2->GetName() + " in marriage.");
     this_object()->eventPrint((string)who->GetName() + " joins " +
-      (string)spouse1->GetName() + " and " +
-      (string)spouse2->GetName() + ".",
-      ({ spouse1, spouse2, who }));
+            (string)spouse1->GetName() + " and " +
+            (string)spouse2->GetName() + ".",
+            ({ spouse1, spouse2, who }));
     who->AddSkillPoints("faith", random(100));
     return 1;
 }

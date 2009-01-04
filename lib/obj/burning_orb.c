@@ -18,7 +18,7 @@ static void create() {
     SetAdjectives("burning", "flaming");
     SetShort("a burning orb");
     SetLong("A flaming orb that does not burn you when you touch it.  You "
-      "might be able to burn other things with it or light torches.");
+            "might be able to burn other things with it or light torches.");
     SetRadiantLight(5);
     SetMinHeat(10);
     SetFuelRequired(1);

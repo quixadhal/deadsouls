@@ -25,6 +25,6 @@ mixed do_stop_str(string str) {
 
 string GetHelp(string str) {
     return ("Syntax: stop [ fishing | fighting ]\n\n"
-      "Puts an end to the specified activity.\n\n"
-      "See also: cast, fish, attack");
+            "Puts an end to the specified activity.\n\n"
+            "See also: cast, fish, attack");
 }

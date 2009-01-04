@@ -117,7 +117,9 @@ varargs static void logon(mixed foo) {
     else {
         receive("\nToo many users from your site are currently logged on.\n");
         receive("Please try again later.\n");
+        flush_messages();
         Destruct();
+        //call_out("Destruct",0);
         return;
     }
 } 
@@ -160,6 +162,7 @@ static void InputName(string namen, string kill_me) {
         if( CanLogin() ) receive("\n        >>> Access allowed <<<\n");
         else {
             receive("\n        >>> Access denied <<<\n");
+            flush_messages();
             Destruct();
             return;
         }
@@ -304,10 +307,12 @@ static void eventReEnterGame(string cap) {
     }
     if( exec(Player, this_object()) ) {
         if(rescue) 
-            if(sizeof(deep_inventory(Player))) deep_inventory(Player)->eventMove(ROOM_FURNACE);
+            if(sizeof(deep_inventory(Player))) 
+                deep_inventory(Player)->eventMove(ROOM_FURNACE);
         log_file("enter", cap + " (exec): " + ctime(time()) + "\n"); 
         Player->eventReconnect();
         Player->RemoveProperty("afk");
+        Player->CancelCharmode();
         if(creatorp(Player)) 
             Player->AddChannel((CHAT_D->GetSystemChannels() - ({"muds"})));
         SNOOP_D->ReportReconnect(Player->GetKeyName());
@@ -682,7 +687,13 @@ void InputCre(string str){
         return;
     }
     if(str == "creator") yescre = 1;
-    eventCompleteChar();
+    if(CLASS_SELECTION){
+        eventSelectClass();
+        return;
+    }
+    else {
+        eventCompleteChar();
+    }
 }
 
 void eventCompleteChar(){
@@ -696,6 +707,8 @@ void eventCompleteChar(){
     Player->SetRealName(TrueName);    
     Player->SetLanguage("Common",100);    
     Player->SetDefaultLanguage("Common");   
+    if(yescre) Player->SetPrompt("cwd");
+    else Player->SetPrompt("status");
     if(trabajo) Player->ChangeClass(trabajo);
     this_player()->SetWimpy(20);
     this_player()->SetTerminal("ansi");

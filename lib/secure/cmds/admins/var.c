@@ -92,10 +92,10 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: var get <variable name> <object or file>\n"
-      "        var set <variable name> <new value> <object or file>\n\n"
-      "Sets or gets the value of a variable in an object.\n"
-      "Examples:\n"
-      "var get isPK me\n"
-      "var set Attackable 0 fighter\n\n"
-      "Use with EXTREME caution.");
+            "        var set <variable name> <new value> <object or file>\n\n"
+            "Sets or gets the value of a variable in an object.\n"
+            "Examples:\n"
+            "var get isPK me\n"
+            "var set Attackable 0 fighter\n\n"
+            "Use with EXTREME caution.");
 }

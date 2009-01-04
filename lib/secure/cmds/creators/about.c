@@ -14,7 +14,7 @@ mixed cmd(string str) {
     string name, tmp;
     if( !str || str == "" ) return "Syntax: <about OBJECT>";
     if(!present(str, this_player()) && str != "here" &&
-      !present(str, environment(this_player())))
+            !present(str, environment(this_player())))
         return notify_fail("You don't see that.\n");
     if(str == "here") thing = environment(this_player());
     else thing = present( str, this_player());
@@ -23,8 +23,8 @@ mixed cmd(string str) {
     if(!thing) return notify_fail("Uh oh, error.\n");
     if(interactive(thing)){
         message( "info","Players do not have files with LPC code. "
-          "Player save files are not subject to examination with this command.",
-          this_player());
+                "Player save files are not subject to examination with this command.",
+                this_player());
         return 1;
     }
     name = base_name(thing) + ".c";
@@ -34,10 +34,10 @@ mixed cmd(string str) {
 
 string GetHelp(string str) {
     return ("Syntax: <about OBJECT>\n\n"
-      "Pages through the file referenced by the file name of "
-      "the object that you name.  OBJECT can either be in "
-      "your inventory or in the room.\nWhile inside the pager, you "
-      "have access to the following commands:\n" +
-      (string)LIB_PAGER->GetHelp("pager") + "\n\n"
-      "See also: cat, ed, head, tail");
+            "Pages through the file referenced by the file name of "
+            "the object that you name.  OBJECT can either be in "
+            "your inventory or in the room.\nWhile inside the pager, you "
+            "have access to the following commands:\n" +
+            (string)LIB_PAGER->GetHelp("pager") + "\n\n"
+            "See also: cat, ed, head, tail");
 }

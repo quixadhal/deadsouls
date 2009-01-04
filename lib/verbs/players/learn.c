@@ -11,7 +11,7 @@ static void create()
     SetRules("","STR from LIV","to STR from LIV");
     SetErrorMessage("Syntax: learn <%^BOLD%^%^CYAN%^ability%^RESET%^> to (%^BOLD%^%^ORANGE%^player%^RESET%^)");
     SetHelp("Syntax: learn <%^BOLD%^%^CYAN%^ability%^RESET%^> to (%^BOLD%^%^ORANGE%^player%^RESET%^)\n"
-      "This command allows you to learn from another player an ability, spell, or skill.\n\n");
+            "This command allows you to learn from another player an ability, spell, or skill.\n\n");
 }
 
 mixed can_learn_str_from_liv(string str, object ob)
@@ -21,7 +21,7 @@ mixed can_learn_str_from_liv(string str, object ob)
         return "You cannot move!";
     }
     if( pos == POSITION_LYING &&
-      !RACES_D->GetLimblessCombatRace(this_player()->GetRace()) ){
+            !RACES_D->GetLimblessCombatRace(this_player()->GetRace()) ){
         return "You cannot learn in that position!";
     }
     return 1;

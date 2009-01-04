@@ -26,6 +26,6 @@ int cmd(string str) {
 
 void help() {
     message("help", "Syntax: <head [file]>\n\n"
-      "Gives you the first 22 lines in the file named.\n\n"
-      "See also: cat, more, tail", this_player());
+            "Gives you the first 22 lines in the file named.\n\n"
+            "See also: cat, more, tail", this_player());
 }

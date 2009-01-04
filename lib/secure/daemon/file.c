@@ -19,8 +19,8 @@ static private void validate() {
     }
     if(query_os_type() == "windows"){
         error("The file daemon has been disabled for your mud "+
-          "because it is running on windows. Intensive file operations "+
-          "in windows are not yet supported on Dead Souls.");
+                "because it is running on windows. Intensive file operations "+
+                "in windows are not yet supported on Dead Souls.");
     }
 }
 
@@ -53,11 +53,11 @@ mixed ReadDir(string str){
         foreach(string element in get_dir(str)){
             if(file_exists(str+element)) all_files += ({ str+element });
             if(directory_exists(str+element) && 
-              strsrch(str+element,"/realms") &&
-              strsrch(str+element,"/estates") &&
-              strsrch(str+element,"/secure/save") &&
-              strsrch(str+element,"/secure/log") &&
-              strsrch(str+element,"/secure/upgrades")) {
+                    strsrch(str+element,"/realms") &&
+                    strsrch(str+element,"/estates") &&
+                    strsrch(str+element,"/secure/save") &&
+                    strsrch(str+element,"/secure/log") &&
+                    strsrch(str+element,"/secure/upgrades")) {
                 all_dirs += ({ str+element });
                 current_level_dirs += ({ str+element });
             }
@@ -74,7 +74,7 @@ mixed ReadDir(string str){
 }
 
 static mixed Report(){
-    log_file("adm/file","FILE_D Report accessed and run by: "+identify(previous_object(-1))+"\n");
+    //log_file("adm/file","FILE_D Report accessed and run by: "+identify(previous_object(-1))+"\n");
     foreach(mixed arr in call_out_info()){
         if(arr[0] == this_object()){
             write("File scan is not complete.");

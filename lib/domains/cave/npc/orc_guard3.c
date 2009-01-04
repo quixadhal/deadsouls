@@ -11,14 +11,14 @@ static void create() {
     SetAdjectives(({"armored","professional","guard","orc"}));
     SetShort("an orc guard");
     SetLong("This is an adult orc. He seems to have a professional "
-      "bearing, and a sense of purpose.");
+            "bearing, and a sense of purpose.");
     SetInventory(([
-        "/domains/cave/weap/sword" : "wield sword",
-        "/domains/cave/weap/javelin" : 3,
-        "/domains/cave/armor/leather_armor" : "wear leather armor",
-        "/domains/cave/armor/orc_boot_l" : "wear left boot",
-        "/domains/cave/armor/orc_boot_r" : "wear right boot",
-      ]));
+                "/domains/cave/weap/sword" : "wield sword",
+                "/domains/cave/weap/javelin" : 3,
+                "/domains/cave/armor/leather_armor" : "wear leather armor",
+                "/domains/cave/armor/orc_boot_l" : "wear left boot",
+                "/domains/cave/armor/orc_boot_r" : "wear right boot",
+                ]));
     SetLevel(3);
     SetRace("orc");
     SetClass("fighter");
@@ -41,7 +41,7 @@ void heart_beat(){
         object targ;
         object jav = present("javelin",this_object());
         object *targs = filter(get_livings(env), 
-          (: member_array($1, GetEnemies()) != -1 :) );
+                (: member_array($1, GetEnemies()) != -1 :) );
         //tc("env: "+identify(env));
         if(sizeof(targs)) targ = targs[random(sizeof(targs)-1)];
         if(present("javelin", env)){

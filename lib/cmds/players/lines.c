@@ -40,7 +40,7 @@ int cmd(string str) {
 
 void help(){
     message("help","Syntax: lines -or- lines [on|off]\n\n" 
-      "With no argument this command will display the status "
-      "of the lines to which you have access.  With the argument on|off "
-      "it will turn all of the lines on or off.",this_player());
+            "With no argument this command will display the status "
+            "of the lines to which you have access.  With the argument on|off "
+            "it will turn all of the lines on or off.",this_player());
 }

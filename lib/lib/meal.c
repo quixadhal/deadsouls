@@ -97,7 +97,7 @@ mixed eventDrink(object who){
     if( !((int)ob->eventMove(who)) ){
         who->eventPrint("You drop " + (string)ob->GetShort() + ".");
         environment(who)->eventPrint((string)who->GetName() +
-          " drops " + (string)ob->GetShort() + ".", who);
+                " drops " + (string)ob->GetShort() + ".", who);
         ob->eventMove(environment(who));
     }
 
@@ -121,7 +121,7 @@ mixed eventEat(object who){
         string mymsg, othermsg;
         mymsg = replace_string(MyMessage, "$P", "your");
         othermsg = replace_string(OtherMessage, "$P",
-          possessive(who));
+                possessive(who));
         mymsg = replace_string(mymsg, "$N", "you");
         othermsg = replace_string(othermsg, "$N", (string)who->GetName());
         who->eventPrint( capitalize(mymsg) );
@@ -141,9 +141,9 @@ mixed eventEat(object who){
 
 int eventPoison(object who, object agent, int x){
     who->eventPrint("You put some poison "
-      "in " + add_article(GetShort()) + ".");
+            "in " + add_article(GetShort()) + ".");
     environment(who)->eventPrint( (string)who->GetName()+" puts something "
-      "in " + add_article(GetShort()) + ".", who);
+            "in " + add_article(GetShort()) + ".", who);
     AddPoison(x);
     return 1;
 }
@@ -191,7 +191,7 @@ varargs void SetMealMessages(mixed array val...){
         if( arrayp(val[0]) ) SetMealMessages(val[0]...);
         else if( stringp(val[0]) || functionp(val[0]) ) MyMessage = val[0];
         else error(sprintf("Bad argument 1 to SetMealMessages(): %O\n",
-                val[0]));
+                    val[0]));
         return;
     }
     if( !stringp(val[0]) )

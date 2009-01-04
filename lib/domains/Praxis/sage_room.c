@@ -25,19 +25,19 @@ void create() {
     SetProperty("no magic", 1);
     SetShort( "Sage room");
     SetLong( "The walls of this smoke-filled room are covered with trappings "
-      "from far off lands.  In the center of a huge smoke cloud sits a small "
-      "white-haired man.  He looks like he is very wise.  There are books on "
-      "how to speak different languages.");
+            "from far off lands.  In the center of a huge smoke cloud sits a small "
+            "white-haired man.  He looks like he is very wise.  There are books on "
+            "how to speak different languages.");
     SetItems( 
-      ([({"sage", "man", "old man"}) : "The sage is a tiny little "
-        "wrinkled man. But he looks very wise.",
-        ({"walls", "trappings"}) : "The walls are covered in strange "
-        "writings in many languages, but you can hardly see them "
-        "through all the smoke from the sage's pipe.", 
-        "pipe" : "The sage puffs away on this small water pipe. "
-        "The wisps of smoke remind you of the man's beard.",
-        ({"book", "books"}) : "As you flip through the books you "
-        "decide that you should study a new language."]) );
+            ([({"sage", "man", "old man"}) : "The sage is a tiny little "
+             "wrinkled man. But he looks very wise.",
+             ({"walls", "trappings"}) : "The walls are covered in strange "
+             "writings in many languages, but you can hardly see them "
+             "through all the smoke from the sage's pipe.", 
+             "pipe" : "The sage puffs away on this small water pipe. "
+             "The wisps of smoke remind you of the man's beard.",
+             ({"book", "books"}) : "As you flip through the books you "
+             "decide that you should study a new language."]) );
     AddExit("south", "/domains/Praxis/w_boc_la2", (: "leave_the_room" :) );
 }
 
@@ -69,8 +69,8 @@ int fix_languages() {
     }
     //LANG_D->init_languages(this_player());
     write("The sage says: You have been healed, my " + 
-      (((string)this_player()->query_gender() == "male") ? "son" :
-        "daughter") + ".");
+            (((string)this_player()->query_gender() == "male") ? "son" :
+             "daughter") + ".");
     return 1;
 }
 
@@ -96,7 +96,7 @@ int able_to_study(int amount)
 
     exp = (int)this_player()->query_exp();
     if((exp - amount) < 
-      (int)ADVANCE_D->get_exp((int)this_player()->query_level()))
+            (int)ADVANCE_D->get_exp((int)this_player()->query_level()))
         return 0;
     else
         return 1;
@@ -117,7 +117,7 @@ void clean_call_outs(object ob)
 
     all_callouts = call_out_info();
     all_callouts = filter_array(all_callouts, "coclean", this_object(), 
-      this_object());
+            this_object());
     for(i = 0, acsz = sizeof(all_callouts); i < acsz; i++)
         remove_call_out(all_callouts[i][1]);
     for(i = 0, acsz = sizeof(all_callouts); i < acsz; i++)
@@ -138,35 +138,35 @@ int convert_time(string str)
         j = to_int(times[2 * i]);
         switch(times[2 * i + 1])
         {
-        case "seconds":
-        case "second":
-            j = j * SECOND;
+            case "seconds":
+                case "second":
+                j = j * SECOND;
             break;
-        case "minutes":
-        case "minute":
-            j = j * MINUTE;
+            case "minutes":
+                case "minute":
+                j = j * MINUTE;
             break;
-        case "hours":
-        case "hour":
-            j = j * HOUR;
+            case "hours":
+                case "hour":
+                j = j * HOUR;
             break;
-        case "days":
-        case "day":
-            j = j * DAY;
+            case "days":
+                case "day":
+                j = j * DAY;
             break;
-        case "week":
-        case "weeks":
-            j = j * WEEK;
+            case "week":
+                case "weeks":
+                j = j * WEEK;
             break;
-        case "month":
-        case "months":
-            j = j * MONTH;
+            case "month":
+                case "months":
+                j = j * MONTH;
             break;
-        case "year":
-        case "years":
-            j = j * YEAR;
+            case "year":
+                case "years":
+                j = j * YEAR;
             break;
-        default:
+            default:
             return 0;
         }
         ret += j;
@@ -188,20 +188,20 @@ int study_lang(string str)
     if(queue[this_player()])
     {
         write("The sage says: I cannot teach you two languages at once, my " +
-          (((string)this_player()->query_gender() == "male") ? "son." : 
-            "daughter."));
+                (((string)this_player()->query_gender() == "male") ? "son." : 
+                 "daughter."));
         return 1;
     }
 
     if(!function_exists("learn_language", this_player()))
     {
         write("The sage says: I am sorry, my " + 
-          (((string)this_player()->query_gender() == "male") ? "son" : 
-            "daughter") + ", but I cannot teach you in your current body.");
+                (((string)this_player()->query_gender() == "male") ? "son" : 
+                 "daughter") + ", but I cannot teach you in your current body.");
         return 1;
     }
     if((sscanf(str, "%s for %s", lang, timestr) != 2) || (lang == "") || 
-      (timestr == "") || !(nmtimespan = convert_time(timestr)))
+            (timestr == "") || !(nmtimespan = convert_time(timestr)))
     {
         write("Study which language for how long?");
         return 1;
@@ -223,14 +223,14 @@ int study_lang(string str)
     if(!able_to_study(SEC_TO_EXP * nmtimespan))
     {
         write("The sage says: I am sorry, my " + 
-          (((string)this_player()->query_gender() == "male") ? "son" : 
-            "daughter") + ", but you are not experienced enough to study "
-          "for that long.");
+                (((string)this_player()->query_gender() == "male") ? "son" : 
+                 "daughter") + ", but you are not experienced enough to study "
+                "for that long.");
         return 1;
     }
 
     write("You begin studying " + capitalize(lang) + ".  You must stay here and"
-      " study until your time has ended in order to learn the langauge.");
+            " study until your time has ended in order to learn the langauge.");
     queue[this_player()] = ({ lang, (SEC_TO_EXP * nmtimespan) });
     call_out("advance_em", nmtimespan, this_player());
 

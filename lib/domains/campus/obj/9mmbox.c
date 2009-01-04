@@ -15,8 +15,8 @@ void create() {
     SetCanClose(1);
     SetClosed(0);
     SetInventory( ([
-        "/domains/campus/obj/9mmround": 30
-      ]) );
+                "/domains/campus/obj/9mmround": 30
+                ]) );
 }
 
 mixed CanReceive(object ob){

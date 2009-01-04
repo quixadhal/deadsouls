@@ -119,10 +119,10 @@ void close_callback( int fd )
 void sendHTTPGet()
 {
     string str ="GET "+HTTP_PATH+" HTTP/1.0"+CARRIAGE_RETURN+"\n"+
-    "Host: "+HTTP_HOST+CARRIAGE_RETURN"\n" +
-    "User-Agent: "+ player->GetName() + "@" + mud_name() + " " +
-    mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
-    version() + CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
+        "Host: "+HTTP_HOST+CARRIAGE_RETURN"\n" +
+        "User-Agent: "+ player->GetName() + "@" + mud_name() + " " +
+        mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
+        version() + CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
     int result = 0;
     results = "";
 #ifdef _DEBUG
@@ -150,37 +150,37 @@ int openHTTPConnection()
     if (sock < 0) { 
         switch( sock )
         {
-        case EEMODENOTSUPP :
-            error = "Socket mode not supported.\n" ;
-            break ;
-        case EESOCKET :
-            error = "Problem creating socket.\n" ;
-            break ;
-        case EESETSOCKOPT :
-            error = "Problem with setsockopt.\n" ;
-            break ;
-        case EENONBLOCK :
-            error = "Problem with setting non-blocking mode.\n" ;
-            break ;
-        case EENOSOCKS :
-            error = "No more available efun sockets.\n" ;
-            break ;
-        case EESECURITY :
-            error = "Security violation attempted.\n" ;
-            break ;
-        default :
-            error = "Unknown error code: " + sock + ".\n" ;
-            break ;
+            case EEMODENOTSUPP :
+                error = "Socket mode not supported.\n" ;
+                break ;
+            case EESOCKET :
+                error = "Problem creating socket.\n" ;
+                break ;
+            case EESETSOCKOPT :
+                error = "Problem with setsockopt.\n" ;
+                break ;
+            case EENONBLOCK :
+                error = "Problem with setting non-blocking mode.\n" ;
+                break ;
+            case EENOSOCKS :
+                error = "No more available efun sockets.\n" ;
+                break ;
+            case EESECURITY :
+                error = "Security violation attempted.\n" ;
+                break ;
+            default :
+                error = "Unknown error code: " + sock + ".\n" ;
+                break ;
         }
         notify_fail( "Unable to connect, problem with socket_create.\n"
-          "Reason: " + error ) ;
+                "Reason: " + error ) ;
         return 0 ;
     }
 #ifdef _DEBUG
     write("Attempting to connect to "+HTTP_HOST+ " on port "+ HTTP_PORT + "\n");
 #endif	
     sc_result = socket_connect( sock, HTTP_ADDRESS + " " + HTTP_PORT,
-      "read_callback", "write_callback" ) ;
+            "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS )
     {
         status = SOCK_DISCONNECTED;
@@ -232,8 +232,8 @@ string GetErorMessage() {
 
 string GetHelp() {
     return ("Syntax: dsversion [version]\n\n" +
-      "Shows the latest version of Dead Souls and release notes.\n"+
-      "e.g. dsversion, dsversion r1, dsversion 2.0r1");
+            "Shows the latest version of Dead Souls and release notes.\n"+
+            "e.g. dsversion, dsversion r1, dsversion 2.0r1");
 }
 
 

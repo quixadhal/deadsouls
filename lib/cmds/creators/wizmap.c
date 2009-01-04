@@ -31,8 +31,8 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: wizmap [on | off]\n\n"
-      "If enabled, a simple map of your surroundings is displayed "
-      "when your environment is described to you.\nSee also: "
-      "env, terminal, brief, mute, gag, automap.",
-      this_player());
+            "If enabled, a simple map of your surroundings is displayed "
+            "when your environment is described to you.\nSee also: "
+            "env, terminal, brief, mute, gag, automap.",
+            this_player());
 }

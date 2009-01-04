@@ -19,7 +19,7 @@ int eventShootDude(object ob){
     }
     tell_object(this_object(),"You fire at "+ob->GetName()+"!");
     tell_room(environment(),"The gun turret fires at "+ob->GetName()+"!",
-      ({this_object(),ob}));
+            ({this_object(),ob}));
     tell_object(ob,"The gun turret fires at you!");
     ammo--;
     if(random(100) < 10) return 1;
@@ -27,8 +27,8 @@ int eventShootDude(object ob){
     numlimbs=sizeof(limbs);
     limbname = limbs[random(numlimbs-1)]; 
     tell_room(environment(this_object()),
-      "The bullet smashes into "+
-      capitalize(str)+"'s "+limbname+"!\n",ob);
+            "The bullet smashes into "+
+            capitalize(str)+"'s "+limbname+"!\n",ob);
     tell_object(ob,"The bullet smashes into your "+limbname+"!\n");
     ob->SetAttack(this_agent());
     if(!present("firearms_wound",ob)){
@@ -60,14 +60,15 @@ int eventTargetScan(){
     object *targets;
     int targs;
     if(!environment() || !active) return 0;
-    targets = filter(get_livings(environment()), (: !($1->GetInvis()) :) );
+    targets = filter(get_livings(environment()), (: !($1->GetInvis()) &&
+                $1->GetRace() != "bot" :));
     targets = scramble_array(targets);
     targets -= ({ this_object() });
     if(!(targs = sizeof(targets))) return 0;
     if(targs > 10) targs = 10;
     else {
         eventForce("say "+cardinal(targs)+" target"+
-          ((targs > 1) ? "s" : "" )+" acquired.");
+                ((targs > 1) ? "s" : "" )+" acquired.");
     }
     targs--;
     targets = targets[0..targs];
@@ -103,8 +104,8 @@ static void create() {
     SetAdjectives(({"non-player", "non player"}));
     SetShort("a gun turret");
     SetLong("This is a four foot tall metal turret on tripod legs "+
-      "designed to automatically acquire and engage any moving "
-      "targets with its massive 20 millimeter guns.");
+            "designed to automatically acquire and engage any moving "
+            "targets with its massive 20 millimeter guns.");
     SetPosition(POSITION_STANDING);
     SetLevel(1);
     SetPacifist(1);
@@ -155,7 +156,7 @@ void heart_beat(){
 }
 
 varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
-  mixed limbs){
+        mixed limbs){
     ActivateTurret();
     return ::eventReceiveDamage(agent, type, x, internal, limbs);
 }

@@ -32,9 +32,9 @@ void receive_message(string s1, string s2){
 }
 
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,
-  string msg, string lang) {
+        string msg, string lang) {
     this_object()->receive_message("me",who->GetName()+" "+verb+
-      "s: "+msg) ;
+            "s: "+msg) ;
     return;
 }
 

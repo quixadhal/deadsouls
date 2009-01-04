@@ -15,8 +15,8 @@ mixed cmd(string chan) {
         return "No such channel.";
 
     else INTERMUD_D->eventWrite( ({ "channel-remove", 5, mud_name(), 
-            this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
-            0, chan }) );
+                this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
+                0, chan }) );
 
     load_object("/secure/cmds/creators/update")->cmd("/daemon/intermud");
 

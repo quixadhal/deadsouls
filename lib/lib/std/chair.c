@@ -18,10 +18,10 @@ void create(){
     SetMass(500);
 }
 
-int CanGet(object who){
-    if(sit::CanGet(who))
-        return surface::CanGet(who);
-    else return 0;
-}
+    int CanGet(object who){
+        if(sit::CanGet(who))
+            return surface::CanGet(who);
+        else return 0;
+    }
 
 /* Nothing else needs to happen here */

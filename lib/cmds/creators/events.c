@@ -25,8 +25,8 @@ int cmd(string str) {
         while(i--) {
             l=atoi(""+obs[i]);
             message("info", arrange_string(""+l, 30) +
-              arrange_string(mp[obs[i]]["function"], 15) +
-              local_ctime(l)+" "+query_tz(), this_player());
+                    arrange_string(mp[obs[i]]["function"], 15) +
+                    local_ctime(l)+" "+query_tz(), this_player());
         }
         return 1;
     } else if((archp(previous_object()) && str) || creatorp(previous_object())) {
@@ -52,8 +52,8 @@ int cmd(string str) {
                         for (k = 2; k < sizeof(st2); k++)
                             st3 += "/" + st2[k];
                         message("info", arrange_string(st3, 30) +
-                          arrange_string(mp[obs[i]]["function"], 15) +
-                          ctime(mp[obs[i]]["time"])+" Mud Time", this_player());
+                                arrange_string(mp[obs[i]]["function"], 15) +
+                                ctime(mp[obs[i]]["time"])+" Mud Time", this_player());
                     }
         }
         if (j == 0) {
@@ -67,15 +67,15 @@ int cmd(string str) {
     return 0;
 }
 
-void help() {
-    if(archp(this_player())) 
-        message("help", "Syntax: <events> [wizard]\n\n"
-          "Gives a list of all pending mud events or all events pending for [wizard].",
-          this_player()
-        );
-    else
-        message("help", "Syntax: <events>\n\n"
-          "Gives a list of your pending events.",
-          this_player()
-        );
-}
+    void help() {
+        if(archp(this_player())) 
+            message("help", "Syntax: <events> [wizard]\n\n"
+                    "Gives a list of all pending mud events or all events pending for [wizard].",
+                    this_player()
+                   );
+        else
+            message("help", "Syntax: <events>\n\n"
+                    "Gives a list of your pending events.",
+                    this_player()
+                   );
+    }

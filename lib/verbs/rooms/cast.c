@@ -43,7 +43,7 @@ mixed do_cast_obj(object ob) {
 
 string GetHelp(string str) {
     return "Syntax: <cast OBJ>\n\n"
-    "Starts you fishing so long as OBJ is something you can fish with  "
-    "and you are in a place that allows fishing.\n\n"
-    "See also: fish, stop";
+        "Starts you fishing so long as OBJ is something you can fish with  "
+        "and you are in a place that allows fishing.\n\n"
+        "See also: fish, stop";
 }

@@ -37,9 +37,9 @@ static void create() {
     SetId(({"subject"}));
     SetShort("Test Subject");
     SetLong("This is a file meant to be inherited by Charles "
-      "and Charly, to ensure their AI code remains in sync. If "
-      "you've examined an NPC and got this description, someone "
-      "has cloned the wrong file.");
+            "and Charly, to ensure their AI code remains in sync. If "
+            "you've examined an NPC and got this description, someone "
+            "has cloned the wrong file.");
     SetLevel(5);
     SetRace("human");
     SetGender("male");
@@ -60,10 +60,10 @@ int eventBeginPlay(){
     playing = 1;
     eventForce("say If successful, this will be run "+run+".");
     eventForce("say the winners have been: "
-      "red: "+red_wins+" green: "+green_wins+" blue: "+blue_wins);
+            "red: "+red_wins+" green: "+green_wins+" blue: "+blue_wins);
     eventForce("say I've switched "+percent(switches,runs)+"% "
-      "of the time. My win rate is "+
-      percent(wins,run)+"%.");
+            "of the time. My win rate is "+
+            percent(wins,run)+"%.");
     unguarded( (: save_object(SaveFile,1) :) );
     eventForce("push a button on a pedestal");
     eventForce("push button on pedestal");
@@ -96,14 +96,14 @@ int choice2(string str){
     eventForce("say I am faced with choice 2.");
     which = random(2);
     eventForce("say stats:\nswitches: "+switches+"\n"+
-      "stays: "+stays+"\n"+
-      "wins: "+wins+"\n"+
-      "losses: "+losses+"\n"+
-      "runs: "+runs);
+            "stays: "+stays+"\n"+
+            "wins: "+wins+"\n"+
+            "losses: "+losses+"\n"+
+            "runs: "+runs);
     percent_switch = percent(to_float(switches),to_float(runs));
     percent_wins = percent(to_float(wins),to_float(runs));
     eventForce("say \nMy win rate is "+percent_wins+"%.\n"+
-      "My switch rate is "+percent_switch+"%.");
+            "My switch rate is "+percent_switch+"%.");
     runs++;
     if(smart && runs > 20){
         if( percent_wins < 50 && percent_switch > 50 ) response = "stay";
@@ -187,7 +187,7 @@ void receive_message(string string1, string string2){
 }
 
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,
-  string msg, string lang) {
+        string msg, string lang) {
     ww=who;
     vv=verb;
     mm=msg;

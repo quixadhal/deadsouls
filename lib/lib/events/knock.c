@@ -63,11 +63,11 @@ varargs mixed eventKnock(object who, mixed component){
         who->eventPrint(val);
         if( component ){
             env->eventPrint(who->GetName() + " knocks on the " + component +
-              " on " + GetDefiniteShort() + ".", who);
+                    " on " + GetDefiniteShort() + ".", who);
         }
         else {
             env->eventPrint(who->GetName() + " knocks on " +
-              GetDefiniteShort() + ".", who);
+                    GetDefiniteShort() + ".", who);
         }
         return 1;
     }

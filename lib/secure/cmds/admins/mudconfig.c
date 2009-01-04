@@ -15,14 +15,14 @@ string array yesbools = ({ "enable","on","1","yes" });
 string array nobools = ({ "disable","off","0","no" });
 string array restrict_tokens = ({ "restrict","unrestrict" });
 string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource",
-  "debugger", "access", "pinging", "pinginterval",
-  "imc2serverpass", "imc2clientpass" });
+        "debugger", "access", "pinging", "pinginterval",
+        "imc2serverpass", "imc2clientpass" });
 string array antimodals = ({ "imc2" });
 string array modals = antimodals + ({ "channelpipes", "fastcombat", "catchtell","matchcommand", "matchobject", "autowiz", "locked",
-  "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
-  "cgi", "dirlist", "creweb", "selectclass", "severable",
-  "retain", "defaultparse", "disablereboot", "loglocal", "logremote",
-  "questrequired","autoadvance" });
+        "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
+        "cgi", "dirlist", "creweb", "selectclass", "severable",
+        "retain", "defaultparse", "disablereboot", "loglocal", "logremote",
+        "questrequired","autoadvance" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
 static int NotImplemented(string which);
@@ -71,29 +71,29 @@ mixed cmd(string str) {
     }
 
     else switch(which){
-    case "test" : TestFun(which, arg);break;
-    case "intermud" : ModIntermud(which, arg);break;
-    case "router" : ModRouter(which, arg);break;
-    case "startroom" : ModStartRoom(which, arg);break;
-    case "defaultdomain" : ModDefaultDomain(which, arg);break;
-    case "resets" : which = "TIME_TO_RESET";ProcessOther(which,arg);break;
-    case "offset" : which = "GMT_OFFSET";ProcessOther(which,arg);break;
-    case "extraoffset" : which = "EXTRA_TIME_OFFSET";ProcessOther(which,arg);break;
-    case "newbielevel" : which = "MAX_NEWBIE_LEVEL";ProcessOther(which,arg);break;
-    case "monitor" : which = "GLOBAL_MONITOR";ProcessOther(which,arg);break;
-    case "maxip" : which = "SAME_IP_MAX";ProcessOther(which,arg);break;
-    case "pinginterval" : which = "PING_INTERVAL";ProcessOther(which,arg);break;
-    case "maxcommands" : which = "MAX_COMMANDS_PER_SECOND";ProcessOther(which,arg);break;
-    case "maxidle" : which = "IDLE_TIMEOUT";ProcessOther(which,arg);break;
-    case "hostip" : which = "HOST_IP";ProcessString(which,arg);break;
-    case "email" : which = "ADMIN_EMAIL";ProcessString(which,arg);break;
-    case "liveupgrade" : which = "LIVEUPGRADE_SERVER";ProcessString(which,arg);break;
-    case "mudstatus" : which = "MUD_STATUS";ProcessString(which,arg);break;
-    case "debugger" : which = "DEBUGGER";ProcessString(which,arg);break;
-    case "websource" : which = "WEB_SOURCE";ProcessString(which,arg);break;
-    case "imc2clientpass" : which = "IMC2_CLIENT_PW";ProcessString(which,arg);break;
-    case "imc2serverpass" : which = "IMC2_SERVER_PW";ProcessString(which,arg);break;
-    default : NotImplemented(which);break;
+        case "test" : TestFun(which, arg);break;
+        case "intermud" : ModIntermud(which, arg);break;
+        case "router" : ModRouter(which, arg);break;
+        case "startroom" : ModStartRoom(which, arg);break;
+        case "defaultdomain" : ModDefaultDomain(which, arg);break;
+        case "resets" : which = "TIME_TO_RESET";ProcessOther(which,arg);break;
+        case "offset" : which = "GMT_OFFSET";ProcessOther(which,arg);break;
+        case "extraoffset" : which = "EXTRA_TIME_OFFSET";ProcessOther(which,arg);break;
+        case "newbielevel" : which = "MAX_NEWBIE_LEVEL";ProcessOther(which,arg);break;
+        case "monitor" : which = "GLOBAL_MONITOR";ProcessOther(which,arg);break;
+        case "maxip" : which = "SAME_IP_MAX";ProcessOther(which,arg);break;
+        case "pinginterval" : which = "PING_INTERVAL";ProcessOther(which,arg);break;
+        case "maxcommands" : which = "MAX_COMMANDS_PER_SECOND";ProcessOther(which,arg);break;
+        case "maxidle" : which = "IDLE_TIMEOUT";ProcessOther(which,arg);break;
+        case "hostip" : which = "HOST_IP";ProcessString(which,arg);break;
+        case "email" : which = "ADMIN_EMAIL";ProcessString(which,arg);break;
+        case "liveupgrade" : which = "LIVEUPGRADE_SERVER";ProcessString(which,arg);break;
+        case "mudstatus" : which = "MUD_STATUS";ProcessString(which,arg);break;
+        case "debugger" : which = "DEBUGGER";ProcessString(which,arg);break;
+        case "websource" : which = "WEB_SOURCE";ProcessString(which,arg);break;
+        case "imc2clientpass" : which = "IMC2_CLIENT_PW";ProcessString(which,arg);break;
+        case "imc2serverpass" : which = "IMC2_SERVER_PW";ProcessString(which,arg);break;
+        default : NotImplemented(which);break;
     }
     return 1;
 }
@@ -217,8 +217,8 @@ varargs static int ModStartRoom(string which, string arg){
     CompleteConfig("/secure/include/rooms.h");
     reload(LIB_CREATOR,1,1);
     write("\nNote: Some objects, like verbs and workrooms, still contain the old "+
-      "START_ROOM value. This will not change until they are reloaded or "+
-      "the mud reboots.");
+            "START_ROOM value. This will not change until they are reloaded or "+
+            "the mud reboots.");
     return 1;
 }
 
@@ -230,7 +230,7 @@ varargs static int ModDefaultDomain(string which, string arg){
 
     if(first(arg,1) != "/"){
         write("You've entered a relative path. Please try again, using an absolute path. "+
-          "For example: mudconfig defaultdomain /domains/MystyShyre");
+                "For example: mudconfig defaultdomain /domains/MystyShyre");
         return 1;
     }
 
@@ -498,35 +498,35 @@ static int ProcessModal(string which, string arg){
         which = upper_case(which);
     }
     else switch(lower_case(which)){
-    case "autowiz" : which = "AUTO_WIZ";break;
-    case "locked" : which = "MUD_IS_LOCKED";break;
-    case "localtime" : which = "LOCAL_TIME";break;
-    case "justenglish" : which = "ENGLISH_ONLY";break;
-    case "justhumans" : which = "HUMANS_ONLY";break;
-    case "encumbrance" : which = "ENABLE_ENCUMBRANCE";break;
-    case "pk" : which = "PLAYER_KILL";break;
-    case "compat"  : which = "COMPAT_MODE";break;
-    case "retain" : which = "RETAIN_ON_QUIT";break;
-    case "defaultparse" : which = "DEFAULT_PARSING";break;
-    case "disablereboot" : which = "DISABLE_REBOOTS";break;
-    case "exitsbare" : which = "BARE_EXITS";break;
-    case "nmexits" : which = "NM_STYLE_EXITS";break;
-    case "matchcommand" : which = "COMMAND_MATCHING";break;
-    case "matchobject" : which = "OBJECT_MATCHING";break;
-    case "catchtell" : which = "NPC_CATCH_TELL_DEBUG";break;
-    case "loglocal" : which = "LOG_LOCAL_CHANS";break;
-    case "logremote" : which = "LOG_REMOTE_CHANS";break;
-    case "imc2" : which = "DISABLE_IMC2";break;
-    case "fastcombat" : which = "FAST_COMBAT";break;
-    case "channelpipes" : which = "CHANNEL_PIPES";break;
-    case "cgi" : which = "ENABLE_CGI";break;
-    case "dirlist" : which = "WWW_DIR_LIST";break;
-    case "creweb" : which = "ENABLE_CREWEB";break;
-    case "selectclass" : which = "CLASS_SELECTION";break;
-    case "severable" : which = "SEVERABLE_LIMBS";break;
-    case "questrequired" : which = "REQUIRE_QUESTING";break;
-    case "autoadvance" : which = "AUTO_ADVANCE";break;
-    default : break;
+        case "autowiz" : which = "AUTO_WIZ";break;
+        case "locked" : which = "MUD_IS_LOCKED";break;
+        case "localtime" : which = "LOCAL_TIME";break;
+        case "justenglish" : which = "ENGLISH_ONLY";break;
+        case "justhumans" : which = "HUMANS_ONLY";break;
+        case "encumbrance" : which = "ENABLE_ENCUMBRANCE";break;
+        case "pk" : which = "PLAYER_KILL";break;
+        case "compat"  : which = "COMPAT_MODE";break;
+        case "retain" : which = "RETAIN_ON_QUIT";break;
+        case "defaultparse" : which = "DEFAULT_PARSING";break;
+        case "disablereboot" : which = "DISABLE_REBOOTS";break;
+        case "exitsbare" : which = "BARE_EXITS";break;
+        case "nmexits" : which = "NM_STYLE_EXITS";break;
+        case "matchcommand" : which = "COMMAND_MATCHING";break;
+        case "matchobject" : which = "OBJECT_MATCHING";break;
+        case "catchtell" : which = "NPC_CATCH_TELL_DEBUG";break;
+        case "loglocal" : which = "LOG_LOCAL_CHANS";break;
+        case "logremote" : which = "LOG_REMOTE_CHANS";break;
+        case "imc2" : which = "DISABLE_IMC2";break;
+        case "fastcombat" : which = "FAST_COMBAT";break;
+        case "channelpipes" : which = "CHANNEL_PIPES";break;
+        case "cgi" : which = "ENABLE_CGI";break;
+        case "dirlist" : which = "WWW_DIR_LIST";break;
+        case "creweb" : which = "ENABLE_CREWEB";break;
+        case "selectclass" : which = "CLASS_SELECTION";break;
+        case "severable" : which = "SEVERABLE_LIMBS";break;
+        case "questrequired" : which = "REQUIRE_QUESTING";break;
+        case "autoadvance" : which = "AUTO_ADVANCE";break;
+        default : break;
     }
     foreach(string element in config){
         if(grepp(element, which)){
@@ -543,8 +543,8 @@ static int ProcessModal(string which, string arg){
     }
     CompleteConfig();
     if(which == "DEFAULT_PARSING" || which == "ENABLE_ENCUMBRANCE" ||
-      which == "BARE_EXITS" || which == "COMMAND_MATCHING" ||
-      which == "AUTO_ADVANCE"){
+            which == "BARE_EXITS" || which == "COMMAND_MATCHING" ||
+            which == "AUTO_ADVANCE"){
         reload(LIB_CREATOR,1,1);
         write("This configuration will take effect for each user the next time they log in.");
         return 1;
@@ -558,8 +558,8 @@ static int ProcessModal(string which, string arg){
         reload(LIB_ROOM,1,1);
         reload(LIB_CREATOR,1,1);
         write("This configuration will take effect for rooms not yet loaded for each "
-          "user the next time they log in. To ensure all rooms pick up the new configuration, "
-          "either reboot the mud, or type: \"reload every room\", then quit and log back in.");
+                "user the next time they log in. To ensure all rooms pick up the new configuration, "
+                "either reboot the mud, or type: \"reload every room\", then quit and log back in.");
     }
     if(which == "RETAIN_ON_QUIT" || which == "OBJECT_MATCHING") 
         write("To make this configuration take effect, reboot the mud.");
@@ -594,19 +594,19 @@ int ProcessService(string which, string what){
         what = "port";
     }
     switch(which){
-    case "hftp": port_offset=OFFSET_HFTP;sclass="/secure/lib/net/h_ftpd";type=1;break;
-    case "ftp": port_offset=OFFSET_FTP;sclass="/secure/lib/net/ftp";type=1;break;
-    case "http": port_offset=OFFSET_HTTP;sclass="/secure/lib/net/http";type=3;break;
-    case "rcp": port_offset=OFFSET_RCP;sclass="/secure/lib/net/remote";type=1;break;
-    case "oob": port_offset=OFFSET_OOB;sclass="/secure/lib/net/oob";type=0;break;
+        case "hftp": port_offset=OFFSET_HFTP;sclass="/secure/lib/net/h_ftpd";type=1;break;
+        case "ftp": port_offset=OFFSET_FTP;sclass="/secure/lib/net/ftp";type=1;break;
+        case "http": port_offset=OFFSET_HTTP;sclass="/secure/lib/net/http";type=3;break;
+        case "rcp": port_offset=OFFSET_RCP;sclass="/secure/lib/net/remote";type=1;break;
+        case "oob": port_offset=OFFSET_OOB;sclass="/secure/lib/net/oob";type=0;break;
     }
     switch(what){
-    case "add": INET_D->AddService(which,port_offset, sclass, type);break;
-    case "remove": INET_D->RemoveService(which);break;
-    case "start": INET_D->eventStartServer(which);break;
-    case "restart": INET_D->eventRestartServer(which,1);break;
-    case "stop": INET_D->eventStopServer(which);break;
-    case "port": ModPort(which, port);break;
+        case "add": INET_D->AddService(which,port_offset, sclass, type);break;
+        case "remove": INET_D->RemoveService(which);break;
+        case "start": INET_D->eventStartServer(which);break;
+        case "restart": INET_D->eventRestartServer(which,1);break;
+        case "stop": INET_D->eventStopServer(which);break;
+        case "port": ModPort(which, port);break;
     }
     if(which == "oob"){
         if( what == "start" || what == "restart")
@@ -802,60 +802,60 @@ int ProcessInet(string which, string arg){
 
 void help() {
     message("help",
-      "Syntax: mudconfig PARAMETER VALUE \n\n"
-      "Modifies various system settings.\n"
-      "Examples: \n"
-      "\nmudconfig autowiz [ yes | no ]"
-      "\nmudconfig locked [ yes | no ]"
-      "\nmudconfig justenglish [ yes | no ]"
-      "\nmudconfig justhumans [ yes | no ]"
-      "\nmudconfig encumbrance [ yes | no ]"
-      "\nmudconfig severable [ yes | no ] (whether limbs can be severed in combat. Requires a warmboot.)"
-      "\nmudconfig pk [ yes | no ]"
-      "\nmudconfig compat [ yes | no ]"
-      "\nmudconfig retain [ yes | no ]"
-      "\nmudconfig defaultparse [ yes | no ]"
-      "\nmudconfig disablereboot [ yes | no ]"
-      "\nmudconfig matchcommand [ yes | no ]"
-      "\nmudconfig matchobject [ yes | no ]"
-      "\nmudconfig exitsbare [ yes | no ]"
-      "\nmudconfig nmexits [ yes | no ] (This togggles where default exits are displayed)"
-      "\nmudconfig fastcombat [ yes | no ] (heart rate overridden in combat)"
-      "\nmudconfig selectclass [ yes | no ] (whether new players choose a class on login)"
-      "\nmudconfig localtime [ yes | no ]"
-      "\nmudconfig offset <offset from gmt in seconds>"
-      "\nmudconfig extraoffset <offset from GMT in hours>"
-      "\nmudconfig maxcommands <max number of commands per second>"
-      "\nmudconfig questrequired [ yes | no ]"
-      "\nmudconfig autoadvance [ yes | no ]"
-      "\nmudconfig maxip <max connections per IP>"
-      "\nmudconfig pinginterval <i3 ping interval in seconds>"
-      "\nmudconfig monitor <monitoring level, 0 to 2>"
-      "\nmudconfig newbielevel <max newbie level>"
-      "\nmudconfig resets <interval between resets>"
-      "\nmudconfig router [ enable | disable ]"
-      "\nmudconfig startroom <filename of start room>"
-      "\nmudconfig defaultdomain </full/path>"
-      "\nmudconfig email <the admin's email address>"
-      "\nmudconfig liveupgrade <the default liveupgrade mud's name>"
-      "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
-      "\nmudconfig websource <the remote web server's ip address (eg 111.222.333.444)>"
-      "\nmudconfig channelpipes [ enable | disable ] (whether to allow piping messages. not recommended.)"
-      "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
-      "\nmudconfig imc2 [ enable | disable ]"
-      "\nmudconfig imc2clientpass <client password for IMC2>"
-      "\nmudconfig imc2serverpass <server password for IMC2>"
-      "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
-      "\nmudconfig ftp [ enable | disable | start | stop | restart | status ]"
-      "\nmudconfig hftp [ enable | disable | start | stop | restart | status ]"
-      "\nmudconfig rcp [ enable | disable | start | stop | restart | status ]"
-      "\nmudconfig oob [ enable | disable | start | stop | restart | status ]"
-      "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
-      "\nmudconfig cgi [ enable | disable ] (Whether the mud webserver should use CGI)"
-      "\nmudconfig dirlist [ enable | disable ] (Allow the webserver to display dir contents)"
-      "\nmudconfig creweb [ enable | disable ] (Allow web based editing [requires cgi and dirlist])"
-      "\nmudconfig loglocal [ enable | disable ] (whether local channels are logged)"
-      "\nmudconfig logremote [ enable | disable ] (whether remote channels are logged)"
-      "\n\nSee also: admintool, config", this_player()
-    );
+            "Syntax: mudconfig PARAMETER VALUE \n\n"
+            "Modifies various system settings.\n"
+            "Examples: \n"
+            "\nmudconfig autowiz [ yes | no ]"
+            "\nmudconfig locked [ yes | no ]"
+            "\nmudconfig justenglish [ yes | no ]"
+            "\nmudconfig justhumans [ yes | no ]"
+            "\nmudconfig encumbrance [ yes | no ]"
+            "\nmudconfig severable [ yes | no ] (whether limbs can be severed in combat. Requires a warmboot.)"
+            "\nmudconfig pk [ yes | no ]"
+            "\nmudconfig compat [ yes | no ]"
+            "\nmudconfig retain [ yes | no ]"
+            "\nmudconfig defaultparse [ yes | no ]"
+            "\nmudconfig disablereboot [ yes | no ]"
+            "\nmudconfig matchcommand [ yes | no ]"
+            "\nmudconfig matchobject [ yes | no ]"
+            "\nmudconfig exitsbare [ yes | no ]"
+            "\nmudconfig nmexits [ yes | no ] (This togggles where default exits are displayed)"
+            "\nmudconfig fastcombat [ yes | no ] (heart rate overridden in combat)"
+            "\nmudconfig selectclass [ yes | no ] (whether new players choose a class on login)"
+            "\nmudconfig localtime [ yes | no ]"
+            "\nmudconfig offset <offset from gmt in seconds>"
+            "\nmudconfig extraoffset <offset from GMT in hours>"
+            "\nmudconfig maxcommands <max number of commands per second>"
+            "\nmudconfig questrequired [ yes | no ]"
+            "\nmudconfig autoadvance [ yes | no ]"
+            "\nmudconfig maxip <max connections per IP>"
+            "\nmudconfig pinginterval <i3 ping interval in seconds>"
+            "\nmudconfig monitor <monitoring level, 0 to 2>"
+            "\nmudconfig newbielevel <max newbie level>"
+            "\nmudconfig resets <interval between resets>"
+            "\nmudconfig router [ enable | disable ]"
+            "\nmudconfig startroom <filename of start room>"
+            "\nmudconfig defaultdomain </full/path>"
+            "\nmudconfig email <the admin's email address>"
+            "\nmudconfig liveupgrade <the default liveupgrade mud's name>"
+            "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
+            "\nmudconfig websource <the remote web server's ip address (eg 111.222.333.444)>"
+            "\nmudconfig channelpipes [ enable | disable ] (whether to allow piping messages. not recommended.)"
+            "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
+            "\nmudconfig imc2 [ enable | disable ]"
+            "\nmudconfig imc2clientpass <client password for IMC2>"
+            "\nmudconfig imc2serverpass <server password for IMC2>"
+            "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
+            "\nmudconfig ftp [ enable | disable | start | stop | restart | status ]"
+            "\nmudconfig hftp [ enable | disable | start | stop | restart | status ]"
+            "\nmudconfig rcp [ enable | disable | start | stop | restart | status ]"
+            "\nmudconfig oob [ enable | disable | start | stop | restart | status ]"
+            "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
+            "\nmudconfig cgi [ enable | disable ] (Whether the mud webserver should use CGI)"
+            "\nmudconfig dirlist [ enable | disable ] (Allow the webserver to display dir contents)"
+            "\nmudconfig creweb [ enable | disable ] (Allow web based editing [requires cgi and dirlist])"
+            "\nmudconfig loglocal [ enable | disable ] (whether local channels are logged)"
+            "\nmudconfig logremote [ enable | disable ] (whether remote channels are logged)"
+            "\n\nSee also: admintool, config", this_player()
+            );
 }

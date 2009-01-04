@@ -25,7 +25,7 @@ mixed cmd(string args) {
         if(!who){
             object *creatures = get_livings(environment(this_player()));
             creatures = filter(creatures, 
-              (: answers_to(lower_case($(args)), $1) :));
+                    (: answers_to(lower_case($(args)), $1) :));
             if(sizeof(creatures)) who = creatures[0];
         }
         if(!who){
@@ -37,14 +37,14 @@ mixed cmd(string args) {
     else who = this_player();
 
     ret = who->GetShort() + ", level " +
-    (int)who->GetLevel();
+        (int)who->GetLevel();
     if( (tmp = (string)who->GetClass()) ) 
         ret += " " + capitalize(tmp);
     else ret += " Drifter";
     ret += " (" + who->GetRace() + ")\n";
     stats = map((string)who->GetStats(),
-      (: sprintf("%:-20s: %:-3d", $1, 
-          (int)who->GetStatLevel($1)) :));
+            (: sprintf("%:-20s: %:-3d", $1, 
+                       (int)who->GetStatLevel($1)) :));
     i = sizeof(stats);
     while(i--) if( (y = strlen(stats[i])) > x ) x = y;
     x = ((int *)this_player()->GetScreen())[0]/(x+2);
@@ -56,15 +56,15 @@ mixed cmd(string args) {
 void help() {
     if(creatorp(this_player())){
         message("help", "Syntax: stats [player]\n\n"
-          "Lists the stats of the specified player as well as "
-          "the stat level. With no argument, it defaults to your own stats."
-          "\n\n"
-          "See also: stat, status, score", this_player());
+                "Lists the stats of the specified player as well as "
+                "the stat level. With no argument, it defaults to your own stats."
+                "\n\n"
+                "See also: stat, status, score", this_player());
     }
     else {
         message("help", "Syntax: stats\n\n"
-          "Lists all of your stats as well as how skilled you are "
-          "at the stat in question.\n"
-          "See also: stat, status, score", this_player());
+                "Lists all of your stats as well as how skilled you are "
+                "at the stat in question.\n"
+                "See also: stat, status, score", this_player());
     }
 }

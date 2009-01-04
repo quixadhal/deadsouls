@@ -17,10 +17,10 @@ varargs int cmd(string str){
 void help()
 {
     write("Syntax: defines <token>\n\n"
-      "Returns the defined value for the speficied token, if "
-      "it is defined in the default includes.\n"
-      "Examples:\n"
-      "define SEVERABLE_LIMBS\n"
-      "define MAX_NEWBIE_LEVEL\n\n"
-      "See also: types");
+            "Returns the defined value for the speficied token, if "
+            "it is defined in the default includes.\n"
+            "Examples:\n"
+            "define SEVERABLE_LIMBS\n"
+            "define MAX_NEWBIE_LEVEL\n\n"
+            "See also: types");
 }

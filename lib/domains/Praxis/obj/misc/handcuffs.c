@@ -6,8 +6,8 @@
 #include <lib.h>
 #include <dirs.h>
 #define ALLOWED_COMMANDS ({ "look", "say", "tell", "shout", "smile",\
-    "frown", "grin", "shiver", "giggle", "laugh", "cry", "whimper",\
-    "inventory", "pray", "dest", "call", "eval" })
+        "frown", "grin", "shiver", "giggle", "laugh", "cry", "whimper",\
+        "inventory", "pray", "dest", "call", "eval" })
 
 inherit LIB_ITEM;
 
@@ -37,7 +37,7 @@ int all_cmds(string str) {
 
     if(member_array(query_verb(), ALLOWED_COMMANDS) == -1) {
         message("say", "%^RED%^You cannot do that with the handcuffs on.",
-          this_player());
+                this_player());
         return 1;
     }
     if(this_player()->query_ghost()) call_out("destroy_me", 0);

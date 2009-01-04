@@ -64,20 +64,26 @@ static void window_size(int width, int height){ SetScreen(width, height); }
 
 int eventReceive(string message){
     int max_length = __LARGEST_PRINTABLE_STRING__ - 192;
+    string prompt = this_object()->GetPrompt(1);
     if(sizeof(message) > max_length){
         while(sizeof(message)){
             string tmp = message[0..max_length];
-            receive(tmp);
+            receive(tmp+prompt);
             message = replace_string(message, tmp, "");
         }
     }
-    else receive(message);
+    else {
+        if(this_object()->GetProperty("reprompt")){
+            this_object()->erase_prompt();
+        }
+        receive(message);
+        this_object()->CheckCharmode();
+    }
 }
-
 
 void receive_message(mixed msg_class, string msg){
     int cl = 0;
-
+    //tc(identify(this_object())+" receive_message("+msg_class+", "+msg+")");
     if(intp(msg_class)){
         cl = msg_class;
         eventPrint(msg, cl);
@@ -90,48 +96,48 @@ void receive_message(mixed msg_class, string msg){
     }
     else if( msg_class == "prompt" && msg_class == "editor" ) cl |= MSG_NOWRAP;
     switch(msg_class){
-    case "smell": case "sound": case "touch": 
-        cl |= MSG_ENV;
+        case "smell": case "sound": case "touch": 
+            cl |= MSG_ENV;
         break;
 
-    case "snoop":
-        cl |= MSG_SYSTEM | MSG_NOCOLOUR;
-    case "broadcast":
-        cl |= MSG_SYSTEM;
+        case "snoop":
+            cl |= MSG_SYSTEM | MSG_NOCOLOUR;
+        case "broadcast":
+            cl |= MSG_SYSTEM;
         break;
 
-    case "editor":
-        cl |= MSG_EDIT;
+        case "editor":
+            cl |= MSG_EDIT;
         break;
 
-    case "tell": case "shout":
-        cl |= MSG_CONV;
+        case "tell": case "shout":
+            cl |= MSG_CONV;
         break;
 
-    case "come": case "leave": case "telout": case "telin":
-        cl |= MSG_ENV;
+        case "come": case "leave": case "telout": case "telin":
+            cl |= MSG_ENV;
         break;
 
-    case "living_item": case "inanimate_item":
-        cl |= MSG_ROOMDESC;
+        case "living_item": case "inanimate_item":
+            cl |= MSG_ROOMDESC;
         break;
 
-    case "system": case "more":
-        cl |= MSG_SYSTEM;
+        case "system": case "more":
+            cl |= MSG_SYSTEM;
         break;
 
-    case "prompt":
-        cl = MSG_PROMPT;
+        case "prompt":
+            cl = MSG_PROMPT;
         break;
 
-    case "error":
-        cl |= MSG_ERROR;
+        case "error":
+            cl |= MSG_ERROR;
         break;
 
-    case "help":
-        cl |= MSG_HELP;
+        case "help":
+            cl |= MSG_HELP;
 
-    default:
+        default:
         cl |= MSG_ENV;
 
     }
@@ -168,7 +174,10 @@ varargs int eventPauseMessages(int x, int exceptions){
 
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     int msg_class;
-
+    string prompt = "";
+    if(this_object()->GetProperty("reprompt")){
+        prompt = this_object()->GetPrompt(1);
+    } 
     if( !msg ) return 0;
     if( !arg2 && !arg3 ) msg_class = MSG_ENV;
     else if( !arg2 ){
@@ -187,7 +196,6 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
      * if((msg_class & MSG_CHAN) && environment() &&
      *  environment()->GetProperty("meeting room")) return 0;
      */
-
     if( GetLogHarass() )
         log_file("harass/" + GetKeyName(), strip_colours(msg) + "\n");
     if( !TermInfo )
@@ -200,8 +208,8 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
         if( msg_class & MSG_NOWRAP )
             msg = terminal_colour(msg + "%^RESET%^", TermInfo);
         else
-            msg = terminal_colour(msg + "%^RESET%^\n", TermInfo,
-              GetScreen()[0], indent);
+            msg = terminal_colour(msg + "%^RESET%^\n"+prompt, TermInfo,
+                    GetScreen()[0], indent);
     }
     else if( !(msg_class & MSG_NOWRAP) ) msg = wrap(msg, GetScreen()[0]-1);
     if(PauseMessages && !(msg_class & MessageExceptions)){
@@ -223,7 +231,7 @@ varargs int SetBlocked(string type, int flag){
     }
     Blocked[type] = flag;
     message("system", "You are "+(Blocked[type] ? "now blocking" :
-        "no longer blocking")+" "+type+".", this_object());
+                "no longer blocking")+" "+type+".", this_object());
     return Blocked[type];
 }
 
@@ -244,12 +252,12 @@ int SetLogHarass(int x){
     if( LogHarass == x ) return LogHarass;
     if( x ){
         txt = "**************** Start of Log *****************\n"+
-        "Time: " + ctime( time() ) + "\n";
+            "Time: " + ctime( time() ) + "\n";
         if( environment( this_object() ) ) txt += "Place: " +
             file_name( environment( this_object() ) ) + "\n";
     } else {
         txt = "**************** End of Log *****************\n"+
-        "Time: " + ctime( time() ) + "\n";
+            "Time: " + ctime( time() ) + "\n";
     }
     log_file("harass/" + GetKeyName(), txt);
     return (LogHarass = x);
@@ -272,17 +280,17 @@ int *GetScreen(){ return Screen; }
 
 string SetTerminal(string terminal){ 
     switch( terminal ){
-    case "iris-ansi-net": case "vt100": case "vt220": case "vt102":
-    case "vt300": case "dec-vt100":
-        terminal = "ansi";
+        case "iris-ansi-net": case "vt100": case "vt220": case "vt102":
+            case "vt300": case "dec-vt100":
+            terminal = "ansi";
         break;
-    case "unknown": case "ansi": case "freedom": case "ansi-status":
-    case "xterm": 
+        case "unknown": case "ansi": case "freedom": case "ansi-status":
+            case "xterm": 
+            break;
+        case "console": case "ibm-3278-2":
+            terminal = "unknown";
         break;
-    case "console": case "ibm-3278-2":
-        terminal = "unknown";
-        break;
-    default:
+        default:
         log_file("terminals", "Unknown terminal type: " + terminal + "\n");
         terminal = Terminal;
         break;

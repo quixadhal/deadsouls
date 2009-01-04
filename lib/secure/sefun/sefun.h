@@ -36,7 +36,7 @@ int currency_mass(int x, string type);
 int currency_value(int x, string str);
 int destruct(object ob);
 mixed *distinct_array(mixed *arr);
-string domain(mixed val);
+varargs string domain(mixed val, int path);
 int domain_exists(string dmn);
 object domain_master(mixed val);
 varargs int effective_light(object ob);
@@ -250,7 +250,7 @@ string array groups();
 string query_intermud_ip();
 string *atomize_string(string str);
 string *atomize_array(string *temp_arr);
-string match_command(string verb);
+varargs mixed match_command(string verb, int subs);
 varargs mixed random_numbers(int n, int integer);
 int snooperp(mixed guy);
 string native_version();
@@ -287,5 +287,8 @@ varargs mixed coordinates(object ob, string type);
 mixed calculate_coordinates(string str, int x, int y, int z, string type);
 object room_environment(object ob);
 int query_windows();
+varargs mixed file_present(mixed str, mixed ob, int i);
+varargs mixed present_bonus(mixed str, mixed ob, int i);
+varargs string query_unique_name(mixed ob, int cloned);
 
 #endif /* l_sefun_h */

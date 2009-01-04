@@ -10,20 +10,20 @@ string get_female(int lev);
 string previous_title(object tp);
 int get_cost(string which, int lev);
 
-int CanReceive(object ob) {
-    if(!(int)VOTING_D->is_time_to_vote())
+    int CanReceive(object ob) {
+        if(!(int)VOTING_D->is_time_to_vote())
+            return ::CanReceive(ob);
+        if(creatorp(this_player()) || (int)this_player()->query_level() < 2)
+            return ::CanReceive(ob);
+        if((int)VOTING_D->query_voted((string)this_player()->query_name(),
+                    this_player()->query_class()))
+            return ::CanReceive(ob);
+        else {
+            message("my_action", "You have not yet voted for your class leader.  Please do so now.", this_player());
+            call_out("move_me", 5, this_player());
+        }
         return ::CanReceive(ob);
-    if(creatorp(this_player()) || (int)this_player()->query_level() < 2)
-        return ::CanReceive(ob);
-    if((int)VOTING_D->query_voted((string)this_player()->query_name(),
-        this_player()->query_class()))
-        return ::CanReceive(ob);
-    else {
-        message("my_action", "You have not yet voted for your class leader.  Please do so now.", this_player());
-        call_out("move_me", 5, this_player());
     }
-    return ::CanReceive(ob);
-}
 
 void move_me(object who) {
     who->eventMoveLiving("/domains/Praxis/"+who->query_class()+"_vote");
@@ -37,21 +37,21 @@ void create() {
     SetProperties(([ "no attack":1, "no castle" :1, "light":2, "indoors":1]));
     SetShort("The central chamber of the kataans");
     SetLong(
-      "Welcome to the central chamber of the kataans!\n"
-      "You find yourself in a very dark and damp cave. Shadows dance "
-      "across the stony walls of the cave, and an aura of evil fills the "
-      "air. Kataans come here to advance in the art of combat and in magic. "
-      "The available commands are <cost>, <advance>, <list(number)>,  "
-      "<improve stat>, <train skill amount>, and <roll>.  Down through "
-      "a hole "
-      "guarded by a shimmering %^BLUE%^blue%^RESET%^ light is the "
-      "entrance to the main hall. "
-      "<help skills> will list the full names of all skills.");
+            "Welcome to the central chamber of the kataans!\n"
+            "You find yourself in a very dark and damp cave. Shadows dance "
+            "across the stony walls of the cave, and an aura of evil fills the "
+            "air. Kataans come here to advance in the art of combat and in magic. "
+            "The available commands are <cost>, <advance>, <list(number)>,  "
+            "<improve stat>, <train skill amount>, and <roll>.  Down through "
+            "a hole "
+            "guarded by a shimmering %^BLUE%^blue%^RESET%^ light is the "
+            "entrance to the main hall. "
+            "<help skills> will list the full names of all skills.");
     SetExits( ([ 
-        "up" : "/domains/Praxis/kataan_join",
-        "council" : "/domains/Praxis/council_hall",
-        "east" : "/domains/Praxis/kataan_vote",
-      ]) );
+                "up" : "/domains/Praxis/kataan_join",
+                "council" : "/domains/Praxis/council_hall",
+                "east" : "/domains/Praxis/kataan_vote",
+                ]) );
 
     ob = new("/lib/bboard");
     ob->SetKeyName("board");
@@ -62,8 +62,8 @@ void create() {
     ob->move("/domains/Praxis/kataan_hall");
     ob->SetShort( "Kataans' Board of Despair");
     ob->SetLong( 
-      "The Kataans of our reality post stories of treachery and "
-      "demonic myths for all to see here.\n");
+            "The Kataans of our reality post stories of treachery and "
+            "demonic myths for all to see here.\n");
 }
 
 void init() {
@@ -190,10 +190,10 @@ int improve(string str) {
 
 int get_cost(string stat, int lev) {
     switch(stat) {
-    case "strength": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-    case "intelligence": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-    case "charisma": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-    default: return (int)ADVANCE_D->get_stat_cost(2, lev); break;
+        case "strength": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
+        case "intelligence": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
+        case "charisma": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
+        default: return (int)ADVANCE_D->get_stat_cost(2, lev); break;
     }
 }
 
@@ -205,19 +205,19 @@ int cost(string str) {
     if(bing < 1) write("level:\t\tIt will cost you nothing to advance.");
     else write("level:\t\t"+bing+"\n");
     write("skills: You train by spending the amount of experience you
-desire.\n");
+            desire.\n");
     write("strength:\t\t" + get_cost("strength",
-(int)this_player()->query_base_stats("strength")) +
-"\t\tconstitution:\t\t" + get_cost("constitution",
-(int)this_player()->query_base_stats("constitution")) );
+                (int)this_player()->query_base_stats("strength")) +
+            "\t\tconstitution:\t\t" + get_cost("constitution",
+                (int)this_player()->query_base_stats("constitution")) );
     write("intelligence:\t\t" + get_cost("intelligence",
-(int)this_player()->query_base_stats("intelligence")) +
-"\t\tdexterity:\t\t" + get_cost("dexterity",
-(int)this_player()->query_base_stats("dexterity")) );
+                (int)this_player()->query_base_stats("intelligence")) +
+            "\t\tdexterity:\t\t" + get_cost("dexterity",
+                (int)this_player()->query_base_stats("dexterity")) );
     write("wisdom:\t\t" + get_cost("wisdom",
-(int)this_player()->query_base_stats("wisdom")) +
-"\t\tcharisma:\t\t" + get_cost("charisma",
-(int)this_player()->query_base_stats("charisma")) );
+                (int)this_player()->query_base_stats("wisdom")) +
+            "\t\tcharisma:\t\t" + get_cost("charisma",
+                (int)this_player()->query_base_stats("charisma")) );
     return 1;
 }
 
@@ -235,7 +235,7 @@ int list(string str) {
     if(!str) "/domains/Praxis/quest_room"->list_quests(this_player(), 0);
     else {
         if(sscanf(str, "%d", x) != 1) {
-             notify_fail("You must give the number of the quest you want listed.\n");
+            notify_fail("You must give the number of the quest you want listed.\n");
             return 0;
         }
         if(x<1) {

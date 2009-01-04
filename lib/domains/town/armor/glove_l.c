@@ -5,7 +5,6 @@
 
 inherit LIB_ARMOR;
 
-
 static void create() {
     armor::create();
     SetKeyName("leather glove");
@@ -13,9 +12,8 @@ static void create() {
     SetAdjectives( ({ "black","leather","left" }) );
     SetShort("a black leather glove");
     SetLong("A black glove with five fingers designed for a left hand.");
-    SetDamagePoints(75);
     SetVendorType(VT_ARMOR);
-    SetMass(10);
+    SetMass(5);
     SetBaseCost("silver",7);
     SetArmorType(A_GLOVE);
     SetProtection(BLUNT, 1);
@@ -26,6 +24,7 @@ static void create() {
     SetFingers(5);
     SetRestrictLimbs(({"left hand"}));
 }
+
 void init(){
     ::init();
 }

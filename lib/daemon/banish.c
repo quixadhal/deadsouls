@@ -53,7 +53,7 @@ static private int match_ip(string ip, string *sites);
 void create() { 
     daemon::create();
     SetNoClean(1);
-    __Names = ({}); 
+    __Names = ({"template"}); 
     __Sites = ({}); 
     __WatchNames = ({}); 
     __WatchSites = ({}); 
@@ -158,7 +158,7 @@ string *query_registered() {
 void banish_name(string str) { 
     if(!valid_access(previous_object())) return;
     unguarded( (: log_file, "banish", 
-        (string)this_player()->GetName() + " banished " + str + "." :) );
+                (string)this_player()->GetName() + " banished " + str + "." :) );
     __Names = distinct_array(__Names + ({ lower_case(str) })); 
     save_banish(); 
 } 
@@ -228,7 +228,7 @@ string *query_allowed() {
 void set_illegal_substring(string str) { 
     if(!valid_access(previous_object())) return; 
     __IllegalSubStrings = distinct_array(__IllegalSubStrings + 
-      ({ lower_case(str) })); 
+            ({ lower_case(str) })); 
     save_banish(); 
 } 
 
@@ -291,14 +291,14 @@ int eventConnect(string nom, string ip) {
     if(base_name(previous_object()) != LIB_CONNECT ) return 0;
     if(member_array(nom, __WatchNames) != -1) { 
         log_file("watch/names", sprintf("%s from %s at %s\n", nom, ip,
-            ctime(time()))); 
+                    ctime(time()))); 
     } 
     if(match_ip(ip, __WatchSites)) { 
         log_file("watch/"+ip, sprintf("%s at %s\n", nom, ctime(time()))); 
     } 
     if(member_array(nom, __Allowed) != -1) { 
         log_file("watch/allowed", sprintf("%s from %s at %s\n", nom, ip,
-            ctime(time()))); 
+                    ctime(time()))); 
         __Allowed -= ({ nom }); 
         save_banish(); 
         return 1; 
@@ -306,15 +306,15 @@ int eventConnect(string nom, string ip) {
     if(match_ip(ip, __Sites)) { 
         if(user_exists(nom)) { 
             log_file("watch/"+ip, sprintf("%s allowed in from %s at %s\n",
-                nom, ip, 
-                ctime(time()))); 
+                        nom, ip, 
+                        ctime(time()))); 
             return 1; 
         } 
         else { 
             log_file("watch/"+ip, sprintf("%s failed from %s at %s\n"
-                , nom,
-                ip, 
-                ctime(time()))); 
+                        , nom,
+                        ip, 
+                        ctime(time()))); 
             return 0; 
         } 
     } 

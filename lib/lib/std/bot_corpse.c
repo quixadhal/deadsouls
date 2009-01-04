@@ -23,26 +23,26 @@ int eventDecay(){
     }
     Fresh = 0;
     switch(Count){
-    case 10:
-        if(stank)
-            environment()->eventPrint(possessive_noun(Owner) + " chassis " +
-              "begins to corrode.", MSG_ROOMDESC);
-        SetId(GetId()..., "chassis", "body");
-        SetAdjectives(GetAdjectives()..., "melting", "corroding");
-        SetShort("the corroding chassis of an artificial body");
-        SetSmell("The chassis emits an acrid chemical odor.");
-        break;
-    case 20:
-        if(stank)
-            environment()->eventPrint("An acrid chemical odor fills the entire "
-              "area.", MSG_ROOMDESC);
-        SetId(GetId()..., "synthetics", "pile", "pile of synthetics");
-        SetShort("a pile of corroding synthetics");
-        SetSmell("Its smell is nearly unbearable.");
-        break;
-    case 30:
-        Destruct();
-        return 0;
+        case 10:
+            if(stank)
+                environment()->eventPrint(possessive_noun(Owner) + " chassis " +
+                        "begins to corrode.", MSG_ROOMDESC);
+            SetId(GetId()..., "chassis", "body");
+            SetAdjectives(GetAdjectives()..., "melting", "corroding");
+            SetShort("the corroding chassis of an artificial body");
+            SetSmell("The chassis emits an acrid chemical odor.");
+            break;
+        case 20:
+            if(stank)
+                environment()->eventPrint("An acrid chemical odor fills the entire "
+                        "area.", MSG_ROOMDESC);
+            SetId(GetId()..., "synthetics", "pile", "pile of synthetics");
+            SetShort("a pile of corroding synthetics");
+            SetSmell("Its smell is nearly unbearable.");
+            break;
+        case 30:
+            Destruct();
+            return 0;
     }
     Count++;
     return Count;
@@ -59,6 +59,6 @@ void SetCorpse(object who){
     Fresh = 1;
     SetShort("the wreckage of "+tmpshort);
     SetLong("As you look closely at " + who->GetCapName() +
-      ", you notice that " +  nominative(who) +
-      " does not appear to be moving.");
+            ", you notice that " +  nominative(who) +
+            " does not appear to be moving.");
 }

@@ -11,31 +11,31 @@ static void create() {
     SetRules("OBJ STR", "here STR", "room STR");
     SetErrorMessage("Modify what how?");
     SetHelp("Syntax: <modify OBJ SETTING VALUE>\n\n"
-      "If you have write permissions to the file of the object "
-      "specified, this command initiates changes to that file "
-      "based on the arguments you supply. For example, to change "
-      "the short description of the room you are in:\n"
-      "modify here short a nice new room\n"
-      "To modify an orc npc's desciption (if he's in your current room):\n "
-      "modify orc long a polite, well-groomed orc.\n\n"
-      "Available settings are: \n----\n"
-      "%^GREEN%^room%^RESET%^: "+MODULES_CREATE->GetSettings("room")+"\n--\n"
-      "%^GREEN%^npc%^RESET%^: "+MODULES_CREATE->GetSettings("npc")+"\n--\n"
-      "%^GREEN%^barkeep%^RESET%^: "+MODULES_CREATE->GetSettings("barkeep")+"\n--\n"
-      "%^GREEN%^vendor%^RESET%^: "+MODULES_CREATE->GetSettings("vendor")+"\n--\n"
-      "%^GREEN%^weapon%^RESET%^: "+MODULES_CREATE->GetSettings("weapon")+"\n--\n"
-      "%^GREEN%^item%^RESET%^: "+MODULES_CREATE->GetSettings("item")+"\n--\n"
-      "%^GREEN%^armor%^RESET%^: "+MODULES_CREATE->GetSettings("armor")+"\n--\n"
-      "%^GREEN%^worn_storage%^RESET%^: "+MODULES_CREATE->GetSettings("worn_storage")+"\n--\n"
-      "%^GREEN%^chair%^RESET%^: "+MODULES_CREATE->GetSettings("chair")+"\n--\n"
-      "%^GREEN%^bed%^RESET%^: "+MODULES_CREATE->GetSettings("bed")+"\n--\n"
-      "%^GREEN%^table%^RESET%^: "+MODULES_CREATE->GetSettings("table")+"\n--\n"
-      "%^GREEN%^container%^RESET%^: "+MODULES_CREATE->GetSettings("storage")+"\n----\n"
-      "%^GREEN%^meal%^RESET%^: "+MODULES_CREATE->GetSettings("meal")+"\n----\n"
-      "%^GREEN%^drink%^RESET%^: "+MODULES_CREATE->GetSettings("meal")+"\n----\n"
-      "%^GREEN%^door%^RESET%^: "+MODULES_CREATE->GetSettings("door")+"\n----\n"
-      "%^GREEN%^book%^RESET%^: "+MODULES_CREATE->GetSettings("book")+"\n----\n"
-      "\nSee also: copy, create, delete, reload, initfix, add");
+            "If you have write permissions to the file of the object "
+            "specified, this command initiates changes to that file "
+            "based on the arguments you supply. For example, to change "
+            "the short description of the room you are in:\n"
+            "modify here short a nice new room\n"
+            "To modify an orc npc's desciption (if he's in your current room):\n "
+            "modify orc long a polite, well-groomed orc.\n\n"
+            "Available settings are: \n----\n"
+            "%^GREEN%^room%^RESET%^: "+MODULES_CREATE->GetSettings("room")+"\n--\n"
+            "%^GREEN%^npc%^RESET%^: "+MODULES_CREATE->GetSettings("npc")+"\n--\n"
+            "%^GREEN%^barkeep%^RESET%^: "+MODULES_CREATE->GetSettings("barkeep")+"\n--\n"
+            "%^GREEN%^vendor%^RESET%^: "+MODULES_CREATE->GetSettings("vendor")+"\n--\n"
+            "%^GREEN%^weapon%^RESET%^: "+MODULES_CREATE->GetSettings("weapon")+"\n--\n"
+            "%^GREEN%^item%^RESET%^: "+MODULES_CREATE->GetSettings("item")+"\n--\n"
+            "%^GREEN%^armor%^RESET%^: "+MODULES_CREATE->GetSettings("armor")+"\n--\n"
+            "%^GREEN%^worn_storage%^RESET%^: "+MODULES_CREATE->GetSettings("worn_storage")+"\n--\n"
+            "%^GREEN%^chair%^RESET%^: "+MODULES_CREATE->GetSettings("chair")+"\n--\n"
+            "%^GREEN%^bed%^RESET%^: "+MODULES_CREATE->GetSettings("bed")+"\n--\n"
+            "%^GREEN%^table%^RESET%^: "+MODULES_CREATE->GetSettings("table")+"\n--\n"
+            "%^GREEN%^container%^RESET%^: "+MODULES_CREATE->GetSettings("storage")+"\n----\n"
+            "%^GREEN%^meal%^RESET%^: "+MODULES_CREATE->GetSettings("meal")+"\n----\n"
+            "%^GREEN%^drink%^RESET%^: "+MODULES_CREATE->GetSettings("meal")+"\n----\n"
+            "%^GREEN%^door%^RESET%^: "+MODULES_CREATE->GetSettings("door")+"\n----\n"
+            "%^GREEN%^book%^RESET%^: "+MODULES_CREATE->GetSettings("book")+"\n----\n"
+            "\nSee also: copy, create, delete, reload, initfix, add");
 }
 
 mixed can_modify_obj_str(string str) { 
@@ -66,7 +66,7 @@ mixed do_modify_obj_str(object ob, string str) {
     }
 
     if(base_name(ob) == LIB_DUMMY &&
-      !ob->GetDoor()) ob = environment(this_player());
+            !ob->GetDoor()) ob = environment(this_player());
     else if(base_name(ob) == LIB_DUMMY) ob = load_object(ob->GetDoor());
 
     if(starts_with(base_name(ob),"/lib/")) {

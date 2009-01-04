@@ -37,7 +37,7 @@ mixed cmd(string args) {
     ob->SetRead( (: ReadSocket :) );
     ob->eventWrite("\n");
     message("system", "Finger sent to " + possessive_noun(args) + " site " +
-      ip + ".", this_player());
+            ip + ".", this_player());
     return 1;
 }
 
@@ -47,17 +47,17 @@ void ReadSocket(string str) {
     if( !Waiting[ob = previous_object()] ) return;
     if( !Waiting[ob]["who"] ) return;
     message("system", "Information from " + Waiting[ob]["ip"] + " for " + 
-      Waiting[ob]["player"] + ":", Waiting[ob]["who"]);
+            Waiting[ob]["player"] + ":", Waiting[ob]["who"]);
     message("system", str, Waiting[ob]["who"]);
 }
 
 void help() {
     message("help", "Syntax: <mfinger [player]>\n\n"
-      "Allows you to get finger information from a player's site.\n\n"
-      "Note: In 1995, you could reliably expect a UNIX machine to cheerfully "
-      "respond to a finger request. Now, more than 10 years later, everything "
-      "is blocked, firewalled, and hardened. This command is all but useless, "
-      "and is kept as a historical curiosity. Any \"bugs\" it contains will "
-      "not be fixed.",
-      this_player());
+            "Allows you to get finger information from a player's site.\n\n"
+            "Note: In 1995, you could reliably expect a UNIX machine to cheerfully "
+            "respond to a finger request. Now, more than 10 years later, everything "
+            "is blocked, firewalled, and hardened. This command is all but useless, "
+            "and is kept as a historical curiosity. Any \"bugs\" it contains will "
+            "not be fixed.",
+            this_player());
 }

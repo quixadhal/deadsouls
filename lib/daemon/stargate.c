@@ -152,7 +152,7 @@ void heart_beat(){
             Stargates[key]["last_change"] = 0;
         }
         if((val["last_change"] && (time() - val["last_change"]) > 60) ||
-          (!val["last_change"] && val["status"] != "idle")){
+                (!val["last_change"] && val["status"] != "idle")){
             Stargates[key]["endpoint"] = "";
             Stargates[key]["status"] = "idle";
             Stargates[key]["last_change"] = 0;

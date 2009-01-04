@@ -16,14 +16,14 @@ static void create(){
 
 static void init(){
     if( (string)this_player()->ClassMember((string)GetOwner()) ||
-      (string)this_player()->GetClan() == (string)GetOwner() ){
+            (string)this_player()->GetClan() == (string)GetOwner() ){
         add_action( (: eventDonate :) , "donate" );
     }
 }
 
 string GetLong(string str){
     string ret = "\nIt currently contains "+TotalAssets+" " +
-    "coins and bills.";
+        "coins and bills.";
     if(TotalAssets) return ret;
     else return "";
 }
@@ -74,7 +74,7 @@ int eventDonate(string amt, string type){
     tp->AddCurrency(type, -amount);
     AddAssets(amount);
     tp->eventPrint(GetOwner() + " is grateful "
-      "for your donation.");
+            "for your donation.");
     if(living(this_object())) this_object()->eventForce("say Thank you!");
     return 1;
 }

@@ -16,8 +16,8 @@ static void create() {
 
 int CanReceive(object ob) {
     if(playerp(ob) && !creatorp(ob) && !present("testchar badge",ob)) {
-	message("info","Creator staff only, sorry.", ob);
-	return 0;
+        message("info","Creator staff only, sorry.", ob);
+        return 0;
     }
     return ::CanReceive(ob);
 }

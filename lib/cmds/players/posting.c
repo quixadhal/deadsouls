@@ -23,10 +23,10 @@ int cmd(string str) {
 }
 
 void help() {
-    write(@END
+    write(@EndText
 Syntax: posting
 Displays if a user is in editor, posting on a bulletin board, or in the
 mailer.
-END
+EndText
     );
 }

@@ -17,10 +17,10 @@ static void create() {
     SetRules("OBJ with OBJ");
     SetErrorMessage("Bait what with what?");
     SetHelp("Syntax: bait <POLE> with <BAIT>\n\n"
-      "The bait command is normally used to fasten bait onto "
-      "a fishing pole.  The POLE must be a device of some "
-      "kind which is used for catching fish.  The BAIT "
-      "must be some sort of fishing bait.");
+            "The bait command is normally used to fasten bait onto "
+            "a fishing pole.  The POLE must be a device of some "
+            "kind which is used for catching fish.  The BAIT "
+            "must be some sort of fishing bait.");
 }
 
 mixed can_bait_obj_with_obj(string verb) { return this_player()->CanManipulate(); }

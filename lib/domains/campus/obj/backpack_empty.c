@@ -11,8 +11,8 @@ static void create() {
     SetAdjectives(({"sturdy","green","olive","olive-green","od green","od-green"}));
     SetShort("a sturdy, olive-green backpack");
     SetLong("This is a large, sturdy backpack made of some sort of "
-      "strong, canvas-like material. It appears suitable "+
-      "for just about any adventure you'd find yourself in.");
+            "strong, canvas-like material. It appears suitable "+
+            "for just about any adventure you'd find yourself in.");
     SetMass(100);
     SetBaseCost("silver", 40);
     SetCanClose(1);

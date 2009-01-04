@@ -19,13 +19,13 @@ mixed cmd(string args) {
         this_player()->eventPrint(who->GetName()+" has been idle for "+time_elapsed(x)+".");
     }
     else this_player()->eventPrint((string)who->GetName() + " is "
-          "not idle.");
+            "not idle.");
     return 1;
 }
 
 string GetHelp(string str) {
     return "Syntax: idle <user name>\n\n"
-    "Displays named user's idle time.  A user's \"idle time\" is "
-    "the amount of time since the named user last sent input "
-    "to the MUD.";
+        "Displays named user's idle time.  A user's \"idle time\" is "
+        "the amount of time since the named user last sent input "
+        "to the MUD.";
 }

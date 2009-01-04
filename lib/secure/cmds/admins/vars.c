@@ -48,9 +48,9 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: vars <object or file>\n"
-      "Dumps the variables of an object as well as their values.\n"
-      "Examples:\n"
-      "vars kim\n"
-      "vars /daemon/classes\n\n"
-      "See also: var, variables");
+            "Dumps the variables of an object as well as their values.\n"
+            "Examples:\n"
+            "vars kim\n"
+            "vars /daemon/classes\n\n"
+            "See also: var, variables");
 }

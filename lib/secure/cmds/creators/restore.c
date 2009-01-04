@@ -48,7 +48,7 @@ mixed cmd(string str) {
 
     if(str == "workroom.orig") {
         unguarded( (: globalint = cp(homedir(this_player())+"/bak/workroom.orig",
-              homedir(this_player())+"/workroom.c") :) );
+                        homedir(this_player())+"/workroom.c") :) );
         if(globalint) {
             write("Workroom file restored.");
             load_object(CMD_UPDATE)->cmd("-a "+homedir(this_player())+"/workroom.c");
@@ -81,19 +81,19 @@ mixed cmd(string str) {
 
 int help() {
     message("help", "Syntax: <restore STRING> [NUMBER]\n\n"
-      "Restores the specified file  from your bak/ directory. "
-      "If you specify a number, the command will try to find "
-      "the Nth newest file to restore. Examples:\n"
-      "To restore the most recent version of file.c:\n"
-      "restore file.c\n"
-      "To restore the version you backed up before the most "
-      "recent version:\n"
-      "restore file.c 2\n"
-      "And so on.\n"
-      "\"restore here\" will attempt to restore a backup of the room "
-      "you are currently standing in, and will reload it, if possible. "
-      "This is the only case in which the command will automatically "
-      "reload a restored object.\n"
-      "See also: bk", 
-      this_player());
+            "Restores the specified file  from your bak/ directory. "
+            "If you specify a number, the command will try to find "
+            "the Nth newest file to restore. Examples:\n"
+            "To restore the most recent version of file.c:\n"
+            "restore file.c\n"
+            "To restore the version you backed up before the most "
+            "recent version:\n"
+            "restore file.c 2\n"
+            "And so on.\n"
+            "\"restore here\" will attempt to restore a backup of the room "
+            "you are currently standing in, and will reload it, if possible. "
+            "This is the only case in which the command will automatically "
+            "reload a restored object.\n"
+            "See also: bk", 
+            this_player());
 }

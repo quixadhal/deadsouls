@@ -35,92 +35,95 @@ static private mapping Channels;
 static private mapping chanlast;
 
 static private string *local_chans = ({"newbie","cre","gossip","admin","error", "intermud",
-  "priest", "mage", "explorer", "thief", "fighter", "death", "connections", "muds" });
+        "priest", "mage", "explorer", "thief", "fighter", "death", "connections", "muds" });
 static private string *remote_chans = ({ "Server01:ichat", "Server01:ibuild",
-  "Server01:pchat", "Server02:i2chat", "Server02:i3chat", "Server02:icode",
-  "Server02:igame", "Server02:inews", "Server02:irc", "Server02:ivent" });
+        "Server01:pchat", "Server02:i2chat", "Server02:i3chat", "Server02:icode",
+        "Server02:igame", "Server02:inews", "Server02:imudnews", "Server02:irc", "Server02:ivent" });
 static string *syschans = ({ "intermud", "death", "connections", "muds" });
 
 static private mapping localchans = ([
-  //I3 Channels
-  "imud_code": "intercre",
-  "imud_gossip": "intergossip",
-  "ie_flibcode": "foundation",
-  "dutch": "dutch",
-  "dead_test4": "ds_test",
-  "dead_souls": "ds",
+        //I3 Channels
+        "imud_code": "intercre",
+        "imud_gossip": "intergossip",
+        "ie_flibcode": "foundation",
+        "dutch": "dutch",
+        "dead_test4": "ds_test",
+        "dead_souls": "ds",
 
-  //"free_speech": "fs",
-  //"discworld-chat": "dw",
-  //"discworld-cre": "dwcre",
-  "lpuni": "lpuni",
-  //IMC2 Channels
-  "Server01:ibuild": "ibuild",
-  "Server01:ichat": "ichat",
-  "Server01:pchat": "pchat",
-  "Server02:i2chat": "i2chat",
-  "Server02:i3chat": "i3chat",
-  "Server02:icode": "i2code",
-  "Server02:igame": "i2game",
-  "Server02:inews": "i2news",
-  "Server02:irc": "irc",
-  "Server02:ivent": "ivent",
-]);
+        //"free_speech": "fs",
+        //"discworld-chat": "dw",
+        //"discworld-cre": "dwcre",
+        "lpuni": "lpuni",
+        //IMC2 Channels
+        "Server01:ibuild": "ibuild",
+        "Server01:ichat": "ichat",
+        "Server01:pchat": "pchat",
+        "Server02:i2chat": "i2chat",
+        "Server02:i3chat": "i3chat",
+        "Server02:icode": "i2code",
+        "Server02:igame": "i2game",
+        "Server02:inews": "i2news",
+        "Server02:imudnews": "imudnews",
+        "Server02:irc": "irc",
+        "Server02:ivent": "ivent",
+        ]);
 
 static private mapping remotechans = ([
-  //I3 Channels
-  "intercre": "imud_code",
-  "intergossip": "imud_gossip",
-  "foundation": "ie_flibcode",
-  "dutch": "dutch",
-  "ds_test": "dead_test4",
-  "ds": "dead_souls",
-  //"fs": "free_speech",
-  //"dw": "discworld-chat",
-  //"dwcre": "discworld-cre",
-  "lpuni": "lpuni",
+        //I3 Channels
+        "intercre": "imud_code",
+        "intergossip": "imud_gossip",
+        "foundation": "ie_flibcode",
+        "dutch": "dutch",
+        "ds_test": "dead_test4",
+        "ds": "dead_souls",
+        //"fs": "free_speech",
+        //"dw": "discworld-chat",
+        //"dwcre": "discworld-cre",
+        "lpuni": "lpuni",
 
-  //IMC2 Channels
-  "ibuild" : "Server01:ibuild",
-  "ichat" : "Server01:ichat",
-  "pchat" : "Server01:pchat",
-  "i2chat" : "Server02:i2chat",
-  "i3chat" : "Server02:i3chat",
-  "i2code" : "Server02:icode",
-  "i2game" : "Server02:igame",
-  "i2news" : "Server02:inews",
-  "irc" : "Server02:irc",
-  "ivent" : "Server02:ivent",
-]);
+        //IMC2 Channels
+        "ibuild" : "Server01:ibuild",
+        "ichat" : "Server01:ichat",
+        "pchat" : "Server01:pchat",
+        "i2chat" : "Server02:i2chat",
+        "i3chat" : "Server02:i3chat",
+        "i2code" : "Server02:icode",
+        "i2game" : "Server02:igame",
+        "i2news" : "Server02:inews",
+        "imudnews" : "Server02:imudnews",
+        "irc" : "Server02:irc",
+        "ivent" : "Server02:ivent",
+        ]);
 
 static private mapping tags = ([
-  "intermud"    : "%^WHITE%^",
-  "muds"        : "%^WHITE%^",
-  "connections" : "%^BOLD%^WHITE%^",
-  "death"       : "%^BOLD%^RED%^",
-  "cre"         : "%^BOLD%^GREEN%^",
-  "admin"       : "%^BOLD%^MAGENTA%^",
-  "newbie"      : "%^BOLD%^B_YELLOW%^",
-  "gossip"      : "%^BOLD%^B_BLUE%^",
+        "intermud"    : "%^WHITE%^",
+        "muds"        : "%^WHITE%^",
+        "connections" : "%^BOLD%^WHITE%^",
+        "death"       : "%^BOLD%^RED%^",
+        "cre"         : "%^BOLD%^GREEN%^",
+        "admin"       : "%^BOLD%^MAGENTA%^",
+        "newbie"      : "%^BOLD%^B_YELLOW%^",
+        "gossip"      : "%^BOLD%^B_BLUE%^",
 
-  "ds"          : "%^YELLOW%^",
-  "dchat"	 :"%^CYAN%^",
-  "intergossip" : "%^GREEN%^",
-  "intercre"    : "%^ORANGE%^",
+        "ds"          : "%^YELLOW%^",
+        "dchat"	 :"%^CYAN%^",
+        "intergossip" : "%^GREEN%^",
+        "intercre"    : "%^ORANGE%^",
 
-  "ibuild"      : "%^B_RED%^%^YELLOW%^",
-  "ichat"       : "%^B_RED%^%^GREEN%^",
-  "pchat"       : "%^B_RED%^%^BOLD%^GREEN%^",
-  "i2game"      : "%^B_BLUE%^",
-  "i2chat"      : "%^B_GREEN%^",
-  "i3chat"      : "%^B_RED%^",
-  "i2code"      : "%^B_YELLOW%^%^RED%^",
-  "i2news"      : "%^B_YELLOW%^%^BLUE%^",
-  "irc"         : "%^B_BLUE%^%^GREEN%^",
-  "ivent"         : "%^B_BLUE%^%^GREEN%^",
+        "ibuild"      : "%^B_RED%^%^YELLOW%^",
+        "ichat"       : "%^B_RED%^%^GREEN%^",
+        "pchat"       : "%^B_RED%^%^BOLD%^GREEN%^",
+        "i2game"      : "%^B_BLUE%^",
+        "i2chat"      : "%^B_GREEN%^",
+        "i3chat"      : "%^B_RED%^",
+        "i2code"      : "%^B_YELLOW%^%^RED%^",
+        "i2news"      : "%^B_YELLOW%^%^BLUE%^",
+        "imudnews"    : "%^B_YELLOW%^%^CYAN%^",
+        "irc"         : "%^B_BLUE%^%^GREEN%^",
+        "ivent"         : "%^B_BLUE%^%^GREEN%^",
 
-  "default"     : "%^BOLD%^BLUE%^",
-]);
+        "default"     : "%^BOLD%^BLUE%^",
+        ]);
 
 static void create() {
     object pl;
@@ -219,11 +222,11 @@ string *eventRegisterMember(string *chans) {
     foreach(channel in chans) {
         /* just check out for secure channels */
         switch(channel) {
-        case "admin":
-            if( !archp(ob) ) break;
-        case "cre": case "intercre": case "intergossip":
-            if( !creatorp(ob) ) break;
-        default:
+            case "admin":
+                if( !archp(ob) ) break;
+            case "cre": case "intercre": case "intergossip":
+                if( !creatorp(ob) ) break;
+            default:
             if( !Channels[channel]) Channels[channel] = ({});
             Channels[channel] = distinct_array(Channels[channel] + ({ ob }));
             tmp += ({ channel });
@@ -267,7 +270,7 @@ int cmdLast(string feep){
 
 static int LogIt(string what, string where, string canale){
     if( (member_array(canale,local_chans) != -1 && LOG_LOCAL_CHANS) ||
-      ( member_array(GetRemoteChannel(canale),remote_chans) != -1 && LOG_REMOTE_CHANS) ){
+            ( member_array(GetRemoteChannel(canale),remote_chans) != -1 && LOG_REMOTE_CHANS) ){
         unguarded( (: write_file($(where), $(what)) :) );
         return 1;
     }
@@ -359,7 +362,7 @@ int cmdChannel(string verb, string str) {
     if(sizeof(str) > 2){
 
         if((str[0..0] == ":" || str[0..0] == ";") &&
-          alphap(str[1..1]) && str[2..2] != " "){
+                alphap(str[1..1]) && str[2..2] != " "){
             if(str[0..0] == ";" && !grepp(verb,"forcedemote")) 
                 verb = replace_string(verb,"emote","") + "forcedemote";
             else if(str[0..0] == ":" && !grepp(verb,"emote")) verb += "emote";
@@ -369,7 +372,7 @@ int cmdChannel(string verb, string str) {
     }
 
     //******LIST******
-              //allow "list <chan>" to list users listening
+    //allow "list <chan>" to list users listening
     if( verb == "list" ) {
         string *who;
         string ch, mud;
@@ -394,7 +397,7 @@ int cmdChannel(string verb, string str) {
 
             if( !(mud = (string)INTERMUD_D->GetMudName(mud)) ) {
                 this_player()->eventPrint(mud_name() + " is not aware of "+
-                  "such a place.", MSG_ERROR);
+                        "such a place.", MSG_ERROR);
                 return 1;
             }
 
@@ -404,7 +407,7 @@ int cmdChannel(string verb, string str) {
             }
             SERVICES_D->eventSendChannelWhoRequest(ch, mud);
             this_player()->eventPrint("Remote listing request sent.",
-              MSG_SYSTEM);
+                    MSG_SYSTEM);
             return 1;
         }
         else ch = str;
@@ -422,7 +425,7 @@ int cmdChannel(string verb, string str) {
     //******END LIST******
 
 
-        //All emotes will fall into this IF structure and get tagged
+    //All emotes will fall into this IF structure and get tagged
     //as emote = 1 or forcedemote = 1
 
     //If it's a verb+emote, de-emote the verb, and mark as an emote
@@ -442,7 +445,7 @@ int cmdChannel(string verb, string str) {
         remote_chans = distinct_array(INTERMUD_D->GetChannels());
 
     if(member_array(GetRemoteChannel(verb), remote_chans) == -1 &&
-      member_array(verb, local_chans) == -1) local_chans += ({ verb });
+            member_array(verb, local_chans) == -1) local_chans += ({ verb });
 
 
     //******Access Checks
@@ -483,7 +486,7 @@ int cmdChannel(string verb, string str) {
     if( (int)this_player()->GetBlocked(verb) ) {
         if( (int)this_player()->GetBlocked("all") ) {
             this_player()->eventPrint("You cannot chat while totally blocked.",
-              MSG_ERROR);
+                    MSG_ERROR);
             return 1;
         }
         this_player()->eventPrint("Turn this channel on to talk on it.", MSG_ERROR);
@@ -514,171 +517,171 @@ int cmdChannel(string verb, string str) {
         //***********************************
 
         if( !remains ) { //If no arguments and just one word
-        msg_data = SOUL_D->GetChannelEmote(emote_cmd, ""); //Search for a feeling that matches
-    } else { //If there is an argument to the emote,
-        if( ob = find_living(target = convert_name(remains)) ) {  //If there is a living target
-            msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LIV");
-            //If it's not there, get the emote's LVS text.
-            //if (!msg_data)
-            //	msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LVS", remains);
-        } else if( strsrch(target, "@") == -1 ) { //If no living target
-            string array words = explode(remains, " ");
-            target = "";
-            for(i=0; i<sizeof(words); i++) {
-                target += lower_case(words[i]);
-                if( ob = find_living(target) ) {
-                    if( i < sizeof(words)-1 ) {
-                        remains = implode(words[(i+1)..], " ");
-                    } else {
-                        remains = 0;
-                    }
-                    //If it's not there, get the emote's LVS STR text.
-                    if (!msg_data)
-                        msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LVS STR", remains);
-                    break;
-                }
-            }
-
-            if( !ob ) {
-                msg_data = SOUL_D->GetChannelEmote(emote_cmd, "STR", remains);
-                target = 0;
-            }
-
-        } else {
-            string array words;
-
-            //Find any @'s in the remains.. Should be User@Mud
-            i = strsrch(remains, "@", -1);
-
-            //If there's not enough room for a proper name@mud, just do it as a string
-            if ( i >= strlen(remains)-1 ) {
-                msg_data = SOUL_D->GetChannelEmote(emote_cmd, "STR", remains);
-                target = 0;
-            } else { //Otherwise, call mud and find user
-                string mud,temp;
-
-                words = explode(remains[(i+1)..], " ");
-                target = remains[0..i];
-                remains = "";
-                while(sizeof(words)) {
-                    temp = implode(words, " ");
-                    temp = trim(temp);
-                    if(!alphap(last(temp,1))) temp = truncate(temp,1);
-                    mud = INTERMUD_D->GetMudName(lower_case(temp));
-                    if (!mud) mud = IMC2_D->find_mud(lower_case(temp));
-                    if( mud ) {
-                        target += mud;
+            msg_data = SOUL_D->GetChannelEmote(emote_cmd, ""); //Search for a feeling that matches
+        } else { //If there is an argument to the emote,
+            if( ob = find_living(target = convert_name(remains)) ) {  //If there is a living target
+                msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LIV");
+                //If it's not there, get the emote's LVS text.
+                //if (!msg_data)
+                //	msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LVS", remains);
+            } else if( strsrch(target, "@") == -1 ) { //If no living target
+                string array words = explode(remains, " ");
+                target = "";
+                for(i=0; i<sizeof(words); i++) {
+                    target += lower_case(words[i]);
+                    if( ob = find_living(target) ) {
+                        if( i < sizeof(words)-1 ) {
+                            remains = implode(words[(i+1)..], " ");
+                        } else {
+                            remains = 0;
+                        }
+                        //If it's not there, get the emote's LVS STR text.
+                        if (!msg_data)
+                            msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LVS STR", remains);
                         break;
                     }
-                    if( remains == "" ) remains = words[<1];
-                    else remains = words[<1] + " " + remains;
-                    words = words[0..<2];
                 }
 
-                //If we couldn't find the mud,
-                if ( !mud ) {
+                if( !ob ) {
                     msg_data = SOUL_D->GetChannelEmote(emote_cmd, "STR", remains);
                     target = 0;
-                } else {
-                    if ( trim(remains) == "" ) {
-                        msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LIV");
+                }
+
+            } else {
+                string array words;
+
+                //Find any @'s in the remains.. Should be User@Mud
+                i = strsrch(remains, "@", -1);
+
+                //If there's not enough room for a proper name@mud, just do it as a string
+                if ( i >= strlen(remains)-1 ) {
+                    msg_data = SOUL_D->GetChannelEmote(emote_cmd, "STR", remains);
+                    target = 0;
+                } else { //Otherwise, call mud and find user
+                    string mud,temp;
+
+                    words = explode(remains[(i+1)..], " ");
+                    target = remains[0..i];
+                    remains = "";
+                    while(sizeof(words)) {
+                        temp = implode(words, " ");
+                        temp = trim(temp);
+                        if(!alphap(last(temp,1))) temp = truncate(temp,1);
+                        mud = INTERMUD_D->GetMudName(lower_case(temp));
+                        if (!mud) mud = IMC2_D->find_mud(lower_case(temp));
+                        if( mud ) {
+                            target += mud;
+                            break;
+                        }
+                        if( remains == "" ) remains = words[<1];
+                        else remains = words[<1] + " " + remains;
+                        words = words[0..<2];
+                    }
+
+                    //If we couldn't find the mud,
+                    if ( !mud ) {
+                        msg_data = SOUL_D->GetChannelEmote(emote_cmd, "STR", remains);
+                        target = 0;
                     } else {
-                        msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LIV STR", remains);
+                        if ( trim(remains) == "" ) {
+                            msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LIV");
+                        } else {
+                            msg_data = SOUL_D->GetChannelEmote(emote_cmd, "LIV STR", remains);
+                        }
                     }
                 }
             }
-        }
-    } //Done finding target
+        } //Done finding target
 
-    //***********************************
-    //Find the target's proper name and target the message at him/her.
-    //***********************************
+        //***********************************
+        //Find the target's proper name and target the message at him/her.
+        //***********************************
 
-    if ( msg_data ) { //There's a target
-    string sgen = this_player()->GetGender();
-    string tgen = 0;
+        if ( msg_data ) { //There's a target
+            string sgen = this_player()->GetGender();
+            string tgen = 0;
 
-    if ( ob ) { //If a local user
-        target = ob->GetName();
-        tgen = ob->GetGender();
-    } else if ( target ) { //If a mud user
-        string user, mud;
+            if ( ob ) { //If a local user
+                target = ob->GetName();
+                tgen = ob->GetGender();
+            } else if ( target ) { //If a mud user
+                string user, mud;
 
-        sscanf(target, "%s@%s", user, mud);
-        targetkey = target;
-        tgen = SERVICES_D->GetRemoteGender(user, mud);
-        target = SERVICES_D->GetRemoteDisplayName(user, mud);
-        if( !target ) target = capitalize(targetkey);
-    }
+                sscanf(target, "%s@%s", user, mud);
+                targetkey = target;
+                tgen = SERVICES_D->GetRemoteGender(user, mud);
+                target = SERVICES_D->GetRemoteDisplayName(user, mud);
+                if( !target ) target = capitalize(targetkey);
+            }
 
-    //Calculate the viewpoint for 3rd parties
-    str = create_message(POV_OBSERVER, msg_data[0][0],
-      msg_data[0][1], "$N", sgen, "$O", tgen,
-      msg_data[1]);
+            //Calculate the viewpoint for 3rd parties
+            str = create_message(POV_OBSERVER, msg_data[0][0],
+                    msg_data[0][1], "$N", sgen, "$O", tgen,
+                    msg_data[1]);
 
-    //If it's targetted, calculate the message for the target
-    if ( target ) {
-        target_msg = create_message(POV_TARGET, msg_data[0][0],
-          msg_data[0][1], "$N", sgen,
-          "$O", tgen, msg_data[1]);
-        target_msg = replace_string(target_msg, "$O's", "your");    
-    }
-} else { //There's no target. Spurt it out like the user put it in.
-    //Forced emotes only allow real emotes, not custom ones.
-    if (forcedemote == 1) {
-        if ( member_array( emote_cmd,SOUL_D->GetEmotes() ) > -1 ) {
-            write("Invalid syntax. See %^CYAN%^help "+emote_cmd+"%^RESET%^ for a list of usages.");
-            return 1;
-        } else {
-            write("No such feeling. See %^CYAN%^help feelings%^RESET%^ for a list of feelings.");
-            return 1;
-        }
-    } else {
-        str = "$N " + str;
-        target = 0;
-    }
-}
-}
-
-
-//If admin or cre channels, Capitalize a person's real name, because admins can be physically hidden
-if( verb == "admin" || verb == "cre" ) {
-    if( !(name = (string)this_player()->GetCapName()) )
-        name = capitalize((string)this_player()->GetKeyName());
-}
-else name = (string)this_player()->GetName();
-
-//Add the "Name" $N to the string
-if(!grepp(str,"$N") && emote) str = "$N "+str;
-
-//Send locally
-eventSendChannel(name, verb, str, emote, target, target_msg);
-
-//If it's a remote channel, send it remotely.
-if(member_array(GetRemoteChannel(verb), remote_chans) != -1
-  && member_array(verb, local_chans) == -1){
-    if (rc[0..5] == "Server") { //It's an IMC2 channel
-        if( ob ) {
-            IMC2_D->channel_out(name, rc, replace_string(replace_string(str,"$N ",""),"$O",target), emote);
-        } else if ( targetkey ) {
-            IMC2_D->channel_out(name, rc, replace_string(replace_string(str,"$N ",""),"$O",targetkey), emote);
-        } else {
-            IMC2_D->channel_out(name, rc, replace_string(str,"$N ",""), emote);
-        }
-    } else { //It's an I3 channel
-        if( ob ) {
-            SERVICES_D->eventSendChannel(name, rc, str, emote, convert_name(target), target_msg);
-        } else {
-            SERVICES_D->eventSendChannel(name, rc, str, emote, convert_name(targetkey), target_msg);;
+            //If it's targetted, calculate the message for the target
+            if ( target ) {
+                target_msg = create_message(POV_TARGET, msg_data[0][0],
+                        msg_data[0][1], "$N", sgen,
+                        "$O", tgen, msg_data[1]);
+                target_msg = replace_string(target_msg, "$O's", "your");    
+            }
+        } else { //There's no target. Spurt it out like the user put it in.
+            //Forced emotes only allow real emotes, not custom ones.
+            if (forcedemote == 1) {
+                if ( member_array( emote_cmd,SOUL_D->GetEmotes() ) > -1 ) {
+                    write("Invalid syntax. See %^CYAN%^help "+emote_cmd+"%^RESET%^ for a list of usages.");
+                    return 1;
+                } else {
+                    write("No such feeling. See %^CYAN%^help feelings%^RESET%^ for a list of feelings.");
+                    return 1;
+                }
+            } else {
+                str = "$N " + str;
+                target = 0;
+            }
         }
     }
-}
 
-return 1;
+
+    //If admin or cre channels, Capitalize a person's real name, because admins can be physically hidden
+    if( verb == "admin" || verb == "cre" ) {
+        if( !(name = (string)this_player()->GetCapName()) )
+            name = capitalize((string)this_player()->GetKeyName());
+    }
+    else name = (string)this_player()->GetName();
+
+    //Add the "Name" $N to the string
+    if(!grepp(str,"$N") && emote) str = "$N "+str;
+
+    //Send locally
+    eventSendChannel(name, verb, str, emote, target, target_msg);
+
+    //If it's a remote channel, send it remotely.
+    if(member_array(GetRemoteChannel(verb), remote_chans) != -1
+            && member_array(verb, local_chans) == -1){
+        if (rc[0..5] == "Server") { //It's an IMC2 channel
+            if( ob ) {
+                IMC2_D->channel_out(name, rc, replace_string(replace_string(str,"$N ",""),"$O",target), emote);
+            } else if ( targetkey ) {
+                IMC2_D->channel_out(name, rc, replace_string(replace_string(str,"$N ",""),"$O",targetkey), emote);
+            } else {
+                IMC2_D->channel_out(name, rc, replace_string(str,"$N ",""), emote);
+            }
+        } else { //It's an I3 channel
+            if( ob ) {
+                SERVICES_D->eventSendChannel(name, rc, str, emote, convert_name(target), target_msg);
+            } else {
+                SERVICES_D->eventSendChannel(name, rc, str, emote, convert_name(targetkey), target_msg);;
+            }
+        }
+    }
+
+    return 1;
 }
 
 varargs void eventSendChannel(string who, string ch, string msg, int emote,
-  string target, string targmsg) {
+        string target, string targmsg) {
     object channeler = find_player(lower_case(who));
     string pchan,pmsg;
 
@@ -699,7 +702,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     if(this_player() && this_player() != channeler) channeler = this_player();
 
     if(!strsrch(base_name(previous_object()), "/realms/") ||
-      !strsrch(base_name(previous_object()), "/open/")) {
+            !strsrch(base_name(previous_object()), "/open/")) {
         return 0;
     }
 
@@ -716,9 +719,9 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);
     }
     else if( origin() != ORIGIN_LOCAL && previous_object() != master() &&
-      file_name(previous_object()) != PARTY_D && 
-      file_name(previous_object()) != UPDATE_D && 
-      member_array(ch, syschans) == -1){
+            file_name(previous_object()) != PARTY_D && 
+            file_name(previous_object()) != UPDATE_D && 
+            member_array(ch, syschans) == -1){
         return;
     }
     if(!Channels[ch] && file_name(previous_object()) != SERVICES_D){

@@ -43,7 +43,7 @@ mixed cmd(string args) {
 
 string GetHelp(string topic) {
     return ("Syntax: <last>\n"
-      "        <last -NUMBER>\n\n"
-      "Gives you a list of the last bunch of people to login or logout "
-      "from the enter log.");
+            "        <last -NUMBER>\n\n"
+            "Gives you a list of the last bunch of people to login or logout "
+            "from the enter log.");
 }

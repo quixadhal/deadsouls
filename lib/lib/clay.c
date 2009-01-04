@@ -5,7 +5,7 @@ private static string Composition, Name, ShortDesc, Desc;
 private static string *Nouns, *Adjs;
 
 varargs string SetComposition(string comp, string name, string *nouns, string *adjs, string
-  short, string desc);
+        short, string desc);
 void InitComposition();
 
 void create(){

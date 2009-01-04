@@ -34,7 +34,7 @@ mixed CanPoison(object who){
 
 mixed eventPoison(object who, object agent, int strength){
     send_messages("spread", "$agent_name $agent_verb some poison onto "
-      "$target_name.", who, this_object(), environment(who));
+            "$target_name.", who, this_object(), environment(who));
     AddPoison(strength);
     return 1;
 }

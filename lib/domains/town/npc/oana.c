@@ -12,10 +12,10 @@ static void create() {
     SetShort("Oana the Magic Shop keeper");
     SetLevel(12);
     SetLong("Oana is a sprightly young woman with very short "+
-      "dark hair and a simple, plain "+
-      "manner of dress. She is the Magic Shop "+
-      "keeper, and you may trade in magical "+
-      "items with her.");
+            "dark hair and a simple, plain "+
+            "manner of dress. She is the Magic Shop "+
+            "keeper, and you may trade in magical "+
+            "items with her.");
     SetGender("female");
     SetMorality(40);
     SetRace("human");

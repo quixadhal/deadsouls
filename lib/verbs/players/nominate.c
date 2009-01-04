@@ -18,7 +18,7 @@ static void create() {
     SetRules("STR");
     SetErrorMessage("Who would you like to nominate?");
     SetHelp("Syntax: <nominate STR>\n"
-      "Nominates a candidate");
+            "Nominates a candidate");
 }
 
 mixed can_nominate_str() {

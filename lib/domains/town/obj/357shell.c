@@ -13,6 +13,7 @@ void create(){
     SetFirearmType("revolver");
     SetAmmoType("magnum");
     SetVendorType(VT_TREASURE);
+    SetMass(1);
 }
 
 void init(){

@@ -17,7 +17,7 @@
 <div id="header">
 <p id="headertext">Dead Souls - Installation FAQ</p>
 <p id="subheadertext">By Cratylus @ Frontiers, February 2006. Updated
-December 2007.<br>
+November 2008.<br>
 </p>
 </div>
 <!-- End: Header -->
@@ -45,8 +45,7 @@ many warnings?</a></li>
   <li><a href="#12">How do I enable database support?</a></li>
   <li><a href="#13">How do I upgrade from one version of Dead Souls to
 another?<big><span style="font-weight: bold;"></span></big></a></li>
-  <li><small><a href="#13b"><big>I upgraded with the 2.1 to 2.4 patch
-but I'm at 2.4.0, not 2.4.1. What gives?</big></a></small></li>
+  <li><small><a href="#13b"><big>How do I compile a 64 bit driver?</big></a></small></li>
   <li><a href="#14">When I log out after starting the mud, problems
 happen.</a></li>
   <li><a href="#15">I put the mud in a Linux startup script, but it
@@ -71,8 +70,8 @@ regularly. The following will always have the most recent versions.</p>
 <p>Download the stable version from the following:
 </p>
 <ul>
-  <big> </big>
-  <li><big><a href="http://lpmuds.net/files/deadsouls/ds2.6.4.zip"><span
+  <big> </big> <li><big><a
+ href="http://lpmuds.net/files/deadsouls/ds2.6.4.zip"><span
  style="text-decoration: underline;">http://lpmuds.net/files/deadsouls/ds2.6.4.zip</span></a></big></li>
 </ul>
 <br>
@@ -283,10 +282,15 @@ with a different unzip utility.</li>
 <ul>
   <li>Login to your shell. Follow the instructions provided by your
 hosting service or your unix documentation to know how to do this.</li>
+  <li>If you are using Ubuntu, you may need to install compiler tools
+and bison: <br>
+    <span style="color: rgb(255, 0, 0); font-weight: bold;">apt-get
+install libc6-dev</span><span style="font-weight: bold;"> </span><br>
+    <span style="color: rgb(255, 0, 0); font-weight: bold;">apt-get
+install bison</span></li>
   <li>Download the distribution package. For example: <span
  style="font-weight: bold; color: rgb(255, 0, 0);">wget
-http://dead-souls.net/code/dead_souls_alpha.zip</span><br>
-  </li>
+http://dead-souls.net/code/dead_souls_alpha.zip</span></li>
   <li>DO NOT use fileroller (a GUI based app) to decompress the
 package. If
 you ignore this warning you are very likely to end up with really
@@ -346,15 +350,6 @@ admin privileges.</li>
   <li>You'll get booted out. Reboot the MUD, telnet back in, and you're
 now running Your Very Own MUD. If startmud is running, the MUD should
 restart automatically.</li>
-  <li>check the <a href="http://dead-souls.net/hotfix.html">HOTFIX PAGE</a>
-for
-late-breaking fixes.</li>
-  <li>See if any upgrades are available by typing: <span
- style="font-weight: bold;">liveupgrade all</span></li>
-  <li>If files are downloaded, apply the upgrades by typing: <span
- style="font-weight: bold;">liveupgrade apply</span></li>
-  <li>If you get nothing but a repeating message, cancel the upgrade by
-typing: <span style="font-weight: bold;">liveupgrade cancel</span></li>
   <li>Start reading the guide and the handbook and the manual.<br>
   </li>
 </ul>
@@ -550,34 +545,31 @@ overview of major changes. It does not document every difference
 between versions. <br>
 </p>
 <br>
-<p><big><span style="font-weight: bold;"><a name="13b"></a>I upgraded
-with the
-2.1 to 2.4 patch but I'm at 2.4.0, not 2.4.1. What gives?</span></big><br>
+<p><big><span style="font-weight: bold;"><a name="13b"></a>How do I
+compile a 64 bit driver?</span></big><br>
 </p>
-<p>Upgrading from 2.1 or 2.1.1 to 2.4 is a good thing, and will give
-you access to important new features and security fixes.<br>
-However, 2.1.x and 2.4.x are different enough that to get the full
-benefit of 2.4.x, you need to recompile the driver.<br>
-Your mud lib version of 2.4.0 is a reminder that you need to recompile
-the driver using the source from <a
- href="http://dead-souls.net/code/dead_souls.zip">the full<br>
-install</a>. Once you've done that, edit /secure/sefun/mud_info.c to
-read "2.4" instead of "2.4.0" and reboot.<br>
+<p>Assuming you are using a 64-bit AMD processor and running a 64-bit
+OS on it, you can enable the compilation of a 64-bit driver by editing
+fluffos*/build.FluffOS and changing:<br>
 </p>
-<p>You will then be able to perform liveupgrades, and you will be able
-to enable the cool new<br>
-2.4.x parsing features with these commands:<br>
-</p>
-<p><span style="font-weight: bold;">mudconfig defaultparse yes</span><br
- style="font-weight: bold;">
-<span style="font-weight: bold;">mudconfig matchcommand yes</span><br
- style="font-weight: bold;">
-<span style="font-weight: bold;">mudconfig matchobject yes</span><br
- style="font-weight: bold;">
-<span style="font-weight: bold;">mudconfig exitsbare yes</span><br
- style="font-weight: bold;">
-<span style="font-weight: bold;">shutdown now</span><br>
+<p>ENABLE_M64=0<br>
 <br>
+to<br>
+</p>
+<p>ENABLE_M64=1<br>
+</p>
+<p>Then re-do the compile with:<br>
+</p>
+<p><span style="font-weight: bold;">make distclean</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">./configure</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">make install</span><br>
+</p>
+<p>If this fails, you are probably either not running a 64-bit AMD
+processor, or not running a 64-bit OS on it.<span
+ style="font-weight: bold;"><br>
+</span><br>
 </p>
 <h1><a name="14"></a>When I log out after starting the mud, problems
 happen.

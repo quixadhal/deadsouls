@@ -2,7 +2,7 @@
 // A useful command from the people at Portals.
 // I think Huthar wrote this one.
 // 94-07-24 :  Pallando added utime and stime bits from TMI
-*/
+ */
 
 #include <lib.h>
 
@@ -34,7 +34,7 @@ int help()
     write( @EndText
 Syntax: gauge <command>
 Effect: Gauges how many CPU cycles <command> takes to execute.
-    and how much system and user time.
+and how much system and user time.
 Nota Bene: <command> must be typed in full (no aliases)
 EndText
     );

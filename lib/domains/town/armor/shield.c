@@ -5,7 +5,6 @@
 
 inherit LIB_ARMOR;
 
-
 static void create() {
     armor::create();
     SetKeyName("large shield");
@@ -13,16 +12,16 @@ static void create() {
     SetAdjectives( ({ "wood", "wooden","large" }) );
     SetShort("a large wooden shield");
     SetLong("A large, heavy shield made of strong wood banded with iron.");
-    SetDamagePoints(75);
     SetVendorType(VT_ARMOR);
-    SetMass(200);
-    SetBaseCost("silver",150);
+    SetMass(100);
+    SetBaseCost("silver",250);
     SetArmorType(A_SHIELD);
     SetProtection(BLUNT, 10);
     SetProtection(BLADE, 10);
     SetProtection(KNIFE, 10);
     //SetRestrictLimbs( ({"left hand"}) );
 }
+
 void init(){
     ::init();
 }

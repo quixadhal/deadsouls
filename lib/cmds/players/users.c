@@ -44,7 +44,7 @@ int help()
     write( @EndText
 Syntax: users
 Effect: Lists the names of player logged in. 
-        A shorter and quicker version of "who"
+A shorter and quicker version of "who"
 See also: who, where
 See also: say, tell, class
 EndText

@@ -41,7 +41,7 @@ mixed cmd(string args) {
     }
 
     if(!strsrch(file,"/secure/scripts/") ||
-      !strsrch(file,user_path(this_player())) ){
+            !strsrch(file,user_path(this_player())) ){
         write("Processing "+file+"...");
     }
     else {
@@ -88,15 +88,15 @@ mixed cmd(string args) {
 
 void help() {
     message("system", "Syntax: source [-gq] <filename>\n\n"
-      "If <filename> exists and is readable, this command "
-      "will read each line of that file and force you to "
-      "execute that line as if you had entered it on the "
-      "command line. If there is a file called .profile "
-      "in your home directory, it is automatically executed "
-      "in this way each time you log in.\n\n"
-      "To include system load output, use the -g flag.\n\n"
-      "If a set of commands need to occur with some time between "
-      "them (for example, to avois the MAX_COMMANDS_PER_SECOND limit) "
-      "use the -q flag. For example:\n source -q /secure/scripts/crat2.src\n\n"
-      "", this_player());
+            "If <filename> exists and is readable, this command "
+            "will read each line of that file and force you to "
+            "execute that line as if you had entered it on the "
+            "command line. If there is a file called .profile "
+            "in your home directory, it is automatically executed "
+            "in this way each time you log in.\n\n"
+            "To include system load output, use the -g flag.\n\n"
+            "If a set of commands need to occur with some time between "
+            "them (for example, to avois the MAX_COMMANDS_PER_SECOND limit) "
+            "use the -q flag. For example:\n source -q /secure/scripts/crat2.src\n\n"
+            "", this_player());
 }

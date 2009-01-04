@@ -17,18 +17,18 @@ void init() {
 void create() {
     ::create();
     SetProperties( ([
-        "light" : 2, 
-        "no kill" : 1,
-        "no steal" : 1,
-        "no magic" : 1,
-        "no teleport" : 1,
-        "no castle" : 1
-      ]) );
+                "light" : 2, 
+                "no kill" : 1,
+                "no steal" : 1,
+                "no magic" : 1,
+                "no teleport" : 1,
+                "no castle" : 1
+                ]) );
     SetShort("Project Room");
     SetLong("Welcome to the Project Tracking Department!\n"
-      "A list of commands is printed on the wall, use <read list> to view it.  "
-      "This is the room you can come to find out about "
-      "what is going on on the immortal plane on Nightmare.");
+            "A list of commands is printed on the wall, use <read list> to view it.  "
+            "This is the room you can come to find out about "
+            "what is going on on the immortal plane on Nightmare.");
     SetExits( ([ "west" : "/domains/Praxis/mudlib" ]) );
 }
 
@@ -44,9 +44,9 @@ int start_fun(string group) {
     return 1;
 }
 
-int list_fun(string which) {
-    if(!which)
-        return notify_fail("List what?\n");
-    if(which == "groups")
-        return;
-}
+    int list_fun(string which) {
+        if(!which)
+            return notify_fail("List what?\n");
+        if(which == "groups")
+            return;
+    }

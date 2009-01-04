@@ -31,7 +31,7 @@ int SetClosed(int x){
 varargs mixed CanClose(object who, string id){
 
     if(who && environment() && environment() != environment(who) &&
-      environment() != who)
+            environment() != who)
         return "#That's not accessible to you.";
 
     if( Closed ){
@@ -43,7 +43,7 @@ varargs mixed CanClose(object who, string id){
 
 varargs mixed CanOpen(object who, object tool){
     if(environment() && environment() != environment(who) &&
-      environment() != who)
+            environment() != who)
         return "#That's not accessible to you.";
 
     if( !Closed ){
@@ -57,7 +57,7 @@ mixed eventClose(object who){
         return 0;
     }
     send_messages("close", "$agent_name $agent_verb $target_name.",
-      who, this_object(), environment(who));
+            who, this_object(), environment(who));
     return 1;
 }
 
@@ -66,7 +66,7 @@ varargs mixed eventOpen(object who, object tool){
         return 0;
     }
     send_messages("open", "$agent_name $agent_verb $target_name.",
-      who, this_object(), environment(who));
+            who, this_object(), environment(who));
     return 1;
 }
 

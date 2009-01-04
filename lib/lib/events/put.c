@@ -28,7 +28,7 @@ mixed CanPut(object who){
     if( (tmp = CanDrop(who)) != 1 ) return tmp;
     if( !environment() ){ destruct(this_object()); return 1; }
     if( environment() != this_player() &&
-      environment() != environment(this_player())) return 0;
+            environment() != environment(this_player())) return 0;
     if( !PreventPut ) return 1;
     if( stringp(PreventPut) && PreventPut == "PERMIT" ) return 1;
     if( intp(PreventPut) ) return 0;
@@ -58,7 +58,7 @@ varargs mixed eventPut(object who, object storage, string prep){
     }
 
     if((inherits(LIB_SIT,storage) && sizeof(storage->GetSitters())) ||
-      (inherits(LIB_LIE,storage) && sizeof(storage->GetLiers()))){
+            (inherits(LIB_LIE,storage) && sizeof(storage->GetLiers()))){
         write("There appears to be someone blocking your access.");
         return 0;
     }
@@ -69,10 +69,10 @@ varargs mixed eventPut(object who, object storage, string prep){
         return 0;
     }
     who->eventPrint("You put " + GetShort() + prep +
-      (string)storage->GetShort() + ".");
+            (string)storage->GetShort() + ".");
     environment(who)->eventPrint((string)who->GetName() + " puts " +
-      GetShort() + prep +
-      (string)storage->GetShort() + ".", who);
+            GetShort() + prep +
+            (string)storage->GetShort() + ".", who);
     if(inherits("/lib/std/storage",this_object())){
         depth = this_object()->GetRecurseDepth();
         if(depth && inherits("/lib/std/storage",storage)) storage->AddRecurseDepth(depth); 

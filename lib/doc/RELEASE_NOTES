@@ -1,3 +1,81 @@
+---- 2.9a13 ---
+- Released 2009-01-04
+- Finally got around to indenting everything consistently.
+- Improved handling of missing/broken rooms in ROOMS_D.
+- The noclip command now enables "noclip mode" rather than
+  being a command for moving in a specific direction. While in
+  noclip mode you can move through closed doors and walls if
+  the rooms daemon is aware of an adjacent room in that direction,
+  even with no explicit exit there.
+- Fixed some vaguenesses in death notices.
+- Virtual rooms now immediately unload when the last object in their
+  inventory leaves. This allows, for example, launching a torpedo that 
+  travels 200 rooms without now having to have 200 totally useless 
+  rooms hanging around in memory.
+- Added commands: reprompt, charmode, keepalive
+- The reprompt mode redraws your prompt when you receive
+  messages, similar to how Diku muds do so. Note
+  that reprompt mode looks awful on most mud clients...it's
+  intended for folks with "single pane" clients, like people
+  using the default Linux telnet client.
+- The charmode command puts you into character mode, so that
+  your input is received on a per-keystroke basis, rather than
+  a per-line basis. This allows for stuff like using up and down
+  arrows for command recall. This is for single-pane clients
+  only! Most mud clients will fail to handle this...and they
+  may fail very horribly. This mode is experimental and 
+  somewhat broken at the moment. Unsupported on Windows muds.
+- Fixed bug in LIB_BODY that caused overlapping armor to increase
+  damage received.
+- The default player prompt now includes status info.
+- Driver: Fixed a bug in comm.c that failed to reset to linemode 
+  if the object with the get_char() target function was destructed.
+- Some damage limits have been raised. You may find your npc's
+  and weapons doing substantially more damage. See MAX_POWER and
+  MAX_SKILL in LIB_COMBAT.
+- i3router: Connection freakouts by blacklisted muds are now handled 
+  more gracefully.
+- Added sefuns: present_file(), present_bonus(), query_unique_name()
+- Driver: added efuns: query_charmode(), remove_get_char(), 
+  send_nullbyte() (thanks, Raudhrskal!)
+- AUTO_WIZ no longer prevents class selection.
+- Unified command history code into LIB_HISTORY and rewrote a bit in
+  order to use mappings rather than arrays, to avoid ambiguities.
+- The customdefs.h file for creators and builders is now in their
+  area/ directory. This is to make it easier to migrate such an
+  area to domains/ once it is complete.
+- Consolidated the calculation of max health points into LIB_RACE,
+  fixing some issues with strangely overhealthy npc's during combat
+  (eg kitchen rats).
+- Added Raudhrskal's implementation of Daelaskai's evaldefs idea
+  (thx guys).
+- If a thing doesn't have SetDamagePoints() called on it, it will
+  not deteriorate when it receives damage.
+- Items in perfect condition no longer indicate their condition.
+- Implemented basic persistence for rooms. If a room
+  has SetPersist(1); in create() and RestoreObject(); on the
+  following line, then when it reloads, it will restore into
+  its inventory whatever was left there...even across reboots. 
+  For an example, see /domains/town/room/secret.c
+- Containers can also have persistence set, but *BEWARE*. Any
+  item you set to be persistent in this way should be unique
+  in the mud. Having multiple clones of an object with persistent
+  inventory may result in hilarity, but very likely also 
+  confusion and sadness in an open mud. For an example of an item with
+  persistent inventory, see /domains/town/obj/charity.c
+  *IMPORTANT NOTE*: carryable items that are made persistent will
+  appear to behave oddly when you "reload" and "update" them, and
+  modify them with QCS. This is because QCS does not actually
+  destroy them right away, and in fact for a brief time you have
+  two of the same item in the mud, stepping on each other's persistent
+  inventory. Expect to see weirdness when using QCS with persistent items.
+- Land-based rooms can now have respiration types other than R_AIR.
+  For an example, see: /domains/default/room/vacuum.c
+  You can also test by issuing the commands:
+  goto /domains/default/room/menagerie
+  eval return HERE->SetRespirationType(R_VACUUM)
+  and seeing most everything drop dead within seconds.
+
 ---- 2.9a12 ---
 - Released 2008-11-26
 - DECAY_D is now more resistant to runtime-error failures.

@@ -34,7 +34,7 @@ static void create() {
 int eventWearShield(object who) {
     if( (string)who->GetRace() != "hobbit" ) {
         who->eventPrint("The shield's handle simply does not fit your hand "
-          "right.");
+                "right.");
         return 0;
     }
     else return 1;

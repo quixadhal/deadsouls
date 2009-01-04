@@ -84,8 +84,8 @@ int eventCreateSocket(int port) {
     int x;
     Listen["Blocking"] = 0; /* servers are not blocking to start */
     x = socket_create(SocketType,
-      "eventServerReadCallback", 
-      "eventServerAbortCallback");
+            "eventServerReadCallback", 
+            "eventServerAbortCallback");
     if( x < 0 ) {
         eventSocketError("Error in socket_create().", x);
         return x;
@@ -157,8 +157,8 @@ static void eventServerListenCallback(int fd) {
 
     trr("server:eventServerListenCallback: fd: "+fd+", "+socket_address(fd),mcolor,mclass);
     x = socket_accept(fd,
-      "eventServerReadCallback", 
-      "eventServerWriteCallback");
+            "eventServerReadCallback", 
+            "eventServerWriteCallback");
     if( x < 0 ) {
         trr("Error in socket_accept().",mcolor,mclass);
         eventSocketError("Error in socket_accept().", x);
@@ -211,21 +211,21 @@ static void eventServerWriteCallback(int fd) {
     x = EESUCCESS;
     while( sock["Buffer"] && x == EESUCCESS ) {
         switch( x = socket_write(sock["Descriptor"], sock["Buffer"][0]) ) {
-        case EESUCCESS:
-            break;
-        case EECALLBACK:
-            sock["Blocking"] = 1;
-            break;
-        case EEWOULDBLOCK: 
-            call_out( (: eventServerWriteCallback :), 0, fd);
-            return;
-        case EEALREADY:
-            sock["Blocking"] = 1;
-            return;
-        default:
-            eventClose(sock);
-            eventSocketError("Error in socket_write().", x);
-            return;
+            case EESUCCESS:
+                break;
+            case EECALLBACK:
+                sock["Blocking"] = 1;
+                break;
+            case EEWOULDBLOCK: 
+                call_out( (: eventServerWriteCallback :), 0, fd);
+                return;
+            case EEALREADY:
+                sock["Blocking"] = 1;
+                return;
+            default:
+                eventClose(sock);
+                eventSocketError("Error in socket_write().", x);
+                return;
         }
         if( sizeof(sock["Buffer"]) == 1 ) {
             sock["Buffer"] = 0;

@@ -2,7 +2,7 @@
  * This is a simple echo server. It just spews out what the
  * client types in. To disconnect the client types: quit
  * If your mud port is 6666, this will be on 6667
-*/
+ */
 
 #include <network.h>
 int port = PORT_ECHO;

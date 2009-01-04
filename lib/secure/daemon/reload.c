@@ -95,6 +95,7 @@ varargs mixed ReloadPlayer(mixed who, int deep){
     mixed mx;
     string name;
     object tmp_bod, new_bod;
+    int charmode;
 
     validate();
 
@@ -102,6 +103,8 @@ varargs mixed ReloadPlayer(mixed who, int deep){
     if(!who) return 0;
 
     name = who->GetKeyName();
+    charmode = who->GetCharmode();
+    who->CancelCharmode();
     who->save_player(name);
     mx = reload(load_object(LIB_CREATOR), deep, 0);
     if(mx) mx = reload(load_object(LIB_PLAYER), deep, 0);
@@ -130,6 +133,7 @@ varargs mixed ReloadPlayer(mixed who, int deep){
 
     destruct(tmp_bod);
     new_bod->Setup();
+    //new_bod->SetCharmode(charmode);
     SNOOP_D->CheckBot(name);
     return 1;
 }
@@ -176,11 +180,11 @@ varargs int eventReload(mixed what, int when, int nodelay){
     if(!objectp(what)) return 0;
     if(Reloadees[what]) return 0;
     if( (previous_object() != what) && 
-      !((int)master()->valid_apply(({ "ASSIST" }))) ){
+            !((int)master()->valid_apply(({ "ASSIST" }))) ){
         log_file("adm/reload_d",get_stack()+" "+identify(previous_object(-1))+
-          " attempted to use RELOAD_D: "+timestamp()+"\n");
+                " attempted to use RELOAD_D: "+timestamp()+"\n");
         tell_creators(get_stack()+" "+identify(previous_object(-1))+
-          " attempted to use RELOAD_D: "+timestamp()+"\n");
+                " attempted to use RELOAD_D: "+timestamp()+"\n");
         error("Illegal attempt to access RELOAD_D: "+get_stack()+" "+identify(previous_object(-1)));
     }
     what = file_name(what);
@@ -239,9 +243,9 @@ mapping GetReloads(){
 mapping ClearReloads(){
     if(!((int)master()->valid_apply(({ "ASSIST" }))) ){
         log_file("adm/reload_d",get_stack()+" "+identify(previous_object(-1))+
-          " attempted to clear RELOAD_D: "+timestamp()+"\n");
+                " attempted to clear RELOAD_D: "+timestamp()+"\n");
         tell_creators(get_stack()+" "+identify(previous_object(-1))+
-          " attempted to clear RELOAD_D: "+timestamp()+"\n");
+                " attempted to clear RELOAD_D: "+timestamp()+"\n");
         error("Illegal attempt to access RELOAD_D: "+get_stack()+" "+identify(previous_object(-1)));
     }
     Reloadees = ([]);
@@ -259,7 +263,7 @@ int ReloadDir(string dir, int passes){
     int err;
     validate();
     lib_obs = filter(lib_obs, (: !clonep($1) || 
-        (clonep($1) && environment($1)) :));
+                (clonep($1) && environment($1)) :));
     debug("Size of ReloadDir("+dir+", "+passes+"): "+sizeof(lib_obs));
     if(!passes) passes = 3;
     while(passes){
@@ -267,7 +271,7 @@ int ReloadDir(string dir, int passes){
         foreach(object ob in lib_obs){
             reset_eval_cost();
             if(ob != this_object() && 
-              member_array(base_name(ob), exceptions) == -1){
+                    member_array(base_name(ob), exceptions) == -1){
                 if(ob && inherits(LIB_ROOM,ob) && sizeof(livings(ob,1))){
                     reload_handles += ({ call_out((: eventReload :), 5,ob, 0, 1) });
                 }
@@ -318,7 +322,7 @@ int ReloadMud2(){
     if(!roomscleaned || stilldirty) return 0;
     dir2 = ({ "/lib/", "/secure/","/daemon/" });
     dir1 = ({ "/cmds/", "/verbs/","/estates/", "/obj/", "/open/", 
-      "/shadows/", "/std/", "/powers/" });
+            "/shadows/", "/std/", "/powers/" });
 
     stage2 = 1;
     ReloadBaseSystem();

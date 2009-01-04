@@ -24,7 +24,7 @@ int RemoveDig(){
 mixed SetDig(mixed val){
     if( !stringp(val) && !arrayp(val) && !functionp(val) ){
         error("Bad argument 1 to SetDig().\n\tExpected: string or function "
-          "or mixed array, Got: " + typeof(val) + "\n");
+                "or mixed array, Got: " + typeof(val) + "\n");
     }
     return (Dig = val);
 }
@@ -46,8 +46,8 @@ mixed eventDig(object who, object tool){
     }
     if( stringp(val) ){
         environment(who)->eventPrint(who->GetName() + " digs " +
-          GetShort() + " with " +
-          tool->GetShort() + ".", who);
+                GetShort() + " with " +
+                tool->GetShort() + ".", who);
         who->eventPrint(val);
     }
     else {

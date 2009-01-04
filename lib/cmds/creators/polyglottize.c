@@ -18,10 +18,10 @@ mixed cmd(string str) {
         return 1;
     }
     if(creatorp(target) && !archp(this_player()) &&
-      target != this_player()){
+            target != this_player()){
         write("That's impolite.");
         tell_player(target,capitalize(this_player()->GetKeyName())+
-          " just tried to polyglottize you.");
+                " just tried to polyglottize you.");
         return 1;
     }
 
@@ -36,6 +36,6 @@ mixed cmd(string str) {
 
 void help() {
     message("help", "Syntax: polyglottize <target>\n\n"
-      "Make the target able to understand all languages.\n\n",
-      this_player());
+            "Make the target able to understand all languages.\n\n",
+            this_player());
 }                                                    

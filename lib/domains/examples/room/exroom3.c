@@ -52,4 +52,4 @@ EndText);
 /*  The eventMoveLiving() function transports the player who pulls
     the lever to another room.  It also writes a message in the room
     that the player leaves and in the room they are sent to.
-*/
+ */

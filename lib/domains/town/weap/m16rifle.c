@@ -9,8 +9,8 @@ void create(){
     SetAdjectives(({"m-16","M-16","m16","M16","assault","colt"}));
     SetShort("an M-16 assault rifle");
     SetLong("This sleek black weapon has been a military workhorse "+
-      "for decades. It is durable, accurate, and above all, extraordinarily deadly. "+
-      "This rifle uses .223 caliber ammunition magazines.");
+            "for decades. It is durable, accurate, and above all, extraordinarily deadly. "+
+            "This rifle uses .223 caliber ammunition magazines.");
     SetCaliber(223);
     SetFirearmType("auto");
     SetFirearmName("rifle");

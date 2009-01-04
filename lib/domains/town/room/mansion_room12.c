@@ -8,14 +8,14 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Secret Chamber");
     SetLong("You are in a secret underground chamber beneath the "
-      "mansion.");
+            "mansion.");
     SetExits( ([
-        "up" : "/domains/town/room/mansion_room9"
-      ]) );
+                "up" : "/domains/town/room/mansion_room9"
+                ]) );
     SetObviousExits("u");
     SetInventory( ([
-        "/domains/town/obj/chest2" : 1,
-      ]) );
+                "/domains/town/obj/chest2" : 1,
+                ]) );
     SetDoor("up", "/domains/town/doors/trapdoor");
 }
 void init(){
@@ -29,9 +29,9 @@ int CheckQuest(object ob){
         ob->AddQuest("the Finder of Hidden Chambers","Newbie Mansion Chamber Quest");
         write("%^BOLD%^%^RED%^\n\nCONGRATULATIONS!\n%^RESET%^");
         write("%^BOLD%^%^RED%^You have solved the secret quest of the "+
-          "Hidden Mansion Chamber. You have "+
-          "earned 2 quest points, and 1500 experience "+
-          "points. Nice job!\n\n%^RESET%^");
+                "Hidden Mansion Chamber. You have "+
+                "earned 2 quest points, and 1500 experience "+
+                "points. Nice job!\n\n%^RESET%^");
         say(this_player()->GetName()+" solves newbie quest 1.");
         ob->AddQuestPoints(2);
         ob->AddExperiencePoints(1500);

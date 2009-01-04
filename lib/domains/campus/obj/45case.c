@@ -13,8 +13,8 @@ void create() {
     SetDollarCost(1);
     SetMaxCarry(12);
     SetInventory( ([
-        "/domains/campus/obj/45round" : 12,
-      ]) );
+                "/domains/campus/obj/45round" : 12,
+                ]) );
 }
 
 mixed CanReceive(object ob){

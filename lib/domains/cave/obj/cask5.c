@@ -28,6 +28,6 @@ void init(){
 
 mixed CanDrink(object who, string what){
     return "This is a tapped "+GetKeyName()+". You fill something "+
-      "with it, you don't drink directly from it, you barbarian.";
+        "with it, you don't drink directly from it, you barbarian.";
 }
 

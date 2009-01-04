@@ -15,7 +15,7 @@ void create() {
     SetAdjectives( ({ "small", "plastic","blue", "a" }) );
     SetShort("a small, %^BLUE%^blue%^RESET%^ plastic box");
     SetLong("It is a simple plastic box used to hold things. It is %^BLUE%^blue%^RESET%^, and it has a cute Virtual Campus "+
-      "logo on it.");
+            "logo on it.");
     SetMass(274);
     SetDollarCost(1);
     SetMaxCarry(100);

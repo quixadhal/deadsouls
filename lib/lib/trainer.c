@@ -24,14 +24,14 @@ static void create(){
     Students = ([]);
     SetNoClean(1);
     SetCommandResponses( ([
-        "train" : (: eventTrain :),
-        "teach" : (: eventTrain :),
-        "default" : (: eventHelp :),
-        "help" : (: eventHelp :),
-      ]) );
+                "train" : (: eventTrain :),
+                "teach" : (: eventTrain :),
+                "default" : (: eventHelp :),
+                "help" : (: eventHelp :),
+                ]) );
     SetRequestResponses( ([
-        "help" : (: eventHelp :),
-      ]) );
+                "help" : (: eventHelp :),
+                ]) );
 }
 
 static void init(){
@@ -41,7 +41,7 @@ static void init(){
     str = (string)this_player()->GetKeyName();
     if( Students[str] ){
         eventForce("speak You will have to start your "             
-          "studies anew, "+(string)this_player()->GetName());
+                "studies anew, "+(string)this_player()->GetName());
         map_delete(Students, str);
     }
 }
@@ -58,18 +58,18 @@ int GetNoSpells(){
 
 /**** data manipulation ****/
 
-mixed AddTrainingSkills(string *args){
-    if( !args ) 
-        error("Bad argument 1 to AddTrainingSkills.");
-    return (TrainingSkills = distinct_array(TrainingSkills + args));
-}
+    mixed AddTrainingSkills(string *args){
+        if( !args ) 
+            error("Bad argument 1 to AddTrainingSkills.");
+        return (TrainingSkills = distinct_array(TrainingSkills + args));
+    }
 
-mixed RemoveTrainingSkills(string *args){
-    if( !args || !arrayp(args) ) 
-        error("Bad argument 1 to RemoveTrainingSkills.");
-    TrainingSkills -= args;
-    return TrainingSkills;
-}
+    mixed RemoveTrainingSkills(string *args){
+        if( !args || !arrayp(args) ) 
+            error("Bad argument 1 to RemoveTrainingSkills.");
+        TrainingSkills -= args;
+        return TrainingSkills;
+    }
 
 string array GetTrainingSkills(){ return copy(TrainingSkills); }
 
@@ -114,15 +114,15 @@ mapping GetStudents(){ return copy(Students); }
 
 int eventHelp(object who, string unused){
     if(who) eventForce("speak I am not sure of what you are "
-          "asking, " + (string)who->GetName() + ".");
+            "asking, " + (string)who->GetName() + ".");
     if(sizeof( GetTrainingSkills() )){
         eventForce("speak My area of training expertise covers " +
-          Expertise() + ".");
+                Expertise() + ".");
         eventForce("speak You can \"ask "+GetKeyName()+" to train "
-          "<SKILL>\" if you have training points.");
+                "<SKILL>\" if you have training points.");
         if(sizeof(this_object()->GetSpellBook()) && !GetNoSpells()){
             eventForce("speak You can also \"ask "+GetKeyName()+
-              " to teach <SPELL>.\"");
+                    " to teach <SPELL>.\"");
         }
     }
     return 1;
@@ -135,8 +135,8 @@ int eventTrain(object who, string verb, string skill){
 
     if(who->GetLanguageLevel(this_object()->GetNativeLanguage()) < 100){
         write("You must be fluent in "+this_object()->GetNativeLanguage()+
-          " in order to understand the training provided by "+
-          this_object()->GetName()+".");
+                " in order to understand the training provided by "+
+                this_object()->GetName()+".");
         return 1;
     }
 
@@ -163,12 +163,12 @@ int eventTrain(object who, string verb, string skill){
         }
 
         who->eventPrint(GetName() + " touches your forehead and gives "
-          "you knowledge of " + skill + ".");
+                "you knowledge of " + skill + ".");
         environment()->eventPrint(GetName() + " touches " +
-          possessive_noun(who) +
-          " forehead and gives " +
-          objective(who) + " knowledge of " +
-          skill + ".", who);
+                possessive_noun(who) +
+                " forehead and gives " +
+                objective(who) + " knowledge of " +
+                skill + ".", who);
         return 1;
     }
 
@@ -180,13 +180,13 @@ int eventTrain(object who, string verb, string skill){
     }
     if( member_array(skill, this_object()->GetTrainingSkills()) == -1 ){
         eventForce("speak I know nothing about the art of " +
-          skill + ".");
+                skill + ".");
         return 0;
     }
     if( member_array(skill, 
-        (string *)this_player()->GetSkills() ) == -1 ){
+                (string *)this_player()->GetSkills() ) == -1 ){
         eventForce("speak You do not appear to be the type "
-          "who would be skilled in " + skill + "!");
+                "who would be skilled in " + skill + "!");
         eventForce("speak I cannot train you in a skill you don't know at all. You may need to join a guild or a class that enables you to train in this skill.");
         return 0;
     }
@@ -224,22 +224,22 @@ static int ContinueTraining(object who, string skill, int x){
 
 int eventStart(object who, string skill){
     who->eventPrint(GetName() + " begins teaching you "
-      "about the skill of " + skill + ".");
+            "about the skill of " + skill + ".");
     environment()->eventPrint(GetName() + " begins teaching " +
-      (string)who->GetName() + "...", who);
+            (string)who->GetName() + "...", who);
     return 1;
 }
 
 int eventContinue(object who, string skill, int x){
     who->eventPrint("You listen intently as " + GetName()
-      + " continues " + possessive(this_object())
-      + " dissertation on " + skill + ".");
+            + " continues " + possessive(this_object())
+            + " dissertation on " + skill + ".");
     return 1;
 }
 
 int eventComplete(object who, string skill){
     who->eventPrint("You feel more adept with your " + skill + ".");
     eventForce("speak I can teach you no more for now, " +
-      (string)who->GetName() + ".");
+            (string)who->GetName() + ".");
     return 1;
 }

@@ -47,7 +47,7 @@ static int ProcessData(int fd){
     string data= FilesMap[fd]["contents"];
     mixed tmp2 = "";
     string *nullifiers = ({ "HTTP/", "HTTP0^0", "Date:", "Server:", "Last-Modified:", "ETag:",
-      "Accept-Ranges:", "Content-Length:", "Connection:", "Content-Type:", "X-Pad:" });
+            "Accept-Ranges:", "Content-Length:", "Connection:", "Content-Type:", "X-Pad:" });
     string *tmparr = ({});
     FilesMap[fd]["last_char"] = last(data,1);
     FilesMap[fd]["first_char"] = first(data,1);
@@ -111,9 +111,9 @@ varargs int GetFile(string source, string file, string host, string where, int p
     if(sizeof(FilesMap) > max_outbound){
         if(!FileQueue) FileQueue = ([]);
         if(!FileQueue[file]) FileQueue[file] = ([ "source" : source, "file" : file, "host" : host,
-              "where" : where, "port" : (port || 80), "creation" : time(), "started" : 0,
-              "user" : (this_player() ? this_player()->GetName() : identify(this_object())),
-              "first_char" : "", "last_char" : "" ]);
+                "where" : where, "port" : (port || 80), "creation" : time(), "started" : 0,
+                "user" : (this_player() ? this_player()->GetName() : identify(this_object())),
+                "first_char" : "", "last_char" : "" ]);
         return 0;
     }
 
@@ -123,15 +123,15 @@ varargs int GetFile(string source, string file, string host, string where, int p
     }
 
     FilesMap[fd] = ([ "source" : source, "file" : file, "host" : host,
-      "where" : where, "port" : (port || 80), "creation" : time(), "started" : 0,
-      "user" : (this_player() ? this_player()->GetName() : identify(this_object())) ]);
+            "where" : where, "port" : (port || 80), "creation" : time(), "started" : 0,
+            "user" : (this_player() ? this_player()->GetName() : identify(this_object())) ]);
 
-status = socket_connect(fd, source +" "+port, "read_callback", "write_callback");
-if( status < 0 ){
-    return 0;
-}
+    status = socket_connect(fd, source +" "+port, "read_callback", "write_callback");
+    if( status < 0 ){
+        return 0;
+    }
 
-return fd;
+    return fd;
 }
 
 static varargs void RetryGet(int i){
@@ -162,7 +162,7 @@ static void CleanFD(int fd){
 
 void heart_beat(){
     if((!FileQueue || !sizeof(FileQueue)) &&
-      (!FilesMap || !sizeof(FilesMap))){
+            (!FilesMap || !sizeof(FilesMap))){
         if(upgrading){
             LUReport("\nFile download complete. After backing up your mud, issue the command: liveupgrade apply");
             upgrading = 0;
@@ -181,11 +181,11 @@ void write_callback(int fd){
         return; 
     }
     str ="GET "+FilesMap[fd]["file"]+" HTTP/1.0"+CARRIAGE_RETURN+"\n"+
-    "Host: "+FilesMap[fd]["host"]+CARRIAGE_RETURN+"\n" +
-    "User-Agent: "+ FilesMap[fd]["user"] + "@" + mud_name() + " " +
-    mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
-    version() + " "+
-    CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
+        "Host: "+FilesMap[fd]["host"]+CARRIAGE_RETURN+"\n" +
+        "User-Agent: "+ FilesMap[fd]["user"] + "@" + mud_name() + " " +
+        mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
+        version() + " "+
+        CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
     result = socket_write(fd, (string)str);
 }
 

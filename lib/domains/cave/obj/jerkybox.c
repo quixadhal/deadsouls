@@ -12,8 +12,8 @@ void create() {
     SetMass(274);
     SetMaxCarry(500);
     SetInventory( ([
-        "/domains/cave/meals/jerky" : random(100)+1,
-    ]) );
+                "/domains/cave/meals/jerky" : random(100)+1,
+                ]) );
 }
 
 void init(){

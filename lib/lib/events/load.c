@@ -3,8 +3,8 @@ int Loaded = 0;
 
 varargs mixed CanLoad(object who, object what){
     if(who && environment() && environment() != environment(who) &&
-      environment() != who && environment(environment()) != environment(who)
-      && environment(environment()) != who ){
+            environment() != who && environment(environment()) != environment(who)
+            && environment(environment()) != who ){
         return "#That's not accessible to you.";
     }
     else return 1;
@@ -12,8 +12,8 @@ varargs mixed CanLoad(object who, object what){
 
 varargs mixed CanUnload(object who, object what){
     if(who && environment() && environment() != environment(who) &&
-      environment() != who && environment(environment()) != environment(who)
-      && environment(environment()) != who ){
+            environment() != who && environment(environment()) != environment(who)
+            && environment(environment()) != who ){
         return "#That's not accessible to you.";
     }
     else return 1;

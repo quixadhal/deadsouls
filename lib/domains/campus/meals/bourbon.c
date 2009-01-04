@@ -19,7 +19,7 @@ static void create() {
     SetMealType(MEAL_DRINK | MEAL_ALCOHOL);
     SetStrength(100);
     SetMealMessages("You finish off the boubon and gasp! WHEW!! Mean stuff!",
-      "$N finishes off a bottle of bourbon and lets loose a rebel yell!");
+            "$N finishes off a bottle of bourbon and lets loose a rebel yell!");
     SetEmptyName("bottle");
     SetEmptyShort("an empty bottle of bourbon");
     SetEmptyLong("This is an empty green bottle that once held bourbon.");

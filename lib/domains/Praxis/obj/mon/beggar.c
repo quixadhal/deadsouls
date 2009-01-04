@@ -75,7 +75,7 @@ void catch_tell(string str) {
 }
 void complete_quest(object ob) {
     if(!ob->set_mini_quest("beggar", 5000,
-        "You replaced the missing left hand of a poor beggar.\n")) {
+                "You replaced the missing left hand of a poor beggar.\n")) {
         tell_object(ob, "The beggar thanks you.\n");
         tell_room(environment(this_object()), "The beggar thanks "+ob->query_cap_name()+".\n", ({ ob, this_object() }) );
         SetAction(5, ob->query_cap_name()+" replaced my missing left hand!");

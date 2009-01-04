@@ -25,11 +25,11 @@ int cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: <removeguest [player list]>\n\n"
-      "Removes a single player or a list of players from the guests"
-      "allowed onto the mud when it is locked.  This function is generally used to"
-      "remove access a player might have been granted by the addguest"
-      "command.\n\n"
-      "See also: addguest, whoguests", this_player()
-    );
+            "Syntax: <removeguest [player list]>\n\n"
+            "Removes a single player or a list of players from the guests"
+            "allowed onto the mud when it is locked.  This function is generally used to"
+            "remove access a player might have been granted by the addguest"
+            "command.\n\n"
+            "See also: addguest, whoguests", this_player()
+           );
 }

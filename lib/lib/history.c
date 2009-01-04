@@ -10,17 +10,12 @@
 
 private int HistorySize = MIN_HISTORY_SIZE;
 private static int CommandNumber = 1;
-private static array History;
-
-static void create(){
-    if( HistorySize < MIN_HISTORY_SIZE ) HistorySize = MIN_HISTORY_SIZE;
-    if( HistorySize > MAX_HISTORY_SIZE ) HistorySize = MAX_HISTORY_SIZE;
-    History = allocate(HistorySize);
-}
+private mapping History = ([]);
 
 static string eventHistory(string str){
     string cmd, args, old, neu;
     int len, num;
+    CommandNumber = sizeof(History);
 
     if( str[0] == '^' ) str = "!!" + str;
     if( (len = strlen(str)) < 2 || str[0] != '!' ) return Push(str);
@@ -131,12 +126,22 @@ static string eventHistory(string str){
     return Push(cmd);
 }
 
-nomask private static string Push(string cmd){
-    int x;
-
-    x = (CommandNumber-1) % sizeof(History);
-    History[x] = cmd;
-    CommandNumber++;
+static string Push(string cmd){
+    CommandNumber = sizeof(History);
+    if(CommandNumber && History[CommandNumber-1] == cmd){
+        return cmd;
+    }
+    if(CommandNumber >= HistorySize){
+        mapping newmap = ([]);
+        foreach(mixed key, mixed val in History){
+            if(key > 0) newmap[key-1] = val;
+        } 
+        History = newmap;
+    }
+    else {
+        History[CommandNumber] = cmd;
+    }
+    CommandNumber = sizeof(History);
     return cmd;
 }
 
@@ -144,43 +149,54 @@ int GetCommandNumber(){
     return CommandNumber;
 }
 
-private string GetHistory(mixed val){
-    if( CommandNumber == 1 ) return "";
-    if( intp(val) ){
-        if( val < 1 ) return "";
-        else if( val > CommandNumber -1 ) return "";
-        else if( val < (CommandNumber - sizeof(History)) ) return "";
-        val = (val-1) % sizeof(History);
-        return History[val];
-    }
-    else if( stringp(val) ){
-        int i, x;
-
-        x = (CommandNumber-2) % sizeof(History);
-        for(i = x; i>=0; i--){
-            if( !History[i] ) continue;
-            if( strsrch(History[i], val) == 0 ) return History[i];
+    string GetHistory(mixed val){
+        if(!this_player() || this_player() != this_object()
+                || this_player()->GetForced()) return "";
+        if( intp(val) ){
+            if( !History[val] ) return "";
+            return History[val];
         }
-        for(i = sizeof(History)-1; i>x; i--){
-            if( !History[i] ) continue;
-            if( strsrch(History[i], val) == 0 ) return History[i];
+        else if( stringp(val) ){
+            foreach(mixed key, mixed what in History){
+                if( strsrch(what, val) == 0 ) return what;
+            }
+            return "";
         }
-        return "";
+        else error("Invalid argument to GetHistory().\n");
     }
-    else error("Invalid argument to GetHistory().\n");
-}
 
-string *GetHistoryList(){
-    if( !((int)master()->valid_apply(({ GetKeyName() }))) ) return ({});
+mapping GetHistoryList(){
+    if( !((int)master()->valid_apply(({ GetKeyName() }))) ) return ([]);
     return copy(History);
 }
 
-int SetHistorySize(int x){
-    if( !((int)master()->valid_apply(({ GetKeyName() }))) )
-        return HistorySize;    
-    if( x == HistorySize ) return HistorySize;
-    if( x > MAX_HISTORY_SIZE ) return HistorySize;
-    else if( x < MIN_HISTORY_SIZE ) return HistorySize;
-    CommandNumber = 1;
-    return sizeof(History = allocate(HistorySize = x));
+mapping GetCommandHist(){
+    return GetHistoryList();
 }
+
+    int SetHistorySize(int x){
+        if( !((int)master()->valid_apply(({ GetKeyName() }))) )
+            return HistorySize;    
+        if( x == HistorySize ) return HistorySize;
+        if( x > MAX_HISTORY_SIZE ) return HistorySize;
+        else if( x < MIN_HISTORY_SIZE ) return HistorySize;
+        return (HistorySize = x);
+    }
+
+string GetLastCommand(){
+    if(!this_object()->GetForced() && 
+            (this_player() == this_object() || previous_object() == master())){
+        return History[sizeof(History)-1];
+    }
+    else return "";
+}
+
+int GetMaxCommandHistSize(){
+    return MAX_HISTORY_SIZE;
+}
+
+int SetMaxCommandHistSize(int i){
+    SetHistorySize(i);
+    return HistorySize;
+}
+

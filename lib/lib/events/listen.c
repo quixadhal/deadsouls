@@ -90,7 +90,7 @@ varargs mixed SetListen(mixed array args...){
     }
     else {
         error("Wrong number of arguments to SetListen():\n\t"
-          "Expected 1 or 2, got " + sizeof(args) + "\n");
+                "Expected 1 or 2, got " + sizeof(args) + "\n");
     }
 }
 
@@ -101,7 +101,7 @@ varargs mixed eventListen(object who, string str){
         return 1;
     }
     environment(who)->eventPrint(who->GetName() + " listens to " + GetShort() +
-      ".", who);
+            ".", who);
     who->eventPrint(str);
     return 1;
 }

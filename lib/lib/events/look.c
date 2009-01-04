@@ -193,20 +193,20 @@ varargs mixed eventShow(object who, string component){
         component = remove_article(lower_case(component));
         desc = GetItem(component, who);
         environment(who)->eventPrint(who->GetName() + " looks at the " +
-          component + " on the " + remove_article(GetShort()) + ".",
-          ({ who, this_object() }));
+                component + " on the " + remove_article(GetShort()) + ".",
+                ({ who, this_object() }));
     }
     else {
         desc = GetExternalDesc(who);
         environment(who)->eventPrint(who->GetName() + " looks at the " +
-          remove_article(GetShort()) + ".",
-          ({ who, this_object() }));
+                remove_article(GetShort()) + ".",
+                ({ who, this_object() }));
     }
 
     if((!inherits(LIB_SIT,this_object()) && !inherits(LIB_LIE,this_object())) ||
-      (!sizeof(this_object()->GetLiers()) && !sizeof(this_object()->GetSitters()))){
+            (!sizeof(this_object()->GetLiers()) && !sizeof(this_object()->GetSitters()))){
         if(inherits(LIB_SURFACE,this_object()) ||
-          this_object()->GetOpacity() < 33){
+                this_object()->GetOpacity() < 33){
             (functionp(desc) ? evaluate(desc) : who->eventPrint(desc));
             this_object()->eventShowInterior(who);
         }
@@ -221,7 +221,7 @@ mixed direct_look_obj(){
     if(!this_object()->GetInvis()){
         if( env != this_player() && env != environment(this_player()) ){
             return "#Perhaps \"look at "+this_object()->GetKeyName()+
-            " on\" something?"; 
+                " on\" something?"; 
         }
     }
     return 1;
@@ -238,7 +238,7 @@ mixed direct_look_on_obj(){
 mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg, mixed arg2){
     if(!ob) ob=environment(target);
     if((inherits(LIB_SIT,ob) && sizeof(ob->GetSitters())) ||
-      (inherits(LIB_LIE,ob) && sizeof(ob->GetLiers()))){
+            (inherits(LIB_LIE,ob) && sizeof(ob->GetLiers()))){
         write("There appears to be someone blocking your view.");
     }
 
@@ -248,7 +248,7 @@ mixed direct_look_at_obj_on_obj(object target, object ob,mixed arg, mixed arg2){
 
     if(!target->GetInvis()){
         if((inherits(LIB_SURFACE,ob) || living(ob)) && 
-          environment(target) == ob){
+                environment(target) == ob){
             if(this_player()->GetEffectiveVision() == VISION_CLEAR){
                 if(living(target)) return target->GetLong();
                 else return target->GetExternalDesc();
@@ -270,7 +270,7 @@ mixed direct_look_at_str_on_obj(string str, object target){
     object dingus;
     str = remove_article(lower_case(str));
     if((inherits(LIB_SIT,target) && sizeof(target->GetSitters())) ||
-      (inherits(LIB_LIE,target) && sizeof(target->GetLiers()))){
+            (inherits(LIB_LIE,target) && sizeof(target->GetLiers()))){
         write("There appears to be someone blocking your view.");
         return 0;
     }

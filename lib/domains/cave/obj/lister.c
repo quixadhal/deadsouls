@@ -10,7 +10,7 @@ void create(){
     SetAdjectives( ({"large","canvas","wood","suspended"}) );
     SetShort("a lister bag");
     SetLong("A large canvas bag suspended on a tripod containing "+
-      "drinking water.");
+            "drinking water.");
     SetMass(2000);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
@@ -29,5 +29,5 @@ void init(){
 
 mixed CanDrink(object who, string what){
     return "This is a tapped "+GetKeyName()+". You fill something "+
-      "with it, you don't drink directly from it, you barbarian.";
+        "with it, you don't drink directly from it, you barbarian.";
 }

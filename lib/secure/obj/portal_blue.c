@@ -52,7 +52,7 @@ int eventEnter(object who){
     if(dest == environment(who)){
         dest = 0;
         pg = filter(deep_inventory(who),
-          (: base_name($1) == "/domains/default/obj/generator" :) );
+                (: base_name($1) == "/domains/default/obj/generator" :) );
         if(sizeof(pg)) pg = pg[0];
         if(pg && objectp(pg)) pg->eventMove(environment(who));
         while(!dest){
@@ -88,25 +88,25 @@ mixed eventDescribeEndpoint() {
         return "It is too dark there.";
 
     items = filter(all_inventory(env),
-      (: !(int)$1->GetInvis(this_player()) :) );
+            (: !(int)$1->GetInvis(this_player()) :) );
     items = items - (livings = filter(items, (: living :)));
     message("my_action", "%^GREEN%^"
-      "Looking "+str+" you see...",
-      this_player() );
+            "Looking "+str+" you see...",
+            this_player() );
     message("other_action",
-      (string)this_player()->GetCapName()+" looks "+str+".",
-      environment(this_player()), this_player() );
+            (string)this_player()->GetCapName()+" looks "+str+".",
+            environment(this_player()), this_player() );
     message("room_description",
-      ("\n"+(string)env->GetLong(0)+"\n" || "\nA void.\n"),
-      this_player() );
+            ("\n"+(string)env->GetLong(0)+"\n" || "\nA void.\n"),
+            this_player() );
     if( sizeof(items) )
         message("room_inventory",
-          "%^MAGENTA%^" + DescribeItems(items) + "%^RESET%^\n",
-          this_player() );
+                "%^MAGENTA%^" + DescribeItems(items) + "%^RESET%^\n",
+                this_player() );
     if( sizeof(livings) )
         message("room_inventory",
-          "%^BOLD%^%^RED%^" + DescribeLiving(livings) + "%^RESET%^",
-          this_player() );
+                "%^BOLD%^%^RED%^" + DescribeLiving(livings) + "%^RESET%^",
+                this_player() );
     return 1;
 }
 
@@ -151,8 +151,8 @@ string DescribeLiving(mixed var) {
     ret = "";
     i = sizeof( shorts = keys(m) );
     while(i--) if( m[ shorts[i] ] > 1 )
-            ret += (consolidate(m[shorts[i]], shorts[i]) + "\n");
-        else ret += (shorts[i] + "\n");
+        ret += (consolidate(m[shorts[i]], shorts[i]) + "\n");
+    else ret += (shorts[i] + "\n");
     return ret;
 }
 

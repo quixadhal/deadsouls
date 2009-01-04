@@ -42,5 +42,5 @@ varargs int cmd(string str){
 void help()
 {
     write("Syntax: wizvision [ on | off ]\n"+
-      "Enables clear vision in all lighting situations."); 
+            "Enables clear vision in all lighting situations."); 
 }

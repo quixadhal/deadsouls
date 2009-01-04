@@ -11,7 +11,7 @@ static void create() {
     daemon::create();
     Guards = ([]);
     Guarded = (["rooms" : ([]), "objects" : ([]), 
-      "livings" : ([]) ]);
+            "livings" : ([]) ]);
     SetNoClean(1);
 }
 
@@ -97,13 +97,13 @@ varargs int CheckMove(object who, mixed dest, mixed dir){
     }
     if(member_array(query_verb(),go_verbs) == -1) return 1;
     guards = filter(guards, (: $1 && objectp($1) && environment($1) &&
-        environment($1) == environment($(who)) :) );
+                environment($1) == environment($(who)) :) );
     if(!sizeof(guards)) return 1;
     foreach(object guard in guards){
         mixed f;
         int x;
         if(Guards[guard] && Guards[guard]["rooms"] &&
-          Guards[guard]["rooms"][dest]){
+                Guards[guard]["rooms"][dest]){
             f = Guards[guard]["rooms"][dest];
         }
         if(!(guard->AllowPass(who, dest))){
@@ -125,13 +125,13 @@ varargs int CheckGet(object who, object what){
         return 1;
     }
     guards = filter(guards, (: $1 && objectp($1) && environment($1) &&
-        environment($1) == environment($(who)) :) );
+                environment($1) == environment($(who)) :) );
     if(!sizeof(guards)) return 1;
     foreach(object guard in guards){
         mixed f;
         int x;
         if(Guards[guard] && Guards[guard]["objects"] &&
-          Guards[guard]["objects"][what]){
+                Guards[guard]["objects"][what]){
             f = Guards[guard]["objects"][what];
         }
         if(!(guard->AllowGet(who, what))){

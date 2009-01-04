@@ -3,7 +3,7 @@
 // Please include this header if you use this code.
 // Adapted by Buddha(1-18-91) from unknown source.
 // Added check for existance of destination file. Plura 930120
-*/
+ */
 
 #include <lib.h>
 inherit LIB_DAEMON;
@@ -55,7 +55,7 @@ cmd(string str) {
         } 
         rename(t1,t2);
         if((dir && directory_exists(t2) && !directory_exists(t1)) ||
-          (!dir && file_exists(t2) && !file_exists(t1)) )
+                (!dir && file_exists(t2) && !file_exists(t1)) )
             write("mv: Ok.");
         else write("mv: Failed.");
     }
@@ -64,12 +64,12 @@ cmd(string str) {
 
 int help() {
     write(
-      "Syntax:\nmv <file1> <file2|directory>\n" +
-      "Renames a file or moves it into the directory specified.\n" +
-      "The -f flag forces the overwriting of an existing file.\n\n"+
-      "Examples:\n"+
-      "mv -f workroom.bak workroom.c\n"+
-      "mv workroom.bak /tmp/");
+            "Syntax:\nmv <file1> <file2|directory>\n" +
+            "Renames a file or moves it into the directory specified.\n" +
+            "The -f flag forces the overwriting of an existing file.\n\n"+
+            "Examples:\n"+
+            "mv -f workroom.bak workroom.c\n"+
+            "mv workroom.bak /tmp/");
     return 1;
 }
 

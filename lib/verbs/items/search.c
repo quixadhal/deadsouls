@@ -17,12 +17,12 @@ static void create() {
     SetRules("", "OBJ", "STR on OBJ", "STR of OBJ");
     SetErrorMessage("Search something?");
     SetHelp("Syntax: <search>\n"
-      "        <search ITEM>\n"
-      "        <search THING on ITEM>\n\n"
-      "Without any arguments, this command allows you to search "
-      "your general surroundings.  You may, however, concentrate "
-      "your searching on any target.\n\n"
-      "See also: listen, look, read, smell, touch");
+            "        <search ITEM>\n"
+            "        <search THING on ITEM>\n\n"
+            "Without any arguments, this command allows you to search "
+            "your general surroundings.  You may, however, concentrate "
+            "your searching on any target.\n\n"
+            "See also: listen, look, read, smell, touch");
 }
 
 mixed can_search() {
@@ -56,7 +56,7 @@ mixed do_search() {
         val = "You don't find a thing.";
     }
     environment(this_player())->eventPrint(this_player()->GetName() +
-      " searches around.", this_player());
+            " searches around.", this_player());
     this_player()->eventPrint(val);
     return 1;
 }

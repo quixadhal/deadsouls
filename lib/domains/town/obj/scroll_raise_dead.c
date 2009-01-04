@@ -39,11 +39,11 @@ varargs mixed eventRead(object reader, mixed str){
     }
 
     tell_player(this_player(),"You read the scroll, and with a roar "+
-      "like thunder, "+ob->GetCapName()+" reanimates!");
+            "like thunder, "+ob->GetCapName()+" reanimates!");
     tell_room(environment(this_player()),this_player()->GetCapName()+" reads "+
-      possessive(this_player())+ " scroll at "+ob->GetCapName()+" and "+
-      nominative(ob)+" reanimates as you hear a thunderous roar!",
-      ({ob, this_player()}) );
+            possessive(this_player())+ " scroll at "+ob->GetCapName()+" and "+
+            nominative(ob)+" reanimates as you hear a thunderous roar!",
+            ({ob, this_player()}) );
 
     basefile = lpc_file(ob->GetBaseFile());
     if(file_exists(basefile)){
@@ -56,9 +56,9 @@ varargs mixed eventRead(object reader, mixed str){
         npc->SetLevel(ob->GetLevel());
         npc->SetGender(ob->GetGender());
         npc->SetId( ({ ob->GetGender(), ob->GetRace(),
-            ob->GetClass(), "zombie" }) );
+                    ob->GetClass(), "zombie" }) );
         npc->SetAdjectives( ({ ob->GetGender(), ob->GetRace(),
-            ob->GetClass(), "zombie", "undead" }) );
+                    ob->GetClass(), "zombie", "undead" }) );
         npc->SetUndead(1);
         npc->SetKeyName(lower_case((ob->GetOwner()|| ob->GetRace())));
         npc->SetShort("A zombie "+ob->GetRace());
@@ -108,12 +108,12 @@ varargs mixed eventRead(object reader, mixed str){
 
 void create(){
     string message = "This terrible scroll will reanimate a creature's "+
-    "corpse. The resulting zombie will have little of the personality "+
-    "of its original being...just the physical attributes, which will "+
-    "slowly decay and inevitably fall apart. The zombie will obey any "+
-    "commands spoken in a language that it understood in life. If "+
-    "you are certain you must enter the dark world of necromancy, then "+
-    "you can: read scroll at person";
+        "corpse. The resulting zombie will have little of the personality "+
+        "of its original being...just the physical attributes, which will "+
+        "slowly decay and inevitably fall apart. The zombie will obey any "+
+        "commands spoken in a language that it understood in life. If "+
+        "you are certain you must enter the dark world of necromancy, then "+
+        "you can: read scroll at person";
     ::create();
     SetKeyName("scroll");
     SetId(({"scroll of raise dead","scroll of necromancy"}));
@@ -124,8 +124,8 @@ void create(){
     SetDollarCost(500);
     SetVendorType(VT_TREASURE);
     SetReads( ([ "default" : message,
-        ({ "words", "words written" }) : message,
-      ]) );
+                ({ "words", "words written" }) : message,
+                ]) );
     SetLanguage("English");
 }
 

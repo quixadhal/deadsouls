@@ -15,11 +15,11 @@ mixed cmd(string str) {
 
 void help() {
     message("help", "Syntax: ping <mudname>\n\n"
-      "Pings a mud to test connectivity. Only pings to "
-      "Dead Souls muds are supported and recommended.\n"
-      "Note that you may receive a reply from a different "
-      "mud than the one specified if someone else already "
-      "initiated a ping, or if your mud's keepalive happens "
-      "to be running at the moment of your command.\n\n",
-      this_player());
+            "Pings a mud to test connectivity. Only pings to "
+            "Dead Souls muds are supported and recommended.\n"
+            "Note that you may receive a reply from a different "
+            "mud than the one specified if someone else already "
+            "initiated a ping, or if your mud's keepalive happens "
+            "to be running at the moment of your command.\n\n",
+            this_player());
 }                                                    

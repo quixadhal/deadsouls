@@ -7,7 +7,7 @@
 // Single arg cp added by Scythe@Dead Souls (1/25/93)
 // Bug in single arg cp fixed by Pallando (5/26/93)
 // Added wild card support by Brodbane@Eve (4/3/06)
-*/
+ */
 
 #include <lib.h>
 inherit LIB_DAEMON;
@@ -61,19 +61,19 @@ int cmd(string str) {
     {
         switch( file_size(file2) )
         {
-        case -1:
-            this_player()->eventForce("mkdir "+file2);
-            break;
-        case -2:
-            break;
-        default:
-            return(write("Cannot copy wild card to a single file."),1);
+            case -1:
+                this_player()->eventForce("mkdir "+file2);
+                break;
+            case -2:
+                break;
+            default:
+                return(write("Cannot copy wild card to a single file."),1);
         }
     }
 
     foreach( string file in files ) {
         string dest = (file_size(file2)==-2 ? rmSlash(file2+"/"+
-            explode( file, "/")[<1]) : file2 );
+                    explode( file, "/")[<1]) : file2 );
 
 
         if( file_size( file ) == -2 ) {
@@ -107,15 +107,15 @@ int cmd(string str) {
 int 
 help() {
     message("help", "Command: cp\nSyntax: cp <oldfile> [pathname]<newfile>\n"
-      "This command makes a copy of the file using the new name "
-      "and location passed.  If a new pathname is not specified "
-      "then the copy is put into the present working directory. "
-      "Optionally, wild cards can be used by employing the * operator.\n"
-      "The -f flag forces overwriting of an existing file.\n\n" 
-      "Examples:\n"
-      "cp -f workroom.bak workroom.c\n"
-      "cp workroom.bak /tmp/",
-      this_player());
+            "This command makes a copy of the file using the new name "
+            "and location passed.  If a new pathname is not specified "
+            "then the copy is put into the present working directory. "
+            "Optionally, wild cards can be used by employing the * operator.\n"
+            "The -f flag forces overwriting of an existing file.\n\n" 
+            "Examples:\n"
+            "cp -f workroom.bak workroom.c\n"
+            "cp workroom.bak /tmp/",
+            this_player());
     return 1;
 }
 

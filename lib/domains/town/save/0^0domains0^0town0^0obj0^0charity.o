@@ -1,0 +1,30 @@
+#/domains/town/obj/charity.c
+MaxCarry 5000
+Opacity 100
+MaxDamagePoints 20000
+PreventGet "It's bolted down you filthy scum."
+DisableChance 50
+Mass 5000
+PersistentInventory ({"([\"Wielded\":0,\"FlaskUses\":10,\"Value\":0,\"Class\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Mass\":20,\"FlaskContents\":\"water\",\"#base_name#\":\"/domains/town/obj/canteen\",\"MealType\":4,\"Properties\":([]),\"Cost\":1000,\"FlaskStrength\":5,])","([\"Value\":0,\"MaxRecurseDepth\":3,\"CanLock\":0,\"RecurseDepth\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Persist\":1,\"Closed\":1,\"Mass\":100,\"#base_name#\":\"/domains/town/obj/rucksack\",\"Properties\":([]),\"Cost\":20000,\"#inventory#\":({\"([\\\"Heat\\\":0,\\\"Wielded\\\":0,\\\"Lit\\\":0,\\\"Value\\\":0,\\\"FuelAmount\\\":10,\\\"Class\\\":1,\\\"Worn\\\":0,\\\"Deterioration\\\":0,\\\"Broken\\\":0,\\\"Poison\\\":0,\\\"Mass\\\":1,\\\"#base_name#\\\":\\\"/domains/town/obj/match\\\",\\\"Properties\\\":([]),\\\"Cost\\\":100,])\",\"([\\\"Heat\\\":0,\\\"Wielded\\\":0,\\\"Lit\\\":0,\\\"Value\\\":0,\\\"FuelAmount\\\":10,\\\"Class\\\":1,\\\"Worn\\\":0,\\\"Deterioration\\\":0,\\\"Broken\\\":0,\\\"Poison\\\":0,\\\"Mass\\\":1,\\\"#base_name#\\\":\\\"/domains/town/obj/match\\\",\\\"Properties\\\":([]),\\\"Cost\\\":100,])\",\"([\\\"Heat\\\":0,\\\"Wielded\\\":0,\\\"Lit\\\":0,\\\"Value\\\":0,\\\"FuelAmount\\\":10,\\\"Class\\\":1,\\\"Worn\\\":0,\\\"Deterioration\\\":0,\\\"Broken\\\":0,\\\"Poison\\\":0,\\\"Mass\\\":1,\\\"#base_name#\\\":\\\"/domains/town/obj/match\\\",\\\"Properties\\\":([]),\\\"Cost\\\":100,])\",\"([\\\"Heat\\\":0,\\\"Wielded\\\":0,\\\"Lit\\\":0,\\\"Value\\\":0,\\\"FuelAmount\\\":1000,\\\"Class\\\":10,\\\"Worn\\\":0,\\\"Deterioration\\\":0,\\\"Broken\\\":0,\\\"Poison\\\":0,\\\"Mass\\\":20,\\\"#base_name#\\\":\\\"/domains/town/obj/torch\\\",\\\"Properties\\\":([]),\\\"Cost\\\":6000,])\",}),\"CanClose\":1,])","([\"Wielded\":0,\"Value\":0,\"Class\":30,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Mass\":300,\"#base_name#\":\"/domains/town/weap/sword\",\"Properties\":([]),\"Cost\":80000,])","([\"Value\":0,\"Mass\":200,\"Worn\":0,\"#base_name#\":\"/domains/town/armor/helmet\",\"Properties\":([]),\"Deterioration\":0,\"Broken\":0,\"Cost\":50000,\"Poison\":0,])","([\"Value\":0,\"Mass\":200,\"Worn\":0,\"#base_name#\":\"/domains/town/armor/chainmail\",\"Properties\":([]),\"Deterioration\":0,\"Broken\":0,\"Cost\":80000,\"Poison\":0,])","([\"BaitStrength\":0,\"Wielded\":0,\"Value\":0,\"Class\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Mass\":10,\"MealStrength\":20,\"#base_name#\":\"/domains/town/meals/ham_sand\",\"MealType\":2,\"Properties\":([]),\"Cost\":1000,])","([\"BaitStrength\":0,\"Wielded\":0,\"Value\":0,\"Class\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Mass\":10,\"MealStrength\":20,\"#base_name#\":\"/domains/town/meals/ham_sand\",\"MealType\":2,\"Properties\":([]),\"Cost\":1000,])","([\"BaitStrength\":0,\"Wielded\":0,\"Value\":0,\"Class\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Mass\":10,\"MealStrength\":20,\"#base_name#\":\"/domains/town/meals/ham_sand\",\"MealType\":2,\"Properties\":([]),\"Cost\":1000,])","([\"BaitStrength\":0,\"Wielded\":0,\"Value\":0,\"Class\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Mass\":10,\"MealStrength\":20,\"#base_name#\":\"/domains/town/meals/ham_sand\",\"MealType\":2,\"Properties\":([]),\"Cost\":1000,])","([\"BaitStrength\":0,\"Wielded\":0,\"Value\":0,\"Class\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Mass\":60,\"MealStrength\":15,\"#base_name#\":\"/domains/town/meals/potion_bigheal\",\"MealType\":4,\"Properties\":([]),\"Cost\":550000,])","([\"BaitStrength\":0,\"Wielded\":0,\"Value\":0,\"Class\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Mass\":60,\"MealStrength\":5,\"#base_name#\":\"/domains/town/meals/potion_strength\",\"MealType\":4,\"Properties\":([]),\"Cost\":100000,])","([\"Value\":0,\"Mass\":50,\"Worn\":0,\"#base_name#\":\"/domains/default/armor/gray_amulet\",\"Properties\":([\"no steal\":1,]),\"Deterioration\":0,\"Broken\":0,\"Cost\":100000,\"Poison\":0,])","([\"Heat\":0,\"Wielded\":0,\"Lit\":0,\"Value\":0,\"FuelAmount\":50,\"Class\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Mass\":5,\"#base_name#\":\"/domains/town/obj/pipe\",\"Properties\":([]),\"Cost\":30000,])","([\"Value\":0,\"MaxRecurseDepth\":3,\"CanLock\":0,\"RecurseDepth\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Persist\":1,\"Closed\":1,\"Mass\":100,\"#base_name#\":\"/domains/campus/obj/pack\",\"Properties\":([]),\"Cost\":3000,\"#inventory#\":({}),\"CanClose\":1,])",})
+PersistentInventoryEnabled 1
+Modify 1
+Short "a large bin"
+CapName "Charity bin"
+ExternalDesc "This a very large bin for holding donations to the needy. Since it is in a church, and for charity, it is reasonable to guess that folks above a certain level will receive a minor bonus for donating valuable things, and a severe penalty for taking them. There is a sign on the charity bin that you can read."
+Items (["sign":"A sign on the bin you can read.",])
+Properties ([])
+SaveRecurse 1
+Saved ({"Closed","CanClose","CanLock","RecurseDepth","MaxRecurseDepth","Properties","Locked","Keys","LockStrength","Properties","Persist","Properties","Class","Worn","Poison","Wielded","Value","Cost","Mass","Broken","Deterioration","Properties",})
+Cost 50000
+VendorType 2
+Class 1
+DamageType 2
+MaxClass 1
+ArmorType 32768
+Hands 1
+WeaponType "blunt"
+Money ([])
+QuestId ""
+Keys ({})
+MaxRecurseDepth 3
+RecurseDepth 1

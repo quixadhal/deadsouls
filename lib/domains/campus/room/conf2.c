@@ -16,17 +16,17 @@ static void create() {
     SetShort("Conference Room");
     SetLong((: ExtraDesc :));
     SetExits( ([ 
-      ]) );
+                ]) );
     SetInventory(([
-        "/domains/town/obj/bbucket" : 1,
-        "/domains/town/obj/chair" : 4,
-        "/domains/campus/obj/podium" : 1,
-      ]));
+                "/domains/town/obj/bbucket" : 1,
+                "/domains/town/obj/chair" : 4,
+                "/domains/campus/obj/podium" : 1,
+                ]));
 
     SetProperties(([
-        "no attack" : 1,
-        "nopeer" : 1,
-      ]));
+                "no attack" : 1,
+                "nopeer" : 1,
+                ]));
     privacy=0;
     set_heart_beat(20);
     timer = 0;
@@ -89,29 +89,29 @@ int set_privacy(int i){
     return 1;
 }
 /*
-int privacy(string str){
-    if(environment(this_player()) != this_object() && !archp(this_player())) {
-        write("You lack the adequate privileges to do that.");
-        say(this_player()->GetName()+" is trying to muck around with the privacy shield system.");
-        return 1;
-    }
+   int privacy(string str){
+   if(environment(this_player()) != this_object() && !archp(this_player())) {
+   write("You lack the adequate privileges to do that.");
+   say(this_player()->GetName()+" is trying to muck around with the privacy shield system.");
+   return 1;
+   }
 
-    if(str=="on" || str == "1"){
-        this_object()->set_privacy(1);
-        write("You enable the privacy shield.\n");
-        say(this_player()->GetName()+" enables a privacy force field around the room.");
-        timer = time();
-        return 1;
-    }
-    if(str=="off" || str == "0"){
-        this_object()->set_privacy(0);
-        write("You disable the privacy shield.\n");
-        say(this_player()->GetName()+" disables a privacy force field around the room.");
-        timer = 0;
-        return 1;
-    }
-}
-*/
+   if(str=="on" || str == "1"){
+   this_object()->set_privacy(1);
+   write("You enable the privacy shield.\n");
+   say(this_player()->GetName()+" enables a privacy force field around the room.");
+   timer = time();
+   return 1;
+   }
+   if(str=="off" || str == "0"){
+   this_object()->set_privacy(0);
+   write("You disable the privacy shield.\n");
+   say(this_player()->GetName()+" disables a privacy force field around the room.");
+   timer = 0;
+   return 1;
+   }
+   }
+ */
 int get_privacy(){
     return privacy;
 }

@@ -23,8 +23,8 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: <replog [(logname)]>\n\n"
-      "Tails the reports log of the immortal or domain named.\n"
-      "If no immortal or domain is named, the report log is given\n"
-      "for the person issuing the command.\n"
-    );
+            "Tails the reports log of the immortal or domain named.\n"
+            "If no immortal or domain is named, the report log is given\n"
+            "for the person issuing the command.\n"
+         );
 }

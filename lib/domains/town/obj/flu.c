@@ -46,7 +46,7 @@ void bonuses(){
     }
     else if(victim) {
         foreach( string stat in ({"intelligence", "strength",
-            "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+                    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
             victim->RemoveStatBonus(stat);
         }
     }

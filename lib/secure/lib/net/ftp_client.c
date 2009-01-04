@@ -61,7 +61,7 @@ int eventCreateSocket(string host, int port) {
         return x;
     }
     x = socket_connect(Socket->Descriptor, host + " " + port, 
-      "eventReadCallback", "eventWriteCallback");
+            "eventReadCallback", "eventWriteCallback");
     if( x != EESUCCESS ) {
         eventClose(Socket);
         eventSocketError("Error in socket_connect().", x);
@@ -98,34 +98,34 @@ static void eventWriteCallback(int fd) {
     x = EESUCCESS;
     while( Socket->Buffer && x == EESUCCESS ) {
         switch( x = socket_write(Socket->Descriptor, Socket->Buffer[0]) ) {
-        case EESUCCESS:
-            if (Write ){
-                mixed tmp;
+            case EESUCCESS:
+                if (Write ){
+                    mixed tmp;
 
-                tmp = evaluate(Write, this_object());
-                if ( sizeof(tmp) ){
-                    Socket->Buffer += ({ tmp });
+                    tmp = evaluate(Write, this_object());
+                    if ( sizeof(tmp) ){
+                        Socket->Buffer += ({ tmp });
+                    }
                 }
-            }
-            Socket->NoDestruct = 0;
-            break;
-        case EECALLBACK:
-            Socket->Blocking = 1;
-            Socket->NoDestruct = 1;
-            break;
-        case EEWOULDBLOCK:
-            call_out( (: eventWriteCallback($(fd)) :), 0);
-            Socket->NoDestruct = 1;
-            return;
-        case EEALREADY:
-            Socket->Blocking = 1;
-            eventDestruct();
-            return;
-        default:
-            eventClose(Socket);
-            eventSocketError("Error in socket_write().", x);
-            eventDestruct();
-            return ;
+                Socket->NoDestruct = 0;
+                break;
+            case EECALLBACK:
+                Socket->Blocking = 1;
+                Socket->NoDestruct = 1;
+                break;
+            case EEWOULDBLOCK:
+                call_out( (: eventWriteCallback($(fd)) :), 0);
+                Socket->NoDestruct = 1;
+                return;
+            case EEALREADY:
+                Socket->Blocking = 1;
+                eventDestruct();
+                return;
+            default:
+                eventClose(Socket);
+                eventSocketError("Error in socket_write().", x);
+                eventDestruct();
+                return ;
         }
         if( sizeof(Socket->Buffer) == 1 ) Socket->Buffer = 0;
         else Socket->Buffer = Socket->Buffer[1..];
@@ -166,8 +166,8 @@ int eventWriteDestruct() {
     return eventDestruct();
 }
 
-static void eventSocketError(string str, int x) { 
-    if( LogFile ) 
-        log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
-}
+    static void eventSocketError(string str, int x) { 
+        if( LogFile ) 
+            log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
+    }
 

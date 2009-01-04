@@ -108,7 +108,7 @@ static void clear_parallel_errors (saved_error_t **);
 static svalue_t *get_the_error (parser_error_t *, int);
 
 #define isignore(x) (!uisprint(x) || x == '\'')
-#define iskeep(x) (uisalnum(x) || x == '*')
+#define iskeep(x) (uisalnum(x) || x == '*' || x == '?' || x == '!'|| x == '.'|| x == ':')
 
 #define SHARED_STRING(x) ((x)->subtype == STRING_SHARED ? (x)->u.string : findstring((x)->u.string))
 

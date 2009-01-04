@@ -15,15 +15,15 @@ static void create() {
     SetRules("enter STR", "room STR", "enter STR", "exit STR", "OBJ", "OBJ from OBJ", "OBJ from here", "OBJ from room");
     SetErrorMessage("Delete what?");
     SetHelp("Syntax: <delete exit DIRECTION>\n"
-      "        <delete OBJECT>\n"
-      "        <delete OBJECT from OBJECT>\n"
-      "  This command removes an object from the permanent "
-      "inventory of another object. When only one object is specified, "
-      "this command assumes you mean to remove an object from the "
-      "inventory of the room you are in.\n"
-      "  If the \"exit\" keyword is used, this command attempts to "
-      "remove the exit in the direction you specify.\n"
-      "See also: add, copy, create, delete, modify, reload, initfix");
+            "        <delete OBJECT>\n"
+            "        <delete OBJECT from OBJECT>\n"
+            "  This command removes an object from the permanent "
+            "inventory of another object. When only one object is specified, "
+            "this command assumes you mean to remove an object from the "
+            "inventory of the room you are in.\n"
+            "  If the \"exit\" keyword is used, this command attempts to "
+            "remove the exit in the direction you specify.\n"
+            "See also: add, copy, create, delete, modify, reload, initfix");
 }
 
 

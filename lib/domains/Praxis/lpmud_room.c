@@ -10,10 +10,10 @@ void create() {
     SetProperty("indoors", 1);
     SetShort( "The LPMud Room");
     SetLong(
-      "Advertisements for new LPMuds are posted here. "
-      "Ads on other boards will be quickly removed.");
+            "Advertisements for new LPMuds are posted here. "
+            "Ads on other boards will be quickly removed.");
     SetExits( 
-      (["west" : "/domains/Praxis/adv_main"]) );
+            (["west" : "/domains/Praxis/adv_main"]) );
 
     ob = new("/lib/bboard");
     ob->SetKeyName("board");
@@ -23,7 +23,7 @@ void create() {
     ob->move("/domains/Praxis/lpmud_room");
     ob->SetShort( "LPMud Advertising Board");
     ob->SetLong( "This board exists to promote LPMuds everywhere. "
-      "Please feel free to post about a mud you know of here.\n");
+            "Please feel free to post about a mud you know of here.\n");
 }
 
 void init(){

@@ -15,13 +15,13 @@ static void create() {
     SetRules("OBS", "OBS with OBJ");
     SetErrorMessage("Light what?  Or light what with what?");
     SetHelp("Syntax: <light OBJECT>\n"
-      "        <light OBJECT with OBJECT>\n\n"
-      "Using the first syntax, you can light things which "
-      "do not need another source in order to be lit, like a lamp or "
-      "a lighter.  The second syntax allows you to light objects which "
-      "require burning sources in order for themselves to be light, "
-      "like a torch or a camp fire.\n\n"
-      "See also: extinguish");
+            "        <light OBJECT with OBJECT>\n\n"
+            "Using the first syntax, you can light things which "
+            "do not need another source in order to be lit, like a lamp or "
+            "a lighter.  The second syntax allows you to light objects which "
+            "require burning sources in order for themselves to be light, "
+            "like a torch or a camp fire.\n\n"
+            "See also: extinguish");
 }
 
 mixed can_light_obj() {
@@ -61,8 +61,8 @@ mixed do_light_obs(mixed *targs) {
     tmp = item_list(obs);
     this_player()->eventPrint("You light " + tmp + ".");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " lights " + tmp + ".",
-      this_player());
+            " lights " + tmp + ".",
+            this_player());
     return 1;
 }
 
@@ -85,10 +85,10 @@ mixed do_light_obs_with_obj(mixed *targs, object source) {
     if( !sizeof(obs) ) return 1;
     tmp = item_list(obs);
     this_player()->eventPrint("You light " + tmp + " with " +
-      (string)source->GetShort() + ".");
+            (string)source->GetShort() + ".");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " lights " + tmp + " with " +
-      (string)source->GetShort() + ".",
-      this_player());
+            " lights " + tmp + " with " +
+            (string)source->GetShort() + ".",
+            this_player());
     return 1;
 }

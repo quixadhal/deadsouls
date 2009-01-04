@@ -21,7 +21,7 @@ mixed cmd(string str) {
     }
     else {
         ret = "The following creatures bear ill will toward "+ 
-        capitalize(str)+": ";
+            capitalize(str)+": ";
         filter(foes, (: foenames += ({$1->GetShort()}) :) );
         ret += implode(foenames, ", ")+".";
     }
@@ -30,8 +30,8 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: enemies\n"
-      "This command reports who feels antagonism toward you.",
-      this_player() );
+            "Syntax: enemies\n"
+            "This command reports who feels antagonism toward you.",
+            this_player() );
 }
 

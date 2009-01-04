@@ -85,20 +85,20 @@ int eventDecay(){
         return 0;
     }
     switch(Count){
-    case 10:
-        if(stank)
-            message("smell", "The "+Limb+" really stinks.", environment());
-        SetShort("the stinky remains of a rotting " + Limb);
-        break;
-    case 20:
-        if(stank)
-            message("smell", "A rotting stench fills the entire area.",
-              environment());
-        SetShort("a pile of rotting flesh");
-        break;
-    case 30:
-        Destruct();
-        return 0;
+        case 10:
+            if(stank)
+                message("smell", "The "+Limb+" really stinks.", environment());
+            SetShort("the stinky remains of a rotting " + Limb);
+            break;
+        case 20:
+            if(stank)
+                message("smell", "A rotting stench fills the entire area.",
+                        environment());
+            SetShort("a pile of rotting flesh");
+            break;
+        case 30:
+            Destruct();
+            return 0;
     }
     if(slowdecay){
         if(random(100) > slowdecay) Count++;

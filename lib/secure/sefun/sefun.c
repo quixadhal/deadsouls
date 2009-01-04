@@ -23,9 +23,8 @@
 #include "sefun.h"
 
 #include "/secure/sefun/absolute_value.c"
-#include "/secure/sefun/base_name.c"
+#include "/secure/sefun/names.c"
 #include "/secure/sefun/communications.c"
-#include "/secure/sefun/convert_name.c"
 #include "/secure/sefun/copy.c"
 #include "/secure/sefun/domains.c"
 #include "/secure/sefun/economy.c"
@@ -84,7 +83,6 @@
 #include "/secure/sefun/numbers.c"
 #include "/secure/sefun/inventory.c"
 #include "/secure/sefun/findobs.c"
-#include "/secure/sefun/query_names.c"
 #include "/secure/sefun/ascii.c"
 #include "/secure/sefun/wild_card.c"
 #include "/secure/sefun/compare_array.c"
@@ -102,7 +100,7 @@ int regexp_count = 1;
 int max_regexp = 200;
 private static string *blacklist = ({});
 private static string *jokes = ({"bind","call_out","call_other",
-  "unguarded","evaluate"});
+        "unguarded","evaluate"});
 
 varargs object clone_object(string name, mixed args...){
     int obsnum;
@@ -171,10 +169,10 @@ mapping rusage(){
     return efun::rusage();
 #else
     return ([ "nivcsw" : 0, "isrss" : 0, "nsignals" : 0, "utime" : 0,
-      "oublock" : 0, "maxrss" : 0, "stime" : 0, 
-      "nvcsw" : 0, "majflt" : 0, "nswap" : 0, "msgrcv" : 0, 
-      "inblock" : 0, "minflt" : 0, "ixrss" : 0,
-      "msgsnd" : 0, "idrss" : 0 ]);
+            "oublock" : 0, "maxrss" : 0, "stime" : 0, 
+            "nvcsw" : 0, "majflt" : 0, "nswap" : 0, "msgrcv" : 0, 
+            "inblock" : 0, "minflt" : 0, "ixrss" : 0,
+            "msgsnd" : 0, "idrss" : 0 ]);
 #endif
 }
 
@@ -238,8 +236,8 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     else error("call_out with no previous_object()");
 
     if(sizeof(raw) > MAX_CALL_OUTS && (strsrch(prevbase,"/secure/") && 
-        strsrch(prevbase,"/lib/") && strsrch(prevbase,"/std/") &&
-        strsrch(prevbase,"/daemon/") && strsrch(prevbase,"/domains/"))){
+                strsrch(prevbase,"/lib/") && strsrch(prevbase,"/std/") &&
+                strsrch(prevbase,"/daemon/") && strsrch(prevbase,"/domains/"))){
         int err;
         globalmixed = prev;
         err = catch(unguarded( (: destruct( globalmixed ) :) ));
@@ -266,7 +264,7 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     if(strsrch(prevbase,"/secure/") && strsrch(prevbase,"/daemon/")){
 #if CALL_OUT_LOGGING
         unguarded( (: write_file("/log/secure/callouts",timestamp()+" "+
-              identify(previous_object(-1))+" "+identify((gargs || gfun))+"\n") :) );
+                        identify(previous_object(-1))+" "+identify((gargs || gfun))+"\n") :) );
 #endif
 
         while(i--){
@@ -374,7 +372,7 @@ varargs mixed objects(mixed arg1, mixed arg2){
     else tmp_obs = efun::objects();
 
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
-      base_name(previous_object())  != SERVICES_D){
+            base_name(previous_object())  != SERVICES_D){
 #ifdef __FLUFFOS__
         tmp_obs = filter(tmp_obs, (: !($1->GetInvis() && archp($1)) :) );
 #else
@@ -416,7 +414,7 @@ varargs mixed objects(mixed arg1, mixed arg2){
 mixed array users(){
     object *ret = filter(efun::users(), (: ($1) && environment($1) :) );
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
-      base_name(previous_object())  != SERVICES_D)
+            base_name(previous_object())  != SERVICES_D)
         ret = filter(ret, (: !($1->GetInvis() && archp($1)) :) );
     return ret;
 }
@@ -428,7 +426,7 @@ mixed array users(){
             if(objectp(foo) && environment(foo)) ret += ({ foo });
         }
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
-      base_name(previous_object())  != SERVICES_D)
+            base_name(previous_object())  != SERVICES_D)
         foreach(mixed foo in ret){
             if(foo->GetInvis() && archp(foo)) ret -= ({ foo });
         }
@@ -465,19 +463,19 @@ int destruct(object ob) {
 
 varargs void shutdown(int code) {
     if(!((int)master()->valid_apply(({"ASSIST"}))) &&
-      !((int)master()->valid_apply(({"SECURE"})))) return;
+            !((int)master()->valid_apply(({"SECURE"})))) return;
     if(this_player())
         log_file("shutdowns", (string)this_player()->GetCapName()+
-          " shutdown "+mud_name()+" at "+ctime(time())+"\n");
+                " shutdown "+mud_name()+" at "+ctime(time())+"\n");
     else log_file("shutdowns", "Game shutdown by "+
-          file_name(previous_object(0))+" at "+ctime(time())+"\n");
+            file_name(previous_object(0))+" at "+ctime(time())+"\n");
     efun::shutdown(code);
 }
 
 int valid_snoop(object snooper, object target){
     if(member_group(target, PRIV_SECURE)) {
         message("system", (string)snooper->GetCapName()+" is trying to snoop "
-          "you.", target);
+                "you.", target);
         if(!member_group(snooper, PRIV_SECURE)) return 0;
     }
     if(archp(snooper)) return 1;
@@ -497,17 +495,17 @@ varargs object snoop(object who, object target) {
     }
     else if(member_group(target, PRIV_SECURE)) {
         message("system", (string)who->GetCapName()+" is now snooping "
-          "you.", target);
+                "you.", target);
         return efun::snoop(who, target);
     }
     else return efun::snoop(who, target);
 }
 
-object query_snoop(object ob) {
-    if(base_name(previous_object()) != SNOOP_D)
-        return 0;
-    return efun::query_snoop(ob);
-}
+    object query_snoop(object ob) {
+        if(base_name(previous_object()) != SNOOP_D)
+            return 0;
+        return efun::query_snoop(ob);
+    }
 
 object query_snooping(object ob) {
     if(!((int)master()->valid_apply(({})))) return 0;
@@ -519,7 +517,7 @@ int exec(object target, object src) {
     int ret;
     tmp = base_name(previous_object());
     if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE 
-      && tmp != SU && tmp != RELOAD_D) return 0;
+            && tmp != SU && tmp != RELOAD_D) return 0;
     ret = efun::exec(target, src);
     return ret;
 }
@@ -577,3 +575,94 @@ int sefun_exists(string str){
     if(member_array(str,functions(this_object())) != -1) return 1;
     return 0;
 }
+
+int query_charmode(object ob){
+    int ret = -1;
+#ifdef __DSLIB__
+    ret = unguarded( (: efun::query_charmode($(ob)) :) );
+#endif
+    return ret;
+}
+
+varargs void input_to(mixed fun, int flag, mixed args...){
+    object prev = previous_object();
+    object player = this_player();
+
+    gargs = args;
+    gfun = fun;
+    gdelay = flag;
+
+    if(!prev){
+        error("input_to with no previous_object()");
+    }
+    if(stringp(fun)){
+        if(member_array(fun,jokes) != -1){
+            error("Please, no jokes!");
+        }
+        globalmixed = prev;
+        fun = bind( (: call_other, globalmixed, gfun  :) ,prev);
+    }
+    gfun = fun;
+
+    if(player && player->GetCharmode()){
+#ifdef __DSLIB__
+        remove_get_char(player);
+#endif
+    }
+    if(sizeof(gargs)){
+        //tc("lol1");
+        efun::input_to(gfun, gdelay, gargs...);
+    }
+    else {
+        //tc("lol2");
+        efun::input_to(gfun, gdelay);
+    }
+}
+
+/* Do not use this sefun directly. */
+varargs mixed file_present_logic(string str, object ob, int i){
+    int cloned;
+    mixed *rets = ({});
+    if(objectp(str) || strsrch(str,"/")){
+        return efun::present(str, ob);
+    }
+    if(grepp(str,"#")) cloned = 1;
+    foreach(mixed item in all_inventory(ob)){
+        if(cloned && file_name(item) == str) rets += ({ item });
+        else if(!cloned && base_name(item) == str) rets += ({ item });
+    }
+    if(i && sizeof(rets)) return rets;
+    else if(sizeof(rets)) return rets[0];
+    return 0; 
+}
+
+varargs mixed present_file(mixed str, mixed ob, int i){
+    object ret, env, *rets = ({});
+    if(!str) return 0;
+    if(objectp(str)) str = base_name(str);
+    if(ob){ 
+        ret = file_present_logic(str, ob, i);
+        if(ret) return ret;
+    }
+    else {
+        ob = previous_object();
+        if(ob){
+            ret = file_present_logic(str, ob, i);
+            if(ret) return ret;
+            env = environment(ob);
+            if(env) ret = file_present_logic(str, env, i);
+            if(ret) return ret;
+        }
+    }
+    return 0;
+}
+
+varargs mixed present_bonus(mixed str, mixed ob, int i){
+    mixed thingies = ( filter( all_inventory(ob),
+                (: $1->GetBonusName() :) ) || ({}) );
+    thingies = filter(thingies,(: $1->GetBonusName() == $(str) :));
+    if(!i && sizeof(thingies)) return thingies[0];
+    else if(sizeof(thingies)) return thingies;
+    return 0;
+}
+

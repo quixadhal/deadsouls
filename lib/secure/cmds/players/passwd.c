@@ -25,9 +25,9 @@ mixed cmd(string args) {
     }
     else ob = previous_object();
     previous_object()->eventPrint("Changing password for " +
-      (ob ? (string)ob->GetCapName() :
-        capitalize(args)) + " on " +
-      mud_name() + ".", MSG_SYSTEM);
+            (ob ? (string)ob->GetCapName() :
+             capitalize(args)) + " on " +
+            mud_name() + ".", MSG_SYSTEM);
     if( previous_object() == ob ) {
         ob->eventPrint("Old password: ", MSG_PROMPT);
         input_to( (: OldPass :), I_NOECHO | I_NOESC, ob);
@@ -59,8 +59,8 @@ static void OldPass(string pass, object who) {
 static void NewPass(string pass, mixed who) {
     if( !pass || strlen(pass) < 5 ) {
         this_player()->eventPrint("Password must be at least 5 "
-          "characters, password change failed.",
-          MSG_SYSTEM);
+                "characters, password change failed.",
+                MSG_SYSTEM);
         return;
     }
     this_player()->eventPrint("\nConfirm: ", MSG_PROMPT);
@@ -92,9 +92,9 @@ static void ConfirmPass(string str, mixed who, string newpass) {
 
 string GetHelp(string str) {
     return ("Syntax: <passwd>\n"
-      "        <passwd PLAYER>\n\n"
-      "If you are not an arch, then the second syntax is not available "
-      "to you.  This command allows you to change your password.\n\n"
-      "See also: chfn");
+            "        <passwd PLAYER>\n\n"
+            "If you are not an arch, then the second syntax is not available "
+            "to you.  This command allows you to change your password.\n\n"
+            "See also: chfn");
 }
 

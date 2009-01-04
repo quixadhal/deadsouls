@@ -70,9 +70,9 @@ nomask void save_player(string nom){
         return;
     }
     Inventory = filter(map(all_inventory(), (: $1->GetSaveString() :)),
-      (: $1 :));
+            (: $1 :));
     file = save_file(GetKeyName());
-    unguarded((: save_object, file, 1 :));
+    unguarded((: save_object, file :));
     Inventory = 0;
 }
 
@@ -85,7 +85,7 @@ static void heart_beat(){
     LastSave = x;
     save_player(GetKeyName());
     if( !builderp(this_object()) && !present("visitor pass",this_object()) 
-      && !testp(this_object()) ){
+            && !testp(this_object()) ){
         eventPrint("Autosaving...", MSG_SYSTEM);
     }
 }

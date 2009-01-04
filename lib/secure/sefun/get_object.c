@@ -18,7 +18,7 @@
 //   :s - shadow of an object
 //   :>func - the object returned by the base object->func() (useful for things
 //            like referencing the monster attacking someone.
-*/
+ */
 
 private static string gstr;
 
@@ -32,8 +32,8 @@ varargs object get_object( string str, object player, int living )
     if( !str ) return 0;
     if( !player || !living( player ) ) player = this_player();
     if( sscanf( str, "@%s", tmp )         &&
-      ( tmp = get_object( tmp, player ) ) &&
-      ( what = environment( tmp )       )    ){
+            ( tmp = get_object( tmp, player ) ) &&
+            ( what = environment( tmp )       )    ){
         return what;
     }
     if( player )    //  Check existance of this_player()
@@ -49,7 +49,7 @@ varargs object get_object( string str, object player, int living )
             }
             gstr = str;
             candidates = filter(all_inventory(player),
-              (: member_array(gstr, $1->GetCanonicalId()) != -1 :) );
+                    (: member_array(gstr, $1->GetCanonicalId()) != -1 :) );
             if(living){
                 candidates = filter(candidates, (: living($1) :) );
             }
@@ -70,7 +70,7 @@ varargs object get_object( string str, object player, int living )
                 }
                 gstr = str;
                 candidates = filter(all_inventory(player),
-                  (: member_array(gstr, $1->GetCanonicalId()) != -1 :) );
+                        (: member_array(gstr, $1->GetCanonicalId()) != -1 :) );
                 if(living){
                     candidates = filter(candidates, (: living($1) :) );
                 }
@@ -178,8 +178,8 @@ varargs mixed get_objects( string str, object player, int no_arr )
         }
         switch( sizeof( ret ) )
         {
-        case 0: return 0;
-        case 1: return ret[0];
+            case 0: return 0;
+            case 1: return ret[0];
         }
         return( no_arr ? ret[0] : ret );
     }
@@ -194,24 +194,24 @@ varargs mixed get_objects( string str, object player, int no_arr )
 }
 
 /*
-  NB
+   NB
 
-  It would be fairly simple to combine these two functions into one
-varargs object get_object( string str, object player, int arr_poss )
-  which will only return a single object unless the array_possible flag
-  is passed.
+   It would be fairly simple to combine these two functions into one
+   varargs object get_object( string str, object player, int arr_poss )
+   which will only return a single object unless the array_possible flag
+   is passed.
 
-  I have chosen not to do this however, since some muds may not wish to
-  use the more complicated search routines and keeping get_objects() as
-  a seperate simul_efun makes it easier to disable.
-*/
+   I have chosen not to do this however, since some muds may not wish to
+   use the more complicated search routines and keeping get_objects() as
+   a seperate simul_efun makes it easier to disable.
+ */
 
 object *get_dummies(mixed where){
     object *ret = ({});
     if(stringp(where)) where = to_object(where);
     if(!where || !objectp(where)) return ret;
     ret = filter(deep_inventory(where), (: inherits(LIB_BASE_DUMMY, $1) ||
-        base_name($1) == LIB_BASE_DUMMY || base_name($1) == LIB_DUMMY :) );
+                base_name($1) == LIB_BASE_DUMMY || base_name($1) == LIB_DUMMY :) );
     return ret;
 }
 

@@ -26,11 +26,11 @@ static void heart_beat(){
     }
 }
 
-mixed direct_light_obj(){
-    if( GetFuelAmount() < 1 )
-        return "There is no " + GetFuelType() + " in " + GetShort() + ".";
-    return 1;
-}
+    mixed direct_light_obj(){
+        if( GetFuelAmount() < 1 )
+            return "There is no " + GetFuelType() + " in " + GetShort() + ".";
+        return 1;
+    }
 
 mixed eventDarken(){
     light::eventDarken();

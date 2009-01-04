@@ -38,8 +38,8 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: quests\n\n"
-      "This command lists the quests you have completed.\n\n",
-      this_player() );
+            "Syntax: quests\n\n"
+            "This command lists the quests you have completed.\n\n",
+            this_player() );
 }
 

@@ -21,7 +21,7 @@ mixed cmd(string args) {
     }
 
     if( sscanf(args, "%s into %s", a, b) != 2 &&
-      sscanf(args, "%s to %s", a, b) != 2 ) {
+            sscanf(args, "%s to %s", a, b) != 2 ) {
         return "Syntax: <transfer OBJECT INTO OBJECT>\n\n";
     }
     what = get_object(a);
@@ -38,13 +38,13 @@ mixed cmd(string args) {
     res = what->eventMove(destination);
     if( !res ) {
         return "Failed to transfer " + identify(what) + " into " +
-        identify(destination) + ".";
+            identify(destination) + ".";
     }
     else if( res != 1 ) {
         return res;
     }
     previous_object()->eventPrint("Transferred " + identify(what) + " into " +
-      identify(destination) + ".", MSG_SYSTEM);
+            identify(destination) + ".", MSG_SYSTEM);
     if( living(what) ) {
         what->eventDescribeEnvironment();
     }
@@ -53,7 +53,7 @@ mixed cmd(string args) {
 
 string GetHelp() {
     return ("Syntax: <transfer OBJECT into OBJECT>\n\n"
-      "Allows you to transfer the object you name into the container "
-      "you name.\n\n"
-      "See also: trans, expel, goto, return");
+            "Allows you to transfer the object you name into the container "
+            "you name.\n\n"
+            "See also: trans, expel, goto, return");
 }

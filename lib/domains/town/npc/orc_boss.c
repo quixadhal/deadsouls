@@ -24,7 +24,7 @@ static void create() {
     SetAdjectives(({"dirty","orc","boss"}));
     SetShort("the boss orc");
     SetLong("This orc is typical of its breed: nasty, brutish, and short. It is larger "
-      "than the local orcs you've seen, and looks mean and tough.");
+            "than the local orcs you've seen, and looks mean and tough.");
     SetLevel(1);
     SetRace("orc");
     SetClass("fighter");
@@ -32,8 +32,8 @@ static void create() {
     SetMaxHealthPoints(200);
     SetEncounter(  (: CheckOrc :) );
     SetInventory(([
-        "/domains/town/weap/dagger":"wield dagger",
-      ]) );
+                "/domains/town/weap/dagger":"wield dagger",
+                ]) );
     SetGuard("west","The boss orc blocks your path!");
 }
 

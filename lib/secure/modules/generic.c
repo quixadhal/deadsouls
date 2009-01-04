@@ -21,46 +21,46 @@ mixed gmake(string str) {
     if(sscanf(str, "%s %s %s",thingy, val, filename) == 3) true();
     else if(sscanf(str,"%s %s",thingy, filename) !=2) thingy = str;
     switch(thingy){
-    case "item" : creation = "thing"; dir = "obj";break;
-    case "book" : creation = "book"; dir = "obj";break;
-    case "thing" : creation = "thing"; dir = "obj";break;
-    case "weap" : creation = "weapon"; dir = "weap";break;
-    case "weapon" : creation = "weapon"; dir = "weap";break;
-    case "armor" : creation = "armor"; dir = "armor";break;
-    case "arm" : creation = "armor"; dir = "armor";break;
-    case "chair" : creation = "chair"; dir = "obj";break;
-    case "bed" : creation = "bed"; dir = "obj";break;
-    case "storage" : creation = "container"; dir = "obj";break;
-    case "container" : creation = "container"; dir = "obj";break;
-    case "table" : creation = "table"; dir = "obj";break;
-    case "door" : creation = "door"; dir = "doors";break;
-    case "barkeep" : creation = "barkeep"; dir = "npc";break;
-    case "vendor" : creation = "vendor"; dir = "npc";break;
-    case "trainer" : creation = "trainer"; dir = "npc";break;
-    case "npc" : creation = "npc"; dir = "npc";break;
-    case "mob" : creation = "npc"; dir = "npc";break;
-    case "mon" : creation = "npc"; dir = "npc";break;
-    case "monst" : creation = "npc"; dir = "npc";break;
-    case "monster" : creation = "npc"; dir = "npc";break;
-    case "meal" : creation = "meal"; dir = "meals";break;
-    case "food" : creation = "meal"; dir = "meals";break;
-    case "drink" : creation = "drink"; dir = "meals";break;
-    case "worn" : creation = "worn_storage"; dir = "armor";break;
-    case "wornstorage" : creation = "worn_storage"; dir = "armor";break;
-    case "worn_storage" : creation = "worn_storage"; dir = "armor";break;
-    default : true();
+        case "item" : creation = "thing"; dir = "obj";break;
+        case "book" : creation = "book"; dir = "obj";break;
+        case "thing" : creation = "thing"; dir = "obj";break;
+        case "weap" : creation = "weapon"; dir = "weap";break;
+        case "weapon" : creation = "weapon"; dir = "weap";break;
+        case "armor" : creation = "armor"; dir = "armor";break;
+        case "arm" : creation = "armor"; dir = "armor";break;
+        case "chair" : creation = "chair"; dir = "obj";break;
+        case "bed" : creation = "bed"; dir = "obj";break;
+        case "storage" : creation = "container"; dir = "obj";break;
+        case "container" : creation = "container"; dir = "obj";break;
+        case "table" : creation = "table"; dir = "obj";break;
+        case "door" : creation = "door"; dir = "doors";break;
+        case "barkeep" : creation = "barkeep"; dir = "npc";break;
+        case "vendor" : creation = "vendor"; dir = "npc";break;
+        case "trainer" : creation = "trainer"; dir = "npc";break;
+        case "npc" : creation = "npc"; dir = "npc";break;
+        case "mob" : creation = "npc"; dir = "npc";break;
+        case "mon" : creation = "npc"; dir = "npc";break;
+        case "monst" : creation = "npc"; dir = "npc";break;
+        case "monster" : creation = "npc"; dir = "npc";break;
+        case "meal" : creation = "meal"; dir = "meals";break;
+        case "food" : creation = "meal"; dir = "meals";break;
+        case "drink" : creation = "drink"; dir = "meals";break;
+        case "worn" : creation = "worn_storage"; dir = "armor";break;
+        case "wornstorage" : creation = "worn_storage"; dir = "armor";break;
+        case "worn_storage" : creation = "worn_storage"; dir = "armor";break;
+        default : true();
     }
 
     legal_dirs = ({"meals","doors", "obj","armor","weap","npc"});
     if(member_array(dir, legal_dirs) == -1) {
         write("That is not a valid argument. You may create the following: room, npc, "+
-          "door, weapon, armor, container, item, table, chair, bed, meal, worn_storage.");
+                "door, weapon, armor, container, item, table, chair, bed, meal, worn_storage.");
         return 1;
     }
 
     else if(!filename || filename == ""){
         write("You must specify a filename. For example: create "+creation+
-          " "+thingy+"_14.c");
+                " "+thingy+"_14.c");
         write("or: create "+thingy+" /realms/my_name/area/"+dir+"/my_first_"+creation+".c");
         return 1;
     }
@@ -73,29 +73,29 @@ mixed gmake(string str) {
     }
 
     if(grepp(filename,"/") && directory_exists(path_prefix(filename)) &&
-      check_privs(this_player(), filename)){
+            check_privs(this_player(), filename)){
         write("Ok, using yer filename: "+filename);
     }
     else if(last_string_element(this_player()->query_cwd(),"/") == dir &&
-      check_privs(this_player(), this_player()->query_cwd())){
+            check_privs(this_player(), this_player()->query_cwd())){
         write("Using your cwd: "+this_player()->query_cwd()+"/"+filename);
         filename = this_player()->query_cwd()+"/"+filename;
     }
     else if(this_player()->query_cwd() != "/" &&
-      member_array(dir,get_dir(this_player()->query_cwd()+"/")) != -1 &&
-      check_privs(this_player(), this_player()->query_cwd()+"/"+dir)){
+            member_array(dir,get_dir(this_player()->query_cwd()+"/")) != -1 &&
+            check_privs(this_player(), this_player()->query_cwd()+"/"+dir)){
         write("Using your cwd plus "+dir+": "+this_player()->query_cwd()+"/"+dir+"/"+filename);
         filename = this_player()->query_cwd()+"/"+dir+"/"+filename;
     }
     else if(member_array(dir,get_dir(path_prefix(this_player()->query_cwd())+"/")) != -1 &&
-      check_privs(this_player(), path_prefix(this_player()->query_cwd())+"/"+dir)){
+            check_privs(this_player(), path_prefix(this_player()->query_cwd())+"/"+dir)){
         write("Using your cwd plus ../"+dir+": "+path_prefix(this_player()->query_cwd())+"/"+dir+"/"+filename);
         filename = path_prefix(this_player()->query_cwd())+"/"+dir+"/"+filename;
     }
     else { 
         area_dir = homedir(this_player())+"/area";
         write("I'm going to go with the appropriate area directory: "+area_dir+"/"+dir+"/"+
-          replace_string(filename,"/",""));
+                replace_string(filename,"/",""));
         filename = area_dir+"/"+dir+"/"+replace_string(filename,"/","");
 
     }
@@ -129,8 +129,8 @@ varargs int eventStartGenericQuestions(object ob, string tempfile, string *new_a
     NewArr = new_arr;
     func = what;
     write("This setting takes multiple values. If you have no more values to "+
-      "enter, then enter a dot on a blank line. To cancel, enter a single q on "+
-      "a blank line.");
+            "enter, then enter a dot on a blank line. To cancel, enter a single q on "+
+            "a blank line.");
     if(NewArr && sizeof(NewArr)) array_val = NewArr;
     else array_val = ({});
     array_val -= ({0});
@@ -210,8 +210,8 @@ int eventAddItem(object ob, string addendum){
         write("Please enter the number of these that you want to add:");
     }
     else write("Please enter a command for the NPC to perform with this "+
-          "item. If you have no such command to enter, enter the number of "+
-          "these items you want to add:");
+            "item. If you have no such command to enter, enter the number of "+
+            "these items you want to add:");
     input_to( (: eventDoAddition :) );
     return 1;
 }

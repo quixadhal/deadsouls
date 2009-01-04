@@ -28,7 +28,7 @@ static void eventLoadItem(string file, mixed args, int count){
             if(!u) u = file->GetMaxClones();
             if( u ){
                 object *clones = filter(findobs(file),(: clonep($1) &&
-                    environment($1) :));
+                            environment($1) :));
                 if(sizeof(clones) >= u) return;
             }
             ob = new(file);

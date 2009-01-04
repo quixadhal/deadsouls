@@ -21,15 +21,15 @@ void create(){
     SetId(({"replacer","thing","gadget","string replacer","device"}));
     SetShort("a string replacer");
     SetLong("This is the most dangerous device on the mud.\n"+
-      "It allows you to replace strings in files.\n"+
-      "To use it, you must first \"turn on replacer\"\n"+
-      "Then you have two options:\n"+
-      "To replace a word in one file: replace <filename> <oldword> <newword>\n"+
-      "To replace a word in EVERY FILE IN YOUR CURRENT WORKING DIRECTORY:\n autorep <oldword> <newword>\n\n"+
-      "It does not handle spaces or special characters well. Using "+
-      "strings with parentheses, brackets, or anything other than "+
-      "the english alphabet may have unexpected results."+
-      "\n%^RED%^%^BOLD%^ADMIN USE ONLY!%^RESET%^");
+            "It allows you to replace strings in files.\n"+
+            "To use it, you must first \"turn on replacer\"\n"+
+            "Then you have two options:\n"+
+            "To replace a word in one file: replace <filename> <oldword> <newword>\n"+
+            "To replace a word in EVERY FILE IN YOUR CURRENT WORKING DIRECTORY:\n autorep <oldword> <newword>\n\n"+
+            "It does not handle spaces or special characters well. Using "+
+            "strings with parentheses, brackets, or anything other than "+
+            "the english alphabet may have unexpected results."+
+            "\n%^RED%^%^BOLD%^ADMIN USE ONLY!%^RESET%^");
     SetMass(20);
     SetValue(10);
     SetVendorType(VT_TREASURE);
@@ -44,12 +44,12 @@ void init(){
 int eventActivate(){
     validate();
     write("With an unearthly roar, the string replacer comes "+
-      "to life. You sense great danger.");
+            "to life. You sense great danger.");
     write("\n\nWARNING: Your current working directory is:\n\n");
     write(this_player()->query_cwd()+"\n\n");
     say(this_player()->GetName()+" turns on "+possessive(this_player())+
-      " string replacer and you hear a loud, unearthly "+
-      "roar that makes the ground tremble.");
+            " string replacer and you hear a loud, unearthly "+
+            "roar that makes the ground tremble.");
     active = 1;
     return 1;
 }
@@ -57,9 +57,9 @@ int eventActivate(){
 int eventDeactivate(){
     validate();
     write("The string replacer powers off with a peculiar "+
-      "mechanical whine. You feel safer.");
+            "mechanical whine. You feel safer.");
     say(this_player()->GetName()+"'s string replacer "+
-      "powers down.");
+            "powers down.");
     active = 0;
     return 1;
 }

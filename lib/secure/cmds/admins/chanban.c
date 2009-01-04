@@ -19,8 +19,8 @@ mixed cmd(string args) {
         return "No such channel.";
 
     else INTERMUD_D->eventWrite( ({ "channel-admin", 5, mud_name(), 
-            this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
-            0, chan, ({ mud }), ({}) }) );
+                this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
+                0, chan, ({ mud }), ({}) }) );
 
     write(mud+" has been banned from "+chan+".");
 

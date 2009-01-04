@@ -19,8 +19,8 @@ void create(){
     Lit=0;
     SetVendorType(VT_TREASURE);
     SetInventory(([
-        "/domains/campus/obj/dcell_crappy":2
-      ]));
+                "/domains/campus/obj/dcell_crappy":2
+                ]));
 
 }
 void init(){

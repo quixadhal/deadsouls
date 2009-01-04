@@ -14,15 +14,15 @@ static void create() {
     closed=1;
     callfloor=0;
     SetExits( ([
-        "east" : "/domains/town/room/church",
-      ]) );
+                "east" : "/domains/town/room/church",
+                ]) );
     SetItems(([
-        //new("/domains/town/obj/ebutton1") : 1,
-        //new("/domains/town/obj/ebutton2") : 1,
-        "elevator" : "A means of vertical indoors transportation.",
-        "wall" : "The buttons are on the wall.",
-        ({"elevator door","door"}) : "The door to the outside."
-      ]) );
+                //new("/domains/town/obj/ebutton1") : 1,
+                //new("/domains/town/obj/ebutton2") : 1,
+                "elevator" : "A means of vertical indoors transportation.",
+                "wall" : "The buttons are on the wall.",
+                ({"elevator door","door"}) : "The door to the outside."
+                ]) );
     AddItem(new("/domains/town/obj/ebutton2"));
     AddItem(new("/domains/town/obj/ebutton1"));
     set_heart_beat(1);
@@ -71,7 +71,7 @@ int SetFloor(int i){
 int CanReceive(object ob) {
 #if 1
     if(living(ob) && closed > 0 && query_verb() != "goto" &&
-      query_verb() != "trans"  ){
+            query_verb() != "trans"  ){
         message("info","The elevator door is closed.", ob);
         return 0;
     }
@@ -81,8 +81,8 @@ int CanReceive(object ob) {
 int CanRelease(object ob){
     if(archp(ob)) {
         tell_object(ob,"%^RED%^As archwizard, you are permitted to "
-          "exit the elevator at any time. Normal creators and "
-          "players cannot do this.%^RESET%^\n");
+                "exit the elevator at any time. Normal creators and "
+                "players cannot do this.%^RESET%^\n");
     }
     if(closed > 0 && query_verb() == "go" ){
         message("info","The elevator door is closed.", ob);

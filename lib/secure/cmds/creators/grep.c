@@ -31,8 +31,8 @@ int cmd(string str) {
         if(sscanf(str, "-%s %s", tmp, txt) == 2){
             for(i = 0, max = sizeof(tmp); i<max; i++){
                 switch(tmp[i]){
-                case 'n' : flags = flags|GREP_NUMBERED_LINES ;break;
-                case 'r' : flags = flags|GREP_RECURSE_DIRECTORIES ;break;
+                    case 'n' : flags = flags|GREP_NUMBERED_LINES ;break;
+                    case 'r' : flags = flags|GREP_RECURSE_DIRECTORIES ;break;
                 }
             }
         }
@@ -45,7 +45,7 @@ int cmd(string str) {
     }
     else output = 0;
     if(sscanf(str, "'%s' %s", exp, file) != 2 &&
-      sscanf(str, "%s %s", exp, file) != 2) return 0;
+            sscanf(str, "%s %s", exp, file) != 2) return 0;
     if(!(max = sizeof(files = (string *)wild_card(file)))) {         
         message("system", "File not found.", this_player());
         return 1;
@@ -71,8 +71,8 @@ int cmd(string str) {
             }
 #if 0
             if(member_array(last(files[i],2), allowed_types1) == -1 &&
-              member_array(last(files[i],4), allowed_types3) == -1 &&
-              grepp(files[i],".")){
+                    member_array(last(files[i],4), allowed_types3) == -1 &&
+                    grepp(files[i],".")){
                 write(files[i]+": unrecognized extension. Skipping.");
                 continue;
             }
@@ -117,8 +117,8 @@ int cmd(string str) {
             }
 #if 0
             if(member_array(last(files[i],2), allowed_types1) == -1 &&
-              member_array(last(files[i],4), allowed_types3) == -1 &&
-              grepp(files[i],".")){
+                    member_array(last(files[i],4), allowed_types3) == -1 &&
+                    grepp(files[i],".")){
                 write(files[i]+": unrecognized extension. Skipping.");
                 continue;
             }
@@ -146,14 +146,14 @@ int cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: <grep [-nr] '[pattern]' [file] (> [redirect])>\n\n"
-      "Searches a file or group of files for a specific pattern.  "
-      "If the pattern is a single word, then no '' is needed.  Patterns "
-      "of more than one word or beginning with a '-' however, need to be enclosed in ''.  "
-      "You may redirect the output of the grep to a file using the >."
-      "\n  Options:\n"
-      "    -r  recursive search, search extends to child directories.\n"
-      "    -n  numbered lines, includes line numbers of successful hits."
-      "\n\nSee also: cd, ls, mv, pwd, rm", this_player()
-    );
+            "Syntax: <grep [-nr] '[pattern]' [file] (> [redirect])>\n\n"
+            "Searches a file or group of files for a specific pattern.  "
+            "If the pattern is a single word, then no '' is needed.  Patterns "
+            "of more than one word or beginning with a '-' however, need to be enclosed in ''.  "
+            "You may redirect the output of the grep to a file using the >."
+            "\n  Options:\n"
+            "    -r  recursive search, search extends to child directories.\n"
+            "    -n  numbered lines, includes line numbers of successful hits."
+            "\n\nSee also: cd, ls, mv, pwd, rm", this_player()
+           );
 } 

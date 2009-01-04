@@ -1,7 +1,7 @@
 /* /secure/cmds/player/afk.c
-*  From the Frontiers LPC library
-*  created by Cratylus, 17Nov96
-*/
+ *  From the Frontiers LPC library
+ *  created by Cratylus, 17Nov96
+ */
 
 #include <lib.h>
 
@@ -24,5 +24,5 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <afk>\n\n"
-      "Toggles your 'away from keyboard' flag.\n\n", this_player());
+            "Toggles your 'away from keyboard' flag.\n\n", this_player());
 }

@@ -72,7 +72,7 @@ mixed cmd(string str) {
                 words -= ({ retname });
                 msg = implode(words," ");
                 this_player()->eventTellHist("You tried to tell "+retname+": "+
-                  "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
+                        "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
                 write("Tell whom what?");
                 return 1;
             }
@@ -113,20 +113,20 @@ mixed cmd(string str) {
         if( (err = (mixed)this_player()->CanSpeak(ob, "tell", msg)) != 1){
             if(ob && !creatorp(ob)) this_player()->AddMagicPoints(15);
             this_player()->eventTellHist("You tried to tell "+retname+": "+
-              "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
+                    "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
             return err || "Tell whom what?";
         }
         if( ob->GetInvis() && ( ( archp(ob) && !archp(this_player()) ) 
-            || ( creatorp(ob) && !creatorp(this_player()) ) ) ){
+                    || ( creatorp(ob) && !creatorp(this_player()) ) ) ){
             string inv_ret = "%^BLUE%^%^BOLD%^" + me + 
-            " unknowingly tells you, %^RESET%^\"" + msg + "\"";
+                " unknowingly tells you, %^RESET%^\"" + msg + "\"";
             if(!machine_message){
                 ob->eventPrint(inv_ret);
             }
             ob->eventTellHist(inv_ret);
             ob->SetProperty("reply", lower_case(me));
             this_player()->eventTellHist("You tried to tell "+retname+": "+
-              "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
+                    "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
             if(query_verb() == "tell") return "Tell whom what?";
             else {
                 write("Tell whom what?");
@@ -137,32 +137,32 @@ mixed cmd(string str) {
 #ifdef BLOCK_TELLS_TO_AFK
         if(ob->GetProperty("afk")) {
             message("my_action", (string)ob->GetName()+
-              " is afk and cannot receive your message.", this_player()); 
+                    " is afk and cannot receive your message.", this_player()); 
         }
 #endif
         else this_player()->eventSpeak(ob, TALK_PRIVATE, msg);
         ob->SetProperty("reply", lower_case(me));
         if(!archp(ob) && userp(ob) && (query_idle(ob) > 60))
             message("my_action", (string)ob->GetName()+
-              " is idle and may not have been paying attention.", this_player());
+                    " is idle and may not have been paying attention.", this_player());
         else if(in_edit(ob) || in_input(ob))
             message("my_action", (string)ob->GetCapName()+" is in input "+
-              "and may not be able to respond.", this_player());
+                    "and may not be able to respond.", this_player());
         else if(ob->GetSleeping())
             message("my_action", (string)ob->GetCapName()+" is sleeping "+
-              "and is unable to respond.", this_player());
+                    "and is unable to respond.", this_player());
     }
     return 1;
 }
 
 void help(string str) {
     message("help",
-      "Syntax: <tell [player] [message]>\n"
-      "        <tell [player]@[mud] [message]>\n\n"
-      "Sends the message to the player named either on this mud if no "
-      "mud is specified, or to the player named on another mud when "
-      "another mud is specified. If the other mud is on an IMC2 network "
-      "rather than an Intermud-3 network, use \"imc2 tell\""
-      "\n\n"
-      "See also: imc2, say, shout, yell, emote",this_player());
+            "Syntax: <tell [player] [message]>\n"
+            "        <tell [player]@[mud] [message]>\n\n"
+            "Sends the message to the player named either on this mud if no "
+            "mud is specified, or to the player named on another mud when "
+            "another mud is specified. If the other mud is on an IMC2 network "
+            "rather than an Intermud-3 network, use \"imc2 tell\""
+            "\n\n"
+            "See also: imc2, say, shout, yell, emote",this_player());
 }

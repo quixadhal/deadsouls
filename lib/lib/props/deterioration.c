@@ -8,7 +8,7 @@
 #include <daemons.h>
 
 private int Broken          = 0;
-private int DamagePoints    = 0;
+private int DamagePoints;
 private int Deterioration   = 0;
 private int MaxDamagePoints = 20000;
 
@@ -46,13 +46,16 @@ string GetItemCondition(){
 }
 
 string array GetSave(){
-    return ({ "Broken", "DamagePoints", "Deterioration" });
+    if(undefinedp(DamagePoints)) return ({ "Broken", "Deterioration" });
+    else return ({ "Broken", "DamagePoints", "Deterioration" });
 }
 
 int eventReceiveDamage(mixed agent, int type, int amt, int i, mixed array l){
     int x = -1;
     mixed worn = this_object()->GetWorn();
     mapping temp_prot = this_object()->GetProtectionMap();
+    //tc("I am "+identify(this_object())+", eventReceiveDamage("+identify(agent)+", "+type+", "+amt+", "+i+", "+identify(l)+")");
+    if(undefinedp(DamagePoints)) return 0;
     if(query_verb() == "pick") return 0;
     if(objectp(agent)){
         if(estatep(agent) && !estatep(this_object())) return 0;
@@ -75,6 +78,7 @@ int eventReceiveDamage(mixed agent, int type, int amt, int i, mixed array l){
         DamagePoints = MaxDamagePoints;
         eventDeteriorate(type);
     }
+    //tc("returning "+x);
     return x;
 }
 

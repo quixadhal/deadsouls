@@ -675,11 +675,11 @@ void start_logon(){
           ));
         buf="";
         /* For invitation-only networks.
-                send_text(sprintf("PW %s %s version=%d %s\n",
-                        MUDNAME,
-                        IMC2_CLIENT_PW, 2, "hub03"
-                ));
-        */
+           send_text(sprintf("PW %s %s version=%d %s\n",
+           MUDNAME,
+           IMC2_CLIENT_PW, 2, "hub03"
+           ));
+         */
         sequence=time();
     }
 
@@ -723,14 +723,14 @@ void start_logon(){
           while(sizeof(rest)>0){
               sscanf(rest, "%s=%s", what, rest);
               /*
-                              write("what="+what+", rest="+rest+"\n");
-              */
+                 write("what="+what+", rest="+rest+"\n");
+               */
               // At this point, what is the key, rest is value plus rest.
               if(rest[0]==34){ // value is in quotes, tons of fun!
                   // find first quote without a backslash in front?
                   /*
-                                          write("rest begings with a quote\n");
-                  */
+                     write("rest begings with a quote\n");
+                   */
                   i = 1;
                   while(((rest[i]!=34) || (rest[i-1]==92)) && (i<sizeof(rest))){ // 34 = ", 92 = \
                       // While this is not a quote, or if this is an escaped quote, keep looking.
@@ -941,10 +941,10 @@ void start_logon(){
         string output="";
         int sz;
         /*
-        For colors explanation, refer to IMC Packet Documentation by Xorith.
-        Thanks very much for putting that out, by the way. :)
-        Found at http://hub00.muddomain.com/imc2_protocol_doc.txt
-        */
+           For colors explanation, refer to IMC Packet Documentation by Xorith.
+           Thanks very much for putting that out, by the way. :)
+           Found at http://hub00.muddomain.com/imc2_protocol_doc.txt
+         */
         sz=sizeof(str)-1;
         while(sizeof(str)>1){
             switch(str[0]){
@@ -1149,35 +1149,35 @@ void start_logon(){
 
     void chan_who_in(string fromname, string frommud, mapping data){
         /*	  // Handles an incoming channel who request.
-                  object user, *usrs=({ });
-                  string local, lname;
-                  string output;
-                  local=localize_channel(data["channel"]);
-                  if(data["lname"]) lname = data["lname"];
-                  else lname = local;
-                  if(!local){ // Channel not used locally.
-                      output = sprintf("channel=%s list=\"%s (%s) is not configured on this MUD.\n\"",
-                        data["channel"],lname,data["channel"]);
-                  }
-                  else{ // Is used locally
-                      output = "The following users are listening to "+lname+" ("+local+"):\n  ";
-                      foreach(user in users()){
-                          if(chan_listening(user,local)
+              object user, *usrs=({ });
+              string local, lname;
+              string output;
+              local=localize_channel(data["channel"]);
+              if(data["lname"]) lname = data["lname"];
+              else lname = local;
+              if(!local){ // Channel not used locally.
+              output = sprintf("channel=%s list=\"%s (%s) is not configured on this MUD.\n\"",
+              data["channel"],lname,data["channel"]);
+              }
+              else{ // Is used locally
+              output = "The following users are listening to "+lname+" ("+local+"):\n  ";
+              foreach(user in users()){
+              if(chan_listening(user,local)
 #ifdef INVIS
-                            && !INVIS(user)
+    && !INVIS(user)
 #endif
-                          ){
-                              usrs += ({ GET_CAP_NAME(user) });
-                          }
-                      } // foreach
-                      output += implode(usrs,", ");
-                      output += "\n";
-                      if(!sizeof(usrs)){
-                          output=sprintf("channel=%s list=\"Nobody is listening to %s (%s) on this MUD.\n\"",
-                            lname,local);
-                      }
-                  }
-                  send_packet("*","ice-chan-whoreply",fromname,frommud,output);*/
+    ){
+    usrs += ({ GET_CAP_NAME(user) });
+    }
+    } // foreach
+    output += implode(usrs,", ");
+    output += "\n";
+    if(!sizeof(usrs)){
+    output=sprintf("channel=%s list=\"Nobody is listening to %s (%s) on this MUD.\n\"",
+    lname,local);
+    }
+    }
+    send_packet("*","ice-chan-whoreply",fromname,frommud,output);*/
     }
 
     string find_mud(string str){
@@ -1314,21 +1314,21 @@ void start_logon(){
         string output;
 
         output=sprintf(@EndText
-IMC2 NETWORK INFORMATION
-------------------------
-Status: %s
-Hub address: %s
-Hub port: %d
-The hub calls itself: %s
-The network calls itself: %s
-Command to use this network: %s
-The MUD calls this connection: %s
+            IMC2 NETWORK INFORMATION
+            ------------------------
+            Status: %s
+            Hub address: %s
+            Hub port: %d
+            The hub calls itself: %s
+            The network calls itself: %s
+            Command to use this network: %s
+            The MUD calls this connection: %s
 
-Packet logging: %s
+            Packet logging: %s
 
-The network calls the MUD: %s
-The MUD's Version ID: %s
-The MUD's URL: %s
+            The network calls the MUD: %s
+            The MUD's Version ID: %s
+            The MUD's URL: %s
 EndText,
           ((mode==MODE_CONNECTED) ? "Connected" : "Not connected"),
 #ifdef HOSTNAME
@@ -1495,35 +1495,35 @@ EndText,
             return 1;
             break;
             /*	  case "chanwho":
-                          if(!args) return notify_fail("What channel?\n");
-                          if(sscanf(args,"%s %s",a,b)!=2){
-                              a=args;
-                              b="";
-                          }
-                          else {
-                              if(b!="*") b=find_mud(b);
-                          }
-                          if(!b) return notify_fail("MUD isn't known on "+NETWORK_ID+".\n");
-                          if(!localchaninfo[a]) return notify_fail("Invalid channel.\n");
-                          if(b==""){ // check who's on locally
-                              c = "The following users are listening to "+a+":\n  ";
-                              foreach(usr in users())
-                              if(chan_listening(usr,a)){
-                                  usrs += ({ usr });
-                                  c += " "+GET_CAP_NAME(usr);
-                              }
-                              c += "\n";
-                              if(!usrs) c="Nobody on this mud is listening to that channel.\n";
-                              IMC2_MSG(c,THIS_PLAYER);
-                              return 1;
-                          }
-                          if((b!="*") && (!mudinfo[b]["online"]))
-                              return notify_fail(NETWORK_ID+"- "+b+" is offline right now.\n");
-                          chanwho_out(THIS_PLAYER,a,b);
-                          IMC2_MSG(sprintf("%s- Sent a channel who request to %s for the %s channel.\n",
-                              NETWORK_ID,b,a),THIS_PLAYER);
-                          return 1;
-                          break;*/
+                      if(!args) return notify_fail("What channel?\n");
+                      if(sscanf(args,"%s %s",a,b)!=2){
+                      a=args;
+                      b="";
+                      }
+                      else {
+                      if(b!="*") b=find_mud(b);
+                      }
+                      if(!b) return notify_fail("MUD isn't known on "+NETWORK_ID+".\n");
+                      if(!localchaninfo[a]) return notify_fail("Invalid channel.\n");
+                      if(b==""){ // check who's on locally
+                      c = "The following users are listening to "+a+":\n  ";
+                      foreach(usr in users())
+                      if(chan_listening(usr,a)){
+                      usrs += ({ usr });
+                      c += " "+GET_CAP_NAME(usr);
+                      }
+                      c += "\n";
+                      if(!usrs) c="Nobody on this mud is listening to that channel.\n";
+                      IMC2_MSG(c,THIS_PLAYER);
+                      return 1;
+                      }
+                      if((b!="*") && (!mudinfo[b]["online"]))
+                      return notify_fail(NETWORK_ID+"- "+b+" is offline right now.\n");
+                      chanwho_out(THIS_PLAYER,a,b);
+                      IMC2_MSG(sprintf("%s- Sent a channel who request to %s for the %s channel.\n",
+                      NETWORK_ID,b,a),THIS_PLAYER);
+                      return 1;
+                      break;*/
         case "allchans": case "ice-update":
             allchans(args,this_player());
             return 1;
@@ -1558,34 +1558,34 @@ EndText,
 
     string main_help(){
         return sprintf(@EndText
-IMC2 system by Tim, set up for %s.
-To use this, type the command '%s' followed by one of the following:
-	chans - lists the channels that this MUD uses
-	allchans - lists all the channels on this network
-	chan (channel) (message) - talks on a channel
-	chanemote (channel) (message) - emotes on a channel
-	chansocial (channel) (message) - does a social on a channel
-	chanwho (channel) (mud) - checks who is listening to a channel
-	backlog (channel) - reads last %d messages on the channel
-	listen (channel) - listen to a channel
-	unlisten (channel) - stop listening to a channel
-	info (name) - lists information about a MUD
-	list - lists the MUDs on this network
-	beep (name)@(mud) - send a beep through the network
-	tell (name)@(mud) (message) - send a tell through the network
-	tellemote (name)@(mud) (message) - send an emote through the network
-	tells - shows your last %d tells
-	finger (name)@(mud) - send a finger request for information about name@mud
-	reply (message) - reply to the last incoming tell you received
-	replyemote (message) - reply with an emote to the last incoming tell you received
-	ping (mud) - pings a mud
-	setup - shows information about this IMC2 network
-	help - see this help message
-Admin commands:
-	configchan (local_name) (remote_name) (level_number) - configures a channel locally
-	unconfigchan (local_name) - removes a locally configured channel
-	chancmd (channel) (command) - for remote channel administration
-	chanperms - lists the permission levels that are possible for configchan
+            IMC2 system by Tim, set up for %s.
+            To use this, type the command '%s' followed by one of the following:
+            chans - lists the channels that this MUD uses
+            allchans - lists all the channels on this network
+            chan (channel) (message) - talks on a channel
+            chanemote (channel) (message) - emotes on a channel
+            chansocial (channel) (message) - does a social on a channel
+            chanwho (channel) (mud) - checks who is listening to a channel
+            backlog (channel) - reads last %d messages on the channel
+            listen (channel) - listen to a channel
+            unlisten (channel) - stop listening to a channel
+            info (name) - lists information about a MUD
+            list - lists the MUDs on this network
+            beep (name)@(mud) - send a beep through the network
+            tell (name)@(mud) (message) - send a tell through the network
+            tellemote (name)@(mud) (message) - send an emote through the network
+            tells - shows your last %d tells
+            finger (name)@(mud) - send a finger request for information about name@mud
+            reply (message) - reply to the last incoming tell you received
+            replyemote (message) - reply with an emote to the last incoming tell you received
+            ping (mud) - pings a mud
+            setup - shows information about this IMC2 network
+            help - see this help message
+            Admin commands:
+            configchan (local_name) (remote_name) (level_number) - configures a channel locally
+            unconfigchan (local_name) - removes a locally configured channel
+            chancmd (channel) (command) - for remote channel administration
+            chanperms - lists the permission levels that are possible for configchan
 EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
     }
 

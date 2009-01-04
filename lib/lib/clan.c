@@ -35,12 +35,12 @@ mixed CanJoin(object ob){ return 1; }
 string GetAffectLong(object ob){
     if(!ob || !living(ob)) return 0;
     return ob->GetName() + " is a member of the "
-    + pluralize(GetClanName()) + ".";
+        + pluralize(GetClanName()) + ".";
 }
 
 string SetLeader(string str){
     if(!user_exists(str)) error("No such user: " + str
-          + ". You must have a real leader.");
+            + ". You must have a real leader.");
     if(!stringp(Clan->leader)) 
         Clan->leader = str;
     return Clan->leader;
@@ -79,8 +79,8 @@ int eventBring(string str){
     if((string)who->GetClan() != (string)GetClanName())
         return notify_fail(who->GetName() + " is not one of you!\n");
     if(   environment(who)->GetProperty("no teleport")
-      || environment(this_player())->GetProperty("no teleport")
-      || environment(this_player())->GetProperty("no magic"))
+            || environment(this_player())->GetProperty("no teleport")
+            || environment(this_player())->GetProperty("no magic"))
         return notify_fail("A magic force blocks your powers.\n");
     if(present(who, environment(this_player())))
         return notify_fail(capitalize(str) + " is here.\n");
@@ -91,7 +91,7 @@ int eventBring(string str){
     who->eventMoveLiving(environment(this_player()));
     if(!present(who, environment(this_player())))
         this_player()->eventPrint("%^CYAN%^" + capitalize(str)
-          + " is beyond your reach.%^RESET%^");
+                + " is beyond your reach.%^RESET%^");
     return 1;
 }
 
@@ -110,7 +110,7 @@ int eventInitiate(string str){
         return notify_fail("Too low on magic power.\n");
     if(initiate->GetClan())
         return notify_fail("You may only initiate people without clan "
-          + "affiliation.\n");
+                + "affiliation.\n");
     initiate->SetClan((string)GetClanName());
     initiate->SetSkill(GetClanSkill(), 1, 1);
     if(clanObject = new((string)GetClanObject()))
@@ -122,10 +122,10 @@ int eventInitiate(string str){
 
 void eventJoin(object ob){
     ob->eventPrint("%^YELLOW%^You are now a member of the "
-      + pluralize((string)GetClanName()) + ".%^RESET%^");
+            + pluralize((string)GetClanName()) + ".%^RESET%^");
     environment(ob)->eventPrint("%^YELLOW%^" +(string)ob->GetName()
-      + " is now a member of the "
-      + pluralize((string)GetClanName()) + ".%^RESET%^", ob);
+            + " is now a member of the "
+            + pluralize((string)GetClanName()) + ".%^RESET%^", ob);
 }
 
 int eventRetire(string str){
@@ -149,14 +149,14 @@ int eventRetire(string str){
 
 void eventUnjoin(object ob){
     ob->eventPrint("%^RED%^You are no longer a member of the "
-      + pluralize((string)GetClanName()) + ".%^RESET%^");
+            + pluralize((string)GetClanName()) + ".%^RESET%^");
     environment(ob)->eventPrint("%^RED%^" + (string)ob->GetName()
-      + " is no longer a member of the "
-      + pluralize((string)GetClanName()) + ".%^RESET%^", ob);
+            + " is no longer a member of the "
+            + pluralize((string)GetClanName()) + ".%^RESET%^", ob);
 }
 
 void eventWelcome(object ob){
     ob->eventPrint("%^YELLOW%^Welcome, fellow " + (string)GetClanName()
-      + ".%^RESET%^");
+            + ".%^RESET%^");
 }
 

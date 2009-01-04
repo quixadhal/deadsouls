@@ -16,12 +16,12 @@ int TalkFunc(){
     thing5 = "Was bedeutet das?";
 
     switch(rand1){
-    case 1 : eventForce("say "+thing1);break;
-    case 2 : eventForce("say "+thing2);break;
-    case 3 : eventForce("say "+thing3);break;
-    case 4 : eventForce("say "+thing4);break;
-    case 5 : eventForce("say "+thing5);break;
-    default :  eventForce("shrug");
+        case 1 : eventForce("say "+thing1);break;
+        case 2 : eventForce("say "+thing2);break;
+        case 3 : eventForce("say "+thing3);break;
+        case 4 : eventForce("say "+thing4);break;
+        case 5 : eventForce("say "+thing5);break;
+        default :  eventForce("shrug");
     }
 }
 int AnswerFunc(){
@@ -37,12 +37,12 @@ int AnswerFunc(){
     answer5 = "Ach.";
 
     switch(rand2){
-    case 1 : eventForce("say "+answer1);break;
-    case 2 : eventForce("say "+answer2);break;
-    case 3 : eventForce("say "+answer3);break;
-    case 4 : eventForce("say "+answer4);break;
-    case 5 : eventForce("say "+answer5);break;
-    default : eventForce("shake");
+        case 1 : eventForce("say "+answer1);break;
+        case 2 : eventForce("say "+answer2);break;
+        case 3 : eventForce("say "+answer3);break;
+        case 4 : eventForce("say "+answer4);break;
+        case 5 : eventForce("say "+answer5);break;
+        default : eventForce("shake");
     }
 }
 static void create() {

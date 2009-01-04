@@ -15,9 +15,9 @@ void create() {
     SetBaseCost("silver",50);
     SetMaxCarry(100);
     SetInventory(([
-        "/domains/cave/obj/mug" : 4,
-        "/domains/cave/obj/stein" : 1,
-      ]));
+                "/domains/cave/obj/mug" : 4,
+                "/domains/cave/obj/stein" : 1,
+                ]));
     SetCanClose(0);
 }
 mixed CanGet(object ob) { return "The rack does not budge.";}

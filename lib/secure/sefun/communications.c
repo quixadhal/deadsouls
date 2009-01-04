@@ -38,13 +38,13 @@ varargs void tc(string str, string col, object dude){
     string prefix;
     if(!col) col = "magenta";
     switch(col){
-    case "red" : prefix = "%^BOLD%^RED%^";break;
-    case "cyan" : prefix = "%^BOLD%^CYAN%^";break;
-    case "blue" : prefix = "%^BOLD%^BLUE%^";break;
-    case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
-    case "green" : prefix = "%^BOLD%^GREEN%^";break;
-    case "white" : prefix = "%^BOLD%^WHITE%^";break;
-    default : prefix = "%^BOLD%^MAGENTA%^";break;
+        case "red" : prefix = "%^BOLD%^RED%^";break;
+        case "cyan" : prefix = "%^BOLD%^CYAN%^";break;
+        case "blue" : prefix = "%^BOLD%^BLUE%^";break;
+        case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
+        case "green" : prefix = "%^BOLD%^GREEN%^";break;
+        case "white" : prefix = "%^BOLD%^WHITE%^";break;
+        default : prefix = "%^BOLD%^MAGENTA%^";break;
     }
     if(!dude) dude = find_player(DEBUGGER);
     if(dude){
@@ -58,13 +58,13 @@ varargs int tn(string str, string col, object room, int mclass){
     string prefix;
     if(!col) col = "magenta";
     switch(col){
-    case "red" : prefix = "%^BOLD%^RED%^";break;
-    case "cyan" : prefix = "%^BOLD%^CYAN%^";break;
-    case "blue" : prefix = "%^BOLD%^BLUE%^";break;
-    case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
-    case "green" : prefix = "%^BOLD%^GREEN%^";break;
-    case "white" : prefix = "%^BOLD%^WHITE%^";break;
-    default : prefix = "%^BOLD%^MAGENTA%^";break;
+        case "red" : prefix = "%^BOLD%^RED%^";break;
+        case "cyan" : prefix = "%^BOLD%^CYAN%^";break;
+        case "blue" : prefix = "%^BOLD%^BLUE%^";break;
+        case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
+        case "green" : prefix = "%^BOLD%^GREEN%^";break;
+        case "white" : prefix = "%^BOLD%^WHITE%^";break;
+        default : prefix = "%^BOLD%^MAGENTA%^";break;
     }
     if(!room) tell_object(load_object(ROOM_NETWORK) ,prefix+str+"%^RESET%^");
     else {

@@ -2,8 +2,6 @@
 #include <props.h>
 
 inherit LIB_BED;
-inherit LIB_SMELL;
-
 
 static void create() {
     ::create();
@@ -12,12 +10,12 @@ static void create() {
     SetAdjectives( ({ "guest" }) );
     SetShort("a guest bed");
     SetLong("This is a comfortable-looking bed for guests to sleep on.");
-    SetMass(4000);
+    SetMass(1000);
     SetBaseCost("silver",800);
     SetMaxSitters(2);
     SetMaxLiers(1);
-
 }
+
 void init(){
     ::init();
 }

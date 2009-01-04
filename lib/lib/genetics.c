@@ -137,8 +137,8 @@ int GetStatLevel(string stat){
 
     x = (GetBaseStatLevel(stat) + GetStatBonus(stat));
     switch(stat){
-    case "coordination": case "wisdom":
-        x -= GetAlcohol();
+        case "coordination": case "wisdom":
+            x -= GetAlcohol();
     }
     return x;
 }
@@ -158,7 +158,7 @@ int AddStatPoints(string stat, int x){
         }
     }
     while(Stats[stat]["points"] > (y = GetMaxStatPoints(stat,
-          Stats[stat]["level"]))){
+                    Stats[stat]["level"]))){
         if(Stats[stat]["level"] >= GetLevel()*4) Stats[stat]["points"] = y;
         else {
             Stats[stat]["level"]++;
@@ -256,9 +256,9 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score){
     }
 
     if(sizeof(get_livings(this_object())) && 
-      rider = get_random_living(this_object())){
+            rider = get_random_living(this_object())){
         if(rider->GetProperty("mount") == this_object() &&
-          environment(this_object())){
+                environment(this_object())){
             return rider->GetEffectiveVision(environment(this_object()));
         }
     }

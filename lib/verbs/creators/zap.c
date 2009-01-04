@@ -15,8 +15,8 @@ static void create() {
     SetRules("LVS");
     SetErrorMessage("zap what?");
     SetHelp("Syntax: <zap CREATURE>\n\n"
-      "Deal massive damage to a living thing.\n"
-      "\nSee also: dest");
+            "Deal massive damage to a living thing.\n"
+            "\nSee also: dest");
 }
 
 mixed can_zap_liv(string str) { 
@@ -38,7 +38,7 @@ mixed do_zap_liv(object ob){
     if(!mhp) mhp = 99999;
     write("You zap "+name+".");
     say(this_player()->GetName()+" raises a hand and %^RED%^ZAPS%^RESET%^"+
-      " "+name+"!",({ob}));
+            " "+name+"!",({ob}));
     tell_object(ob,this_player()->GetName()+" raises a hand and %^RED%^ZAPS%^RESET%^ you!");
     ob->eventReceiveDamage(this_player(),BLUNT,(mhp * 5),0,({ob->GetTorso()}));
 

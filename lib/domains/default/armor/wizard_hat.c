@@ -10,11 +10,11 @@ static void create(){
     SetId( ({"hat"}) );
     SetShort("a wizard's hat");
     SetLong("This is a large, floppy hat with a wide brim all "+
-      "around it, and a conical center. It is dark blue in color, "+
-      "and is decorated with pictures of yellow moons and stars.");
+            "around it, and a conical center. It is dark blue in color, "+
+            "and is decorated with pictures of yellow moons and stars.");
     SetProperties(([
-        "beta" : 2,
-      ]));
+                "beta" : 2,
+                ]));
     SetMass(50);
     SetBaseCost("silver",500);
     SetDamagePoints(100);

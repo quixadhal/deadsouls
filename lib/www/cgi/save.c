@@ -8,7 +8,7 @@ mapping UploadsMap = ([]);
 
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
-      strsrch(base_name(previous_object()), SOCKET_HTTP)){
+            strsrch(base_name(previous_object()), SOCKET_HTTP)){
         string offender = identify(previous_object(-1));
         debug("save.c SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" save.c breach: "+offender+" "+get_stack());

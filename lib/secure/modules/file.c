@@ -33,10 +33,10 @@ string eventAppendLast(string file, string fun, string addendum){
             func = reverse_string(func);
             func = replace_string(func,"REPLACE_THIS",addendum+"\n}");
             done = 1;
-        }
-        ret += func + "\n";
-    }
-    return ret;
+}
+ret += func + "\n";
+}
+return ret;
 }
 
 string eventAppend(string file, string *params, string addendum){
@@ -256,85 +256,85 @@ string array eventReadFunctions(string source){
         }
 
         else if(line && infunc && starts_with_arr(line, beginners) && !grepp(line,"(")){
-            fun_arr[element] += line;
-        }
-
-
-        else if(line && infunc && starts_with_arr(line, beginners) && grepp(line,"(")){
-            infunc = 0;
-            i--;
-        }
-    }
-
-    ret = ({headers});
-    foreach(string item in fun_arr){
-        if(item && sizeof(item)) ret += ({newline_trim(item)});
-    }
-    rm(tmpsource);
-    return ret;
-}
-
-int eventAddInit(string file){
-    string *contents, *temparray, *temparray2, *beginners;
-    string tmpfile;
-    int done, add, memnum;
-
-    globalstr = tmpfile;
-    globalstr2 = file;
-
-    if(file_exists(file) && !check_privs(this_player(),file)){
-        write("You do not appear to have write access to this file. Modification aborted.");
-        return 1;
-    }
-
-    tmpfile = generate_tmp(file);
-    temparray = ({});
-    temparray2 = ({});
-    contents = unguarded( (: eventReadFunctions(globalstr2) :) );
-    beginners = ({"private","static","nomask","varargs"});
-    beginners += ({"int","void","buffer","mapping","mixed","string","array","float"});
-
-    foreach(string func in contents){
-        if(member_array(func,contents) != 0 && grepp(func,"void init")) memnum = member_array(func,contents);
-    }
-
-    if(memnum && memnum != -1){
-        if(!grepp(contents[memnum],"::init()")){
-            temparray = explode(contents[memnum],"\n");
-            foreach(string line in temparray){
-                if(line && !starts_with_arr(line, beginners)) add = 1;
-                if(add && !done) {
-                    temparray2 += ({"::init();"});
-                    temparray2 += ({line});
-                    done = 1;
+                fun_arr[element] += line;
                 }
-                else {
-                    temparray2 += ({line});
-                }
-            }
-            contents[memnum] = implode(temparray2,"\n");
-            global_array = contents;
-            globalstr3 = tmpfile;
-            unguarded( (: write_file(globalstr3,implode(global_array,"\n"),1) :) );
-        }
 
-        else {
-            return 2;
-        }
-    }
 
-    else {
-        contents += ({ "void init(){\n::init();\n}" });
-        global_array = contents;
-        globalstr3 = tmpfile;
-        unguarded( (: write_file(globalstr3,implode(global_array,"\n"),1) :) );
-    }
-    globalstr = tmpfile;
-    globalstr2 = file;
-    done = unguarded( (: cp(globalstr, globalstr2) :) );
-    unguarded( (: rm(globalstr) :) );
-    return done;
-}
+                else if(line && infunc && starts_with_arr(line, beginners) && grepp(line,"(")){
+                    infunc = 0;
+                    i--;
+                    }
+                    }
+
+                    ret = ({headers});
+                    foreach(string item in fun_arr){
+                    if(item && sizeof(item)) ret += ({newline_trim(item)});
+                    }
+                    rm(tmpsource);
+                    return ret;
+                    }
+
+                    int eventAddInit(string file){
+                    string *contents, *temparray, *temparray2, *beginners;
+                    string tmpfile;
+                    int done, add, memnum;
+
+                    globalstr = tmpfile;
+                    globalstr2 = file;
+
+                    if(file_exists(file) && !check_privs(this_player(),file)){
+                        write("You do not appear to have write access to this file. Modification aborted.");
+                        return 1;
+                    }
+
+                    tmpfile = generate_tmp(file);
+                    temparray = ({});
+                    temparray2 = ({});
+                    contents = unguarded( (: eventReadFunctions(globalstr2) :) );
+                    beginners = ({"private","static","nomask","varargs"});
+                    beginners += ({"int","void","buffer","mapping","mixed","string","array","float"});
+
+                    foreach(string func in contents){
+                        if(member_array(func,contents) != 0 && grepp(func,"void init")) memnum = member_array(func,contents);
+                    }
+
+                    if(memnum && memnum != -1){
+                        if(!grepp(contents[memnum],"::init()")){
+                            temparray = explode(contents[memnum],"\n");
+                            foreach(string line in temparray){
+                                if(line && !starts_with_arr(line, beginners)) add = 1;
+                                if(add && !done) {
+                                    temparray2 += ({"::init();"});
+                                    temparray2 += ({line});
+                                    done = 1;
+                                }
+                                else {
+                                    temparray2 += ({line});
+                                }
+                            }
+                            contents[memnum] = implode(temparray2,"\n");
+                            global_array = contents;
+                            globalstr3 = tmpfile;
+                            unguarded( (: write_file(globalstr3,implode(global_array,"\n"),1) :) );
+                        }
+
+                        else {
+                            return 2;
+                        }
+                    }
+
+                    else {
+                        contents += ({ "void init(){\n::init();\n}" });
+                        global_array = contents;
+                        globalstr3 = tmpfile;
+                        unguarded( (: write_file(globalstr3,implode(global_array,"\n"),1) :) );
+                    }
+                    globalstr = tmpfile;
+                    globalstr2 = file;
+                    done = unguarded( (: cp(globalstr, globalstr2) :) );
+                    unguarded( (: rm(globalstr) :) );
+                    return done;
+                    }
 
 varargs int eventModString(string file, string param, mixed replace, string *params){
     string check_include, ret, tmpfile;
@@ -356,10 +356,10 @@ varargs int eventModString(string file, string param, mixed replace, string *par
 
     if(stringp(replace)) { 
         if(globalstr3 == "SetArmorType" || globalstr3 == "SetMealType" || 
-          globalstr3 == "SetPosition" || globalstr3 == "SetTerrainType" ||
-          globalstr3 == "AddTerrainType" || globalstr3 == "SetSize" ||
-          globalstr3 == "SetBodyType" || globalstr3 == "SetRespiration" ||
-          globalstr3 == "SetVendorType" || globalstr3 == "SetDamageType"){
+                globalstr3 == "SetPosition" || globalstr3 == "SetTerrainType" ||
+                globalstr3 == "AddTerrainType" || globalstr3 == "SetSize" ||
+                globalstr3 == "SetBodyType" || globalstr3 == "SetRespiration" ||
+                globalstr3 == "SetVendorType" || globalstr3 == "SetDamageType"){
             replace = upper_case(replace);
             if(globalstr3 == "SetArmorType") check_include = "/include/armor_types.h";
             if(globalstr3 == "SetVendorType") check_include = "/include/vendor_types.h";

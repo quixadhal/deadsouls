@@ -14,7 +14,7 @@ int AllowPass(object who, object what){
     if(this_object()->GetSleeping()) return 1;
     if(this_object()->GetParalyzed()) return 1;
     if(this_object()->GetPosition() == POSITION_LYING &&
-      !(RACES_D->GetLimblessCombatRace(race)) ) return 1; 
+            !(RACES_D->GetLimblessCombatRace(race)) ) return 1; 
     return 0;
 }
 
@@ -25,7 +25,7 @@ int AllowGet(object who, object what){
     if(this_object()->GetSleeping()) return 1;
     if(this_object()->GetParalyzed()) return 1;
     if(this_object()->GetPosition() == POSITION_LYING &&
-      !(RACES_D->GetLimblessCombatRace(race)) ) return 1;
+            !(RACES_D->GetLimblessCombatRace(race)) ) return 1;
     return 0;
 }
 
@@ -36,7 +36,7 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
     if(!PendingGuard) PendingGuard = ({});
 
     PendingGuard += ({ ([ "what" : what, "action" : action,
-        "howlong" : howlong ]) });
+                "howlong" : howlong ]) });
 
     if(!env){
         return 0;
@@ -85,7 +85,7 @@ void CheckPending(){
         int ret;
         foreach(mixed guardmount in PendingGuard){
             ret = SetGuard(guardmount["what"], guardmount["action"], 
-              guardmount["howlong"]);
+                    guardmount["howlong"]);
             if(!ret) tmp_pending += ({ guardmount });
         }
         PendingGuard = tmp_pending;

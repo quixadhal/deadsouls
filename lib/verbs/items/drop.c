@@ -20,12 +20,12 @@ static void create() {
     SetRules("OBS", "WRD WRD");
     SetErrorMessage("Drop what?");
     SetHelp("Syntax: <drop ITEM>\n"
-      "        <drop all>\n"
-      "        <drop all ITEM TYPE>\n"
-      "        <drop AMOUNT CURRENCY>\n\n"
-      "Allows you to drop something you have, or to drop an amount of "
-      "some currency you have on you.\n\n"
-      "See also: get, put");
+            "        <drop all>\n"
+            "        <drop all ITEM TYPE>\n"
+            "        <drop AMOUNT CURRENCY>\n\n"
+            "Allows you to drop something you have, or to drop an amount of "
+            "some currency you have on you.\n\n"
+            "See also: get, put");
 }
 
 mixed can_drop_obj(object ob) { return this_player()->CanManipulate(); }
@@ -81,7 +81,7 @@ mixed do_drop_obs(mixed *res) {
         if( (tmp = (mixed)ob->eventDrop(this_player())) != 1 ) {
             if( stringp(tmp) ) this_player()->eventPrint(tmp);
             else this_player()->eventPrint("You cannot drop " +
-                  (string)ob->GetShort() + ".");
+                    (string)ob->GetShort() + ".");
         }
     return 1;
 }
@@ -102,14 +102,14 @@ mixed do_drop_wrd_wrd(mixed args...) {
     pile = new(LIB_PILE);
     pile->SetPile(curr, amt);
     if( !((int)pile->eventMove(env)) ||
-      (int)this_player()->AddCurrency(curr, -amt) == -1 ) {
+            (int)this_player()->AddCurrency(curr, -amt) == -1 ) {
         this_player()->eventPrint("Something prevents your action.");
         pile->eventDestruct();
         return 1;
     }
     this_player()->eventPrint("You drop " + amt + " " + curr + ".");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " drops some " + curr + ".",
-      this_player());
+            " drops some " + curr + ".",
+            this_player());
     return 1;
 }

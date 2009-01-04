@@ -23,9 +23,13 @@
 #define BITE               (1 << 20)
 #define OTHER              (1 << 21)
 #define KARMA              (1 << 22)
+#define DRAMA              (1 << 23)
+#define OVERPRESSURE       (1 << 24)
+#define UNDERPRESSURE      (1 << 25)
+#define INERTIA            (1 << 26)
 
-#define MAX_DAMAGE_BIT     OTHER
+#define MAX_DAMAGE_BIT     INERTIA
 
-#define ALL_DAMAGE  BLUNT | BLADE | KNIFE | WATER | SHOCK | COLD | HEAT | GAS | ACID | MAGIC | POISON | DISEASE | TRAUMA | PIERCE | PSIONIC | ANOXIA | DEATHRAY | EMOTIONAL | SONIC | BITE | OTHER | KARMA
+#define ALL_DAMAGE  BLUNT | BLADE | KNIFE | WATER | SHOCK | COLD | HEAT | GAS | ACID | MAGIC | POISON | DISEASE | TRAUMA | PIERCE | PSIONIC | ANOXIA | DEATHRAY | EMOTIONAL | SONIC | BITE | OTHER | KARMA | DRAMA | OVERPRESSURE | UNDERPRESSURE | INERTIA
 
 #endif /* s_damage_types_h */

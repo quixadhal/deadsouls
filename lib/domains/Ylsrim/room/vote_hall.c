@@ -18,7 +18,7 @@ static void create() {
     SetTown("Ylsrim");
     SetClimate("indoors");
     SetProperties( ([ "no kill" : 1, "no attack" : 1, "no steal" : 1,
-        "no magic" : 1, "light" : 3, "no bump" : 1, "no teleport" : 1 ]) );
+                "no magic" : 1, "light" : 3, "no bump" : 1, "no teleport" : 1 ]) );
     SetShort("voting hall");
     SetLong("You are in the voting hall of Ylsrim. This is where people come to nominate candidates for class leader and to cast their vote.  There is a list posted on the wall here.");
     SetItems( ([ "list" : "This is the list of candidates." ]) );
@@ -32,7 +32,7 @@ mixed ReadList() {
 
     if( VOTING_D->GetStatus() == VOTE_NOT_RUNNING ) {
         this_player()->eventPrint("Since the elections are not "
-          "currently running, the list is blank.");
+                "currently running, the list is blank.");
         return 1;
     }
 
@@ -66,29 +66,29 @@ mixed eventNominate( object who, string str ) {
     iErr = VOTING_D->eventAddCandidate( who->GetClass(), str );
 
     switch( iErr ) {
-    case VOTE_NOT_RUNNING :
-        this_player()->eventPrint("The elections are not running now!");
-        break;
+        case VOTE_NOT_RUNNING :
+            this_player()->eventPrint("The elections are not running now!");
+            break;
 
-    case VOTE_MODE_VOTING :
-        this_player()->eventPrint("The time for nominating "
-          "candidates is past, cast your vote instead.");
-        break;
+        case VOTE_MODE_VOTING :
+            this_player()->eventPrint("The time for nominating "
+                    "candidates is past, cast your vote instead.");
+            break;
 
-    case VOTE_ERROR :
-        this_player()->eventPrint("There was an error, you cannot "
-          "nominate someone at this time.");
-        break;
+        case VOTE_ERROR :
+            this_player()->eventPrint("There was an error, you cannot "
+                    "nominate someone at this time.");
+            break;
 
-    case VOTE_NOT_CLASS_MEMBER :
-        this_player()->eventPrint( capitalize(str) + " is not a member
-of "
-            "the " + pluralize( who->GetClass() ) + ".");
+        case VOTE_NOT_CLASS_MEMBER :
+            this_player()->eventPrint( capitalize(str) + " is not a member
+                    of "
+                    "the " + pluralize( who->GetClass() ) + ".");
             break;
 
         case VOTE_ALREADY_RUNNING :
             this_player()->eventPrint( capitalize(str) + " is already
-running." );
+                    running." );
             break;
     }
     return 1;
@@ -104,22 +104,22 @@ mixed eventVote( object who, string str ) {
     switch( iErr ) {
         case VOTE_NOT_RUNNING :
             this_player()->eventPrint("The elections are not running
-now!");
+                    now!");
             break;
 
         case VOTE_MODE_CANDIDATES :
             this_player()->eventPrint("Voting has not yet started, "
-              "nominate a candidate instead.");
+                    "nominate a candidate instead.");
             break;
 
         case VOTE_NOT_PRIMARY :
             this_player()->eventPrint("Only your primary character can
-vote.");
+                    vote.");
             break;
 
         case VOTE_NOT_CLASS_MEMBER :
             this_player()->eventPrint( str + " is not a candidate for "
-              "the " + pluralize(who->GetClass()) + ".");
+                    "the " + pluralize(who->GetClass()) + ".");
             break;
 
         case VOTE_ALREADY_VOTED :
@@ -138,17 +138,17 @@ mixed eventWithdraw( object who ) {
     int iErr;
 
     iErr = VOTING_D->eventRemoveCandidate( who->GetClass(), who->GetName()
-);
+            );
 
     switch( iErr ) {
         case VOTE_NOT_RUNNING :
             this_player()->eventPrint("The elections are not running
-now!");
+                    now!");
             break;
 
         case VOTE_MODE_VOTING :
             this_player()->eventPrint("The elections have begun, it is "
-              "too late to withdraw.");
+                    "too late to withdraw.");
             break;
 
         case VOTE_NOT_CANDIDATE :
@@ -159,5 +159,5 @@ now!");
     return 1;
 }
 void init(){
-::init();
+    ::init();
 }

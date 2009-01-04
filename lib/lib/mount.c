@@ -38,11 +38,11 @@ int eventRide(string direction){
     }
 
     if(!s1 || s1 == "") switch(this_object()->GetPosition()){
-    case POSITION_STANDING : travel_cmd = "go";break;
-    case POSITION_SITTING : travel_cmd = "crawl";break;
-    case POSITION_LYING : travel_cmd = "crawl";break;
-    case POSITION_FLYING : travel_cmd = "fly";break;
-    default : travel_cmd = "go";
+        case POSITION_STANDING : travel_cmd = "go";break;
+        case POSITION_SITTING : travel_cmd = "crawl";break;
+        case POSITION_LYING : travel_cmd = "crawl";break;
+        case POSITION_FLYING : travel_cmd = "fly";break;
+        default : travel_cmd = "go";
     }
     else direction = s2;
     this_object()->eventForce(travel_cmd+" "+direction);
@@ -89,7 +89,7 @@ mixed eventMount(object who){
     }
     if(this_object()->GetMountOwner() != who){
         write(this_object()->GetName()+" doesn't know you well enough to let "+
-          "you ride "+objective(this_object())+".");
+                "you ride "+objective(this_object())+".");
         return 0;
     }
     else {

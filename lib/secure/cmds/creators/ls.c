@@ -9,7 +9,7 @@ inherit LIB_DAEMON;
 
 static private mapping file_mapping(string *files);
 static private string display_ls(mixed targ, int aflag, int lflag, int tflag,
-  int nflag, int bflag, int sflag);
+        int nflag, int bflag, int sflag);
 static private string long_list(string dir, mixed *files);
 static private string short_list(string dir, mixed *files, int n, int s);
 
@@ -35,13 +35,13 @@ int cmd(string str) {
     i = sizeof(options);
     while(i--) {
         switch(options[i]) {
-        case "a": all_files = 1; break;
-        case "l": long_details = 1; break;
-        case "t": time_sort = 1; break;
-        case "m": moref = 1; break;
-        case "n": no_load_info = 1; break;
-        case "b": brief = 1; break;
-        case "s": size = 1; break;
+            case "a": all_files = 1; break;
+            case "l": long_details = 1; break;
+            case "t": time_sort = 1; break;
+            case "m": moref = 1; break;
+            case "n": no_load_info = 1; break;
+            case "b": brief = 1; break;
+            case "s": size = 1; break;
         }
     }
     for(i=0, maxi = sizeof(paths), files = ({}); i<maxi; i++)
@@ -53,7 +53,7 @@ int cmd(string str) {
     dirs = filter(files, "is_dir", this_object());
     if(sizeof(files = files - dirs))
         show = display_ls(file_mapping(files),all_files,long_details, time_sort,
-          no_load_info, brief, size);
+                no_load_info, brief, size);
     else show = "";
     if(!(maxi = sizeof(dirs))) {
         if(moref) previous_object()->more(explode(show, "\n"), "system");
@@ -62,7 +62,7 @@ int cmd(string str) {
     }
     for(i=0; i<maxi; i++){
         show += display_ls(dirs[i], all_files, long_details, time_sort, 
-          no_load_info, brief, size);
+                no_load_info, brief, size);
     }
     if(!moref && check_string_length(show)) previous_object()->eventPrint(show);
     else print_long_string(this_player(),show);
@@ -88,27 +88,27 @@ static private mapping file_mapping(string *files) {
 }
 
 static private string display_ls(mixed targ, int aflag, int lflag, int tflag,
-  int nflag, int bflag, int sflag) {
+        int nflag, int bflag, int sflag) {
     string *cles;
     string ret = "";
     int i, maxi;
 
     if(stringp(targ) && targ == "/") targ = ([ "/" : get_dir("/", -1) ]);
-else if(stringp(targ)){
-    targ = "/"+implode(explode(targ,"/"),"/");
-    targ = ([ targ : get_dir(targ+"/", -1) ]);
-}
-for(i=0, maxi = sizeof(cles = keys(targ)); i<maxi; i++) {
-    if(!bflag) ret = cles[i]+":\n";
-    if(!aflag) targ[cles[i]] = filter(targ[cles[i]], "filter_dots",
-          this_object());
-    if(tflag) 
-        targ[cles[i]]=sort_array(targ[cles[i]],"time_sort",this_object());
-    if(lflag) ret += long_list(cles[i], targ[cles[i]]);
-    else ret += short_list(cles[i], targ[cles[i]], nflag, sflag);
-    ret += "\n";
-}
-return ret;
+    else if(stringp(targ)){
+        targ = "/"+implode(explode(targ,"/"),"/");
+        targ = ([ targ : get_dir(targ+"/", -1) ]);
+    }
+    for(i=0, maxi = sizeof(cles = keys(targ)); i<maxi; i++) {
+        if(!bflag) ret = cles[i]+":\n";
+        if(!aflag) targ[cles[i]] = filter(targ[cles[i]], "filter_dots",
+                this_object());
+        if(tflag) 
+            targ[cles[i]]=sort_array(targ[cles[i]],"time_sort",this_object());
+        if(lflag) ret += long_list(cles[i], targ[cles[i]]);
+        else ret += short_list(cles[i], targ[cles[i]], nflag, sflag);
+        ret += "\n";
+    }
+    return ret;
 }
 
 static int filter_dots(mixed *file) { return (file[0][0] != '.'); }
@@ -130,14 +130,14 @@ static private string long_list(string dir, mixed *files) {
     if((int)master()->valid_write(dir, previous_object())) acc += "w";
     else acc += "-";
     if(member_array(dir[0..strlen(dir)-2],
-        (string *)previous_object()->GetSearchPath()) != -1) acc += "x";
+                (string *)previous_object()->GetSearchPath()) != -1) acc += "x";
     else acc += "-";
     for(i=0, maxi=sizeof(files); i<maxi; i++) {
         if(files[i][1] == -2) loaded = "";
         else loaded = (find_object(dir+files[i][0]) ? "*" : "");
         ret += sprintf("%:-3s%:-5s%:-30s %d\t%s", 
-          loaded, acc, ctime(files[i][2]),
-          files[i][1], files[i][0]);
+                loaded, acc, ctime(files[i][2]),
+                files[i][1], files[i][0]);
         if(files[i][1] == -2) ret += "/\n";
         else ret += "\n";
     }
@@ -193,25 +193,25 @@ static string map_files(mixed *file, int *flags) {
 
 void help() {
     message("help", "Syntax: <ls [-ablmnst] (directories|files)>\n\n"
-      "If you pass a single directory as an argument, it will list all "
-      "files and directories in that directory.  If you list a single "
-      "file, then information about that file will be displayed.  If you "
-      "use special characters like wild cards, then relevant information "
-      "regarding those files and/or directories will be displayed.  The "
-      "options have the following meanings:\n"
-      "    -a List all files, including files beginning with a '.'\n"
-      "    -b Brief listing, leaving out the directory name\n"
-      "    -l Long listing of all details about a file\n"
-      "    -m Page the output through more\n"
-      "    -n No display of loaded object information\n"
-      "    -s No display of size information\n"
-      "    -t Sort directory listings by time last modified\n\n"
-      "The -l option overrides the -n and -s options.  The columns "
-      "in the -l listing break down in the following manner:\n"
-      "    * if loaded, blank space if not loaded\n"
-      "    Access permissions, in the form of rwx\n"
-      "    Time last modified\n"
-      "    Size of the file\n"
-      "    File name\n\nSee also: cd, mkdir, mv, pwd, rm, rmdir", 
-      this_player());
+            "If you pass a single directory as an argument, it will list all "
+            "files and directories in that directory.  If you list a single "
+            "file, then information about that file will be displayed.  If you "
+            "use special characters like wild cards, then relevant information "
+            "regarding those files and/or directories will be displayed.  The "
+            "options have the following meanings:\n"
+            "    -a List all files, including files beginning with a '.'\n"
+            "    -b Brief listing, leaving out the directory name\n"
+            "    -l Long listing of all details about a file\n"
+            "    -m Page the output through more\n"
+            "    -n No display of loaded object information\n"
+            "    -s No display of size information\n"
+            "    -t Sort directory listings by time last modified\n\n"
+            "The -l option overrides the -n and -s options.  The columns "
+            "in the -l listing break down in the following manner:\n"
+            "    * if loaded, blank space if not loaded\n"
+            "    Access permissions, in the form of rwx\n"
+            "    Time last modified\n"
+            "    Size of the file\n"
+            "    File name\n\nSee also: cd, mkdir, mv, pwd, rm, rmdir", 
+            this_player());
 }

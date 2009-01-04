@@ -30,13 +30,13 @@ int cmd(string str) {
     }
     while(i--) {
         switch(file_size(files[i])) {
-        case -1: message("system", "File "+files[i]+" does not exist.",
-              this_player()); break;
-        case -2: message("system", files[i]+" is a directory.", 
-              this_player()); break;
-        default: message("system", rm(files[i]) ? files[i]+": Ok." :
-              files[i]+": Permission denied.", this_player());
-            break;
+            case -1: message("system", "File "+files[i]+" does not exist.",
+                             this_player()); break;
+            case -2: message("system", files[i]+" is a directory.", 
+                             this_player()); break;
+            default: message("system", rm(files[i]) ? files[i]+": Ok." :
+                             files[i]+": Permission denied.", this_player());
+                     break;
         }
     }
     return 1;
@@ -44,10 +44,10 @@ int cmd(string str) {
 
 void help() {
     message("help", "Syntax: <rm [file]>\n\n"
-      "The command deletes the file named.  Once deleted, the file "
-      "cannot be recovered.", this_player());
+            "The command deletes the file named.  Once deleted, the file "
+            "cannot be recovered.", this_player());
     if(archp(this_player()))
         message("help", "Note for arches: wild cards work with this command, "
-          "but there is no prompt, so be VERY CAREFULL!!!!", 
-          this_player());
+                "but there is no prompt, so be VERY CAREFULL!!!!", 
+                this_player());
 }

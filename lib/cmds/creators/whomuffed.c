@@ -33,10 +33,10 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: whomuffed\n"
-      "        whomuffed <name>\n\n"
-      "This command lists who is ignored by the player specified.\n"
-      "See also: earmuff, unmuff\n\n",
-      this_player() );
+            "Syntax: whomuffed\n"
+            "        whomuffed <name>\n\n"
+            "This command lists who is ignored by the player specified.\n"
+            "See also: earmuff, unmuff\n\n",
+            this_player() );
 }
 

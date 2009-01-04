@@ -14,8 +14,8 @@ int CheckOrc(mixed val){
     if(member_array(val->GetRace(),exempted) != -1) return 0;
     eventForce("growl at "+val->GetKeyName());
     if( this_object()->GetEnemyChaser() &&
-      !this_object()->GetLeader() && sizeof(filter(val->GetFollowers(),
-      (: base_name($1) == base_name(this_object()) :))) < 1){
+            !this_object()->GetLeader() && sizeof(filter(val->GetFollowers(),
+                    (: base_name($1) == base_name(this_object()) :))) < 1){
         eventForce("follow "+val->GetKeyName());
         SetWanderSpeed(1);
     }
@@ -34,21 +34,21 @@ int torch_action(){
     int x, y;
     if(this_object()->GetEffectiveVision() < VISION_CLEAR){
         tmp = filter(all_inventory(this_object()), (: answers_to("match",
-          $1) && $1->GetLit() :) );
+                        $1) && $1->GetLit() :) );
         tmp2 = filter(all_inventory(this_object()), (: answers_to("torch",
-          $1) && $1->GetFuelAmount() :) );
+                        $1) && $1->GetFuelAmount() :) );
         if(sizeof(tmp)) match = tmp[0];
         if(sizeof(tmp2)) torch = tmp2[0];
         if(!torch){
             tmp2 = filter(all_inventory(this_object()), 
-              (: answers_to("torch", $1) :) );
+                    (: answers_to("torch", $1) :) );
             if(sizeof(tmp2)) tmp2->eventMove(ROOM_FURNACE);
             torch = new("/domains/cave/obj/torch");
             torch->eventMove(this_object());
         }
         if(!match){
             tmp = filter(all_inventory(this_object()),
-              (: answers_to("match", $1) :) );
+                    (: answers_to("match", $1) :) );
             if(sizeof(tmp)) tmp->eventMove(ROOM_FURNACE);
             match = new("/domains/cave/obj/everstrike_match");
             match->eventMove(this_object());
@@ -63,7 +63,7 @@ int torch_action(){
                     this_object()->eventForce("strike my match");
                 }
                 this_object()->eventForce("light "+torchname+" with "+
-                  matchname );
+                        matchname );
             }
         }
     }

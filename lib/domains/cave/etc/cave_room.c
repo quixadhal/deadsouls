@@ -23,7 +23,7 @@ int CanReceive(object ob){
             string name = base_name(element);
             level = element->GetLevel();
             if(creatorp(element) && !archp(element)
-              || (userp(element) && level > 20)){
+                    || (userp(element) && level > 20)){
                 write("Sorry. This is a player-only area.");
                 return 0;
             }
@@ -31,7 +31,7 @@ int CanReceive(object ob){
                 element->eventMove(ROOM_FURNACE);
             }
         }
-    //ob->ChangeClass(ob->GetClass());
+        //ob->ChangeClass(ob->GetClass());
     }
     return ret;    
 }

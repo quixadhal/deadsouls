@@ -41,25 +41,25 @@ void create(){
 void bonuses(){
     if(victim && environment(this_object()) == victim){
         victim->AddStatBonus("intelligence", 
-          -(percent_of(20,this_player()->GetBaseStatLevel("intelligence"))));
+                -(percent_of(20,this_player()->GetBaseStatLevel("intelligence"))));
         victim->AddStatBonus("strength", 
-          -(percent_of(75,this_player()->GetBaseStatLevel("strength"))));
+                -(percent_of(75,this_player()->GetBaseStatLevel("strength"))));
         victim->AddStatBonus("charisma", 
-          -(percent_of(65,this_player()->GetBaseStatLevel("charisma"))));
+                -(percent_of(65,this_player()->GetBaseStatLevel("charisma"))));
         victim->AddStatBonus("durability", 
-          -(percent_of(65,this_player()->GetBaseStatLevel("durability"))));
+                -(percent_of(65,this_player()->GetBaseStatLevel("durability"))));
         victim->AddStatBonus("agility", 
-          -(percent_of(40,this_player()->GetBaseStatLevel("agility"))));
+                -(percent_of(40,this_player()->GetBaseStatLevel("agility"))));
         victim->AddStatBonus("coordination", 
-          -(percent_of(45,this_player()->GetBaseStatLevel("coordination"))));
+                -(percent_of(45,this_player()->GetBaseStatLevel("coordination"))));
         victim->AddStatBonus("speed", 
-          -(percent_of(55,this_player()->GetBaseStatLevel("speed"))));
+                -(percent_of(55,this_player()->GetBaseStatLevel("speed"))));
         victim->AddStatBonus("wisdom", 
-          -(percent_of(10,this_player()->GetBaseStatLevel("wisdom"))));
+                -(percent_of(10,this_player()->GetBaseStatLevel("wisdom"))));
     }
     else if(victim) {
         foreach( string stat in ({"intelligence", "strength",
-            "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+                    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
             victim->RemoveStatBonus(stat);
         }
     }

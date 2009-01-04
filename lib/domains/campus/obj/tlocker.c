@@ -15,16 +15,16 @@ void create() {
     SetAdjectives(({"metal","tall","school"}));
     SetShort("a tall metal locker");
     SetLong("This is a large school locker, the kind one might find in any of "+
-      "thousands of schools around the world.");
+            "thousands of schools around the world.");
     SetMass(3000);
     SetDollarCost(50);
     SetMaxCarry(500);
     SetInventory(([
-        "/domains/campus/obj/bag": 1,
-        "/domains/campus/obj/9mmclip": 1,
-        "/domains/campus/weap/waterpistol" : 1,
-        "/domains/campus/obj/223clip": 1
-      ]));
+                "/domains/campus/obj/bag": 1,
+                "/domains/campus/obj/9mmclip": 1,
+                "/domains/campus/weap/waterpistol" : 1,
+                "/domains/campus/obj/223clip": 1
+                ]));
     SetCanClose(1);
     SetClosed(0);
     SetCanLock(1);

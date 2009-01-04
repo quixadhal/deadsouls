@@ -20,7 +20,7 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: <log [log file]>\n\n"
-      "Tails the log file named (i.e. a file in the mud log directory).\n\n"
-      "See also:\nelog, replog\n"
-    );
+            "Tails the log file named (i.e. a file in the mud log directory).\n\n"
+            "See also:\nelog, replog\n"
+         );
 }

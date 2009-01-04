@@ -29,10 +29,10 @@ mixed cmd(string args) {
     else {
         while(args[0] == '-') {
             switch(args[1]) {
-            case 'd': scan |= OPT_D; break;
-            case 'e': scan |= OPT_E; break;
-            case 'i': scan |= OPT_I; break;
-            case 'f': scan |= OPT_F; break;
+                case 'd': scan |= OPT_D; break;
+                case 'e': scan |= OPT_E; break;
+                case 'i': scan |= OPT_I; break;
+                case 'f': scan |= OPT_F; break;
             }
             if( strlen(args) > 3 ) args = trim(args[2..]);
             else args = "";
@@ -61,15 +61,15 @@ string inventory(object ob, int level, int scan) {
         if( scan & OPT_F ) tmp = identify(ob) + "\n" + ret + " ";
         else tmp = "";
         tmp += sprintf("(%s) - Mass: %d  Value: %d  Class: %d",
-          capitalize((string)ob->GetKeyName()),
-          (int)ob->GetMass(), (int)ob->GetValue(),
-          intp((int)ob->GetClass()) ? (int)ob->GetClass() : 0 );
+                capitalize((string)ob->GetKeyName()),
+                (int)ob->GetMass(), (int)ob->GetValue(),
+                intp((int)ob->GetClass()) ? (int)ob->GetClass() : 0 );
         if( ob->GetWorn() ) tmp += " (worn)";
         ret += tmp;
     }
     else ret += identify(ob);
     if( ( scan & OPT_D ) &&
-      ( maxi = sizeof(inv = all_inventory(ob))) ) ret += ":\n";
+            ( maxi = sizeof(inv = all_inventory(ob))) ) ret += ":\n";
     else ret += "\n";
     if( !( scan & OPT_D ) ) return ret;
     for(i=0; i<maxi; i++)
@@ -79,13 +79,13 @@ string inventory(object ob, int level, int scan) {
 
 string GetHelp(string str) {
     return "Syntax: <scan (-e) (-d) (-i) (-f) ([object])>\n\n"
-    "Scans the inventory of the object you name.  If you do "
-    "not specify an object, then it gives you your inventory.  "
-    "If you specify the -e option, the command does the "
-    "environment of the object which is targeted.  If the -d "
-    "option is specified, then a deep scan is done.  The -i "
-    "option displays information about each object.  The -f "
-    "option forces filenames to be displayed (default).\n\n"
-    "See also: inventory, stat";
+        "Scans the inventory of the object you name.  If you do "
+        "not specify an object, then it gives you your inventory.  "
+        "If you specify the -e option, the command does the "
+        "environment of the object which is targeted.  If the -d "
+        "option is specified, then a deep scan is done.  The -i "
+        "option displays information about each object.  The -f "
+        "option forces filenames to be displayed (default).\n\n"
+        "See also: inventory, stat";
 }
 

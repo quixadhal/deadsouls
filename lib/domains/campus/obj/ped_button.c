@@ -20,8 +20,8 @@ int PushButton(object who) {
     objects+=({ load_object("/domains/campus/room/monty") });
 
     send_messages("press", "$agent_name $agent_verb the button, "
-      "resetting the experiment.",
-      who, 0, environment(who));
+            "resetting the experiment.",
+            who, 0, environment(who));
 
     foreach(object ob in objects){
         ob->ButtonPush();

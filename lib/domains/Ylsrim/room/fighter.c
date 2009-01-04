@@ -16,10 +16,10 @@ static void create() {
     SetShort("the interior chamber of the Hall of Fighters");
     SetLong("Fighters sort of lounge around in here.");
     SetExits( ([
-        "south" : "/domains/Ylsrim/room/"+ "fighter_hall",
-      ]) );
+                "south" : "/domains/Ylsrim/room/"+ "fighter_hall",
+                ]) );
     SetItems( ([
-      ]) );
+                ]) );
     SetDoor( "south", "/domains/Ylsrim/etc/fighter_door.c");
 }
 void init(){

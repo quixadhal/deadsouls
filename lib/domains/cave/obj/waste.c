@@ -7,9 +7,9 @@ int searched;
 string SearchCrap(){
     string result;
     result="You rummage through the disgusting pile "+
-    "and find nothing.";
+        "and find nothing.";
     say(this_player()->GetName()+" searches a pile of debris "+
-      "with no results.");
+            "with no results.");
 
     if(!random(10)){
         object germ = new("/domains/cave/obj/ecoli");

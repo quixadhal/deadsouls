@@ -10,8 +10,8 @@ static void create() {
     SetRules("OBJ","OBJ from OBJ","OBJ in OBJ","OBJ on OBJ", "OBJ out of OBJ");
     SetErrorMessage("Unload something?");
     SetHelp("Syntax: unload THING\n"
-      "        unload THING from THING\n"
-      "Synonyms: discharge, deplete\n");  
+            "        unload THING from THING\n"
+            "Synonyms: discharge, deplete\n");  
 }
 
 mixed can_unload() {

@@ -9,7 +9,7 @@ int PreExit(mixed args...){
     livings = get_livings(this_object());
     foreach(object living in livings){
         if(base_name(living) == "/domains/default/vehicles/strider" &&
-          previous_object(2) != living ){
+                previous_object(2) != living ){
             write("The strider is in your way.");
             return 0;
         }
@@ -25,12 +25,12 @@ static void create() {
     SetShort("Test Labs Corridor East");
     SetLong("This is the main corridor of the test labs. East is the mounted combat arena. The corridor runs west from here.");
     SetExits( ([
-        "west" : "/domains/default/room/wiz_corr_east2",
-      ]) );
+                "west" : "/domains/default/room/wiz_corr_east2",
+                ]) );
     AddExit("east", "/domains/default/virtual/arena/1,10", (: PreExit :));
     SetInventory(([
-        "/domains/default/vehicles/strider" : 1,
-      ]));
+                "/domains/default/vehicles/strider" : 1,
+                ]));
 
     SetProperty("no attack", 1);
 

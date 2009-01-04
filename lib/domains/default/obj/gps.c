@@ -9,12 +9,12 @@ string LongDesc(){
     Tracked = ([]);
     if(creatorp(this_player())){
         ret = "This small electronic appliance is designed to "+
-        "provide information, if available, regarding your location "+
-        "in the world. Commands: coord, prox";
+            "provide information, if available, regarding your location "+
+            "in the world. Commands: coord, prox";
     }
     else {
         ret = "This is a device creators use to analyze their "+
-        "position in relation to the mud.";
+            "position in relation to the mud.";
     }
     return ret;
 }
@@ -44,9 +44,9 @@ int GetCoord(){
     if(!creatorp(this_player())) return 0;
     ret = ROOMS_D->GetCoordinates(environment(this_player()));
     if(!sizeof(ret) || ROOMS_D->GetGrid(ret)["room"] != 
-      base_name(environment(this_player()))){
+            base_name(environment(this_player()))){
         ret = "It seems you are unable to receive positioning "+
-        "data about your location at the moment.";
+            "data about your location at the moment.";
     }
     else{
         mixed foo = ROOMS_D->GetGrid(ret);
@@ -65,10 +65,10 @@ int GetProx(int i){
     if(!creatorp(this_player())) return 0;
     coords = ROOMS_D->GetCoordinates(environment(this_player()));
     if(!sizeof(coords) || ROOMS_D->GetGrid(coords)["room"] !=
-      base_name(environment(this_player())) || 
-      sscanf(coords,"%d,%d,%d",x,y,z) != 3){
+            base_name(environment(this_player())) || 
+            sscanf(coords,"%d,%d,%d",x,y,z) != 3){
         ret = "It seems you are unable to receive proximity "+
-        "data about your location at the moment.";
+            "data about your location at the moment.";
     }
     else{
         if(ROOMS_D->GetGrid(x+","+(y+1)+","+z)["room"])
@@ -118,7 +118,7 @@ int StopTrack(string str){
         return 1;     
     }
     write("Stopping the track of "+
-      capitalize(Tracked[str]->GetKeyName())+".");     
+            capitalize(Tracked[str]->GetKeyName())+".");     
     TRACKER_D->RemoveTrack(mark, this_object());
     Tracked[str] = 0;
     return 1;
@@ -128,6 +128,6 @@ int ReceiveTrackingData(mapping data){
     object env = environment();
     if(!env) return 0;
     tell_object(env, "The GPS device chirps: Tracking data received for "+
-      data["object"]->GetShort()+": "+identify(data));
+            data["object"]->GetShort()+": "+identify(data));
     return 1;
 }

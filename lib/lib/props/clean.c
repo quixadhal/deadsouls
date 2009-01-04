@@ -9,6 +9,8 @@
 #include <clean_up.h>
 #include <rooms.h>
 
+inherit LIB_SAVE;
+
 private static int NoClean = 0; 
 
 /* ******************* clean.c attributes ************************* */
@@ -56,6 +58,7 @@ static int Destruct(){
 }
 
 int eventDestruct(){
+    save::eventDestruct();
     return Destruct();
 }
 
@@ -95,7 +98,7 @@ int clean_up(int ref_exists){
 
         if(inv) catch(inv->eventMove(ROOM_FURNACE));
         if( this_object() ){
-            Destruct();
+            eventDestruct();
         }
         if( this_object() ){
             destruct(this_object());

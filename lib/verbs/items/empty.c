@@ -10,7 +10,7 @@ static void create() {
     SetRules("OBJ");
     SetErrorMessage("Empty what?");
     SetHelp("Syntax: empty <vessel>\n\n"
-      "Removes the fluid from a vessel.");
+            "Removes the fluid from a vessel.");
 }
 
 mixed can_empty_obj(string verb) { return this_player()->CanManipulate(); }

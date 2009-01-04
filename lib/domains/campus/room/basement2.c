@@ -15,28 +15,28 @@ static void create() {
     SetAmbientLight(5);
     SetShort("the basement");
     SetLong("You are in the basement of the LPC University administrative building. It "+
-      "is very dark here, and rather damp. The fluorescent lighting seems to have "+
-      "completely failed. The east side "+
-      "of the basement seems somewhat better lit. The west wall seems heavily "+
-      "smudged...it's even grungier than the rest of this place.");
+            "is very dark here, and rather damp. The fluorescent lighting seems to have "+
+            "completely failed. The east side "+
+            "of the basement seems somewhat better lit. The west wall seems heavily "+
+            "smudged...it's even grungier than the rest of this place.");
     SetItems(([
-        "basement" : "This is a dark, creepy basement.",
-        "building" : "You are in the basement of the LPC University administrative building.",
-        ({"wall","west wall"}) : "The wall seems to have a lot of smudged handprints "+
-        "on it.",
-        ({"dark","darkness"})  : "There's a lot of it, all around.",
-        ({"light","lighting","fluorescent lighting"}) : "The lighting here has failed "+
-        "completely.",
-        ({"prints","print","handprint","handprints"}) : "Smudgy handprints, as if someone "+
-        "had been against the wall here.",
-        "air" : "It feels heavy, making it hard to breathe. It's hard to imagine "+
-        "who or what would enjoy spending time down here."]));
+                "basement" : "This is a dark, creepy basement.",
+                "building" : "You are in the basement of the LPC University administrative building.",
+                ({"wall","west wall"}) : "The wall seems to have a lot of smudged handprints "+
+                "on it.",
+                ({"dark","darkness"})  : "There's a lot of it, all around.",
+                ({"light","lighting","fluorescent lighting"}) : "The lighting here has failed "+
+                "completely.",
+                ({"prints","print","handprint","handprints"}) : "Smudgy handprints, as if someone "+
+                "had been against the wall here.",
+                "air" : "It feels heavy, making it hard to breathe. It's hard to imagine "+
+                "who or what would enjoy spending time down here."]));
     SetExits( ([
-        "east" : "/domains/campus/room/basement.c",
-      ]) );
+                "east" : "/domains/campus/room/basement.c",
+                ]) );
     SetRead( ([
-        ({"wall","west wall"}) : "The cake is a lie.",
-      ]), "malkierien" ); 
+                ({"wall","west wall"}) : "The cake is a lie.",
+                ]), "malkierien" ); 
     SetProperty("no attack", 1);
 }
 void init(){

@@ -9,11 +9,11 @@ static void create() {
     SetSynonyms("shove");
     SetErrorMessage("Move what? Or move what on what?");
     SetHelp("Syntax: <move OBJECT>\n"
-      "        <move THING on OBJECT>\n\n"
-      "Allows you to move an object, or perhaps a thing on the "
-      "object.  For example, you might want to "
-      "\"move the painting on the wall\", or simply \"move carpet\".\n\n"
-      "Synonyms: shove");
+            "        <move THING on OBJECT>\n\n"
+            "Allows you to move an object, or perhaps a thing on the "
+            "object.  For example, you might want to "
+            "\"move the painting on the wall\", or simply \"move carpet\".\n\n"
+            "Synonyms: shove");
 }
 
 mixed can_move_obj() {

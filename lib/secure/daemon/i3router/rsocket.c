@@ -11,6 +11,9 @@ static private int router_socket;
 static private mapping sockets = ([]);
 static private int incept_date;
 int verbose;
+int heart_count, interval = 1;
+int last_connect = time();
+static int *badsocks = ({});
 
 void write_data(int fd, mixed data);
 varargs void yenta(mixed arg1, mixed arg2);
@@ -21,22 +24,39 @@ varargs static void validate(int i){
     if(i){
         if(!socket_status(i) || !socket_status(i)[5]){
             server_log("%^RED%^BAD SOCKET ALERT. fd "+i+":  "+
-              identify(socket_status(i)),"rsocket");
+                    identify(socket_status(i)),"rsocket");
             error("Bad socket, fd "+i);
         }
     }
     if( previous_object() != cmd && previous_object() != router &&
-      previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
+            previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
         server_log("%^RED%^SECURITY ALERT: validation failure in RSOCKET_D.","rsocket");
         error("Illegal attempt to access router socket daemon: "+get_stack()+
-          " "+identify(previous_object(-1)));
+                " "+identify(previous_object(-1)));
     }
+}
+
+mixed SetBadsocks(mixed foo){
+    if(arrayp(foo)) badsocks = copy(foo);
+    else badsocks = ({ });
+    return badsocks;
 }
 
 static void create(){
     incept_date = time();
     call_out("setup",1);
     SetNoClean(1);
+    set_heart_beat(1);
+}
+
+void heart_beat(){
+    heart_count++;
+    if(!(heart_count % 60)){
+        SetBadsocks( ({}) );
+    }
+    if(heart_count > 300){
+        heart_count = 0;
+    }
 }
 
 void close_connection(int fd){
@@ -49,11 +69,12 @@ void close_connection(int fd){
     if(!sockstat || !sizeof(sockstat)) return;
     if(sockstat[1] == "LISTEN") return;
     server_log("%^YELLOW%^About to try closing socket: "+fd+
-      " (aka: "+(ROUTER_D->query_connected_fds()[fd] ||
-        identify(sockstat))+")","rsocket");
+            " (aka: "+(ROUTER_D->query_connected_fds()[fd] ||
+                    identify(sockstat))+")","rsocket");
     yenta("%^YELLOW%^Pre-closing state: "+sockstat[1],"rsocket");
     sockerr = socket_close(fd);
     if(sockerr > -1) map_delete(sockets,fd);
+    badsocks -= ({ fd });
     yenta("%^WHITE%^closing socket:"+fd,"rsocket");
     yenta("%^WHITE%^closing sockerr:"+sockerr,"rsocket");
     yenta("%^YELLOW%^Post-closing state: "+socket_status(fd)[1],"rsocket");
@@ -82,17 +103,37 @@ static void close_callback(int fd){
 }
 
 static void listen_callback(int fd){
-    int fdstat;
+    mixed fdstat,newfd;
+    validate();
 
-    validate(fd);
-
-    if ((fdstat = socket_accept(fd, "read_callback", "write_callback")) < 0) {
-        trr("listen_callback couldn't accept socket "+fd+", errorcode "+fdstat);
+    if ((newfd = socket_accept(fd, "read_callback", "write_callback")) < 0) {
+        trr("listen_callback couldn't accept socket "+fd+", errorcode "+newfd);
         return;
     }
     else {
-        server_log("socket_accepted: "+fdstat+
-          ", "+identify(socket_status(fdstat)),"rsocket");
+        server_log("socket_accepted: "+newfd+
+                ", "+identify(socket_status(newfd)),"rsocket");
+        //tc("listen_callback "+newfd+": "+identify(fdstat=socket_status(newfd)),"white");
+
+        if(sizeof(fdstat) > 4){
+            foreach(mixed foo in ROUTER_D->GetBlacklistedMuds()){
+                if(!strsrch(fdstat[4]+"",foo)){
+                    //tc("dropping blacklisted "+fdstat[4],"white");
+                    //socket_close(newfd);
+                    badsocks += ({ newfd });
+                    return;
+                }
+            }
+        }
+
+        if(time() - last_connect < interval){
+            //tc("early connect from "+newfd+" noted","white");
+            badsocks -= ({ newfd });
+            socket_close(newfd);
+            return;
+        }
+
+        last_connect = time();
     }
 }
 
@@ -106,12 +147,15 @@ static void read_callback(int fd, mixed info){
     }
     else yenta("%^WHITE%^data from fd "+fd+":\n%^BLUE%^"+identify(info));
     if(!find_object(ROUTER_D)) return;
+    if(member_array(fd, badsocks) != -1) return;
     ROUTER_D->read_callback(fd,info);
 }
 
 static void write_callback(int fd){
 
     validate(fd);
+
+    if(member_array(fd, badsocks) != -1) return;
 
     if(!sockets[fd]) return;
     if(sockets[fd]["write_status"] == EEALREADY) {
@@ -129,6 +173,8 @@ static void write_data_retry(int fd, mixed data, int counter){
 
     validate(fd);
 
+    if(member_array(fd, badsocks) != -1) return;
+
     if(!find_object(ROUTER_D)) return;
 
     maxtry = ROUTER_D->GetMaxRetries();
@@ -142,34 +188,35 @@ static void write_data_retry(int fd, mixed data, int counter){
     }
     sockets[fd]["write_status"] = rc;
     switch (rc) {
-    case EESUCCESS:
-        break;
-    case EEALREADY:
-        sockets[fd]["pending"] = data;
-        break;
-    case EECALLBACK:
-        break;
-    case EESECURITY:
-        break;
-    case EEFDRANGE:
-        break;
-    case EENOTCONN:
-        break;
-    case EEBADF:
-        break;
-    default:
-        if (counter < maxtry) {
-            if(counter < 2 || counter > maxtry-1)
-                trr("RSOCKET_D write_data_retry "+counter+" to "+
-                  ROUTER_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
-            call_out( (: write_data_retry :), 2 , fd, data, counter + 1 ); 
-            return;
-        }
+        case EESUCCESS:
+            break;
+        case EEALREADY:
+            sockets[fd]["pending"] = data;
+            break;
+        case EECALLBACK:
+            break;
+        case EESECURITY:
+            break;
+        case EEFDRANGE:
+            break;
+        case EENOTCONN:
+            break;
+        case EEBADF:
+            break;
+        default:
+            if (counter < maxtry) {
+                if(counter < 2 || counter > maxtry-1)
+                    trr("RSOCKET_D write_data_retry "+counter+" to "+
+                            ROUTER_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
+                call_out( (: write_data_retry :), 2 , fd, data, counter + 1 ); 
+                return;
+            }
     }
 }
 
 void write_data(int fd, mixed data){
     validate(fd);
+    if(member_array(fd, badsocks) != -1) return;
     write_data_retry(fd, data, 0);
 }
 

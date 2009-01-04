@@ -61,7 +61,7 @@ mixed eventGet(object who){
     }
     who->eventPrint("You get " + this_object()->GetShort() + ".");
     environment(who)->eventPrint((string)who->GetName() + " gets " +
-      this_object()->GetShort() + ".", who);
+            this_object()->GetShort() + ".", who);
     return 1;
 }
 
@@ -69,19 +69,19 @@ static void create(){
     PreventGet = 0;
 }
 
-mixed direct_get_obj(object target){
-    if(environment() == this_player())
-        return "#You're already holding it.";
-    if( environment() != environment(this_player()) ){
-        string str = this_object()->GetShort();
+    mixed direct_get_obj(object target){
+        if(environment() == this_player())
+            return "#You're already holding it.";
+        if( environment() != environment(this_player()) ){
+            string str = this_object()->GetShort();
 
-        if( !str ) str = "It";
-        else str = capitalize(str);
-        return "#You may need to get closer to it. Perhaps \"get "+this_object()->GetKeyName()+
-        " from\" something?";
+            if( !str ) str = "It";
+            else str = capitalize(str);
+            return "#You may need to get closer to it. Perhaps \"get "+this_object()->GetKeyName()+
+                " from\" something?";
+        }
+        return CanGet(this_player());
     }
-    return CanGet(this_player());
-}
 
 mixed direct_get_obj_out_of_obj(object target, object src){
     object env;

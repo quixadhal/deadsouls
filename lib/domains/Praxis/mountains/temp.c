@@ -6,12 +6,12 @@ void create() {
     SetProperty("indoors", 1);
     SetShort( "Inside a dark chamber");
     SetLong(
-      "You are in a very dark chamber, illuminated only by your "
-      "light source.  The stench in here is foul, and trapped.");
+            "You are in a very dark chamber, illuminated only by your "
+            "light source.  The stench in here is foul, and trapped.");
     SetItems(
-      (["light" : "What light?",
-        "tunnel" : "It is very dark.",
-        "chamber" : "You cannot see it very well."]) );
+            (["light" : "What light?",
+             "tunnel" : "It is very dark.",
+             "chamber" : "You cannot see it very well."]) );
     SetExits( (["west" : "/domains/Praxis/mountains/tunnel1"]) );
 }
 
@@ -26,7 +26,7 @@ void reset() {
         mon->SetLevel(3);
         mon->SetShort( "Goblin soldier");
         mon->SetLong( "An ugly monster who has likely never "
-          "seen the light of day.");
+                "seen the light of day.");
         mon->SetRace( "goblin");
         mon->SetAggressive( 10);
         mon->SetMorality(-140);
@@ -40,7 +40,7 @@ void reset() {
         arm->SetId( ({ "boot", "boot", "goblin boot" }) );
         arm->SetShort( "Right goblin boot");
         arm->SetLong( "A boot for right foot made from the rotting "
-          "leather goblins can only find.");
+                "leather goblins can only find.");
         arm->set_type("boot");
         arm->set_limbs( ({ "right foot" }) );
         arm->set_ac(3);

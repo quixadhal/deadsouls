@@ -41,10 +41,10 @@ mixed cmd(mixed args) {
 
 void help() {
     message("help", "Syntax: <ticktock [seconds]>\n\n"
-      "Changes in-game mud time by the number of seconds "
-      "specified. This is useful for changing night to "
-      "day and vice versa, when testing ambient light and "
-      "variable room descriptions. The timeshift does not "
-      "persist between reboots.\n\n"
-      "", this_player());
+            "Changes in-game mud time by the number of seconds "
+            "specified. This is useful for changing night to "
+            "day and vice versa, when testing ambient light and "
+            "variable room descriptions. The timeshift does not "
+            "persist between reboots.\n\n"
+            "", this_player());
 }

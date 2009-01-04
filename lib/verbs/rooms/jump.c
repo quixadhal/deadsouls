@@ -25,20 +25,20 @@ static void create() {
     verb::create();
     SetVerb("jump");
     SetRules("in OBJ", "into OBJ", "off OBJ", "off of OBJ", "from OBJ",
-      "through OBJ", "across OBJ", "over OBJ", "onto OBJ", "on OBJ"); 
+            "through OBJ", "across OBJ", "over OBJ", "onto OBJ", "on OBJ"); 
     SetSynonyms("leap");
     SetErrorMessage("Jump from, into, over, on, or through something?");
     SetHelp("Syntax: <jump into PLACE>\n"
-      "        <jump off PLACE>\n"
-      "        <jump through THING>\n"
-      "        <jump over THING>\n"
-      "        <jump on THING>\n\n"
-      "These six different syntaxes actually represent three very "
-      "different types of motion.  They are thus often used in very "
-      "different circumstances.  All of them do, however, allow you "
-      "to jump.\n\n"
-      "Synonyms: leap\n\n"
-      "See also: enter, go");
+            "        <jump off PLACE>\n"
+            "        <jump through THING>\n"
+            "        <jump over THING>\n"
+            "        <jump on THING>\n\n"
+            "These six different syntaxes actually represent three very "
+            "different types of motion.  They are thus often used in very "
+            "different circumstances.  All of them do, however, allow you "
+            "to jump.\n\n"
+            "Synonyms: leap\n\n"
+            "See also: enter, go");
 }
 
 mixed can_jump_word_obj() {

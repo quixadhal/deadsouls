@@ -132,7 +132,7 @@ varargs void SetLongAndItems(int x, int y, int z) {
     if(query_night()) str += " The stars of the night sky glitter overhead.";
 
     SetItems( ([ ({ "sea", "ocean" })  : "A seemingly endless body of water.",
-      ]) );
+                ]) );
 
     SetLong(str);
     SetDayLight(30);

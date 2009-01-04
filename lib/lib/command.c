@@ -21,13 +21,13 @@ private static string CommandFail;
 private static string *SearchPath;
 private static int last_cmd_time = 0;
 private static int cmd_count = 1;
-private string *CommandHist = ({});
 private string *localcmds = ({});
 private string *next_command = ({});
 private static string *QueuedCommands = ({});
-private int MaxCommandHistSize = 20;
 static string current_command = "";
 static string original_command = "";
+static int Charmode = 0;
+static string Charbuffer = "";
 
 int direct_force_liv_str(){ return 1; }
 int direct_force_liv_to_str(){ return 1; }
@@ -37,7 +37,7 @@ int direct_force_liv_to_str(){ return 1; }
 
 static void create(){
     SearchPath = ({ DIR_PLAYER_CMDS, DIR_SECURE_PLAYER_CMDS, DIR_CLAN_CMDS,
-      DIR_COMMON_CMDS, DIR_SECURE_COMMON_CMDS });
+            DIR_COMMON_CMDS, DIR_SECURE_COMMON_CMDS });
 }
 
 static string process_input(string cmd){ 
@@ -51,6 +51,9 @@ static int cmdAll(string args){
     object old_agent;
     mixed err;
     string verb, file;
+
+    //tc("args: ("+args+")","red");
+    //tc("verb: ("+query_verb()+")","red");
 
     if(Paused){
         return 0;
@@ -68,12 +71,12 @@ static int cmdAll(string args){
         }
     }    
 
-    if(sizeof(CommandHist) >= MaxCommandHistSize) CommandHist -= ({ CommandHist[0] }); 
-    if(!args) CommandHist += ({ query_verb() });
-    else CommandHist += ({ query_verb()+" "+args });
+    if(!verb) verb = query_verb();
+
+    if(!args) this_object()->Push(verb);
+    else this_object()->Push(verb+" "+args);
 
     old_agent = this_agent(this_object());
-    verb = query_verb();
 
     if(this_player()->GetSleeping() > 0){
         if(verb != "wake"){
@@ -86,8 +89,8 @@ static int cmdAll(string args){
         localcmds = ({});
         filter(this_player()->GetCommands(), (: localcmds += ({ $1[0] }) :));
         if(member_array(verb,CMD_D->GetCommands()) == -1 &&
-          member_array(verb,keys(VERBS_D->GetVerbs())) == -1 &&
-          member_array(verb,localcmds) == -1 ){
+                member_array(verb,keys(VERBS_D->GetVerbs())) == -1 &&
+                member_array(verb,localcmds) == -1 ){
             string dir;
             if(args) dir = verb + " " + args;
             else dir = verb;
@@ -136,8 +139,9 @@ static int cmdAll(string args){
             string cmd;
             int dbg;
 
-            if( args ) cmd = verb + " " + args;
-            else cmd = verb;
+            if( verb && args ) cmd = verb + " " + args;
+            else if(verb) cmd = verb;
+            else if(args) cmd = args;
             if( (int)this_object()->GetProperty("parse debug") ) dbg = 1;
             else if( (int)this_object()->GetProperty("debug") ) dbg = 1;
             else dbg = 0;
@@ -148,9 +152,9 @@ static int cmdAll(string args){
             if( err ){
                 if( err == -1 ){
                     if( !(err = (string)VERBS_D->GetErrorMessage(verb)) &&
-                      !(err = (string)SOUL_D->GetErrorMessage(verb)) ){
+                            !(err = (string)SOUL_D->GetErrorMessage(verb)) ){
                         err = "Such a command exists, but no default "
-                        "syntax is known.";
+                            "syntax is known.";
                     }
                 }
                 if( intp(err) )  /* MudOS bug */ err = "What?";
@@ -233,16 +237,17 @@ int eventForce(string cmd){
     int res;
 #if 0
     if(this_player() && interactive(this_object()) 
-      && this_player() != this_object()){
+            && this_player() != this_object()){
         string forcer = this_player()->GetKeyName();
         string forcee = this_object()->GetKeyName();
         log_file("adm/force", 
-          timestamp()+" "+forcer+" forced "+forcee+" to "+cmd+"\n");
+                timestamp()+" "+forcer+" forced "+forcee+" to "+cmd+"\n");
     }
 #endif
     if(!cmd) return 0;
 
     cmd = process_input(cmd);
+    if(!cmd) return 0;
     Forced = 1;
     err = catch(res = command(cmd));
     Forced = 0;
@@ -319,7 +324,7 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
 
     if(!original_command || !sizeof(original_command)) original_command = lastcmd;
 
-    tmpret = lastcmd;
+    tmpret = (lastcmd || "");
     foreach(string foo in prep_arr){
         if(grepp(tmpret," "+foo+" ")){
             tmpret = replace_string(tmpret," "+foo+" "," PREPO ");
@@ -339,14 +344,14 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
         if(StillTrying){
             tmpstr = remove_article(direct);
             if(args && sizeof(args) && answers_to(tmpstr, args[0]) &&
-              present(args[0]))
+                    present(args[0]))
                 ob1 = args[0];
             else ob1 = to_object(tmpstr, this_object());
         }
         if(StillTrying && indirect){
             tmpstr = remove_article(indirect);
             if(args && sizeof(args) && answers_to(tmpstr, args[0]) &&
-              present(args[0]))
+                    present(args[0]))
                 ob2 = args[0];
             else ob2 = to_object(tmpstr, this_object());
         }
@@ -356,7 +361,7 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
         else indirect = remove_article(indirect);
         if(!ob1 && direct && grepp(direct," ")){
             if(sscanf(direct,"%s %s",s1, s2) == 2 && 
-              !ordinalp(s1,1)){
+                    !ordinalp(s1,1)){
                 direct2 = "a "+direct;
             }
         }
@@ -368,7 +373,7 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
         }
         if(!ob2 && indirect && grepp(indirect," ")){
             if(sscanf(indirect,"%s %s",s1, s2) == 2 && 
-              !ordinalp(s1,1)){
+                    !ordinalp(s1,1)){
                 if(!LimbCertain(indirect)) indirect2 = "a "+indirect;
             }
         }
@@ -426,30 +431,10 @@ int GetForced(){ return Forced; }
 
 int GetClient(){ return 0; }
 
-static string *GetCommandHist(){
-    return CommandHist;
-}
-
-string GetLastCommand(){
-    if(!GetForced() && (this_player() == this_object() || previous_object() == master())){
-        return CommandHist[sizeof(CommandHist)-1];
-    }
-    else return "";
-}
-
 string GetCurrentCommand(){
     if(!this_player()) return "";
     if(this_player() != this_object()) return "";
     return current_command;
-}
-
-int GetMaxCommandHistSize(){
-    return MaxCommandHistSize;
-}
-
-int SetMaxCommandHistSize(int i){
-    if(!i || i < 2) i = 2;
-    return MaxCommandHistSize = i;
 }
 
 int SetPlayerPaused(int i){

@@ -13,14 +13,14 @@ void create() {
     SetDayLong("This is a cave carved into the rocky riverbank wall. Daylight shines in from the west, where the river flows. To the east, the cave continues into darkness.");
     SetLong("This is a small cave near a riverbank.");
     SetItems(([
-        ({ "wall", "rocky wall", "river bank wall", "riverbank wall", "rocky river bank wall", "rocky riverbank wall" }) : "The local river carved a narrow and steep valley here over the years. The walls of that valley is what this cave has been dug out of.",
-      ]));
+                ({ "wall", "rocky wall", "river bank wall", "riverbank wall", "rocky river bank wall", "rocky riverbank wall" }) : "The local river carved a narrow and steep valley here over the years. The walls of that valley is what this cave has been dug out of.",
+                ]));
     SetExits( ([
-        "west" : "/domains/town/room/riverbank",
-        "east" : "/domains/cave/room/cavepass1.c",
-      ]) );
+                "west" : "/domains/town/room/riverbank",
+                "east" : "/domains/cave/room/cavepass1.c",
+                ]) );
     SetInventory(([
-      ]));
+                ]));
 }
 void init(){
     ::init();

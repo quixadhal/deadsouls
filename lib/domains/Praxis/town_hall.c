@@ -2,7 +2,7 @@
 // File     :  /domains/Praxis/town_hall.c
 // Comment  :  Entrance for Court room and Council chambers
 // 94-07-02 :  Pallando @ Nightmare wrote it
-*/
+ */
 #include <lib.h>
 #include <objects.h>
 
@@ -17,39 +17,39 @@ void create()
 {
     ::create();
     SetProperties( ([
-        "indoors" : 1,
-        "light" : 2,
-        "no castle" : 1,
-        "no teleport" : 1,
-        "no bump" : 1,
-        "no attack" : 1,
-        "no steal" : 1,
-        "no magic" : 1,
-      ]) );
+                "indoors" : 1,
+                "light" : 2,
+                "no castle" : 1,
+                "no teleport" : 1,
+                "no bump" : 1,
+                "no attack" : 1,
+                "no steal" : 1,
+                "no magic" : 1,
+                ]) );
     SetShort( "Praxis Town Hall" );
     SetLong(
-      "This is a large stately hall; the walls are covered with rich hangings, "
-      "the vaulted roof is supported by thick marble columns.  A wide curving "
-      "staircase leads up to the council chambers above.  The exit to the "
-      "street is north."
-      // "  South lies the Court of Justice."
-    );
+            "This is a large stately hall; the walls are covered with rich hangings, "
+            "the vaulted roof is supported by thick marble columns.  A wide curving "
+            "staircase leads up to the council chambers above.  The exit to the "
+            "street is north."
+            // "  South lies the Court of Justice."
+           );
     SetItems( ([
-        "hall" : "It is five times the height of a tall man.",
-        "roof" : "If you \"listen to council\", perhaps you will hear them.",
-        "hangings" : "They depict the noble self-sacrifice of being a councilor.",
-        "columns" : "They have gargoyles at their tops.",
-        "staircase" : "It goes between two of the columns.",
-        "chambers" : "If you listen, perhaps you can hear the council.",
-        "court" : "This is where trials are held.",
-        "street" : "It is Boc La Road south of the monastary.",
-        "gargoyles" : "They look innocently inanimate.",
-        "gargoyle" : "It is impenetrateable as a stone wall.",
-      ]) );
+                "hall" : "It is five times the height of a tall man.",
+                "roof" : "If you \"listen to council\", perhaps you will hear them.",
+                "hangings" : "They depict the noble self-sacrifice of being a councilor.",
+                "columns" : "They have gargoyles at their tops.",
+                "staircase" : "It goes between two of the columns.",
+                "chambers" : "If you listen, perhaps you can hear the council.",
+                "court" : "This is where trials are held.",
+                "street" : "It is Boc La Road south of the monastary.",
+                "gargoyles" : "They look innocently inanimate.",
+                "gargoyle" : "It is impenetrateable as a stone wall.",
+                ]) );
     SetExits( ([
-        "south" : "/domains/Praxis/court_room",
-        "north" : "/domains/Praxis/e_boc_la1",
-      ]) );
+                "south" : "/domains/Praxis/court_room",
+                "north" : "/domains/Praxis/e_boc_la1",
+                ]) );
     SetListen( "council", (: "listen_council" :) );
 }
 int pre_exit_up()

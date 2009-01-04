@@ -10,7 +10,7 @@ static void create(){
     SetAdjectives( ({ "wood","wooden" }) );
     SetShort("a wooden rod with a carved snake on it");
     SetLong("This handsome staff has been carved to "
-      "seem to have a snake wrapped around it.");
+            "seem to have a snake wrapped around it.");
     SetVendorType(VT_WEAPON);
     SetDamagePoints(50);
     SetClass(100);

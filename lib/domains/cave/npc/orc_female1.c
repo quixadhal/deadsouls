@@ -18,10 +18,10 @@ static void create() {
     SetAdjectives(({"adult","female"}));
     SetShort("a female orc");
     SetLong("This is an adult orc, a creature somewhat larger "+
-      "and stronger than a typical human.");
+            "and stronger than a typical human.");
     SetInventory(([
-        "/domains/cave/armor/orc_dress" : "wear dress",
-      ]));
+                "/domains/cave/armor/orc_dress" : "wear dress",
+                ]));
     SetLevel(2);
     SetMelee(1);
     SetRace("orc");

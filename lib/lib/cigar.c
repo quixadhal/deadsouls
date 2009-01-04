@@ -39,7 +39,7 @@ mixed eventSmoke(object who, object what){
     }
     write("You smoke your "+remove_article(GetShort())+".");
     say(who->GetName()+" smokes from "+possessive(who)+" "
-      +remove_article(GetShort())+".");
+            +remove_article(GetShort())+".");
     lastpuff = time();
     eventDecreaseFuel(1);
     if( !GetFuelAmount() ) eventBurnOut();

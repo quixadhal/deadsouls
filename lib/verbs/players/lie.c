@@ -18,11 +18,11 @@ static void create() {
     SetErrorMessage("Lie down?");
     SetSynonyms("lay");
     SetHelp("Syntax: <lie down>\n"
-      "        <lie down in OBJECT>\n\n"
-      "Allows you to lie down on the ground or in a bed.  "
-      "It can be really exciting.\n\n"
-      "Synonyms: lay (bad english)\n\n"
-      "See also: sit, stand");
+            "        <lie down in OBJECT>\n\n"
+            "Allows you to lie down on the ground or in a bed.  "
+            "It can be really exciting.\n\n"
+            "Synonyms: lay (bad english)\n\n"
+            "See also: sit, stand");
 }
 
 mixed can_lie_down() {

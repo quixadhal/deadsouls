@@ -8,7 +8,7 @@ static void create() {
     SetId(({"hamburger","burger"}));
     SetShort("a greasy hamburger");
     SetLong("Evidently considered to be food by some people, "+
-      "this little horror in a bun is greasy, flat, and slightly gray. Enjoy!");
+            "this little horror in a bun is greasy, flat, and slightly gray. Enjoy!");
     SetNoCondition(1);
     SetMass(15);
     SetStrength(35);
@@ -16,7 +16,7 @@ static void create() {
     SetDollarCost(4);
     SetMealType(MEAL_FOOD);
     SetMealMessages("You wolf down your hamburger with gusto.",
-      "$N wolfs down $P hamburger hungrily.");
+            "$N wolfs down $P hamburger hungrily.");
 }
 void init(){
     ::init();

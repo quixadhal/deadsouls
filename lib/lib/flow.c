@@ -16,7 +16,12 @@ mixed *third = ({});
 mixed *fourth = ({});
 static int press;
 static string FlowType = "water";
-static int orig_medium;
+static string ThisFile;
+static int HBOverride, orig_medium, DoorStopped = 1;
+
+void shb(int i){
+    if(!HBOverride) set_heart_beat(i);
+}
 
 void create(){
     ::create();
@@ -29,7 +34,7 @@ void create(){
     SetInvis(1);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
-    set_heart_beat(5);
+    shb(5);
     SetNoCondition(1);
     SetPreventGet("You can't get that.");
     if(FlowType == "water"){
@@ -40,6 +45,7 @@ void create(){
         SetEverFill(1);
         SetMealType(MEAL_DRINK);
     }
+    ThisFile = base_name(this_object());
 }
 
 void eventFlood(mixed targets){
@@ -51,15 +57,16 @@ void eventFlood(mixed targets){
         if(environment() == room) continue;
         if(press < 2) break;
         flooder = filter(all_inventory(room),
-          (: base_name($1) == LIB_FLOW :) );
+                (: base_name($1) == ThisFile :) );
         if(sizeof(flooder)){
             if(sizeof(flooder) > 1) flooder[1..]->eventDestruct();
             flooder = flooder[0];
         }
         else {
             int flood;
-            flooder = new(LIB_FLOW);
+            flooder = new(ThisFile);
             //tc("flooder: "+identify(flooder),"green");
+            flooder->SetProperty("LastLocation", base_name(env)); 
             flood = flooder->eventMove(room);
             if(!flood) continue;
             tell_room(room,"This area starts flooding with water!");
@@ -86,7 +93,7 @@ void CheckRooms(){
         return;
     }
     if(clonep() && environment() && !living(environment()) && press > 1){
-        set_heart_beat(5);
+        shb(5);
     }
     if(env){
         Exits = env->GetExitMap(); 
@@ -95,8 +102,8 @@ void CheckRooms(){
             mixed door = env->GetDoor(key);
             int ok =1;
             if(door){
-                set_heart_beat(1);
-                if(door->GetClosed() && !door->GetPerforated()){
+                shb(1);
+                if(DoorStopped && door->GetClosed() && !door->GetPerforated()){
                     //tc("NOT OK");
                     ok = 0;
                 }
@@ -127,7 +134,7 @@ void CheckRooms(){
             //tc("room: "+identify(room),"white");
             if(press < 2) break;
             flooder = filter(all_inventory(room),
-              (: base_name($1) == LIB_FLOW :) );
+                    (: base_name($1) == ThisFile :) );
             if(!sizeof(flooder)) second += ({ room });
             else third += ({ room });
         }
@@ -141,7 +148,7 @@ void CheckRooms(){
 void heart_beat(){
     object env = environment();
     if(!clonep() || !env || living(env) || press < 2){
-        set_heart_beat(60);
+        shb(60);
         return;
     }
     CheckRooms();
@@ -168,7 +175,7 @@ int AddPressure(int x){
         }
         press += x;
     }
-    if(press) set_heart_beat(5);
+    if(press) shb(5);
     return press;
 }
 
@@ -179,6 +186,25 @@ int GetPressure(){
 int SetPressure(int i){
     press = i;
     return press;
+}
+
+int GetHBOverride(){
+    return HBOverride;
+}
+
+int SetHBOverride(int x){
+    if(x) HBOverride = 1;
+    else HBOverride = 0;
+    return HBOverride;
+}
+
+int GetDoorStopped(){
+    return DoorStopped;
+}
+
+int SetDoorStopped(int i){
+    DoorStopped = i;
+    return DoorStopped;
 }
 
 void init(){

@@ -10,7 +10,7 @@ static void checkPreloads(){
     foreach(string daemon in preloads){
         //tc("PRELOAD_D: "+daemon);
         if(!find_object(daemon) && daemon != INTERMUD_D && daemon != IMC2_D &&
-          daemon != AUTOEXEC_D) {
+                daemon != AUTOEXEC_D) {
             //tc("PRELOAD_D: "+daemon,"green");
             update(daemon);
         }

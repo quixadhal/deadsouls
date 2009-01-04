@@ -10,7 +10,7 @@ int rtype;
 
 int eventShadow(object whom){
     if(base_name(previous_object()) == "/domains/default/armor/breather" ||
-      base_name(previous_object()) == "/domains/town/armor/breather"){
+            base_name(previous_object()) == "/domains/town/armor/breather"){
         breatherob = previous_object();
         ::eventShadow(whom);
         rtype = RACES_D->GetRaceRespirationType(whom->GetRace());

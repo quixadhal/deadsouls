@@ -9,12 +9,12 @@ static void create() {
     SetId(({"seth","brundle","Dr. Brundle","Seth","Brundle","seth brundle", "Seth Brundle"}));
     SetShort("Dr. Seth Brundle");
     SetLong("Dr. Brundle is a tall, lanky scientist with an olive complexion "+
-      "and dark, piercing eyes. He seems extremely upset, and hard at work. He looks "+
-      "rumpled, wired, and really nervous.");
+            "and dark, piercing eyes. He seems extremely upset, and hard at work. He looks "+
+            "rumpled, wired, and really nervous.");
     SetInventory(([
-        "/domains/campus/obj/omni" : 1,
-        "/domains/campus/obj/labkey" : 1,
-      ]));
+                "/domains/campus/obj/omni" : 1,
+                "/domains/campus/obj/labkey" : 1,
+                ]));
     SetLevel(5);
     SetUnique(1);
     SetRace("human");
@@ -22,11 +22,11 @@ static void create() {
     AddCommandResponse("give", (: give_it :));
     AddCommandResponse("omni", (: give_it :) );
     SetAction(25, ({
-        "Seth Brundle runs a nervous hand through his hair.",
-        "Dr. Brundle twitches momentarily.", "Dr. Seth Brundle ponders.",
-        "Seth thinks.", "Dr. Seth Brundle thinks carefully.",
-        "Dr. Seth Brundle says, \"You won't be able to get back without an omni.\"",
-        "Dr. Seth Brundle peers nervously at the portal."}));
+                "Seth Brundle runs a nervous hand through his hair.",
+                "Dr. Brundle twitches momentarily.", "Dr. Seth Brundle ponders.",
+                "Seth thinks.", "Dr. Seth Brundle thinks carefully.",
+                "Dr. Seth Brundle says, \"You won't be able to get back without an omni.\"",
+                "Dr. Seth Brundle peers nervously at the portal."}));
 }
 void reset(){
     if(!present("omni",this_object())){

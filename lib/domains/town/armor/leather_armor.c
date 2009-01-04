@@ -18,9 +18,8 @@ static void create() {
     SetShort("a suit of leather armor");
     SetLong("An ordinary suit of leather armor. It is worn on one's arms, torso and legs.");
     SetVendorType(VT_ARMOR);
-    SetMass(750);
+    SetMass(350);
     SetValue(150);
-    SetDamagePoints(800);
     SetProtection(BLUNT, 20);
     SetProtection(BLADE, 20);
     SetProtection(KNIFE, 25);
@@ -29,6 +28,7 @@ static void create() {
     SetProtection(SHOCK, 15);
     SetArmorType(A_BODY_ARMOR);
 }
+
 void init(){
     ::init();
 }

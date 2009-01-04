@@ -18,11 +18,11 @@ mixed AddProperty(string prop, mixed val){
     return Properties[prop];
 }
 
-mixed GetProperty(string prop){
-    if(Properties && Properties[prop])
-        return Properties[prop];
-    else return 0;
-}
+    mixed GetProperty(string prop){
+        if(Properties && Properties[prop])
+            return Properties[prop];
+        else return 0;
+    }
 
 mapping GetProperties(){
     if(!Properties) Properties = ([]);

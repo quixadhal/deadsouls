@@ -10,7 +10,7 @@ void create() {
     SetShort("a wooden table");
     SetLong("It is a simple, medium-sized table made of wood.");
     SetInventory(([
-      ]));
+                ]));
     SetMass(274);
     SetBaseCost("silver",1);
     SetBaseCost("silver",1);

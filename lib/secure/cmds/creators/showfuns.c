@@ -4,13 +4,13 @@
 inherit LIB_DAEMON;
 string *arr = ({});
 string *types = ({ "void ", "status ",
-  "string ", "string \*", "string array ",
-  "int ", "int *", "int array ",
-  "object ", "object *", "object array ",
-  "mapping ", "mapping *", "mapping array ",
-  "mixed ", "mixed *", "mixed array ",
-  "float ", "float *", "float array ",
-  "function ", "function *", "function array " });
+        "string ", "string \*", "string array ",
+        "int ", "int *", "int array ",
+        "object ", "object *", "object array ",
+        "mapping ", "mapping *", "mapping array ",
+        "mixed ", "mixed *", "mixed array ",
+        "float ", "float *", "float array ",
+        "function ", "function *", "function array " });
 
 void create(){
     daemon::create();
@@ -58,6 +58,6 @@ mixed cmd(string str) {
 
 int help() {
     message("help", "Syntax: <showfuns [file]>\n\n"
-      "Displays the functions defined in the file.",
-      this_player());
+            "Displays the functions defined in the file.",
+            this_player());
 }

@@ -22,73 +22,73 @@ void create() {
     daemon::create();
     SetNoClean(1);
     nohtml = ([ "BR": "", "P" : "", "/P" : "", "HREF" : "", ">" : "",
-      "NAME" : "", "/A" : "", "I" : "", "/I" : "", "PRE" : "",
-      "/PRE" : "", "STRONG" : "", "/STRONG" : "", "TABLE" : "",
-      "/TABLE" : "", "TR" : "", "/TR" : "", "TD" : "", "/TD" : ""]);
+            "NAME" : "", "/A" : "", "I" : "", "/I" : "", "PRE" : "",
+            "/PRE" : "", "STRONG" : "", "/STRONG" : "", "TABLE" : "",
+            "/TABLE" : "", "TR" : "", "/TR" : "", "TD" : "", "/TD" : ""]);
     term_info = ([ ]);
     term_info["unknown"] =
-    ([ "RESET": "", "BOLD": "", "FLASH":"", "BLACK":"", "RED":"",
-      "BLUE":"", "CYAN":"", "MAGENTA":"", "ORANGE":"", "YELLOW":"",
-      "GREEN":"", "WHITE":"", "BLACK":"", "B_RED":"", "B_ORANGE":"",
-      "B_YELLOW":"", "B_BLACK":"", "B_CYAN":"","B_WHITE":"", "B_GREEN":"",
-      "B_MAGENTA":"", "STATUS":"", "WINDOW":"", "INITTERM": "",
-      "ENDTERM":""]) + nohtml;
+        ([ "RESET": "", "BOLD": "", "FLASH":"", "BLACK":"", "RED":"",
+         "BLUE":"", "CYAN":"", "MAGENTA":"", "ORANGE":"", "YELLOW":"",
+         "GREEN":"", "WHITE":"", "BLACK":"", "B_RED":"", "B_ORANGE":"",
+         "B_YELLOW":"", "B_BLACK":"", "B_CYAN":"","B_WHITE":"", "B_GREEN":"",
+         "B_MAGENTA":"", "STATUS":"", "WINDOW":"", "INITTERM": "",
+         "ENDTERM":""]) + nohtml;
     term_info["ansi"] =
-    ([ "RESET":ANSI("0"), "BOLD":ANSI(1), "FLASH":ANSI(5),
-      "BLACK":ANSI(30), "RED":ANSI(31), "GREEN":ANSI(32),
-      "ORANGE":ANSI(33),     "YELLOW":ANSI(1)+ANSI(33), "BLUE": ANSI(34),
-      "CYAN":ANSI(36), "MAGENTA":ANSI(35), "BLACK":ANSI(30),
-      "WHITE": ANSI(37), "B_RED":ANSI(41), "B_GREEN":ANSI(42),
-      "B_ORANGE":ANSI(43), "B_YELLOW":ANSI(1)+ANSI(43), "B_BLUE":ANSI(44),
-      "B_CYAN":ANSI(46), "B_BLACK":ANSI(40), "B_WHITE": ANSI(47),
-      "CLEARLINE":ESC("[L")+ESC("[G"), "B_MAGENTA":ANSI(45), "STATUS":"",
-      "WINDOW":"", "INITTERM":ESC("[H")+ESC("[2J"), "ENDTERM":"" ]) +
-    nohtml;
+        ([ "RESET":ANSI("0"), "BOLD":ANSI(1), "FLASH":ANSI(5),
+         "BLACK":ANSI(30), "RED":ANSI(31), "GREEN":ANSI(32),
+         "ORANGE":ANSI(33),     "YELLOW":ANSI(1)+ANSI(33), "BLUE": ANSI(34),
+         "CYAN":ANSI(36), "MAGENTA":ANSI(35), "BLACK":ANSI(30),
+         "WHITE": ANSI(37), "B_RED":ANSI(41), "B_GREEN":ANSI(42),
+         "B_ORANGE":ANSI(43), "B_YELLOW":ANSI(1)+ANSI(43), "B_BLUE":ANSI(44),
+         "B_CYAN":ANSI(46), "B_BLACK":ANSI(40), "B_WHITE": ANSI(47),
+         "CLEARLINE":ESC("[L")+ESC("[G"), "B_MAGENTA":ANSI(45), "STATUS":"",
+         "WINDOW":"", "INITTERM":ESC("[H")+ESC("[2J"), "ENDTERM":"" ]) +
+        nohtml;
     term_info["freedom"] =
-    ([ "RESET": ESC("G0"), "BOLD":ESC("G@"), "FLASH":ESC("G2"),
-      "BLACK":"", "RED":"", "GREEN":"", "ORANGE":"", "YELLOW":"", "BLUE":"",
-      "CYAN":"", "MAGENTA":"", "BLACK":"", "WHITE":"", "B_RED":ESC("GD"),
-      "B_GREEN": ESC("GD"), "B_ORANGE":ESC("G4"), "B_YELLOW":ESC("G4"),
-      "B_BLUE":ESC("G4"), "B_CYAN":ESC("GD"), "B_BLACK": ESC("GD"),
-      "B_WHITE":ESC("G4"), "B_MAGENTA":("G4"), "STATUS":"", "WINDOW":"",
-      "CLEARLINE":CARRIAGE_RETURN, "INITTERM":"", "ENDTERM":"" ]) + nohtml;
+        ([ "RESET": ESC("G0"), "BOLD":ESC("G@"), "FLASH":ESC("G2"),
+         "BLACK":"", "RED":"", "GREEN":"", "ORANGE":"", "YELLOW":"", "BLUE":"",
+         "CYAN":"", "MAGENTA":"", "BLACK":"", "WHITE":"", "B_RED":ESC("GD"),
+         "B_GREEN": ESC("GD"), "B_ORANGE":ESC("G4"), "B_YELLOW":ESC("G4"),
+         "B_BLUE":ESC("G4"), "B_CYAN":ESC("GD"), "B_BLACK": ESC("GD"),
+         "B_WHITE":ESC("G4"), "B_MAGENTA":("G4"), "STATUS":"", "WINDOW":"",
+         "CLEARLINE":CARRIAGE_RETURN, "INITTERM":"", "ENDTERM":"" ]) + nohtml;
     term_info["ansi-status"] =
-    ([ "RESET": ANSI("0;37;40"), "BOLD":ANSI(1), "FLASH":ANSI(5),
-      "BLACK":ANSI(30), "RED":ANSI(31), "GREEN":ANSI(32), "ORANGE":ANSI(33),
-      "YELLOW":ANSI(33), "BLUE":ANSI(34), "CYAN": ANSI(36),
-      "MAGENTA": ANSI(35), "BLACK":ANSI(30), "WHITE":ANSI(37),
-      "B_RED":ANSI(41), "B_GREEN":ANSI(42), "B_ORANGE":ANSI(43),
-      "B_YELLOW": ANSI(1)+ANSI(43), "B_BLUE":ANSI(44),
-      "B_CYAN": ANSI(46), "B_BLACK":ANSI(40), "B_WHITE":ANSI(47),
-      "B_MAGENTA":ANSI(45), "STATUS":ESC("[23;24r")+ESC(8), 
-      "WINDOW":ESC(7)+ESC("[0;22r")+ESC("[22H\n"),
-      "INITTERM":ESC("[H")+ESC("[J")+ESC("[23;24r")+ESC("23H\n"),
-      "CLEARLINE":CARRIAGE_RETURN, "ENDTERM":ESC("[0r")+ESC("[H")+ESC("[J") ]) +nohtml;
-term_info["xterm"] =
-([ "RESET" :  ANSI("0;37;40"), "BOLD": ESC("[7m"),
-  "FLASH":ESC("[5m$<2>"), "BLACK":ANSI(30), "RED":ANSI(31),
-  "GREEN":ANSI(32), "ORANGE":ANSI(33), "YELLOW":ANSI(33),
-  "BLUE":ANSI(34), "CYAN":ANSI(36), "MAGENTA":ANSI(35),"BLACK":ANSI(34),
-  "WHITE":ANSI(38), "B_RED":ANSI(41), "B_GREEN":ANSI(42), 
-  "B_ORANGE":ANSI(43), "B_YELLOW":ANSI(43), "B_BLUE":ANSI(44), 
-  "B_CYAN":ANSI(46), "B_BLACK":ANSI(40), "B_WHITE": ANSI(47),
-  "B_MAGENTA": ANSI(45), "STATUS":"", "WINDOW":"", "INITTERM":"",
-  "CLEARLINE":CARRIAGE_RETURN, "ENDTERM":"" ]) + nohtml;
-term_info["html"] = term_info["unknown"] +
-([ "RED"  : "<FONT COLOR=\"#FF0000\">",
-  "GREEN" : "<FONT COLOR=\"#00FF00\">",
-  "BLUE"  : "<FONT COLOR=\"#0000FF\">",
-  "YELLOW" : "<FONT COLOR=\"#FFFF00\">",
-  "CYAN" : "<FONT COLOR=\"#00A0DD\">",
-  "MAGENTA" : "<FONT COLOR=\"#C50067\">",
-  "YELLOW" : "<FONT COLOR=\"#FFFF00\">",
-  "RESET": "</FONT>",
-  "BR" : "<BR>", "P" : "<P>", "/P" : "</P>", ">" : ">",
-  "HREF" : "<A HREF=", "NAME" : "<A NAME=", "/A" : "</A>",
-  "I" : "<I>", "/I" : "</I>", "PRE" : "</PRE>", "/PRE" : "</PRE>",
-  "STRONG" : "<STRONG>", "/STRONG" : "</STRONG>",
-  "TABLE" : "<TABLE>", "/TABLE" : "</TABLE>", "TR" : "<TR>",
-  "/TR" : "</TR>", "TD" : "<TD>" , "/TD" : "</TD>" ]);
+        ([ "RESET": ANSI("0;37;40"), "BOLD":ANSI(1), "FLASH":ANSI(5),
+         "BLACK":ANSI(30), "RED":ANSI(31), "GREEN":ANSI(32), "ORANGE":ANSI(33),
+         "YELLOW":ANSI(33), "BLUE":ANSI(34), "CYAN": ANSI(36),
+         "MAGENTA": ANSI(35), "BLACK":ANSI(30), "WHITE":ANSI(37),
+         "B_RED":ANSI(41), "B_GREEN":ANSI(42), "B_ORANGE":ANSI(43),
+         "B_YELLOW": ANSI(1)+ANSI(43), "B_BLUE":ANSI(44),
+         "B_CYAN": ANSI(46), "B_BLACK":ANSI(40), "B_WHITE":ANSI(47),
+         "B_MAGENTA":ANSI(45), "STATUS":ESC("[23;24r")+ESC(8), 
+         "WINDOW":ESC(7)+ESC("[0;22r")+ESC("[22H\n"),
+         "INITTERM":ESC("[H")+ESC("[J")+ESC("[23;24r")+ESC("23H\n"),
+         "CLEARLINE":CARRIAGE_RETURN, "ENDTERM":ESC("[0r")+ESC("[H")+ESC("[J") ]) +nohtml;
+    term_info["xterm"] =
+        ([ "RESET" :  ANSI("0;37;40"), "BOLD": ESC("[7m"),
+         "FLASH":ESC("[5m$<2>"), "BLACK":ANSI(30), "RED":ANSI(31),
+         "GREEN":ANSI(32), "ORANGE":ANSI(33), "YELLOW":ANSI(33),
+         "BLUE":ANSI(34), "CYAN":ANSI(36), "MAGENTA":ANSI(35),"BLACK":ANSI(34),
+         "WHITE":ANSI(38), "B_RED":ANSI(41), "B_GREEN":ANSI(42), 
+         "B_ORANGE":ANSI(43), "B_YELLOW":ANSI(43), "B_BLUE":ANSI(44), 
+         "B_CYAN":ANSI(46), "B_BLACK":ANSI(40), "B_WHITE": ANSI(47),
+         "B_MAGENTA": ANSI(45), "STATUS":"", "WINDOW":"", "INITTERM":"",
+         "CLEARLINE":CARRIAGE_RETURN, "ENDTERM":"" ]) + nohtml;
+    term_info["html"] = term_info["unknown"] +
+        ([ "RED"  : "<FONT COLOR=\"#FF0000\">",
+         "GREEN" : "<FONT COLOR=\"#00FF00\">",
+         "BLUE"  : "<FONT COLOR=\"#0000FF\">",
+         "YELLOW" : "<FONT COLOR=\"#FFFF00\">",
+         "CYAN" : "<FONT COLOR=\"#00A0DD\">",
+         "MAGENTA" : "<FONT COLOR=\"#C50067\">",
+         "YELLOW" : "<FONT COLOR=\"#FFFF00\">",
+         "RESET": "</FONT>",
+         "BR" : "<BR>", "P" : "<P>", "/P" : "</P>", ">" : ">",
+         "HREF" : "<A HREF=", "NAME" : "<A NAME=", "/A" : "</A>",
+         "I" : "<I>", "/I" : "</I>", "PRE" : "</PRE>", "/PRE" : "</PRE>",
+         "STRONG" : "<STRONG>", "/STRONG" : "</STRONG>",
+         "TABLE" : "<TABLE>", "/TABLE" : "</TABLE>", "TR" : "<TR>",
+         "/TR" : "</TR>", "TD" : "<TD>" , "/TD" : "</TD>" ]);
 }
 
 mapping query_term_info(string type) {

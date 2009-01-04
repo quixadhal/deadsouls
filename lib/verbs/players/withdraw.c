@@ -17,7 +17,7 @@ static void create() {
     SetVerb("withdraw");
     SetRules("");
     SetHelp("Syntax: <withdraw>\n"
-      "Allows you to withdraw from the elections");
+            "Allows you to withdraw from the elections");
 }
 
 mixed can_withdraw() {

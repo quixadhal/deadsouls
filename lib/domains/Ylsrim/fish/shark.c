@@ -17,7 +17,7 @@ static void create() {
     SetId( ({ "shark", "blue shark" }) );
     SetShort("a blue shark");
     SetLong("It is a huge, long fish with razor sharp teeth and a carnivorous "
-      "appetite.");
+            "appetite.");
     SetMass(100); 
     SetFight(40);
     SetFood("/domains/Ylsrim"+ "/meal/shark");
@@ -31,7 +31,7 @@ int eventCatch(object who, object pole) {
 void BiteMe(object who) {
     who->eventPrint("The shark bites you before it dies!");
     environment(who)->eventPrint("The shark bites " + (string)who->GetName() +
-      " before it dies!", who);
+            " before it dies!", who);
     who->eventReceiveDamage(this_object(), KNIFE, random(20), 0,
-      (string)who->GetRandomLimb("right hand"));
+            (string)who->GetRandomLimb("right hand"));
 }

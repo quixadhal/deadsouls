@@ -17,16 +17,16 @@ mixed cmd(string str) {
 
     if( !sizeof(str) ) return "Syntax: peer <direction>";
     switch(str){
-    case "n" : str = "north";break;
-    case "ne" : str = "northeast";break;
-    case "nw" : str = "northwest";break;
-    case "s" : str = "south";break;
-    case "se" : str = "southeast";break;
-    case "sw" : str = "southwest";break;
-    case "e" : str = "east";break;
-    case "w" : str = "west";break;
-    case "u" : str = "up";break;
-    case "d" : str = "down";break;
+        case "n" : str = "north";break;
+        case "ne" : str = "northeast";break;
+        case "nw" : str = "northwest";break;
+        case "s" : str = "south";break;
+        case "se" : str = "southeast";break;
+        case "sw" : str = "southwest";break;
+        case "e" : str = "east";break;
+        case "w" : str = "west";break;
+        case "u" : str = "up";break;
+        case "d" : str = "down";break;
     }
     env = environment(this_player());
     if( !file = (string)env->GetExit(str) ) file = (string)env->GetEnter(str);
@@ -38,12 +38,12 @@ mixed cmd(string str) {
         return "It is too dark to attempt that.";
     if( env->GetDoor(str) && !(((string)env->GetDoor(str))->CanPeer()) ) {
         message("my_action", sprintf("%s is blocking your view %s.",
-            (capitalize(env->GetDoor(str)->GetShort(str))), str),
-          this_player() );
+                    (capitalize(env->GetDoor(str)->GetShort(str))), str),
+                this_player() );
         return 1;
     }
     if( !unguarded((: file_exists, file + ".c" :)) ||
-      (!env = load_object(file)) ) {
+            (!env = load_object(file)) ) {
         message("my_action", "It is not safe to peer "+str+"!", this_player() );
         return 1;
     }
@@ -56,25 +56,25 @@ mixed cmd(string str) {
         return "It is too dark there.";
 
     items = filter(all_inventory(env),
-      (: !(int)$1->GetInvis(this_player()) :) );
+            (: !(int)$1->GetInvis(this_player()) :) );
     items = items - (livings = filter(items, (: living :)));
     message("my_action", "%^GREEN%^"
-      "Peering "+str+" you see...",
-      this_player() );
+            "Peering "+str+" you see...",
+            this_player() );
     message("other_action",
-      (string)this_player()->GetCapName()+" peers "+str+".",
-      environment(this_player()), this_player() );
+            (string)this_player()->GetCapName()+" peers "+str+".",
+            environment(this_player()), this_player() );
     message("room_description",
-      ("\n"+(string)env->GetLong(0)+"\n" || "\nA void.\n"),
-      this_player() );
+            ("\n"+(string)env->GetLong(0)+"\n" || "\nA void.\n"),
+            this_player() );
     if( sizeof(items) )
         message("room_inventory",
-          "%^MAGENTA%^" + DescribeItems(items) + "%^RESET%^\n",
-          this_player() );
+                "%^MAGENTA%^" + DescribeItems(items) + "%^RESET%^\n",
+                this_player() );
     if( sizeof(livings) )
         message("room_inventory",
-          "%^BOLD%^%^RED%^" + DescribeLiving(livings) + "%^RESET%^",
-          this_player() );
+                "%^BOLD%^%^RED%^" + DescribeLiving(livings) + "%^RESET%^",
+                this_player() );
     return 1;
 }
 
@@ -119,16 +119,16 @@ string DescribeLiving(mixed var) {
     ret = "";
     i = sizeof( shorts = keys(m) );
     while(i--) if( m[ shorts[i] ] > 1 )
-            ret += (consolidate(m[shorts[i]], shorts[i]) + "\n");
-        else ret += (shorts[i] + "\n");
+        ret += (consolidate(m[shorts[i]], shorts[i]) + "\n");
+    else ret += (shorts[i] + "\n");
     return ret;
 }
 
 void help() {
     message("help",
-      "Syntax: peer <direction>\n\n"
-      "Allows you to look into an adjacent room without actually "
-      "entering it.  Note that light and doorways affect what you "
-      "see.\n\n",
-      this_player() );
+            "Syntax: peer <direction>\n\n"
+            "Allows you to look into an adjacent room without actually "
+            "entering it.  Note that light and doorways affect what you "
+            "see.\n\n",
+            this_player() );
 }

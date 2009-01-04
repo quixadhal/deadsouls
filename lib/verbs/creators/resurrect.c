@@ -14,10 +14,10 @@ static void create() {
     SetRules("OBJ", "here");
     SetErrorMessage("resurrect what?");
     SetHelp("Syntax: <resurrect OBJ>\n\n"
-      "Bring back to life something that died. When used on the corpse\n"
-      "of a player, it brings them back from death without skill or\n"
-      "experience penalties.\n"
-      "\nSee also: zap");
+            "Bring back to life something that died. When used on the corpse\n"
+            "of a player, it brings them back from death without skill or\n"
+            "experience penalties.\n"
+            "\nSee also: zap");
 }
 
 mixed can_resurrect_obj(string str) { 
@@ -51,14 +51,14 @@ mixed do_resurrect_obj(object ob) {
     }
 
     tell_player(this_player(),"You wave your hand, and with a flash "+
-      "of light, "+ob->GetCapName()+" comes back to life!");
+            "of light, "+ob->GetCapName()+" comes back to life!");
     tell_player(ob,capitalize(this_player()->GetKeyName())+" waves "+
-      possessive(this_player())+
-      " hand, and with a flash of light, you come back from the dead!");
+            possessive(this_player())+
+            " hand, and with a flash of light, you come back from the dead!");
     tell_room(environment(this_player()),this_player()->GetCapName()+" waves "+
-      possessive(this_player())+
-      " hand, and with a flash of light, "+ob->GetCapName()+" comes back to life!",
-      ({ob, this_player()}) );
+            possessive(this_player())+
+            " hand, and with a flash of light, "+ob->GetCapName()+" comes back to life!",
+            ({ob, this_player()}) );
     if(playerob){
         object *inv;
         playerob->eventRevive(1);

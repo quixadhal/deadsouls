@@ -16,7 +16,7 @@ static void create()  {
     SetStrength(20);
     SetBaseCost("silver",15);
     SetMealMessages("The wonderful drink is most invigorating." , 
-      "$N drinks $P espresso, and looks invigorated and a bit more wired.");
+            "$N drinks $P espresso, and looks invigorated and a bit more wired.");
 }
 void init(){
     ::init();

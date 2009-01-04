@@ -18,15 +18,15 @@ void create() {
     SetProperties( ([ "light" : 2, "night light" : 1, "no castle" : 1 ]));
     SetShort("a graffitti covered wall");
     SetLong(
-      "You are in among ruined buildings in a bad part of the village.  "
-      "There is graffiti all over the wall to the east.");
+            "You are in among ruined buildings in a bad part of the village.  "
+            "There is graffiti all over the wall to the east.");
     SetItems(
-      (["buildings" : "They are worn down by years of neglect.",
-        "graffiti" : "Some is fresh, some is old.",
-        "wall" : "You can scribble something on it.  <scribble stuff>.\n"
-        "You can also read what is on it."]) );
+            (["buildings" : "They are worn down by years of neglect.",
+             "graffiti" : "Some is fresh, some is old.",
+             "wall" : "You can scribble something on it.  <scribble stuff>.\n"
+             "You can also read what is on it."]) );
     SetExits( 
-      (["south"	 : "/domains/Praxis/alley2"]) );
+            (["south"	 : "/domains/Praxis/alley2"]) );
     call_out("fade", 900);
     //restore_object("/domains/Praxis/data/wall");
 }
@@ -42,8 +42,8 @@ int scribble(string str) {
     save_object("/domains/Praxis/data/wall");
     message("my_action", sprintf("You scribble: %s", str), this_player());
     message("other_action", sprintf("%s scribbles some graffitti on the wall.",
-        (string)this_player()->query_cap_name()), this_object(),
-      ({ this_player() }));
+                (string)this_player()->query_cap_name()), this_object(),
+            ({ this_player() }));
     return 1;
 }
 
@@ -62,8 +62,8 @@ int read(string str) {
         message("info", text_scan[i], this_player());
     }
     message("other_action", sprintf("%s reads the graffitti on the wall.",
-        (string)this_player()->query_cap_name()), this_object(),
-      ({ this_player() }));
+                (string)this_player()->query_cap_name()), this_object(),
+            ({ this_player() }));
     return 1;
 }
 
@@ -87,7 +87,7 @@ void fade() {
     str = text_scan[0];
     text_scan -= ({ str });
     message("environment", "Some graffitti fades from the wall.",
-      this_object());
+            this_object());
     call_out("fade", 10000);
     save_object("/domains/Praxis/data/wall");
 }

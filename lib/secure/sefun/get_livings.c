@@ -15,7 +15,7 @@ varargs object array get_livings(object ob,int foo){
     for(i=0;i<sizeof(stuff);i++){
         if(living(stuff[i]) && !sizeof(lstuff)) lstuff = ({stuff[i]});
         if(living(stuff[i]) && sizeof(lstuff) > 0 &&
-          member_array(stuff[i],lstuff) == -1) lstuff += ({stuff[i]});
+                member_array(stuff[i],lstuff) == -1) lstuff += ({stuff[i]});
     }
 
     if(foo == 1){
@@ -23,7 +23,7 @@ varargs object array get_livings(object ob,int foo){
         for(i=0;i<sizeof(lstuff);i++){
             if( interactive(lstuff[i]) && !sizeof(istuff) ) istuff = ({lstuff[i]});
             if( interactive(lstuff[i]) && sizeof(istuff)> 0 &&
-              member_array(lstuff[i],istuff) == -1) istuff+= ({lstuff[i]});
+                    member_array(lstuff[i],istuff) == -1) istuff+= ({lstuff[i]});
         }
         if(sizeof(istuff) > 0) return istuff;
         if(!sizeof(istuff)) return 0;
@@ -34,7 +34,7 @@ varargs object array get_livings(object ob,int foo){
         for(i=0;i<sizeof(lstuff);i++){
             if( !interactive(lstuff[i]) && !sizeof(istuff) ) istuff = ({lstuff[i]});
             if( !interactive(lstuff[i]) && sizeof(istuff)> 0 &&
-              member_array(lstuff[i],istuff) == -1) istuff+= ({lstuff[i]});
+                    member_array(lstuff[i],istuff) == -1) istuff+= ({lstuff[i]});
         }
         if(sizeof(istuff) > 0) return istuff;
         if(!sizeof(istuff)) return 0;

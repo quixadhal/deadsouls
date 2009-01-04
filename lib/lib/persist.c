@@ -81,18 +81,18 @@ int eventLoadObject(mixed val, int recurse){
 
         if( !eventMove(prev) ){
             call_out(function(object p){
-                  object env;
-                  if(p && objectp(p)) env = environment(p);
-                  else return;
+                    object env;
+                    if(p && objectp(p)) env = environment(p);
+                    else return;
 
-                  if( !env ){
-                      p->eventPrint("You lose " + GetShort() + ".");
-                  }
-                  else {
-                      p->eventPrint("You drop " + GetShort() + ".");
-                      eventMove(env);
-                  }
-              }, 1, prev);
+                    if( !env ){
+                    p->eventPrint("You lose " + GetShort() + ".");
+                    }
+                    else {
+                    p->eventPrint("You drop " + GetShort() + ".");
+                    eventMove(env);
+                    }
+                    }, 1, prev);
         }
     }
 }

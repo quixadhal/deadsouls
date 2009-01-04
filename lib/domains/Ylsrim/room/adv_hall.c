@@ -15,15 +15,15 @@ static void create() {
     SetAmbientLight(30);
     SetShort("the adventurer's hall");
     SetLong("A bulletin board sits in the middle of this circular room where "
-      "adventurers from all over gather to meet one another.  Kaliid Road "
-      "lies to the south.  Stairs lead up to the tower.");
+            "adventurers from all over gather to meet one another.  Kaliid Road "
+            "lies to the south.  Stairs lead up to the tower.");
     SetItems( ([ "stairs" : "They spiral up into the tower which looks over "
-        "Kaliid Road.",
-        "tower" : "You can't see much in the darkness into which the "
-        "stairs disappear." ]));
+                "Kaliid Road.",
+                "tower" : "You can't see much in the darkness into which the "
+                "stairs disappear." ]));
     SetExits( ([
-        "up" : "/domains/Ylsrim/room/"+ "tower",
-        "south" : "/domains/Ylsrim/room/"+ "kaliid4" ]) );
+                "up" : "/domains/Ylsrim/room/"+ "tower",
+                "south" : "/domains/Ylsrim/room/"+ "kaliid4" ]) );
     ob = new("/domains/Ylsrim/etc/adv_board");
     ob->set_max_posts(30);
     ob->eventMove(this_object());

@@ -16,7 +16,7 @@ void stone_player(object who, string where) {
 
     me = previous_object();
     message("say", "%^RED%^"+me->query_cap_name()+", cheers wildly and "
-      "runs off to join in the stoning!", environment(me));
+            "runs off to join in the stoning!", environment(me));
     me->eventMoveLiving(where, "cheers wildly and "
-      "runs off to join in the stoning!");
+            "runs off to join in the stoning!");
 } 

@@ -21,7 +21,7 @@ int eventShootDude(object ob){
     }
     tell_object(this_object(),"You fire at "+ob->GetName()+"!");
     tell_room(environment(),"The killbot fires at "+ob->GetName()+"!",
-      ({this_object(),ob}));
+            ({this_object(),ob}));
     tell_object(ob,"The killbot fires at you!");
     ammo--;
     if(random(100) < 10) return 1;
@@ -29,8 +29,8 @@ int eventShootDude(object ob){
     numlimbs=sizeof(limbs);
     limbname = limbs[random(numlimbs-1)]; 
     tell_room(environment(this_object()),
-      "The bullet smashes into "+
-      capitalize(str)+"'s "+limbname+"!\n",ob);
+            "The bullet smashes into "+
+            capitalize(str)+"'s "+limbname+"!\n",ob);
     tell_object(ob,"The bullet smashes into your "+limbname+"!\n");
     dam = 20;
     dam *= random(10);
@@ -71,8 +71,8 @@ int eventTargetScan(){
     int targs;
     if(!environment() || !active) return 0;
     targets = filter(get_livings(environment()), (: !($1->GetInvis()) &&
-        ($1->GetRace() != "god") && member_array($1, GetNonTargets()) == -1 &&
-        ($1->GetRace() != "bot") :));
+                ($1->GetRace() != "god") && member_array($1, GetNonTargets()) == -1 &&
+                ($1->GetRace() != "bot") :));
     targets = scramble_array(targets);
     targets -= ({ this_object() });
     if((targs = sizeof(targets)) < 1){
@@ -84,7 +84,7 @@ int eventTargetScan(){
     if(targs > 10) targs = 10;
     else {
         eventForce("say "+cardinal(targs)+" target"+
-          ((targs > 1) ? "s" : "" )+" acquired.");
+                ((targs > 1) ? "s" : "" )+" acquired.");
     }
     targs--;
     targets = targets[0..targs];
@@ -115,7 +115,7 @@ static void create() {
     SetAdjectives(({"kill","non-player", "non player"}));
     SetShort("a killbot");
     SetLong("This is a hovering orb with a machine gun hanging "+
-      "underneath it and a single red glowing eye scanning the area.");
+            "underneath it and a single red glowing eye scanning the area.");
     SetPosition(POSITION_FLYING);
     SetLevel(1);
     SetPacifist(1);
@@ -173,12 +173,12 @@ void heart_beat(){
         object target;
         incept = time();
         rooms = filter(rooms, (: member_array(base_name($1), ({ ROOM_START,
-                ROOM_FURNACE, ROOM_VOID, ROOM_POD, ROOM_DEATH, ROOM_WIZ,
-                ROOM_ARCH, ROOM_NETWORK, ROOM_ROUTER, LIB_FURNACE,
-                ROOM_FREEZER }) ) == -1  && strsrch(base_name($1),"/realms/") &&
-            !inherits(LIB_FURNACE,$1) &&
-            !($1->GetVirtual() && !grepp(base_name($1),",")) &&
-            last_string_element(base_name($1),"/") != "death" :) );
+                            ROOM_FURNACE, ROOM_VOID, ROOM_POD, ROOM_DEATH, ROOM_WIZ,
+                            ROOM_ARCH, ROOM_NETWORK, ROOM_ROUTER, LIB_FURNACE,
+                            ROOM_FREEZER }) ) == -1  && strsrch(base_name($1),"/realms/") &&
+                    !inherits(LIB_FURNACE,$1) &&
+                    !($1->GetVirtual() && !grepp(base_name($1),",")) &&
+                    last_string_element(base_name($1),"/") != "death" :) );
         while(!success){
             target = rooms[random(sizeof(rooms)-1)];
             success = this_object()->eventMoveLiving(target);
@@ -189,7 +189,7 @@ void heart_beat(){
 }
 
 varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
-  mixed limbs){
+        mixed limbs){
     object env = room_environment();
     if(env){
         tell_room(env,"The killbot %^RED%^BEEPS%^RESET%^.");

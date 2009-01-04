@@ -15,9 +15,9 @@ mapping Directions = ([]);
 
 string LongD(){
     string ret = "This is a large device worn on the back and designed to \"boost\" " +
-    "the wearer through the air or through space. For continuous operation, "+
-    "it should probably be activated.  The fuel gauge "+
-    "reads "+to_int(percent(charge,maxcharge))+" percent.";
+        "the wearer through the air or through space. For continuous operation, "+
+        "it should probably be activated.  The fuel gauge "+
+        "reads "+to_int(percent(charge,maxcharge))+" percent.";
     return ret;
 }
 
@@ -137,12 +137,12 @@ int boost(string str, int coasting){
 
     if( sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ){
         message("my_action", "You bump into " +
-          (string)Doors[str]->GetShort(str) + ".", owner);
+                (string)Doors[str]->GetShort(str) + ".", owner);
         return 1;
     }
 
     if( Exit && Exit["pre"] &&
-      !((int)evaluate(Exit["pre"], str)) ){
+            !((int)evaluate(Exit["pre"], str)) ){
         return 1;
         //return 1;
     }
@@ -174,13 +174,13 @@ int boost(string str, int coasting){
 
 int eventTurnOn(){
     if(!(this_object()->GetWorn()) || !this_player() ||
-      environment(this_object()) != this_player()){
+            environment(this_object()) != this_player()){
         write("You are not wearing the rocket pack.");
         return 1;
     }
     write("You activate the rocket pack with a deep, rumbling roar!");
     say(this_player()->GetName()+" fires up "+possessive(this_player())+" "
-      "rocket pack with a deep, rumbling roar!");
+            "rocket pack with a deep, rumbling roar!");
     activated = 1;
     return 1;
 }
@@ -188,7 +188,7 @@ int eventTurnOn(){
 int eventTurnOff(){
     write("You deactivate the rocket pack. The boosters sputter and go silent.");
     say(this_player()->GetName()+" deactivates "+possessive(this_player())+" "
-      "rocket pack. The boosters sputter and go silent.");
+            "rocket pack. The boosters sputter and go silent.");
     activated = 0;
     return 1;
 }

@@ -13,10 +13,10 @@ static void create(){
     SetId(({"amulet", "gray", "idler_amulet" }));
     SetShort("a gray amulet");
     SetLong("This dull, heavy amulet seems rather worthless, though "
-      "something about it seems to suggest hidden purpose.");
+            "something about it seems to suggest hidden purpose.");
     SetProperties(([
-        "no steal" : 1,
-      ]));
+                "no steal" : 1,
+                ]));
     SetMass(50);
     SetBaseCost(100000);
     SetArmorType(A_AMULET);

@@ -11,7 +11,7 @@ static void create() {
     SetAdjectives( ({ "long","well crafted","bladed","two handed" }) );
     SetShort("a longsword");
     SetLong("A well crafted bladed weapon of exceptional lethality. It "+
-      "is designed to be wielded with two hands.");
+            "is designed to be wielded with two hands.");
     SetMass(500);
     SetHands(2);
     SetBaseCost("silver",2800);

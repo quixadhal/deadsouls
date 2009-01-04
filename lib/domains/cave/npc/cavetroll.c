@@ -11,13 +11,13 @@ static void create() {
     SetAdjectives(({"dirty","cave"}));
     SetShort("a cave troll");
     SetLong("Unlike its more civilized brethren, the cavetroll is a "+
-      "huge and monstrously powerful creature with an even more "+
-      "vicious temperament. Its rocklike skin makes it difficult to "+
-      "injure, and its gargantuan muscles make it difficult to "+
-      "survive in combat against it.");
+            "huge and monstrously powerful creature with an even more "+
+            "vicious temperament. Its rocklike skin makes it difficult to "+
+            "injure, and its gargantuan muscles make it difficult to "+
+            "survive in combat against it.");
     SetInventory(([
-        "/domains/cave/armor/loincloth" : "wear loincloth",
-      ]));
+                "/domains/cave/armor/loincloth" : "wear loincloth",
+                ]));
     SetLevel(13);
     SetRace("troll");
     SetClass("fighter");

@@ -86,7 +86,7 @@ int send_post(mapping borg, string mud) {
     mapping TmpMap = ([]);
 
     if(file_name(previous_object(0)) != LOCALPOST_D &&
-      base_name(previous_object(0)) != OBJ_POST){
+            base_name(previous_object(0)) != OBJ_POST){
         return 0;
     }
 
@@ -107,7 +107,7 @@ int send_post(mapping borg, string mud) {
     borg["to"] = convert_names(borg["to"]); 
     borg["cc"] = convert_names(borg["cc"]); 
     borg["from"] = sprintf("%s@%s", convert_name(borg["from"]),
-      mud_name());
+            mud_name());
 
     foreach(string destination in distinct_array(muds)){
         string *tmp_to = ({});
@@ -122,17 +122,17 @@ int send_post(mapping borg, string mud) {
         if(!Outgoing) Outgoing = ([]);
         if(!Outgoing[destination]) Outgoing[destination] = ([]);
         Outgoing[destination][borg["id"]] = 
-        ({	  
-          "mail",
-          borg["id"],
-          borg["from"],
-          ([ destination : tmp_to ]),
-          ([ destination : tmp_cc ]),
-          ({}),
-          borg["id"],
-          borg["subject"],
-          borg["message"],
-        });
+            ({	  
+             "mail",
+             borg["id"],
+             borg["from"],
+             ([ destination : tmp_to ]),
+             ([ destination : tmp_cc ]),
+             ({}),
+             borg["id"],
+             borg["subject"],
+             borg["message"],
+             });
     }
     save_mailqueue(); 
     return 1;
@@ -157,17 +157,17 @@ int incoming_post(mixed *packet){
     }
     if(!grepp(packet[2],"@")) from = packet[2]+"@"+packet[0];
     borg =
-    ([
-      "id" : packet[1],
-      "from" : from,
-      "to" : packet[3][mud_name()],
-      "cc" : packet[4][mud_name()],
-      "date" : ( stringp(packet[6]) ? to_int(packet[6]) : packet[6] ),
-      "subject" : packet[7],
-      "message" : packet[8]
-    ]);
-LOCALPOST_D->send_post(copy(borg)); 
-return 1; 
+        ([
+         "id" : packet[1],
+         "from" : from,
+         "to" : packet[3][mud_name()],
+         "cc" : packet[4][mud_name()],
+         "date" : ( stringp(packet[6]) ? to_int(packet[6]) : packet[6] ),
+         "subject" : packet[7],
+         "message" : packet[8]
+         ]);
+    LOCALPOST_D->send_post(copy(borg)); 
+    return 1; 
 } 
 
 static private string *local_targets(string *str) {
@@ -178,7 +178,7 @@ static private string *local_targets(string *str) {
     while(i--) {
         sscanf(str[i], "%s@%s", a, b);
         if(replace_string(lower_case(b), " ", ".") == 
-          replace_string(lower_case(mud_name()), " ", ".")) str[i] = a;
+                replace_string(lower_case(mud_name()), " ", ".")) str[i] = a;
     }
     return str;
 } 

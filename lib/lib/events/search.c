@@ -21,8 +21,8 @@ mapping GetTraps(){
     foreach(mixed key, mixed val in shads){
         if(!inherits(LIB_BOOBYTRAP_SHADOW, key)) map_delete(shads, key);
         else shads[key] = ([ "level" : key->GetTrapLevel(), "description" : key->GetTrapDescription() ]);
-}
-return shads;
+    }
+    return shads;
 }
 
 mapping FoundTraps(){
@@ -135,7 +135,7 @@ varargs mixed SetSearch(mixed array args...){
     }
     else {
         error("Wrong number of arguments to SetSearch():\n\t"
-          "Expected 1 or 2, got " + sizeof(args) + "\n");
+                "Expected 1 or 2, got " + sizeof(args) + "\n");
     }
 }
 
@@ -146,7 +146,7 @@ varargs mixed eventSearch(object who, string str){
         return 1;
     }
     environment(who)->eventPrint(who->GetName() + " searches "
-      "for something.", who);
+            "for something.", who);
     who->eventPrint(str);
     return 1;
 }

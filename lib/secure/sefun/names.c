@@ -1,4 +1,32 @@
+#include <daemons.h>
 #include <lib.h>
+
+#ifndef __FLUFFOS__
+string base_name(mixed val) {
+    string name, base;
+    int borg;
+    if(!val) return "";
+    if(objectp(val)) name = file_name(val);
+    else if(val == "") return "";
+    else if(stringp(val) && sizeof(val)) name = val;
+    else name = file_name(val);
+    if(sscanf(name, "%s#%d", base, borg) ==2) return base;
+    else return name;
+}
+#endif
+
+string convert_name(string str) {
+    string a, b, ret;
+    if(!str || str == "") return "";
+    if(!grepp(str,"@")){
+        str = replace_string(str, " ", "");
+        str = replace_string(str, "'", "");
+        return lower_case(replace_string(str, "-", ""));
+    }
+    if(sscanf(str, "%s@%s", a, b) == 2 &&
+            ret = INTERMUD_D->GetMudName(b)) return a+"@"+ret;
+    else return str; 
+}
 
 string *query_names(object whom) {
     string *name = ({});
@@ -57,4 +85,18 @@ int answers_to(string name, object what){
         if(member_array(implode(tmp_arr," "), names) != -1) return 1;
     }
     return 0;
+}
+
+varargs string query_unique_name(mixed ob, int cloned){
+    string fn;
+    if(objectp(ob)){
+        if(!clonep(ob)) cloned = 0;
+        if(cloned) fn = file_name(ob);
+        else fn = base_name(ob);
+    }
+    else if(stringp(ob)) fn = ob;
+    else return 0;
+    fn = replace_string(fn, "/", "0^0");
+    fn = replace_string(fn, "#", "9^9");
+    return fn;
 }

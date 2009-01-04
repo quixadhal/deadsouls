@@ -16,7 +16,7 @@ void create() {
     SetAdjectives( ({ "small", "cloth", "a" }) );
     SetShort("a small cloth bag");
     SetLong("It is a simple cloth bag used to hold things. It has a cute Virtual Campus "+
-      "logo on it.");
+            "logo on it.");
     SetMass(274);
     SetDollarCost(1);
     SetMaxCarry(50);

@@ -27,11 +27,11 @@ object ssocket = find_object(SSOCKET_D);
 
 static void validate(){
     if( previous_object() != cmd && previous_object() != rsocket &&
-      previous_object() != this_object() && previous_object() != ssocket &&
-      !((int)master()->valid_apply(({ "ASSIST" }))) ){
+            previous_object() != this_object() && previous_object() != ssocket &&
+            !((int)master()->valid_apply(({ "ASSIST" }))) ){
         trr("SECURITY ALERT: validation failure in ROUTER_D.","red");
         error("Illegal attempt to access router daemon: "+get_stack()+
-          " "+identify(previous_object(-1)));
+                " "+identify(previous_object(-1)));
     }
 }
 
@@ -114,6 +114,7 @@ varargs string *SetList();
 
 static void close_connection(int fd){
     if(!socket_status(fd) || socket_status(fd)[0] == -1) return;
+    trr("trying to close "+fd);
     if(base_name(socket_status(fd)[5]) == RSOCKET_D){
         RSOCKET_D->close_connection(fd);
     }
@@ -140,7 +141,7 @@ varargs void write_data(int fd, mixed data, int override){
         }
         if(!ok){
             trr("%^B_GREEN%^ATTENTION: IRN startup aborted for "+
-              tmpsstat,"red");
+                    tmpsstat,"red");
             return;
         }
         trr("%^B_YELLOW%^ATTENTION: IRN startup about to be sent to fd"+fd+":%^RESET%^ "+ identify(data)+", "+identify(socket_status(fd)),"red");
@@ -148,7 +149,7 @@ varargs void write_data(int fd, mixed data, int override){
     targetmud = this_object()->query_connected_fds()[fd];
     if(!sstat || sstat[1] != "DATA_XFER") return;
     if(!fd || (!data[4] && targetmud) ||  member_array(fd, keys(irn_sockets)) != -1 ||
-      (targetmud && targetmud == data[4]) ){  
+            (targetmud && targetmud == data[4]) ){  
         if(rsock && sstat[5] == rsock) RSOCKET_D->write_data(fd, data);
         else IMC2_SERVER_D->write_data(fd, data);
     }
@@ -191,9 +192,9 @@ int *open_socks(){
     validate();
     foreach(mixed element in socket_names()){
         if(intp(element[0]) && element[0] != -1 && !grepp(element[3],"*") &&
-          last_string_element(element[3],".") == router_port &&
-          member_array(element[0],
-            keys(this_object()->query_irn_sockets())) == -1) {
+                last_string_element(element[3],".") == router_port &&
+                member_array(element[0],
+                    keys(this_object()->query_irn_sockets())) == -1) {
             ret += ({ element[0] });
         }
     }
@@ -222,24 +223,24 @@ mixed get_info(int auto) {
 
     if(find_object(SSOCKET_D)){
         sret = "\nIMC2 server socket daemon uptime: "+
-        time_elapsed(time()-SSOCKET_D->GetInceptDate())+
-        ", up since "+ctime(SSOCKET_D->GetInceptDate());
+            time_elapsed(time()-SSOCKET_D->GetInceptDate())+
+            ", up since "+ctime(SSOCKET_D->GetInceptDate());
     }
     socks += "\nTotal number of connected muds: "+socknum+"\n";
     ret = "router_name: "+router_name+
-    "\nrouter_ip: "+router_ip+
-    "\nrouter_port: "+router_port+
-    "\nrouter_list"+identify(router_list)+
-    "\nchannel_update_counter: "+ channel_update_counter+
-    ((sizeof(channels)) ? "\nchannels:"+implode(sort_array(keys(channels),1),", ") : "")+
-    "\nmudinfo_update_counter: "+ mudinfo_update_counter+
-    "\nsockets: "+socks+
-    "\nmuds: "+muddies+
-    "\nRouter socket daemon uptime: "+
-    time_elapsed(time()-RSOCKET_D->GetInceptDate())+
-    ", up since "+ctime(RSOCKET_D->GetInceptDate())+
-    sret+
-    "\n"+Report();
+        "\nrouter_ip: "+router_ip+
+        "\nrouter_port: "+router_port+
+        "\nrouter_list"+identify(router_list)+
+        "\nchannel_update_counter: "+ channel_update_counter+
+        ((sizeof(channels)) ? "\nchannels:"+implode(sort_array(keys(channels),1),", ") : "")+
+            "\nmudinfo_update_counter: "+ mudinfo_update_counter+
+                "\nsockets: "+socks+
+                "\nmuds: "+muddies+
+                "\nRouter socket daemon uptime: "+
+                time_elapsed(time()-RSOCKET_D->GetInceptDate())+
+                ", up since "+ctime(RSOCKET_D->GetInceptDate())+
+                sret+
+                "\n"+Report();
 
     if(auto) return ret;
     write(ret);
@@ -307,7 +308,7 @@ varargs string *SetList(){
     if(!strsrch(router_name,"*")) tmp = router_name;
     else tmp = "*"+router_name;
     if(lower_case(mud_name()) == "frontiers" ||
-      lower_case(mud_name()) == "*yatmim"){
+            lower_case(mud_name()) == "*yatmim"){
         tmp_port = "23";
         tmp_ip = "149.152.218.102";
         tmp = "*yatmim";
@@ -422,7 +423,7 @@ void check_discs(){
     foreach(string mudname in keys(mudinfo)){
         if(!connected_muds[mudname] && mudinfo[mudname]["router"]){
             if(mudinfo[mudname]["router"] != my_name &&
-              member_array(mudinfo[mudname]["router"],keys(irn_connections)) == -1){
+                    member_array(mudinfo[mudname]["router"],keys(irn_connections)) == -1){
                 if(!mudinfo[mudname]["disconnect_time"]){
                     trr("killing "+mudname);
                     mudinfo[mudname]["disconnect_time"] = 100;
@@ -439,8 +440,8 @@ void check_discs(){
             string lost_mud;
             if(!intp(element)) continue;
             if(!socket_status(element) ||
-              socket_status(element)[1] == "CLOSED" || !GetRemoteIP(element) ||
-              GetRemoteIP(element) != mudinfo[query_connected_fds()[element]]["ip"]){
+                    socket_status(element)[1] == "CLOSED" || !GetRemoteIP(element) ||
+                    GetRemoteIP(element) != mudinfo[query_connected_fds()[element]]["ip"]){
                 foreach(string key, mixed val in mudinfo){
                     if(!connected_muds[key] && mudinfo[key]["router"]){
                         if(mudinfo[key]["router"] == my_name){
@@ -481,12 +482,12 @@ void clean_ghosts(){
 
     if(!rsockd && !ssockd) return;
 
-    tmp =sizeof(socket_status())-1;
+    tmp=sizeof(socket_status())-1;
 
     for(i=0;i < tmp;i++){ 
         if(!incoming[i][5] || 
-          (incoming[i][5] != rsockd && incoming[i][5] != ssockd)) continue;
-        if(member_array(i, legit_socks) == -1 && incoming[i][1] == "DATA_XFER"){ 
+                (incoming[i][5] != rsockd && incoming[i][5] != ssockd)) continue;
+        if(member_array(i,legit_socks) == -1 && incoming[i][1] == "DATA_XFER"){ 
             this_object()->close_connection(i);
         }
     }
@@ -530,7 +531,7 @@ void clear_discs(){
 
         if(!connected_muds[mudname] && mudinfo[mudname]["router"]){
             if(mudinfo[mudname]["router"] != my_name && 
-              member_array(mudinfo[mudname]["router"],keys(irn_connections)) == -1){
+                    member_array(mudinfo[mudname]["router"],keys(irn_connections)) == -1){
                 if(!mudinfo[mudname]["disconnect_time"])
                     mudinfo[mudname]["disconnect_time"] = 0;
                 if(mudinfo[mudname]["connect_time"])
@@ -550,7 +551,7 @@ void clear_discs(){
         }
 
         if(mudinfo[mudname] && mudinfo[mudname]["disconnect_time"] > 0 &&
-          mudinfo[mudname]["connect_time"] > 0){
+                mudinfo[mudname]["connect_time"] > 0){
             i = 1;
             server_log("I want to remove "+mudname+". It is in a paradox state.");
             if(member_array(mudname,keys(query_connected_muds())) != -1){
@@ -570,7 +571,7 @@ int eventDestruct(){
     validate();
     save_object(SAVE_ROUTER);
     server_log("I am being destructed by: \n"+get_stack()+
-      "\n"+identify(previous_object(-1)));
+            "\n"+identify(previous_object(-1)));
     daemon::eventDestruct();
 }
 
@@ -612,14 +613,14 @@ varargs void ReceiveList(mixed data, string type, string who){
             //  mudinfo[key]["router"] == router_name) continue;
             if(!connected_muds[key]){
                 trr("%^B_GREEN%^%^BLACK%^accepting "+key+
-                  " update from "+(mudinfo[key] ? mudinfo[key]["router"] : who ));
+                        " update from "+(mudinfo[key] ? mudinfo[key]["router"] : who ));
                 mudinfo_updates[key] = mudinfo_update_counter;
                 mudinfo[key]=val;
                 schedule_broadcast(key, 1);
             }
             else {
                 trr("%^RESET%^Looks like I'm %^B_RED%^%^BLACK%^REJECTING%^RESET%^ "+key+"."
-                  +mudinfo[key]["router"]+" update from "+who);
+                        +mudinfo[key]["router"]+" update from "+who);
             }
         }
     }

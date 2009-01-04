@@ -69,6 +69,6 @@ int cmd(string args) {
 
 void help() {
     write("Syntax: <who [@mud]>\n\n"
-      "Gives you a who list in abbreviated form from this mud or other muds on the I3 or IMC2 network.\n"
-    );
+            "Gives you a who list in abbreviated form from this mud or other muds on the I3 or IMC2 network.\n"
+         );
 }

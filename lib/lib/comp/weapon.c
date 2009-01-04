@@ -85,7 +85,7 @@ string GetWeaponType(){
 string SetWeaponType(string str){
     if( !stringp(str) ){
         error("Bad argument 1 to SetWeaponType().\n\tExpected: string, Got: " +
-          typeof(str) + "\n");
+                typeof(str) + "\n");
     }
     return (WeaponType = str);
 }
@@ -106,7 +106,7 @@ mixed CanEquip(object who, string array limbs){
     }
     if( GetHands() != sizeof(limbs) ){
         return "#You must use " + cardinal(Hands) + " hands to wield " +
-        GetDefiniteShort() + ".";
+            GetDefiniteShort() + ".";
     }
     if( Hands > sizeof(who->GetWieldingLimbs()) ){
         return "#You do not have enough limbs for that weapon!";
@@ -126,11 +126,11 @@ int eventDeteriorate(int type){
         if( living(env) ){
             if( x > 1 ){
                 env->eventPrint(capitalize(GetDefiniteShort()) +
-                  " is wearing down.");
+                        " is wearing down.");
             }
             else {
                 env->eventPrint(capitalize(GetDefiniteShort()) +
-                  " is completely worn.");
+                        " is completely worn.");
             }
         }
         if( GetProperty("blessed") ){
@@ -171,7 +171,7 @@ mixed eventEquip(object who, string array limbs){
         who->eventPrint("You wield " + GetShort() + ".");
     }
     environment(who)->eventPrint(who->GetName() + " wields " + GetShort() +
-      ".", who);
+            ".", who);
     return 1;
 }
 
@@ -183,8 +183,8 @@ int eventStrike(object target){
 
         if( x > 0 ){
             send_messages("", "$agent_possessive_noun " + GetKeyName() +
-              " poisons $target_name.", environment(), target,
-              environment(environment()));
+                    " poisons $target_name.", environment(), target,
+                    environment(environment()));
             target->AddPoison(x);
             AddPoison(-x);
         }
@@ -201,7 +201,7 @@ mixed eventUnequip(object who){
     }
     Wielded = 0;
     if(!who->GetDead()) send_messages("unwield", "$agent_name $agent_verb $target_name.",
-          who, this_object(), environment(who));
+            who, this_object(), environment(who));
     return 1;
 }
 

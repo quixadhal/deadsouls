@@ -41,7 +41,7 @@ mixed cmd(string args) {
 
 string GetHelp() {
     return ("Syntax: <which [command]>\n\n"
-      "Gives you a listing of all directories in which a command "
-      "object may be found.\n\n"
-      "See also: help, man");
+            "Gives you a listing of all directories in which a command "
+            "object may be found.\n\n"
+            "See also: help, man");
 }

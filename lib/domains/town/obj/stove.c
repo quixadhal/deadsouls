@@ -10,20 +10,21 @@ void create() {
     SetAdjectives(({"large","imported","expensive"}));
     SetShort("a large stove");
     SetLong("This is a very large kitchen stove, which can "+
-      "handle quite a lot of food at once. The exterior is "+
-      "finished in a very tasteful brushed metal motif, and "+
-      "it seems that this is one of those expensive, imported "+
-      "stoves that only ridiculously rich people have in "+
-      "their homes.");
-    SetMass(500000);
-    SetBaseCost("silver",50000);
+            "handle quite a lot of food at once. The exterior is "+
+            "finished in a very tasteful brushed metal motif, and "+
+            "it seems that this is one of those expensive, imported "+
+            "stoves that only ridiculously rich people have in "+
+            "their homes.");
+    SetMass(5000);
+    SetBaseCost("silver",1000);
     SetMaxCarry(5000);
     SetInventory(([
-        "/domains/town/npc/rat" : 1
-      ]));
+                "/domains/town/npc/rat" : 1
+                ]));
     SetCanClose(1);
     SetClosed(1);
 }
+
 varargs mixed eventOpen(object who, string id, object tool) {
     object rat;
     mixed tmp = ::eventOpen(who, id, tool);
@@ -37,6 +38,7 @@ varargs mixed eventOpen(object who, string id, object tool) {
     }
     return 1;
 }
+
 void init(){
     ::init();
 }

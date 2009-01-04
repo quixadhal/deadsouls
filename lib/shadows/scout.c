@@ -96,7 +96,7 @@ int eventShadow(object whom){
         }
     }
     if(base_name(previous_object()) == "/domains/town/armor/scoutsuit"
-      || base_name(previous_object()) == "/domains/default/armor/scoutsuit"){
+            || base_name(previous_object()) == "/domains/default/armor/scoutsuit"){
         ::eventShadow(whom);
         suit = previous_object();
         if(CheckDisguised()) whom->SetId(({"scout"}));
@@ -116,14 +116,14 @@ int unscoutshadow(){
 
 string array parse_command_id_list() {
     string array ids = (this_object()->GetId() + 
-      (CheckDisguised() ? ({ "scout" }) : ({}) ) || ({}));
+            (CheckDisguised() ? ({ "scout" }) : ({}) ) || ({}));
     return filter(ids, (: stringp($1) && ($1 != "") :));
 
 }
 
 string array parse_command_plural_id_list() {
     string array ids = (this_object()->GetId() +
-      (CheckDisguised() ? ({ "scout" }) : ({}) ) || ({}));
+            (CheckDisguised() ? ({ "scout" }) : ({}) ) || ({}));
     ids = filter(ids, (: stringp($1) && ($1 != "") :));
     return map(ids, (: pluralize :));
 }
@@ -136,8 +136,8 @@ int GetSkillLevel(string skill) {
     if(!ob) return 0;
     if(!suit->GetActive()) return ob->GetSkillLevel(skill);
     switch(skill){
-    case "melee attack" : ret = 50;break;
-    default :
+        case "melee attack" : ret = 50;break;
+        default :
     }
     if(ret){
         suit->eventDecrementCharge();
@@ -158,11 +158,11 @@ int GetStatLevel(string stat){
     if(!ob) return 0;
     if(!suit->GetActive()) return ob->GetStatLevel(stat);
     switch(stat){
-    case "strength" : ret = 40;break;
-    case "agility" : ret = 50;break;
-    case "durability" : ret = 60;break;
-    case "coordination" : ret = 70;break;
-    default :
+        case "strength" : ret = 40;break;
+        case "agility" : ret = 50;break;
+        case "durability" : ret = 60;break;
+        case "coordination" : ret = 70;break;
+        default :
     }
     if(ret){
         suit->eventDecrementCharge();
@@ -256,7 +256,7 @@ void eventDescribeEnvironment(int verbose) {
     int medium, terrain;
 
     extra += "Power remaining: "+to_int(percent(suit->GetRemainingCharge(),
-        suit->GetMaxCharge()))+"%\n";
+                suit->GetMaxCharge()))+"%\n";
 
     if(!ob) return 0;
     if(!CheckSuit() || !suit->GetActive()) return ob->eventDescribeEnvironment(verbose);
@@ -280,7 +280,7 @@ void eventDescribeEnvironment(int verbose) {
 
     foo = last_string_element(filename,"/");
     if(sscanf(foo,"%d,%d,%d", x,y,z) == 3 ||
-      sscanf(foo,"%d,%d", x,y) == 2){
+            sscanf(foo,"%d,%d", x,y) == 2){
         hud = 1;
         extra += "Local coordinates: "+x+","+y+","+z+"\n";
     }
@@ -318,12 +318,12 @@ void eventDescribeEnvironment(int verbose) {
         hud = 1;
         extra += "Medium: ";
         switch(medium){
-        case MEDIUM_LAND : extra += "land\n"; break;
-        case MEDIUM_AIR : extra += "air\n"; break;
-        case MEDIUM_SPACE : extra += "space\n"; break;
-        case MEDIUM_WATER : extra += "water\n"; break;
-        case MEDIUM_SURFACE : extra += "surface\n"; break;
-        default: extra += "unknown\n";
+            case MEDIUM_LAND : extra += "land\n"; break;
+            case MEDIUM_AIR : extra += "air\n"; break;
+            case MEDIUM_SPACE : extra += "space\n"; break;
+            case MEDIUM_WATER : extra += "water\n"; break;
+            case MEDIUM_SURFACE : extra += "surface\n"; break;
+            default: extra += "unknown\n";
         }
     }
 
@@ -334,6 +334,7 @@ void eventDescribeEnvironment(int verbose) {
             else invisibles[dude->GetRace()]++;
         }
         foreach(mixed key, mixed val in invisibles){
+            if(!key) continue;
             extra += "Invisible "+pluralize(key)+": "+val+"\n";
         }
     }

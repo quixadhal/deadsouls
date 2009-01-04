@@ -2,7 +2,7 @@
 // The snoop command.
 // Daemonized by Buddha (2-19-92)
 // Part of the TMI mudlib.
-*/
+ */
 
 #include <lib.h>
 #include <daemons.h>
@@ -32,7 +32,7 @@ int help()
     write( @EndText
 Syntax: snoop <user>
 Effect: Echoes to your screen everything <user> sees or types.
-        To stop snooping, type just "unsnoop <user>"
+To stop snooping, type just "unsnoop <user>"
 See also: unsnoop, monitor, unmonitor
 EndText
     );

@@ -16,7 +16,7 @@ mixed cmd(string args){
     string array adverbs;
     string emote, xtra, prep;
     if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
-      !member_group(this_player(), "EMOTES") ){
+            !member_group(this_player(), "EMOTES") ){
         write("You are not admin, nor a member of the EMOTES group.");
         return 1;
     }
@@ -41,7 +41,7 @@ mixed cmd(string args){
             prep = xtra[0..<5];
             token = xtra[<3..];
             if( member_array(prep, master()->parse_command_prepos_list()) ==
-              -1 ) {
+                    -1 ) {
                 return "The preposition " + prep + " is not a valid.";
             }
             if( member_array(token, ({ "LIV", "LVS" })) == -1 ) {
@@ -80,7 +80,7 @@ mixed cmd(string args){
         else {
             if( prep ) {
                 msg = "$agent_name $agent_verb $adverb " + prep +
-                " $target_name.";
+                    " $target_name.";
             }
             else {
                 msg = "$agent_name $agent_verb $target_name $adverb.";
@@ -99,26 +99,26 @@ mixed cmd(string args){
 
 string GetHelp(string args) {
     return ("Syntax: <stupidemote EMOTE>\n"
-      "        <stupidemote EMOTE RULE>\n"
-      "You must be admin or member of the EMOTES group to use this command.\n\n"
-      "This command allows you to add the most common kinds of "
-      "emote straight from the command line.  Using the first syntax, "
-      "You can add a simple, untargetted emote.  For example, "
-      "if you did <stupidemote cheese>, this would create an emote "
-      "that would allow people to do <cheese> and <cheese adverb> "
-      "with a message that looks like \"Descartes cheeses.\"\n"
-      "The second syntax is for targetted emotes.  You specify a "
-      "targetting rule.  Targetting rules can be one of the following:\n"
-      "\t* LIV\n"
-      "\t* LVS\n"
-      "\t* preposition LIV\n"
-      "\t* preposition LVS\n"
-      "The difference between LIV and LVS just determines whether the "
-      "emote can be targetted at a single living being or one or more "
-      "living beings.  So, to add the \"smile\" emote, you would "
-      "do:\n"
-      "> stupidemote smile at LVS\n"
-      "and that would give you all the functionality of the \"smile\" "
-      "emote that exists on this mudlib.\n\n"
-      "See also: addadverb, addemote, removeadverb, removeemote");
+            "        <stupidemote EMOTE RULE>\n"
+            "You must be admin or member of the EMOTES group to use this command.\n\n"
+            "This command allows you to add the most common kinds of "
+            "emote straight from the command line.  Using the first syntax, "
+            "You can add a simple, untargetted emote.  For example, "
+            "if you did <stupidemote cheese>, this would create an emote "
+            "that would allow people to do <cheese> and <cheese adverb> "
+            "with a message that looks like \"Descartes cheeses.\"\n"
+            "The second syntax is for targetted emotes.  You specify a "
+            "targetting rule.  Targetting rules can be one of the following:\n"
+            "\t* LIV\n"
+            "\t* LVS\n"
+            "\t* preposition LIV\n"
+            "\t* preposition LVS\n"
+            "The difference between LIV and LVS just determines whether the "
+            "emote can be targetted at a single living being or one or more "
+            "living beings.  So, to add the \"smile\" emote, you would "
+            "do:\n"
+            "> stupidemote smile at LVS\n"
+            "and that would give you all the functionality of the \"smile\" "
+            "emote that exists on this mudlib.\n\n"
+            "See also: addadverb, addemote, removeadverb, removeemote");
 }

@@ -12,7 +12,7 @@ string bportal = "/secure/obj/portal_blue";
 varargs mixed CheckOrange(int ob){
     object o, *tmp;
     int orange = sizeof(tmp=filter(deep_inventory(this_object()),
-        (: base_name($1) == "/domains/default/obj/vial_orange" :) ) );
+                (: base_name($1) == "/domains/default/obj/vial_orange" :) ) );
     if(orange) o = tmp[0];
     if(ob) return o;
     return orange;
@@ -21,7 +21,7 @@ varargs mixed CheckOrange(int ob){
 varargs mixed CheckBlue(int ob){
     object b, *tmp;
     int blue = sizeof(tmp=filter(deep_inventory(this_object()),
-        (: base_name($1) == "/domains/default/obj/vial_blue" :) ) );
+                (: base_name($1) == "/domains/default/obj/vial_blue" :) ) );
     if(blue) b = tmp[0];
     if(ob) return b;
     return blue;
@@ -48,15 +48,15 @@ mixed PressOrange(mixed args...){
     }
     if(orange){
         write("You press the button and with a deep thumping "+
-          "sound an orange portal appears.");
+                "sound an orange portal appears.");
         say(this_player()->GetName()+" presses a button on "+
-          possessive(this_player())+" portal generator, and with "+
-          "a deep thumping sound an orange portal appears.");
+                possessive(this_player())+" portal generator, and with "+
+                "a deep thumping sound an orange portal appears.");
     }  
     else {
         write("Click.");
         say(this_player()->GetName()+" presses a button on "+
-          possessive(this_player())+" portal generator.");
+                possessive(this_player())+" portal generator.");
     }
     return 1;
 }
@@ -68,15 +68,15 @@ mixed PressBlue(mixed args...){
     }
     if(blue){
         write("You press the button and with a deep thumping "+
-          "sound a blue portal appears.");
+                "sound a blue portal appears.");
         say(this_player()->GetName()+" presses a button on "+
-          possessive(this_player())+" portal generator, and with "+
-          "a deep thumping sound a blue portal appears.");
+                possessive(this_player())+" portal generator, and with "+
+                "a deep thumping sound a blue portal appears.");
     }
     else {
         write("Click.");
         say(this_player()->GetName()+" presses a button on "+
-          possessive(this_player())+" portal generator.");
+                possessive(this_player())+" portal generator.");
     }
     return 1;
 }
@@ -107,31 +107,31 @@ void create(){
     SetAdjectives( ({"sleek","mk i","futuristic","portal","gcm"}) );
     SetShort("a portal generator");
     SetLong("This is a sleek, futuristic device with orange and "+
-      "blue buttons. It has a printed label you can read, and it looks "+
-      "like someone has scribbled some markings on it as well.");
+            "blue buttons. It has a printed label you can read, and it looks "+
+            "like someone has scribbled some markings on it as well.");
     SetMass(100);
     SetBaseCost("silver",5000);
     SetVendorType(VT_TREASURE);
     SetItems( ([
-        ({"label","printed label"}) : "A printed label you can read.",
-        ({"markings","scribbles","scribbled markings"}) : "Markings "+
-        "you can read, apparently scribbled in haste.",
-        ({ "button", "buttons" }) : "The portal generator has two buttons, one"+  
-        " orange, one blue.",
-        ({ "orange button" }) : (: ExaOrange :),
-        ({ "blue button" }) : (: ExaBlue :),
-      ]) );
+                ({"label","printed label"}) : "A printed label you can read.",
+                ({"markings","scribbles","scribbled markings"}) : "Markings "+
+                "you can read, apparently scribbled in haste.",
+                ({ "button", "buttons" }) : "The portal generator has two buttons, one"+  
+                " orange, one blue.",
+                ({ "orange button" }) : (: ExaOrange :),
+                ({ "blue button" }) : (: ExaBlue :),
+                ]) );
     SetReads( ([
-        "default" : "Try 'read label on generator'",
-        ({"label","printed label"}) : (: ReadLabel :),
-        ({"markings","scribbles","scribbled markings"}) : (: ReadScribbles :),
-      ]) );
+                "default" : "Try 'read label on generator'",
+                ({"label","printed label"}) : (: ReadLabel :),
+                ({"markings","scribbles","scribbled markings"}) : (: ReadScribbles :),
+                ]) );
     SetPress( ([
-        "default" : "Try 'push blue button on generator'",
-        ({ "button", "buttons" }) : "You have to press one or the other.",
-        ({"orange button"}) : (: PressOrange :),
-        ({"blue button"}) : (: PressBlue :),
-      ]) );
+                "default" : "Try 'push blue button on generator'",
+                ({ "button", "buttons" }) : "You have to press one or the other.",
+                ({"orange button"}) : (: PressOrange :),
+                ({"blue button"}) : (: PressBlue :),
+                ]) );
     SetMaxCarry(200);
     SetUnique(1);
 }

@@ -33,6 +33,7 @@ static void notify_no_command (void)
 	    if (v && v->type == T_STRING) {
 		tell_object(command_giver, v->u.string, SVALUE_STRLEN(v));
 	    }
+            debug_message("crat a\n");
 	    command_giver->interactive->iflags &= ~NOTIFY_FAIL_FUNC;
 	    command_giver->interactive->default_err_message.s = 0;
 	}
@@ -55,6 +56,7 @@ void clear_notify (object_t * ob)
     dem = ip->default_err_message;
     if (ip->iflags & NOTIFY_FAIL_FUNC) {
 	free_funp(dem.f);
+        debug_message("crat b\n");
 	ip->iflags &= ~NOTIFY_FAIL_FUNC;
     }
     else if (dem.s)
@@ -711,6 +713,7 @@ void f_notify_fail (void)
 	if (sp->type == T_STRING) {
 	    command_giver->interactive->default_err_message.s = make_shared_string(sp->u.string);
 	} else {
+            debug_message("crat c\n");
 	    command_giver->interactive->iflags |= NOTIFY_FAIL_FUNC;
 	    command_giver->interactive->default_err_message.f = sp->u.fp;
 	    sp->u.fp->hdr.ref++;

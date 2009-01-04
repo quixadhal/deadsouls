@@ -10,7 +10,7 @@ inherit LIB_ITEM;
 
 static int LifeSpan = 0;
 static string Caster = "Blitz",
-LinkRoom;
+              LinkRoom;
 
 static void create() {
     item::create();
@@ -28,13 +28,13 @@ static void create() {
 string eventShowPortal() {
     string str;
     str = "A shimmering, magical portal that pulsates different "
-    "shades of white and blue. It was created by Talima "
-    "for her faithful servent " + Caster + ". ";
+        "shades of white and blue. It was created by Talima "
+        "for her faithful servent " + Caster + ". ";
     if( sizeof(LinkRoom) ) {
         object ob = load_object(LinkRoom);
         if( !ob ) return "There are problems with this portal.";
         str += "Gazing into its fitful depths, you can barely see "
-        "an occasional glimpse of " + ob->GetShort() + ".";
+            "an occasional glimpse of " + ob->GetShort() + ".";
     }
     else str += "You see nothing in its depths.";
     return str;
@@ -72,10 +72,10 @@ mixed CanEnter(object who, string what) {
 int eventEnter(object who) {
     if( !who ) return 0;
     who->eventPrint("%^RED%^%^BOLD%^You step into the portal "
-      "and feel reality shift around you.");
+            "and feel reality shift around you.");
     who->eventMoveLiving(LinkRoom,
-      "%^GREEN%^$N steps into the portal and disappears.",
-      "%^GREEN%^$N steps out of a shimmering portal.");
+            "%^GREEN%^$N steps into the portal and disappears.",
+            "%^GREEN%^$N steps out of a shimmering portal.");
     return 1;
 }
 

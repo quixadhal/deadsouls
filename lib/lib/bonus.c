@@ -34,6 +34,8 @@ void heart_beat(){
 
 mapping SetStats(mapping arg){
     Stats = copy(arg);
+    if(environment(this_object()) && living(environment(this_object())))
+        SetBonuses();
     return copy(Stats);
 }
 
@@ -63,6 +65,12 @@ int SetBonusDuration(int i){
     Duration = i;
 }
 
+int AddBonusDuration(int i){
+    Duration += i;
+    if(Duration < 0) Duration = 0;
+    return Duration;
+}
+
 int GetBonusDuration(){
     return Duration;
 }
@@ -81,12 +89,12 @@ int SetBonuses(){
     if(sizeof(Points))
         foreach(string key, int val in Points){
             switch(key){
-            case "HP" : env->AddHP(val);break;
-            case "XP" : env->AddExperiencePoints(val);break;
-            case "SP" : env->AddStaminaPoints(val);break;
-            case "MP" : env->AddMagicPoints(val);break;
-            case "poison" : env->AddPoison(val);break;
-            default : break;
+                case "HP" : env->AddHP(val);break;
+                case "XP" : env->AddExperiencePoints(val);break;
+                case "SP" : env->AddStaminaPoints(val);break;
+                case "MP" : env->AddMagicPoints(val);break;
+                case "poison" : env->AddPoison(val);break;
+                default : break;
             }
         }
     return 1;

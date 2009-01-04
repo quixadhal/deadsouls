@@ -15,7 +15,7 @@ static void create() {
     SetBaseCost("silver",10);
     SetMealType(MEAL_FOOD);
     SetMealMessages("You eat your food. Mmm!",
-      "$N eats $P food.");
+            "$N eats $P food.");
     SetNoCondition(1);
 }
 void init(){

@@ -9,8 +9,8 @@ void create(){
     SetAdjectives( ({"spent","lead"}) );
     SetShort("a spent firearms slug");
     SetLong("This small, twisted chunk of metal appears to be a spent "+
-      "slug: the part of a bullet that is fired from a gun and enters the target. "+
-      "Its shape has been distorted by its impact with whatever it hit.");
+            "slug: the part of a bullet that is fired from a gun and enters the target. "+
+            "Its shape has been distorted by its impact with whatever it hit.");
     SetMass(1);
     SetDollarCost(0);
     SetVendorType(VT_TREASURE);

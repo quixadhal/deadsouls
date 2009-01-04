@@ -95,6 +95,9 @@ int make_empties(){
 }
 
 void deletes(){
+    rm("/secure/sefun/base_name.c");
+    rm("/secure/sefun/convert_name.c");
+    rm("/secure/sefun/query_names.c");
     rm("/domains/campus/room/store2.c");
     rm("/domains/town/room/room.c");
     rm("/domains/default/obj/flow.c");

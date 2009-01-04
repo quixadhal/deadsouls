@@ -18,22 +18,22 @@ static void create() {
     verb::create();
     SetVerb("look");
     SetRules("", "STR", "on OBJ", "OBJ", "at STR", "at OBJ", "in OBJ", "inside OBJ",
-      "at OBJ:v in OBJ", "at OBJ:v inside OBJ", "at OBJ on OBJ", "at STR on OBJ");
+            "at OBJ:v in OBJ", "at OBJ:v inside OBJ", "at OBJ on OBJ", "at STR on OBJ");
     SetErrorMessage("Look at or in something?");
     SetHelp("Syntax: <look>\n"
-      "        <look at ITEM>\n"
-      "        <look in CONTAINER>\n"
-      "        <look at ITEM in CONTAINER>\n"
-      "        <look at ITEM on ITEM>\n\n"
-      "Without any arguments, this command allows you to see a "
-      "description of the area about you, including what other "
-      "things are there with you.\n\n"
-      "If you look at something, then you get a detailed description "
-      "of the thing at which you are looking.  You should be able to "
-      "look at any thing you see mentioned in the room when you use the "
-      "look command without arguments.  Anything you cannot look at is "
-      "considered a bug.\n\n"
-      "See also: peer");  
+            "        <look at ITEM>\n"
+            "        <look in CONTAINER>\n"
+            "        <look at ITEM in CONTAINER>\n"
+            "        <look at ITEM on ITEM>\n\n"
+            "Without any arguments, this command allows you to see a "
+            "description of the area about you, including what other "
+            "things are there with you.\n\n"
+            "If you look at something, then you get a detailed description "
+            "of the thing at which you are looking.  You should be able to "
+            "look at any thing you see mentioned in the room when you use the "
+            "look command without arguments.  Anything you cannot look at is "
+            "considered a bug.\n\n"
+            "See also: peer");  
 }
 
 mixed can_look() {
@@ -90,9 +90,9 @@ mixed can_look_at_str_on_obj(string targ, string verb, string id1, string id2){
 
 mixed do_look() {
     if(environment(this_player()) && !this_player()->GetInvis() &&  
-      !environment(this_player())->GetProperty("meeting room"))
+            !environment(this_player())->GetProperty("meeting room"))
         environment(this_player())->eventPrint((string)this_player()->GetName() +
-          " looks around.", this_player(), (MSG_ENV|MSG_ANNOYING));
+                " looks around.", this_player(), (MSG_ENV|MSG_ANNOYING));
     this_player()->eventDescribeEnvironment(0);
     return 1;
 }
@@ -107,7 +107,7 @@ mixed do_look_str(string str) {
 
 varargs mixed do_look_at_obj(object ob, mixed arg) {
     if(ob->GetInvis() && !archp(this_player()) && 
-      base_name(ob) != LIB_BASE_DUMMY && !inherits(LIB_BASE_DUMMY,ob) ){
+            base_name(ob) != LIB_BASE_DUMMY && !inherits(LIB_BASE_DUMMY,ob) ){
         write("There is no "+arg+" here.");
         return 1;
     }
@@ -123,7 +123,7 @@ mixed do_look_at_str(string str) {
     //	return "There is no " + remove_article(str) + " here.";
     //    }
     return (mixed)SEASONS_D->eventShow(this_player(),
-      remove_article(lower_case(str)));
+            remove_article(lower_case(str)));
 }
 
 mixed do_look_in_obj(object ob, mixed arg){ 
@@ -132,7 +132,7 @@ mixed do_look_in_obj(object ob, mixed arg){
 
 mixed do_look_inside_obj(object ob,mixed arg) {
     if(ob->GetInvis() && !archp(this_player()) &&
-      base_name(ob) != LIB_BASE_DUMMY && !inherits(LIB_BASE_DUMMY,ob) ){
+            base_name(ob) != LIB_BASE_DUMMY && !inherits(LIB_BASE_DUMMY,ob) ){
         return write("There is no "+arg+" here.");
     }
     return (mixed)ob->eventShowInterior(this_player());
@@ -140,7 +140,7 @@ mixed do_look_inside_obj(object ob,mixed arg) {
 
 mixed do_look_at_obj_word_obj(object target, object storage, mixed arg) {
     if(target->GetInvis() && !archp(this_player()) &&
-      base_name(target) != LIB_BASE_DUMMY && !inherits(LIB_BASE_DUMMY,target) ){
+            base_name(target) != LIB_BASE_DUMMY && !inherits(LIB_BASE_DUMMY,target) ){
         return write("There is no "+arg+" here.");
     }
     return (mixed)target->eventShow(this_player());

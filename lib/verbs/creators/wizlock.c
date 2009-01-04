@@ -15,8 +15,8 @@ static void create() {
     SetRules("OBJ");
     SetErrorMessage("wizlock what?");
     SetHelp("Syntax: <wizlock object>\n\n"
-      "Magically lock a lockable thing without needing a key.\n"
-      "\nSee also: wizunlock");
+            "Magically lock a lockable thing without needing a key.\n"
+            "\nSee also: wizunlock");
 }
 
 mixed can_wizlock_obj(string str) { 
@@ -39,7 +39,7 @@ mixed do_wizlock_obj(object ob){
     } 
     write("You wizlock "+name+".");
     say(this_player()->GetName()+" makes a closed-fist gesture at"+
-      " "+name+".",({ob}));
+            " "+name+".",({ob}));
     ob->SetLocked(1);
     return 1;
 }

@@ -40,8 +40,8 @@ varargs mixed eventBeginOOB(string mud, int token, mixed *data){
     int port = MudList[mud][11]["oob"];
     string ip = MudList[mud][1];
     if(sizeof(MudList[mud][12]) &&
-      MudList[mud][12]["ip"] &&
-      MudList[mud][12]["ip"] != "127.0.0.1")
+            MudList[mud][12]["ip"] &&
+            MudList[mud][12]["ip"] != "127.0.0.1")
         ip = MudList[mud][12]["ip"];
     validate();
     trr("OOB_D.eventBeginOOB, mud: "+mud+", token: "+token,"yellow",MSG_OOB);
@@ -125,8 +125,8 @@ varargs mixed RequestBegin(string target, mixed *data){
         RequestToken(target);
     ip = INTERMUD_D->GetMudList()[target][1];
     if(sizeof(INTERMUD_D->GetMudList()[target][12]) &&
-      INTERMUD_D->GetMudList()[target][12]["ip"] &&
-      INTERMUD_D->GetMudList()[target][12]["ip"] != "127.0.0.1")
+            INTERMUD_D->GetMudList()[target][12]["ip"] &&
+            INTERMUD_D->GetMudList()[target][12]["ip"] != "127.0.0.1")
         ip = INTERMUD_D->GetMudList()[target][12]["ip"];
     port = INTERMUD_D->GetMudList()[target][11]["oob"];
     if( eventCreateSocket(ip, port) < 0 ){
@@ -135,7 +135,7 @@ varargs mixed RequestBegin(string target, mixed *data){
     }
     else trr("OOB_D.RequestBegin socket created",mcolor,MSG_OOB);
     if(member_array(target, waiting_auth) == -1 && (!ReceivedMudTokens[target] ||
-        !ReceivedMudTokens[target]["token"]) ){
+                !ReceivedMudTokens[target]["token"]) ){
         RequestToken(target);
         if(data) call_out( (: RequestBegin( $(target), $(data) ) :), 5);
         else call_out( (: RequestBegin( $(target) ) :), 5);
@@ -286,16 +286,16 @@ mixed SendFile(string str){
     }
     return 1;}
 
-mixed GetFile(string mud, mixed file){
-    validate();
-    if(stringp(file)) AddRequestedFile(mud, file);
-    else if(arrayp(file))
-        foreach(string element in file){
-            AddRequestedFile(mud, element);
-        }
-    RequestBegin(mud, ({ "oob-file-req", file }) );
-    return 1;
-}
+    mixed GetFile(string mud, mixed file){
+        validate();
+        if(stringp(file)) AddRequestedFile(mud, file);
+        else if(arrayp(file))
+            foreach(string element in file){
+                AddRequestedFile(mud, element);
+            }
+        RequestBegin(mud, ({ "oob-file-req", file }) );
+        return 1;
+    }
 
 int eventMajorUpgrade(string mud, string *files){
     int interval = 0;

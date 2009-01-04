@@ -16,13 +16,13 @@ void heart_beat(){
     //GetShadowedObject()->heart_beat(); 
     if(!(count % 10) && env){
         tell_room(env,this_object()->GetName()+" shudders and groans.",
-          ({ this_object() }) );
+                ({ this_object() }) );
         GetShadowedObject()->eventReceiveDamage("decay",OTHER,random(50),1);
     }
     if(count < 0){
         mixed *inv = all_inventory(GetShadowedObject());
         tell_room(env,this_object()->GetName()+" falls apart!",
-          ({ this_object() }) );
+                ({ this_object() }) );
         //tc("inv: "+identify(inv));
         if(sizeof(inv)) inv->eventMove(env);
         foreach(mixed element in this_object()->GetLimbs()){

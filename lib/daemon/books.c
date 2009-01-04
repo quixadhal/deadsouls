@@ -71,8 +71,8 @@ mixed *LoadChapters(string Source){
         this_path = Source+"/"+chap;
         statinfo = stat(this_path);
         if(sizeof(statinfo) != 3 || !intp(statinfo[1]) ||
-          (Books[Source][this_path] && Books[Source][this_path] 
-            == statinfo[1])){
+                (Books[Source][this_path] && Books[Source][this_path] 
+                 == statinfo[1])){
             //debug(this_path+" already cached.");
             continue;
         }
@@ -89,7 +89,7 @@ mixed *LoadChapters(string Source){
             globalstr = this_path;
             globalstr2 = Source;
             unguarded( (: Books[globalstr2]["reads"][globalheader[0]] = 
-                read_file(globalstr) :) ); 
+                        read_file(globalstr) :) ); 
         }
     }
     this_object()->LoadBookIndex(Source);

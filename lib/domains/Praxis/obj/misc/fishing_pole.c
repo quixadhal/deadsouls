@@ -3,15 +3,15 @@
    you can bait it with anything that returns an id of bait and also
    in that it has the following functions called by fishing rooms:
    query_pole_class() returns an integer, the higher the number, the
-        better the pole is for fishing.
+   better the pole is for fishing.
    query_bait() returns an integer which is the strength of the bait,
-        the higher the number, the better the bait is for fishing
+   the higher the number, the better the bait is for fishing
    pole class should range from 2 (a horrible pole) to 7 (an absolutely
-        awesome pole)
+   awesome pole)
    bait strength, which is found out by the pole by calling a function
-        in items which return an id of true for bait, should be a
-        number between 0 (items fish wont eat) to 4 (yummy fish food)
-*/
+   in items which return an id of true for bait, should be a
+   number between 0 (items fish wont eat) to 4 (yummy fish food)
+ */
 
 #include <lib.h>
 inherit LIB_ITEM;
@@ -46,7 +46,7 @@ string GetLong(string str) {
     else if(str == "string") return ("A string with a hook at the end.\n");
     else {
         return ("A bamboo stick with a piece of string connected to the end.\n"
-          "At the end of the string is a hook.  What a primitive looking fishing tool!\n");
+                "At the end of the string is a hook.  What a primitive looking fishing tool!\n");
     }
 }
 
@@ -100,7 +100,7 @@ void unbait() {
 int query_broken(){
     return broken;} int break_pole() {    SetValue( 10);
 
-    true();
-    broken = 1;
-}
+        true();
+        broken = 1;
+    }
 

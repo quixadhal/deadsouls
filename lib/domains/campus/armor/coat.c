@@ -9,7 +9,7 @@ static void create(){
     SetAdjectives(({"lab","science","white","long"}));
     SetShort("a lab coat");
     SetLong("This is a long white lab coat of the type used by scientists "+
-      "to avoid getting experimental results on themselves.");
+            "to avoid getting experimental results on themselves.");
     SetMass(75);
     SetDollarCost(100);
     SetArmorType(A_CLOAK);

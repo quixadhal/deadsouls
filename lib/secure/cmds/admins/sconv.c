@@ -10,14 +10,14 @@ mapping AreaMap = ([]);
 mapping RawMap = ([]);
 mapping Genders = ([ 0 : "neutral", 1 : "male", 2 : "female" ]);
 mapping Directions = ([ 0 : "north", 1 : "east", 2 : "south",
-  3 : "west", 4 : "up", 5 : "down", 6 : "northeast", 7 : "northwest",
-  8 : "southeast", 9 : "southwest", 10 : "somewhere" ]);
+        3 : "west", 4 : "up", 5 : "down", 6 : "northeast", 7 : "northwest",
+        8 : "southeast", 9 : "southwest", 10 : "somewhere" ]);
 mapping Types = ([ 1 : "LIB_ITEM", 2 : "LIB_ITEM", 3 : "LIB_ITEM", 4 : "LIB_ITEM",
-  5 : "LIB_ITEM", 6 : "LIB_ITEM", 7 : "LIB_ITEM", 8 : "LIB_ITEM", 9 : "LIB_ARMOR", 10 : "LIB_POTION",
-  11 : "LIB_ITEM", 12 : "LIB_BED", 13 : "LIB_ITEM", 14 : "LIB_ITEM", 15 : "LIB_STORAGE", 
-  16 : "LIB_ITEM", 17 : "LIB_MEAL", 18 : "LIB_ITEM", 19 : "LIB_MEAL", 20 : "LIB_PILE",
-  21 : "LIB_ITEM", 22 : "LIB_ITEM", 23 : "LIB_ITEM", 24 : "LIB_ITEM", 25 : "LIB_ITEM", 
-  26 : "LIB_ITEM", 44 : "LIB_ITEM" ]);
+        5 : "LIB_ITEM", 6 : "LIB_ITEM", 7 : "LIB_ITEM", 8 : "LIB_ITEM", 9 : "LIB_ARMOR", 10 : "LIB_POTION",
+        11 : "LIB_ITEM", 12 : "LIB_BED", 13 : "LIB_ITEM", 14 : "LIB_ITEM", 15 : "LIB_STORAGE", 
+        16 : "LIB_ITEM", 17 : "LIB_MEAL", 18 : "LIB_ITEM", 19 : "LIB_MEAL", 20 : "LIB_PILE",
+        21 : "LIB_ITEM", 22 : "LIB_ITEM", 23 : "LIB_ITEM", 24 : "LIB_ITEM", 25 : "LIB_ITEM", 
+        26 : "LIB_ITEM", 44 : "LIB_ITEM" ]);
 string gdirection, cle, val;
 int item_type, extra_flags, wear_flags;
 int tmp1, tmp2, tmp3;
@@ -67,8 +67,8 @@ int ConvertArea(string arg){
     string *rooms_arr;
     string *obs_arr;
     string *delimiters = ({ "#AREA", "#VERSION", "#AUTHOR", "#RANGES", "#RESETMSG",
-      "#FLAGS", "#ECONOMY", "#CLIMATE", "#HELPS", "#MOBILES", "#OBJECTS",
-      "#ROOMS", "#RESETS", "#SHOPS", "#REPAIRS", "#SPECIALS", "#$" });
+            "#FLAGS", "#ECONOMY", "#CLIMATE", "#HELPS", "#MOBILES", "#OBJECTS",
+            "#ROOMS", "#RESETS", "#SHOPS", "#REPAIRS", "#SPECIALS", "#$" });
     string *new_delimiters = ({});
     string *segmented = ({});
 
@@ -329,10 +329,10 @@ int ConvertArea(string arg){
 
 void help() {
     message("help", "Syntax: sconv <file> <area>\n\n"
-      "Tries to convert a Smaug area file into a Dead Souls domain.\n"
-      "Example: sconv /tmp/fubar.are Foo\n"
-      "This would try to create /domains/Foo and convert the area described\n"
-      "in /tmp/fubar.are into LPC files in that domain."
-      "\n", this_player());
+            "Tries to convert a Smaug area file into a Dead Souls domain.\n"
+            "Example: sconv /tmp/fubar.are Foo\n"
+            "This would try to create /domains/Foo and convert the area described\n"
+            "in /tmp/fubar.are into LPC files in that domain."
+            "\n", this_player());
 }
 

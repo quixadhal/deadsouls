@@ -19,13 +19,13 @@ static void create() {
     SetAdjectives(({"armored","professional","orc","commander"}));
     SetShort("an orc commander");
     SetLong("This is a very large adult orc. He seems to have a professional "
-      "bearing, and a sense of purpose.");
+            "bearing, and a sense of purpose.");
     SetInventory(([
-        "/domains/cave/weap/battleaxe" : "wield axe",
-        "/domains/cave/armor/chainmail" : "wear chainmail",
-        "/domains/cave/armor/orc_tallboot_l" : "wear left boot",
-        "/domains/cave/armor/orc_tallboot_r" : "wear right boot",
-      ]));
+                "/domains/cave/weap/battleaxe" : "wield axe",
+                "/domains/cave/armor/chainmail" : "wear chainmail",
+                "/domains/cave/armor/orc_tallboot_l" : "wear left boot",
+                "/domains/cave/armor/orc_tallboot_r" : "wear right boot",
+                ]));
     SetRace("orc");
     SetLevel(10);
     SetClass("fighter");

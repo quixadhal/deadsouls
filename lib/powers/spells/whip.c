@@ -15,27 +15,27 @@ static void create() {
     SetStaminaCost(10, 10);
     SetDifficulty(0);
     SetHelp("Syntax: <cast whip>\n\n"
-      "This spell conjures a whip made of magical energy and "
-      "moves it to a wielding limb. If unwielded, it will vanish. "
-      "The power of the whip as a weapon depends on your spellcasting "
-      "abilities.");
+            "This spell conjures a whip made of magical energy and "
+            "moves it to a wielding limb. If unwielded, it will vanish. "
+            "The power of the whip as a weapon depends on your spellcasting "
+            "abilities.");
 }
 
 varargs int eventCast(object who, int level, string limb, object array targs){
     object whip;
     object *limbs = this_player()->GetWieldingLimbs();
     object *whips = filter(all_inventory(this_player()),
-      (: base_name($1) == "/obj/whip" :) );
+            (: base_name($1) == "/obj/whip" :) );
     if(sizeof(whips)){
         write("You already have an energy whip.");
         return 1;
     }
     whip = new("/obj/whip");
     write("You make a powerful motion with your hand and conjure "+
-      "an energy whip!");
+            "an energy whip!");
     say(this_player()->GetName()+" makes a powerful motion with "+
-      possessive(this_player())+" hand and conjures "+
-      "an energy whip!");
+            possessive(this_player())+" hand and conjures "+
+            "an energy whip!");
     whip->eventMove(this_player());
     limbs = filter(limbs, (: !(this_player()->GetWielded($1)) :) );
     if(sizeof(limbs)){
@@ -50,4 +50,4 @@ varargs int eventCast(object who, int level, string limb, object array targs){
     }
     return 1;
 }
-    
+

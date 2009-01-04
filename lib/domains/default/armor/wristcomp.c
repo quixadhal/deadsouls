@@ -25,12 +25,12 @@ static void create() {
     SetKeyName("wrist computer");
     SetId( ({ "computer", "bracer","comp","wristcomp","system" }) );
     SetAdjectives( ({ "wrist","odd","odd looking","complex","tough","rugged",
-        "tactical", "tactical data" }) );
+                "tactical", "tactical data" }) );
     SetShort("a Yautja wrist computer");
     SetLong("An odd looking bracer intended to be worn on the arm. It looks "
-      "extremely complex yet also very tough and rugged. One may perhaps "
-      "\"activate bracer\". It appears that one can access special functions "
-      "by opening it.");
+            "extremely complex yet also very tough and rugged. One may perhaps "
+            "\"activate bracer\". It appears that one can access special functions "
+            "by opening it.");
     SetDamagePoints(75);
     SetVendorType(VT_ARMOR);
     SetMass(10);
@@ -46,12 +46,12 @@ static void create() {
     SetClosed(1);
     SetLanguage("Yautja");
     SetItems( ([
-        ({"panel","functions"}) : (: CheckPanel :),
-      ]) );
+                ({"panel","functions"}) : (: CheckPanel :),
+                ]) );
     SetRead( ([
-        ({ "panel", "default" }) :"Yautja tactical data system, version .09",
-        //"panel": (: eventRead :),
-      ]) );
+                ({ "panel", "default" }) :"Yautja tactical data system, version .09",
+                //"panel": (: eventRead :),
+                ]) );
     SetMaxClones(2);
 }
 
@@ -104,13 +104,13 @@ varargs void yaut_say(string str, mixed whom){
 int eventTurnOn(){
     object *contents = all_inventory();
     if(!(this_object()->GetWorn()) || !this_player() ||
-      environment(this_object()) != this_player()){
+            environment(this_object()) != this_player()){
         write("You are not wearing the wrist computer.");
         return 1;
     }
     write("You activate the wrist computer. The computer says:");
     say(this_player()->GetName()+" operates "+possessive(this_player())+" "
-      "wrist computer. You hear the computer say: "); 
+            "wrist computer. You hear the computer say: "); 
     yaut_say("Computer online.");
     if(sizeof(contents)) contents->eventPowerOn();
     active = 1;
@@ -121,7 +121,7 @@ int eventTurnOff(){
     object *contents = all_inventory();
     write("You deactivate the wrist computer. The computer says:");
     say(this_player()->GetName()+" operates "+possessive(this_player())+" "
-      "wrist computer. You hear the computer say: ");
+            "wrist computer. You hear the computer say: ");
     yaut_say("Computer offline.");
     if(sizeof(contents)) contents->eventPowerOff();    
     active = 0;
@@ -146,7 +146,7 @@ varargs mixed eventUninstallModule(object which, int auto){
     object module = previous_object();
     if(which) module = which;
     if(!auto) say(this_player()->GetName()+" operates "+possessive(this_player())+" "
-          "wrist computer.");
+            "wrist computer.");
     if(!active){
         if(!auto) write("The computer is not active.");
         return 1;
@@ -172,7 +172,7 @@ varargs mixed eventInstallModule(mapping ModuleData, int auto){
     object module = previous_object();
     if(member_array("eventInitialize",call_stack(2)) != -1) auto = 1;
     if(!auto) say(this_player()->GetName()+" operates "+possessive(this_player())+" "
-          "wrist computer.");
+            "wrist computer.");
     if(!answers_to("Yautja data module",module)){
         if(!auto) write("That is not a proper data module for this computer.");
         return 0;
@@ -243,8 +243,8 @@ varargs mixed eventRead(mixed who, mixed str){
         if(ob->Report()) ret += ob->Report();
     }
     SetRead( ([
-        ({ "panel", "default" }) :ret,
-      ]) );
+                ({ "panel", "default" }) :ret,
+                ]) );
     return ::eventRead(dude, what);
 }
 

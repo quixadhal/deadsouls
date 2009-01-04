@@ -19,13 +19,13 @@ void create(){
     SetAdjectives( ({"data","yautja","stealth"}) );
     SetShort("a Yautja data module");
     SetLong("This is a small cartridge that contains programming intended "
-      "for a Yautja wrist computer. It appears to have writing on it.");
+            "for a Yautja wrist computer. It appears to have writing on it.");
     SetNoCondition(1);
     SetMass(1);
     SetReads( ([
-        "default" : "Stealth module: provides cloaking and decloaking.",
-        "writing": "Stealth module: provides cloaking and decloaking.",
-      ]) );
+                "default" : "Stealth module: provides cloaking and decloaking.",
+                "writing": "Stealth module: provides cloaking and decloaking.",
+                ]) );
     SetLanguage("Yautja");
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
@@ -59,7 +59,7 @@ varargs int eventDecloak(mixed arg){
     }
     write("Your wrist computer chirps, and you become visible.");
     say(this_player()->GetName()+"'s wrist computer chirps, and "+
-      capitalize(this_player()->GetKeyName())+" fades into view.");
+            capitalize(this_player()->GetKeyName())+" fades into view.");
     this_player()->SetInvis(0);
     return 1;
 }
@@ -92,7 +92,7 @@ varargs int eventCloak(mixed arg){
     }
     write("Your wrist computer chirps, and you become transparent.");
     say(this_player()->GetName()+"'s wrist computer chirps, and "+nominative(this_player())+
-      " fades from view.");
+            " fades from view.");
     this_player()->SetInvis(1);
     return 1;
 }
@@ -105,9 +105,9 @@ varargs mixed eventInstall(object what, object where, int auto){
         return 1;
     }
     SendMap = ([
-      "cloaking" : ([ "function" : f1, "hook" : "cloak" ]),
-      "decloaking" : ([ "function" : f2, "hook" : "decloak" ])
-    ]);
+            "cloaking" : ([ "function" : f1, "hook" : "cloak" ]),
+            "decloaking" : ([ "function" : f2, "hook" : "decloak" ])
+            ]);
     where->eventInstallModule(SendMap,auto ||0);
     power = 1;
     return 1;
@@ -145,7 +145,7 @@ int eventPowerOff(){
             if(whom->GetInvis() && !creatorp(whom)){
                 write("Your wrist computer makes a croaking noise, and you become visible.");
                 say(whom->GetName()+"'s wrist computer makes a croaking noise, and "+
-                  capitalize(whom->GetKeyName())+" fades into view.");
+                        capitalize(whom->GetKeyName())+" fades into view.");
             }
         }
     }

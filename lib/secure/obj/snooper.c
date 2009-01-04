@@ -16,9 +16,9 @@ void create(){
     SetAdjectives( ({"invisible","snooper","snoop"}) );
     SetShort("an invisible object");
     SetLong("This is an object of indeterminate nature and proportions. "
-      "It is intentionally invisible, and your attempts to "
-      "understand it may constitute a security breach. You'd "
-      "be well advised to leave it alone.");
+            "It is intentionally invisible, and your attempts to "
+            "understand it may constitute a security breach. You'd "
+            "be well advised to leave it alone.");
     SetInvis(1);
     set_heart_beat(10);
     SetNoClean(1);
@@ -77,7 +77,7 @@ void receive_message(string s1, string s2){
 
 int eventDestruct(){
     if(base_name(previous_object()) != SNOOP_D && !archp(previous_object(2)) &&
-      previous_object() != this_object()) return 0;
+            previous_object() != this_object()) return 0;
     SNOOP_D->UnregisterSnooper();
     return item::eventDestruct();
 }

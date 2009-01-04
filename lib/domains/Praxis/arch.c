@@ -14,9 +14,9 @@ void create() {
     SetProperty("indoors", 1);
     SetShort( "The Arch's Room");
     SetLong(
-      "This is where the arches decide the fate of Nightmare.");
+            "This is where the arches decide the fate of Nightmare.");
     SetExits( 
-      (["down" : "/domains/Praxis/planning_room"]) );
+            (["down" : "/domains/Praxis/planning_room"]) );
 
     ob = new("/lib/bboard");
     ob->SetKeyName("board");

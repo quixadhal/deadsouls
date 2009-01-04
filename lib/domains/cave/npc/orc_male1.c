@@ -10,7 +10,7 @@ int CheckOrc(mixed val){
     if(val->GetRace() == "orc" || val->GetRace() == "rodent") return 0;
     eventForce("growl at "+val->GetKeyName());
     if(!this_object()->GetLeader() && sizeof(filter(val->GetFollowers(),
-      (: base_name($1) == base_name(this_object()) :))) < 1){
+                    (: base_name($1) == base_name(this_object()) :))) < 1){
         eventForce("follow "+val->GetKeyName());
         SetWanderSpeed(1);
     }
@@ -24,12 +24,12 @@ static void create() {
     SetAdjectives(({"adult","male"}));
     SetShort("a male orc");
     SetLong("This is an adult orc, a creature somewhat larger "+
-      "and stronger than a typical human.");
+            "and stronger than a typical human.");
     SetInventory(([
-        "/domains/cave/armor/leather_armor" : "wear leather armor",
-        "/domains/cave/armor/orc_boot_l" : "wear left boot",
-        "/domains/cave/armor/orc_boot_r" : "wear right boot",
-      ]));
+                "/domains/cave/armor/leather_armor" : "wear leather armor",
+                "/domains/cave/armor/orc_boot_l" : "wear left boot",
+                "/domains/cave/armor/orc_boot_r" : "wear right boot",
+                ]));
     SetLevel(2);
     SetMelee(1);
     SetRace("orc");

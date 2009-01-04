@@ -44,7 +44,7 @@ void init(){
     this_object()->CalculateAmmoSize();
     namen=this_object()->GetId();
     if(FirearmType=="revolver"
-      && !present("cylinder",this_object())){
+            && !present("cylinder",this_object())){
         new("/lib/cylinder")->eventMove(this_object());
     }
     if(FirearmType=="revolver" && !cloned){
@@ -144,7 +144,7 @@ mixed eventShoot(object ob, mixed target){
     }
     else {
         obs = filter(get_livings(environment(this_player())),
-          (: answers_to($(target), $1) :));
+                (: answers_to($(target), $1) :));
         if(!sizeof(obs)) cible = present(target,environment(this_player()));
         else cible = obs[0];
     }
@@ -163,7 +163,7 @@ mixed eventShoot(object ob, mixed target){
     write("You shoot at "+capitalize(target)+"!\n");
     say(environment(this_object())->GetName()+" shoots at "+capitalize(target)+"!\n");
     if(cible) tell_object(cible, environment(this_object())->GetName()+
-          " shoots at you!\n");
+            " shoots at you!\n");
     this_object()->eventFire(target);
     if(FirearmType=="auto"){
         shell = new(LIB_SHELL);
@@ -204,7 +204,7 @@ int eventFire(mixed str){
     ob = 0;
     if(objectp(str)) ob = str;
     else obs = filter(get_livings(environment(this_player())),
-          (: answers_to($(str), $1) :));
+            (: answers_to($(str), $1) :));
     if(!ob && !sizeof(obs)) ob = present(str,environment(this_player()));
     else if(!ob) ob = obs[0];
     if(creatorp(ob)){
@@ -215,7 +215,7 @@ int eventFire(mixed str){
     }
     if(ob && !living(ob) && base_name(ob) != LIB_CORPSE){
         tell_room(environment(environment(this_object())),
-          "The bullet smashes into "+lower_case(ob->GetShort())+"!\n");
+                "The bullet smashes into "+lower_case(ob->GetShort())+"!\n");
         if(!sscanf(ob->GetLong(),"%sIt has been damaged by gun%s",s1,s2)){
             tempclass=ob->GetClass();
             if(tempclass) ob->SetClass(tempclass/2);
@@ -256,7 +256,7 @@ int eventFire(mixed str){
         limbarr=ob->GetLimbs();
         limbname=limbarr[limbhit];
         tell_room(environment(environment(this_object())),"The bullet smashes into "+
-          capitalize(str)+"'s "+limbname+"!\n",ob);
+                capitalize(str)+"'s "+limbname+"!\n",ob);
         tell_object(ob,"The bullet smashes into your "+limbname+"!\n");
         ob->AddLead("gunshot_wounds", 1);
         ob->SetAttack(this_agent());
@@ -321,20 +321,20 @@ int missed_shot(){
     i=random(sizeof(inv));
     if(living(inv[i])){
         tell_room(environment(environment(this_object())), inv[i]->GetName()+" is struck "+
-          "by the stray bullet!",inv[i]);
+                "by the stray bullet!",inv[i]);
         tell_object(inv[i],"You are struck by a stray bullet from "+environment(this_object())->GetName()+
-          "'s gun.\n");
+                "'s gun.\n");
     }
     if(!living(inv[i])){
         string shortd = (inv[i]->GetShort() || "");
         arr=explode(inv[i]->GetKeyName(),"");
         if(sizeof(arr) && arr[sizeof(arr)-1] =="s"){
             tell_room(environment(environment(this_object())), 
-              capitalize(shortd)+" are struck by the stray bullet.");
+                    capitalize(shortd)+" are struck by the stray bullet.");
         }
         else
             tell_room(environment(environment(this_object())),
-              capitalize(shortd)+" is struck by the stray bullet.");
+                    capitalize(shortd)+" is struck by the stray bullet.");
     }
     autohit=1;
     rounds++;
@@ -407,9 +407,9 @@ mixed eventLoad(object ob){
         return 1;
     }
     if(GetFirearmType() == "revolver" && ob && objectp(ob) &&
-      ob->GetFirearmType() == "revolver" && (base_name(ob) == LIB_ROUND ||
-        inherits(LIB_ROUND,ob)) && ob->GetCaliber() == GetCaliber() &&
-      rounds != MaxAmmo){
+            ob->GetFirearmType() == "revolver" && (base_name(ob) == LIB_ROUND ||
+                inherits(LIB_ROUND,ob)) && ob->GetCaliber() == GetCaliber() &&
+            rounds != MaxAmmo){
         rounds++;
     }
     return 1;
@@ -430,7 +430,7 @@ mixed eventUnload(mixed what){
         return 1;
     }
     if(FirearmType=="revolver" && 
-      environment(this_object()) == this_player()){
+            environment(this_object()) == this_player()){
         if(rounds == 0 && shells == 0){
             write("Your "+GetFirearmName()+" is already empty.");
             return 1;
@@ -491,7 +491,7 @@ int doRevolverUnload(string what, string num){
         write("You unload "+cardinal(n1)+" "+things+" from your "+GetFirearmName()+".");
     }
     say(environment(this_object())->GetName()+" unloads some cartridges from "+
-      possessive(environment(this_object()))+" revolver.");
+            possessive(environment(this_object()))+" revolver.");
     return 1;
 }
 

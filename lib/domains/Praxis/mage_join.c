@@ -15,30 +15,30 @@ void create() {
     SetProperty("indoors", 1);
     SetShort( "Inside a tree");
     SetLong(
-      "The inside of the tree impossibly occupies more space than "
-      "its physical size!  Torches circle the wooden walls of the "
-      "tree, giving it a magical light.  A flight of stairs leads "
-      "down into a hole in the ground protected by a magical "
-      "%^BLUE%^blue%^RESET%^ "
-      "light.  The High Mage Warlock waits here to initiate aspiring "
-      "magic users into the mysterious class of Nightmare mages.  "
-      "<preview> will tell you about becoming a mage.");
+            "The inside of the tree impossibly occupies more space than "
+            "its physical size!  Torches circle the wooden walls of the "
+            "tree, giving it a magical light.  A flight of stairs leads "
+            "down into a hole in the ground protected by a magical "
+            "%^BLUE%^blue%^RESET%^ "
+            "light.  The High Mage Warlock waits here to initiate aspiring "
+            "magic users into the mysterious class of Nightmare mages.  "
+            "<preview> will tell you about becoming a mage.");
     SetItems(
-      (["tree" : "Like Dr. Who's tardis, bigger inside than outside.",
-        "hole" : "The hole leads down into an undergorund room.",
-        "light" : "You are certain that it is a field which allows "
-        "only mages to pass.",
-        "walls" : "They are made from the wood of this old tree. An "
-        "opening leads outside.",
-        "stairs" : "They are very nice.",
-        "torch" : "It is locked magically into the wall.",
-        "warlock" : "He awaits to initiate new mages.",
-        "mage" : "He awaits to initiate new mages and explain "
-        "the difference between transitive and intransitive verbs.",
-        "opening" : "It leads out to West Road.",
-        "torches" : "They create an eerie glow to the room."]) );
+            (["tree" : "Like Dr. Who's tardis, bigger inside than outside.",
+             "hole" : "The hole leads down into an undergorund room.",
+             "light" : "You are certain that it is a field which allows "
+             "only mages to pass.",
+             "walls" : "They are made from the wood of this old tree. An "
+             "opening leads outside.",
+             "stairs" : "They are very nice.",
+             "torch" : "It is locked magically into the wall.",
+             "warlock" : "He awaits to initiate new mages.",
+             "mage" : "He awaits to initiate new mages and explain "
+             "the difference between transitive and intransitive verbs.",
+             "opening" : "It leads out to West Road.",
+             "torches" : "They create an eerie glow to the room."]) );
     SetExits( 
-      (["out" :	"/domains/Praxis/west_road3"]) );
+            (["out" :	"/domains/Praxis/west_road3"]) );
     AddExit("down", "/domains/Praxis/mage_hall.c", (:go_down:));
 }
 
@@ -50,12 +50,12 @@ int preview() {
     message("other_action", this_player()->query_cap_name()+" seeks to learn about mages.", this_object(), ({this_player()}));
     message("info", "Welcome, explorer!", this_player());
     message("info", "Mages have no overriding beliefs which unite them, but instead "
-      "they are united in their love of the art of magic.  Some of them "
-      "are devoted practitioners of white magic, while others are evil "
-      "dark mages.  Their magical arts are centered around those "
-      "which will most help them along in the material world, the arts "
-      "of conjuring and magical combat.  You can type <become mage> to "
-      "be initiated into the class of mages.", this_player());
+            "they are united in their love of the art of magic.  Some of them "
+            "are devoted practitioners of white magic, while others are evil "
+            "dark mages.  Their magical arts are centered around those "
+            "which will most help them along in the material world, the arts "
+            "of conjuring and magical combat.  You can type <become mage> to "
+            "be initiated into the class of mages.", this_player());
     return 1;
 }
 

@@ -10,7 +10,7 @@ static void create() {
     SetLevel(1);
     SetLong("A nondescript being whose job is to sell food and drink.");
     SetMenuItems(([
-      ]));
+                ]));
     SetGender("male");
     SetRace("human");
     SetSkill("bargaining", 1);

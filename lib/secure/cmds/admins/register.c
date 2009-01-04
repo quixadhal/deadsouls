@@ -20,10 +20,10 @@ int cmd(string str) {
         return 0;
     }
     write("%^RED%^Enter all applicable information, including names, "
-      "offenses and email addresses.");
+            "offenses and email addresses.");
     rm(DIR_TMP+"/"+this_player()->GetKeyName()+".tmp");
     this_player()->eventEdit( DIR_TMP "/" + (string)this_player()->GetKeyName(),
-      (: end_edit($(str)) :));
+            (: end_edit($(str)) :));
     return 1;
 }
 
@@ -44,7 +44,7 @@ void end_edit(string site) {
     num = sizeof(lines = explode(wrap(tmpfile, 60), "\n"));
     str = " - "+site+" placed on Registration\n";
     str += "   by "+(string)previous_object()->GetName()+": "+
-    ctime(time())+"\n";
+        ctime(time())+"\n";
     for(x=0; x<num; x++) 
         str +=  "      * "+lines[x]+"\n";
 

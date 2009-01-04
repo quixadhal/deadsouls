@@ -328,7 +328,7 @@ mixed eventWander(){
                 continue;
             door = (string)environment()->GetDoor(tmp);
             if( door  &&
-              (int)door->GetClosed() ) continue;
+                    (int)door->GetClosed() ) continue;
             sorties += ({ "go " + tmp });
         }
 
@@ -342,7 +342,7 @@ mixed eventWander(){
                 continue;
             door = (string)environment()->GetDoor(tmp);
             if( door  &&
-              (int)door->GetClosed() ) continue;
+                    (int)door->GetClosed() ) continue;
             sorties += ({ "enter " + tmp });
         }
         if( sizeof(sorties) ){

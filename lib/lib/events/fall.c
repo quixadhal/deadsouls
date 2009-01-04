@@ -15,7 +15,7 @@ mixed eventFall(){
     if(env == rumbo) return 0;
     if(env->GetMedium() != MEDIUM_AIR){
         send_messages("crash", "$agent_name $agent_verb down!",
-          this_object(), 0, env);
+                this_object(), 0, env);
         if(living(this_object())) this_object()->SetPosition(POSITION_LYING);
         return 1;
     }
@@ -26,7 +26,7 @@ mixed eventFall(){
         if(stringp(rumbo)) err = catch(rumbo = load_object(rumbo));
         if(err || !rumbo){
             log_file("runtime","\n"+timestamp()+" "+identify(this_object())+
-              " could not load "+identify(rumbo)+" to fall into.\n");
+                    " could not load "+identify(rumbo)+" to fall into.\n");
             err = catch(rumbo = load_object(ROOM_VOID));
         }
         if(err || !rumbo){
@@ -35,9 +35,9 @@ mixed eventFall(){
         tell_object(this_object(),"You plummet downward!");
         if(this_object()->eventMove(rumbo)){
             tell_room(rumbo,capitalize(name)+" plummets in from above.",
-              ({ this_object() }));
+                    ({ this_object() }));
             tell_room(env,capitalize(name)+" continues "+
-              possessive(this_object())+" fall downward.", ({ this_object() }));
+                    possessive(this_object())+" fall downward.", ({ this_object() }));
 
             if(rumbo->GetMedium() == MEDIUM_AIR && !(this_object()->CanFly())){ 
                 call_out( "eventFall", 1);

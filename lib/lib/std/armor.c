@@ -123,25 +123,25 @@ string GetItemCondition(){
     }
     if( cuts == -1 && dents == -1 ) return 0;
     if( cuts > -1 ) switch( cuts ){
-    case 0..10: ret = "shredded to pieces"; break;
-    case 11..20: ret = "shredded"; break;
-    case 21..40: ret = "mildly shredded"; break;
-    case 41..60: ret = "slashed up"; break;
-    case 61..80: ret = "scratched"; break;
-    case 81..90: ret = "somewhat nicked"; break;
-    default: ret = "unbroken";
+        case 0..10: ret = "shredded to pieces"; break;
+        case 11..20: ret = "shredded"; break;
+        case 21..40: ret = "mildly shredded"; break;
+        case 41..60: ret = "slashed up"; break;
+        case 61..80: ret = "scratched"; break;
+        case 81..90: ret = "somewhat nicked"; break;
+        default: ret = "unbroken";
     }
     if( dents > -1 ){
         if( ret ) ret += " and ";
         else ret = "";
         switch( dents ){
-        case 0..10: ret += "utterly battered"; break;
-        case 11..20: ret += "terribly pounded"; break;
-        case 21..40: ret += "serverly dented"; break;
-        case 41..60: ret += "pretty dented"; break;
-        case 61..80: ret += "dented"; break;
-        case 81..90: ret += "slightly dented"; break;
-        default: ret += "unmarred";
+            case 0..10: ret += "utterly battered"; break;
+            case 11..20: ret += "terribly pounded"; break;
+            case 21..40: ret += "serverly dented"; break;
+            case 41..60: ret += "pretty dented"; break;
+            case 61..80: ret += "dented"; break;
+            case 81..90: ret += "slightly dented"; break;
+            default: ret += "unmarred";
         }
     }
     return "Its surface is " + ret + ".";
@@ -246,24 +246,24 @@ mixed CanEquip(object who, string array limbs){
         string which;
 
         switch(GetArmorType()){
-        case A_SHIELD:
-            if( which = who->GetLimbParent(limbs[0]) ){
-                limbs = ({ limbs[0], "torso", which });
-            }
-            break;
+            case A_SHIELD:
+                if( which = who->GetLimbParent(limbs[0]) ){
+                    limbs = ({ limbs[0], "torso", which });
+                }
+                break;
 
-        case A_LONG_GLOVE: case A_LONG_BOOT:
-            if( which = who->GetLimbParent(limbs[0]) ){
-                limbs = ({ limbs[0], which });
-            }
-            else {
+            case A_LONG_GLOVE: case A_LONG_BOOT:
+                if( which = who->GetLimbParent(limbs[0]) ){
+                    limbs = ({ limbs[0], which });
+                }
+                else {
+                    limbs = ({ limbs[0] });
+                }
+                break;
+
+            default:
                 limbs = ({ limbs[0] });
-            }
-            break;
-
-        default:
-            limbs = ({ limbs[0] });
-            break;
+                break;
         }
     }
     return equip::CanEquip(who, limbs);
@@ -333,24 +333,24 @@ mixed eventEquip(object who, string array limbs){
         string which;
 
         switch(GetArmorType()){
-        case A_SHIELD:
-            if( which = who->GetLimbParent(limbs[0]) ){
-                limbs = ({ limbs[0], "torso", which });
-            }
-            break;
+            case A_SHIELD:
+                if( which = who->GetLimbParent(limbs[0]) ){
+                    limbs = ({ limbs[0], "torso", which });
+                }
+                break;
 
-        case A_LONG_GLOVE: case A_LONG_BOOT:
-            if( which = who->GetLimbParent(limbs[0]) ){
-                limbs = ({ limbs[0], which });
-            }
-            else {
+            case A_LONG_GLOVE: case A_LONG_BOOT:
+                if( which = who->GetLimbParent(limbs[0]) ){
+                    limbs = ({ limbs[0], which });
+                }
+                else {
+                    limbs = ({ limbs[0] });
+                }
+                break;
+
+            default:
                 limbs = ({ limbs[0] });
-            }
-            break;
-
-        default:
-            limbs = ({ limbs[0] });
-            break;
+                break;
         }
     }
     if( functionp(Wear) ){
@@ -439,7 +439,7 @@ varargs mixed eventUnequip(object who){
         return tmp;
     }
     if(!who->GetDead()) send_messages("remove", "$agent_name $agent_verb $target_name.",
-          who, this_object(), environment(who));
+            who, this_object(), environment(who));
     return 1;
 }
 
@@ -452,7 +452,7 @@ int restrict(mixed arg){
 /* ******************** armor.c driver applies ******************** */
 static void create(){
     AddSave(equip::GetSave() + value::GetSave() + mass::GetSave() +
-      poison::GetSave() + deterioration::GetSave());
+            poison::GetSave() + deterioration::GetSave());
     steal::create();
     object::create();
     SetVendorType(VT_ARMOR);

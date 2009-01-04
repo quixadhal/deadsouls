@@ -110,8 +110,6 @@ varargs static void create(int x, int y, int z) {
     if( nwd ) AddExit("+x-y-z", __DIR__ + nwd);
     if( sed ) AddExit("-x+y-z", __DIR__ + sed);
     if( swd ) AddExit("-x-y-z", __DIR__ + swd);
-
-
 }
 
 varargs void SetLongAndItems(int x, int y, int z) {
@@ -123,7 +121,7 @@ varargs void SetLongAndItems(int x, int y, int z) {
     str = "Outer space. A big, place.";
 
     SetItems( ([ ({ "star","stars" })  : "Oddly steady in their shine, they stand silent witness.",
-      ]) );
+                ]) );
 
     SetLong(str);
     SetDayLight(30);

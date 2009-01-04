@@ -22,12 +22,12 @@ mixed cmd(string str) {
             message("my_action", "You twitch.", this_player());
             if(hiddenp(this_player())) return 1;
             message("other_action", (string)this_player()->GetName()+
-              " twitches.", ob, ({ this_player() }));
+                    " twitches.", ob, ({ this_player() }));
             return 1;
         }
         riders=ob->GetRiders();
         if(riders && sizeof(riders) && member_array(dude,riders) != -1 &&
-          environment(ob)){
+                environment(ob)){
             ob = environment(ob);
         }
     }
@@ -57,10 +57,10 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: <goto [living thing|file]>\n\n"
-      "This command will move you to where the living thing is if it can "
-      "be found, otherwise it will search for the file named and try to "
-      "move you into that file.\n\nSee also: home, move, trans, expel.",
-      this_player()
-    );
+            "Syntax: <goto [living thing|file]>\n\n"
+            "This command will move you to where the living thing is if it can "
+            "be found, otherwise it will search for the file named and try to "
+            "move you into that file.\n\nSee also: home, move, trans, expel.",
+            this_player()
+           );
 }

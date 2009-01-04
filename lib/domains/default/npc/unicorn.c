@@ -13,9 +13,9 @@ static void create() {
     SetGender("male");
     SetMelee(1);
     SetAction(5, ({ 
-        "The unicorn snorts.", "You hear the unicorn whinny.", 
-        "The unicorn flips its tail in the air.",
-        "The unicorn looks around."}));
+                "The unicorn snorts.", "You hear the unicorn whinny.", 
+                "The unicorn flips its tail in the air.",
+                "The unicorn looks around."}));
 }
 void init(){
     ::init();

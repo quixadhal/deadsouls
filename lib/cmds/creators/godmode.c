@@ -43,5 +43,5 @@ varargs int cmd(string str){
 void help()
 {
     write("Syntax: godmode [ on | off ]\n"+
-      "Enables or disables immunity to most forms of lethal damage."); 
+            "Enables or disables immunity to most forms of lethal damage."); 
 }

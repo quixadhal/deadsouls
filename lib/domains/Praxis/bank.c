@@ -26,24 +26,24 @@ void create() {
     SetProperty("night light", 2);
     SetShort( "the bank of praxis");
     SetLong(
-      "Welcome to the Bank of Praxis!\n"
-      "The Bank of Praxis is a lovely looking building. Red carpeting "
-      "covers the worn floor, and to the north there is a polished wooden "
-      "counter. In the back of the bank there is a vault where all "
-      "the town's deposits are kept. A sign by the teller details "
-      "all commands. The exit to the bank is back south.");
+            "Welcome to the Bank of Praxis!\n"
+            "The Bank of Praxis is a lovely looking building. Red carpeting "
+            "covers the worn floor, and to the north there is a polished wooden "
+            "counter. In the back of the bank there is a vault where all "
+            "the town's deposits are kept. A sign by the teller details "
+            "all commands. The exit to the bank is back south.");
     SetItems(
-      (["bank" : "You are in its huge lobby. There is a counter in "
-        "front of you\nand and exit behind you.",
-        "citizens" : "They are wandering about aimlessly.",
-        "account" : "You're a damn loon.",
-        "sign" : "Reading it will give you a list of commands.",
-        "teller" : "The teller looks at you impatiently.",
-        "counter" : "A teller waits behind it for you to do something.",
-        "exit" : "It leads out into the alley.",
-        "vault" : (: this_object(), "look_at_vault" :) ]) );
+            (["bank" : "You are in its huge lobby. There is a counter in "
+             "front of you\nand and exit behind you.",
+             "citizens" : "They are wandering about aimlessly.",
+             "account" : "You're a damn loon.",
+             "sign" : "Reading it will give you a list of commands.",
+             "teller" : "The teller looks at you impatiently.",
+             "counter" : "A teller waits behind it for you to do something.",
+             "exit" : "It leads out into the alley.",
+             "vault" : (: this_object(), "look_at_vault" :) ]) );
     SetExits( 
-      (["south":"/domains/Praxis/alley1"]) );
+            (["south":"/domains/Praxis/alley1"]) );
 }
 
 void reset() {
@@ -58,7 +58,7 @@ void reset() {
         mon->SetGender("male");
         mon->SetShort( "Bank guard");
         mon->SetLong( "A big, ugly ogre hired to guard the "
-          "newly open bank.\n");
+                "newly open bank.\n");
         mon->SetLevel(14);
         mon->SetRace("human");
         mon->SetHealthPoints(500 + random(100));
@@ -68,13 +68,13 @@ void reset() {
         mon->SetSkills("defense", 70);
         mon->SetSkills("blade", 90);
         mon->set_emotes(9, 
-          ({ "Guard says: Goddamn thief!",
-            "Guard grunts.",
-            "Guard says: No way you're getting past me!",
-            "Guard says: You disgust me."}), 1);
+                ({ "Guard says: Goddamn thief!",
+                 "Guard grunts.",
+                 "Guard says: No way you're getting past me!",
+                 "Guard says: You disgust me."}), 1);
         mon->set_emotes(3,
-          ({ "Guard munches on a rat pie.", 
-            "Guard says: I hate rogues." }), 0);
+                ({ "Guard munches on a rat pie.", 
+                 "Guard says: I hate rogues." }), 0);
         mon->SetWielding_limbs( ({ "right hand", "left hand" }) );
         mon->move(this_object());
         weapon = new(LIB_ITEM);
@@ -112,13 +112,13 @@ int do_drunkard() {
         this_player()->add_follower(present("guard"));
         write("The guard foils you before you can slip the key in!");
         say(this_player()->query_cap_name()+" is foiled trying to break "
-          "into the vault!");
+                "into the vault!");
         return 0;
     }
     if(this_player()->query_intox()) {
         write("You are fumble around drunkenly with the bank key.");
         say(this_player()->query_cap_name()+" fiddles around drunkenly "
-          "with the bank key.");
+                "with the bank key.");
         return 0;
     }
     return 1;
@@ -127,15 +127,15 @@ int do_drunkard() {
 int read(string str) {
     if(str != "sign") return notify_fail("Read what?\n");
     message("info",
-      "You may do any of the following at Praxis Merchant's Bank:\n"
-      "<open account>\nWill open an account for you.\n\n"
-      "<close account>\nCloses your account.\n\n"
-      "<balance>\nGives you account balance information.\n\n"
-      "<deposit [#] [type]>\nDeposits # of currency of type.\n\n"
-      "<withdraw [#] [type]>\nWithdraws # of currency of type.\n\n"
-      "<exchange [#] of [type1] for [type2]>\nExchanges currencies.  There is a 10% charge.\n\n",
-      this_player()
-    );
+            "You may do any of the following at Praxis Merchant's Bank:\n"
+            "<open account>\nWill open an account for you.\n\n"
+            "<close account>\nCloses your account.\n\n"
+            "<balance>\nGives you account balance information.\n\n"
+            "<deposit [#] [type]>\nDeposits # of currency of type.\n\n"
+            "<withdraw [#] [type]>\nWithdraws # of currency of type.\n\n"
+            "<exchange [#] of [type1] for [type2]>\nExchanges currencies.  There is a 10% charge.\n\n",
+            this_player()
+           );
     return 1;
 }
 
@@ -152,9 +152,9 @@ int Bugga(string str) {
     else amount = 20 + random(20);
     ob->do_damage(limb, amount);
     tell_object(ob, "The guard bashes your "+limb+" with his "
-      "left fist!");
+            "left fist!");
     tell_room(this_object(), "The guard bashes "+ob->query_cap_name()+"'s "+
-      limb+" with his left fist!", ({ ob }));
+            limb+" with his left fist!", ({ ob }));
     return 1;
 }
 

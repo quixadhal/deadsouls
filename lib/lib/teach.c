@@ -30,9 +30,9 @@ int eventOfferTeaching(object who, string what){
     }
     //if(!Teaching[who] || !Teaching[who][0] || Teaching[who][0] != what){
     tell_player(who,this_object()->GetName()+
-      " offers to teach you "+what+".");
+            " offers to teach you "+what+".");
     tell_player(this_object(),"You offer to teach "+what+
-      " to "+who->GetName()+".");
+            " to "+who->GetName()+".");
     //}
     Teaching[who] = ({ what, time() });
     return 1;
@@ -59,15 +59,15 @@ int eventTeach(object who, string what){
     }
 
     who->eventPrint(this_object()->GetName() + " touches your forehead and gives "
-      "you knowledge of " + what + ".");
+            "you knowledge of " + what + ".");
     environment()->eventPrint(this_object()->GetName() + " touches " +
-      possessive_noun(who) +
-      " forehead and gives " +
-      objective(who) + " knowledge of " +
-      what + ".", ({ who, this_object() }));
+            possessive_noun(who) +
+            " forehead and gives " +
+            objective(who) + " knowledge of " +
+            what + ".", ({ who, this_object() }));
     this_object()->eventPrint("You touch "+possessive_noun(who) + 
-      " forehead and give " + objective(who) + " knowledge of " +
-      what + ".");
+            " forehead and give " + objective(who) + " knowledge of " +
+            what + ".");
     if(!creatorp(this_object())){
         this_object()->AddMagicPoints(-magpoint);
     }

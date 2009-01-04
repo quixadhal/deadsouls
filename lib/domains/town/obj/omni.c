@@ -10,8 +10,8 @@ static void create() {
     SetId(({"omni","Omni","device"}));
     SetShort("an omni");
     SetLong("This is a small, round metal device, copper in color, "+
-      "and similar in appearance to a pocket watch. There is a blinking red light "+
-      "next to the tiny metal button at its top.");
+            "and similar in appearance to a pocket watch. There is a blinking red light "+
+            "next to the tiny metal button at its top.");
     SetMass(10);
     SetBaseCost("silver",300);
     AddItem("button", "A button on the omni.");
@@ -46,8 +46,8 @@ void heart_beat(){
     if(vanish_count == 50){
         tell_object(environment(),"The omni begins to glow a dull red.");
         this_object()->SetLong("This is a small, round metal device, copper in color, "+
-          "and similar in appearance to a pocket watch. There is a blinking red light "+
-          "next to the tiny metal button at its top. It is glowing a dull red.");
+                "and similar in appearance to a pocket watch. There is a blinking red light "+
+                "next to the tiny metal button at its top. It is glowing a dull red.");
         this_object()->SetShort("an omni (glowing)");
     }
 }

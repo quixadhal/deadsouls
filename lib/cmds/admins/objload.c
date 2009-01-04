@@ -45,8 +45,8 @@ mixed cmd(string args) {
 
 string GetHelp(string unused) {
     return ("Syntax: <objload>\n\n"
-      "Provides you with information about how many objects "
-      "each creator has in the game.");
+            "Provides you with information about how many objects "
+            "each creator has in the game.");
 }
 
 
