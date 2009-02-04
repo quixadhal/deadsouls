@@ -145,16 +145,28 @@ mapping CompileLevelList(){
     return copy(Levels);
 }
 
+static void ScheduledPlayerAdd(string *plays){
+    foreach(string play in plays){
+        this_object()->AddPlayerInfo(play);
+    }
+}
+
 string *CompileCreList(){
     string *cre_dirs = unguarded( (: get_dir(DIR_CRES+"/") :) );
     string *cres = ({});
+    string *cache = ({});
+    int i;
     foreach(string subdir in cre_dirs){
         cres += unguarded( (: get_dir,DIR_CRES+"/"+subdir+"/" :) );
     }
     foreach(string cre in cres){
         if(member_array(cre, user_list) == -1 ||
                 member_array(cre, creators) == -1) 
-            this_object()->AddPlayerInfo(replace_string(cre, ".o",""));
+            cache += ({ replace_string(cre, ".o","") });
+        if(sizeof(cache) > 20){
+            call_out("ScheduledPlayerAdd", i, copy(cache));
+            cache = ({});
+        }
     }
     return cres;
 }
@@ -162,13 +174,20 @@ string *CompileCreList(){
 string *CompilePlayerList(){
     string *play_dirs = get_dir(DIR_PLAYERS+"/");
     string *plays = ({});
+    string *cache = ({});
+    int i;
     foreach(string subdir in play_dirs){
         plays += get_dir(DIR_PLAYERS+"/"+subdir+"/");
     }
     foreach(string play in plays){
+        i++;
         if(member_array(play, user_list) == -1 ||
                 member_array(play, players) == -1)
-            this_object()->AddPlayerInfo(replace_string(play, ".o",""));
+            cache += ({ replace_string(play, ".o","") });
+        if(sizeof(cache) > 20){
+            call_out("ScheduledPlayerAdd", i, copy(cache));
+            cache = ({});
+        }
     }
     return plays;
 }
@@ -443,15 +462,17 @@ int CheckBuilder(object who){
 }
 
 string GetUserPath(mixed name){
-    string ret;
+    string ret = "/tmp/";
     if(name && objectp(name)) name = name->GetKeyName();
     if(!name){
-        if(!this_player()) return "/tmp/";
+        if(!this_player()) return ret;
         else name = this_player()->GetKeyName();
     }
     if(member_array(name, creators) != -1){
         ret = REALMS_DIRS+"/"+name+"/";
     }
-    else ret = DIR_ESTATES + "/"+name[0..0]+"/"+name+"/";
+    else if(member_array(name, players) != -1){
+        ret = DIR_ESTATES + "/"+name[0..0]+"/"+name+"/";
+    }
     return ret;
 }

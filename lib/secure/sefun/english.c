@@ -24,12 +24,18 @@ varargs mixed match_command(string verb, int subs){
     localcmds += keys(VERBS_D->GetVerbs());
     if(member_array(verb,localcmds) == -1){
         if(alphap(verb)) local_arr = regexp(localcmds,"^"+verb);
+        //else tc("wtf: "+identify(verb));
+        //tc("local_arr: "+identify(local_arr));
         if(sizeof(local_arr)){
             if(!subs){
                 return local_arr[0];
             }
             else return local_arr;
         }
+    }
+    else {
+        if(subs) return ({ verb });
+        else return verb;
     }
     return "";
 }

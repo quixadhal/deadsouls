@@ -16,7 +16,7 @@ static void create() {
     SetNoClean(1);
     SetHelp("Syntax: score\n\n"
             "Displays information about your character.\n\n"
-            "See also: status\n");
+            "See also: stat, status, env\n");
 }
 
 static string *FoodDegree =

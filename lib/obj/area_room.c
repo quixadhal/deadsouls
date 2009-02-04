@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <rooms.h>
 
-#include "../../customdefs.h";
+#include "../customdefs.h";
 
 inherit LIB_ROOM;
 

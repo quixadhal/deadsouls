@@ -8,62 +8,68 @@
 
 #include <lib.h>
 #include <privs.h>
+#include <cfg.h>
 #include <config.h>
 #include <daemons.h>
 
 string tz;
+string *zonearray = explode((read_file(CFG_TIMEZONES)|| ""), "\n");
+mapping months = ([ 
+        0 : "January",
+        1 : "February",
+        2 : "March",
+        3 : "April",
+        4 : "May",
+        5 : "June",
+        6 : "July",
+        7 : "August",
+        8 : "September",
+        9 : "October",
+        10 : "November",
+        11 : "December",]);
+mapping days = ([
+        0 : "Sunday",
+        1 : "Monday",
+        2 : "Tuesday",
+        3 : "Wednesday",
+        4 : "Thursday",
+        5 : "Friday",
+        6 : "Saturday",
+        ]);
 
 string query_tz(){
-    string zone;
+    if(tz) return tz;
     if (file_size("/cfg/timezone.cfg") > 0) 
-        zone = read_file("/cfg/timezone.cfg")[0..2];
-    if (!zone) zone = "GMT";
-    return zone;
+        tz = read_file("/cfg/timezone.cfg")[0..2];
+    if (!tz) tz = "GMT";
+    return tz;
 }
 
 mixed local_ctime(int i){
     return ctime(i + ((TIME_D->GetOffset(query_tz()) ) * 3600));
 }
 
-mixed local_time(mixed val){
-    string *zonearray;
-    string tzone,l_time, os;
-    int timediff,offset;
-
-    os = query_os_type();
-
+varargs mixed local_time(mixed val){
+    mixed stuff = ({});
+    string tzone;
+    int offset;
     if(stringp(val)) {
-        tzone =  upper_case(val);
-        zonearray = explode(read_file("/cfg/timezones.cfg"),"\n");
-        if(member_array(tzone,zonearray) == -1) tzone = query_tz();
-        if(!tzone || tzone == "") tzone = query_tz();
-        offset = TIME_D-> GetOffset(tzone);
-        offset += EXTRA_TIME_OFFSET;
-        timediff = offset * 3600;
-        if(os != "windows") l_time=ctime(time() + timediff);
-        else l_time=ctime(time());
-        return l_time;
+        val = upper_case(val);
+        if(member_array(val, zonearray) != -1) tzone = val;
     }
-    if(intp(val)){
-        mixed *stuff;
-        offset = 0;
-        if(!LOCAL_TIME){
-            offset = TIME_D-> GetOffset(query_tz());
-            offset *= 3600;
-        }
-        stuff = localtime(time()+offset);
-        stuff[9] = query_tz();
-        return stuff;
-    }
+    if(!tzone) tzone = query_tz();
+    offset = TIME_D->GetOffset(tzone);
+    offset += EXTRA_TIME_OFFSET;
+    offset *= 3600;
 
+    stuff = localtime(time() + offset);
+    stuff[9] = tzone;
+    return stuff;
 }
 
 int valid_timezone(string str){
-    string *zonearray;
     if(!str || str == "") return 0;
     str = upper_case(str)[0..2];
-    zonearray = explode(read_file("/cfg/timezones.cfg"),"\n");
-    zonearray += ({""});
     if(member_array(str,zonearray) == -1) {
         return 0;
     }
@@ -80,4 +86,16 @@ string set_tz(string str){
         error("Illegal attempt to modify timezone: "+get_stack()+" "+identify(previous_object(-1)));
     unguarded( (: write_file("/cfg/timezone.cfg",tz,1) :) );
     return "Mud time zone is now "+read_file("/cfg/timezone.cfg");
+}
+
+varargs string system_month(int i, int abbr){
+    if(!months[i]) return "";
+    if(!abbr) return months[i];
+    else return months[i][0..2];
+}
+
+varargs string system_day(int i, int abbr){
+    if(!days[i]) return "";
+    if(!abbr) return days[i];
+    else return days[i][0..2];
 }

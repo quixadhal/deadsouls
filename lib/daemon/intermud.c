@@ -30,6 +30,7 @@ private mixed *Nameservers;
 private static int Tries;
 private static int SocketStat = -1;
 private static int Online = 0;
+private static string my_ip;
 
 mapping ExtraInfo();
 void ConvertLists();
@@ -173,7 +174,10 @@ static void eventRead(mixed *packet){
             string tmp = "";
             if(cle){
                 string lib = "unknown";
-                if(val && sizeof(val) > 5 && arrayp(val)) lib = val[5];
+                if(val && sizeof(val) > 5 && arrayp(val)){
+                    if(!my_ip && cle == mud_name()) my_ip = val[1];
+                    lib = val[5];
+                }
                 MUDINFO_D->ReceiveMudInfo(cle, val);
                 tmp += "%^BOLD%^CYAN%^Processing mud: "+identify(cle)+
                     ", lib: "+lib;
@@ -443,6 +447,12 @@ void ConvertLists(){
 
 int GetEnabled(){
     return !(DISABLE_INTERMUD);
+}
+
+string GetMyIp(){
+    string ret = "127.0.0.1";
+    if(my_ip) ret = my_ip;
+    return ret;
 }
 
 #endif /* __PACKAGE_SOCKETS__ */

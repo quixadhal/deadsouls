@@ -3,6 +3,7 @@
 #include <vendor_types.h>
 inherit LIB_ITEM;
 mapping Tracked = ([]);
+mixed gtmp;
 
 string LongDesc(){
     string ret;
@@ -35,6 +36,7 @@ void init(){
     ::init();
     add_action("GetCoord","coord");
     add_action("GetProx","prox");
+    add_action("GetShell","shell");
     add_action("StartTrack","track");
     add_action("StopTrack","untrack");
 }
@@ -129,5 +131,49 @@ int ReceiveTrackingData(mapping data){
     if(!env) return 0;
     tell_object(env, "The GPS device chirps: Tracking data received for "+
             data["object"]->GetShort()+": "+identify(data));
+    return 1;
+}
+
+int GetShell(string str){
+    mapping Shell = ([]);
+    mixed all = ({});
+    int shell = atoi(str);
+    int i, max = shell+1;
+    Shell[0] = room_environment(this_player())->GetNeighbors();
+    if(!shell){
+        //tc("Shell[0]: "+identify(Shell[0]));
+        return 1;
+    }
+    for(i = 1; i < max; i++){ 
+        Shell[i] = ({});
+        //tc("i: "+i);
+        foreach(mixed foo in Shell[i-1]){
+            object bar;
+            mixed tmparr = ({});
+            //tc("looking at: "+foo,"green");
+            catch( bar = load_object(foo) );
+            if(bar){
+                tmparr = (bar->GetNeighbors() - ({ foo }) );
+                if(!sizeof(tmparr)){
+                    //tc("had to compile","blue");
+                    bar->CompileNeighbors();
+                    tmparr = (bar->GetNeighbors() - ({ foo }) );
+                }
+            }
+            //else tc("LOL");
+            //tc("%^B_BLACK%^tmparr: "+identify(tmparr),"white");
+            gtmp = Shell[i-1];
+            //tc("%^B_BLUE%^gtmp: "+identify(gtmp),"cyan");
+            tmparr = filter(tmparr, (: member_array($1, gtmp) == -1 :) );
+            gtmp = all;
+            Shell[i] += filter(tmparr, (: member_array($1, gtmp) == -1 :) );
+            all += Shell[i];
+            //Shell[i] += tmparr;
+        }
+        Shell[i] = distinct_array(Shell[i]);
+        //tc("Shell["+i+"]: "+identify(Shell[i]));
+    }
+    //tc("Shell: "+identify(shell),"blue");
+    write("Rooms at distance "+shell+": "+identify(Shell[shell]));
     return 1;
 }

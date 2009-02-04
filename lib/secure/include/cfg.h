@@ -16,6 +16,8 @@
 #define CFG_RACES               DIR_SECURE_CFG "/races"
 #define CFG_READ		DIR_SECURE_CFG "/read.cfg"
 #define CFG_TIME                DIR_CFG "/time.cfg"
+#define CFG_TIMEZONES           DIR_CFG "/timezones.cfg"
+#define CFG_TIMEZONE            DIR_CFG "/timezone.cfg"
 #define CFG_WHERE               DIR_CFG "/where.cfg"
 #define CFG_WRITE		DIR_SECURE_CFG "/write.cfg"
 

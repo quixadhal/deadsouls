@@ -13,11 +13,11 @@ static int heart_count;
 void CheckPortals(){
     mixed *tmp;
     if(catch(blue = load_object(broom)) || !blue){
-        broom = ROOM_START;
+        broom = ROOM_POD;
         blue = load_object(broom);
     }
     if(catch(orange = load_object(oroom)) || !orange){
-        oroom = ROOM_START;
+        oroom = ROOM_POD;
         orange = load_object(oroom);
     }
     if(!bportal){

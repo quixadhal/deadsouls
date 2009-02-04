@@ -129,7 +129,7 @@ string local_time(string str);
 void reap_dummies();
 varargs void reap_other(string str);
 mixed reap_list();
-string timestamp();
+string timestamp(mixed tz);
 object *get_dupes(object ob, object where);
 varargs string get_stack(int x);
 mixed hobbled(object ob);
@@ -290,5 +290,8 @@ int query_windows();
 varargs mixed file_present(mixed str, mixed ob, int i);
 varargs mixed present_bonus(mixed str, mixed ob, int i);
 varargs string query_unique_name(mixed ob, int cloned);
+varargs string system_month(int i, int abbr);
+varargs string system_day(int i, int abbr);
+void write2(string str);
 
 #endif /* l_sefun_h */

@@ -12,6 +12,7 @@ void create() {
     SetLong("This is a small cave at the base of a cliff. A stone door is set into the north wall.");
     SetExits( ([
                 "out" : "/domains/town/virtual/forest/24,25",
+                "south" : "/domains/town/virtual/forest/24,25",
                 "north" : "/domains/town/room/cave1.c",
                 ]) );
     SetDoor("north", "/domains/town/doors/stone.c");

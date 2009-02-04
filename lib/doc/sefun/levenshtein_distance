@@ -1,0 +1,23 @@
+levenshtein_distance - compute Levenshtein distance of two strings
+
+SYNOPSIS
+    int levenshtein_distance(string a, string b)
+
+DESCRIPTION
+    Computes the Levenshtein distance between strings a and b,
+    which is the number of insertions, deletions, or replacements
+    necessary to transform one to the other.  For more information,
+    see http://en.wikipedia.org/wiki/Levenshtein_distance.
+
+EXAMPLE
+    > eval -b levenshtein_distance("kitten", "mittens")
+    [Integer] 2
+    > eval -b levenshtein_distance("terrible", "tortuous")
+    [Integer] 6
+    > eval -b levenshtein_distance("terrible", "tribble")
+    [Integer] 2
+    > eval -b levenshtein_distance("know", "nkow")
+    [Integer] 2
+
+SEE ALSO
+    damerau_levenshtein_distance(sefun), regexp(efun)

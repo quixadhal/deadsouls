@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <medium.h>
 #include <rooms.h>
 #include <position.h>
 
@@ -43,14 +44,18 @@ int inventory_accessible(){
 
 mixed eventMount(object who){
     int rider_weight;
+    string weight = "weight";
     if(!who) return 0;
+    if(environment() && environment()->GetMedium() == MEDIUM_SPACE){
+        weight = "mass";
+    }
     rider_weight = (who->GetCarriedMass()) + (who->GetMass() || 2000);
     if(!environment(this_object())) return 0;
     if(environment(who) && environment(who) == this_object()){
         return write("You are already mounted.");
     }
     if(rider_weight + this_object()->GetCarriedMass() > this_object()->GetMaxCarry()){
-        return write("This vehicle cannot handle that much weight.");
+        return write("This vehicle cannot handle that much "+weight+".");
     }
     else {
         string int_desc = GetVehicleInterior();

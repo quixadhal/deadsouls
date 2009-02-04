@@ -3,6 +3,7 @@
 inherit LIB_DAEMON;
 
 varargs int cmd(string str){
+#if GRID
     if(!str){
         write("Showgrid is "+ (this_player()->GetVisibleGrid() ? "on." : "off."));
         return 1;
@@ -37,6 +38,10 @@ varargs int cmd(string str){
     }
     write("Try: help showgrid");
     return 1;
+#else
+    write("This feature is disabled.");
+    return 1;
+#endif
 }
 
 void help()

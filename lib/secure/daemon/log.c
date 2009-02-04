@@ -22,7 +22,9 @@ int RotateLogs(){
                 rename(temppath,foopath);
                 if( file_size(path+"archive") != -2 ) mkdir(path+"archive");
                 cp(foopath,path+"archive/"+fooname);
-                rm(foopath); 
+                rm(foopath);
+                //tc("temppath: "+temppath);
+                write_file(temppath, "", 1); 
             }
         }
     }

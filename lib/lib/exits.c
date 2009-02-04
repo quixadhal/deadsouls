@@ -31,7 +31,10 @@ mixed CanGo(object who, string str){
     noclip = who->GetProperty("noclip");
     if( !noclip && !Exits[str] && str != "up" && str != "down" &&
             !(sizeof(this_object()->GetFlyRoom())) &&
-            !(sizeof(this_object()->GetSinkRoom())) ) return GoMessage;
+            !(sizeof(this_object()->GetSinkRoom())) ){
+        //tc("weak 1");
+        return GoMessage;
+    }
     else return 1;
 }
 
@@ -96,8 +99,10 @@ mixed eventGo(object who, string str){
             who->eventMoveLiving(this_object()->GetSinkRoom(),omsg,imsg,str);
             return 1;
         }
-        write("You can't go that way.");
-        return 0;
+        if(!noclip){ 
+            write("You can't go that way.");
+            return 0;
+        }
     }
     if(Exits[str] && Exits[str]["room"]){
         who->eventMoveLiving(Exits[str]["room"],0,0,str);

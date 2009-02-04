@@ -128,6 +128,13 @@ static private void LoadIndices() {
         Indices["religion"] = tmp;
     else Indices["religion"] = ({});
 
+    if( tmp = get_dir(DIR_CONSTRUCTS_HELP "/") )
+        Indices["lpc"] = tmp;
+    else Indices["lpc"] = ({});
+
+    if( tmp = get_dir(DIR_CONCEPTS_HELP "/") )
+        Indices["lpc"] += tmp;
+
     Indices["library objects"] = ({});
     foreach(dir in ({ DIR_LIB, DIR_SECURE_LIB })){
         if( !(tmp = get_dir(dir + "/*.c")) ) continue;
@@ -316,7 +323,7 @@ string GetHelpByIndex(string index, string topic) {
         return help;
 
         case "player documents": case "creator documents":
-            case "law":
+            case "law": case "lpc":
             switch(index) {
                 case "player documents":
                     if( topic == "soul" ) {
@@ -334,6 +341,12 @@ string GetHelpByIndex(string index, string topic) {
 
                 case "law":
                     file = DIR_LAW_HELP "/" + topic;
+                break;
+
+                case "lpc":
+                    file = DIR_CONCEPTS_HELP "/" + topic;
+                if( !file_exists(file) )
+                    file = DIR_CONSTRUCTS_HELP "/" + topic;
                 break;
             }
         if( !file_exists(file) ) {

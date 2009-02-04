@@ -8,6 +8,7 @@
  */
 
 #include <config.h>
+#include <runtime_config.h>
 #include <rooms.h>
 #include <cfg.h>
 #include <lib.h>
@@ -40,17 +41,24 @@
 #define CONSOLE_TRACE 0
 #endif
 
-
-private static int ResetNumber;
+private static int incept_date, ResetNumber, heart_count, in_reset;
+private static int eval_threshold, reset_handle = -1;
+private int PerformanceScore;
 private static object Unguarded, gguy;
 private static string PlayerName, rlog, gcmd,bname;
 private static object NewPlayer;
-private static mapping Groups, ReadAccess, WriteAccess;
+private static mapping Groups, ReadAccess, WriteAccess, CostErr;
 private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "powers" });
 private static string array efuns_arr = ({});
 
+static void Setup(){
+    if(!PerformanceScore && file_exists(SAVE_MASTER+__SAVE_EXTENSION__)){
+        restore_object(SAVE_MASTER);
+    }
+    else save_object(SAVE_MASTER);
+}
+
 void create() {
-#if 1
 #ifdef __OPCPROF__
     string tmpfun, junk, opstr;
     string *oparr = ({});
@@ -71,22 +79,38 @@ void create() {
         }
     }
 #endif
-#endif
+    eval_threshold = (get_config(__MAX_EVAL_COST__) / 1000000) + 1;
+    incept_date = time();
+    PerformanceScore = 0;
     Unguarded = 0;
     NewPlayer = 0;
     PlayerName = 0;
     ResetNumber = 1;
-    if(!file_exists("/secure/sefun/native_version.c"))
-        cp("/secure/scripts/native_version.proto", "/secure/sefun/native_version.c");
+    if(!(file_exists("/secure/sefun/native_version.c"))){
+        cp("/secure/scripts/native_version.proto", 
+                "/secure/sefun/native_version.c");
+    }
     new_read();
     new_write();
     new_groups();
-    call_out( (: eventReset :), TIME_TO_RESET );
+    reset_handle = call_out( (: eventReset :), TIME_TO_RESET );
+    call_out( (: Setup :), 10);
+    set_heart_beat(1);
+}
+
+static void heart_beat(){
+    heart_count++;
+    if(!(heart_count % 60)){
+        CostErr = ([]);
+        if(in_reset){
+            eventReset();
+        }
+    }
+    if(heart_count > 64000) heart_count = 0;
 }
 
 void new_read() {
     mapping tmp;
-
     tmp = ([]);
     load_access(CFG_READ, tmp);
     ReadAccess = tmp;
@@ -94,7 +118,6 @@ void new_read() {
 
 void new_write() {
     mapping tmp;
-
     tmp = ([]);
     load_access(CFG_WRITE, tmp);
     WriteAccess = tmp;
@@ -102,7 +125,6 @@ void new_write() {
 
 void new_groups() {
     mapping tmp;
-
     tmp = ([]);
     load_access(CFG_GROUPS, tmp);
     Groups = tmp;
@@ -212,17 +234,18 @@ void preload(string str) {
         after = rusage();
         if(sizeof(before) && sizeof(after)){
             t = after["utime"] - before["utime"];
+            PerformanceScore += t;
             write("("+t+"ms)\n");
         }            
         return;
 #endif
         write("(done)\n");
     }
+    save_object(SAVE_MASTER);
 }
 
 int valid_write(string file, object ob, string fun) {
     string *ok;
-
     if( ob == master() ) return 1;
     ok = match_path(WriteAccess, file);
     return check_access(ob, fun, file, ok, "write");
@@ -318,42 +341,24 @@ int check_access(object ob, string fun, mixed file, string *ok, string oper) {
     return 1;
 }
 
-#if 0
-nomask static int check_user(object ob, string fun, string file, string oper) {
-    string nom, tmp, junk;
-    int x;
-    if( !sscanf(file, REALMS_DIRS "/%s", nom) ){
-        //x = sscanf(file, ESTATES_DIRS "/%s/%s", junk, nom);
-        if(x != 2) return 0;
-    }
-    if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
-    nom = user_path(nom)+"adm/access";
-    if(file_size(nom+".c") < 0) return 0;
-    catch(x = (int)call_other(nom, "check_access", ob, fun, file, oper));
-    return x;
-}
-#else
-nomask static int check_user(object ob, string fun, string file, string oper) {
+nomask static int check_user(object ob, string fun, string file, string oper){
     string nom, tmp;
     int x;
-
-    if(!creatorp(ob)){
-        nom = last_string_element(base_name(ob),"/");
+    if(interactive(ob) && !creatorp(ob)){
+        nom = ob->GetKeyName();
         if(!strsrch(file,DIR_ESTATES + "/"+nom[0..0]+"/"+nom)) return 1;
     }
     if( !sscanf(file, REALMS_DIRS "/%s", nom) ) return 0;
     if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
     nom = user_path(nom)+"adm/access";
-    if(file_size(nom+".c") < 0) return 0;
-    catch(x = (int)call_other(nom, "check_access", ob, fun, file, oper));
+    if(strsrch(nom,"/tmp") && file_size(nom+".c") > 0)
+        catch(x = (int)call_other(nom, "check_access", ob, fun, file, oper));
     return x;
 }
-#endif
 
 nomask static int check_domain(object ob, string fun, string file, string o) {
     string nom;
     int x;
-
     if( !sscanf(file, DOMAINS_DIRS+"/%s/%*s", nom) ) return 0;
     nom = DOMAINS_DIRS+"/"+nom+"/adm/access";
     if(file_size(nom+".c") < 0) return 0;
@@ -421,9 +426,12 @@ object compile_object(string str) {
     return (object)call_other(tmp, "compile_object", str);               
 }
 
-static void crash(string err) {
+static void crash(mixed args...) {
+    string err;
     string guilty_stack = get_stack(1);
     string guilty_obs = identify(previous_object(-1));
+    if(sizeof(args)) err = args[0];
+    //tc("CRASH: "+identify(args),"red");
     write_file(DIR_LOGS "/crashes",
             mud_name() + " crashed " + ctime(time()) + " with error " +
             err+".\n"+guilty_stack+"\n"+guilty_obs+"\n---\n");
@@ -443,7 +451,6 @@ int valid_bind(object binder, object old_owner, object new_owner) {
 
 int valid_hide(object who) {
     string priv;
-
     if(!objectp(who)) return 0;
     if(environment(who) && hiddenp(environment(who))) return 1;
     if(!(priv = query_privs(who))) return 0;
@@ -540,6 +547,10 @@ mixed apply_unguarded(function f) {
 
 string error_handler(mapping mp, int caught) {
     string ret, file, dbg;
+    int now = time();
+
+    if(!CostErr) CostErr = ([ now : 0 ]);
+    else if(undefinedp(CostErr[now])) CostErr[now] = 0;
 
     if(CONSOLE_TRACE){
         dbg = "\n----\n";
@@ -549,21 +560,30 @@ string error_handler(mapping mp, int caught) {
         dbg += "\n----\n";
         debug_message(dbg);
     }
-    if(mp && mp["error"] && grepp(mp["error"], "Too many open files")){
-        if(!EVENTS_D->GetRebooting()){
-            EVENTS_D->eventReboot(1);
+    if(mp && mp["error"]){
+        if(grepp(mp["error"], "Too many open files")){
+            debug_message("Too many open files!\n");
+            shutdown(-9);
+        }
+        if(grepp(mp["error"], "Too long evaluation.")){
+            CostErr[now]++; 
+        }
+        if(grepp(mp["error"], "Can't catch eval cost too big error.")){
+            CostErr[now]++;
+        }
+        if(CostErr[now] >= eval_threshold){
+            /* This prevents a strange eval cost cascade that
+             * can sometimes happen under extreme load. Unfortunately
+             * the only effective countermeasure is a hard reboot
+             * of the mud.
+             */
+            debug_message("Eval cost error cascade!\n");
+            shutdown(-9);
         }
     }
     ret = "---\n"+timestamp()+"\n"+ standard_trace(mp);
     if( caught ) write_file(file = "/log/catch", ret);
     else write_file(file = "/log/runtime", ret);
-    //if(!this_player()){
-    //    object *object_stack = call_stack(1);
-    //    object web_sessions = load_object(WEB_SESSIONS_D);
-    //    if(web_sessions && member_array(web_sessions, object_stack) != -1){
-    //        web_sessions->ReceiveErrorReport(ret);
-    //    }
-    //}
     if( this_player(1) && find_object(SEFUN) ) {
         this_player(1)->SetLastError(mp);
         if( creatorp(this_player(1)) ) {
@@ -643,7 +663,6 @@ string trace_line(object obj, string prog, string file, int line) {
 
 int different(string fn, string pr) {
     int tmp;
-
     sscanf(fn, "%s#%d", fn, tmp);
     fn += ".c";
     return (fn != pr) && (fn != ("/" + pr));
@@ -661,7 +680,6 @@ string make_path_absolute(string file) {
 
 int player_exists(string nom) {
     string str;
-
     if( !nom ) return 0;
     str = DIR_PLAYERS "/" + nom[0..0] + "/" + nom + __SAVE_EXTENSION__;
     if( file_size(str) > -1 ) return 1;
@@ -905,13 +923,17 @@ string *query_group(string grp) { return copy(Groups[grp]); }
 
 mapping query_groups() { return copy(Groups); }
 
-static void eventReset() {
+static void eventReset(){
     object *obs;
     object ob;
     int x, y;
+    in_reset = 1;
 
     ResetNumber++;
-    call_out( (: eventReset :), TIME_TO_RESET );
+    if(find_call_out("eventReset") == -1 && find_call_out(reset_handle) == -1){ 
+        //tc(ctime(time())+" scheduling reset for: "+ctime(time()+TIME_TO_RESET));
+        reset_handle = call_out( (: eventReset :), TIME_TO_RESET );
+    }
     x = reclaim_objects();
     write_file(DIR_LOGS "/reset", "Reset " + ResetNumber + " occurred at: " +
             ctime(time()) + "\n");
@@ -937,6 +959,7 @@ static void eventReset() {
         f = bind((: call_other, ob, "reset", ResetNumber :), ob);
         if( f ) catch(evaluate(f));
     }
+    in_reset = 0;
     write_file(DIR_LOGS "/reset", "\t" + x + " objects reclaimed, " +
             (sizeof(obs) - y) + " objects reset, " + y + " objects "
             "cleaned.\n");
@@ -959,4 +982,15 @@ string *GetEfuns(){
 
 object *parse_command_users() {
     return filter(users(), (: creatorp($1) || (int)$1->is_living() :));
+}
+
+int GetPerformanceScore(){
+    return PerformanceScore;
+}
+
+int GetPerfOK(){
+    if(!PerformanceScore && uptime() > 60 &&
+            (time() - incept_date) < 5) return 0;
+    if(PerformanceScore <= MIN_PERF) return 1;
+    return 0;
 }

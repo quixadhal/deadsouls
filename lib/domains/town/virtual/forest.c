@@ -28,6 +28,10 @@ varargs static void create(int x, int y) {
 
     SetNoReplace(1);
     virt_land::create();
+    /* Without the virtual exemption, virts with npc's
+     * wind up being perpetual motion NPC factories.
+     */
+    SetExemptVirtual(1);
     XPosition = x;
     YPosition = y;
     SetClimate("temperate");

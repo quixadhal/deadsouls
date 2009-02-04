@@ -111,7 +111,7 @@ varargs static void logon(mixed foo) {
     receive("\n" + center("Driver: " + version() + "               Mudlib: "+
         mudlib() + " " + mudlib_version()) + "\n");
     if(CheckIp()){ 
-        receive("\nWhat name do you wish? \n");
+        receive("\nWhat name do you wish? ");
         input_to((: InputName :), I_NOESC); 
     }
     else {
@@ -142,7 +142,7 @@ static void InputName(string namen, string kill_me) {
         }
         else {
             receive("\nYou must enter a name in order to join!\n");
-            receive("\nWhat name do you wish? \n");
+            receive("\nWhat name do you wish? ");
             input_to((: InputName :), I_NOESC, "kill me");
             return;
         }
@@ -188,7 +188,7 @@ static void InputName(string namen, string kill_me) {
     if( find_player(Name) ) NetDead = 1;
 
     if(Name != "guest"){
-        receive("Password: \n");
+        receive("Password: ");
         input_to((: InputPassword :), I_NOECHO | I_NOESC, name);
     }
     else InputPassword("guest","Guest");
@@ -225,7 +225,7 @@ static void InputPassword(string pass, string cap) {
                 Destruct();
                 return;
             }
-            receive("Password: \n");
+            receive("Password: ");
             input_to( (: InputPassword :), I_NOECHO | I_NOESC, cap);
             return;
         }
@@ -363,7 +363,9 @@ static private void eventEnterGame() {
     if(creatorp(Player)){  
         string profile = user_path(Player->GetKeyName())+".profile";
         if(file_exists(profile)){
-            Player->eventForce("source "+profile);
+            string q = "";
+            if(!MASTER_D->GetPerfOK()) q = "-q ";
+            Player->eventForce("source "+q+profile);
         }
     }
     Player->RemoveProperty("afk");
@@ -377,11 +379,11 @@ static private void eventEnterGame() {
 static void CreatePassword(string pass, string cap) {
     if( strlen(pass) < 3) {
         receive("\nYour password must be at least 5 letters in length.\n");
-        receive("Please choose another password: \n");
+        receive("Please choose another password: ");
         input_to( (: CreatePassword :), I_NOECHO | I_NOESC, cap);
         return;
     }
-    receive("\nPlease confirm your password: \n");
+    receive("\nPlease confirm your password: ");
     input_to( (: ConfirmPassword :), I_NOECHO | I_NOESC, cap, pass);
 }
 
@@ -394,7 +396,7 @@ static void ConfirmPassword(string control, string cap, string pass) {
         input_to((: InputGender :), I_NOESC, cap);
         return; 
     } 
-    receive("\nPassword entries do not match, re-choose password: \n");
+    receive("\nPassword entries do not match, re-choose password: ");
     input_to((: CreatePassword :), I_NOECHO | I_NOESC, cap);
     return; 
 } 

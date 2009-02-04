@@ -10,8 +10,8 @@
 
 inherit LIB_DAEMON;
 
-#define HTTP_ADDRESS "204.209.44.12"
-#define HTTP_HOST "lpmuds.net"
+#define HTTP_ADDRESS "66.197.134.110"
+#define HTTP_HOST "dead-souls.net"
 #define HTTP_PORT 80
 #define HTTP_PATH "/RELEASE_NOTES"
 #define NOTES_DELIM "----"
@@ -38,12 +38,11 @@ int http_file_found;
 
 private string args_list;
 
-mixed ProcessHTTPResult()
-{
+mixed ProcessHTTPResult(){
     string * parts;
     string * arg_array;
     string * temp;
-    parts = explode( results, NOTES_DELIM );
+    parts = explode( results, NOTES_DELIM )[1..];
     temp = explode( parts[0], "---" );
     player->eventPrint( "Current Version of "+mud_name()+": " + mudlib_version() );
     player->eventPrint( "Latest Version of Dead Souls: %^RED%^"+trim(temp[0])+ "%^RESET%^" );
@@ -67,29 +66,11 @@ mixed ProcessHTTPResult()
     return 1;
 }
 
-void read_callback( int fd, mixed message )
-{
-    if( !http_file_found ){
-        if( message[9..11] != "200" ){
-            player->eventPrint( "Error, unable to locate page requested." );
-
-            http_file_found = 3;
-        }
-        else
-        {
-            http_file_found = 1;
-        }
-    }
-    else if( http_file_found == 1 ){
-        results += message;
-    }
-    else{
-
-    }
+void read_callback( int fd, mixed message ){
+    results += message;
 }
 
-void write_callback( int fd )
-{
+void write_callback( int fd ){
 #ifdef _DEBUG
     player->eventPrint("Connected!");
 #endif
@@ -98,23 +79,22 @@ void write_callback( int fd )
     sendHTTPGet();
 }
 
-void close_callback( int fd )
-{
-    if( status == SOCK_CONNECTED )
-    {
-        // Process HTML here
+    void close_callback( int fd ){
+        if( status == SOCK_CONNECTED )
+        {
+            // Process HTML here
 #ifdef _DEBUG
-        player->eventPrint("Connection closed by host.");
+            player->eventPrint("Connection closed by host.");
 #endif
-        ProcessHTTPResult();
+            ProcessHTTPResult();
+        }
+        if( status == SOCK_CONNECTING )
+        {       
+            player->eventPrint("Connection attempt failed.");
+        }
+        socket_close( fd ) ;
+        status = SOCK_DISCONNECTED;
     }
-    if( status == SOCK_CONNECTING )
-    {       
-        player->eventPrint("Connection attempt failed.");
-    }
-    socket_close( fd ) ;
-    status = SOCK_DISCONNECTED;
-}
 
 void sendHTTPGet()
 {
@@ -132,7 +112,8 @@ void sendHTTPGet()
     {
         result = socket_write( socket, (string)str );
 #ifdef _DEBUG
-        player->eventPrint( "HTTP request sent to " + socket + " result = "+result );
+        player->eventPrint( "HTTP request sent to " + 
+                identify(socket_status(socket)) + " result = "+result );
 #endif
     }
 }
@@ -233,19 +214,5 @@ string GetErorMessage() {
 string GetHelp() {
     return ("Syntax: dsversion [version]\n\n" +
             "Shows the latest version of Dead Souls and release notes.\n"+
-            "e.g. dsversion, dsversion r1, dsversion 2.0r1");
+            "e.g. dsversion, dsversion 2.9a12, dsversion 2.0r1");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

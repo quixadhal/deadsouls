@@ -45,6 +45,7 @@ int cmd( string a )
     "#include <save.h>\n"+
     "#include <rooms.h>\n"+
     "#include <config.h>\n"+
+    "#include <localtime.h>\n"+
     "#include <daemons.h>\n"+
     "#include <objects.h>\n"+
     "#include <commands.h>\n"+

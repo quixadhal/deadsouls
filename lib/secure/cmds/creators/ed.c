@@ -8,6 +8,12 @@
 
 inherit LIB_DAEMON;
 
+int ed_callback(object ob){
+    //tc("ed_callback("+identify(ob)+")");
+    if(ob) ob->CheckCharmode();
+    return 1;
+}
+
 mixed cmd(string args) {
     int x;
 
@@ -33,7 +39,7 @@ mixed cmd(string args) {
         message("editor", args + ", new file, starting in input mode.\n",
                 this_player());
     else message("editor", args + ", " + x + " bytes\n", this_player());
-    this_player()->eventEdit(args, 1);
+    this_player()->eventEdit(args, (: ed_callback, this_player() :) );
     return 1;
 }
 

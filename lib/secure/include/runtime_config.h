@@ -79,8 +79,13 @@
 #define __OBJECT_HASH_TABLE_SIZE__        CFG_INT(20)
 #define __LIVING_HASH_TABLE_SIZE__        CFG_INT(21)
 
-#define __FD6_PORT__		    CFG_INT(22)
-#define __FD6_KIND__		    CFG_INT(23)
+#ifndef __FD6_PORT__
+#define __FD6_PORT__                CFG_INT(22)
+#endif
+#ifndef __FD6_KIND__
+#define __FD6_KIND__                CFG_INT(23)
+#endif
+
 
 #define RUNTIME_CONFIG_NEXT CFG_INT(24)
 

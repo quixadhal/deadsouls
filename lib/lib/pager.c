@@ -22,6 +22,9 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...){
     int maxi;
 
     if( InPager ) return "You are already in the pager.";
+    if(query_charmode(this_object())){
+        receive("\r\e[2J");
+    }
     if( !stringp(val) && !arrayp(val) )
         error("Bad argument 1 to eventPage().\n");
     if(!sizeof(val)) return 0;
@@ -97,13 +100,7 @@ static int Page(mixed tmpfile){
         //if(sizeof(val) == 1) val = ({});
         if(clef) file += ([ clef : val ]);
     }
-
-    if(waschar){
-        key = "<spacebar>";
-    }
-    else {
-        key = "enter";
-    }
+    key = "enter";
     endline = file["CurrentLine"] + (GetScreen()[1] - 3);
     if( endline < file["CurrentLine"] ) endline = file["CurrentLine"];
     if( endline > (file["Size"] - 1) ) endline = file["Size"] - 1;

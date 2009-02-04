@@ -16,7 +16,8 @@ int cmd(string str) {
     int offset, x, scr, nr;
 
     if(sizeof(query_os_type())) extra = " for "+query_os_type();
-    tz = query_tz();
+    tz = this_player()->GetProperty("timezone");
+    if(!tz || !valid_timezone(tz)) tz = query_tz();
     offset = (int)TIME_D->GetOffset(tz);
     offset += EXTRA_TIME_OFFSET;
     if(query_os_type() != "windows" ) x = offset * 3600;

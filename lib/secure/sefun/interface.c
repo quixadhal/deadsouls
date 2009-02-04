@@ -14,7 +14,12 @@ mapping Uncolor = ([ "RESET": "\b", "BOLD": "", "FLASH":"", "BLACK":"", "RED":""
 #include <daemons.h>
 
 string strip_colours(string str){
-    string ret = terminal_colour(str, Uncolor);
+    string ret;
+    //tc("sizeof(str): "+sizeof(str));
+    //tc("strlen(str): "+strlen(str));
+    ret = terminal_colour(str, Uncolor);
+    //tc("sizeof(ret): "+sizeof(ret));
+    //tc("strlen(ret): "+strlen(ret));
     return replace_string(ret, "\b", "");
 }
 

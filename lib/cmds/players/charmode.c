@@ -16,6 +16,7 @@ mixed cmd(string str) {
     if( str != "on" && str != "off" )
         return "You can only turn charmode 'on' or 'off'";
     this_player()->SetCharmode(( str == "on" ? 1 : 0 ));
+    this_player()->SetProperty("reprompt", this_player()->GetCharmode());
     message("system",
             "Your charmode mode is turned "+str+".",
             this_player() );

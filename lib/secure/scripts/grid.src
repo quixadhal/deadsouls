@@ -14,3 +14,6 @@ clone /domains/default/npc/drone
 goto /domains/town/room/mansion_uhall1
 gridconfig set here -5,3,1
 clone /domains/default/npc/drone
+goto /domains/town/room/cave_entrance
+gridconfig set here -7,32,0
+clone /domains/default/npc/drone

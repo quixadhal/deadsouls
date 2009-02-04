@@ -144,6 +144,14 @@ int Setup(){
                 consolidate(bugs, "an incomplete bug") +
                 " assigned to you!!!!  <<<\n", this_object());
     NOTIFY_D->eventPrintNotices(this_object(), laston);
+
+    /* Check for new customdefs location */
+    if(!file_exists(tmp = REALMS_DIRS+"/"+GetKeyName()+"/area/customdefs.h")){
+        string tmp2 = REALMS_DIRS+"/"+GetKeyName()+"/customdefs.h";
+        if(file_exists(tmp2) && directory_exists(REALMS_DIRS+"/"+GetKeyName()))
+            cp(tmp2, tmp);
+    }
+
     return 1;
 }
 

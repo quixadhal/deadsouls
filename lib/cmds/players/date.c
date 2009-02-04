@@ -9,15 +9,15 @@
 #include <localtime.h>
 
 mixed cmd(string timezone) {
-    string *parts, year, time;
+    string *parts, year, time, tz;
     int offset, x, hour, min, sec;
 
-    if(timezone && timezone != "" && valid_timezone(timezone)){
-        write(local_time(timezone));
-        return 1;
+    if(!timezone || !valid_timezone(timezone)){
+        timezone = this_player()->GetProperty("timezone");
     }
+    if(!timezone || !valid_timezone(timezone)) timezone = local_time()[9];
 
-    offset = (int)TIME_D->GetOffset(local_time()[9]);
+    offset = (int)TIME_D->GetOffset(timezone);
     offset += EXTRA_TIME_OFFSET;
     if(query_os_type() != "windows" ) 
         x = offset * 3600;

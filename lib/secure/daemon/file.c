@@ -22,6 +22,11 @@ static private void validate() {
                 "because it is running on windows. Intensive file operations "+
                 "in windows are not yet supported on Dead Souls.");
     }
+    if(!(MASTER_D->GetPerfOK())){
+        error("Your system performance is too weak to support the "+
+                "file daemon's resource-intensive operations, so file "+
+                "indexing has been disabled.");
+    }
 }
 
 void heart_beat(){
@@ -41,7 +46,6 @@ mixed ReadDir(string str){
 #ifndef __FLUFFOS__
     return 0;
 #endif
-
     validate();
     //log_file("adm/file","FILE_D ReadDir accessed and run by: "+identify(previous_object(-1))+"\n");
 
@@ -157,13 +161,13 @@ static void create() {
     return 0;
 #endif
     daemon::create();
-    if(!file_exists(SaveFiles)){
-        unguarded( (: save_object(SaveFiles) :) );
+    if(file_exists(SaveFiles)){
+        restore_object(SaveFiles);
     }
-    else restore_object(SaveFiles);
-    //call_out((: ReadDir,"/" :), 1);
-    catch( ReadDir("/") );
-    if(!fun_d) fun_d = load_object(FUNCTION_D);
+    if(query_os_type() != "windows" && MASTER_D->GetPerfOK()){
+        catch( ReadDir("/") );
+        if(!fun_d) fun_d = load_object(FUNCTION_D);
+    }
 }
 
 int eventDestruct(){

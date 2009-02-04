@@ -47,7 +47,10 @@ string eventWatch(string str, string watching);
 int eventCombatPrep();
 
 int report(string str){
-    object owner = environment(this_object());
+    object owner;
+    if(!this_object() || !(owner = environment(this_object()))){
+        return 0;
+    }
     if(!owner || !creatorp(owner)) return 0;
     if(observing){
         tell_player(owner, "%^RED%^OBSERVER%^BLUE%^ "+name+"%^RESET%^ "+str);
@@ -231,6 +234,7 @@ int think(string str){
     }
     str = strip_colours(str);
     report(name+" think(\""+str+"\")");
+    if(!sizeof(str)) return 0;
     this_object()->eventScanExits(str);
     if(this_action - last_action > 10 && enable){
         parse_comm("stand up");
@@ -319,10 +323,10 @@ string eventBolo(string str){
         parse_comm("reprompt on");
     }
     if(grepp(str, "Charmode:") && grepp(str, "off")){
-        parse_comm("charmode on");
+        //parse_comm("charmode on");
     }
-    if(grepp(str, "Keepalive mode:") && grepp(str, "off")){
-        parse_comm("keepalive 1");
+    if(grepp(str, "Keepalive mode:") && !grepp(str, "off")){
+        parse_comm("keepalive off");
     }
 
     if(grepp(str, "You can't crawl in your current position")){

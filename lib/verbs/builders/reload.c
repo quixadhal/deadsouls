@@ -7,6 +7,7 @@
 inherit LIB_VERB;
 
 string libfile = "foo";
+int quiet = 0;
 
 static void create() {
     verb::create();
@@ -45,56 +46,60 @@ mixed can_reload_every_str(string str){
     else return 1;
 }
 
-mixed can_reload_str_obj(string str) {
+mixed can_reload_str_obj(string str){
     return can_reload_obj(str);
 }
 
-mixed can_reload_word(string str) { 
-    return can_reload_obj("foo"); }
+mixed can_reload_word(string str){
+    return can_reload_obj("foo"); 
+}
 
-    mixed can_reload_str_word(string str, string str2) { 
-        return can_reload_obj("foo"); }
+mixed can_reload_str_word(string str, string str2){ 
+    return can_reload_obj("foo"); 
+}
 
-        mixed do_reload_obj(object ob) {
-            string s1,s2, foo = "Null object: ";
-            if(ob && ob->GetDoor()) ob = load_object(ob->GetDoor());
-            if(!creatorp(this_player()) && strsrch(base_name(ob), homedir(this_player()))){
-                write("Builders can only reload things that belong to them.");
-                return 1;
-            }
-            if(!ob || userp(ob)) {
-                if(ob) foo = base_name(ob)+": ";
-                write(foo+"Invalid for reloading.");
-                return 1;
-            }
-            if(ob && ob->GetDirectionMap()){
-                write(base_name(ob)+" is a virtual room, and not subject to normal reloading.");
-                return 1;
-            }
-            if(!strsrch(base_name(ob),"/open") ||
-                    sscanf(base_name(ob),"/realms/%s/tmp/%s",s1,s2) == 2){
-                write(base_name(ob)+" is a temp file and not subject to reloading.");
-                return 1;
-            }
-            reload(ob);
-            if(ob && inherits(LIB_DOOR,ob)){
-                string *doors = environment(this_player())->GetDoors();
-                if(!sizeof(doors)) return 1;
-                foreach(string dir in doors){
-                    string substr = environment(this_player())->GetDoor(dir);
-                    if(last(substr,2) == ".c") substr = truncate(substr,2);
-                    if(substr == base_name(ob)){
-                        reload(load_object(environment(this_player())->GetExit(dir)));
-                        reload(environment(this_player()));
-                    }
-                }
-            }
-            return 1;
+mixed do_reload_obj(object ob) {
+    string s1,s2, foo = "Null object: ";
+    if(ob && ob->GetDoor()) ob = load_object(ob->GetDoor());
+    if(!creatorp(this_player()) && strsrch(base_name(ob), homedir(this_player()))){
+        write("Builders can only reload things that belong to them.");
+        return 1;
+    }
+    if(!ob || userp(ob)) {
+        if(ob) foo = base_name(ob)+": ";
+        if(!quiet){
+            write(foo+"Invalid for reloading.");
         }
+        return -1;
+    }
+    if(ob && ob->GetDirectionMap()){
+        write(base_name(ob)+" is a virtual room, and not subject to normal reloading.");
+        return 1;
+    }
+    if(!strsrch(base_name(ob),"/open") ||
+            sscanf(base_name(ob),"/realms/%s/tmp/%s",s1,s2) == 2){
+        write(base_name(ob)+" is a temp file and not subject to reloading.");
+        return 1;
+    }
+    reload(ob, 0, quiet);
+    if(ob && inherits(LIB_DOOR,ob)){
+        string *doors = environment(this_player())->GetDoors();
+        if(!sizeof(doors)) return 1;
+        foreach(string dir in doors){
+            string substr = environment(this_player())->GetDoor(dir);
+            if(last(substr,2) == ".c") substr = truncate(substr,2);
+            if(substr == base_name(ob)){
+                reload(load_object(environment(this_player())->GetExit(dir)));
+                reload(environment(this_player()));
+            }
+        }
+    }
+    return 1;
+}
 
 mixed do_reload_str_obj(string str, object ob) {
-    if(str == "-r") reload(ob, 1);
-    else return reload(ob);
+    if(str == "-r") reload(ob, 1, quiet);
+    else return reload(ob, 0, quiet);
 }
 
 mixed do_reload_word(string wrd) {
@@ -111,7 +116,7 @@ mixed do_reload_str_word(string wrd1, string wrd2) {
 
 mixed do_reload_every_str(string str){
     object *ob_pool = ({});
-
+    int count;
     if(!archp(this_player())){
         write("This verb is intended for arches only.");
         return 1;
@@ -146,13 +151,20 @@ mixed do_reload_every_str(string str){
         return 1;
     }
 
+    quiet = 1;
+    call_out("unQuiet", 6);
+    write("Reloading...");
     foreach(object ob in ob_pool){
-        if(ob) write("reloading: "+file_name(ob));
-        do_reload_obj(ob);
+        if(do_reload_obj(ob) > 0) count++;
     }
+    quiet = 0;
 
-    write("Done.");
+    write("Done. Reloaded "+count+" objects.");
     libfile = "foo";
     return 1;
+}
+
+void unQuiet(){
+    quiet = 0;
 }
 

@@ -17,6 +17,7 @@ static void create() {
 
 varargs mixed AddGuard(object guard, mixed what, mixed action){
     string which;
+    //tc("AddGuard("+identify(guard)+", "+identify(what)+", "+identify(action),"red");
     if(!what || !objectp(guard) || interactive(guard)){
         return 0;
     }
@@ -30,9 +31,11 @@ varargs mixed AddGuard(object guard, mixed what, mixed action){
     else which = "objects";
     if(!Guarded[which]) Guarded[which] = ([]);
 
-
     if(Guards[guard] && member_array(what, keys(Guards[guard][which])) != -1){
-        return -2;
+        if(member_array(what, keys(Guarded[which])) != -1 &&
+                member_array(guard, Guarded[which][what]) != -1){ 
+            return -2;
+        }
     }
     if(!Guards[guard]){
         Guards[guard] = (["rooms" : ([]), "objects" : ([]), "livings" : ([]) ]);
@@ -40,7 +43,7 @@ varargs mixed AddGuard(object guard, mixed what, mixed action){
     Guards[guard][which][what] = (action || -1);
     if(!Guarded[which][what]) Guarded[which][what] = ({});
     Guarded[which][what] += ({guard});
-
+    Guarded[which][what] = distinct_array(Guarded[which][what]);
     return 1;
 }
 
@@ -54,7 +57,7 @@ mapping GetGuardeds(){
 
 varargs mixed GetGuard(object ob, string which){
     mixed ret;
-    if(!which){
+    if(!which && ob){
         if(inherits(LIB_ROOM,ob)) which = "rooms";
         if(living(ob)) which = "livings";
         else which = "objects";
@@ -88,6 +91,7 @@ int ClearGuards(){
 
 varargs int CheckMove(object who, mixed dest, mixed dir){
     mixed guards;
+    //tc("CheckMove("+identify(who)+", "+identify(dest)+", "+identify(dir),"green");
     if(!objectp(dest)){
         int err = catch( dest = load_object(dest) );
         if(err || !dest) return 0;
@@ -121,6 +125,7 @@ varargs int CheckMove(object who, mixed dest, mixed dir){
 
 varargs int CheckGet(object who, object what){
     mixed guards;
+    //tc("CheckGet("+identify(who)+", "+identify(what),"blue");
     if(!(guards = Guarded["objects"][what])){
         return 1;
     }

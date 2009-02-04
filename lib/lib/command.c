@@ -36,6 +36,7 @@ int direct_force_liv_to_str(){ return 1; }
 /*  ***************  /lib/command.c driver applies  ***************  */
 
 static void create(){
+    SetCommandFail(0);
     SearchPath = ({ DIR_PLAYER_CMDS, DIR_SECURE_PLAYER_CMDS, DIR_CLAN_CMDS,
             DIR_COMMON_CMDS, DIR_SECURE_COMMON_CMDS });
 }
@@ -452,8 +453,8 @@ int GetPlayerPaused(){
 
 string SetCommandFail(string str){ 
     if( !str || str == "" ){
-        if(!creatorp(this_player())) CommandFail = "Try \"help commands\" for a list of some commands.";
-        if(creatorp(this_player())) CommandFail = "Try \"help creator commands\" for a list of some creator commands.";
+        if(!creatorp(this_object())) CommandFail = "Try \"help commands\" for a list of some commands.";
+        if(creatorp(this_object())) CommandFail = "Try \"help creator commands\" for a list of some creator commands.";
         return CommandFail;
     }
     else return (CommandFail = str);

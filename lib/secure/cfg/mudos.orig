@@ -10,16 +10,23 @@ name : DeadSoulsNew
 # port number to accept users on
 external_port_1 : telnet 6666
 
-# the address server is an external program that lets the mud translate
-# internet names to numbers (and vice versa).  select an unused port.
-address server ip : localhost
-address server port : 8099
-
 # absolute pathname of mudlib
 mudlib directory : /CHANGE/THIS/PATH/lib
 
 # absolute pathname of driver/config dir
 binary directory : /CHANGE/THIS/PATH/bin
+
+# the address server is an external program that lets the mud translate
+# internet names to numbers (and vice versa).  select an unused port.
+address server ip : localhost
+address server port : 8099
+
+# fd6 stuff is what allows portbind to work properly. If
+# you want to have the mud accept connections on port 23 but run
+# as non-root, you uncomment the two fd6 lines below and issue the
+# appropriate portbind command to start the mud.
+#fd6 port : 23
+#fd6 kind : telnet
 
 # debug.log and author/domain stats are stored here
 log directory : /log
@@ -51,7 +58,7 @@ global include file : <global.h>
 # like destructing the object. If the function isn't defined by the
 # object, then nothing will happen.
 # This time should be substantially longer than the swapping time.
-time to clean up : 14400
+time to clean up : 2100000000
 
 # How long time until an unused object is swapped out.
 # Machine with too many players and too little memory: 900 (15 minutes)
@@ -60,7 +67,7 @@ time to clean up : 14400
 time to swap : 0
 
 # How many seconds until an object is reset again.
-time to reset : 900000
+time to reset : 2100000000
 
 # Maximum number of bits in a bit field. They are stored in printable
 # strings, 6 bits per byte.
@@ -80,7 +87,7 @@ maximum array size : 64000
 maximum buffer size : 400000
 
 # Max size for a mapping
-maximum mapping size : 15000
+maximum mapping size : 64000
 
 # Max inherit chain size
 inherit chain size : 30

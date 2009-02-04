@@ -60,12 +60,17 @@ void eventDescribeEnvironment(int brief){
         }
         else desc = "\n";
         if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ){
-            if(this_object()->GetProperty("automapping")){ 
+#ifdef MINIMAP
+            if(this_object()->GetProperty("minimapping")){ 
                 desc += simple_map(env)+"\n"; 
             }
-            if(this_object()->GetProperty("wizmapping")){ 
+#endif
+#if (WIZMAP && GRID)
+            if(MASTER_D->GetPerfOK() && 
+                    this_object()->GetProperty("wizmapping")){ 
                 desc += MAP_D->GetMap(environment(this_object()),6)+"\n"; 
             }
+#endif
             desc += (string)env->GetLong();
         }
         if(functionp(tmp = (mixed)env->GetSmell("default")))
@@ -81,7 +86,7 @@ void eventDescribeEnvironment(int brief){
     else {
         if(i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM){
             desc = (string)env->GetShort();
-            if(this_object()->GetProperty("automapping")) desc += simple_map(env)+"\n";
+            if(this_object()->GetProperty("minimapping")) desc += simple_map(env)+"\n";
             if(NM_STYLE_EXITS){
                 if( (tmp = (string)env->GetObviousExits()) && tmp != "" )
                     desc += " [" + tmp + "]";

@@ -19,10 +19,10 @@
 #define EXTRA_TIME_OFFSET        0
 #define MAX_LOG_SIZE             150000
 #define MAX_NET_DEAD_TIME        1800
-#define MIN_HISTORY_SIZE         20
-#define MAX_HISTORY_SIZE         30
+#define MIN_HISTORY_SIZE         50
+#define MAX_HISTORY_SIZE         100
 #define LOGON_TIMEOUT            360
-#define IDLE_TIMEOUT             3600
+#define IDLE_TIMEOUT             180000
 #define LINK_WAIT_PERIOD         1800
 #define MAX_PASSWORD_TRIES       3
 #define MIN_USER_NAME_LENGTH     2
@@ -90,5 +90,9 @@
 #define MEMUSE_SOFT_LIMIT        0
 #define MEMUSE_HARD_LIMIT        0
 #define MAX_USERS                0
+#define MIN_PERF                 1500
+#define MINIMAP                  1
+#define WIZMAP                   1
+#define GRID                     1
 
 #endif /* s_config_h */

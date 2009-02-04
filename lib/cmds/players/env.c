@@ -46,12 +46,19 @@ mixed cmd(string args) {
     write("Mute mode: \t\t"+ GetMuted() );
     write("Gag mode: \t\t"+ GetGagged() );
     write("Wimpy mode: \t\t"+ ( ((int)this_player()->GetWimpy()) ? "on" : "off" ));
-    write("Automap mode: \t\t"+ ( this_player()->GetProperty("automapping") ? "on" : "off" ));
+#if MINIMAP
+    write("Minimap mode: \t\t"+ ( this_player()->GetProperty("minimapping") ? "on" : "off" ));
+#endif
     write("Annoyblock: \t\t"+ ( (this_player()->GetAnnoyblock()) ? "on" : "off" ));
     write("Reprompt mode: \t\t"+ ( this_player()->GetProperty("reprompt") ? "on" : "off" ));
+    write("Timezone: \t\t"+ ( this_player()->GetProperty("timezone") ? 
+                this_player()->GetProperty("timezone") : "None specified" ));
+#ifdef __GET_CHAR_IS_BUFFERED__
     write("Charmode: \t\t"+ 
             //( (query_charmode(player) > 0) ? "on" : "off" ));
         ( (player->GetCharmode()) ? "on" : "off" ));
+#endif
+    write("Commandecho: \t\t"+ ( this_player()->GetProperty("commandecho") ? this_player()->GetProperty("commandecho") : "off" ));
 #ifdef __DSLIB__
     write("Keepalive mode: \t"+ ( this_player()->GetProperty("keepalive") 
                 ? this_player()->GetProperty("keepalive") : "off" ));
@@ -61,9 +68,11 @@ mixed cmd(string args) {
         write("Debug mode: \t\t"+ ( (this_player()->GetProperty("debug")) ? "on" : "off" ));
         write("Godmode: \t\t"+ ( (this_player()->GetGodMode()) ? "on" : "off" ));
         write("Wizvision: \t\t"+ ( (this_player()->GetWizVision()) ? "on" : "off" ));
+#if GRID
         write("Showgrid: \t\t"+ ( (this_player()->GetVisibleGrid()) ? "on" : "off" ));
         write("Wizmap mode: \t\t"+ ( this_player()->GetProperty("wizmapping") ? "on" : "off" ));
         write("Noclip mode: \t\t"+ ( this_player()->GetProperty("noclip") ? "on" : "off" ));
+#endif
     }
     return 1;
 }
@@ -75,5 +84,5 @@ void help() {
     else de_bug = ".";
     message("help", "Syntax: <env>\n\n"
             "Displays some basic interface and play settings. " +
-            "See also: brief, terminal, screen, chancolors, pk, mute, gag, wimpy, automap, annoyblock, reprompt, charmode, keepalive"+de_bug, this_player());
+            "See also: brief, terminal, screen, chancolors, pk, mute, gag, wimpy, minimap, annoyblock, reprompt, charmode, keepalive, commandecho, timezone"+de_bug, this_player());
 }

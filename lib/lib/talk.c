@@ -12,7 +12,7 @@
 #include "include/talk.h"
 #define MAX_TELL_HIST_SIZE  50
 
-private static string array TellHist = ({});
+private mixed TalkHist = ([]);
 private string SpeakColor = "CYAN%^";
 
 int GetPolyglot();
@@ -72,21 +72,57 @@ string GetSpeakColor(){ return SpeakColor; }
 int eventTellHist(string str){
     string pob = base_name(previous_object());
     string stack = implode(call_stack(2)," ");
+    string tz = this_object()->GetProperty("timezone");
+    if(!tz || !valid_timezone(tz)) tz = query_tz();
+    if(!TalkHist) TalkHist = ([]);
+    if(!TalkHist["tell"]) TalkHist["tell"] = ({});
     if(pob != SERVICES_D && pob != "/secure/cmds/players/tell" &&
             stack != "eventTellHist eventHearTalk eventSpeak cmd cmdAll <function>" &&
             stack != "eventTellHist eventHearTalk eventSpeak cmd cmd cmdAll <function>"){
         return 0; 
     }
-    if(sizeof(TellHist) > MAX_TELL_HIST_SIZE) TellHist -= ({ TellHist[0] });
-    TellHist += ({ timestamp()+" "+str });
+    if(sizeof(TalkHist["tell"]) > MAX_TELL_HIST_SIZE){
+        TalkHist["tell"] -= ({ TalkHist["tell"][0] });
+    }
+    TalkHist["tell"] += ({ timestamp(tz)+" "+str });
     return 1;
 }
 
-    string array GetTellHistory(){
-        if(this_object() != this_player() && !archp(this_player()))
-            return ({});
-        return copy(TellHist);
+string array GetTellHistory(){
+    if(!TalkHist) TalkHist = ([]);     
+    if(!TalkHist["tell"]) TalkHist["tell"] = ({});
+    if(this_object() != this_player() && !archp(this_player()))
+        return ({});
+    return copy(TalkHist["tell"]);
+}
+
+int eventTalkHist(string str, string type){
+    string pob = base_name(previous_object());
+    string stack = implode(call_stack(2)," ");
+    string tz = this_object()->GetProperty("timezone");
+    if(!tz || !valid_timezone(tz)) tz = query_tz();
+    if(!TalkHist) TalkHist = ([]);
+    if(!TalkHist[type]) TalkHist[type] = ({});
+    if(sizeof(TalkHist[type]) > MAX_TELL_HIST_SIZE){
+        TalkHist[type] -= ({ TalkHist[type][0] });
     }
+    TalkHist[type] += ({ timestamp(tz)+" "+str });
+    return 1;
+}
+
+string array GetTalkHistory(string type){
+    if(!type) type = "say";
+    if(!TalkHist) TalkHist = ([]);     
+    if(!TalkHist[type]) TalkHist[type] = ({});
+    if(this_object() != this_player() && !archp(this_player()))
+        return ({});
+    return copy(TalkHist[type]);
+}
+
+string array GetTalkHistTypes(){
+    if(!TalkHist) TalkHist = ([]);
+    return keys(TalkHist);
+}
 
 varargs mixed CanSpeak(object target, string verb, string msg, string lang){
     if(!this_player()->CanBreathe()){
@@ -133,6 +169,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
             tmp = "%^BOLD%^" + SpeakColor + (string)who->GetName() + " whispers in " +
                 capitalize(lang) + " to you,%^RESET%^ \"" + msg + "%^RESET%^\"";
             this_object()->eventPrint(tmp, MSG_CONV);
+            eventTalkHist(tmp, "whisper");
             break;
 
         case TALK_LOCAL:
@@ -150,12 +187,14 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
                 tmp = (string)who->GetName() + " " + pluralize(verb) + " " + tmp +
                     ", \"";
                 tmp = tmp + "%^BOLD%^CYAN%^\"" + msg + "%^RESET%^\"";
+                eventTalkHist(tmp, "say");
                 this_object()->eventPrint(tmp, MSG_CONV);
             }
             else if( verb == "yell" ){
                 tmp = "%^BOLD%^GREEN%^You hear a " + (string)who->GetGender()
                     + " " + (string)who->GetRace() + " yell in " + capitalize(lang) +
                     " from a distance,%^RESET%^ \"" + msg + "%^RESET%^\"";
+                eventTalkHist(tmp, "yell");
                 this_object()->eventPrint(tmp, MSG_CONV);
             }
             else {
@@ -164,18 +203,21 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
                 tmp = (string)who->GetName() + " " + tmp + ", \"";
                 tmp = tmp + "%^BOLD%^" + SpeakColor + msg + "%^RESET%^\"";
                 this_object()->eventPrint(tmp, MSG_CONV);
+                eventTalkHist(tmp, verb);
             }
             break;
 
         case TALK_AREA:
             tmp = "%^BOLD%^GREEN%^" + (string)who->GetName() + " yells in " +
                 capitalize(lang) + ",%^RESET%^ \"" + msg + "%^RESET%^\"";
+            eventTalkHist(tmp, "yell");
             this_object()->eventPrint(tmp, MSG_CONV);
             break;
 
         case TALK_WORLD:
             tmp = "%^BOLD%^BLUE%^" + (string)who->GetName() + " shouts in " +
                 capitalize(lang) + ",%^RESET%^ \"" + msg + "%^RESET%^\"";
+            eventTalkHist(tmp, "shout");
             this_object()->eventPrint(tmp, MSG_CONV); 
             break;
 
@@ -229,6 +271,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang){
                 ",%^RESET%^ \"" + msg + "%^RESET%^\"";
             else tmp = "%^BOLD%^CYAN%^You whisper in " + capitalize(lang) + " to " +
                 (string)target->GetName() + ",%^RESET%^ \"" + msg + "%^RESET%^\"";
+            eventTalkHist(tmp, "whisper");
             this_object()->eventPrint(tmp, MSG_CONV);	
             env->eventHearTalk(this_object(), target, cls, "whisper",
                     msg, lang);
@@ -255,6 +298,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang){
                 if( lang ) tmp = tmp + " in " + capitalize(lang);
             }
             tmp = tmp + ", \"%^BOLD%^" + SpeakColor + msg + "%^RESET%^\"";
+            eventTalkHist(tmp, "say");
             this_object()->eventPrint(tmp, MSG_CONV);
             env->eventHearTalk(this_object(), target, cls, verb, msg,
                     lang);
@@ -263,6 +307,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang){
         case TALK_AREA:
             tmp = "%^BOLD%^GREEN%^You yell in " + capitalize(lang) + ",%^RESET%^ \"" +
                 msg + "%^RESET%^\"";
+            eventTalkHist(tmp, "yell");
             this_object()->eventPrint(tmp, MSG_CONV);   	
             env->eventHearTalk(this_object(), target, cls, "yell", msg,
                     lang);
@@ -271,6 +316,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang){
         case TALK_WORLD:
             tmp = "%^BOLD%^BLUE%^You shout in " + capitalize(lang) + ",%^RESET%^ \"" +
                 msg + "%^RESET%^\"";
+            eventTalkHist(tmp, "shout");
             this_object()->eventPrint(tmp, MSG_CONV); 		
             (users() - ({ this_object() }))->eventHearTalk(this_object(), target,
                                                            cls,"shout", msg, lang);

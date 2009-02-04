@@ -36,11 +36,10 @@ static void create(){
 }
 
 static string process_input(string str){
-    SetCommandFail(0);
+    command::SetCommandFail(0);
     command::process_input(str);
     if( Client ){
         int cl;
-
         sscanf(str, "%d %s", cl, str);
     }
     if( (str = editor::process_input(str)) == "" ) return "";
@@ -62,19 +61,26 @@ static void terminal_type(string str){
 
 static void window_size(int width, int height){ SetScreen(width, height); }
 
-int eventReceive(string message){
+varargs int eventReceive(string message, int noprompt, int noerase){
     int max_length = __LARGEST_PRINTABLE_STRING__ - 192;
     string prompt = this_object()->GetPrompt(1);
+    string *stack = call_stack(2);
+    if(stack[1] == "write2" && message != "\n"){
+        noerase = 1;
+    }
+    if(in_edit(this_object())) prompt = this_object()->GetPrompt();
     if(sizeof(message) > max_length){
         while(sizeof(message)){
             string tmp = message[0..max_length];
-            receive(tmp+prompt);
+            receive(tmp+(noprompt ? "" : prompt));
             message = replace_string(message, tmp, "");
         }
     }
     else {
-        if(this_object()->GetProperty("reprompt")){
+        if(!noerase && this_object()->GetProperty("reprompt")){
+            //if(!in_edit(this_object())){
             this_object()->erase_prompt();
+            //}
         }
         receive(message);
         this_object()->CheckCharmode();
@@ -83,7 +89,6 @@ int eventReceive(string message){
 
 void receive_message(mixed msg_class, string msg){
     int cl = 0;
-    //tc(identify(this_object())+" receive_message("+msg_class+", "+msg+")");
     if(intp(msg_class)){
         cl = msg_class;
         eventPrint(msg, cl);
@@ -95,13 +100,19 @@ void receive_message(mixed msg_class, string msg){
         cl |= MSG_NOWRAP;
     }
     else if( msg_class == "prompt" && msg_class == "editor" ) cl |= MSG_NOWRAP;
+
     switch(msg_class){
         case "smell": case "sound": case "touch": 
             cl |= MSG_ENV;
         break;
 
+        case "receive":
+            cl |= MSG_RECEIVE;
+        break;
+
         case "snoop":
             cl |= MSG_SYSTEM | MSG_NOCOLOUR;
+
         case "broadcast":
             cl |= MSG_SYSTEM;
         break;
@@ -176,7 +187,9 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     int msg_class;
     string prompt = "";
     if(this_object()->GetProperty("reprompt")){
+        //if(!in_edit(this_object())){
         prompt = this_object()->GetPrompt(1);
+        //}
     } 
     if( !msg ) return 0;
     if( !arg2 && !arg3 ) msg_class = MSG_ENV;
@@ -216,6 +229,10 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
         MessageQueue += msg;
     }
     else {
+        if(msg_class & MSG_RECEIVE){
+            receive(msg);
+            return 1;
+        }
         if( Client ) eventReceive("<" + msg_class + " " + msg + " " + msg_class +">\n");
         else eventReceive(msg);
     }

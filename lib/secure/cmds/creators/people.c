@@ -13,7 +13,7 @@ inherit LIB_DAEMON;
 
 static private int *__SortFlags;
 
-static private string query_time();
+static private string query_people_time();
 private string calculateFormatString(int screenSize);
 object *whom, *who, *display;
 string *args;
@@ -99,7 +99,7 @@ int cmd(string str) {
     bar += "\n";
     msg = bar;
     tmp1 = " " + maxi + ((maxi != 1) ? " people" : " person") + " in current sort ";
-    tmp2 = query_time() + " ";
+    tmp2 = query_people_time() + " ";
     i = sizeof(tmp1) + sizeof(tmp2);
     msg += tmp1;
     for(i = sizeof(tmp1) + sizeof(tmp2) + 1; i < screenSize; i++) msg += " ";
@@ -253,7 +253,7 @@ static string map_info(object ob, string formatString) {
     if(!(x = (int)ob->GetLevel())) lev = "-";
     else lev = x+"";
     if((x = query_idle(ob)) < 60) idle = "";
-    else if(x >= 2600) idle = sprintf("%:-3d h", x/3600);
+    else if(x >= 3600) idle = sprintf("%:-3d h", x/3600);
     else idle = sprintf("%:-2d m", x/60);
     ip = query_ip_name(ob);
     if(!room_env(ob)) env = "no environment";
@@ -265,11 +265,12 @@ static string map_info(object ob, string formatString) {
     return sprintf(formatString, age, lev, nom, ip, idle, blk, env);
 }
 
-static private string query_time() {
+static private string query_people_time() {
     string tzone;
     int x, offset;
 
-    tzone = query_tz();
+    if(this_player()) tzone = this_player()->GetProperty("timezone");
+    if(!tzone || !valid_timezone(tzone)) tzone = query_tz();
     offset = (int)TIME_D->GetOffset(tzone);
     offset += EXTRA_TIME_OFFSET;
     if(query_os_type() != "windows" ) x = offset * 3600;

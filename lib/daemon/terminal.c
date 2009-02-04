@@ -135,3 +135,9 @@ string GetHTML(string str) {
     }
     return str;
 }
+
+#ifdef __DSLIB__
+int GetCharmode(object ob){
+    return query_charmode(ob);
+}
+#endif

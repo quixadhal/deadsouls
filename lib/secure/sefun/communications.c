@@ -43,7 +43,7 @@ varargs void tc(string str, string col, object dude){
         case "blue" : prefix = "%^BOLD%^BLUE%^";break;
         case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
         case "green" : prefix = "%^BOLD%^GREEN%^";break;
-        case "white" : prefix = "%^BOLD%^WHITE%^";break;
+        case "white" : prefix = "%^B_BLACK%^BOLD%^WHITE%^";break;
         default : prefix = "%^BOLD%^MAGENTA%^";break;
     }
     if(!dude) dude = find_player(DEBUGGER);
@@ -63,7 +63,7 @@ varargs int tn(string str, string col, object room, int mclass){
         case "blue" : prefix = "%^BOLD%^BLUE%^";break;
         case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
         case "green" : prefix = "%^BOLD%^GREEN%^";break;
-        case "white" : prefix = "%^BOLD%^WHITE%^";break;
+        case "white" : prefix = "%^B_BLACK%^BOLD%^WHITE%^";break;
         default : prefix = "%^BOLD%^MAGENTA%^";break;
     }
     if(!room) tell_object(load_object(ROOM_NETWORK) ,prefix+str+"%^RESET%^");
@@ -92,7 +92,7 @@ varargs int debug(mixed msg, mixed val, string color){
     if(val) ret += identify(val);
     if(!color || !sizeof(color)) color = "green";
     foreach(object guy in players){
-        tc("%^BOLD%^WHITE%^DEBUG: %^RESET%^ "+prevob,color,guy);
+        tc("%^B_BLACK%^BOLD%^WHITE%^DEBUG: %^RESET%^ "+prevob,color,guy);
         tc(ret, color, guy);
     }
     return 1;
@@ -116,7 +116,7 @@ varargs void tell_room(mixed ob, mixed str, mixed exclude) {
     if(!ob ) return;
     if(stringp(ob) && unguarded( (: !file_exists($(ob)) && !file_exists($(ob)+".c") :) )) return;
     if(stringp(ob) &&!(ob = load_object(ob))) return;
-    ob->eventPrint(str, MSG_ENV, exclude);
+    if(ob) ob->eventPrint(str, MSG_ENV, exclude);
 }
 
 varargs void shout(mixed str, mixed exclude) {
@@ -124,4 +124,10 @@ varargs void shout(mixed str, mixed exclude) {
     else if(!pointerp(exclude)) exclude = ({});
     if(this_player()) exclude += ({ this_player() });
     users()->eventPrint(str + "", MSG_CONV, exclude);
+}
+
+void write2(mixed str){
+    object player = this_player();
+    if(!player) return;
+    player->eventReceive(str);
 }

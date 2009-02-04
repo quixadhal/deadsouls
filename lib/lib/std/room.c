@@ -67,13 +67,15 @@ private static mixed    global_item;
 private static mixed	Action;
 private int		tick_resolution	= 5;
 private int		TerrainType	= T_OUTDOORS;
-private int		RespirationType	= R_AIR;
+private int		RespirationType;
 private int		Medium  	= MEDIUM_LAND;
 private mapping         ActionsMap      = ([]);
 private string          SinkRoom        = "";
 private string          FlyRoom         = "";
 private int             FlowLimit       = 0;
-
+private int array       Coords          = ({});
+private string array    Neighbors       = ({});
+private mixed array     NeighborCoords  = ({});
 
 string GetClimate();
 int GetNightLight();
@@ -94,7 +96,6 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3);
 /***********      /lib/room.c data manipulation functions      **********/
 
 void CheckActions(){
-
     if(sizeof(ActionsMap)){
         foreach(mixed key, mixed val in ActionsMap){
             if( ActionChance > random(100) ){
@@ -932,7 +933,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
         targs -= arg3;
         msg_class = arg2;
     }
-    targs->eventPrint(msg, msg_class);
+    if(sizeof(targs)) targs->eventPrint(msg, msg_class);
     return 1;
 }
 
@@ -963,9 +964,10 @@ int CanReceive(object ob){
 }
 
 varargs void reset(int count){
-    if(sizeof(all_inventory())){
-        foreach(object element in deep_inventory()){
-            if(element->GetNoClean()) return;
+    mixed *inv = deep_inventory(this_object());
+    if(inv && sizeof(inv)){
+        if( sizeof(filter(inv, (: interactive($1) || $1->GetNoClean() :))) ){
+            return;
         }
     }
     inventory::reset(count);
@@ -1173,6 +1175,12 @@ varargs mixed DestructEmptyVirtual(object ob){
     if(!this_object()->GetVirtual()){
         return 0;
     }
+    if(this_object()->GetNoClean()){
+        return 0;
+    }
+    if(this_object()->GetExemptVirtual()){
+        return 0;
+    }
     inv  = filter(all_inventory(this_object()),
             (: !inherits(LIB_BASE_DUMMY, $1) :) );
     if(!sizeof(inv)){
@@ -1188,8 +1196,68 @@ mixed eventPostRelease(object ob){
     return ret;
 }
 
+void CompileNeighbors(mixed coords){
+#if GRID
+    int x, x2;
+    int y, y2;
+    int a, b, c;
+    if(sizeof(Neighbors) || !(MASTER_D->GetPerfOK())) return;
+    if(!sizeof(Coords)){
+        mixed crds = ROOMS_D->GetCoordinates(this_object());
+        if(sizeof(crds)){
+            sscanf(crds,"%d,%d,%d",a,b,c);
+            Coords = ({ a, b, c });
+        }
+        if(!sizeof(Coords)) return;
+    }
+    x2 = Coords[0]+2;
+    y2 = Coords[1]+2;
+    NeighborCoords = ({ });
+    //tc("Coords: "+identify(Coords));
+    for(x = Coords[0]-1; x < x2; x++){
+        //tc("x: "+x,"red");
+        for(y = Coords[1]-1; y < y2; y++){
+            //tc("y: "+y, "green");
+            NeighborCoords += ({ ({ x, y, 0 }) });
+            //tc(x+","+y, "blue");
+        }
+    }
+    NeighborCoords -= ({ Coords });
+    foreach(mixed foo in NeighborCoords){
+        mixed bar = ROOMS_D->GetGrid(foo[0]+","+foo[1]+","+foo[2]);
+        if(bar && bar["room"]){
+            //tc("Neighbor: "+bar["room"], "black");
+            Neighbors += ({ bar["room"] });
+        }
+    }
+#endif
+}
+
+mixed GetNeighbors(){
+    return copy(Neighbors);
+}
+
+mixed GetNeighborCoords(){
+    return copy(NeighborCoords);
+}
+
+mixed GetCoords(){
+    return copy(Coords);
+}
+
 static void init(){
     object prev = previous_object();
+    if(undefinedp(RespirationType)){
+        switch(GetMedium()){
+            case MEDIUM_WATER : RespirationType = R_WATER; break;
+            case MEDIUM_SPACE : RespirationType = R_VACUUM; break;
+            case MEDIUM_AIR : RespirationType = R_AIR; break;
+            case MEDIUM_LAND : RespirationType = R_AIR; break;
+            case MEDIUM_SURFACE : RespirationType = (R_AIR | R_WATER); break;
+            case MEDIUM_METHANE : RespirationType = R_METHANE; break;
+            default : RespirationType = R_AIR; break;
+        }
+    }
     if(this_object()->GetProperty("indoors")) SetClimate("indoors");
     if(!sizeof(GetObviousExits()) && DefaultExits > 0 && ObviousVisible){
         GenerateObviousExits();
@@ -1198,10 +1266,15 @@ static void init(){
             || sizeof(ActionsMap)){
         set_heart_beat(tick_resolution);
     }
+#if GRID
     if(this_object() && prev && (living(prev) || prev->GetMapper())){
         //tc("trying to set "+identify(this_object()),"green");
-        ROOMS_D->SetRoom(this_object(), prev);
+        if(MASTER_D->GetPerfOK()){
+            Coords = ROOMS_D->SetRoom(this_object(), prev);
+            CompileNeighbors(Coords);
+        }
     }
+#endif
     if(this_object()->GetVirtual() && !query_heart_beat()){
         set_heart_beat(1);
     }

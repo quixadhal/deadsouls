@@ -339,7 +339,7 @@ int Setup(){
     if(GetProperty("brand_spanking_new")){
         object jeans, shirt, book;
 
-        this_object()->SetProperty("automapping", 1);
+        this_object()->SetProperty("minimapping", 1);
         if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
         PLAYERS_D->AddPlayerInfo(this_object());
 
@@ -376,7 +376,7 @@ int Setup(){
         string home;
 
         this_object()->SetTown("World");
-        this_object()->SetProperty("automapping", 0);
+        this_object()->SetProperty("minimapping", 0);
         this_object()->SetProperty("wizmapping", 1);
 
         robe = new("/domains/default/armor/robe");

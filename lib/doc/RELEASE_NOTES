@@ -1,3 +1,67 @@
+---- 2.9a14 ---
+- Released 2009-02-04
+- Driver is now a slightly modified FluffOS 2.15.
+- Added an experimental screen-mode inheritabable editor, see 
+  0IB_CEDIT and: help ced . It's still a bit quirky and buggy, and
+  incomplete (handles wrapping poorly, doesn't do search/replace,
+  etc). For now it's a proof-of-concept/prototype with saving disabled
+  (thx to Tricky and Raudhrskal for advice on terminal control). Will
+  not work without charmode. Will not work without FluffOS 2.15-ds*.
+- Added sefuns: system_month(), system_day(), write2()
+- Added sefuns from Chaos@Lost Souls: levenshtein_distance(),
+  damerau_levenshtein_distance()
+- Added commands: commandecho, profile, timezone, efuns, sefuns, lfuns
+- Driver: added ANSI_SUBSTITUTE define to comm.c in order to
+  control which character is substituted with in NO_ANSI.
+- It's now possible to re-engage in combat with an opponent you've
+  previously ignored.
+- Rooms now attempt to set their own respiration type based on
+  their medium, if their respiration type is not already set.
+- The longcat command now tries a bit harder to display ludicrously
+  large files.
+- The commands dsversion and noclip work again.
+- Various conflicts in coordinate setting fixed.
+- Mitigated a compat buster in QCS involving customdefs.
+- Miscellaneous performance tweaks to make DS friendlier to use
+  on weak hardware. Tested on a Pentium 133MHz and 
+  an UltraSparcII 300MHz.
+- Changed the name "automap" to "minimap". Automapping will mean
+  something else in later releases.
+- Implemented a "minimum performance" threshold for certain
+  resource-intensive features. The performance score of a system is 
+  determined by CPU time taken at boot. The MIN_PERF define in config.h
+  establishes the minimum score required for "heavy" features like
+  wizmapping and file/function indexing. This system allows people with
+  weak machines to use DS without tons of errors, and it allows people
+  with fast machines to enjoy the fancy stuff by default.
+- Fixed a problem in FUNCTION_D that prevented the lib from having
+  function data when running on Windows.
+- Warmboot no longer hoses up people in charmode.
+- MASTER_D now forces a quick shutdown if it detects one of the following:
+    * Exhausted file descriptors.
+    * Eval cost error cascade loop.
+- Driver: added efun remove_charmode()
+- The hist command now includes timestamps and accepts a number
+  argument for how many lines to display.
+- Fixed local_time() to accept a string timezone.
+- Commands like "date" and "people" now have output customized to the 
+  player's timezone.
+- Driver: fixed command() efun so that success is nonzero 
+  when running on Windows.
+- Charmode now works on Windows (see command() above).
+- The hist command now also handles: say, whisper, yell, shout.
+- Fixed a bug in LIB_BODY that caused decapitation during combat
+  to occur twice, resulting in two severed heads.
+- The "nightmare shell" now does tabbed command completion,
+  tabbed filename completion, tabbed object completion, and 
+  up/down-arrow command recall when in charmode.
+- The findfun command now also identifies efuns and sefuns, and
+  tries to suggest other possible matches based on differing
+  case and format. It also now takes a substring flag to search
+  efuns, sefuns, and lfuns for possible matches.
+- Guarding works properly again. You can no longer take Kim's
+  cash register.
+
 ---- 2.9a13 ---
 - Released 2009-01-04
 - Finally got around to indenting everything consistently.
@@ -17,7 +81,7 @@
   messages, similar to how Diku muds do so. Note
   that reprompt mode looks awful on most mud clients...it's
   intended for folks with "single pane" clients, like people
-  using the default Linux telnet client.
+  using a default Linux telnet client.
 - The charmode command puts you into character mode, so that
   your input is received on a per-keystroke basis, rather than
   a per-line basis. This allows for stuff like using up and down
@@ -52,7 +116,7 @@
 - If a thing doesn't have SetDamagePoints() called on it, it will
   not deteriorate when it receives damage.
 - Items in perfect condition no longer indicate their condition.
-- Implemented basic persistence for rooms. If a room
+- Implemented basic persistence for rooms. If a room is SetNoClean(1),
   has SetPersist(1); in create() and RestoreObject(); on the
   following line, then when it reloads, it will restore into
   its inventory whatever was left there...even across reboots. 

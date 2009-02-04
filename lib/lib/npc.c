@@ -101,7 +101,7 @@ void CheckEncounter(){
 }
 
 static void init(){
-    guard::CheckPending();
+    guard::init();
     CheckEncounter();
 }
 

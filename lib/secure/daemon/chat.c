@@ -96,9 +96,9 @@ static private mapping remotechans = ([
         ]);
 
 static private mapping tags = ([
-        "intermud"    : "%^WHITE%^",
-        "muds"        : "%^WHITE%^",
-        "connections" : "%^BOLD%^WHITE%^",
+        "intermud"    : "%^B_BLACK%^WHITE%^",
+        "muds"        : "%^B_BLACK%^WHITE%^",
+        "connections" : "%^B_BLACK%^BOLD%^WHITE%^",
         "death"       : "%^BOLD%^RED%^",
         "cre"         : "%^BOLD%^GREEN%^",
         "admin"       : "%^BOLD%^MAGENTA%^",
@@ -879,5 +879,13 @@ string GetRemoteChannel(string ch) {
     else return ch;
 }
 
+int GetListening(object player, string ch){
+    if(!Channels[ch] || 
+            member_array(player, Channels[ch]) == -1) return 0;
+    return 1;
+}
+
 string *GetChannels() { return copy(keys(Channels)); }
 string *GetSystemChannels() { return copy(syschans); }
+mapping GetTags() { return copy(tags); }
+string GetTag(string ch) { return tags[ch]; }

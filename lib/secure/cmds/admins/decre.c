@@ -32,19 +32,20 @@ mixed cmd(string args) {
     if( !strsrch(file = save_file(nom), DIR_PLAYERS) )
         return "You cannot make "+capitalize(args)+" a player.";
 
-    if(ob == this_player()){
-        return "Nonsense.";
-    }
-
     if(!ob = find_player(nom)){
+        if(nom == this_player()->GetKeyName()){
+            return "I've no idea how you've managed this, but \"no\".";
+        }
         PLAYERS_D->RemovePendingEncre(lower_case(nom));
         PLAYERS_D->AddPendingDecre(lower_case(nom));
         write(capitalize(nom)+" will be demoted on their next login.");
         return 1;
     }
-
     else {
         mixed attrape;
+        if(ob == this_player() || securep(ob)){
+            return "Nonsense.";
+        }
         home_dir = homedir(ob);
         write("You decre "+capitalize(nom)+".");
         PlayerName = nom;

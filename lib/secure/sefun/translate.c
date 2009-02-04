@@ -17,14 +17,14 @@
         "iskit", "imhud", "halas", "sagud", "imche", "eigoga", "nihongo",\
         "wakarimaska", "wakarimasen", "samastihenh", "iye", "hai",\
         "ni", "huei", "shwa", "potong-hwa", "mah", "wa", "ideahr",\
-        "khairei", "hoc", "propter", "auch", "vielen",\
+        "khairei", "hoc", "propter", "auch", "vielen","lurgid",\
         "forshtor", "deuw", "noshk", "puedo", "pero", "debajo" , "atras",\
         "mientras", "desde", "nunca", "haka", "silflay", "embleer", "hraka",\
         "mbembe", "mau-mau","tiki","meka","leka","hai","haini","ho", \
         "chonny","mola","chala","hala","hei","thlon","mey","nikto",\
         "ecgum", "eyne", "sobre","dupa","zum","schlampe","jodio","con",\
         "narfle", "garthak", "hokanda-matuso","oota-goota","mafi","makka",\
-        "shukran", "akbar", "mokele", "dapku", "loituma",\
+        "shukran", "akbar", "mokele", "dapku", "loituma","plurdled",\
         "curiae", "aethelingas", "eorlas","carajo","oder",\
     "ae","aroha","awarua","atua","tenei", "dsfargeg",\
     "tangata","koa","kora","hupane","upane",\
@@ -42,8 +42,8 @@
     "UNITINU","STENDEC","CROATOAN","LATUALATUKA",\
     "LMKUU","puka","degozaimasu","szysznyk", "syzygy",\
     "darklock","confutatis","maledictis","flammis","acribus",\
-    "addictis","XYNTA","durian","adzuki",\
-    "ХУИТА",\
+    "addictis","XYNTA","durian","adzuki","flocka",\
+    "ХУИТА", "nibiru", "tatonka","tralfamadore",\
     "sihulm","koyaanisqatsi","tanstaafl","misunderestimate",\
     "ar","ot","ti","fi","na",\
     "ar","ot","ti","fi","na",\
@@ -71,6 +71,7 @@
     "bukkakke","santorum","habeebit","yotsuba", "obama",\
     "mccain","biden","palin","chitonw","wachovia","wamu",\
     "dogoodi","idoogod","yamaglonchi","hotchka","tacgnol",\
+    "zangano","zafacon","doushnou","yanaglonchi","rowsdower",\
 })
 
 string translate(string str, int prof) {

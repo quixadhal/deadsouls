@@ -127,19 +127,55 @@ static string eventHistory(string str){
 }
 
 static string Push(string cmd){
+    int j, crunch;
     CommandNumber = sizeof(History);
     if(CommandNumber && History[CommandNumber-1] == cmd){
+        return cmd;
+    }
+    if(member_array(cmd, values(History)) != -1){
+        foreach(mixed key, mixed val in History){
+            if(cmd == val){
+                History[key] = 0;
+                //tc("deleting command "+key+": "+cmd);
+            }
+            crunch = 1;
+        }
+    }
+    if(crunch){
+        mapping newmap = ([]);
+        j = 0;
+        for(int i = 0; i < CommandNumber; i++){
+            if(History[i]){
+                newmap[j] = History[i];
+                j++;
+            } 
+        }
+        History = newmap;
+        //tc("History: "+sizeof(History),"white");
+        //tc("History["+(CommandNumber-2)+"]: "+History[CommandNumber-2], "white");
+        //tc("History["+(CommandNumber-1)+"]: "+History[CommandNumber-1], "white");
+        //tc("History["+CommandNumber+"]: "+History[CommandNumber], "white");
+        CommandNumber = sizeof(History);
         return cmd;
     }
     if(CommandNumber >= HistorySize){
         mapping newmap = ([]);
         foreach(mixed key, mixed val in History){
+            //tc("History["+key+"]: "+val, "blue");
             if(key > 0) newmap[key-1] = val;
         } 
         History = newmap;
+        CommandNumber = sizeof(History);
+        //tc("History["+(CommandNumber-2)+"]: "+History[CommandNumber-2], "yellow");
+        //tc("History["+(CommandNumber-1)+"]: "+History[CommandNumber-1], "cyan");
+        //tc("History["+CommandNumber+"]: "+History[CommandNumber], "magenta");
+        //tc("History: "+sizeof(History));
     }
     else {
         History[CommandNumber] = cmd;
+        //tc("History["+(CommandNumber-2)+"]: "+History[CommandNumber-2], "red");
+        //tc("History["+(CommandNumber-1)+"]: "+History[CommandNumber-1], "green");
+        //tc("History["+CommandNumber+"]: "+History[CommandNumber], "blue");
     }
     CommandNumber = sizeof(History);
     return cmd;

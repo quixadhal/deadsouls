@@ -20,7 +20,7 @@ mixed cmd(string str) {
     string *lines, *raw_lines;
     object ob;
     string tmp, content;
-
+    mixed *fs;
     arr = ({});
 
     if( !str ) return "You must specify a file.";
@@ -35,6 +35,7 @@ mixed cmd(string str) {
         tmp = "";
         lines = explode(content, "\n");
         ob = load_object(str);
+        fs = functions(ob);
         if(!ob) return "File cannot be loaded.";
         else arr = query_local_functions(ob);
         raw_lines = filter(lines, (: reverse_memberp($1, types) :) );
@@ -51,7 +52,7 @@ mixed cmd(string str) {
                 }
             }
         }
-        FUNCTION_D->ReceiveFunctionData(str, tmp, stat(str)[0]);
+        FUNCTION_D->ReceiveFunctionData(str, tmp, stat(str)[0], fs);
     }
     return tmp;
 }

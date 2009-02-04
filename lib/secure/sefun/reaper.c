@@ -4,7 +4,7 @@
 private string *glist;
 private object thingy;
 
-string *ExemptArray = ({ LIB_CONNECT, OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER, LIB_FTP_DATA_CONN, LIB_SOCKET, SOCKET_HTTP });
+string *ExemptArray = ({ LIB_CONNECT, OBJ_SNOOPER, LIB_DOOR, LIB_ROOM, LIB_SERVER, LIB_FTP_DATA_CONN, LIB_SOCKET, SOCKET_HTTP, SEFUN });
 
 void  reap_dummies(){
     //
@@ -26,8 +26,13 @@ varargs void reap_other(string s1){
     //
     string s2;
     int fail;
-    object *garbage = ({});
-    object *others = objects((: $1 && clonep($1) && !userp($1) &&
+    object *garbage;
+    object *others;
+
+    if(!this_object()) return;
+
+    garbage = ({});
+    others = objects((: $1 && clonep($1) && !userp($1) &&
                 !inherits(LIB_ROOM, $1) && !environment($1) &&
                 !inherits(LIB_SHADOW, $1) &&
                 member_array(base_name($1), ExemptArray) == -1 :))[0..6300];

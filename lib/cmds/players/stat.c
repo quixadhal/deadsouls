@@ -128,5 +128,6 @@ mixed cmd(string args) {
 
 string GetHelp(string blah) {
     return ("Syntax: stat <living>\n\n"
-            "Displays statistical information of a living object.");
+            "Displays statistical information of a living object.\n"
+            "See also: score, status, env.");
 }

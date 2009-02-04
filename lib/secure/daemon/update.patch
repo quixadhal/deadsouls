@@ -95,6 +95,8 @@ int make_empties(){
 }
 
 void deletes(){
+    rm("/secure/daemon/map.c");
+    rm("/secure/cmds/creators/sed.c");
     rm("/secure/sefun/base_name.c");
     rm("/secure/sefun/convert_name.c");
     rm("/secure/sefun/query_names.c");
@@ -173,6 +175,22 @@ varargs static void eventUpdate(object whom){
         if(!grepp(config_file, "MAX_USERS"))
             config_file = append_line(config_file,"#define MEMUSE_HARD_LIMIT",
               "#define MAX_USERS                0");
+
+        if(!grepp(config_file, "MIN_PERF"))
+            config_file = append_line(config_file,"#define MAX_USERS",
+            "#define MIN_PERF                 1000");
+
+        if(!grepp(config_file, "MINIMAP"))
+            config_file = append_line(config_file,"#define MIN_PERF",
+            "#define MINIMAP                  1");
+
+        if(!grepp(config_file, "WIZMAP"))
+            config_file = append_line(config_file,"#define MINIMAP",
+            "#define WIZMAP                   1");
+
+        if(!grepp(config_file, "GRID"))
+            config_file = append_line(config_file,"#define WIZMAP",
+            "#define GRID                     1");
 
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }

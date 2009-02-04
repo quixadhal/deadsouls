@@ -83,10 +83,7 @@ int clean_up(int ref_exists){
     } 
     inv = deep_inventory(this_object());
     if(inv && sizeof(inv)){
-        if( sizeof(filter(inv, (: interactive($1) :))) ){
-            return TRY_AGAIN_LATER;
-        }
-        if( sizeof(filter(inv, (: $1->GetNoClean() :))) ){
+        if( sizeof(filter(inv, (: interactive($1) || $1->GetNoClean() :))) ){
             return TRY_AGAIN_LATER;
         }
     }
@@ -96,7 +93,12 @@ int clean_up(int ref_exists){
             return NEVER_AGAIN;
         }
 
-        if(inv) catch(inv->eventMove(ROOM_FURNACE));
+        foreach(mixed ob in inv){
+            if(ob) ob->eventDestruct();
+            if(ob) destruct(ob);
+            if(ob) catch(ob->eventMove(ROOM_FURNACE));
+        }
+
         if( this_object() ){
             eventDestruct();
         }

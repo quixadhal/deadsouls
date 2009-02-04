@@ -68,7 +68,7 @@ mixed cmd(string args) {
         cre_ob->eventForce("cd");
         cre_ob->SetPrompt("cwd");
         cre_ob->SetProperty("wizmapping",1);
-        cre_ob->SetProperty("automapping",0);
+        cre_ob->SetProperty("minimapping",0);
         jeans = present("jeans",cre_ob);
         shirt = present("t-shirt",cre_ob);
         if(jeans) jeans->eventMove(ROOM_FURNACE);

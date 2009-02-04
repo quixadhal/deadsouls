@@ -145,7 +145,11 @@ mixed cmd(string str) {
         if(!archp(ob) && userp(ob) && (query_idle(ob) > 60))
             message("my_action", (string)ob->GetName()+
                     " is idle and may not have been paying attention.", this_player());
-        else if(in_edit(ob) || in_input(ob))
+        else if((in_edit(ob) || in_input(ob))
+#ifdef __DSLIB__
+                && !query_charmode(ob)
+#endif
+               )
             message("my_action", (string)ob->GetCapName()+" is in input "+
                     "and may not be able to respond.", this_player());
         else if(ob->GetSleeping())

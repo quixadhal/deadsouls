@@ -20,7 +20,7 @@
 #include <commands.h>
 #include <objects.h>
 #include <privs.h>
-#include "sefun.h"
+#include "./sefun.h"
 
 #include "/secure/sefun/absolute_value.c"
 #include "/secure/sefun/names.c"
@@ -91,8 +91,10 @@
 #ifdef LIVEUPGRADE_SERVER
 #include "/secure/sefun/native_version.c"
 #endif
-#include "/secure/sefun/automap.c"
+#include "/secure/sefun/minimap.c"
+#include "/secure/sefun/fuzzymatch.c"
 
+object globalob;
 string globalstr;
 mixed globalmixed, gargs, gfun, gdelay;
 int last_regexp = time();
@@ -101,6 +103,17 @@ int max_regexp = 200;
 private static string *blacklist = ({});
 private static string *jokes = ({"bind","call_out","call_other",
         "unguarded","evaluate"});
+
+#ifdef __FLUFFOS__
+mixed copy(mixed val){
+    return efun::copy(val);
+}
+
+string base_name(mixed val){
+    if(!val) return "";
+    return efun::base_name(val);
+}
+#endif /* __FLUFFOS__ */
 
 varargs object clone_object(string name, mixed args...){
     int obsnum;
@@ -127,17 +140,6 @@ varargs object clone_object(string name, mixed args...){
     }
     return efun::clone_object(name, args...);
 }
-
-#ifdef __FLUFFOS__
-mixed copy(mixed val){
-    return efun::copy(val);
-}
-
-string base_name(mixed val){
-    if(!val) return "";
-    return efun::base_name(val);
-}
-#endif /* __FLUFFOS__ */
 
 //For some reason, FluffOS read_file() will read
 //a zero-length file as a 65535 length T_INVALID variable.
@@ -186,7 +188,6 @@ string dump_file_descriptors(){
 void reset_eval_cost(){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
         efun::reset_eval_cost();
-    else debug_message("failed reset_eval_cost: "+get_stack());
 }
 
 void set_eval_limit(int i){
@@ -232,11 +233,13 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     gfun = fun;
     gdelay = delay;
 
+    get_garbage();
     if(prev) prevbase = base_name(prev);
     else error("call_out with no previous_object()");
 
     if(sizeof(raw) > MAX_CALL_OUTS && (strsrch(prevbase,"/secure/") && 
                 strsrch(prevbase,"/lib/") && strsrch(prevbase,"/std/") &&
+                strsrch(prevbase,"/obj/") &&
                 strsrch(prevbase,"/daemon/") && strsrch(prevbase,"/domains/"))){
         int err;
         globalmixed = prev;
@@ -269,8 +272,10 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
 
         while(i--){
             if(sizeof(raw[i]) && objectp(raw[i][0])){
-                string *lol = explode(base_name(raw[i][0]),"/");
-                string wut = "/"+lol[0]+"/"+lol[1]+"/";
+                string *lol;
+                string wut;
+                lol = explode(base_name(raw[i][0]),"/");
+                wut = "/"+lol[0]+"/"+lol[1]+"/";
                 if(!(callers[wut])) callers[wut] = 1;
                 else callers[wut]++;
             }
@@ -464,6 +469,7 @@ int destruct(object ob) {
 varargs void shutdown(int code) {
     if(!((int)master()->valid_apply(({"ASSIST"}))) &&
             !((int)master()->valid_apply(({"SECURE"})))) return;
+    if(code == -9) efun::shutdown(code);
     if(this_player())
         log_file("shutdowns", (string)this_player()->GetCapName()+
                 " shutdown "+mud_name()+" at "+ctime(time())+"\n");
@@ -578,8 +584,9 @@ int sefun_exists(string str){
 
 int query_charmode(object ob){
     int ret = -1;
+    globalob = ob;
 #ifdef __DSLIB__
-    ret = unguarded( (: efun::query_charmode($(ob)) :) );
+    ret = unguarded( (: efun::query_charmode(globalob) :) );
 #endif
     return ret;
 }
@@ -607,6 +614,7 @@ varargs void input_to(mixed fun, int flag, mixed args...){
     if(player && player->GetCharmode()){
 #ifdef __DSLIB__
         remove_get_char(player);
+        remove_charmode(player);
 #endif
     }
     if(sizeof(gargs)){

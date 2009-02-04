@@ -13,5 +13,5 @@ mixed cmd(string args) { return this_player()->eventDisplayStatus(); }
 void help() {
     message("help", "Syntax: <status>\n\n"
             "Gives you information about your current physical status.\n\n"
-            "See also: money, skills, stats", this_player());
+            "See also: money, skills, stats, score, env", this_player());
 }

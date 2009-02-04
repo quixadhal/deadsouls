@@ -6,9 +6,21 @@ inherit LIB_DAEMON;
 
 int hasrun = 0;
 
+string RateScore(int i){
+    string ret;
+    if(!i) ret = "No score available.";
+    else if(i < 500) ret = "Spectacular.";
+    else if(i < 1000) ret = "Excellent.";
+    else if(i < 1500) ret = "Good.";
+    else if(i < 3000) ret = "Fair.";
+    else if(i < 5000) ret = "Poor.";
+    else ret = "Very poor.";
+    return ret;
+}
+
 static void eventRun() {
     string ret = "";
-    int t;
+    int t, PerformanceScore = MASTER_D->GetPerformanceScore();
     mapping before, after;
     string *noobnames = ({ "Dead_Souls_"+DEBUGGER, "DeadSoulsNew",
             "DeadSoulsWin" });
@@ -51,7 +63,11 @@ static void eventRun() {
 #else 
     ret =  "Autoexec daemon run complete.\n";
 #endif
-
+    if(PerformanceScore){
+        float secs = ((PerformanceScore + t ) * 0.001);
+        ret += "CPU time in boot: " + sprintf("%.2f",secs)+ " seconds.";
+        ret += " (Performance score: " + (RateScore(PerformanceScore))+")\n";
+    }
     debug_message(ret);
 }
 

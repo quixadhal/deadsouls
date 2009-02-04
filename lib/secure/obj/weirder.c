@@ -141,6 +141,8 @@ void init(){
     add_action("yeik","yeik");
     add_action("yeik2","yeik2");
     add_action("vargon","vargon");
+    add_action("commcheck","commcheck");
+    add_action("perfcheck","perfcheck");
 }
 
 static int loadthing(string str){
@@ -483,3 +485,44 @@ int vargon(string str){
     return waves;
 }
 
+int commcheck(){
+    int i, count = 20;
+    validate();
+    write("Testing comms...");
+    write2("\n");
+    i = time_expression {
+        while(count){
+            count--;
+            reset_eval_cost();
+            write2(".");
+            flush_messages();
+        }
+    };
+    write2("\n\n");
+    write("Microseconds: "+i);
+    return 1;
+}
+
+int perfcheck(string foo){
+    int sauber = 1, i, count = 1000000;
+    validate();
+    write("Testing performance...");
+    if(sizeof(foo)) sauber = 0;
+    if(sauber){
+        i = time_expression {
+            while(count){
+                count--;
+            }
+        };
+    }
+    else {
+        i = time_expression {
+            while(count){
+                count--;
+                reset_eval_cost();
+            }
+        };
+    }
+    write("Microseconds: "+i);
+    return 1;
+}

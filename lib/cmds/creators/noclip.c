@@ -5,6 +5,10 @@ inherit LIB_DAEMON;
 varargs int cmd(string args){
     int status = this_player()->GetProperty("noclip");
     string sstatus = "are";
+#if !(GRID)
+    write("This feature is disabled.");
+    return 1;
+#endif
     if(!status) sstatus = "are not";
     if(!args){
         write("You "+sstatus+" noclipping.");
@@ -33,5 +37,5 @@ void help(){
             "Allows you to travel to adjacent rooms known to the "+
             "mud, even if a door is in the way or there is no "+
             "explicit exit in that direction.\nSee also: "+
-            "showgrid, wizmap, automap, prox");
+            "showgrid, wizmap, minimap, prox");
 }

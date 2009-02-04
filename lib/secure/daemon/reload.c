@@ -11,6 +11,7 @@ static int stage2, stilldirty, roomscleaned, warm_boot_in_progress = 0;
 string savefile = "/secure/save/reload";
 static string *exceptions = ({ RELOAD_D, RSOCKET_D });
 object *grooms = ({});
+int last_deep_player_load;
 
 varargs void validate(){
     if((!(int)master()->valid_apply(({ "SECURE", "ASSIST" })))){
@@ -75,19 +76,34 @@ int ReloadBaseSystem(){
     catch( update(MASTER_D) );
     foreach(string file in tmp){
         if(!strsrch(file,"sefun.")) continue;
+        if(last(file,2) != ".c") continue;
         sefun_files += ({ "/secure/sefun/"+file });
     }
+    reset_eval_cost();
     foreach(string file in sefun_files){
-        catch(update(file));
+        int err;
+        //tc("file: "+file,"red");
+        err = catch(update(file));
+        if(err){ 
+            debug("file: "+file);
+        }
     }
-    RELOAD_D->eventReload(load_object(SEFUN), 1);
+    reset_eval_cost();
+    RELOAD_D->eventReload(load_object(SEFUN), 1, 1);
     catch( update(MASTER_D) );
+    reset_eval_cost();
     catch( reload(load_object(LIB_CREATOR), 1, 1) );
+    reset_eval_cost();
     catch( reload(load_object(LIB_SENTIENT), 1, 1) );
+    reset_eval_cost();
     catch( reload(load_object(LIB_ROOM), 1, 1) );
+    reset_eval_cost();
     catch( reload(load_object(LIB_ARMOR), 1, 1) );
+    reset_eval_cost();
     catch( reload(load_object(LIB_STORAGE), 1, 1) );
+    reset_eval_cost();
     catch( reload(load_object(LIB_WORN_STORAGE), 1, 1) );
+    reset_eval_cost();
     return 1;
 }
 
@@ -95,19 +111,31 @@ varargs mixed ReloadPlayer(mixed who, int deep){
     mixed mx;
     string name;
     object tmp_bod, new_bod;
-    int charmode;
+    //int charmode;
 
     validate();
 
     if(stringp(who)) who = find_player(who);
     if(!who) return 0;
 
+    if(deep){
+        if((time() - last_deep_player_load) < 3){
+            /* No need for a deep load if one just happened */
+            deep = 0;
+        }
+        else {
+            last_deep_player_load = time();
+        }
+    }
+
     name = who->GetKeyName();
-    charmode = who->GetCharmode();
+    //charmode = who->GetCharmode();
     who->CancelCharmode();
     who->save_player(name);
     mx = reload(load_object(LIB_CREATOR), deep, 0);
+    reset_eval_cost();
     if(mx) mx = reload(load_object(LIB_PLAYER), deep, 0);
+    reset_eval_cost();
 
     if(!mx) error("OHSHI-");
 
@@ -132,8 +160,8 @@ varargs mixed ReloadPlayer(mixed who, int deep){
     }
 
     destruct(tmp_bod);
+    reset_eval_cost();
     new_bod->Setup();
-    //new_bod->SetCharmode(charmode);
     SNOOP_D->CheckBot(name);
     return 1;
 }
@@ -171,7 +199,6 @@ varargs int eventReload(mixed what, int when, int nodelay){
     if(nodelay) return reload(what, 0, 1);
     if(!when) when = time();
     else when += time();
-    if(!what) return 0;
     if(stringp(what)){
         if(last(what,2) == ".c") what = trim(what,2);
         what = find_object(what);
@@ -307,6 +334,7 @@ int ReloadUsers(){
 int ReloadMud1(){
     validate();
     shout("Warm boot initiated!");
+    users()->CancelCharmode();
     warm_boot_in_progress = 1;
     roomscleaned = 0;
     shout("Rooms resetting..."); 

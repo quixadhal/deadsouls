@@ -19,6 +19,7 @@
 #define SAVE_IMC2_SERVER   DIR_SECURE_SAVE "/imc2_server"
 #define SAVE_LIVEUPGRADE   DIR_SECURE_SAVE "/liveupgrade"
 #define SAVE_MAILQUEUE     DIR_DATA "/mailqueue"
+#define SAVE_MASTER        DIR_SECURE_SAVE "/master"
 #define SAVE_MAP           DIR_SAVE "/map"
 #define SAVE_MUDINFO       DIR_SAVE "/mudinfo"
 #define SAVE_NAMESERVER    DIR_SAVE "/network"

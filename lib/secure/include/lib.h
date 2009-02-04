@@ -108,6 +108,7 @@
 #define LIB_ROUND          DIR_LIB        "/round"
 #define LIB_SCROLL         DIR_LIB        "/scroll"
 #define LIB_SECURE_BOARD   DIR_SECURE_LIB "/bboard"
+#define LIB_CEDIT          DIR_LIB        "/cedit"
 #define LIB_SENTIENT       DIR_LIB        "/sentient"
 #define LIB_SERVER         DIR_SECURE_LIB "/net/server"
 #define LIB_SHADOW         DIR_LIB        "/shadow"

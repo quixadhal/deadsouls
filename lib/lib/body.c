@@ -32,7 +32,7 @@ inherit LIB_MOUNT;
 inherit LIB_BODY_MASS;
 inherit LIB_PERSIST;
 
-#define COLLAPSE_AT            10.0
+#define COLLAPSE_AT            5.0
 #ifndef SEVERABLE_LIMBS
 #define SEVERABLE_LIMBS 1
 #endif
@@ -586,8 +586,6 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
         agent = 0;
     }
 
-    //tc(file_name(this_object())+" "+identify(agent)+" "+x+" "+identify(limbs));
-
     if(objectp(agent)){
         if(estatep(agent) && !estatep(this_object())) return 0;
         if(!estatep(agent) && estatep(this_object())) return 0;
@@ -612,37 +610,28 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
             x -= evaluate(f, this_object(), agent, type, x, limbs);
         }
     }
-    //tc("1");
     x = eventCheckProtection(agent, type, x);
     if( !limbs ){
-        //tc("2");
         if( internal ){
-            //tc("3");
             AddHealthPoints(-x, 0, (agent || agentname));
             return x;
         }
         else {
-            //tc("4");
             limbs = GetLimbs();
         }
     }
     else if( stringp(limbs) ){
-        //tc("5");
         limbs = ({ limbs });
     }
     else if( !arrayp(limbs) ){
-        //tc("wat","red");
         return -1;
     }
-    //tc("limbs: "+identify(limbs));
     if( internal ){
-        //tc("internal","red");
         AddHealthPoints(-x, 0, (agent || agentname));
         return x;
     }
     else {
         int i, y, maxi;
-        //tc("limbs and not internal");
 
         y = 0;
         for(i=0, maxi = sizeof(limbs); i < maxi; i++){
@@ -660,14 +649,12 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
                     call_out("RemoveLimb",0,limbs[i], (agent || agentname));
                 }
                 AddStaminaPoints(-z/2);
-                //continue;
             }
             else {
                 while(j--){
                     dmgred = (int)obs[j]->eventReceiveDamage(
                             (agent || agentname), type, z, 0, limbs[i]);
                     z -= dmgred;
-                    //tc("z: "+z,"red");
                     if(z < 1){
                     }
                     else {
@@ -675,9 +662,7 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
                 }
             }
             y = z;
-            //tc("y: "+y,"green");
             if( y ){
-                //tc("general damage: "+y);
                 if(!AddHealthPoints(-y, 0, (agent || agentname))){
                     call_out("RemoveLimb",0,limbs[i], (agent || agentname));
                 }
@@ -685,15 +670,6 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
             }
             return y;
         }
-#if 0
-        //tc("me: "+identify(this_object())+" agent: "+identify(agent||agentname)+" x: "+x+" tmpdam: "+tmpdam,"blue");
-        AddHealthPoints(-x, 0, (agent || agentname));
-        AddStaminaPoints(-x/2);
-        if(HealthPoints < 1 && !this_object()->GetDying()){
-            this_object()->SetDying(1);
-            call_out("eventDie", 0, (agent || agentname));
-        }
-#endif
         return x;
     }
 }
@@ -805,8 +781,6 @@ varargs int eventDie(mixed agent){
     string killer, death_annc;
     object crime_scene;
 
-    //tc("body::eventDie("+identify(agent)+")");
-
     if(DeathEvents) return 1;
     DeathEvents = 1;
 
@@ -823,8 +797,6 @@ varargs int eventDie(mixed agent){
     else if(!this_object()->GetUndead())
         death_annc = killer + " has slain "+ this_object()->GetName()+".";
     else death_annc = killer + " has destroyed "+ this_object()->GetName()+".";
-
-    //tc("death_annc: "+death_annc,"white");
 
     CHAT_D->eventSendChannel("SYSTEM","death",death_annc,0);
 
@@ -1265,7 +1237,6 @@ varargs int AddLimb(string limb, string parent, int classes, int *armors){
     int arm = 0;
 
     if(!limb || Limbs[limb] || (parent && !Limbs[parent])){
-        //tc("limb "+limb+" fail.");
         return 0;
     }
     if(armors){
@@ -1281,7 +1252,6 @@ varargs int AddLimb(string limb, string parent, int classes, int *armors){
     Limbs[limb] = ([ "parent" : parent, "children" : ({}), "class" : classes,
             "armors" : arm ]);
     Limbs[limb]["health"] = GetMaxHealthPoints(limb);
-    //tc("limb "+limb+" succeed.");
     return 1;
 }
 
@@ -1362,7 +1332,7 @@ int DestLimb(string limb){
 varargs int RemoveLimb(string limb, mixed agent, int quiet){
     string *kiddies;
     string limbname,adjname,templimbname, agentname;
-    int i;
+    int i, fatal;
 
     if(agent && stringp(agent)){
         agentname = agent;
@@ -1370,47 +1340,13 @@ varargs int RemoveLimb(string limb, mixed agent, int quiet){
     }
 
     if(limb == this_object()->GetTorso() || limb == "neck") return 0;
-
     if(godmode || !SEVERABLE_LIMBS) return 0;
-
     if( sscanf(limb, "%s %s", adjname, templimbname) == 2 ) limbname=templimbname;
     else limbname=limb;
 
     if(!limb || !Limbs[limb]) return -1;
-    if(!Limbs[limb]["parent"] || Limbs[limb]["class"] == 1){
-        object objict;
-        if(!quiet){
-            message("environment", possessive_noun(GetName()) + " " + limb +
-                    " is severed!", environment(), ({ this_object() }));
-            message("environment", "Your "+ limb + " is severed!", this_object());
-        }
-        if(GetRace() == "golem"){
-            objict = new(LIB_CLAY);
-            if(GetBodyComposition()) objict->SetComposition(GetBodyComposition());
-        }
-        else {
-            if(GetRace() == "android" || GetRace() == "bot" ||
-                    inherits(LIB_VEHICLE,this_object())) objict = new(LIB_BOT_LIMB);
-            else objict = new(LIB_LIMB);
-            objict->SetLimb(limb, GetCapName(), GetRace());
-        }
-        objict->eventMove(environment());
-        i = sizeof(WornItems[limb]);
-        while(i--){
-            WornItems[limb][i]->SetWorn(0);
-            WornItems[limb][i]->eventMove(objict);
-        }
-        while( i = sizeof(WornItems[limb]) )
-            eventRemoveItem(WornItems[limb][i]);
+    if(!Limbs[limb]["parent"] || Limbs[limb]["class"] == 1) fatal = 1;
 
-        if( !this_object()->GetDying() ){
-            this_object()->SetDying(1);
-            Agent = agent;
-            //tc("Agent: "+identify(Agent)+", agentname: "+identify(agentname),"red");
-            call_out("eventDie", 0, (Agent ? Agent : agentname));
-        }
-        return 0;
-    }
     MissingLimbs[limb] = copy(Limbs[limb]);
     Limbs[Limbs[limb]["parent"]]["children"] -= ({ limb });
     if( (i = sizeof(kiddies = Limbs[limb]["children"])) )
@@ -1444,7 +1380,13 @@ varargs int RemoveLimb(string limb, mixed agent, int quiet){
         while( i = sizeof(WornItems[limb]) )
             eventRemoveItem(WornItems[limb][i]);
     }
-
+    if(fatal){
+        if( !this_object()->GetDying() ){
+            this_object()->SetDying(1);
+            Agent = agent;
+            call_out("eventDie", 0, (Agent ? Agent : agentname));
+        }
+    }
     return 1;
 }
 
@@ -1491,7 +1433,6 @@ string array GetLimbs(){
 }
 
 int GetLimbClass(string limb){
-    //tc("limbs: "+identify(Limbs));
     if(sizeof(Limbs) && sizeof(Limbs[limb])) return Limbs[limb]["class"]; 
     return 5;
 }
@@ -1705,7 +1646,6 @@ varargs static int AddHealthPoints(int x, string limb, mixed agent){
             if( !this_object()->GetDying()){
                 this_object()->SetDying(1);
                 Agent = agent;
-                //tc("Agent: "+identify(Agent)+", agentname: "+identify(agentname),"green");
                 call_out("eventDie", 0, (Agent || agentname));
             }
         }

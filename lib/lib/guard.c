@@ -4,8 +4,9 @@
 private static mixed GuardAction;
 private static mixed globalwhat;
 private static array PendingGuard = ({});
-private static object gwhat;
+private static mixed gwhat;
 private static object Principal;
+private static mapping GuardMap = ([]);
 
 int AllowPass(object who, object what){
     string race = this_object()->GetRace();
@@ -31,14 +32,15 @@ int AllowGet(object who, object what){
 
 varargs mixed SetGuard(mixed what, mixed action, int howlong){
     object env = environment();
+    if(!GuardMap) GuardMap = ([]);
     if(!clonep(this_object())) return 0;
     if(!what && !sizeof(PendingGuard)) return 0;
     if(!PendingGuard) PendingGuard = ({});
 
     PendingGuard += ({ ([ "what" : what, "action" : action,
                 "howlong" : howlong ]) });
-
     if(!env){
+        //tc("foo 1");
         return 0;
     }
 
@@ -51,24 +53,33 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
             gwhat = exits[gwhat];
         }
         if(!unguarded( (: directory_exists(path_prefix(gwhat)) :) ) ){
+            //tc("2");
             return 0;
         }
         err = catch( unguarded( (: gwhat = load_object(gwhat) :) ) );
         if(err || !gwhat){
+            //tc("3");
             return 0;
         }
     }
-
-    if(living(gwhat)){
+    if(gwhat && living(gwhat)){
         Principal = gwhat;
         this_object()->eventForce("follow "+gwhat->GetKeyName());
     }
 
-    else if(!inherits(LIB_ROOM,gwhat)){
+    else if(gwhat && !inherits(LIB_ROOM,gwhat)){
         mixed inv = deep_inventory(env);
         inv = filter(inv, (: base_name($1) == base_name(gwhat) :)); 
+        inv = filter(inv, (: $1 && !interactive(environment($1)) :)); 
+        if(!sizeof(inv)){ 
+            //tc("hmm");
+            if(objectp(gwhat)) what = base_name(gwhat);
+            GuardMap[random(20)] = ([ "base" : what, "action" : action ]);
+        }
         foreach(object ob in inv){
             GUARD_D->AddGuard(this_object(), ob, action);
+            GuardMap[file_name(ob)] = ([ "base" : base_name(ob),
+                    "action" : action ]);
             if(living(ob)){
                 Principal = ob;
             }
@@ -76,6 +87,7 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
     }
     else GUARD_D->AddGuard(this_object(), gwhat, action);
     gwhat = 0;
+    //tc("GuardMap: "+identify(GuardMap),"blue");
     return 1;
 }
 
@@ -92,7 +104,8 @@ void CheckPending(){
     }
 }
 
-void heart_beat(){
+void CheckGuardeds(){
+    if(!GuardMap) GuardMap = ([]);
     if(Principal){
         object enemies = Principal->GetEnemies();
         if(sizeof(enemies)){
@@ -103,4 +116,33 @@ void heart_beat(){
             }
         }
     }
+    if(sizeof(GuardMap)){
+        mapping RetMap = ([]), ReGuard = ([]);
+        //tc("woo! GuardMap: "+identify(GuardMap),"red");
+        foreach(string key, mapping tmpmap in GuardMap){
+            object ob, env;
+            if(!(ob = find_object(key)) || !(env = environment(ob)) ||
+                    env != environment(this_object())){
+                ReGuard[tmpmap["base"]] = tmpmap["action"];
+            }
+            else RetMap[key] = tmpmap;
+            //tc("ob: "+identify(ob)+", env: "+identify(env)+", ReGuard["+tmpmap["base"]+"]: "+identify(tmpmap["action"]));
+        }
+        GuardMap = copy(RetMap);
+        if(sizeof(ReGuard)){
+            foreach(string key, mixed action in ReGuard){
+                //tc("SetGuyard("+key+", "+identify(action)+")", "white");
+                SetGuard(key, action);
+            }
+        }
+    }
+}
+
+void heart_beat(){
+    CheckGuardeds();
+}
+
+void init(){
+    CheckGuardeds();
+    CheckPending();
 }

@@ -115,7 +115,7 @@ mv lib patch/
 date
 cat diff2.txt
 cd patch/lib
-find ./ |grep -v "\.html"|grep -v "\.gif" |grep -v "\.o" > upgrades.txt
+find ./ |grep -v "\.html"|grep -v "\.gif" |grep -v "\.o" |grep -v "/news/" > upgrades.txt
 find ./ |grep  "\.orig" >> upgrades.txt
 perl -pi -e s/"\.\/lib"/"\/lib"/g upgrades.txt
 perl -pi -e s/"\.\/"/"\/"/g upgrades.txt

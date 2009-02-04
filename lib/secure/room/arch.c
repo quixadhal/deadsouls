@@ -98,7 +98,7 @@ string SignRead(){
     string ret = "";
 
     if(!INTERMUD_D->GetEnabled()){
-        ret += "\"I3 connection: %^BOLD%^WHITE%^DISABLED%^RESET%^, ";
+        ret += "\"I3 connection: %^B_BLACK%^%^BOLD%^WHITE%^DISABLED%^RESET%^, ";
     }
     else if(INTERMUD_D->GetConnectedStatus())
         ret += "\"I3 connection: %^BOLD%^GREEN%^ONLINE%^RESET%^, ";
@@ -110,7 +110,7 @@ string SignRead(){
             break;
         case 2:
             if(!IMC2_D->GetEnabled()){
-                ret += "IMC2: %^BOLD%^WHITE%^DISABLED%^RESET%^\"";
+                ret += "IMC2: %^B_BLACK%^%^BOLD%^WHITE%^DISABLED%^RESET%^\"";
             }
             else {
                 ret += "IMC2: %^BOLD%^YELLOW%^WAITING FOR ACCEPTANCE%^RESET%^\"";

@@ -80,7 +80,7 @@
 #define BACKLOG_WEB_LEVEL 0
 
 // WHO_STR is the code that you want a who request to display.
-#define WHO_STR CGI_WHO->gateway(1)+URL+"\ntelnet://alcatraz.wolfpaw.com:8000\n"+"______________________________________________________________________________"
+//#define WHO_STR CGI_WHO->gateway(1)+URL+"\ntelnet://alcatraz.wolfpaw.com:8000\n"+"______________________________________________________________________________"
 
 // What's the file for the channel daemon?
 #ifndef CHANNEL_BOT
@@ -148,7 +148,7 @@
 
 inherit LIB_DAEMON;
 
-string tmpstr, host;
+string tmpstr, host, who_str;;
 
 static int socket_num, counter;
 static int heart_count = 0;
@@ -412,7 +412,7 @@ private void got_packet(string info){
         case "wHo": // Drop-through
         case "who":
             send_packet("*","who-reply",sender,origin,
-              "text="+escape(pinkfish_to_imc2(WHO_STR)));
+              "text="+escape(pinkfish_to_imc2(who_str)));
             CHAT_D->eventSendChannel("SYSTEM","intermud","[" + capitalize(sender)+"@"+origin+
               " requests the IMC2 who list]",0);
             break;
@@ -531,7 +531,8 @@ void create(){
 }
 
 void Setup(){
-    int temp, kill;
+    int temp, kill, my_port;
+    string my_ip;
 #ifdef DISABLE_IMC2
     if(DISABLE_IMC2){
         kill = 1;
@@ -544,6 +545,16 @@ void Setup(){
     if(kill || autodisabled){
         call_out( (: eventDestruct() :), 5);
         return;
+    }
+    else {
+        my_ip = INTERMUD_D->GetMyIp();
+        if(my_ip == "127.0.0.1"){
+            my_ip = "alcatraz.wolfpaw.com";
+            my_port = 8000;
+        }
+        else my_port = query_host_port();
+        who_str = CGI_WHO->gateway(1)+URL+"\ntelnet://"+my_ip+":"+my_port+"\n";
+        who_str += repeat_string("_", 75);
     }
     tn("IMC2: setup "+ctime(time()));
 #ifndef NO_UIDS
@@ -560,8 +571,11 @@ void Setup(){
     if(!tells) tells=([ ]);
     ping_requests=([ ]);
     mode = MODE_WAITING_ACCEPT;
-    catch( host = query_intermud_ip() );
-    if(!sizeof(host)) host = "dead-souls.net";
+    if(my_ip == "alcatraz.wolfpaw.com"){
+        catch( host = query_intermud_ip() );
+        if(!sizeof(host)) host = "dead-souls.net";
+    }
+    else host = my_ip;
 #ifdef HOSTIP
     // We already know the IP, go straight to the connecting, just do callback as if it found the IP.
     resolve_callback(HOSTIP,HOSTIP,1);

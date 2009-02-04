@@ -84,6 +84,8 @@ alias area cd /realms/$N/area/
 alias cs codesay $*
 alias sec cd /secure
 alias sef cd /secure/sefun
+alias sobj cd /secure/obj
+alias sroom cd /secure/room
 alias aw adminemote waves.
 alias cw creemote waves.
 alias welcome ds hi, $*. you can use this channel to ask questions. it's an intermud channel that dead souls muds listen to.
@@ -117,10 +119,12 @@ call me->AddChannel("muds")
 muds
 alias intermud intergossip http://lpmuds.net/intermud.html
 alias porch goto /domains/town/room/porch
-prompt %^BOLD%^%^BLUE%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 
-alias crat source -q /secure/scripts/crat2.src
+prompt $T %^BOLD%^%^BLUE%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 
+alias crat source /secure/scripts/crat.src
+alias crat2 source -q /secure/scripts/crat2.src
 alias crat3 source -q /secure/scripts/crat3.src
 alias testmud source -q /secure/scripts/testmud.src
+alias bedlam source -q /secure/scripts/bedlam.src
 alias mayhem source -q /secure/scripts/mayhem.src
 alias indentall source /secure/scripts/indent.src
 alias resetgrid source -q /secure/scripts/resetgrid.src
@@ -150,11 +154,12 @@ wizvision on
 call me->SetSkill("magic attack",100)
 call me->SetSkill("magic defense",100)
 call me->SetSkill("conjuring",100)
-screen 80 30
-history 30
+screen 80 24
+history 100
 automap on
 showgrid on
 debug on
+commandecho red
 save
 mudconfig consoletrace on
 mudconfig logremote on

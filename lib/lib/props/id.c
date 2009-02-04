@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <daemons.h>
 
 private static string array Adjectives   = ({});
 private string              CapName      = 0;
@@ -86,6 +87,9 @@ string array GetCanonicalId(){
 varargs string array SetId(mixed val...){
     string tmp, fn, gs;
     string *exclude = ({});
+    if(!(MASTER_D->GetPerfOK())){
+        Matching = 0;
+    }
     if( stringp(val) ){
         val = ({ val });
     }
