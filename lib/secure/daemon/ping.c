@@ -1,11 +1,6 @@
 #include <lib.h>
-#include <config.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
-
-#ifndef PING_INTERVAL
-#define PING_INTERVAL 30
-#endif
 
 inherit LIB_DAEMON;
 

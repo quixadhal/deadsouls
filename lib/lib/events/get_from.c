@@ -1,5 +1,5 @@
 /*    /lib/events/get_from.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles get from/put in
  *    Created by Descartes of Borg 961221
  *    Version: @(#) get_from.c 1.1@(#)

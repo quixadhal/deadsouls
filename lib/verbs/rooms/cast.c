@@ -1,5 +1,5 @@
 /*    /verbs/rooms/cast.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    cast OBJ in STR
  *    cast OBJ
  *    created by Descartes of Borg 951016

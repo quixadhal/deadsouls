@@ -1,5 +1,5 @@
 /*    /verbs/common/mail.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    mail
  *    mail STR
  *    created by Descartes of Borg 950113

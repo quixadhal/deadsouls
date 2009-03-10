@@ -1,0 +1,116 @@
+chapter 2 "Post-Mansion Hints"
+
+So you're flush with joy at having solved your first quest, 
+and now you're loaded with money and loot! Woo! But...oh no...
+there's so much loot left in the mansion, and the gate gard won't 
+let you pass because you're not a newbie anymore. Bummer! Well,
+we're going to fix that, but first, let's get organized. You're
+carrying a bunch of stuff, some of which you want to keep, some
+of which you want to sell, and it's going to get tiresome soon,
+having to sort through your inventory all the time at shops. So
+the first thing we're going to do is buy a rucksack.
+
+Why?
+
+Remember when you tried to "drop all" and the only things
+you didn't drop were the things you were wearing? A rucksack
+gives you somewhere to keep a bunch of stuff, and you *wear*
+the rucksack. Meaning that "drop all" and "sell all" will
+ignore the valuable stuff you keep in your rucksack, if
+you're wearing it. Neat, huh? It makes life much easier when 
+selling tons of loot.
+
+So, let's go to Otik (from the gate guard, 1n, 3e, 1n), and
+buy the rucksack. Try:
+%^GREEN%^buy ruck from otik%^RESET%^
+If you dont have enough money, sell some of the junk you got
+from the mansion. It also could be that you *do* have enough money,
+but not in silver. If this is the case, go to zoe and do a
+currency exchange:
+%^GREEN%^exchange 5 gold for silver%^RESET%^
+Note that you can only exchange money in your possession. Zoe
+does not exchange money while it is deposited.
+
+Once you have your rucksack, wear it, open it, and put in it
+the stuff you want to keep. I suggest putting the grenade, the
+pistol, and the slips in there. Now sell the junk you don't
+want, deposit the excess cash with Zoe, and let's get ready
+to deal with the gate guard.
+
+The problem: A guard you cannot kill, preventing passage.
+
+The solution: Find a way around, or through him.
+
+Now, you might be tempted to use the grenade. You *could* pull
+the pin on the grenade, drop it, leave, wait a few seconds, and
+come back...and the guard *might* be dead. But this is a magical
+guard. Even if he dies, his spirit prevents you from getting
+past. And he will regenerate into a new body within seconds. So...
+what to do? There are two solutions, and both of them require...
+
+SCIENCE!
+
+Go to Zoe and withdraw 110 dollars or so (darn fees), then
+go to the bookstore (1w, 8s, 5e, 1n), and buy the lab coat from Kim.
+Now go to the campus stargate lab (1s, 5w, 1s, 1w, 1n), where Kleiner
+is busy working on exotechnology, as usual. In typical egghead
+fashion, Kleiner is too preoccupied with his experiments to 
+help you, but he wants *your* help. He's lost his lab coat, you see.
+Like so many geniuses, Kleiner is somewhat physically clumsy,
+and if he wears a lab coat you give him, he's liable to drop
+his identification badge. This badge gives its carrier access
+to the "hazardous technologies" lab two rooms south of Kleiner.
+
+%^RED%^PROTIP%^RESET%^: Do not attempt to kill Kleiner. He is carrying a
+teleportation device called an omni which he will use the moment he
+receives harm from someone. Attacking Kleiner just means he and
+his ID badge will teleport to some random location, and you'll be
+up the creek.
+
+%^RED%^PROTIP%^RESET%^: In the hazardous materials lab, DO NOT attempt to harm
+the tripod gun turret. Failure to heed this warning will result in
+catastrophic injury to anyone in the room.
+
+On the hazlab workbench you'll find various items of interest. For
+now we'll concentrate on the Yautja wrist computer, the Yautja data
+module, and the rocket pack. The rocket pack is the simplest tool for
+circumventing the gate guard. Wear it, and head back to the guard
+(1n, 1e, 6n, 2w, 1s). Now use the pack to fly over the guard:
+
+%^GREEN%^activate pack%^RESET%^
+%^GREEN%^boost up%^RESET%^
+%^GREEN%^boost south%^RESET%^
+%^GREEN%^boost down%^RESET%^
+%^GREEN%^deactivate pack%^RESET%^
+
+How do ya like that! Remember to deactivate the pack, too. If you
+leave it running, it'll eventually run out of fuel. Don't get too
+crazy flying around with it, either. You're extremely likely to boost 
+yourself out over the ocean if you're not careful, and wind up
+lost and drowning. Also, if you run out of fuel while up in the
+air, you *will* fall and the damage you'll receive will be grievous.
+So let's be very careful in our use of the rocket pack.
+
+Another way to get past the guard is by having him not see you at all.
+The Yautja technology can help you in this:
+
+%^GREEN%^wear wristcomp%^RESET%^
+%^GREEN%^open wristcomp%^RESET%^
+%^GREEN%^activate wristcomp%^RESET%^
+%^GREEN%^install module in wristcomp%^RESET%^
+%^GREEN%^close wristcomp%^RESET%^
+%^GREEN%^cloak%^RESET%^
+%^GREEN%^go south%^RESET%^
+%^GREEN%^decloak%^RESET%^
+
+It is crucially important that you are cloaked only as long as
+necessary. If you walk around while cloaked, it will sap your stamina
+extremely quickly. Note that it is a peculiarity of Yautja technology
+that it's a bit awkward to use. If you remove the wristcomp, it 
+deactivates, and you'll need to wear it, activate it again, uninstall
+the module, and install it again. Those Yautja hunters always do
+things the hard way, I'll tellya.
+
+You now have the tools you need to successfully steal every
+ounce of worth from the newbie mansion regardless of your
+newbie status. Congratulations...I guess.

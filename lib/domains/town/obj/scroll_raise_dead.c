@@ -1,6 +1,6 @@
 #include <lib.h>
 #include <position.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <vendor_types.h>
 inherit LIB_ITEM;
 

@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include "ex.h"
 
 //  The #include "ex.h" is used in each of these files to remember

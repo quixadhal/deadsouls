@@ -1,4 +1,4 @@
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
 
 void set(mixed arg1, mixed arg2){

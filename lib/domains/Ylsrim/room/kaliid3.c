@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/kaliid3.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of a room with a door and press event handler
  *    Created by Descartes of Borg 961222
  */

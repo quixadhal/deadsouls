@@ -17,23 +17,26 @@
 inherit LIB_DAEMON;
 
 private mapping Stargates = ([]);
+static string SaveFile;
 
 static void create(){
     daemon::create();
+    SaveFile = save_file(SAVE_STARGATE);
     SetNoClean(1);
     eventLoad();
     set_heart_beat(60);
     if (!Stargates) Stargates = ([]);
+    unguarded( (: SaveObject, SaveFile, 1 :) );
 }
 
 void eventSave(){
-    unguarded( (: save_object, SAVE_STARGATE, 1 :) );
+    unguarded( (: SaveObject, SaveFile, 1 :) );
     return;
 }
 
 void eventLoad(){
-    if (file_size(SAVE_STARGATE __SAVE_EXTENSION__) > 0){
-        unguarded( (: restore_object, SAVE_STARGATE :) );
+    if(file_exists(SaveFile)){
+        unguarded( (: RestoreObject, SaveFile :) );
     }
     return;
 }

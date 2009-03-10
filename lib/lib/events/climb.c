@@ -1,5 +1,5 @@
 /*    /lib/climb.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    handles different methods of climbing
  *    created by Descartes of Borg 960120
  *    Version: @(#) climb.c 1.7@(#)

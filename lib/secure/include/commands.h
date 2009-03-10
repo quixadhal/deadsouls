@@ -9,6 +9,7 @@
 #define CMD_ENCRE             (DIR_SECURE_ADMIN_CMDS "/encre")
 #define CMD_END               (DIR_SECURE_ADMIN_CMDS "/end")
 #define CMD_IMC_SERVER_D      (DIR_SECURE_ADMIN_CMDS "/imc2d")
+#define CMD_LIVEUPGRADE       (DIR_SECURE_ADMIN_CMDS "/liveupgrade")
 #define CMD_LS                (DIR_CREATOR_CMDS "/ls")
 #define CMD_SAY               (DIR_PLAYER_CMDS "/say")
 #define CMD_SETREBOOT         (DIR_SECURE_ADMIN_CMDS "/setreboot")

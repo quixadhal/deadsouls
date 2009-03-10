@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/s_bazaar.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    A simple room example with a unique, wandering NPC
  *    Created by Descartes of Borg 960302
  */

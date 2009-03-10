@@ -1,5 +1,5 @@
 /*    /lib/jump.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    handles different methods of jumping
  *    created by Descartes of Borg 960117
  *    Version: @(#) jump.c 1.4@(#)

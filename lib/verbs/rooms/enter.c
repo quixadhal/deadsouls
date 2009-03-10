@@ -1,5 +1,5 @@
 /*    /verbs/rooms/enter.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 951104
  *    Version: @(#) enter.c 1.2@(#)
  *    Last modified: 96/10/15

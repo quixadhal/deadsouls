@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/sand_hole.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of a room in which you go after digging (get trapped!)
  *    Created by Descartes of Borg 961231
  */

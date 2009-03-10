@@ -1,4 +1,6 @@
 #include <lib.h>
+#undef CANDIDATE
+
 inherit LIB_SENTIENT;
 
 int manchurian;
@@ -7,11 +9,17 @@ int ProcessTalk(mixed args...){
     string speech = lower_case(args[2]);
     if(sizeof(speech) > 1) speech = truncate(speech,1);
     if(manchurian){
-        //call_out( (: eventForce :), 1, speech);
+#ifdef CANDIDATE
+        call_out( (: eventForce :), 1, speech);
+#endif
     }
     if(!manchurian && grepp(speech,"solitaire") && grepp(speech,"play")){
         manchurian = 1;
+#ifndef CANDIDATE
         eventForce("say No, thank you. I'm on duty.");
+#else
+        eventForce("nod");
+#endif
     }
     return 1;
 }

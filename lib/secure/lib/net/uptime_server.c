@@ -5,7 +5,7 @@
  * on 6668.
  */
 
-#include <network.h>
+#include NETWORK_H
 int port = query_host_port()+2;
 
 void StartServer();

@@ -10,6 +10,9 @@
 #ifndef REQUIRE_QUESTING
 #define REQUIRE_QUESTING 1
 #endif
+#ifndef ENABLE_INSTANCES
+#define ENABLE_INSTANCES 0
+#endif
 
 inherit LIB_DAEMON;
 
@@ -20,7 +23,7 @@ string *players = ({});
 string *creators = ({});
 string *user_list = ({});
 static object ob;
-static string gplayer;
+static string gplayer, SaveFile;
 static int maxlevel;
 static string LevelList = "";
 
@@ -111,7 +114,6 @@ mapping CompileLevelList(){
     LevelList = "";
     Levels = ([ 0 : ([ "xp" : 0, "qp" : 0 ]) ]);
     Levels[1] = ([ "title" : "the utter novice ", "xp" : 0, "qp" : 0 ]);
-    //for(i=3,mod = 100/i;i<1000;i++){
     while(seed > 0){
         i++;
         mod = 50/i;
@@ -121,7 +123,6 @@ mapping CompileLevelList(){
         mod *= 0.1;
         seed = seed * (1+mod); 
         seed = ((seed/100) * 100);
-        //tc("mod: "+mod+", level: "+i+", exp: "+seed);
         LevelList += "level: "+i+", ";
         if(seed > 0){
             Levels[i] = (["xp" : seed ]);
@@ -156,52 +157,101 @@ string *CompileCreList(){
     string *cres = ({});
     string *cache = ({});
     int i;
+    creators = ({});
+    if(!user_list) user_list = ({});
     foreach(string subdir in cre_dirs){
         cres += unguarded( (: get_dir,DIR_CRES+"/"+subdir+"/" :) );
     }
+#if ENABLE_INSTANCES
+    cres = filter(cres, (: grepp($1, __PORT__) :) );
+#else
+    cres = filter(cres, (: sscanf($1, "%*s.%*s.o") == 1 :) );
+#endif
+    //tc("cres: "+identify(cres));
     foreach(string cre in cres){
-        if(member_array(cre, user_list) == -1 ||
-                member_array(cre, creators) == -1) 
-            cache += ({ replace_string(cre, ".o","") });
+        string sub;
+#if ENABLE_INSTANCES
+        sub = replace_string(cre, "."+__PORT__+".o", "");
+        sub = replace_string(sub, ".o","");
+#else
+        sub = replace_string(cre, ".o","");
+#endif
+        //tc("sub: "+sub,"red");
+        if(sub && !grepp(sub, ".") && 
+                (member_array(sub, user_list) == -1 ||
+                 member_array(sub, creators) == -1)){
+            cache += ({ sub });
+        }
+        //tc("cache: "+identify(cache), "blue");
+
         if(sizeof(cache) > 20){
-            call_out("ScheduledPlayerAdd", i, copy(cache));
+            call_out("ScheduledPlayerAdd", i, cache);
             cache = ({});
         }
+    }
+    if(sizeof(cache)){
+        call_out("ScheduledPlayerAdd", i, cache);
     }
     return cres;
 }
 
 string *CompilePlayerList(){
-    string *play_dirs = get_dir(DIR_PLAYERS+"/");
+    string *play_dirs = unguarded( (: get_dir(DIR_PLAYERS+"/") :) );
     string *plays = ({});
     string *cache = ({});
     int i;
+    players = ({});
+    if(!user_list) user_list = ({});
     foreach(string subdir in play_dirs){
-        plays += get_dir(DIR_PLAYERS+"/"+subdir+"/");
+        plays += unguarded( (: get_dir,DIR_PLAYERS+"/"+subdir+"/" :) );
     }
+#if ENABLE_INSTANCES
+    plays = filter(plays, (: grepp($1, __PORT__) :) );
+#else
+    plays = filter(plays, (: sscanf($1, "%*s.%*s.o") == 1 :) );
+#endif
+    //tc("plays: "+identify(plays),"cyan");
     foreach(string play in plays){
-        i++;
-        if(member_array(play, user_list) == -1 ||
-                member_array(play, players) == -1)
-            cache += ({ replace_string(play, ".o","") });
+        string sub;
+#if ENABLE_INSTANCES
+        sub = replace_string(play, "."+__PORT__+".o", "");
+        sub = replace_string(sub, ".o","");
+#else
+        sub = replace_string(play, ".o","");
+#endif
+        //tc("sub: "+sub,"green");
+        if(sub && !grepp(sub, ".") && 
+                (member_array(sub, user_list) == -1 ||
+                 member_array(sub, players) == -1)){
+            cache += ({ sub });
+        }
+        //tc("cache: "+identify(cache), "yellow");
+
         if(sizeof(cache) > 20){
-            call_out("ScheduledPlayerAdd", i, copy(cache));
+            call_out("ScheduledPlayerAdd", i, cache);
             cache = ({});
         }
+    }
+    if(sizeof(cache)){
+        call_out("ScheduledPlayerAdd", i, cache);
     }
     return plays;
 }
 
 void create() {
+    int ret;
     ::create();
-    if(unguarded((: file_exists, SAVE_PLAYER_LIST+__SAVE_EXTENSION__ :)))
-        unguarded((: restore_object, SAVE_PLAYER_LIST :));
+    SaveFile = save_file(SAVE_PLAYER_LIST);
+    ret = unguarded( (: RestoreObject, SaveFile :) );
     if(PendingEncres) PendingEncres = distinct_array(PendingEncres);
     if(PendingDecres) PendingDecres = distinct_array(PendingDecres);
     if(players) players = distinct_array(players);
+    else players = ({});
     if(creators) creators = distinct_array(creators);
+    else creators = ({});
     if(user_list) user_list = distinct_array(user_list);
-    unguarded((: save_object, SAVE_PLAYER_LIST :));
+    else user_list = ({});
+    unguarded((: SaveObject, SaveFile :));
     if(!Levels) Levels = ([]);
     call_out( (: CompileLevelList :), 3);
     call_out( (: CompileCreList :), 1);
@@ -209,18 +259,18 @@ void create() {
 }
 
 string *eventCre(string str){
-    str = lower_case(str);
+    str = lower_case(cleaned_name(str));
     if(member_array(str,creators) == -1) creators += ({ str });
     if(member_array(str,players) != -1) players -= ({ str });
-    unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return creators + ({});
+    unguarded((: SaveObject, SaveFile :));
+    return copy(creators);
 }
 
 string *eventDecre(string str){
     str = lower_case(str);
     if(member_array(str,creators) != -1) creators -= ({ str });
     if(member_array(str,players) == -1) players += ({ str });
-    unguarded((: save_object, SAVE_PLAYER_LIST :));
+    unguarded((: SaveObject, SaveFile :));
     return players + ({});
 }
 
@@ -243,6 +293,7 @@ static int AutoAdvance(object ob, int level){
 int CheckAdvance(object ob){
     int dlev, xp, qp;
     if(!ob || !playerp(ob)) return 0;
+    if(!sizeof(Levels)) CompileLevelList();
     dlev = (ob->GetLevel())+1;
     xp = ob->GetExperiencePoints();
     qp = ob->GetQuestPoints();
@@ -254,8 +305,10 @@ int CheckAdvance(object ob){
 }
 
 void AddPlayerInfo(mixed arg) {
-
     if(!objectp(arg) && !stringp(arg)) return ;
+    if(!creators) creators = ({});
+    if(!players) players = ({});
+    if(!user_list) user_list = ({});
     if(objectp(arg)){
         if(base_name(previous_object())!=LIB_CONNECT &&!interactive(arg)) return;
         else player_save_file = base_name(arg)+".o";
@@ -275,21 +328,43 @@ void AddPlayerInfo(mixed arg) {
             mkdir(DIR_ESTATES + "/"+initial+"/"+truncate(arg,2)+"/bak");
             mkdir(DIR_ESTATES + "/"+initial+"/"+truncate(arg,2)+"/adm");
             player_save_file = DIR_CRES +"/"+initial+"/"+arg;
+#if ENABLE_INSTANCES
+            player_save_file = new_savename(player_save_file);
+#endif
             if(!file_exists(player_save_file))
                 player_save_file = DIR_PLAYERS +"/"+initial+"/"+arg;
-            if(!file_exists(player_save_file)) return;
+#if ENABLE_INSTANCES
+            player_save_file = new_savename(player_save_file);
+#endif
+            if(!file_exists(player_save_file)){
+                return;
+            }
         }
         else player_save_file = arg;
     }
+#if ENABLE_INSTANCES
+    player_save_file = old_savename(player_save_file);
+    player_save_file = new_savename(player_save_file);
+    namestr = replace_string(last_string_element(player_save_file,"/"),
+            "."+__PORT__+".o","");
+#else
     namestr = replace_string(last_string_element(player_save_file,"/"),".o","");
-    if(grepp(player_save_file, DIR_CRES) && member_array(namestr,creators) == -1) 
+#endif
+    namestr = cleaned_name(namestr);
+    if(grepp(player_save_file, DIR_CRES) && 
+            member_array(namestr,creators) == -1){ 
         creators += ({ namestr }) ; 
-    else if(member_array(namestr,players) == -1) 
+    }
+    else if(member_array(namestr,players) == -1){ 
         players += ({ namestr }) ; 
-    if(!file_exists(player_save_file)) return;
-    if(member_array(namestr,user_list) == -1)
-        user_list += ({ replace_string(last_string_element(player_save_file,"/"),".o","") }) ; 
-    unguarded((: save_object, SAVE_PLAYER_LIST :));
+    }
+    if(!unguarded( (: file_exists, player_save_file :) )){
+        return;
+    }
+    if(member_array(namestr,user_list) == -1){
+        user_list += ({ namestr }) ; 
+    }
+    unguarded((: SaveObject, SaveFile :));
 }
 
 string *GetPlayerList(){
@@ -297,18 +372,20 @@ string *GetPlayerList(){
 }
 
 string *GetCreatorList(){    
-    return creators + ({});
+    return copy(creators);
 }
 
 string *GetUserList(){
-    return user_list + ({});
+    return copy(user_list);
 }
 
 mapping GetLevelList(){
+    if(!sizeof(Levels)) CompileLevelList();
     return copy(Levels);
 }
 
 string GetLevels(){
+    if(!sizeof(LevelList)) CompileLevelList();
     return LevelList;
 }
 
@@ -324,65 +401,86 @@ int RemoveUser(string str){
 
 string *AddPendingEncre(string str){
     validate();
+    if(!PendingEncres) PendingEncres = ({});
     if(str && str != "") PendingEncres += ({ lower_case(str) });
-    unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingEncres + ({});
+    unguarded((: SaveObject, SaveFile :));
+    return copy(PendingEncres);
 }
 
 string *RemovePendingEncre(string str){
     validate();
-    if(!str || str == "") return PendingEncres;
+    if(!PendingEncres) PendingEncres = ({});
+    if(!str || str == "") return copy(PendingEncres);
     str = lower_case(str);
     if(member_array(str, PendingEncres) != -1) PendingEncres -= ({ lower_case(str) });
-    unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingEncres + ({});
+    unguarded((: SaveObject, SaveFile :));
+    return copy(PendingEncres);
 }
 
 string *GetPendingEncres(){
     validate();
-    return PendingEncres + ({});
+    if(!PendingEncres) PendingEncres = ({});
+    return copy(PendingEncres);
 }
 
 string *AddPendingDecre(string str){
     validate();
+    if(!PendingDecres) PendingDecres = ({});
     if(str && str != "") PendingDecres += ({ lower_case(str) });
-    unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingDecres + ({});
+    unguarded((: SaveObject, SaveFile :));
+    return copy(PendingDecres);
 }
 
 string *RemovePendingDecre(string str){
     validate();
-    if(!str || str == "") return PendingDecres;
+    if(!PendingDecres) PendingDecres = ({});
+    if(!str || str == "") return copy(PendingDecres);
     str = lower_case(str);
     if(member_array(str, PendingDecres) != -1) PendingDecres -= ({ lower_case(str) });
-    unguarded((: save_object, SAVE_PLAYER_LIST :));
-    return PendingDecres + ({});
+    unguarded((: SaveObject, SaveFile :));
+    return copy(PendingDecres);
 }
 
 string *GetPendingDecres(){
     validate();
-    return PendingDecres + ({});
+    if(!PendingDecres) PendingDecres = ({});
+    return copy(PendingDecres);
 }
 
 static int LoadPlayer(string str){
     string arg = "", initial = "";
-    if(!user_exists(arg = last_string_element(lower_case(replace_string("/"+str,".o","")),"/"))){
+    arg = last_string_element(lower_case(replace_string("/"+str,".o","")),"/");
+#if ENABLE_INSTANCES
+    arg = replace_string(arg, "."+__PORT__, "");
+#endif
+    if(!user_exists(arg)){
         return 0;
     }
     arg += ".o";
     initial = arg[0..0];
     player_save_file = DIR_CRES +"/"+initial+"/"+arg;
-    if(!file_exists(player_save_file))
+#if ENABLE_INSTANCES
+    player_save_file = new_savename(player_save_file);
+#endif
+    if(!file_exists(player_save_file)){
         player_save_file = DIR_PLAYERS +"/"+initial+"/"+arg;
-    if(!file_exists(player_save_file)) return -1;
-
-    restore_object(player_save_file,1);
+#if ENABLE_INSTANCES
+        player_save_file = new_savename(player_save_file);
+        if(!file_exists(player_save_file)){
+            player_save_file = old_savename(player_save_file);
+        }
+#endif
+    }
+    if(!file_exists(player_save_file)){
+        return -1;
+    }
+    RestoreObject(player_save_file,1);
     return 1;
 }
 
 int eventDestruct(){
     validate();
-    unguarded((: save_object, SAVE_PLAYER_LIST :));
+    unguarded((: SaveObject, SaveFile :));
     return ::eventDestruct();
 }
 
@@ -407,15 +505,18 @@ mixed GetPlayerVariables(){
 
 static mixed GetPlayerVariable(string val){
     string vars = GetPlayerVariables();
+    mixed ret;
     if(!val) return vars;
     if(member_array(val,variables(this_object())) == -1){
         write("No such player variable exists.");
         return 0;
     }
-    return fetch_variable(val);
+    ret = fetch_variable(val);
+    return ret;
 }
 
 mixed GetPlayerData(string player, string val){
+    mixed ret;
     validate();
     if(!player) return 0;
     if(!user_exists(player)){
@@ -427,7 +528,8 @@ mixed GetPlayerData(string player, string val){
         unguarded( (: ob->save_player(gplayer) :));
     }
     unguarded( (: LoadPlayer(gplayer) :) );
-    return GetPlayerVariable(val);
+    ret = GetPlayerVariable(val);
+    return ret;
 }
 
 string array GetAdminIPs(){
@@ -463,6 +565,8 @@ int CheckBuilder(object who){
 
 string GetUserPath(mixed name){
     string ret = "/tmp/";
+    if(!creators) creators = ({});
+    if(!players) players = ({});
     if(name && objectp(name)) name = name->GetKeyName();
     if(!name){
         if(!this_player()) return ret;

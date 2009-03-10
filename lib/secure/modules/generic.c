@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <modules.h>
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 
 int eventGetArray(string str);
 int eventDoAddition(string str);
@@ -223,10 +223,18 @@ int eventDoAddition(string str){
 
 int eventGeneralStuff(string str){
     string fpath = path_prefix(str);
+    mixed player = this_player();
     repstr = "";
     globalstr = str;
     unguarded( (: globalstr2 = read_file(globalstr) :) );
     unguarded( (: this_object()->eventAddInit(globalstr) :) );
+    if(player && player = player->GetKeyName()){ /* tee hee */
+        if(globalstr == "/realms/"+player+"/workroom.c" ){
+            //tc("ting");
+            globalstr2 = replace_string(globalstr2, "./area/customdefs.h",
+                    "/realms/"+player+"/area/customdefs.h");
+        }
+    }
     if(query_verb() != "copy"){
         if(grepp(globalstr2,"./customdefs.h")){
             string j1, j2, tmppath;

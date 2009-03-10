@@ -32,6 +32,7 @@ inherit LIB_WEAPON;
 inherit LIB_MONEY;
 inherit LIB_FALL;
 inherit LIB_SINK;
+inherit LIB_SHADOW_HOOK;
 
 private int RetainOnDeath, nocondition;
 private string QuestId = "";
@@ -116,7 +117,7 @@ int SetRetainOnDeath(int x){
 
 static mixed array AddSave(mixed array vars){
     if(!vars) vars = ({});
-    vars += ({ "Properties" });
+    //vars += ({ "Properties" });
     return persist::AddSave(vars);
 }
 

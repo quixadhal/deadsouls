@@ -1,5 +1,5 @@
 /*    /verbs/items/steal.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    steal WRD from LIV
  *    steal OBJ from LIV
  *    created by Descartes of Borg 951218
@@ -61,6 +61,7 @@ mixed do_steal_wrd_from_liv(string wrd, object liv) {
 }
 
 mixed do_steal_obj_from_liv(object item, object liv) {
+    if(!item) return "That's not here.";
     if( environment(item) != liv ) {
         this_player()->eventPrint((string)liv->GetName() + " does not have that.");
         return 1;

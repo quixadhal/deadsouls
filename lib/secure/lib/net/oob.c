@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <dirs.h>
 #include <daemons.h>
-#include <network.h>
+#include NETWORK_H
 #include <message_class.h>
 
 inherit LIB_SOCKET;

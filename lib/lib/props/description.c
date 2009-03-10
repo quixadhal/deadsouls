@@ -1,5 +1,5 @@
 /*    /lib/props/description.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles the describing of objects
  *    Created by Descartes of Borg 961222
  *    Version: @(#) description.c 1.1@(#)

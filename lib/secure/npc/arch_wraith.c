@@ -1,6 +1,6 @@
 #include <position.h>
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_SENTIENT;
 object *enemies = ({});

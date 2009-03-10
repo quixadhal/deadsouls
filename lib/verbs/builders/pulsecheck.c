@@ -2,7 +2,7 @@
 #include <daemons.h>
 #include <damage_types.h>
 #include <modules.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <commands.h>
 
 inherit LIB_VERB;

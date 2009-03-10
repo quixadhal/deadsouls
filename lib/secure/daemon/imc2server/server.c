@@ -25,7 +25,7 @@ static void validate(){
 void create(){
     ::create();
     if(object_file(SAVE_IMC2_SERVER)){
-        unguarded( (: restore_object, SAVE_IMC2_SERVER, 1 :) );
+        unguarded( (: RestoreObject, SAVE_IMC2_SERVER, 1 :) );
     }
 }
 
@@ -336,7 +336,7 @@ string SetRouterPort(string str){
 
 int eventDestruct(){
     validate();
-    unguarded( (: save_object(SAVE_IMC2_SERVER) :) );
+    unguarded( (: SaveObject(SAVE_IMC2_SERVER) :) );
     server_log("I am being destructed by: \n"+get_stack()+
             "\n"+identify(previous_object(-1)));
     daemon::eventDestruct();

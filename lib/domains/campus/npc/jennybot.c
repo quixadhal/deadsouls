@@ -6,7 +6,7 @@ object player, bot, ob, noobster;
 static string name, watchline;
 static int count, active, tip, tipnumber, current_tip, hb, mooch, greeting, greetwait;
 string *watchlist = ({});
-static string save_file = "/domains/campus/save/jennybot.o";
+static string save_file = save_file("/domains/campus/save/jennybot");
 
 mixed GreetingResponse(object who, mixed foo, string message, mixed bar){
     int greet;
@@ -41,9 +41,8 @@ string LongDesc(){
 
 static void create(){
     watchlist = ({});
-    AddSave(({ "players" }) );
     ::create();
-    restore_object(save_file);
+    RestoreObject(save_file);
     SetKeyName("jennybot");
     SetId(({"guide","guidebot","fembot","bot","jennifer","niffy","android","jenny","robot","woman","lady"}));
     SetAdjectives(({"orientation","young","female","polite","pretty","guide","newbie","simple","extremely"}));
@@ -154,7 +153,7 @@ int refreshlist(){
         mooch = 0;
     }
     watchlist = distinct_array(watchlist);
-    unguarded( (: save_object(save_file,1) :) );
+    unguarded( (: SaveObject(save_file,1) :) );
     return 1;
 }
 

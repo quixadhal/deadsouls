@@ -90,6 +90,13 @@ mapping SetCommandResponses(mapping mp){
     return (CommandResponses = expand_keys(mp));
 }
 
+mapping AddCommandResponses(mapping mp){
+    mapping ret = add_maps(CommandResponses, mp, -1);
+    CommandResponses = ret;
+    //tc("AddCommandResponses: "+identify(CommandResponses));
+    return ret;
+}
+
 mixed AddEmoteResponse(string verb, mixed val){
     return (EmoteResponses[verb] = val);
 }
@@ -136,6 +143,12 @@ int RemoveRequestResponse(string str){
 
 mapping SetRequestResponses(mapping mp){
     return (RequestResponses = expand_keys(mp));
+}
+
+mapping AddRequestResponses(mapping mp){
+    mapping ret = add_maps(RequestResponses, mp, -1);
+    RequestResponses = ret;
+    return RequestResponses;
 }
 
 mixed AddTalkResponse(string str, mixed val){
@@ -217,9 +230,15 @@ int GetPermitLoad(){
 
 /* ******************    /lib/sentient.c events      **************** */
 mixed eventAsk(object who, string str){
-    string cmd, args;
+    string cmd, args, lang, prof;
 
     if( !str || str == "" ) return 0;
+    lang = who->GetDefaultLanguage();
+    prof = who->GetLanguageLevel(lang);
+    str = translate(str, prof);
+    prof = this_object()->GetLanguageLevel(lang);
+    str = translate(str, prof);
+    //debug("eventAsk("+identify(who)+", "+str+")"); 
     if( sscanf(str, "%s %s", cmd, args) != 2 ){
         cmd = str;
         args = 0;
@@ -253,6 +272,16 @@ varargs mixed eventReceiveEmote(object who, string verb, string info){
 }
 
 mixed eventConsult(object who, string str){
+    string lang, prof;
+
+    if( !str || str == "" || !ConsultResponses) return 0;
+    lang = who->GetDefaultLanguage();
+    prof = who->GetLanguageLevel(lang);
+    str = translate(str, prof);
+    prof = this_object()->GetLanguageLevel(lang);
+    str = translate(str, prof);
+    //debug("eventConsult("+identify(who)+", "+str+")");
+
     if( !str || str == "" || !ConsultResponses) return 0;
     str = remove_article(str);
     if( !ConsultResponses[str] ){
@@ -271,7 +300,16 @@ mixed eventConsult(object who, string str){
 }
 
 mixed eventRequest(object who, string str){
+    string lang, prof;
+
     if( !str || str == "" ) return 0;
+    lang = who->GetDefaultLanguage();
+    prof = who->GetLanguageLevel(lang);
+    str = translate(str, prof);
+    prof = this_object()->GetLanguageLevel(lang);
+    str = translate(str, prof);
+    //debug("eventRequest("+identify(who)+", "+str+")");
+
     if( !RequestResponses[str] ){
         if( !RequestResponses["default"] ) return 0;
         else if( stringp(RequestResponses["default"]) ){

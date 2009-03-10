@@ -3,19 +3,9 @@
 #include <cfg.h>
 #include <save.h>
 #include <daemons.h>
-#include <network.h>
+#include NETWORK_H
 
-#define WGET_D "/secure/daemon/luget"
-#ifndef WEB_SOURCE_IP
-#define WEB_SOURCE_IP "204.209.44.12"
-#endif
-#ifndef WEB_SOURCE_NAME
-#define WEB_SOURCE_NAME "lpmuds.net"
-#endif
 #define WEB_SOURCE_PORT 80
-#ifndef SAVE_LIVEUPGRADE
-#define SAVE_LIVEUPGRADE   DIR_SECURE_SAVE "/liveupgrade"
-#endif
 
 inherit LIB_DAEMON;
 
@@ -103,7 +93,7 @@ int eventRevert(string revert_path){
 void eventReloads(){
     cp("/secure/daemon/update.patch","/secure/daemon/update.c");
     reload(UPDATE_D);
-    reload(WGET_D);
+    reload(LUGET_D);
 }
 
 int eventCopy(string element){
@@ -265,7 +255,7 @@ mixed cmd(string str) {
         player->eventPrint("Cancelled.");
         player = 0;
         RELOAD_D->eventReload(this_object(), 2);
-        reload(WGET_D);
+        reload(LUGET_D);
         return 1;
     }
     if(oob){
@@ -326,7 +316,7 @@ mixed cmd(string str) {
         else if(this_player()) player = this_player();
         else player = this_object();
 
-        if(WGET_D->GetUpgrading()){
+        if(LUGET_D->GetUpgrading()){
             player->eventPrint("An upgrade in already occurring. Please wait for it to complete.");
             return 1;
         }
@@ -339,7 +329,7 @@ mixed cmd(string str) {
                 OOB_D->GetFile(mud,upgrades_txt+"/upgrades.txt");
             }
             else {
-                WGET_D->GetFile(WEB_SOURCE_IP, upgrade_prefix+"/upgrades.txt",WEB_SOURCE_NAME,
+                LUGET_D->GetFile(WEB_SOURCE_IP, upgrade_prefix+"/upgrades.txt",WEB_SOURCE_NAME,
                         "/secure/upgrades/txt/list.txt",WEB_SOURCE_PORT);
             }
             call_out( (: cmd :), 5, orig_str);
@@ -356,7 +346,7 @@ mixed cmd(string str) {
             OOB_D->eventMajorUpgrade(mud, allnames);
         }
         else {
-            WGET_D->eventMajorUpgrade(WEB_SOURCE_IP, allnames,WEB_SOURCE_NAME);
+            LUGET_D->eventMajorUpgrade(WEB_SOURCE_IP, allnames,WEB_SOURCE_NAME);
         }
         rm(upgrades_txt+"/list.txt");
         player->eventPrint("Full upgrade begun.");
@@ -375,7 +365,7 @@ mixed cmd(string str) {
     }
     else {
         player->eventPrint("Requesting the file \""+file+"\" from "+WEB_SOURCE_IP);
-        WGET_D->GetFile(WEB_SOURCE_IP, upgrade_prefix+file);
+        LUGET_D->GetFile(WEB_SOURCE_IP, upgrade_prefix+file);
     }
     return 1;
 }

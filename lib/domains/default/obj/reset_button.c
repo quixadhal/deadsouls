@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_DUMMY; // These do not show up in desc, but you can look at them
 inherit LIB_PRESS; // Makes the item pressable

@@ -1,5 +1,5 @@
 /*    /lib/props/value.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Basic value attributes
  *    Created by Descartes of Borg 970101
  *    Version: @(#) value.c 1.1@(#)

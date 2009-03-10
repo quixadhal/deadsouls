@@ -1,5 +1,5 @@
 /*    /secure/cmds/creator/more.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    more FILE
  *    created by Descartes of Borg 951104
  */

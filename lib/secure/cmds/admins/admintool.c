@@ -1,7 +1,6 @@
 #include <lib.h>
 #include <privs.h>
 #include <daemons.h>
-#include <config.h>
 
 inherit LIB_DAEMON;
 
@@ -280,7 +279,7 @@ int ToggleMudLock(){
     int num;
 
     validate();
-    line_string = read_file("/secure/include/config.h");
+    line_string = read_file(CONFIG_H);
     if(!sizeof(line_string)) write("Couldn't read file.");
     line_array = explode(line_string, "\n");
     if(!sizeof(line_array)) write("Array is zero length.");
@@ -292,7 +291,7 @@ int ToggleMudLock(){
     }
     if(sscanf(lockline,"%s%d",junk, num) < 2) {
         write("Operation failed. You need to hand-"+
-                "edit /secure/include/config.h immediately.");
+                "edit "+CONFIG_H+" immediately.");
         return 0;
     }
     if(num == 0) {
@@ -305,7 +304,7 @@ int ToggleMudLock(){
     }
     newline = junk + num;
     newfile = replace_string(line_string, lockline, newline);
-    write_file("/secure/include/config.h",newfile,1);
+    write_file(CONFIG_H,newfile,1);
     load_object("/secure/cmds/creators/update")->cmd("/secure/daemon/master");
     load_object("/secure/cmds/creators/update")->cmd("/secure/lib/connect");
     write("\n");
@@ -361,7 +360,7 @@ varargs int eventChangeEmail(string str, int auto){
         return 0;
     }
     str == replace_string(str, "#", "");
-    line_string = read_file("/secure/include/config.h");
+    line_string = read_file(CONFIG_H);
     if(!sizeof(line_string)) write("Couldn't read file.");
     line_array = explode(line_string, "\n");
     if(!sizeof(line_array)) write("Array is zero length.");
@@ -372,14 +371,14 @@ varargs int eventChangeEmail(string str, int auto){
     }
     if(sscanf(lockline,"%s\"%s\"",junk, email) < 2) {
         write("Operation failed. You need to hand-"+
-                "edit /secure/include/config.h immediately.");
+                "edit "+CONFIG_H+" immediately.");
         if(!auto) Menu();
         return 0;
     }
 
     newline = junk + "\""+str+"\"";
     newfile = replace_string(line_string, lockline, newline);
-    write_file("/secure/include/config.h",newfile,1);
+    write_file(CONFIG_H,newfile,1);
     load_object("/secure/cmds/creators/update")->cmd("/secure/sefun/sefun");
     write("\n");
     if(!auto) Menu();
@@ -735,7 +734,7 @@ int DoRid(string who) {
                 ob);
         ob->eventForce("quit");
     }
-    file = save_file(ridded) + __SAVE_EXTENSION__;
+    file = player_save_file(ridded);
     write("Target is: "+ridded);
     write("Please enter the reason for ridding " + ridded + ".\n");
     unguarded( (: rm(file) :) );

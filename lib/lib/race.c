@@ -7,7 +7,6 @@
  */
 
 #include <lib.h>
-#include <config.h>
 #include <daemons.h>
 #include <armor_types.h>
 #include <damage_types.h>
@@ -32,19 +31,22 @@ int GetRespiration(){
 }
 
 int SetRespiration(int i){
+    if(i & R_VACUUM){
+        SetResistance(ANOXIA, "immune");
+    }
     return Respiration = i;
 }
 
-varargs int CanBreathe(object what, object where){
+varargs int CanBreathe(object what, object where, int dbg){
     object env = room_environment(this_object());
     int medium, restype, roomres; 
 
     if(this_object()->GetGodMode()){
-        //tc("CanBreathe("+identify(what)+", "+identify(where)+"): godmode");
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): godmode");
         return 1;
     }
     if(!env){
-        //tc("CanBreathe("+identify(what)+", "+identify(where)+"): noenv");
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): noenv");
         return 0;
     }
     medium = env->GetMedium();
@@ -52,40 +54,40 @@ varargs int CanBreathe(object what, object where){
     roomres = env->GetRespirationType();
 
     if(restype & roomres){
-        //tc("CanBreathe("+identify(what)+", "+identify(where)+"): a"+ 1);
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): a"+ 1);
         return 1;
     }
     if(roomres && (restype & roomres)){
-        //tc("CanBreathe("+identify(what)+", "+identify(where)+"): b"+ 1);
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): b"+ 1);
         return 1;
     }
     if(restype & R_VACUUM){
-        //tc("CanBreathe("+identify(what)+", "+identify(where)+"): c"+ 1);
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): c"+ 1);
         return 1;
     }
     if(roomres && !(restype & roomres)){
-        //tc("CanBreathe("+identify(what)+", "+identify(where)+"): d"+ 0);
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): d"+ 0);
         return 0;
     }
 
     if((medium == MEDIUM_AIR || medium == MEDIUM_LAND || 
                 medium == MEDIUM_SURFACE) && (restype & R_AIR) ){
-        //tc("CanBreathe("+identify(what)+", "+identify(where)+"): e"+ 1);
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): e"+ 1);
         return 1;
     }
 
     if((medium == MEDIUM_WATER || medium == MEDIUM_SURFACE)
             && (restype & R_WATER) ){
-        //tc("CanBreathe("+identify(what)+", "+identify(where)+"): f"+ 1);
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): f"+ 1);
         return 1;
     }
 
     if( medium == MEDIUM_METHANE && (restype & R_METHANE) ){
-        //tc("CanBreathe("+identify(what)+", "+identify(where)+"): g"+ 1);
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): g"+ 1);
         return 1;
     }
 
-    //tc("CanBreathe("+identify(what)+", "+identify(where)+"): h"+ 0);
+    if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): h"+ 0);
     return 0;
 }
 

@@ -1,5 +1,5 @@
 /*    /verbs/items/open.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 960115
  *    Version: @(#) open.c 1.2@(#)
  *    Last modified: 96/10/15

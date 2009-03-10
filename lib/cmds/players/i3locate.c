@@ -1,4 +1,4 @@
-/*    /cmds/player/locate.c
+/*    /cmds/players/i3locate.c
  *    from the Dead Souls LPC Library
  *    Intermud 3 command to locate people on other MUDs
  *    created by Descartes of Borg 950624
@@ -10,14 +10,14 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
-    if( !args || args == "" ) return "Locate whom?";
+    if( !args || args == "" ) return "i3locate whom?";
     SERVICES_D->eventSendLocateRequest(convert_name(args));
-    message("system", "Locate query sent.", this_player());
+    message("system", "i3locate query sent.", this_player());
     return 1;
 }
 
 void help() {
-    message("help", "Syntax: <locate [person]>\n\n"
+    message("help", "Syntax: i3locate [person]\n\n"
             "This command allows you to know on which MUDs connected "
             "through the Intermud 3 network have someone using the "
             "name you specify.  Note that this person may not actually be "

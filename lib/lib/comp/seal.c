@@ -1,5 +1,5 @@
 /*    /lib/comp/seal.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    Composite component of a closeable and lockable thing
  *    Created by Descartes of Borg 961221
  *    Version: @(#) seal.c 1.2@(#)

@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 inherit LIB_ITEM;
 inherit LIB_PRESS;
 
@@ -52,6 +52,7 @@ mixed eventPress(object who, string where) {
             " appears!",who);
     return 1;
 }
+
 void heart_beat(){
     object *holders = filter(containers(this_object()),
             (: interactive($1) :) );

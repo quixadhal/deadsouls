@@ -11,7 +11,7 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
-    object ob;
+    object ob, dest;
     string file, res, nom;
 
     if( args == "" || !args ) return "Clone what?";
@@ -32,7 +32,8 @@ mixed cmd(string args) {
         }
         return 1;
     }
-    if( !((int)ob->eventMove(this_player())) &&
+    dest = ( living(ob) ? environment(this_player()) : this_player() );
+    if( !((int)ob->eventMove(dest)) &&
             !((int)ob->eventMove(environment(this_player()))) ) {
         message("system", "Failed to properly move the object.",
                 this_player());

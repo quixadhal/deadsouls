@@ -2,7 +2,6 @@
 #define __NETWORK_H 
 
 #include <socket.h> 
-//#include <config.h>
 
 #define MUD                       0 
 #define STREAM                    1 

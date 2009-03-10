@@ -1,12 +1,12 @@
 #include <lib.h>
-#include <config.h>
+#include <save.h>
 #include <daemons.h>
 #include <runtime_config.h>
 
 inherit LIB_DAEMON;
 string *all_dirs = ({});
 string *all_files = ({});
-static string SaveFiles = "/secure/save/files.o";
+static string SaveFiles = save_file(SAVE_FILES);
 int ftilt, dtilt;
 string globaltemp;
 
@@ -36,7 +36,7 @@ void heart_beat(){
         }
     }
     Report();
-    unguarded( (: save_object(SaveFiles) :) );
+    unguarded( (: SaveObject(SaveFiles) :) );
     set_heart_beat(0);
 }
 
@@ -162,7 +162,7 @@ static void create() {
 #endif
     daemon::create();
     if(file_exists(SaveFiles)){
-        restore_object(SaveFiles);
+        RestoreObject(SaveFiles);
     }
     if(query_os_type() != "windows" && MASTER_D->GetPerfOK()){
         catch( ReadDir("/") );
@@ -171,6 +171,6 @@ static void create() {
 }
 
 int eventDestruct(){
-    unguarded( (: save_object(SaveFiles) :) );
+    unguarded( (: SaveObject(SaveFiles) :) );
     return ::eventDestruct();
 }

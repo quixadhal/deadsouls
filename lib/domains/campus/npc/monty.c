@@ -44,7 +44,7 @@ static void create() {
     SetRace("human");
     SetGender("male");
     SetNoClean(1);
-    if(sizeof(SaveFile)) restore_object(SaveFile);
+    if(sizeof(SaveFile)) RestoreObject(SaveFile);
     playing = 0;
     response = "";
     SetAutoStand(1);
@@ -64,7 +64,7 @@ int eventBeginPlay(){
     eventForce("say I've switched "+percent(switches,runs)+"% "
             "of the time. My win rate is "+
             percent(wins,run)+"%.");
-    unguarded( (: save_object(SaveFile,1) :) );
+    unguarded( (: SaveObject(SaveFile,1) :) );
     eventForce("push a button on a pedestal");
     eventForce("push button on pedestal");
     return 1;

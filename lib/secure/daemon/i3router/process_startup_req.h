@@ -249,7 +249,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
 
     if(mudinfo[info[2]] && sizeof(mudinfo[info[2]]) && mudinfo[info[2]]["password"] != newinfo["password"]){
         // if MUD is already known, not connected, and wrong password
-        if(newinfo["ip"]==mudinfo[info[2]]["ip"] && info[2] != "Dead Souls"){
+        if(newinfo["ip"]==mudinfo[info[2]]["ip"]){
             // same IP as last time and it isn't Dead Souls
             server_log("Wrong password, but right IP");
             trr("Expected "+mudinfo[info[2]]["password"]+
@@ -262,7 +262,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
               }));
         }
         else{
-            trr("wrong password, and from a new IP (or a mud named Dead Souls)","red");
+            trr("wrong password, and from a new IP","red");
             trr("---\n","blue");
             if(!bad_connects[newinfo["ip"]]) bad_connects[newinfo["ip"]] = 1;
             else bad_connects[newinfo["ip"]] = bad_connects[newinfo["ip"]] + 1;

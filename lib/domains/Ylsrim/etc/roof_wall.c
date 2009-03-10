@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/roof_wall.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of climbing down
  *    Created by Descartes of Borg 961222
  */

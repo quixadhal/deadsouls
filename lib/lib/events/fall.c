@@ -1,9 +1,11 @@
-#include <rooms.h>
+#include ROOMS_H
+#include <daemons.h>
 #include <position.h>
 #include <medium.h>
 #include <message_class.h>
 
 mixed eventFall(){
+    string rvoid = ROOMS_D->GetVoid(this_object());
     object env = environment();
     mixed rumbo = 0;
     mixed tmprumbo = 0;
@@ -27,7 +29,7 @@ mixed eventFall(){
         if(err || !rumbo){
             log_file("runtime","\n"+timestamp()+" "+identify(this_object())+
                     " could not load "+identify(rumbo)+" to fall into.\n");
-            err = catch(rumbo = load_object(ROOM_VOID));
+            err = catch(rumbo = load_object(rvoid));
         }
         if(err || !rumbo){
             return 0;

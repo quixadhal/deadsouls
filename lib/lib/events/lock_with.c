@@ -1,5 +1,5 @@
 /*    /lib/events/lock_with.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    The indirect object of locks and unlocks (a key)
  *    Created by Descartes of Borg 960121
  */

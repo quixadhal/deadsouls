@@ -13,9 +13,9 @@ mixed cmd(string args) {
 
     file = MONEY_DIR + (string)previous_object()->GetKeyName();
     account = ([]);
-    if( !file_exists(file + __SAVE_EXTENSION__) )
+    if( !file_exists(save_file(file)) )
         return "You have no bank account on the old Dead Souls.";
-    restore_object(file);
+    RestoreObject(file);
     foreach(string bank, mapping data in account) {
         foreach(string curr, int val in data) {
             float tmp;
@@ -30,7 +30,7 @@ mixed cmd(string args) {
     if( previous_object()->AddBank("Mariner's Bank of Praxis", "electrum",
                 to_int(currency_value(net_worth, "electrum")))
             < 0 ) return "An error occurred in conversion.";
-    unguarded((: rm, file + __SAVE_EXTENSION__ :));
+    unguarded((: rm, save_file(file) :));
     previous_object()->eventPrint("You should now save, since a game crash "
             "between now and your next save will "
             "lose all money frm your newly created "

@@ -1,5 +1,5 @@
 /*    /verbs/rooms/jump.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    jump in OBJ
  *    jump into OBJ
  *    jump off OBJ

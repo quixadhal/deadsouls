@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/shovel.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of how to code a digging tool
  *    Created by Descartes of Borg 961231
  */

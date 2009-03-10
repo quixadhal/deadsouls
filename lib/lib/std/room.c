@@ -11,8 +11,7 @@
 #endif
 
 #include <lib.h>
-#include <rooms.h>
-#include <config.h>
+#include ROOMS_H
 #include <daemons.h>
 #include <function.h>
 #include <medium.h>
@@ -901,7 +900,8 @@ int eventMove(){ return 0; }
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     object *targs;
     int msg_class;
-    targs = filter(all_inventory(), (: (int)$1->is_living() :));
+    targs = filter(all_inventory(), 
+            (: $1->is_living() || $1->GeteventPrints() :));
 
     if( !arg2 && !arg3 ){
         msg_class = MSG_ENV;
@@ -948,6 +948,13 @@ static void create(){
             replace_program(tmp[0]);
         }
     }
+}
+
+int eventDestruct(){
+    if(GetPersistent()){
+        unguarded( (: SaveObject() :) );
+    }
+    return ::eventDestruct();
 }
 
 int CanReceive(object ob){
@@ -1185,7 +1192,7 @@ varargs mixed DestructEmptyVirtual(object ob){
             (: !inherits(LIB_BASE_DUMMY, $1) :) );
     if(!sizeof(inv)){
         all_inventory(this_object())->eventDestruct();
-        return ::eventDestruct();
+        return eventDestruct();
     }
 }
 
@@ -1201,6 +1208,7 @@ void CompileNeighbors(mixed coords){
     int x, x2;
     int y, y2;
     int a, b, c;
+    if(!Neighbors) Neighbors = ({});
     if(sizeof(Neighbors) || !(MASTER_D->GetPerfOK())) return;
     if(!sizeof(Coords)){
         mixed crds = ROOMS_D->GetCoordinates(this_object());

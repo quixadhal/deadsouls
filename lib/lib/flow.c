@@ -1,11 +1,15 @@
 /* Eventually this will handle other kinds of flow
  * materials, but for now it is hardcoded just to be water.
+ * Handle this with EXTREME care. It can very easily
+ * overwhelm your mud.
  */
 
 #include <lib.h>
+#include ROOMS_H
 #include <vendor_types.h>
 #include <meal_types.h>
 #include <medium.h>
+#include <respiration_types.h>
 
 inherit LIB_FLASK;
 mixed *neighbors = ({});
@@ -17,7 +21,7 @@ mixed *fourth = ({});
 static int press;
 static string FlowType = "water";
 static string ThisFile;
-static int HBOverride, orig_medium, DoorStopped = 1;
+static int HBOverride, orig_medium, orig_resp, DoorStopped = 1;
 
 void shb(int i){
     if(!HBOverride) set_heart_beat(i);
@@ -28,7 +32,7 @@ void create(){
     SetKeyName("flow object");
     SetId( ({"flow","flood","object","water","overflow"}) );
     SetAdjectives( ({"flow","flood"}) );
-    SetShort("a flood");
+    SetShort("some water");
     SetLong("This is an overflow of water.");
     SetMass(20);
     SetInvis(1);
@@ -53,7 +57,9 @@ void eventFlood(mixed targets){
     if(!env) return;
     foreach(mixed room in scramble_array(targets)){
         mixed flooder;
+        object arch = load_object(ROOM_ARCH);
         //tc("room: "+identify(room),"white");
+        if(!room) break;
         if(environment() == room) continue;
         if(press < 2) break;
         flooder = filter(all_inventory(room),
@@ -70,6 +76,7 @@ void eventFlood(mixed targets){
             flood = flooder->eventMove(room);
             if(!flood) continue;
             tell_room(room,"This area starts flooding with water!");
+            tell_room(arch,base_name(room)+" has been flooded.");
             //tc("flooder: "+identify(flooder)+", env: "+
             //identify(environment(flooder)),"cyan");
         }
@@ -93,7 +100,7 @@ void CheckRooms(){
         return;
     }
     if(clonep() && environment() && !living(environment()) && press > 1){
-        shb(5);
+        //shb(5);
     }
     if(env){
         Exits = env->GetExitMap(); 
@@ -102,7 +109,7 @@ void CheckRooms(){
             mixed door = env->GetDoor(key);
             int ok =1;
             if(door){
-                shb(1);
+                //shb(1);
                 if(DoorStopped && door->GetClosed() && !door->GetPerforated()){
                     //tc("NOT OK");
                     ok = 0;
@@ -146,18 +153,24 @@ void CheckRooms(){
 }
 
 void heart_beat(){
-    object env = environment();
-    if(!clonep() || !env || living(env) || press < 2){
-        shb(60);
+    object env;
+    if(!clonep()) return;
+    env = environment();
+    //tc("%^B_BLACK%^hb fires for: "+identify(this_object()),"cyan");
+    if(!env || living(env) || press < 2){
+        shb(240);
         return;
     }
     CheckRooms();
     if(press > 1 && env){
-        env->SetMedium(MEDIUM_WATER);
+        //env->SetMedium(MEDIUM_WATER);
+        env->SetRespirationType(R_WATER);
     }
     else if(env){
-        env->SetMedium(orig_medium);
+        //env->SetMedium(orig_medium);
+        env->SetRespirationType(orig_resp);
     }
+    shb(90);
 }
 
 int AddPressure(int x){
@@ -175,8 +188,18 @@ int AddPressure(int x){
         }
         press += x;
     }
-    if(press) shb(5);
+    //if(press) shb(5);
     return press;
+}
+
+varargs int eventPrint(string msg, mixed arg2, mixed arg3){
+    msg = lower_case(msg);
+    //tc("i am "+identify(this_object())+" and I recive: "+msg);
+    if(grepp(msg, "opens") || grepp(msg, "closes") ){
+        CheckRooms();
+        shb(5);
+    }
+    return 1;
 }
 
 int GetPressure(){
@@ -224,7 +247,7 @@ string GetRoomAffectLong(){
 int eventDestruct(){
     object env = environment();
     if(env){
-        env->SetMedium(orig_medium);
+        env->SetRespirationType(orig_resp);
     }
     return ::eventDestruct();
 }
@@ -233,8 +256,11 @@ int eventMove(mixed dest){
     object env;
     int ret = ::eventMove(dest);
     if(ret && env = room_environment(this_object())){
-        orig_medium = env->GetMedium();
+        //orig_medium = env->GetMedium();
+        orig_resp = env->GetRespirationType();
     }
     return ret;
 }
+
+int GeteventPrints() { return 1; }
 

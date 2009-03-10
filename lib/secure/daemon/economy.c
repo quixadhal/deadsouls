@@ -12,7 +12,7 @@ inherit LIB_DAEMON;
 
 private mapping Currencies;
 int LastInflation;
-string oba;
+string oba, SaveFile;
 
 static void create() {
     string *borg;
@@ -22,7 +22,8 @@ static void create() {
     daemon::create();
     SetNoClean(1);
     Currencies = ([]);
-    restore_object(SAVE_ECONOMY);
+    SaveFile = save_file(SAVE_ECONOMY);
+    unguarded( (: RestoreObject(SaveFile) :) );
     i = sizeof(borg = keys(Currencies));
     temps = percent(time()-LastInflation, 4800000)* 0.01;
     while(i--) { 
@@ -31,7 +32,7 @@ static void create() {
     }
     LastInflation = time();
     if(sizeof(Currencies)){
-        unguarded( (: save_object(SAVE_ECONOMY) :) );
+        unguarded( (: SaveObject(SaveFile) :) );
     }
 }
 
@@ -55,7 +56,7 @@ void add_currency(string type, float rate, float infl, float wt) {
     if(!type || !rate || !infl || !wt || Currencies[type]) return;
     Currencies[type] = ([ "rate":rate, "inflation":infl, "weight":wt ]);
     if(sizeof(Currencies)){
-        unguarded( (: save_object(SAVE_ECONOMY) :) );
+        unguarded( (: SaveObject(SaveFile) :) );
     }
 }
 
@@ -64,7 +65,7 @@ void remove_currency(string type) {
     if(!mapp(Currencies)) return;
     map_delete(Currencies, type);
     if(sizeof(Currencies)){
-        unguarded( (: save_object(SAVE_ECONOMY) :) );
+        unguarded( (: SaveObject(SaveFile) :) );
     }
 }
 
@@ -76,7 +77,7 @@ void change_currency(string type, string key, float x) {
     if(!Currencies[type][key]) return;
     Currencies[type][key] = x;
     if(sizeof(Currencies)){
-        unguarded( (: save_object(SAVE_ECONOMY) :) );
+        unguarded( (: SaveObject(SaveFile) :) );
     }
 }
 

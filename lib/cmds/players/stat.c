@@ -91,8 +91,7 @@ mixed cmd(string args) {
             int x, max;
             x = to_int(percent(mp["points"],
                     (int)who->GetMaxSkillPoints(skill, mp["level"])));
-            max = ( mp["class"] == 1 ? 2 : 1 ) +  who->GetLevel();
-            max *= 2;
+            max = who->GetMaxSkillLevel(skill);
             if( max < mp["level"] ) max = mp["level"];
             return sprintf("%:-18s (%d) %:2d%% - %d/%d",
                 skill, mp["class"], x, mp["level"], max);

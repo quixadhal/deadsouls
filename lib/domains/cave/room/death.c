@@ -1,6 +1,6 @@
 #include <lib.h>
 #include <dirs.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit "/domains/cave/etc/cave_room";
 

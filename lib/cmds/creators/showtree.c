@@ -1,5 +1,5 @@
 /*    /cmds/creator/showtree.c
- *    idea borrowed from LIMA for Dead Soulsr2
+ *    idea borrowed from LIMA for Dead Souls
  *    shows information about an object
  *    created by Beek@Dead Souls
  */

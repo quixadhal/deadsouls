@@ -1,6 +1,6 @@
 #include <lib.h>
 #include <dirs.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <damage_types.h>
 
 inherit LIB_SHADOW;

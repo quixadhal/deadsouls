@@ -1,5 +1,5 @@
 /*    /secure/cmds/admins/link.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    link SECONDARY to PRIMARY
  *    link PLAYER
  *    link

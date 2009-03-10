@@ -17,8 +17,7 @@ string GetLine(string skill) {
     if( !sizeof(mp) ) return 0;
     x = to_int(percent(mp["points"],
                 (int)this_player()->GetMaxSkillPoints(skill, mp["level"])));
-    max = ( mp["class"] == 1 ? 2 : 1 ) + (int)this_player()->GetLevel();
-    max *= 2;
+    max = this_player()->GetMaxSkillLevel(skill);
     if( max < mp["level"] ) max = mp["level"];
     return sprintf("%:-20s: %:-6s (%d%%)", skill,
             (mp["level"] + "/" + max), x);

@@ -8,7 +8,7 @@
 
 #include <lib.h>
 #include <daemons.h>
-#include <network.h>
+#include NETWORK_H
 #include <runtime_config.h>
 #include <message_class.h>
 

@@ -6,11 +6,14 @@
 inherit LIB_DAEMON;
 mapping MapMap, MapCache;
 static int caching = 0;
+static string SaveFile;
 
 void create(){
 #if WIZMAP
-    if( file_size( SAVE_MAP __SAVE_EXTENSION__ ) > 0 )
-        unguarded( (: restore_object, SAVE_MAP, 1 :) );
+    SaveFile = save_file(SAVE_MAP);
+    if(file_exists(SaveFile)){
+        unguarded( (: RestoreObject, SaveFile, 1 :) );
+    }
     set_heart_beat(300);
 #endif
 }
@@ -18,15 +21,15 @@ void create(){
 void zero(){
     MapMap = ([]);
     MapCache = ([]);
-    unguarded( (: save_object(SAVE_MAP, 1) :) );
+    unguarded( (: SaveObject(SaveFile, 1) :) );
 }
 
 void heart_beat(){
-    unguarded( (: save_object(SAVE_MAP, 1) :) );
+    unguarded( (: SaveObject(SaveFile, 1) :) );
 }
 
 int eventDestruct(){
-    unguarded( (: save_object(SAVE_MAP, 1) :) );
+    unguarded( (: SaveObject(SaveFile, 1) :) );
     return daemon::eventDestruct();
 }
 
@@ -59,13 +62,15 @@ varargs mixed GetMap(mixed args, int size){
     if(!(MASTER_D->GetPerfOK())){
         return ret;
     }
+    if(!size) size = 4;
+    if(size > 15) size = 6;
     //else tc("huh? "+ MASTER_D->GetPerformanceScore());
     //tc(identify(previous_object())+" asked for a map of "+identify(args),"cyan");
     if(!args) args = base_name(environment(this_player()));
     if(objectp(args)) args = base_name(args);
     myspot=ROOMS_D->GetGridMap(args);
     mycoords = myspot["coord"];
-    if(size) res = size;
+    res = size;
     if(!MapCache) MapCache = ([]);
     //tc("myspot[\"coords\"]: "+identify(myspot["coords"]));
     //tc("mycoords: "+identify(mycoords));

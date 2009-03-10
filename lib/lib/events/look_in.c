@@ -1,5 +1,5 @@
 /*    /lib/events/look_in.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Something that can be seen in
  *    Created by Descartes of Borg 961222
  *    Version :@(#) look_in.c 1.2@(#)

@@ -1,5 +1,5 @@
 /*    /lib/events/give.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Give event handler
  *    Created by Descartes of Borg 970101
  *    Version: @(#) give.c 1.1@(#)

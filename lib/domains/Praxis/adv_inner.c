@@ -1,6 +1,6 @@
-#include <config.h>
+#include <lib.h>
 
-inherit "/lib/std/room";
+inherit LIB_ROOM;
 
 void create() {
     object ob;

@@ -1,4 +1,4 @@
-#include <network.h>
+#include NETWORK_H
 #include <save.h>
 #include <daemons.h>
 
@@ -272,7 +272,7 @@ void irn_clear(){
             //irn_connections[key] = (["blocking" : 1, "type": MUD, "fd": -1, "data" : 0 ]);
         }
     }
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
 }
 
 varargs void irn_setup(int clear, string whom){

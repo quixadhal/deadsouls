@@ -4,7 +4,6 @@
  *    created by Descartes of Borg 960511
  */
 
-#include <config.h>
 #include <message_class.h>
 #include "include/history.h"
 

@@ -1,5 +1,5 @@
 /*    /secure/cmds/admins/addadverb.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Command for adding new adverbs to the soul
  *    Created by Descartes of Borg 961214
  *    Version: @(#) addadverb.c 1.1@(#)

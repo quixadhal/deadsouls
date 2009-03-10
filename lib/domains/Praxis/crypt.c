@@ -14,7 +14,7 @@ void create() {
     prayers = 0;
     is_hammer = 0;
     is_phyl = 0;
-    restore_object(SAVE_FILE);	// restore is_hammer and is_phyl
+    RestoreObject(SAVE_FILE);	// restore is_hammer and is_phyl
     SetProperties(([
                 "no attack": 1,
                 "no steal":1,
@@ -105,7 +105,7 @@ int pray_func(string str) {
                     "Tempos notices that you carry his %^CYAN%^warhammer%^RESET%^ and takes it away! "
                     "As the shadow disappears the %^CYAN%^warhammer%^RESET%^ appears on the altar.");
             is_hammer = 1;
-            save_object(SAVE_FILE);	// save is_hammer
+            SaveObject(SAVE_FILE);	// save is_hammer
             inv[i]->destruct();
             return 1;
         } else if ((!str || strlen(str) == 0) && inv[i]->id("hammer of tempos") && is_hammer == 1) {
@@ -136,7 +136,7 @@ int pray_func(string str) {
                     "Tempos notices that you carry his phylactery and takes it away! "
                     "As the shadow disappears the phylactery appears on the altar.");
             is_phyl = 1;
-            save_object(SAVE_FILE);	// save is_phyl
+            SaveObject(SAVE_FILE);	// save is_phyl
             inv[i]->destruct();
             return 1;
         } else if ((!str || strlen(str) == 0) && inv[i]->id("phylactery") && is_phyl == 1) {
@@ -176,7 +176,7 @@ int pray_func(string str) {
                         "Tempos notices his %^CYAN%^warhammer%^RESET%^ on top of the altar and hands it to you!");
                 tell_room(this_object(),"The shadow disappears as the prayer ends.",({}));
                 is_hammer = 0;
-                save_object(SAVE_FILE);	// save is_hammer
+                SaveObject(SAVE_FILE);	// save is_hammer
                 ob2->move(ob);
                 return 1;
             }
@@ -204,7 +204,7 @@ int pray_func(string str) {
                         "Tempos notices his phylactery on top of the altar and hands it to you!");
                 tell_room(this_object(),"The shadow disappears as the prayer ends.",({}));
                 is_phyl = 0;
-                save_object(SAVE_FILE);	// save is_phyl
+                SaveObject(SAVE_FILE);	// save is_phyl
                 ob2->move(ob);
                 return 1;
             }

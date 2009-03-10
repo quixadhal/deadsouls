@@ -1,5 +1,5 @@
 /*    /verbs/items/free.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    A verb to allow people to free things from traps
  *    Creatd by Descartes of Borg 961010
  *    Version: @(#) free.c 1.1@(#)

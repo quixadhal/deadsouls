@@ -4,7 +4,7 @@
  */
 
 #include <lib.h>
-#include <network.h>
+#include NETWORK_H
 #include <socket_err.h>
 #include <message_class.h>
 #include <daemons.h>

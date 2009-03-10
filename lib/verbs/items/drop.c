@@ -1,5 +1,5 @@
 /*    /verbs/items/drop.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    drop OBJ
  *    drop OBS
  *    drop WRD WRD

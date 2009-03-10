@@ -396,7 +396,7 @@ void create(){
 #ifdef DATA_LOG
     log_file(DATA_LOG,"Creating IMC2 object at "+ctime(time())+".\n");
 #endif
-    if(sizeof(get_dir(SAVE_FILE+".o"))) restore_object(SAVE_FILE);
+    if(sizeof(get_dir(SAVE_FILE+".o"))) RestoreObject(SAVE_FILE);
     if(!mudinfo) mudinfo = ([ ]);
     if(!chaninfo) chaninfo = ([ ]);
     if(!localchaninfo) localchaninfo = ([ ]);
@@ -427,7 +427,7 @@ void remove(){
 #ifdef DATA_LOG
     log_file(DATA_LOG,"IMC2 OBJECT REMOVED\n");
 #endif
-    save_object(SAVE_FILE);
+    SaveObject(SAVE_FILE);
     destruct(this_object());
 }
 

@@ -160,7 +160,7 @@ void eventDescribeEnvironment(int brief){
     if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ){
         mapping lying = ([]), sitting = ([]), standing = ([]), flying = ([]);
         mapping floating = ([]), kneeling = ([]), swimming = ([]);
-        mapping furniture = ([]);
+        mapping furniture = ([]), null = ([]);
         object mount;
         object *obs;
         string key;
@@ -204,6 +204,7 @@ void eventDescribeEnvironment(int brief){
                 floating[s]++;
             else if( pos == POSITION_SWIMMING ) swimming[s]++;
             else if( pos == POSITION_KNEELING ) kneeling[s]++;
+            else if( pos == POSITION_NULL ) null[s]++;
             else lying[s]++;
         }
         if( !desc ){
@@ -310,6 +311,13 @@ void eventDescribeEnvironment(int brief){
                 "%^RESET%^ are kneeling here.";
             desc += "\n";
         }
+        foreach(key, val in null){
+            if( val<2 )
+                desc += capitalize(key) + "%^RESET%^ is here.";
+            else desc += capitalize(consolidate(val, key)) +
+                "%^RESET%^ are here.";
+            desc += "\n";
+        }
     }
     if( tmp ){
         desc = tmp + desc;
@@ -338,7 +346,7 @@ void eventDescribeEnvironment(int brief){
             desc += "\nHere you see: "+mount_inv+".";
         }
         else {
-            desc += "\nYou are mounted on "+
+            desc += "\nYou are riding on "+
                 transport->GetPlainShort()+".";
             desc += "\nOn "+transport->GetPlainShort()+
                 " you see: "+mount_inv+".";

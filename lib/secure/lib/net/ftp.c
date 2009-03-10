@@ -48,11 +48,9 @@
  **
  */
 
-#define LIB_FTP_CLIENT	"/secure/lib/net/ftp_client"
-
 #include <lib.h>
 #include <dirs.h>
-#include <network.h>
+#include NETWORK_H
 #include <runtime_config.h>
 #include "include/ftp.h"
 
@@ -272,7 +270,7 @@ private void eventCmdPswd(string arg){
         return;
     }
 #endif
-    restore_object(DIR_CRES "/" + Session->user[0..0] + "/" +
+    RestoreObject(DIR_CRES "/" + Session->user[0..0] + "/" +
             Session->user, 1 );
     if(!Password || Password != crypt(arg, Password) ) {
         log_file("reports/network_connect", "Attempted login as %s\n",

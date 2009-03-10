@@ -124,13 +124,10 @@ void heart_beat(){
             else {
                 howmany = evaluate( InventoryCheck[key]["howmany"] );
             }
-
             if(sizeof(obs) < howmany){
-                object ob;
-                for(i=(howmany - sizeof(obs)); i > 0; i--){
-                    ob = new(key);
-                    if(ob) ob->eventMove(this_object());
-                }
+                int count = howmany - sizeof(obs);
+                //tc("want to load "+count+" "+key);
+                eventLoadItem(key, count, 0);
             }
         }
     }

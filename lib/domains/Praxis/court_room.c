@@ -4,7 +4,7 @@
 // 94-07-02 :  Pallando @ Nightmare wrote it
  */
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <council.h>
 
 #define COUNCIL_CHAMBER "/domains/Praxis/council"

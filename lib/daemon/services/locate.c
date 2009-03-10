@@ -1,5 +1,5 @@
 /*    /daemon/services/locate.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    performs player lookups
  *    Created by Descartes of Borg 950624
  *    Version: @(#) locate.c 1.2@(#)
@@ -9,7 +9,7 @@
 #define SERVICE_LOCATE
 
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <message_class.h>
 
 static mapping locate_user_table = ([]);

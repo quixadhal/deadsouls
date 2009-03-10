@@ -1,5 +1,5 @@
 /*    /lib/events/bait_with.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles putting bait on fishing devices
  *    Created by Blitz@Dead Souls 960116
  *    Version: @(#) bait_with.c 1.2@(#)

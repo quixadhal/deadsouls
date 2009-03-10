@@ -1,5 +1,5 @@
 /*    /daemon/command.c
- *    from the Dead Soulsr1 Object Library
+ *    from the Dead Souls Object Library
  *    a new commands daemon, much faster than the old
  *    created by Descartes of Borg 940119
  */

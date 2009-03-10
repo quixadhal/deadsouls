@@ -30,6 +30,9 @@ ulimit -a
 
 while [ true ]; do
 
+    cat $MUDHOME/lib/log/runtime >> $MUDHOME/lib/log/runtime.boot
+    rm $MUDHOME/lib/log/runtime
+
     if [ $MUDHOME ] && [ -f $MUDHOME/bin/driver ]  && [ -f $MUDHOME/bin/mudos.cfg ]
         then
         $MUDHOME/bin/driver $MUDHOME/bin/mudos.cfg 

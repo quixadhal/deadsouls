@@ -1,5 +1,5 @@
 /*    /secure/lib/client.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    a TCP client object
  *    Created by Descartes of Borg 950428
  *    Version: @(#) client.c 1.3@(#)
@@ -8,7 +8,7 @@
 
 
 #include <lib.h>
-#include <network.h>
+#include NETWORK_H
 
 inherit LIB_DAEMON;
 

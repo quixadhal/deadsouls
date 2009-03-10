@@ -12,7 +12,7 @@
 
 #include <lib.h>
 #include <save.h>
-#include <network.h>
+#include NETWORK_H
 
 inherit LIB_DAEMON;
 
@@ -34,6 +34,7 @@ static void create() {
 #ifdef SERVICE_UCACHE
     call_out((: eventCompactUcache :), 3600);
 #endif
+    eventSave();
 }
 
 int eventDestruct() {

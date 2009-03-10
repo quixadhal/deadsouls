@@ -8,7 +8,6 @@
 
 #include <lib.h>
 #include <rounds.h>
-#include <config.h>
 #include <daemons.h>
 #include <position.h>
 #include <damage_types.h>
@@ -124,12 +123,15 @@ object SetCurrentEnemy(object ob){
 
 static object ResetCurrentEnemy(){
     object array obs;
+    mixed ret;
 
-    obs = filter(GetEnemies(), (: $1 && environment() == environment($1) :));
+    obs = filter(GetEnemies(), (: $1 && ( environment() == environment($1) 
+                    || environment() == $1 || environment($1) == this_object()):));
     if( !sizeof(obs) ){
-        return 0;
+        ret = 0;
     }
-    return SetCurrentEnemy(obs[random(sizeof(obs))]);
+    else ret = SetCurrentEnemy(obs[random(sizeof(obs))]);
+    return ret;
 }
 
 object GetCurrentEnemy(){
@@ -257,8 +259,14 @@ string GetParty(){
 
 varargs int SetAttack(mixed target, function callback, int type){
     int i;
+    object env = room_environment();
     string *voibs = ({ "kill", "target", "smite", "waste", "hit", "attack" });
 
+    /* Don't put stuff in the combat queue if the room is peaced */
+    if(env && !target && env->GetProperty("no attack")){
+        evaluate( callback );
+        return 1;
+    }
     if( objectp(target) ) target = ({ target });
     if( target ){
         if( member_array(this_object(), target) != -1 ) return 0;
@@ -274,6 +282,13 @@ varargs int SetAttack(mixed target, function callback, int type){
                 if(member_array(individual,NonTargets) != -1) target -= ({ individual });
             }
             if(!sizeof(target)) return 0;
+        }
+
+        if(environment(target[0]) == this_object()){
+            type = ROUND_INTERNAL;
+        }
+        if(environment(this_object()) == target[0]){
+            type = ROUND_EXTERNAL;
         }
 
         if( !GetCurrentEnemy() ) call_out((: eventExecuteAttack :), 0, target);
@@ -297,10 +312,12 @@ int GetLevel(){
     return classes::GetLevel();
 }
 
-int GetInCombat(){
-    return sizeof(filter(GetEnemies(),
-                (: $1 && (environment($1) == environment()) :)));
-}
+    int GetInCombat(){
+        return sizeof(filter(GetEnemies(),
+                    (: $1 && ( (environment($1) == environment()) 
+                               || environment() == $1 || environment($1) ==
+                               this_object()) :)));
+    }
 
 int GetBaseStatLevel(string stat){
     return race::GetBaseStatLevel(stat);
@@ -457,6 +474,8 @@ int CanWeapon(object target, string type, int hands, int num){
 
 
 int CanMelee(object target){
+    //if(environment(target) == this_object() ||
+    //environment(this_object()) == target) return 100;
     if(!this_object()->GetMelee() && 
             this_object()->GetClass() != "fighter"){
         string limb = target->GetRandomLimb(TargetLimb);
@@ -512,10 +531,8 @@ static int Destruct(){
 /*  *****************   /lib/combat.c events  ***************** */
 
 varargs int eventDie(mixed agent){
-    object ob, env = environment();
+    object ob, env = room_environment();
     int x;
-
-    //tc("combat::eventDie("+identify(agent)+")");
 
     if(this_object()->GetGodMode()) return 0;
 
@@ -531,7 +548,6 @@ varargs int eventDie(mixed agent){
             ob->eventEnemyDied(this_object());
         }
     }
-    if(env) env->eventLivingDied(this_object(), agent);
     Enemies = ({});
     flush_messages();
     return 1;
@@ -542,29 +558,38 @@ int eventExecuteAttack(mixed target){
     function f = fNextRound;
     int type = tNextRound;
     int position = GetPosition();
+    string target_name = "";
 
     if(AttacksPerHB > MAX_ATTACKS_PER_HB) return 0;
     if(Dead) return 1;
     if(target->GetDead()) return 1;
 
+    if(stringp(target)) target_name = target;
+    if(objectp(target)) target_name = target->GetShort();
+
     AttacksPerHB++;
 
     fNextRound = 0;
     tNextRound = ROUND_UNDEFINED;
+
+    if(this_object()->GetPacifist()){
+        tell_object(this_object(),"As a pacifist, you choose not to fight.");
+        return 0;
+    }
+
     if( position == POSITION_LYING || position == POSITION_SITTING &&
             RACES_D->GetLimblessCombatRace(this_object()->GetRace()) != 1){
         if(this_object()->CanFly()){
             this_object()->eventFly();
         }
-        else if(RACES_D->GetLimblessCombatRace(GetRace()) != 1){
-            this_object()->eventPrint("You can't fight unless you are up!");
+        else if(objectp(target) && (((this_object()->GetSize(1)) -
+                        target->GetSize(1)) < 2) ){
+            this_object()->eventPrint("You can't fight "+
+                    target_name+" unless you are up!");
             return 0;
         }
     }
-    if(this_object()->GetPacifist()){
-        tell_object(this_object(),"As a pacifist, you choose not to fight.");
-        return 0;
-    }
+
     if( arrayp(target) ){
         if( !f || (functionp(f) & FP_OWNER_DESTED) ){
             return 0; /* built in only handles 1 targ */
@@ -587,7 +612,7 @@ int eventExecuteAttack(mixed target){
     }
     this_object()->AddStaminaPoints(-1);
     switch(type){
-        case ROUND_UNDEFINED:
+        case ROUND_UNDEFINED: case ROUND_EXTERNAL:
             if( functionp(f) && !(functionp(f) & FP_OWNER_DESTED) ){
                 return evaluate(f, target);
             }
@@ -597,6 +622,9 @@ int eventExecuteAttack(mixed target){
             else {
                 return eventMeleeRound(target, 0);
             }
+
+        case ROUND_INTERNAL:
+            return eventMeleeRound(target, 0);
 
         case ROUND_MAGIC:
             return eventMagicRound(target, f);
@@ -758,7 +786,7 @@ int eventMeleeRound(mixed target, function f){
 }
 
 void eventMeleeAttack(object target, string limb){
-    int pro, con;
+    int pro, con, autohit;
     int chance, fail;
     int canmelee = (this_object()->GetMelee() ||
             this_object()->GetClass() == "fighter");
@@ -773,29 +801,37 @@ void eventMeleeAttack(object target, string limb){
         return;
     }
 
-    if(GetPenalty() > random(11)) fail = 1;
+    if(environment(target) == this_object() ||
+            environment(this_object()) == target){
+        con = 0;
+        fail = 0;
+        autohit = 1;
+    }
+    else if(GetPenalty() > random(11)) fail = 1;
 
     pro = CanMelee(target);
-    con = target->GetDefenseChance(target->GetSkillLevel("melee defense"));
+    if(undefinedp(con)){
+        con = target->GetDefenseChance(target->GetSkillLevel("melee defense"));
+    }
     chance = random(pro);
     if( !TargetLimb ){ // I *really* missed
         SendMeleeMessages(target, -2);
         if(!estatep(target)) eventTrainSkill("melee attack", pro, 0, 0,
                 GetCombatBonus(target->GetLevel()));
     }
-    else if( fail || !target->eventReceiveAttack(chance, "melee", this_object()) ){
+    else if( fail || (!autohit && 
+                !target->eventReceiveAttack(chance, "melee", this_object())) ){
         // Enemy dodged my attack
         SendMeleeMessages(target, -1);
         if(!estatep(target) && !fail) eventTrainSkill("melee attack", pro, con, 0,
                 GetCombatBonus(target->GetLevel()));
     }
-    else {
+    else { // I hit, how hard?
         int x, encumbrance;
         encumbrance = this_object()->GetEncumbrance();
         if(encumbrance > 20){
             tell_object(this_object(),"You struggle to fight while carrying stuff.");
         }
-        // I hit, how hard?
         if(!estatep(target)) eventTrainSkill("melee attack", pro, con, 1,
                 GetCombatBonus(target->GetLevel()));
         if(canmelee) x = GetDamage(3*chance/4, "melee attack");
@@ -819,15 +855,18 @@ int eventMagicRound(mixed target, function f){
 }
 
 mixed eventBite(object target){
-    int fail;
+    int fail, internal;
+    object env = room_environment();
     int pro = CanMelee(target);
     int con = target->GetDefenseChance(target->GetSkillLevel("melee defense"));
     int x = random(pro);
     if(AttacksPerHB > MAX_ATTACKS_PER_HB) return 0;
     if(target->GetDead()) return 1;
-    if(GetPenalty() > random(11)) fail = 1;
+    if(environment(target) == this_object() ||
+            environment(this_object()) == target) internal = 1;
+    else if(GetPenalty() > random(11)) fail = 1;
     AttacksPerHB++;
-    if( environment() != environment(target) ){
+    if( !internal && environment() != environment(target) ){
         this_object()->eventPrint(target->GetName() + " has gone away.");
         return 1;
     }
@@ -840,7 +879,7 @@ mixed eventBite(object target){
                 target->eventPrint(possessive_noun(this_object()) + " bite "
                         "is nothing more than a pinch.");
                 this_object()->eventPrint("Your bite is nothing more than a pinch.");
-                environment()->eventPrint(possessive_noun(this_object()) +
+                env->eventPrint(possessive_noun(this_object()) +
                         " bite is nothing more than a "
                         "pinch.",
                         ({ target, this_object() }));
@@ -850,7 +889,7 @@ mixed eventBite(object target){
                         TargetLimb + "!");
                 this_object()->eventPrint("You bite " + target->GetName() + " in the " +
                         TargetLimb + "!");
-                environment()->eventPrint(GetName() + " bites " +
+                env->eventPrint(GetName() + " bites " +
                         target->GetName() + " in the " +
                         TargetLimb + "!",
                         ({ target, this_object() }));
@@ -862,7 +901,7 @@ mixed eventBite(object target){
             target->eventPrint("You avoid " + possessive_noun(this_object()) +
                     " bite.");
             this_object()->eventPrint(target->GetName() + " avoids your bite.");
-            environment()->eventPrint(target->GetName() + " avoids " +
+            env->eventPrint(target->GetName() + " avoids " +
                     possessive_noun(this_object()) +
                     " bite.",
                     ({ this_object(), target }));
@@ -872,24 +911,25 @@ mixed eventBite(object target){
     }
     else {
         this_object()->eventPrint("You flounder about like a buffoon.");
-        environment()->eventPrint(GetName() + " flounders about like a "
+        env->eventPrint(GetName() + " flounders about like a "
                 "buffoon.", this_object());
     }
     return 1;
 }
 
 int eventPreAttack(object agent){
+    object env = room_environment();
     if( agent == this_object() ){
         return 0;
     }
-    if( environment()->GetProperty("no attack") ){
+    if( env->GetProperty("no attack") ){
         return 0;
     }
     if( GetDying() ){
         return 0;
     }
     if( playerp(this_object()) && playerp(agent) && !PLAYER_KILL){ 
-        if( !environment()->CanAttack( agent, this_object() ) ){
+        if( !env->CanAttack( agent, this_object() ) ){
             return 0;
         }
     }
@@ -1032,6 +1072,7 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
 
 mixed eventTurn(object who){
     int defense;
+    object env = room_environment(who);
 
     if( !GetUndead() ){
         return 0;
@@ -1043,7 +1084,7 @@ mixed eventTurn(object who){
         else {
             int x = GetProperty("no turn");
 
-            environment(who)->eventPrint("The power of the undead "
+            env->eventPrint("The power of the undead "
                     "turns on " + who->GetName() +
                     ".", who);
             who->eventPrint("The power of the undead turns on you.");
@@ -1063,7 +1104,7 @@ mixed eventTurn(object who){
     defense = GetMagicResistance();
     if( who->GetSkillLevel("faith") < defense ){
         who->eventPrint("You writhe in pain.");
-        environment(who)->eventPrint(who->GetName() + " writhes in pain.",
+        env->eventPrint(who->GetName() + " writhes in pain.",
                 who);
         who->eventReceiveDamage(this_object(), MAGIC, random(defense), 1);
         if(!estatep(who)) eventTrainSkill("magic defense", defense, who->GetSkillLevel("faith"),
@@ -1075,7 +1116,7 @@ mixed eventTurn(object who){
 }
 
 int eventWimpy(int i){
-    object env = environment();
+    object env = room_environment();
     string dir, cmd;
 
     if( !env || !GetInCombat() ){

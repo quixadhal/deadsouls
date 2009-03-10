@@ -5,7 +5,7 @@
 inherit "/domains/campus/npc/monty";
 
 static void create() {
-    SetSaveFile("/domains/campus/save/charles.o");
+    SetSaveFile(save_file("/domains/campus/save/charles"));
     monty::create();
     smart = 1;
     SetKeyName("charles");

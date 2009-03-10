@@ -2,9 +2,15 @@ title Optimus $N Maximus
 describe $N looks a bit rumpled and tired.
 home
 update
+clean
+clone /domains/default/obj/bbucket
 remove all
+get all
 unwield all
 put all in bin
+cd
+cd area/obj
+clone chest
 open chest
 look in chest
 get all from chest
@@ -31,4 +37,7 @@ clone /domains/town/obj/match
 #clone /domains/default/obj/gps
 clone /secure/obj/weirder.c
 put all in my arbiter suit
+drop chest
+drop bin
 save
+

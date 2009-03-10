@@ -1,4 +1,4 @@
-#include <network.h>
+#include NETWORK_H
 #include <message_class.h>
 #include <daemons.h>
 

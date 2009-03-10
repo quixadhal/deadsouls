@@ -61,7 +61,7 @@ void create(){
     item::create();
 
     SetKeyName("stargate");
-    SetId(({"stargate", "gate", "portal", "ring"}));
+    SetId(({"stargate", "gate", "gateway", "ring"}));
     SetAdjectives(({"stargate"}));
     SetShort( (: displayShort :) );
 
@@ -109,9 +109,9 @@ void eventConnect(string destination){
     ret = STARGATE_D->eventConnect(origin, destination);
     if (ret){
         string d = STARGATE_D->GetDestination(destination);
-        write("The ancient rings lock into place and a portal forms in an explosion of energy.");
-        say("The ancient rings lock into place and a portal forms in an explosion of energy.");
-        tell_room(d, "The ancient rings lock into place and a portal forms in an explosion of energy");
+        write("The ancient rings lock into place and a gateway forms in an explosion of energy.");
+        say("The ancient rings lock into place and a gateway forms in an explosion of energy.");
+        tell_room(d, "The ancient rings lock into place and a gateway forms in an explosion of energy");
         call_out("eventDisconnect", 10+random(5));
         connect_time = time();
         return;
@@ -127,8 +127,8 @@ int eventDisconnect(){
     string endpoint = STARGATE_D->GetEndpoint(origin);
     string e = STARGATE_D->GetDestination(origin);
     string d = STARGATE_D->GetDestination(endpoint);
-    if(d) tell_room(d, "The chevrons on the stargate disengage and the portal disappears.");
-    if(e) tell_room(e, "The chevrons on the stargate disengage and the portal disappears.");
+    if(d) tell_room(d, "The chevrons on the stargate disengage and the gateway disappears.");
+    if(e) tell_room(e, "The chevrons on the stargate disengage and the gateway disappears.");
     connect_time = 0;
     return STARGATE_D->eventDisconnect(origin);
 }
@@ -161,7 +161,7 @@ int cmdEnter(string what){
     string endpoint, destination;
     object who;
 
-    if (what != "gate" && what != "stargate")
+    if(!answers_to(what, this_object()))
     {
         return 0;
     }

@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <vendor_types.h>
 #include <damage_types.h>
 

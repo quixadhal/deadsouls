@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <cfg.h>
 #include <save.h>
 #include <privs.h>
 #include "include/classes.h"
@@ -14,12 +15,25 @@
 inherit LIB_DAEMON;
 
 private mapping Classes = ([]);
+string SaveFile;
 
 static void create() {
     daemon::create();
-    if( unguarded((: file_size(SAVE_CLASSES __SAVE_EXTENSION__) :)) > 0 )
-                                                                      unguarded((: restore_object(SAVE_CLASSES) :));
+    SaveFile = save_file(SAVE_CLASSES);
+    if( unguarded((: file_exists(SaveFile) :)) ){
+        unguarded((: RestoreObject(SaveFile) :));
+    }
     if( !Classes ) Classes = ([]);
+    if(!sizeof(Classes)){
+        string *classes = get_dir(CFG_CLASSES+"/");
+        foreach(string element in classes){
+            string str = CFG_CLASSES+"/"+element;
+            if(file_exists(str)) {
+                catch( this_object()->AddClass(str) );
+            }
+        }
+    }
+    unguarded((: SaveObject(SaveFile) :));
 }
 
     static private void validate() {
@@ -86,13 +100,13 @@ void AddClass(string file) {
         }
     }
     cls->Complete = 1;
-    save_object(SAVE_CLASSES);
+    SaveObject(SaveFile);
 }
 
 void RemoveClass(string class_name) {
     validate();
     map_delete(Classes, class_name);
-    save_object(SAVE_CLASSES);
+    SaveObject(SaveFile);
 }
 
 void SetClass(string class_name, mixed array args) {
@@ -122,7 +136,7 @@ void SetComplete(string class_name) {
     if( !Classes[class_name] ) error("No such class");
     else cls = Classes[class_name];
     cls->Complete = 1;
-    save_object(SAVE_CLASSES);
+    SaveObject(SaveFile);
 }
 
 varargs string array GetClasses() {

@@ -1,5 +1,5 @@
 /*    /cmds/players/wimpy.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    wimpy NUM
  *    wimpy STR
  *    created by Descartes of Borg 960113

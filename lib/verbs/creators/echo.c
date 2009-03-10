@@ -1,5 +1,5 @@
 /*    /verbs/creators/echo.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    echo
  *    echo STR
  *    echo to LIV STR

@@ -22,10 +22,10 @@ LIMB neck:torso:1:A_COLLAR,A_AMULET
 LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET
 left rear leg:torso:3:
 right rear leg:torso:3:
-right foreleg:torso:3:
-left foreleg:torso:3:
-LIMB left forepaw:left foreleg:4::
-LIMB right forepaw:right foreleg:4::
+right fore leg:torso:3:
+left fore leg:torso:3:
+LIMB left forepaw:left fore leg:4::
+LIMB right forepaw:right fore leg:4::
 LIMB left rear paw:left rear leg:4::
 LIMB right rear paw:right rear leg:4::
 SWIMMING_RACE

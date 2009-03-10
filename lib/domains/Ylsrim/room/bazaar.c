@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/bazaar.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of a simple room
  *    created by Descartes of Borg 950928
  */

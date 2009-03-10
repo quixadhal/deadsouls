@@ -1,6 +1,6 @@
 #include <lib.h>
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <save.h>
 #define ROOM_ZERO "/domains/campus/room/start"
 
@@ -16,20 +16,44 @@ int debugging;
 static string *cards = ({ "north", "south", "east", "west",
         "northeast", "northwest", "southeast", "southwest",
         "up", "down" });
+static string void_room, SaveFile;
 static string *unsafes = ({ "/realms/", "/open/", "/estates/" });
 
 void create(){
+    int err;
+    object vvoid;
 #if GRID
+    SaveFile = save_file(SAVE_ROOMS);
     if(!WorldMap) WorldMap = ([]);
     if(!WorldGrid) WorldGrid = ([]);
-    if( file_size( SAVE_ROOMS __SAVE_EXTENSION__ ) > 0 )
-        unguarded( (: restore_object, SAVE_ROOMS, 1 :) );
+    if(file_exists(SaveFile)){
+        unguarded( (: RestoreObject, SaveFile, 1 :) );
+    }
     set_heart_beat(300);
 #endif
+#ifdef ROOM_VIRT_VOID
+    err = catch(vvoid = load_object(ROOM_VIRT_VOID));
+    if(!err && vvoid) void_room = ROOM_VIRT_VOID;
+#endif
+    if(undefinedp(void_room)) void_room = ROOM_VOID;
 }
 
 static void heart_beat(){
-    unguarded( (: save_object(SAVE_ROOMS, 1) :) );
+    unguarded( (: SaveObject(SaveFile, 1) :) );
+}
+
+string GetVoid(mixed ob){
+    if(!ob) ob = previous_object();
+    if(!ob) return ROOM_VOID;
+    if(void_room == ROOM_VOID) return ROOM_VOID;
+    if(stringp(ob)) ob = find_object(ob);
+    if(interactive(ob)){
+        return void_room+"/user_"+ob->GetKeyName();
+    }
+    if(clonep(ob)){
+        return void_room+"/object_"+file_name(ob);
+    }
+    return ROOM_VOID;
 }
 
 string GetRoomZero(){
@@ -49,7 +73,7 @@ mixed GenerateNames(int x){
 }
 
 int eventDestruct(){
-    unguarded( (: save_object(SAVE_ROOMS, 1) :) );
+    unguarded( (: SaveObject(SaveFile, 1) :) );
     return daemon::eventDestruct();
 }
 
@@ -111,7 +135,7 @@ void zero(){
     WorldMap = ([]);
     WorldGrid = ([]);
     Workrooms = ([]);
-    unguarded( (: save_object(SAVE_ROOMS, 1) :) );
+    unguarded( (: SaveObject(SaveFile, 1) :) );
     ROOM_ZERO->init();
 }
 

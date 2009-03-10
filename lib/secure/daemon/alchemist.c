@@ -8,8 +8,10 @@
 //             and using the prop_logic seperated by Pallando@TMI-2
 // 93-06-16:   Pallando added temperature setting
 
+#include <lib.h>
 #include <daemons.h>
 #include <materials.h>
+inherit LIB_DAEMON;
 
 inherit "/std/prop_logic";
 
@@ -67,7 +69,7 @@ void init_properties()
         // Just does properties[property]=value in a heirachic way (see the .o)
         _set( properties, explode( property, "/" ), value );
     }
-    save_object( save_file );
+    SaveObject( save_file );
 }
 
 // During reboots the data is saved in a .o file.
@@ -76,7 +78,7 @@ void create()
 {
     // Inheriting d_masters use different save files.
     if( !save_file ) save_file = "/data/properties";
-    restore_object( save_file );
+    RestoreObject( save_file );
     if( properties ) return;
     init_properties();
 }

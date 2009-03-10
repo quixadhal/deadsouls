@@ -1,5 +1,5 @@
 /*    /verbs/items/pick.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 951220
  *    Version: @(#) pick.c 1.4@(#)
  *    Last modified: 96/10/15

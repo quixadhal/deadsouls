@@ -1,5 +1,5 @@
 /*    /lib/events/drink.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles drinking in the form of OBJ and SUBSTANCE from OBJ
  *    Created by descartes of Borg 961221
  *    Version: %A%

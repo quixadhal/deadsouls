@@ -5,7 +5,6 @@
  */
 
 #include <dirs.h>
-#include <config.h>
 #include "sefun.h"
 #include <council.h>
 #include <daemons.h>

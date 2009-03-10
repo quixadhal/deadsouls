@@ -1,8 +1,8 @@
-inherit "/lib/std/room";
-
-#include <config.h>
+#include <lib.h>
 #include <council.h>
 #include <daemons.h>
+
+inherit LIB_ROOM;
 
 string get_new_title(object tp);
 string get_male(int lev);

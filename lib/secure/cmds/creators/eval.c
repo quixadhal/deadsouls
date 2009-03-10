@@ -40,11 +40,11 @@ int cmd( string a )
     ""+
     "#include <lib.h>\n"+
     "#include <privs.h>\n"+
+    "#include <virtual.h>\n"+
     "#include <cfg.h>\n"+
     "#include <clock.h>\n"+
     "#include <save.h>\n"+
-    "#include <rooms.h>\n"+
-    "#include <config.h>\n"+
+    "#include ROOMS_H\n"+
     "#include <localtime.h>\n"+
     "#include <daemons.h>\n"+
     "#include <objects.h>\n"+

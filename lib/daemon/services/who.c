@@ -7,7 +7,7 @@
 #define SERVICE_WHO
 
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 static mapping user_table = ([]);
 
 int mini;

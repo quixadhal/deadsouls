@@ -1,5 +1,5 @@
 /*    /verbs/items/wear.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Allows a player to wear armor
  *    Created by Descartes of Borg 951020
  *    Version: @(#) wear.c 1.2@(#)

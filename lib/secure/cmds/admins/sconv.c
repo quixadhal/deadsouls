@@ -255,7 +255,7 @@ int ConvertArea(string arg){
         string *lines = explode(block,"\n");
         string short, long;
         string header = "#include <lib.h>\n";
-        header += "#include <rooms.h>\n\n";
+        header += "#include ROOMS_H\n\n";
         header += "inherit LIB_ROOM;\n\n";
         header += "void create() {\n";
         header += "    room::create();\n";

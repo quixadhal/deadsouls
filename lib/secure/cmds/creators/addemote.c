@@ -1,5 +1,5 @@
 /*    /secure/cmds/admins/addemote.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    A sane command for doing emote addition
  *    Created by Descartes of Borg 961208
  *    Version: @(#) addemote.c 1.2@(#)
@@ -174,7 +174,7 @@ static void MainMenu() {
     int i;
     validate();
 
-    tmp = center("Dead Souls V Emote Editor", screen[0]) + "\n";
+    tmp = center("Dead Souls Emote Editor", screen[0]) + "\n";
     for(i=0; i<sizeof(display); i++) {
         display[i] = "[" + (i+1) + "] " + emotes[i];
     }
@@ -199,7 +199,7 @@ static void ShowEmote(string emote) {
     string err = SOUL_D->GetErrorMessage(emote);
     mapping rules = SOUL_D->GetRules(emote);
     int array screen = this_player()->GetScreen() || ({ 80, 25 });
-    string tmp = center("Dead Souls V Emote Editor", screen[0]) + "\n\n";
+    string tmp = center("Dead Souls Emote Editor", screen[0]) + "\n\n";
     string tmp2 = "";
     string array rule_array = allocate(sizeof(rules));
     int i = 0;
@@ -262,7 +262,7 @@ string GetHelp(string str) {
             "        <addemote -add>\n\n"
             "You must be admin or member of the EMOTES group to use this command.\n\n"
             "Used to add and edit emotes in the soul daemon using complex "
-            "rules and the Dead Souls V messaging system.  In order to add "
+            "rules and the Dead Souls messaging system.  In order to add "
             "a new emote using this command, you need to know the following "
             "information:\n"
             "\t* Verb parse rule\n"

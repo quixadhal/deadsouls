@@ -33,6 +33,10 @@ static void create() {
     SetCustomXP(10);
 }
 
+void init(){
+    ::init();
+}
+
 int CanReceive() {
     if(present("healer token", this_object())){
         return 0;
@@ -155,13 +159,12 @@ int PerformRegenerate(string dude){
 int PerformExcision(string dude){
     string what,whom;
     object person,thing,slug;
-    int rifleshot_wounds,firearms_wounds,wounds;
+    int firearms_wounds, wounds;
 
     person = present(dude,environment(this_object()));
     slug=present("firearms_wound",person);
     wounds=0;
-    wounds=person->GetLead("gunshot_wounds");
-    wounds+=person->GetLead("rifleshot_wounds");
+    wounds=person->GetLead();
     if(!slug){
         eventForce("say You have no foreign bodies.");
         eventForce("give my first slip to "+dude);
@@ -170,42 +173,24 @@ int PerformExcision(string dude){
 
     tell_room(environment(this_object()),"Clepius deftly extracts a lead slug from "+ dude+".", ({person}));
     tell_object(person,"Clepius deftly extracts a lead slug from your body.");
-    firearms_wounds=person->GetLead("firearms_wounds");
-    rifleshot_wounds=person->GetLead("rifleshot_wounds");
-    firearms_wounds=person->GetLead("firearms_wounds");
-    rifleshot_wounds=person->GetLead("rifleshot_wounds");
     slug=new("/domains/town/obj/spent");
-    if(person->GetLead("gunshot_wounds") > 0) {
-        person->AddLead("gunshot_wounds", -1);
-        slug->SetShort("a spent pistol slug");
+    if(wounds > 0) {
+        person->AddLead("firearms_wounds", -1);
+        slug->SetShort("a spent firearm slug");
         --wounds;
         slug->eventMove(this_object());
         if(person->GetLead() < 1){                                         
             slug=present("firearms_wound",person);
             if(slug) slug->eventDestruct();
-            return 1;
         }
         return 1;
     }
-    if(person->GetLead("rifleshot_wounds") > 0){                                 
-        person->AddLead("rifleshot_wounds", -1);
-        slug->SetShort("a spent rifle slug");                                 
-        --wounds;
-        slug->eventMove(this_object());                                 
-        if(person->GetLead() < 1){
-            if(slug) slug->eventDestruct();
-            slug=present("firearms_wound",person);
-            if(slug) slug->eventDestruct();
-            return 1;
-        }
-    }
+
     slug->eventMove(this_object());
     slug=present("firearms_wound",person);
     if(wounds < 1 && slug){                                 
         slug->eventDestruct();
-        return 1;                         
     }
-
     return 1;
 }
 
@@ -220,20 +205,15 @@ int DiagPatient(string dude, string problem){
     if(problem == "regenerate") {
         PerformRegenerate(dude);
         NextPatient();
-        return 1;
     }
-
     if(problem == "heal"){
         PerformHeal(dude);
         NextPatient();
-        return 1;
     }
-
-    if(problem == "excision"){
+    if(problem == "excise"){
         PerformExcision(dude);
         NextPatient();
-        return 1;
     }
-
+    return 1;
 }
 

@@ -21,12 +21,12 @@ LIMB torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT,A_CUS
 LIMB neck:torso:1:A_COLLAR,A_AMULET,A_CUSTOM
 LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET,A_CUSTOM
 LIMB right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
-LIMB left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
+LIMB left fore leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
 LIMB left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
-LIMB right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
-LIMB left fore-hoof:left foreleg:4::
+LIMB right fore leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
+LIMB left fore hoof:left fore leg:4::
 LIMB left rear hoof:left rear leg:4::
-LIMB right fore-hoof:right foreleg:4::
+LIMB right fore hoof:right fore leg:4::
 LIMB right rear hoof:right rear leg:4::
 MASS 4000
 SIZE S_LARGE

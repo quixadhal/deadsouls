@@ -8,7 +8,7 @@
  */
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
 
 inherit LIB_DAEMON;
@@ -20,15 +20,15 @@ inherit LIB_HELP;
 
 mapping LocationsMap = ([]);
 
-static int eventUpdate(string args, int flags);
+varargs static int eventUpdate(string args, int flags, string virt);
 
 static void CacheAndCarry(object *obs){
     if(!sizeof(obs)) return;
     foreach(object fellow in obs){
         string ubi = fellow->GetProperty("LastLocation");
         if(ubi) LocationsMap[fellow->GetKeyName()] = ubi;
+        fellow->eventMove(ROOMS_D->GetVoid(fellow));
     }
-    obs->eventMove(ROOM_VOID);
 }
 
 static void ReturnAndRelease(object *dudes, string file){
@@ -41,7 +41,6 @@ static void ReturnAndRelease(object *dudes, string file){
         }
     }
 }
-
 
 static void create() {
     SetHelp("Syntax: <update [-r] [file list]>\n"
@@ -56,9 +55,8 @@ mixed cmd(string args) {
     object *obs, ob, mount;
     string *files, *tmpfiles;
     mixed tmp;
-    string file;
-    int i, flags;
-
+    string file, virt;
+    int i, flags, err, ret;
     if( sizeof(args) ) {
         string str = args;
         args = "";
@@ -74,21 +72,18 @@ mixed cmd(string args) {
     }
     if( args == "" || !args ) {
         if(!this_player()) return "No player.";
-        ob = environment(this_player());
-        if(ob && living(ob)){
-            object *conts = containers(this_player());
-            mount = ob;
-            foreach(mixed thing in conts){
-                if(thing && !living(thing)) ob = thing;
-            }
-        }
+        ob = room_environment(this_player());
         if( !ob ) return "You have no environment.";
         file = base_name(ob);
+        if(ob->GetVirtual()){
+            virt = path_prefix(file);
+        }
         this_player()->eventPrint("Updating environment");
         obs = filter(all_inventory(ob), (: userp :));
         if(mount) obs += ({ mount });
         if( sizeof(obs) ) CacheAndCarry(obs);
-        if( !eventUpdate(base_name(ob), flags) ) {
+        err = catch( ret = eventUpdate(file, flags, virt) );
+        if( err || !ret ) {
             obs->eventPrint("You are thrown into the void as your "
                     "surroundings violently destruct.");
             return "Error in reloading environment.";
@@ -123,7 +118,7 @@ mixed cmd(string args) {
     return 1;
 }
 
-static int eventUpdate(string args, int flags) {
+varargs static int eventUpdate(string args, int flags, string virt) {
     object ob;
     string tmp;
 
@@ -145,6 +140,11 @@ static int eventUpdate(string args, int flags) {
         }        
     }
     if( args[<2..] == ".c" ) args = args[0..<3];
+    if(virt){
+        object virtual = find_object(virt);
+        if(virtual) virtual->eventDestruct();
+        if(virtual) destruct(virtual);
+    }
     ob = find_object(args);
     if(!ob) ob = load_object(args);
     if( ob ) {
@@ -162,6 +162,10 @@ static int eventUpdate(string args, int flags) {
         this_player()->eventPrint("Cannot reload update after destruct.\n"
                 "It will be reloaded at next reference.");
         return 0;
+    }
+    if(!sizeof(args)){
+        write("Error updating. Mojo meditation 8675309.");
+        return 1;
     }
     tmp = catch(call_other(args, "???"));
     if(this_player() && !(flags & U_AUTOMATED) ){

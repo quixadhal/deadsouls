@@ -1,5 +1,5 @@
 /*    /verbs/items/unlock.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 951028
  *    Version: @(#) unlock.c 1.3@(#)
  *    Last modified: 97/01/02

@@ -19,7 +19,6 @@ static void create() {
     SetExits( ([
                 "west" : "/domains/town/room/elevator",
                 ]) );
-    SetObviousExits("w");
     //AddStuff( ({"/domains/town/npc/leo"}) );
 }
 void init(){

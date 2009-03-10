@@ -26,11 +26,11 @@ static void create(){
     SetLong( (: LongRet :) );
     SetMass(1);
     SetBaseCost("silver",5000);
-    SetRestrictLimbs("right hand");
     SetArmorType(A_RING);
 }
 
 void init(){
+    armor::init();
     add_action("SetProtection", "protection");
     add_action("SetReporting", "reporting");
     add_action("SetNPCReporting", "enablereport");

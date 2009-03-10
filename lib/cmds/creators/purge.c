@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <message_class.h>
 
 inherit LIB_DAEMON;

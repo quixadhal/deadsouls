@@ -1,5 +1,5 @@
 /*    /lib/daemon.c
- *    From Dead Souls Object Library
+ *    From Dead Souls Mud Library
  *    Standard inheritable for daemon objects
  *    created by Descartes of Borg 940211
  *    Version: @(#) daemon.c 1.4@(#)
@@ -11,15 +11,15 @@
 
 inherit LIB_CLEAN;
 
-static private string SaveFile = 0;
+static private string DaemonSaveFile = 0;
 
 /* ******************** daemon.c attributes ********************** */
 string GetSaveFile(){
-    return SaveFile;
+    return DaemonSaveFile;
 }
 
 static string SetSaveFile(string str){
-    return (SaveFile = str);
+    return (DaemonSaveFile = str);
 }
 
 /* ********************* daemon.c events ************************* */
@@ -32,11 +32,11 @@ int eventDestruct(){
 }
 
 varargs int eventRestore(int do_not_zero_out){
-    if( !SaveFile ){
+    if( !DaemonSaveFile ){
         return 0;
     }
-    if( unguarded((: file_exists(SaveFile + __SAVE_EXTENSION__) :)) ){
-        return unguarded((: restore_object, SaveFile, do_not_zero_out :));
+    if( unguarded((: file_exists(DaemonSaveFile) :)) ){
+        return unguarded((: RestoreObject, DaemonSaveFile, do_not_zero_out :));
     }
     else {
         return 1;
@@ -44,13 +44,14 @@ varargs int eventRestore(int do_not_zero_out){
 }
 
 varargs int eventSave(int save_zero_values){
-    if( !SaveFile ){
+    if( !DaemonSaveFile ){
         return 0;
     }
-    return unguarded((: save_object, SaveFile, save_zero_values :));
+    return unguarded((: SaveObject, DaemonSaveFile, save_zero_values :));
 }
 
 /* ******************* daemon.c driver applies ********************* */
 static void create(){
     eventRestore(1);
+    SetNoClean(1);
 }

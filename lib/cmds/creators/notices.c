@@ -1,5 +1,5 @@
 /*  /cmds/creators/notices
- *  from the Dead Souls V Mud Library
+ *  from the Dead Souls Mud Library
  *  created by Blitz@Dead Souls 950115
  */
 

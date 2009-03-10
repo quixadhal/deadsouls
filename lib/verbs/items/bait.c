@@ -1,5 +1,5 @@
 /*  /verbs/items/bait.c
- *  from the Dead Souls Object Library
+ *  from the Dead Souls Mud Library
  *  bait verb used with /lib/bait.c
  *  created by Blitz@Dead Souls 960117
  */

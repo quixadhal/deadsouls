@@ -1,11 +1,9 @@
 /*    /verbs/players/speak.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    speak
  *    speak STR
  *    speak in WRD STR
  */
-
-
 
 #include <lib.h>
 #include <talk_type.h>
@@ -55,7 +53,6 @@ mixed do_speak_in_wrd(string str) {
 
 mixed do_speak_str(string str) {
     string lang;
-
     lang = (string)this_player()->GetDefaultLanguage() ||
         (string)this_player()->GetNativeLanguage();
     return do_speak_in_wrd_str(lang, str);

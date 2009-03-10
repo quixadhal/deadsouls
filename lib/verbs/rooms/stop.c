@@ -1,5 +1,5 @@
 /*    /verbs/rooms/stop.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    stop STR
  *    created by Descartes of Borg 951016
  */

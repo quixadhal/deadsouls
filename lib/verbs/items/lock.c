@@ -1,5 +1,5 @@
 /*    /verbs/items/lock.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    lock OBJ with OBJ
  *    created by Descartes of Borg 951028
  *    Version: @(#) lock.c 1.2@(#)

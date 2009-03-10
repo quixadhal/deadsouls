@@ -1,5 +1,5 @@
 /*  /verbs/players/score.c
- *  from the Dead Soulsr2 Library
+ *  from the Dead Souls Library
  *  Displays a list of score and related info
  *  created by Blitz@Dead Souls
  */

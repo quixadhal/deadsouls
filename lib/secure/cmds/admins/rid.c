@@ -1,5 +1,5 @@
 /*    /secure/cmds/adm/rid.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    command to get rid of players 
  *    created by Descartes of Borg 951015
  */
@@ -41,8 +41,8 @@ int cmd(string who) {
           ob);
         if( !((int)ob->eventDestruct()) ) destruct(ob);
     }
-    file = save_file(str) + __SAVE_EXTENSION__;
-    if( rename(file, DIR_RID + "/" + str + __SAVE_EXTENSION__) ) {
+    file = player_save_file(str);
+    if( rename(file, save_file(DIR_RID + "/" + str)) ) {
         write("Rename failed, security violation logged.");
         log_file("security", "\n*****\nRid violation attempted\n"
           "Target: " + who + "\nCall stack:\n" + 

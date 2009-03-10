@@ -1,7 +1,7 @@
 #include <medium.h>
 #include <terrain_types.h>
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
 

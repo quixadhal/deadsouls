@@ -66,13 +66,13 @@ varargs string GetFinger(string who, int html) {
         creator = 0;
         if( !user_exists(who) )
             return capitalize(who) + " has never visited " + mud_name() + ".";
-        else if( !unguarded( (: restore_object, DIR_PLAYERS "/" + who[0..0] +
+        else if( !unguarded( (: RestoreObject, DIR_PLAYERS "/" + who[0..0] +
                         "/" + who :)) &&
-                !(creator = unguarded( (: restore_object, DIR_CRES "/" +
+                !(creator = unguarded( (: RestoreObject, DIR_CRES "/" +
                             who[0..0] + "/" + who :) ) )) return 0;
         CurrentUser = who;
     }
-    else if( !strsrch(save_file(who), DIR_CRES) ) creator = 1;
+    else if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;
     ret = "%^STRONG%^" + replace_string(GetTitle(), "$N", CapName) +
         "%^/STRONG%^BR%^\n";
     if( Long ) {
@@ -160,13 +160,13 @@ mixed array GetRemoteFinger(string who) {
     if( who != CurrentUser ) {
         creator = 0;
         if( !user_exists(who) ) return 0;
-        else if( !unguarded( (: restore_object, DIR_PLAYERS "/" + who[0..0] +
+        else if( !unguarded( (: RestoreObject, DIR_PLAYERS "/" + who[0..0] +
                         "/" + who :)) &&
-                !(creator = unguarded( (: restore_object, DIR_CRES "/" +
+                !(creator = unguarded( (: RestoreObject, DIR_CRES "/" +
                             who[0..0] + "/" + who :) ) )) return 0;
         CurrentUser = who;
     }
-    else if( !strsrch(save_file(who), DIR_CRES) ) creator = 1;
+    else if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;
     ob = find_player(who);
     if( unguarded( (: file_size, user_path(who) + ".plan" :) ) > 0 ) {
         plan = unguarded( (: read_file, user_path(who) + ".plan", 1, 5 :) );

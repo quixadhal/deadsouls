@@ -121,7 +121,7 @@ static void process_channel(mixed fd, mixed *info){
             // in list, you're banned...
             send_error(info[2],0,"not-allowed",
               "Banned from "+info[6],info);
-            //save_object(SAVE_ROUTER);
+            //SaveObject(SAVE_ROUTER);
             return;
         }
 
@@ -180,7 +180,7 @@ static void process_channel(mixed fd, mixed *info){
     //				0, channel_update_counter,
     //				([ info[6]:({ info[2], info[7] }) ])
     //			}));
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     return;
 case "remove":
     if(!channels[info[6]]){ // error, channel is not registered!
@@ -209,7 +209,7 @@ case "remove":
     server_log(info[3]+"@"+info[2]+" deleted the channel: "+info[6]+"\n");
     // broadcast an update saying that this channel is gone now
     broadcast_chanlist(info[6]);
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     SendList( ([ "channels" : ([ info[6] : -1 ]), "listening" : ([]) ]),
       0, "chanlist" );
     return;
@@ -256,7 +256,7 @@ case "admin":
     //trr("Channel data for "+info[6]+": "+identify(channels[info[6]]), "white");
     SendList( ([ "channels" : ([ info[6] : channels[info[6]] ]),
       "listening" : ([ info[6] : listening[info[6]] ]) ]), 0, "chanlist" );
-save_object(SAVE_ROUTER);
+SaveObject(SAVE_ROUTER);
 return;
 case "listen": // mudname=info[2], channame=info[6], on_or_off=info[7]
 if(!channels[info[6]]){ // error, channel is not registered!
@@ -282,7 +282,7 @@ case 0: // selectively banned
         // in list, you're banned...
         send_error(info[2],0,"not-allowed",
           "Banned from "+info[6],info);
-        //save_object(SAVE_ROUTER);
+        //SaveObject(SAVE_ROUTER);
         return;
     }
     // not in ban list at this point
@@ -290,7 +290,7 @@ case 0: // selectively banned
         listening[info[6]] += ({ info[2] });
     else
         listening[info[6]] -= ({ info[2] });
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
     0, "chanlist" );
 return;
@@ -307,7 +307,7 @@ if(info[7])
     listening[info[6]] += ({ info[2] });
 else
     listening[info[6]] -= ({ info[2] });
-save_object(SAVE_ROUTER);
+SaveObject(SAVE_ROUTER);
 SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
 0, "chanlist" );
 return;
@@ -325,7 +325,7 @@ if(info[7])
     listening[info[6]] += ({ info[2] });
 else
     listening[info[6]] -= ({ info[2] });
-save_object(SAVE_ROUTER);
+SaveObject(SAVE_ROUTER);
 SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
 0, "chanlist" );
 return;

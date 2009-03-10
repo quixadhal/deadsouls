@@ -1,0 +1,123 @@
+export INDENT=$3
+export OLDLIB=$1
+export NEWLIB=$2
+
+if [ $3 ]
+then
+echo "3: " $3
+else
+echo "no 3"
+fi
+
+
+cd /
+date
+
+rm -rf /tmp/foo
+mkdir /tmp/foo
+mkdir /tmp/foo/$NEWLIB
+cd /mud/$NEWLIB
+tar cfp - .|(cd /tmp/foo/$NEWLIB;tar xfp -)
+
+cd /tmp/foo
+
+unzip -qd $OLDLIB /misc/data/mud/deadsouls/$OLDLIB.zip
+
+mv $OLDLIB/*/* $OLDLIB/
+
+#\rm -f $OLDLIB/lib/secure/include/config.h
+#\rm -f $NEWLIB/lib/secure/include/config.h
+
+\rm -f $OLDLIB/lib/secure/cfg/*.cfg
+\rm -f $NEWLIB/lib/secure/cfg/*.cfg
+
+\rm -r $NEWLIB/lib/core  $OLDLIB/lib/core
+\rm -rf $NEWLIB/lib/estates
+\rm -r $NEWLIB/lib/secure/sefun/native_version.c  $OLDLIB/lib/secure/sefun/native_version.c
+\cp -f $NEWLIB/lib/secure/lib/connect.real $NEWLIB/lib/secure/lib/connect.c
+
+\cp -f $NEWLIB/lib/secure/daemon/update.patch $NEWLIB/lib/secure/daemon/update.c
+\cp -f $OLDLIB/lib/secure/daemon/update.patch $OLDLIB/lib/secure/daemon/update.c
+
+echo "foo" > $NEWLIB/lib/secure/upgrades/files/0^0tmp0^0foo.txt
+mkdir $OLDLIB/lib/www/cgi
+mkdir $OLDLIB/lib/lib/daemons
+mkdir $OLDLIB/lib/verbs/builders
+mkdir $OLDLIB/lib/cmds/builders
+mkdir $OLDLIB/lib/secure/cmds/builders
+mkdir $OLDLIB/lib/secure/daemon/imc2server
+mkdir $OLDLIB/lib/lib/daemon
+mkdir $OLDLIB/lib/lib/daemon/include
+mkdir $OLDLIB/lib/domains/cave
+mkdir $OLDLIB/lib/domains/cave/adm
+mkdir $OLDLIB/lib/domains/cave/armor
+mkdir $OLDLIB/lib/domains/cave/doors
+mkdir $OLDLIB/lib/domains/cave/etc
+mkdir $OLDLIB/lib/domains/cave/meals
+mkdir $OLDLIB/lib/domains/cave/npc
+mkdir $OLDLIB/lib/domains/cave/obj
+mkdir $OLDLIB/lib/domains/cave/room
+mkdir $OLDLIB/lib/domains/cave/save
+mkdir $OLDLIB/lib/domains/cave/txt
+mkdir $OLDLIB/lib/domains/cave/virtual
+mkdir $OLDLIB/lib/domains/cave/weap
+
+if [ $3 ]
+then
+echo "indenting"
+cd $NEWLIB/lib
+/contrib/indentall
+cd ../../$OLDLIB/lib
+/contrib/indentall
+cd ../../
+else
+echo "not indenting"
+fi
+
+gdiff -rq $OLDLIB/lib $NEWLIB/lib > diff.txt
+
+perl -pi -e s/"\:\ "/"\/"/g diff.txt
+
+cd $NEWLIB/
+
+find ./lib -type f  -exec /contrib/enters {} \;
+rm lib/secure/include/config.h
+rm lib/secure/cfg/mudos.cfg
+rm lib/secure/cfg/groups.cfg
+for i in `find ./lib`;do rmdir -p $i;done
+find ./lib |sort -dr > lib.txt
+chown -R 513:513 lib
+chmod -R 775 lib
+rm /tmp/foo/upgrades.txt
+cd lib
+for i in `find ./ |grep -v "\.html"|grep -v "\.gif" |grep -v "\.o" |grep -v "/news/"`
+do
+if [ -d $i ]; then
+echo ""
+else 
+#echo "testing " $i " and /mud/"$NEWLIB"/lib/"$i
+if gdiff -q $i /tmp/foo/$OLDLIB/lib/$i |grep "/" ; then
+echo "Adding "$i
+echo $i >> /tmp/foo/upgrades.txt
+else
+echo "Not ading"
+fi
+fi
+done
+echo "done"
+
+cat /tmp/foo/upgrades.txt | grep -v "/log/" | grep -v "/tmp/" | grep -v "/save/"> upgrades.txt
+#\cp -f /tmp/foo/upgrades.txt upgrades.txt
+find ./ |grep  "\.orig" >> upgrades.txt
+echo "/secure/daemon/update.c" >> upgrades.txt
+echo "/secure/daemon/update.patch" >> upgrades.txt
+perl -pi -e s/"\.\/lib"/"\/lib"/g upgrades.txt
+perl -pi -e s/"\.\/"/"\/"/g upgrades.txt
+mv upgrades.txt ../
+
+echo "foo"
+\cp -f ../upgrades.txt /mud/$NEWLIB/lib/
+
+cd /tmp
+
+#\rm -rf foo

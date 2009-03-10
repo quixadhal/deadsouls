@@ -30,7 +30,7 @@ static private void load_folder(string who, string folder) {
     if(who == __Owner && folder == __Folder) return;
     OPTIONS_D->assure_box_exists(who);
     file = sprintf("%s/%s/%s/%s", DIR_POSTAL, who[0..0], who, folder);
-    if(!unguarded((: file_exists, file+__SAVE_EXTENSION__ :))) {
+    if(!unguarded((: file_exists, save_file(file) :))) {
         __BoxInfo = ({});
         __Folder = folder;
         __Owner = who;
@@ -38,7 +38,7 @@ static private void load_folder(string who, string folder) {
     else {
         __Folder = folder;
         __Owner = who;
-        if(!unguarded((: restore_object, file :))) __BoxInfo = ({});
+        if(!unguarded((: RestoreObject, file :))) __BoxInfo = ({});
     }
 }
 
@@ -47,7 +47,7 @@ static private void save_folder() {
 
     if(!__Owner || !__Folder) return;
     file= sprintf("%s/%s/%s/%s", DIR_POSTAL, __Owner[0..0], __Owner, __Folder);
-    unguarded((: save_object, file :));
+    unguarded((: SaveObject, file :));
 }
 
 mapping *query_box_info(string who, string folder) {

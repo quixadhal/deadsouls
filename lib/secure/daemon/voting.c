@@ -16,12 +16,14 @@ inherit LIB_DAEMON;
 
 private mapping mapVoting;
 private mapping mapCouncil;
+static string SaveFile;
 
 static void create() {
     daemon::create();
+    SaveFile = save_file(SAVE_VOTES);
     SetNoClean(1);
-    if( file_exists( SAVE_VOTES __SAVE_EXTENSION__ ) ) {
-        unguarded( (: restore_object, SAVE_VOTES :) );
+    if( file_exists( SaveFile ) ) {
+        unguarded( (: RestoreObject, SaveFile :) );
         if( mapVoting["status"] == VOTE_RUNNING )
             call_out( (: eventNextDay :), DAY );
     }
@@ -44,7 +46,7 @@ static void create() {
 }
 
 mixed eventSave() {
-    unguarded( (: save_object, SAVE_VOTES :) );
+    unguarded( (: SaveObject, SaveFile :) );
     return VOTE_SUCCESS;
 }
 

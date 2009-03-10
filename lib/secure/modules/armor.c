@@ -2,7 +2,7 @@
 #include <modules.h>
 #include <daemons.h>
 #include <commands.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <armor_types.h>
 #include <damage_types.h>
 

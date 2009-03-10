@@ -7,11 +7,9 @@ static void create() {
     SetClimate("indoors");
     SetShort("a generic room");
     SetLong("This is an utterly plain, blank room.");
-    SetExits( ([
-                "down" : "/domains/campus/room/bookstore.c",
-                ]) );
     SetInventory(([
                 "/domains/campus/obj/diamond" : 1,
+                "/domains/default/obj/phints" : 5,
                 "/domains/default/obj/handbook" : 5,
                 "/domains/campus/obj/pack" : 30,
                 "/domains/campus/obj/bag" : 3,
@@ -19,6 +17,9 @@ static void create() {
                 "/domains/default/obj/guide" : 5,
                 "/domains/campus/armor/coat" : 1,
                 ]));
+    SetExits( ([
+                "down" : "/domains/campus/room/bookstore.c",
+                ]) );
 }
 int CanReceive(object sneak) {
     object *living_stack = get_livings(sneak);

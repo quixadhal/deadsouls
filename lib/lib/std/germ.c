@@ -1,5 +1,5 @@
 /*    /lib/germ.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Germs which cause disease
  *    created by Descartes of Borg 940905
  *    Version: @(#) germ.c 1.12@(#)
@@ -7,7 +7,7 @@
  */
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
 
 inherit LIB_ITEM;

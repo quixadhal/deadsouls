@@ -25,8 +25,7 @@ varargs int cmd(string str)
             "#include <privs.h>\n"+
             "#include <cfg.h>\n"+
             "#include <save.h>\n"+
-            "#include <rooms.h>\n"+
-            "#include <config.h>\n"+
+            "#include ROOMS_H\n"+
             "#include <daemons.h>\n"+
             "#include <objects.h>\n"+
             "#include <commands.h>\n"+

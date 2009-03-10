@@ -1,5 +1,5 @@
 /*    /verbs/items/listen.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 961014
  *    Version: @(#) listen.c 1.1@(#)
  *    Last modified: 96/10/14

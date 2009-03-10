@@ -1,5 +1,5 @@
 /*    /verbs/items/give.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    give LIV OBJ
  *    give OBJ to LIV
  *    give LIV WRD WRD

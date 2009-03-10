@@ -27,12 +27,12 @@
         "shukran", "akbar", "mokele", "dapku", "loituma","plurdled",\
         "curiae", "aethelingas", "eorlas","carajo","oder",\
     "ae","aroha","awarua","atua","tenei", "dsfargeg",\
-    "tangata","koa","kora","hupane","upane",\
+    "tangata","koa","kora","hupane","upane","krankor",\
     "baardaap","droogkloot","reetketelsteenbeeldhouwer","asbak","haka",\
     "zaadje","verkloten","teef","moffie","shele",\
     "anasi","atouche","ayir","boos","teezee",\
     "durka","haista","vittu","kyrp�","r�k�",\
-    "suoro","voi","debil","kunel","shinel",\
+    "suoro","voi","debil","kunel","shinel","sampo",\
     "sasikumea","zakila","txakurra","soustat","irrumator",\
     "mentula","koproskilo","malakas","la'a'za'zel","zayin",\
     "haakskeekah","noko","shizzle","nizzle","hizzle",\
@@ -43,7 +43,7 @@
     "LMKUU","puka","degozaimasu","szysznyk", "syzygy",\
     "darklock","confutatis","maledictis","flammis","acribus",\
     "addictis","XYNTA","durian","adzuki","flocka",\
-    "ХУИТА", "nibiru", "tatonka","tralfamadore",\
+    "ХУИТА", "NIBIRU", "tatonka","tralfamadore",\
     "sihulm","koyaanisqatsi","tanstaafl","misunderestimate",\
     "ar","ot","ti","fi","na",\
     "ar","ot","ti","fi","na",\

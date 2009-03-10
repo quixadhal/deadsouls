@@ -15,6 +15,7 @@ alias pp go port
 alias ff go fore
 alias lab goto /domains/campus/room/hazlab
 alias shop goto /domains/town/room/shop
+alias roshd goto /domains/Ylsrim/room/fighter_hall
 alias start goto /domains/campus/room/start
 alias obj cd /realms/$N/area/obj
 alias arm cd /realms/$N/area/armor
@@ -95,6 +96,7 @@ alias us update /secure/daemon/imc2server/ssocket
 alias uss update /secure/daemon/imc2server/server
 alias ui update /secure/daemon/i3router/server
 call me->AddChannel("french")
+call me->AddChannel("fluffos")
 call me->AddChannel("ascii_art")
 call me->AddChannel("intergossip")
 call me->AddChannel("coffeemud_universe")
@@ -129,6 +131,7 @@ alias mayhem source -q /secure/scripts/mayhem.src
 alias indentall source /secure/scripts/indent.src
 alias resetgrid source -q /secure/scripts/resetgrid.src
 alias distclean source -q /secure/scripts/distclean.src
+alias killflow source -q /secure/scripts/killflow.src
 alias shutdown say wat
 alias 1 dest bots
 alias 2 update /secure/obj/robot
@@ -154,7 +157,7 @@ wizvision on
 call me->SetSkill("magic attack",100)
 call me->SetSkill("magic defense",100)
 call me->SetSkill("conjuring",100)
-screen 80 24
+screen 200 200
 history 100
 automap on
 showgrid on

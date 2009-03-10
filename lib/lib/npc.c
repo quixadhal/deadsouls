@@ -7,7 +7,7 @@
  */
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
 #include <position.h>
 #include <armor_types.h>
@@ -30,6 +30,7 @@ inherit LIB_OBJECT;
 inherit LIB_DOMESTICATE;
 inherit LIB_GUARD;
 inherit LIB_UNIQUENESS;
+inherit LIB_SHADOW_HOOK;
 
 private int CustomXP, ActionChance, CombatActionChance, AutoStand;
 private mixed Encounter;
@@ -287,7 +288,7 @@ int eventMove(mixed dest){
 }
 
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){
-    object *riders = GetRiders();
+    object *riders = filter(deep_inventory(), (: $1->GeteventPrints() :) );
     object *targs = ({});
     if(NPC_CATCH_TELL_DEBUG){
         tell_room(ROOM_CATCH_TELL,"-------");

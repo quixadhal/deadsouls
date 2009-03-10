@@ -3,7 +3,6 @@
 //      gives information simul_efuns about the mud
 //      created by Descartes of Borg
 
-#include <config.h>
 #include <daemons.h>
 
 string mud_name() { return MUD_NAME; }
@@ -37,7 +36,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.9a14"; }
+string mudlib_version() { return "2.9a15m"; }
 
 int query_host_port() { return __PORT__; }
 

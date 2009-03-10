@@ -5,7 +5,7 @@
  */
 
 #include <lib.h>
-#include <network.h>
+#include NETWORK_H
 
 inherit LIB_SOCKET;
 
@@ -101,7 +101,7 @@ static private void eventProcess(int fd, string str) {
             map_delete(Connections, fd);
             return;
         }
-        unguarded( (: restore_object, DIR_CRES "/" + username[0..0] + "/" +
+        unguarded( (: RestoreObject, DIR_CRES "/" + username[0..0] + "/" +
                     username :) );
         if( Password != crypt(password, Password) ) {
             log_file("remote", "Failed attempt to login as " + username 

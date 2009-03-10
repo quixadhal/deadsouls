@@ -17,33 +17,36 @@ private mapping __MailQueue;
 static private mapping __IncomingMail; 
 mapping Old = ([]);
 mapping Outgoing = ([]);
+string SaveFile;
 
 static int count = 0;
 
 void create() {
     string *muds; 
     int i; 
-
     daemon::create();
+    SaveFile = save_file(SAVE_MAILQUEUE);
     SetNoClean(1);
     __MailQueue = ([]); 
     __IncomingMail = ([]); 
-    if(file_exists(sprintf("%s%s", SAVE_MAILQUEUE, __SAVE_EXTENSION__))) 
+    if(file_exists(SaveFile)){
         restore_mailqueue(); 
+    }
     i = sizeof(muds = keys(__MailQueue)); 
     while(i--) __MailQueue[muds[i]][0]["in transit"] = 0; 
-    set_heart_beat(10);
+    set_heart_beat(1);
 } 
 
 void heart_beat(){
     count++;
     if(sizeof(Outgoing))
-        //OOB_D->SendMail(copy(Outgoing));
         OOB_D->SendMail(Outgoing);
     Outgoing = ([]);
-    if(count > 6){
-        count = 0;
-        save_mailqueue();
+    if(!(count % 60)){
+        if(count > 900){
+            count = 0;
+            save_mailqueue();
+        }
         foreach(mixed key, mixed val in Outgoing){
             if(!sizeof(val)) map_delete(Outgoing,key);
         }
@@ -184,12 +187,14 @@ static private string *local_targets(string *str) {
 } 
 
 static private void save_mailqueue() { 
-    unguarded((: save_object, SAVE_MAILQUEUE :));
+    unguarded((: SaveObject, SaveFile :));
 } 
 
 static private void restore_mailqueue() { 
-    unguarded((: restore_object, SAVE_MAILQUEUE :));
-} string *convert_names(string *noms) {
+    unguarded((: RestoreObject, SaveFile :));
+} 
+
+string *convert_names(string *noms) {
     string a, b;
     string *nombres = ({});
 

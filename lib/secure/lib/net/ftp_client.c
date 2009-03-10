@@ -8,7 +8,7 @@
  */
 
 #include <lib.h>
-#include <network.h>
+#include NETWORK_H
 
 inherit LIB_DAEMON;
 

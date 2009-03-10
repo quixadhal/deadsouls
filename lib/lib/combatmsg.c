@@ -94,14 +94,15 @@ static mixed GetMissData(object targ, int type, string limb){
 
 static void eventSendMissMessages(object target, int x, string limb){
     mixed data;
+    object env = room_environment();
 
     if(target->GetDead() || this_object()->GetDead()) return;
     if( !limb ) limb = "body";
     data = GetMissData(target, x, limb);
     if( sizeof(data) != 4 ) return;
     this_object()->eventPrint(sprintf(data[0], data[1]...));
-    target->eventPrint(sprintf(data[0], data[2]...));
-    environment()->eventPrint(sprintf(data[0], data[3]...), 
+    target->eventPrint(sprintf(data[0], data[2]...), ({ this_object() }));
+    env->eventPrint(sprintf(data[0], data[3]...), 
             ({ this_object(), target }) );
 }
 
@@ -141,6 +142,7 @@ varargs void SendMeleeMessages(object target, int x, string targlimb, string lim
     int i;
     string adverb;
     mixed verb, ptr, moves;
+    object env = room_environment();
 
     //if(target->GetDead() || this_object()->GetDead()) return;
     if( x < 0 ){
@@ -162,8 +164,8 @@ varargs void SendMeleeMessages(object target, int x, string targlimb, string lim
     this_object()->eventPrint(sprintf("You %s %s %s the %s with your %s.",
                 verb[0], (string)target->GetName(), adverb, targlimb, limb) );
     target->eventPrint(sprintf("%s %s you %s your %s with %s %s.",
-                GetName(), verb[1], adverb, targlimb, possessive(this_object()), limb));
-    environment()->eventPrint(sprintf("%s %s %s %s the %s with %s %s.",
+                GetName(), verb[1], adverb, targlimb, possessive(this_object()), limb), ({ this_object() }));
+    env->eventPrint(sprintf("%s %s %s %s the %s with %s %s.",
                 GetName(), verb[1], (string)target->GetName(), adverb, targlimb, 
                 possessive(this_object()), limb), ({ target, this_object() }) );
     flush_messages();
@@ -173,6 +175,7 @@ varargs void SendWeaponMessages(object target, int x, object weapon, string limb
     int i;
     string adverb, type, weap;
     mixed verb, ptr, moves;
+    object env = room_environment();
 
     //if(target->GetDead() || this_object()->GetDead()) return;
     if( x < 0 ){
@@ -201,8 +204,8 @@ varargs void SendWeaponMessages(object target, int x, object weapon, string limb
     this_object()->eventPrint(sprintf("You %s %s %s the %s with your %s.",
                 verb[0], (string)target->GetName(), adverb, limb, weap) );
     target->eventPrint(sprintf("%s %s you %s your %s with %s %s.",
-                GetName(), verb[1], adverb, limb, possessive(this_object()), weap) );
-    environment()->eventPrint(sprintf("%s %s %s %s the %s with %s %s.",
+                GetName(), verb[1], adverb, limb, possessive(this_object()), weap), ({ this_object() }) );
+    env->eventPrint(sprintf("%s %s %s %s the %s with %s %s.",
                 GetName(), verb[1], (string)target->GetName(), adverb, limb,
                 possessive(this_object()), weap), ({ target, this_object() }) );
     flush_messages();

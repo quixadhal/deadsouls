@@ -1,5 +1,3 @@
-#include <lib.h>
-
 static mapping Shadows = ([]);
 
 nomask int AddShadow(object sombra){

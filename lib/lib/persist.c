@@ -5,21 +5,20 @@
  */
 
 #include "include/persist.h"
-#include <config.h>
 
 private int SaveRecurse;
 private static int Retain = RETAIN_ON_QUIT;
 
-mixed *Saved = ({});
+private mixed *Saved = ({ "Properties" });
 
 string GetShort();
 
 static int eventConvertObject(mixed val, int recurse){
     string *flat = ({});
-    mixed *tmp;
+    mixed *tmp, *saved = this_object()->GetSave();
 
     if( val[0] != base_name(this_object()) ) error("Invalid save string.\n");
-    tmp = map(Saved, (: functionp($1) ? evaluate($1, "loading") : $1 :));
+    tmp = map(saved, (: functionp($1) ? evaluate($1, "loading") : $1 :));
     foreach(mixed elem in tmp){
         if( arrayp(elem) ) flat += elem;
         else flat += ({ elem });
@@ -30,7 +29,6 @@ static int eventConvertObject(mixed val, int recurse){
     if( sizeof(val) == 3 ){
         foreach(string obdata in val[2]){
             object ob;
-
             val = restore_variable(obdata);
             ob = new(val[0]);
             ob->eventLoadObject(val, 1);
@@ -41,7 +39,7 @@ static int eventConvertObject(mixed val, int recurse){
 }
 
 int eventLoadObject(mixed val, int recurse){
-    mixed *tmp;
+    mixed *tmp, *saved = this_object()->GetSave();
     string *flat = ({});
     mixed data;
 
@@ -50,7 +48,7 @@ int eventLoadObject(mixed val, int recurse){
     if( arrayp(data) ) return eventConvertObject(data, recurse);
     if( data["#base_name#"] != base_name(this_object()) )
         error("Invalid save string.\n");
-    tmp = map(Saved, (: functionp($1) ? evaluate($1, "loading") : $1 :));
+    tmp = map(saved, (: functionp($1) ? evaluate($1, "loading") : $1 :));
     foreach(mixed elem in tmp){
         if( arrayp(elem) ) flat += elem;
         else flat += ({ elem });
@@ -97,18 +95,26 @@ int eventLoadObject(mixed val, int recurse){
     }
 }
 
-static mixed *AddSave(mixed *vars){ return (Saved += vars); }
+mixed *GetSave(){
+    return copy(Saved); 
+}
+mixed *cGetSave(){ return copy(Saved); }
+mixed *dGetSave(){ return Saved; }
 
-mixed *GetSave(){ return copy(Saved); }
+static mixed *AddSave(mixed *vars){
+    mixed *tmp = Saved + vars;
+    Saved = tmp;
+    return copy(Saved);
+}
 
 static int SetSaveRecurse(int flag){ return (SaveRecurse = flag); }
 
 string GetSaveString(){
-    mixed *tmp;
+    mixed *tmp, *saved = this_object()->GetSave();
     string *flat = ({});
     mapping mp = ([]);
 
-    tmp = map(Saved, (: functionp($1) ? evaluate($1, "saving") : $1 :));
+    tmp = map(saved, (: functionp($1) ? evaluate($1, "saving") : $1 :));
     foreach(mixed elem in tmp){
         if( arrayp(elem) ) flat += elem;
         else flat += ({ elem });

@@ -52,9 +52,7 @@ static int cmdAll(string args){
     object old_agent;
     mixed err;
     string verb, file;
-
-    //tc("args: ("+args+")","red");
-    //tc("verb: ("+query_verb()+")","red");
+    string *talks = ({ "say", "whisper", "yell", "shout", "speak" });
 
     if(Paused){
         return 0;
@@ -74,8 +72,13 @@ static int cmdAll(string args){
 
     if(!verb) verb = query_verb();
 
-    if(!args) this_object()->Push(verb);
-    else this_object()->Push(verb+" "+args);
+    if(!this_object()->GetCharmode()){
+        if(!args) this_object()->Push(verb);
+        else this_object()->Push(verb+" "+args);
+    }
+    else {
+        this_object()->Push(this_object()->GetTempbuffer());
+    }
 
     old_agent = this_agent(this_object());
 
@@ -100,9 +103,12 @@ static int cmdAll(string args){
         }
     }
 
-    if(COMMAND_MATCHING && sizeof(match_command(verb))) verb = match_command(verb);
+    if(COMMAND_MATCHING && sizeof(match_command(verb))){
+        verb = match_command(verb);
+    }
 
-    if(OLD_STYLE_PLURALS && args){
+    if(OLD_STYLE_PLURALS && args && (member_array(verb, talks) == -1 ||
+                (member_array(verb, talks) != -1 && !strsrch(trim(args),"to ")))){
         int numba, i;
         string tmp_ret;
         string *line = explode(args," ");
@@ -339,7 +345,11 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
     odirect = direct;
     oindirect = indirect;
 
-    if(i > 1 ){
+    //read is a special case. takes a str as first arh sometimes.
+    if(act == "read" && !grepp(tmpret, " in a ")){
+        tmpret = replace_string(lastcmd, " in ", " in a ");
+    }
+    else if(i > 1 ){
         object ob1, ob2;
         string tmpstr, s1, s2, article1, article2;
         if(StillTrying){

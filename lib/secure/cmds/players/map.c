@@ -6,6 +6,9 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     string ret;
     int i = atoi(args);
+    if(!i) i = 6;
+    if(!creatorp(this_player())) i = 3;
+    if(i <= 30) i = 29;
     ret = MAP_D->GetMap(environment(this_player()), i);
     write(ret);
     return 1; 

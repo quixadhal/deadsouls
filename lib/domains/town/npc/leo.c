@@ -67,18 +67,19 @@ int CompleteQuest(object ob){
     return 1;
 }
 
-int eventReceiveObject() {
+int eventReceiveObject(object foo) {
+    int ret;
     object ob, player;
     ob = previous_object();
     player = this_player();
 
-    if( !ob || !::eventReceiveObject() ) return 0;
+    if( !ob || !(ret = ::eventReceiveObject(foo)) ) return 0;
     if(base_name(ob) == "/domains/town/weap/orcslayer"){
         this_object()->DisableActions(1);
         call_out("CompleteQuest", 0, player);
         call_out("EnableActions", 300, 1);
     }
-    return 1;
+    return ret;
 }
 
 void init(){

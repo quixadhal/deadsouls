@@ -1,5 +1,5 @@
 /*    /cmds/creator/events.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    show wizard events
  *    Version: @(#) events.c 1.2@(#)
  *    Last modified: 96/12/08

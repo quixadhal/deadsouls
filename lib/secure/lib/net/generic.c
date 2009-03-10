@@ -4,7 +4,7 @@
  * how to build a server object of your own.
  */
 
-#include <network.h>
+#include NETWORK_H
 int port = 6667;
 
 void StartServer();

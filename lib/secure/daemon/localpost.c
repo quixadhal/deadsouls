@@ -98,7 +98,7 @@ varargs string *send_post(mapping borg, mixed who) {
         tmpwho = ({});
         x = (int)OPTIONS_D->query_option(borg["from"], "metoo");
         while(i--) {
-            if(pointerp(who[i] = map_groups(who[i], grps, borg["from"], x))) 
+            if(pointerp(who[i] = map_groups(who[i], grps, borg["from"]))) 
                 tmpwho += who[i];
             else tmpwho += ({ who[i] });
         }
@@ -106,7 +106,7 @@ varargs string *send_post(mapping borg, mixed who) {
         while(i--) {
             if(sscanf(who[i], "%s@%s", a, b) == 2) {
                 if(!remote_mail[b]) remote_mail[b] = ({ a });
-                remote_mail[b] += ({ a });
+                else remote_mail[b] += ({ a });
             }
             else if(!user_exists(who[i])) rejects += ({ who[i] });
             else FOLDERS_D->add_post(who[i], "new", borg);
@@ -160,7 +160,7 @@ varargs string *send_post(mapping borg, mixed who) {
     }
 }
 
-static private mixed map_groups(string str, mapping grps, string who, int x) {
+static private mixed map_groups(string str, mapping grps, string who) {
     if(__MudGroups[str]) return (string *)__MudGroups[str] - ({ who });
     else if(grps[str] && sizeof(grps[str]))
         return (string *)grps[str] - ({ who });

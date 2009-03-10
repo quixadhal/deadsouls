@@ -1,5 +1,5 @@
 #include <vision.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <lib.h>
 
 inherit LIB_SENTIENT;

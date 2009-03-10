@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/weaponry.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 951023
  */
 

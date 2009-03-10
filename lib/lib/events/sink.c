@@ -1,10 +1,12 @@
 #include <position.h>
-#include <rooms.h>
+#include <daemons.h>
+#include ROOMS_H
 #include <medium.h>
 #include <message_class.h>
 
 mixed eventSink(){
     int err;
+    string rvoid = ROOMS_D->GetVoid(this_object());
     object env = environment();
     mixed tmprumbo, rumbo = 0;
     string name = this_object()->GetName();
@@ -24,7 +26,7 @@ mixed eventSink(){
     if(err || !rumbo){
         log_file("runtime","\n"+timestamp()+" "+identify(this_object())+
                 " could not load "+identify(rumbo)+" to sink into.\n");
-        err = catch(rumbo = load_object(ROOM_VOID));
+        err = catch(rumbo = load_object(rvoid));
     }
     if(err || !rumbo){
         return 0;

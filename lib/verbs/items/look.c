@@ -1,5 +1,5 @@
 /*    /verbs/items/look.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    look STR
  *    look at ITEM
  *    created by Descartes of Borg 951218

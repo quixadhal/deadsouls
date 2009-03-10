@@ -50,7 +50,21 @@ varargs mapping add_maps(mapping FirstMapping,mapping  SecondMapping, int prefer
             OutMap[element] = copy(FirstMap[element]);
         }
 
-    if(sizeof(schluessel2))
+    if(preference = -1){
+        if(sizeof(schluessel2)){
+            foreach(mixed element in schluessel2){
+                if(member_array(element,schluessel1) != -1 &&
+                        SecondMap[element]){
+                    OutMap[element] = copy(SecondMap[element]);
+                }
+                else {
+                    OutMap[element] = copy(FirstMap[element]);
+                }
+            }
+        }
+    }
+
+    else if(sizeof(schluessel2))
         foreach(mixed element in schluessel2){
             if(member_array(element,schluessel1) != -1 && preference == 1)
                 OutMap[element] = copy(FirstMap[element]);

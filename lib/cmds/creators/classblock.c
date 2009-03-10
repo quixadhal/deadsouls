@@ -1,6 +1,6 @@
 /**
  * /cmds/creators/classblock.c
- * From the Dead Souls V Object Library
+ * From the Dead Souls Mud Library
  * Allows a creator to tune in or out of all class chat lines.
  * created by Hanse@Dead Souls 930305
  * Version: @(#) classblock.c 1.3@(#)

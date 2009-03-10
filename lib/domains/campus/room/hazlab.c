@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
 
@@ -11,7 +11,7 @@ void create() {
     SetInventory(([
                 "/domains/campus/npc/turret" : 1,
                 "/domains/campus/obj/workbench" : 1,
-                "/domains/default/vehicles/hoverpod" : 1,
+                "/domains/default/vehicle/hoverpod" : 1,
                 ]));
     SetExits(([
                 "north" : "/domains/campus/room/science2",

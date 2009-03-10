@@ -22,8 +22,16 @@ static void create(){
 mixed eventAsk(object who, string str){
     string cmd, args;
     mixed tmp;
+    string lang, prof, orig = str;
 
-    if( (tmp = sentient::eventAsk(who, str)) == 1 ) return 1;
+    lang = who->GetDefaultLanguage();
+    prof = who->GetLanguageLevel(lang);
+    str = translate(str, prof);
+    prof = this_object()->GetLanguageLevel(lang);
+    str = translate(str, prof);
+    //debug("leader eventAsk("+identify(who)+", "+str+")");
+
+    if( (tmp = sentient::eventAsk(who, orig)) == 1 ) return 1;
     if( !str || str == "" ){
         eventForce("speak ask me to what? To describe " + 
                 (GetClass() || "thing") + "s?");

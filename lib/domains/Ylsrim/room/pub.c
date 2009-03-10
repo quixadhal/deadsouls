@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/pub.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example pub room
  *    Created by Descartes of Borg 960302
  */

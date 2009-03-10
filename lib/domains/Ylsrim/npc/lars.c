@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/npc/lars.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example barkeeper
  *    Created by Descartes of Borg 960302
  */

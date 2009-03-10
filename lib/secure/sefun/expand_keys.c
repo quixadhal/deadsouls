@@ -1,5 +1,5 @@
 /*    /secure/sefun/expand_keys.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    takes a mapping with array keys and flattens the arrays
  *    created by Descartes of Borg 951013
  */

@@ -7,10 +7,10 @@ mapping EventsMap = ([]);
 mixed *event_funs = ({});
 int connect_warn;
 string shiz = "\n---------------\n"+ 
-             "%^RED%^CRITICAL%^RESET%^: There was a problem with "+
-             "/secure/lib/connect.c . When the upgrade is complete "+
-             "you must log out and log back in to make sure the "+
-             "correct file is in place.\n---------------\n";
+"%^RED%^CRITICAL%^RESET%^: There was a problem with "+
+"/secure/lib/connect.c . When the upgrade is complete "+
+"you must log out and log back in to make sure the "+
+"correct file is in place.\n---------------\n";
 
 int check_function(string str){
     if(member_array(str,MASTER_D->GetEfuns()) != -1) return 1;
@@ -19,70 +19,70 @@ int check_function(string str){
 
 int make_empties(){
     string *removes = ({
-      "/spells",
-      "/psionics",
-      "/trades",
-      "/prayers",
-      "/feats",
-    });
+            "/spells",
+            "/psionics",
+            "/trades",
+            "/prayers",
+            "/feats",
+            });
 
     string *empties = ({
-      "/cmds/hm",
-      "/cmds/builders",
-      "/secure/cmds/common",
-      "/secure/save/postal",
-      "/secure/save/binaries",
-      "/secure/save/decre",
-      "/secure/save/players",
-      "/secure/save/letters",
-      "/secure/save/backup",
-      "/secure/save/creators",
-      "/secure/save/suicide",
-      "/secure/save/rid",
-      "/secure/save/votes",
-      "/secure/upgrades/txt",
-      "/www/doc",
-      "/www/logs",
-      "/doc/lpc/advanced",
-      "/doc/tmp",
-      "/doc/help/avatars",
-      "/doc/help/hm",
-      "/doc/help/religion",
-      "/doc/help/law",
-      "/doc/faq",
-      "/log/author_stats",
-      "/realms/template/tmp",
-      "/realms/template/log",
-      "/realms/template/area/etc",
-      "/realms/template/area/meals",
-      "/realms/template/area/doors",
-      "/domains/town/save",
-      "/domains/town/virtual/forest",
-      "/domains/town/virtual/sub",
-      "/domains/town/virtual/surface",
-      "/domains/default/save",
-      "/domains/default/virtual/sky",
-      "/domains/default/virtual/arena",
-      "/domains/Ylsrim/save",
-      "/domains/Ylsrim/virtual/desert",
-      "/verbs/spells",
-      "/verbs/undead",
-      "/secure/log/intermud",
-      "/secure/log/network",
-      "/domains/default/save",
-      "/domains/town/save",
-      "/open",
-      "/powers",
-      "/powers/spells",
-      "/powers/prayers",
-      "/powers/feats",
-      "/powers/psionics",
-      "/powers/trades",
-      "/secure/log",
-      "/secure/log/adm",
-      "/secure/log/bak",
-      "/secure/log/intermud",
-      "/secure/log/network",
+            "/cmds/hm",
+            "/cmds/builders",
+            "/secure/cmds/common",
+            "/secure/save/postal",
+            "/secure/save/binaries",
+            "/secure/save/decre",
+            "/secure/save/players",
+            "/secure/save/letters",
+            "/secure/save/backup",
+            "/secure/save/creators",
+            "/secure/save/suicide",
+            "/secure/save/rid",
+            "/secure/save/votes",
+            "/secure/upgrades/txt",
+            "/www/doc",
+            "/www/logs",
+            "/doc/lpc/advanced",
+            "/doc/tmp",
+            "/doc/help/avatars",
+            "/doc/help/hm",
+            "/doc/help/religion",
+            "/doc/help/law",
+            "/doc/faq",
+            "/log/author_stats",
+            "/realms/template/tmp",
+            "/realms/template/log",
+            "/realms/template/area/etc",
+            "/realms/template/area/meals",
+            "/realms/template/area/doors",
+            "/domains/town/save",
+            "/domains/town/virtual/forest",
+            "/domains/town/virtual/sub",
+            "/domains/town/virtual/surface",
+            "/domains/default/save",
+            "/domains/default/virtual/sky",
+            "/domains/default/virtual/arena",
+            "/domains/Ylsrim/save",
+            "/domains/Ylsrim/virtual/desert",
+            "/verbs/spells",
+            "/verbs/undead",
+            "/secure/log/intermud",
+            "/secure/log/network",
+            "/domains/default/save",
+            "/domains/town/save",
+            "/open",
+            "/powers",
+            "/powers/spells",
+            "/powers/prayers",
+            "/powers/feats",
+            "/powers/psionics",
+            "/powers/trades",
+            "/secure/log",
+            "/secure/log/adm",
+            "/secure/log/bak",
+            "/secure/log/intermud",
+            "/secure/log/network",
     });
 
     foreach(string dir in empties){
@@ -95,6 +95,7 @@ int make_empties(){
 }
 
 void deletes(){
+    rm("/cmds/players/locate.c");
     rm("/secure/daemon/map.c");
     rm("/secure/cmds/creators/sed.c");
     rm("/secure/sefun/base_name.c");
@@ -104,6 +105,8 @@ void deletes(){
     rm("/domains/town/room/room.c");
     rm("/domains/default/obj/flow.c");
     rm("/secure/cmds/admins/coordset.c");
+    catch( rename("/domains/default/vehicles",
+                "/domains/default/vehicle") );
 }
 
 varargs static void eventUpdate(object whom){
@@ -119,9 +122,9 @@ varargs static void eventUpdate(object whom){
     write_file("/secure/daemon/update.c",newfile,1);
 
     if(!cp("/secure/lib/connect.real","/secure/lib/connect.c")){
-       connect_warn = 1;
-       if(whom){ 
-           tell_player(whom, shiz);
+        connect_warn = 1;
+        if(whom){ 
+            tell_player(whom, shiz);
         }
     }
 
@@ -129,68 +132,72 @@ varargs static void eventUpdate(object whom){
 
         if(!grepp(config_file, "CLASS_SELECTION"))
             config_file = append_line(config_file,"#define HUMANS_ONLY",
-              "#define CLASS_SELECTION          0");
+                    "#define CLASS_SELECTION          0");
 
         if(!grepp(config_file, "SEVERABLE_LIMBS"))
             config_file = append_line(config_file,"#define HUMANS_ONLY",
-              "#define SEVERABLE_LIMBS          1");
+                    "#define SEVERABLE_LIMBS          1");
 
         if(!grepp(config_file, "MAX_CALL_OUTS"))
             config_file = append_line(config_file,"#define F_TERMINAL_COLOR",
-              "#define MAX_CALL_OUTS            500");
+                    "#define MAX_CALL_OUTS            500");
 
         if(!grepp(config_file, "REQUIRE_QUESTING"))
             config_file = append_line(config_file,"#define MAX_CALL_OUTS",
-              "#define REQUIRE_QUESTING         1");
+                    "#define REQUIRE_QUESTING         1");
 
         if(!grepp(config_file, "AUTO_ADVANCE"))
             config_file = append_line(config_file,"#define REQUIRE_QUESTING",
-              "#define AUTO_ADVANCE             0");
+                    "#define AUTO_ADVANCE             0");
 
         config_file = replace_string(config_file,"WEB_SOURCE   ",
-          "WEB_SOURCE_IP");
+                "WEB_SOURCE_IP");
         config_file = replace_string(config_file,"149.152.218.102",
-          "204.209.44.12");
+                "204.209.44.12");
 
         if(!grepp(config_file, "WEB_SOURCE_NAME"))
             config_file = append_line(config_file,"#define WEB_SOURCE_IP",
-              "#define WEB_SOURCE_NAME          \"lpmuds.net\"");
+                    "#define WEB_SOURCE_NAME          \"lpmuds.net\"");
 
         if(!grepp(config_file, "MAX_INVENTORY_SIZE"))
             config_file = append_line(config_file,"#define AUTO_ADVANCE",
-              "#define MAX_INVENTORY_SIZE       2048");
+                    "#define MAX_INVENTORY_SIZE       2048");
 
         if(!grepp(config_file, "MAX_ATTACKS_PER_HB"))
             config_file = append_line(config_file,"#define MAX_INVENTORY_SIZE",
-              "#define MAX_ATTACKS_PER_HB       40");
+                    "#define MAX_ATTACKS_PER_HB       40");
 
         if(!grepp(config_file, "MEMUSE_SOFT_LIMIT"))
             config_file = append_line(config_file,"#define MAX_ATTACKS_PER_HB",
-              "#define MEMUSE_SOFT_LIMIT        0");
+                    "#define MEMUSE_SOFT_LIMIT        0");
 
         if(!grepp(config_file, "MEMUSE_HARD_LIMIT"))
             config_file = append_line(config_file,"#define MEMUSE_SOFT_LIMIT",
-              "#define MEMUSE_HARD_LIMIT        0");
+                    "#define MEMUSE_HARD_LIMIT        0");
 
         if(!grepp(config_file, "MAX_USERS"))
             config_file = append_line(config_file,"#define MEMUSE_HARD_LIMIT",
-              "#define MAX_USERS                0");
+                    "#define MAX_USERS                0");
 
         if(!grepp(config_file, "MIN_PERF"))
             config_file = append_line(config_file,"#define MAX_USERS",
-            "#define MIN_PERF                 1000");
+                    "#define MIN_PERF                 1000");
 
         if(!grepp(config_file, "MINIMAP"))
             config_file = append_line(config_file,"#define MIN_PERF",
-            "#define MINIMAP                  1");
+                    "#define MINIMAP                  1");
 
         if(!grepp(config_file, "WIZMAP"))
             config_file = append_line(config_file,"#define MINIMAP",
-            "#define WIZMAP                   1");
+                    "#define WIZMAP                   1");
 
         if(!grepp(config_file, "GRID"))
             config_file = append_line(config_file,"#define WIZMAP",
-            "#define GRID                     1");
+                    "#define GRID                     1");
+
+        if(!grepp(config_file, "ENABLE_INSTANCES"))
+            config_file = append_line(config_file,"#define GRID",
+                    "#define ENABLE_INSTANCES         0");
 
         write_file("/secure/include/config.h", config_file+"\n", 1);
     }
@@ -198,24 +205,25 @@ varargs static void eventUpdate(object whom){
     call_out( (: make_empties :),0);
     call_out( (: deletes :),0);
 
-    reload(EVENTS_D,0,1);
-    EventsMap = EVENTS_D->GetEvents();
-    foreach(mixed key, mixed val in EventsMap){
-        event_funs += ({ val["function"] });
+    catch( (: reload(LIB_DAEMON,1,1) :) );
+    catch( (: reload(EVENTS_D,0,1) :) );
+    catch( (: EventsMap = EVENTS_D->GetEvents() :) );
+    if(sizeof(EventsMap)){
+        foreach(mixed key, mixed val in EventsMap){
+            event_funs += ({ val["function"] });
+        }
+        if(member_array("ReadDir",event_funs) == -1)
+            EVENTS_D->AddEvent("/secure/daemon/file","/secure/daemon/file","ReadDir",({ }),90000,1);
+        if(member_array("ReadFuns",event_funs) == -1)
+            EVENTS_D->AddEvent("/secure/daemon/function","/secure/daemon/function","ReadFuns",({ }),100000,1);
+        if(member_array("RotateLogs",event_funs) == -1)
+            EVENTS_D->AddEvent("/secure/daemon/log","/secure/daemon/log","RotateLogs",({ }),3600,1);
     }
-    if(member_array("ReadDir",event_funs) == -1)
-        EVENTS_D->AddEvent("/secure/daemon/file","/secure/daemon/file","ReadDir",({ }),90000,1);
-    if(member_array("ReadFuns",event_funs) == -1)
-        EVENTS_D->AddEvent("/secure/daemon/function","/secure/daemon/function","ReadFuns",({ }),100000,1);
-    if(member_array("RotateLogs",event_funs) == -1)
-        EVENTS_D->AddEvent("/secure/daemon/log","/secure/daemon/log","RotateLogs",({ }),3600,1);
-
     newfile = read_file("/secure/cfg/read.cfg");
     if(!grepp(newfile,"/domains/cave/")){
         newfile += "(/domains/cave/) ASSIST:CMDS:CAVE\n";
     }
     write_file("/secure/cfg/read.cfg",newfile,1);
-
 
     catch( reload("/secure/daemon/master",0,1) );
     catch( reload("/secure/sefun/arrays",0,1) );
@@ -227,7 +235,10 @@ varargs static void eventUpdate(object whom){
     catch( reload("/domains/Praxis/square.c",0,1));
     catch( reload("/domains/Ylsrim/room/tower",0,1));
     catch( reload("/domains/campus/room/slab",0,1));
-    update(RELOAD_D,0,1);
+    update(LIB_SAVE);
+    update(LIB_CLEAN);
+    update(LIB_DAEMON);
+    update(RELOAD_D);
 
     if(whom){
         tell_player(whom,"Update daemon finished.");
@@ -255,6 +266,6 @@ static void create() {
     if(whom){
         tell_player(whom,"Please stand by until you see the \"Update daemon finished.\" message.");
         tell_player(whom,"If you do not see it after a few seconds, you may need to restore "
-          "your mud from backup.");
+                "your mud from backup.");
     }
 }

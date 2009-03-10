@@ -1,6 +1,7 @@
 #include <lib.h>
-#include <config.h>
-#include <rooms.h>
+#include <virtual.h>
+#include ROOMS_H
+#include <save.h>
 #include <daemons.h>
 #include <commands.h>
 
@@ -8,10 +9,10 @@ inherit LIB_DAEMON;
 mapping Reloadees = ([]);
 static int *reload_handles = ({});
 static int stage2, stilldirty, roomscleaned, warm_boot_in_progress = 0;
-string savefile = "/secure/save/reload";
+string savefile = save_file(SAVE_RELOAD);
 static string *exceptions = ({ RELOAD_D, RSOCKET_D });
-object *grooms = ({});
-int last_deep_player_load;
+object *grooms = ({}), *occupied_rooms = ({});
+int last_deep_player_load, virtual_void;
 
 varargs void validate(){
     if((!(int)master()->valid_apply(({ "SECURE", "ASSIST" })))){
@@ -24,10 +25,48 @@ varargs void validate(){
 
 static void create() {
     daemon::create();
-    if(!file_exists(savefile+__SAVE_EXTENSION__)) 
-        unguarded( (: save_object(savefile) :) );
-    else unguarded( (: restore_object(savefile) :) );
+    occupied_rooms = ({});
+    unguarded( (: RestoreObject(savefile) :) );
     set_heart_beat(1);
+    unguarded( (: SaveObject(savefile) :) );
+}
+
+int IsolateUsers(){
+#ifdef ROOM_VIRT_VOID
+    foreach(object user in users()){
+        object pwb_room = room_environment(user);
+        if(pwb_room) user->SetProperty("pwb_room", file_name(pwb_room));
+        //user->eventMove(ROOM_VIRT_VOID+"/user_"+user->GetKeyName());
+        user->eventMove(ROOMS_D->GetVoid(user));
+        reset_eval_cost();
+    }
+#endif
+    return 1;
+}
+
+int UnisolateUsers(){
+#ifdef ROOM_VIRT_VOID
+    foreach(object user in users()){
+        string pwb_room = user->GetProperty("pwb_room");
+        if(pwb_room) user->eventMove(pwb_room);
+        //user->RemoveProperty("pwb_room");
+        reset_eval_cost();
+    }
+#endif
+    return 1;
+}
+
+varargs void eventDestroyDoors(){
+    object *doors;
+    doors = objects((:(base_name($1) == LIB_DUMMY || inherits(LIB_DUMMY,$1)):));
+    doors = filter(doors, (: $1->GetDoor() :) );
+    foreach(object door in doors){
+        object ddaemon = find_object(door->GetDoor());
+        if(ddaemon) ddaemon->eventDestruct();
+        if(ddaemon) destruct(ddaemon);
+        door->eventDestruct();
+        if(door) destruct(door);
+    }
 }
 
 varargs void eventDestructEmptyRooms(object room, int last){
@@ -36,8 +75,9 @@ varargs void eventDestructEmptyRooms(object room, int last){
     else roomscleaned = 0;
     if(room){
         if(objectp(room) && !sizeof(get_livings(room,1))){
-            object *npcs = get_livings(room,2);
-            if(sizeof(npcs)) npcs->eventDestruct();
+            object *subs = get_livings(room,2);
+            if(sizeof(subs)) subs->eventDestruct();
+            reset_eval_cost();
             catch( room->eventDestruct() );
         }
     }
@@ -96,27 +136,36 @@ int ReloadBaseSystem(){
     reset_eval_cost();
     catch( reload(load_object(LIB_SENTIENT), 1, 1) );
     reset_eval_cost();
-    catch( reload(load_object(LIB_ROOM), 1, 1) );
-    reset_eval_cost();
     catch( reload(load_object(LIB_ARMOR), 1, 1) );
     reset_eval_cost();
     catch( reload(load_object(LIB_STORAGE), 1, 1) );
     reset_eval_cost();
     catch( reload(load_object(LIB_WORN_STORAGE), 1, 1) );
     reset_eval_cost();
+    catch( reload(load_object(LIB_ROOM), 1, 1) );
+    reset_eval_cost();
+    catch( reload(load_object(LIB_VIRTUAL), 0, 1) );
+    catch( reload(load_object(LIB_VIRT_LAND), 0, 1) );
+    catch( reload(load_object(LIB_VIRT_SKY), 0, 1) );
+    //catch( reload(load_object(LIB_VIRT_SURFACE), 0, 1) );
+    catch( reload(load_object(LIB_VIRT_SUBSURFACE), 0, 1) );
+    //catch( reload(load_object(LIB_VIRT_SPACE), 0, 1) );
+    catch( reload(load_object(LIB_VIRT_MAP), 0, 1) );
+    reset_eval_cost();
     return 1;
 }
 
 varargs mixed ReloadPlayer(mixed who, int deep){
     mixed mx;
-    string name;
+    string name, pwb_room;
     object tmp_bod, new_bod;
-    //int charmode;
+    int err;
 
     validate();
 
     if(stringp(who)) who = find_player(who);
     if(!who) return 0;
+    pwb_room = file_name(room_environment(who));
 
     if(deep){
         if((time() - last_deep_player_load) < 3){
@@ -129,7 +178,6 @@ varargs mixed ReloadPlayer(mixed who, int deep){
     }
 
     name = who->GetKeyName();
-    //charmode = who->GetCharmode();
     who->CancelCharmode();
     who->save_player(name);
     mx = reload(load_object(LIB_CREATOR), deep, 0);
@@ -162,6 +210,8 @@ varargs mixed ReloadPlayer(mixed who, int deep){
     destruct(tmp_bod);
     reset_eval_cost();
     new_bod->Setup();
+    err = catch(mx = new_bod->eventMove(pwb_room));
+    if(!environment(new_bod)) new_bod->eventMove(ROOM_START);
     SNOOP_D->CheckBot(name);
     return 1;
 }
@@ -249,6 +299,7 @@ void heart_beat(){
             flush_messages();
             this_object()->ReloadUsers();
             shout("Warm boot complete.");
+            virtual_void = 0;
             warm_boot_in_progress = 0;
             stage2 = 0;
             eventSave();
@@ -276,12 +327,12 @@ mapping ClearReloads(){
         error("Illegal attempt to access RELOAD_D: "+get_stack()+" "+identify(previous_object(-1)));
     }
     Reloadees = ([]);
-    save_object(savefile);
+    SaveObject(savefile);
     return copy(Reloadees);
 }
 
 int eventDestruct(){
-    save_object(savefile);
+    SaveObject(savefile);
     return daemon::eventDestruct();
 }
 
@@ -296,6 +347,7 @@ int ReloadDir(string dir, int passes){
     while(passes){
         reset_eval_cost();
         foreach(object ob in lib_obs){
+            if(grepp(file_name(ob), "/void/user_")) continue;
             reset_eval_cost();
             if(ob != this_object() && 
                     member_array(base_name(ob), exceptions) == -1){
@@ -316,11 +368,14 @@ int ReloadUsers(){
     mx = reload(load_object(LIB_CREATOR), 1, 1);
     if(!mx) error("OHFUC-");
 
+    if(virtual_void){
+        UnisolateUsers();
+    }
+
     foreach(object player in users()){
         int invis = player->GetInvis();
         string pstr = base_name(player);
-        reset_eval_cost();
-        player->SetInvis(0);
+        reset_eval_cost();         player->SetInvis(0);
         err = catch(RELOAD_D->ReloadPlayer(player));
         if(err){
             debug("problem reloading "+pstr,"red");
@@ -332,11 +387,23 @@ int ReloadUsers(){
 }
 
 int ReloadMud1(){
+    object vvoid;
+    int err;
     validate();
+#ifdef ROOM_VIRT_VOID
+    err = catch(vvoid = load_object(ROOM_VIRT_VOID));
+    if(!err && vvoid) virtual_void = 1;
+#endif
+    if(virtual_void){
+        IsolateUsers();
+    }
+    occupied_rooms = ({});
     shout("Warm boot initiated!");
     users()->CancelCharmode();
     warm_boot_in_progress = 1;
     roomscleaned = 0;
+    eventDestroyDoors();
+    reset_eval_cost();
     shout("Rooms resetting..."); 
     flush_messages();
     eventResetEmptyRooms();

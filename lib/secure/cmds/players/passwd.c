@@ -76,7 +76,7 @@ static void ConfirmPass(string str, mixed who, string newpass) {
     else {
         string *lines;
 
-        who = save_file(who) + __SAVE_EXTENSION__;
+        who = player_save_file(who);
         lines = explode(unguarded((: read_file, who :)),"\n");
         unguarded((: rm, who :));
         foreach(string line in lines) {

@@ -10,12 +10,15 @@
 inherit LIB_DAEMON;
 
 private mapping Objects;
+static string SaveFile;
 
 static void create() {
     daemon::create();
+    SaveFile = save_file(SAVE_UNIQUE);
     Objects = ([]);
-    if( file_size(SAVE_UNIQUE __SAVE_EXTENSION__) > 0 )
-        unguarded( (: restore_object, SAVE_UNIQUE :) );
+    if(file_exists(SaveFile)){
+        unguarded( (: RestoreObject, SaveFile :) );
+    }
 }
 
 void eventTouchObject() {
@@ -24,7 +27,7 @@ void eventTouchObject() {
     if( !((int)previous_object()->GetUnique()) ) return;
     fn = base_name(previous_object());
     Objects[fn] = time();
-    unguarded( (: save_object, SAVE_UNIQUE :) );
+    unguarded( (: SaveObject, SaveFile :) );
 }
 
 object GetUniqueCopy(string fn, int rare) {
@@ -35,13 +38,13 @@ object GetUniqueCopy(string fn, int rare) {
         ob = new(fn);
         if( !((int)ob->GetUnique()) ) return ob;
         else Objects[fn] = time();
-        unguarded( (: save_object, SAVE_UNIQUE :) );
+        unguarded( (: SaveObject, SaveFile :) );
         return ob;
     }
     x = time() - Objects[fn];
     if( x < (86400 * rare) ) return 0;
     if( ob = new(fn) ) Objects[fn] = time();
-    unguarded( (: save_object, SAVE_UNIQUE :) );
+    unguarded( (: SaveObject, SaveFile :) );
     return ob;
 }
 
@@ -51,5 +54,5 @@ mapping GetUniques(){
 
 mapping ResetUniques(){
     Objects = ([]);
-    unguarded( (: save_object, SAVE_UNIQUE :) );
+    unguarded( (: SaveObject, SaveFile :) );
 }

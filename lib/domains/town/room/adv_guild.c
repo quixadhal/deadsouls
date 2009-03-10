@@ -12,7 +12,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("The Adventurers' Guild");
-    SetLong("This small building is where adventurers can record their adventures and leave messages and announcements for other brave souls. This is also the place one can seek advancement, so if you deserve to be a higher level adventurer, asking the guild master for it will make it so. A scroll lists quests one may perform, and a sign contains some instructions. The Creator's Hall is south of here. A special skills training area is west. A conference room is east, where folks can discuss things in privacy.");
+    SetLong("This small building is where adventurers can record their adventures and leave messages and announcements for other brave souls. This is also the place one can seek advancement, so if you deserve to be a higher level adventurer, asking the guild master for it will make it so. A scroll lists quests one may perform, and a sign contains some instructions. The Creator's Hall is south of here. A special skills training area is upstairs. A conference room is east, where folks can discuss things in privacy.");
     SetItems( ([
                 ({ "list","scroll"}) : "A scroll hangs from the wall, listing "
                 "some adventures you can perform which may have rewards "

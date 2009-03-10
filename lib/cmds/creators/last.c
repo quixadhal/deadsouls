@@ -1,5 +1,5 @@
 /*    /cmds/creators/last.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Shows the last however many people to login
  *    Created by Descartes of Borg 961118
  *    Version: @(#) last.c 1.1@(#)

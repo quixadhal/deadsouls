@@ -1,5 +1,5 @@
 /*    /verbs/items/remove.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Allows players to remove armor
  *    Created by Descartes of Borg 960207
  *    Version: @(#) remove.c 1.2@(#)

@@ -2,7 +2,7 @@
 #include <cfg.h>
 #include <save.h>
 #include <daemons.h>
-#include <network.h>
+#include NETWORK_H
 #include <sockets.h>
 void help();
 
@@ -51,8 +51,8 @@ mixed cmd(string str) {
         help();
         return 1;
     }
-    cp("/secure/include/config.h","/secure/save/backup/config."+time());
-    config = explode( read_file("/secure/include/config.h"),"\n" );
+    cp(CONFIG_H,"/secure/save/backup/config."+time());
+    config = explode( read_file(CONFIG_H),"\n" );
     config2 = ({});
     keywords = ({});
     foreach(string element in config){
@@ -85,6 +85,7 @@ mixed cmd(string str) {
         case "pinginterval" : which = "PING_INTERVAL";ProcessOther(which,arg);break;
         case "maxcommands" : which = "MAX_COMMANDS_PER_SECOND";ProcessOther(which,arg);break;
         case "maxidle" : which = "IDLE_TIMEOUT";ProcessOther(which,arg);break;
+        case "instances" : which = "ENABLE_INSTANCES";ProcessOther(which,arg);break;
         case "hostip" : which = "HOST_IP";ProcessString(which,arg);break;
         case "email" : which = "ADMIN_EMAIL";ProcessString(which,arg);break;
         case "liveupgrade" : which = "LIVEUPGRADE_SERVER";ProcessString(which,arg);break;
@@ -100,7 +101,7 @@ mixed cmd(string str) {
 
 varargs static int CompleteConfig(string file){
     string ret = implode(config2,"\n")+"\n";
-    if(!file) file = "/secure/include/config.h";
+    if(!file) file = CONFIG_H;
     validate();
     ret = replace_string(ret,"\n\n","\n");
     write_file(file,ret,1);
@@ -114,7 +115,7 @@ varargs static int CompleteConfig(string file){
 int ModPortOffset(string which, string arg){
     string out, service, svc, junk, offset, new_offset;
     string *new_array = ({});
-    string netcfg = read_file("/secure/include/network.h");
+    string netcfg = read_file(NETWORK_H);
     string *net_array = explode(netcfg,"\n");
 
     new_offset = arg;
@@ -132,7 +133,7 @@ int ModPortOffset(string which, string arg){
     }
     out = implode(new_array,"\n");
 
-    write_file("/secure/include/network.h",out,1);
+    write_file(NETWORK_H,out,1);
     write("The "+service+" port offset is being set to "+offset+".");
     RELOAD_D->eventReload(this_object(), 1, 1);
     reload(MASTER_D,0,1);
@@ -142,7 +143,7 @@ int ModPortOffset(string which, string arg){
 int ModPort(string which, mixed arg){
     string out, service, svc, junk, new_offset, new_port;
     string *new_array = ({});
-    string netcfg = read_file("/secure/include/network.h");
+    string netcfg = read_file(NETWORK_H);
     string *net_array = explode(netcfg,"\n");
     int offset;
 
@@ -163,7 +164,7 @@ int ModPort(string which, mixed arg){
     }
     out = implode(new_array,"\n");
     if(last(out,1) != "\n") out += "\n";
-    write_file("/secure/include/network.h",out,1);
+    write_file(NETWORK_H,out,1);
     write("The "+service+" port is being set to "+atoi(new_port)+".");
     write("To complete this configuration, wait 2 seconds, then issue the following commands:");
     write("mudconfig "+lower_case(service)+" disable");
@@ -203,8 +204,8 @@ varargs static int ModStartRoom(string which, string arg){
         write("/n/nThat room file is broken. Please fix it and try again.");
         return 1;
     }
-    cp("/secure/include/rooms.h","/secure/save/backup/rooms."+time());
-    config = explode( read_file("/secure/include/rooms.h"),"\n" );
+    cp(ROOMS_H,"/secure/save/backup/rooms."+time());
+    config = explode( read_file(ROOMS_H),"\n" );
     config2 = ({});
     foreach(string line in config){
         string s1,s2,s3;
@@ -214,7 +215,7 @@ varargs static int ModStartRoom(string which, string arg){
         }
         config2 += ({ line });
     }
-    CompleteConfig("/secure/include/rooms.h");
+    CompleteConfig(ROOMS_H);
     reload(LIB_CREATOR,1,1);
     write("\nNote: Some objects, like verbs and workrooms, still contain the old "+
             "START_ROOM value. This will not change until they are reloaded or "+
@@ -348,12 +349,17 @@ varargs static int ModIntermud(string which, string arg){
 
     if(arg == "reset"){
         object ob = find_object(INTERMUD_D);
+        string savei3 = save_file(SAVE_INTERMUD);
         write("Purging all intermud data (including router password!). Previous data file saved to /secure/save/backup/ .");
         if(!ob){
-            if(file_exists(SAVE_INTERMUD+".o")) rename(SAVE_INTERMUD+".o", "/secure/save/backup/intermud."+time());
+            if(file_exists(savei3)){
+                rename(savei3, "/secure/save/backup/intermud."+time());
+            }
         }
         else {
-            if(file_exists(SAVE_INTERMUD+".o")) rename(SAVE_INTERMUD+".o", "/secure/save/backup/intermud."+time());
+            if(file_exists(savei3)){
+                rename(savei3, "/secure/save/backup/intermud."+time());
+            }
             reload(INTERMUD_D,0,1);
         }
         config2 = config;
@@ -418,7 +424,8 @@ static int ProcessOther(string which, string arg){
         if(grepp(element, which)){
             string s1, s2, s3;
             if(sscanf(element,"#define %s %s",s1,s2) != 2){
-                write("Major problem. You should revert to a backup of config.h immediately.");
+                write("Major problem. You should revert to a backup of "+
+                        CONFIG_H+" immediately.");
                 return 1;
             }
             s3 = trim(s2);
@@ -458,7 +465,8 @@ static int ProcessString(string which, string arg){
         if(grepp(element, which)){
             string s1, s2, s3;
             if(sscanf(element,"#define %s %s",s1,s2) != 2){
-                write("Major problem. You should revert to a backup of config.h immediately.");
+                write("Major problem. You should revert to a backup of "+
+                        CONFIG_H+" immediately.");
                 return 1;
             }
             s3 = trim(s2);
@@ -532,7 +540,8 @@ static int ProcessModal(string which, string arg){
         if(grepp(element, which)){
             string s1, s2, s3;
             if(sscanf(element,"#define %s %s",s1,s2) != 2){
-                write("Major problem. You should revert to a backup of config.h immediately.");
+                write("Major problem. You should revert to a backup of "+
+                        CONFIG_H+" immediately.");
                 return 1;
             }
             s3 = trim(s2);
@@ -822,10 +831,12 @@ void help() {
             "\nmudconfig nmexits [ yes | no ] (This togggles where default exits are displayed)"
             "\nmudconfig fastcombat [ yes | no ] (heart rate overridden in combat)"
             "\nmudconfig selectclass [ yes | no ] (whether new players choose a class on login)"
+            "\nmudconfig instances [ yes | no ] (whether mud instances are used)"
             "\nmudconfig localtime [ yes | no ]"
             "\nmudconfig offset <offset from gmt in seconds>"
             "\nmudconfig extraoffset <offset from GMT in hours>"
             "\nmudconfig maxcommands <max number of commands per second>"
+            "\nmudconfig maxidle <number of idle seconds before autoquit>"
             "\nmudconfig questrequired [ yes | no ]"
             "\nmudconfig autoadvance [ yes | no ]"
             "\nmudconfig maxip <max connections per IP>"

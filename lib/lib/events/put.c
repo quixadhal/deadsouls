@@ -1,5 +1,5 @@
 /*    /lib/put.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    handles things which may be put into other objects
  *    created by Descartes of Borg 960114
  */

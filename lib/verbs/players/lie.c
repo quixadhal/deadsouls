@@ -1,5 +1,5 @@
 /*    /verbs/players/lie.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 960711
  *    Version: @(#) lie.c 1.4@(#)
  *    Last Modified: 96/12/21

@@ -22,5 +22,5 @@ static void create() {
     SetLockable("south", 1);
     SetKeys("south", "special_key_id");
     SetClosed(1);
-    SetLocked(1);
+    SetLocked(0);
 }

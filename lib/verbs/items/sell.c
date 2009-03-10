@@ -1,5 +1,5 @@
 /*    /verbs/items/sell.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Allows a player to sell stuff to a vendor
  *    Created by Descartes of Borg 9602??
  *    Version: @(#) sell.c 1.2@(#)

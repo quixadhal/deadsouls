@@ -1,5 +1,6 @@
 #include <lib.h>
-#include <rooms.h>
+#include <daemons.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
 
@@ -19,17 +20,21 @@ void create(){
     }
     SetNoModify(1);
 }
+
 int CanReceive(object ob){
     return room::CanReceive(ob);
 }
+
 void init(){
     ::init();
 }
+
 void heart_beat(){
     if(base_name(this_object()) != LIB_FURNACE){
         if(sizeof(all_inventory(this_object()))){
             foreach(object ob in deep_inventory(this_object())){
-                if(ob && interactive(ob)) ob->eventMove(ROOM_VOID);
+                if(ob && interactive(ob)) 
+                    ob->eventMove(ROOMS_D->GetVoid(ob));
                 else ob->eventDestruct();
             }
         }

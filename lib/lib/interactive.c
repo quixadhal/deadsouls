@@ -15,7 +15,7 @@
 #include <privs.h>
 #include <daemons.h>
 #include <objects.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <marriage.h>
 #include <medium.h>
 #include <position.h>
@@ -33,6 +33,7 @@ inherit LIB_MOVE;
 inherit LIB_PAGER;
 inherit LIB_MESSAGES;
 inherit LIB_INTERFACE;
+inherit LIB_SHADOW_HOOK;
 
 private int Age, WhereBlock, Brief, LoginTime, BirthTime, RescueBit;
 private string Password, Email, RealName, Rank, LoginSite, HostSite, WebPage;
@@ -43,6 +44,7 @@ private static int LastAge, Setup;
 private static object NetDiedHere;
 private static mapping LastError;
 private static string *UserId;
+private mapping Paranoia = ([]);
 
 static void create(){
     object::create();
@@ -60,6 +62,7 @@ static void create(){
     BirthTime = time();
     LastAge = time();
     News = ([]);
+    Paranoia = ([]);
     RescueBit = 0;
     SetShort("$N the unaccomplished");
     SetLong("$N is nondescript.");
@@ -107,7 +110,7 @@ int Setup(){
     LoginTime = time();
     SetId(({}));
     autosave::Setup();
-    call_out("save_player", 2, GetKeyName());
+    //call_out("save_player", 2, GetKeyName());
     if( VOTING_D->GetStatus() == VOTE_RUNNING ){
         if( VOTING_D->GetMode() == VOTE_MODE_CANDIDATES )
             eventPrint("%^YELLOW%^Class Elections are in progress!  "
@@ -386,14 +389,13 @@ void SetRealName(string str){
 string GetRealName(){ return RealName; }
 
 string GetShort(){
-    string str;
-
-    str = object::GetShort(str);
+    string str = object::GetShort();
     if( !str ) str = "$N the unaccomplished";
     if( strsrch(str, "$N") == -1 ) str = "$N";
     str = replace_string(str, "$N", (GetName() || ""));
-    if( interactive(this_object()) ) return str;
-    else return str + " (net-dead)";
+    str += "%^RESET%^";
+    if(!interactive(this_object())) str += " (net-dead)";
+    return str;
 }
 
 varargs string GetLong(){
@@ -441,7 +443,8 @@ string SetCapName(string str){
 }
 
 void move_or_destruct(){
-    (eventMove(ROOM_START) || eventMove(ROOM_VOID));
+    string rvoid = ROOMS_D->GetVoid(this_object());
+    (eventMove(ROOM_START) || eventMove(rvoid));
 }
 
 string SetShort(string str){
@@ -493,4 +496,61 @@ string SetWebPage(string page){
         return WebPage;
     }
     return (WebPage = page);
+}
+
+varargs nomask static void validate_paranoia(int prev){
+    object ob = ( prev ? previous_object() : this_player() );
+    //tc("this_player(): "+identify(this_player()));
+    //tc("archp(this_player()): "+identify(archp(this_player())));
+    //tc("ob: "+identify(ob));
+    if( !this_player() || (!archp(this_player()) &&
+                ob != this_object()) ){
+        //tc("FAIL","red");
+        error("Illegal attempt to access paranoia: "+get_stack()+
+                " "+identify(previous_object(-1)));
+        log_file("adm/pause",timestamp()+" Illegal attempt to access "+
+                "paranoia settings on "+identify(this_object())+
+                " by "+identify(previous_object(-1))+"\n");
+    }
+    //tc("PASS","green");
+}
+
+mixed GetParanoia(string str){
+    //validate_paranoia(1);
+    if(Paranoia[str]) return copy(Paranoia[str]);
+    return 0;
+}
+
+mixed SetParanoia(string str, mixed val){
+    validate_paranoia();
+    Paranoia[str] = val;
+    return copy(Paranoia[str]);
+}
+
+static nomask void NotifyReceipt(object ob){
+    string what, msg;
+    if(playerp(this_object())) what = ob->GetShort();
+    if(creatorp(this_object())) what = identify(ob);
+    tell_player(this_object(),what+", a thing "+
+            "that can watch what is going on around you, has "+
+            "entered your inventory.");
+}
+
+nomask int eventReceiveObject(object ob){
+    int ret = container::eventReceiveObject(ob);
+    //tc("ret: "+ret,"blue");
+    //tc("ob: "+identify(ob),"blue");
+    //tc("im: "+identify(GetParanoia("inventory_monitoring")),"blue");
+    if(ret && GetParanoia("inventory_monitoring")){
+        tell_player(this_object(),"%^YELLOW%^NOTICE:%^RESET%^ "+identify(ob)+
+                " enters your inventory.");
+    }
+    this_object()->AddCarriedMass((int)ob->GetMass());
+    if(environment()) environment()->AddCarriedMass((int)ob->GetMass());
+    if(ob->GeteventPrints()) NotifyReceipt(ob);
+    return ret;
+}
+
+static void heart_beat(){
+    autosave::heart_beat();
 }

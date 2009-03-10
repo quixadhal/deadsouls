@@ -1,5 +1,5 @@
 /*    /lib/sit.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles people sitting down in it
  *    Created by Descartes of Borg 961221
  *    Version: @(#) sit.c 1.1@(#)

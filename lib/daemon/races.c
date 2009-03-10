@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <cfg.h>
 #include <save.h>
 #include <privs.h>
 #include <armor_types.h>
@@ -26,19 +27,34 @@ string array LimblessRaces = ({});
 string array NonBitingRaces = ({});
 string array SwimmingRaces = ({});
 string array NonMeatRaces = ({});
+static string SaveFile;
+
+static void ReloadRaces(){
+    string *races = get_dir(CFG_RACES+"/");
+    Races = ([]);
+    foreach(string race in races){
+        string str = CFG_RACES+"/"+race;
+        if(file_exists(str)) {
+            catch( this_object()->AddRace(str) );
+        }
+    }
+}
 
 static void create() {
     daemon::create();
-
-    if( unguarded((: file_size(SAVE_RACES __SAVE_EXTENSION__) :)) > 0 )
-                                                                    unguarded((: restore_object(SAVE_RACES) :));
-
-    if( !Races ) Races = ([]);
+    SaveFile = save_file(SAVE_RACES);
+    if(file_exists(SaveFile)){
+        //tc("yes","green");
+        unguarded((: RestoreObject(SaveFile) :));
+    }
+    //else tc("no","red");
+    if( !sizeof(Races) ) ReloadRaces();
     if(!FlyingRaces) FlyingRaces = ({});
     if(!LimblessCombatRaces) LimblessCombatRaces = ({});
     if(!LimblessRaces) LimblessRaces = ({});
     if(!NonBitingRaces) NonBitingRaces = ({});
     if(!NonMeatRaces) NonMeatRaces = ({});
+    unguarded((: SaveObject(SaveFile) :));
 }
 
     static private void validate() {
@@ -154,7 +170,9 @@ int GetRaceMass(string str){
 }
 
 int GetRaceSize(string str){
-    int Size = Races[str]["Size"];
+    int Size;
+    //tc("str: "+str);
+    Size = Races[str]["Size"];
     if(Size) return Size;
     else return 0;
 }
@@ -370,7 +388,7 @@ void AddRace(string file, int player) {
     }
 
     Races[race] = res;
-    save_object(SAVE_RACES);
+    SaveObject(SaveFile);
 } 
 
 void RemoveRace(string race) {
@@ -378,7 +396,7 @@ void RemoveRace(string race) {
     map_delete(Races, race);
     RemoveRaceVars(race);
     if(Races[race]) 
-        save_object(SAVE_RACES);
+        SaveObject(SaveFile);
 }
 
 string ConvertPipe(string str){
@@ -490,7 +508,7 @@ void SetComplete(string race) {
     if( !Races[race] ) error("No such race");
     else res = Races[race];
     res["Complete"] = 1;
-    save_object(SAVE_RACES);
+    SaveObject(SaveFile);
 }
 
 void SetLightSensitivity(string race, int array sensitivity) {
@@ -504,7 +522,7 @@ void SetLightSensitivity(string race, int array sensitivity) {
     if( sensitivity[1] > 99 ) error("Invalid sensitivity value");
     if( sensitivity[0] > sensitivity[1] ) error("Invalid sensitivity value");
     res["Sensitivity"] = sensitivity;
-    save_object(SAVE_RACES);
+    SaveObject(SaveFile);
 }
 
 void SetCharacterLimbs(string race, mixed array args) {

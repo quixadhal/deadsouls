@@ -1,5 +1,5 @@
 /*    /lib/std/story.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    handles objects and NPCs telling stories
  *    created by Corvar
  *    Version: 

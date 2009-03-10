@@ -1,5 +1,5 @@
 /*    /cmds/creators/domains.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Shows the domain statistics information
  *    created by Descartes of Borg 960214
  *    Version: @(#) domains.c 1.3@(#)

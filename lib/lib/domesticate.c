@@ -1,6 +1,7 @@
 private string *TrainedSkills = ({});
 private int Befriendable, Trainable, Commandable;
 private object Owner = 0;
+private string *Befriended = ({});
 
 mixed direct_befriend_liv(){
     return 1;
@@ -96,6 +97,7 @@ int eventBefriend(object who){
     say(who->GetName()+" befriends "+this_object()->GetName()+
             ". Awwww, it's such a cute sight to see!");
     Owner = who;
+    Befriended += ({ who });
     return 1;
 }
 
@@ -164,3 +166,22 @@ string eventCommandNPC(object who, string cmd){
     //if(this_object()->GetStat("intelligence") < 10
     return "foo";
 }
+
+varargs mixed GetBefriended(mixed who){
+    if(!Befriended) Befriended = ({});
+    if(!who) return copy(Befriended);
+    if(stringp(who)) who = find_object(who);
+    if(objectp(who)) who = file_name(who);
+    if(member_array(who, Befriended) != -1) return 1;
+    return 0;
+} 
+
+varargs mixed SetBefriended(mixed who){
+    if(!Befriended) Befriended = ({});
+    if(!who) return copy(Befriended);     
+    if(stringp(who)) who = find_object(who);
+    if(who && objectp(who)) who = file_name(who);
+    if(who) Befriended += ({ who });
+    return copy(Befriended);
+}
+

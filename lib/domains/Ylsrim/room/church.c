@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/church
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of a religious class hall
  *    Created by Descartes of Borg 961222
  */

@@ -6,7 +6,7 @@
 #include <logs.h>
 #include <cgi.h>
 #include <save.h>
-#include <network.h>
+#include NETWORK_H
 #include <socket_err.h>
 #include <daemons.h>
 #include <message_class.h>
@@ -15,7 +15,7 @@
 //already connected to LPMuds.net intermud using Intermud-3, do
 //not use the LPMuds.net IMC2 server.
 //#define HOSTPORT 8888
-//#define HOSTIP "204.209.44.3"
+//#define HOSTIP "66.197.134.110"
 
 // Connection data for Davion's server
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
@@ -31,10 +31,6 @@
 
 // What name the network knows your mud as. Replace MUD_NAME with "whatever" if you want it to be different.
 #define MUDNAME (imc2_mud_name())
-
-// File to save data to, .o will be added automatically to the end.
-// This will have private stuff in it, don't put this in a directory where your wizards can read it.
-#define SAVE_FILE "/secure/save/imc2.o"
 
 // COMMAND_NAME is the command that people type to use this network.
 #define COMMAND_NAME "imc2"
@@ -149,6 +145,7 @@
 inherit LIB_DAEMON;
 
 string tmpstr, host, who_str;;
+static string SaveFile;
 
 static int socket_num, counter;
 static int heart_count = 0;
@@ -522,12 +519,17 @@ private void send_text(string text){
 }
 
 void create(){
+#if DISABLE_IMC2
+    unguarded( (: destruct() :) );
+#else
+    SaveFile = save_file(SAVE_IMC2);
     set_heart_beat(10);
     counter = time();
     //tn("IMC2: created "+ctime(time()));
-    if(unguarded( (: file_exists(SAVE_FILE) :) )) 
-        unguarded( (: restore_object(SAVE_FILE) :) );
+    if(unguarded( (: file_exists(SaveFile) :) )) 
+        unguarded( (: RestoreObject(SaveFile) :) );
     call_out( (: Setup :), 1);
+#endif
 }
 
 void Setup(){
@@ -620,7 +622,7 @@ void heart_beat(){
 void remove(){
     // This object is getting destructed.
     mode=2;
-    save_object(SAVE_FILE, 1);
+    SaveObject(SaveFile, 1);
     socket_close(socket_num);
     //	if(imc2_socket) imc2_socket->remove();
 #ifdef IMC2_LOGGING
@@ -1233,7 +1235,7 @@ void start_logon(){
         } else {
             x=0; y=0;
             output=sprintf("[%s] %-20s %-20s %-20s\n","U/D?","Name","Network","IMC2 Version");
-            foreach (mud in muds){
+            foreach (mud in filter(muds, (: mudinfo[$1]["online"] :) )){
                 if(!mudinfo[mud]) output += "Error on mud: "+mud+"\n";
                 else {
                     if(mudinfo[mud]["online"]) x++; else y++;
@@ -1672,7 +1674,7 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
     void eventChangeIMC2Passwords(){
         string cpass = alpha_crypt(10);
         string spass = alpha_crypt(10);
-        string filename = "/secure/include/config.h";
+        string filename = CONFIG_H;
         string file = read_file(filename);
 
         if(!file || !sizeof(file)) return;
@@ -1689,7 +1691,7 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
         //This is just for taking away automatic disablement.
         //For enabling/disabling, see the mudconfig command.
         if(x) autodisabled = 0;
-        save_object(SAVE_FILE,1);
+        SaveObject(SaveFile,1);
         RELOAD_D->eventReload(this_object(), 2, 1);
         return autodisabled;
     }

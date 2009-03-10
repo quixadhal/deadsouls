@@ -1,5 +1,5 @@
 /*    /cmds/players/customize.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    customize
  *    customize STAT AMOUNT
  *    created by Descartes of Borg 950113

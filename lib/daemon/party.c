@@ -13,14 +13,17 @@
 inherit LIB_DAEMON;
 
 mapping Parties;
+static string SaveFile;
 
 static void create() {
     daemon::create();
+    SaveFile = save_file(SAVE_PARTIES);
     Parties = ([]);
-    if( unguarded((: file_size(SAVE_PARTIES __SAVE_EXTENSION__) :)) > 0 )
-                                                                      unguarded((: restore_object(SAVE_PARTIES) :));
+    if( unguarded((: file_exists(SaveFile) :)) ){
+        unguarded((: RestoreObject(SaveFile) :));
+    }
     SetNoClean(1);
-    SetSaveFile(SAVE_PARTIES);
+    SetSaveFile(SaveFile);
     foreach(mixed key, mixed val in Parties){
         mixed array members = this_object()->GetPartyMembers(key);
         members -= ({ 0 });

@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/kaliid6.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of a room with an object that allows climbing
  *    Created by Descartes of Borg 961010
  */

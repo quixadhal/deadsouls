@@ -96,9 +96,10 @@ mixed GetLanguage(){
 varargs mixed eventRead(object who, mixed str){
     mixed ret;
     mixed val;
+    //debug("who: "+identify(who)+", str: "+identify(str), "red");
     if(str) val = GetRead(str);
     else val = GetRead("default");
-
+    //debug("val: "+identify(val), "green");
     if( arrayp(val) ){
         val = val[query_night()];
     }

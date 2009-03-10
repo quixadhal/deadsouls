@@ -1,5 +1,5 @@
 /*    /lib/std/limb.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Standard limb object for severed limbs
  *    Created by Descartes of Borg 950329
  *    Version: @(#) limb.c 1.5@(#)
@@ -8,10 +8,12 @@
 
 #include <lib.h>
 #include <medium.h>
+#include <respiration_types.h>
 
 inherit LIB_SURFACE;
 
 int Count          = 0;
+int Player         = 0;
 string Limb        = 0;
 string Owner       = 0;
 string Race        = 0;
@@ -33,7 +35,6 @@ void create(){
 
 void init(){
     surface::init();
-    if(environment() && environment()->GetMedium() == MEDIUM_LAND) stank = 1;
 }
 
 void SetLimb(string limb, string owner, string race){
@@ -45,9 +46,14 @@ void SetLimb(string limb, string owner, string race){
     Limb = limb;
     Owner = owner;
     Race = race;
+    Player = interactive(previous_object());
     Count = 1;
     SetShort("a rotting " + possessive_noun(Race) + " " + Limb);
     SetLong("This limb has a horrible stench as it rots to nothing.");
+    if(Player){
+        SetNoClean(1);
+        slowdecay = 50;
+    }
 }
 
 string GetOwner(){
@@ -80,10 +86,15 @@ int Destruct(){
 }
 
 int eventDecay(){
-    if( !environment() ){
+    int medium, rtype;
+    if( !room_environment() ){
         Destruct();
         return 0;
     }
+    medium = room_environment()->GetMedium();
+    rtype = room_environment()->GetRespirationType();
+    if(rtype & R_AIR) stank = 1;
+    if(medium == MEDIUM_SPACE && random(100) < 90) return 0;
     switch(Count){
         case 10:
             if(stank)

@@ -8,7 +8,7 @@
  */
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
 #include <position.h>
 #include "include/exits.h"
@@ -288,6 +288,7 @@ void RemoveEnter(string dir){
 void SetEnters(mapping mp){
     foreach(mixed dir, mixed room_or_arr in mp){
         object ob = GetDummyItem(dir);
+        if(!ob) continue;
 
         if( arrayp(room_or_arr) ){
             ob->SetEnter(room_or_arr...);

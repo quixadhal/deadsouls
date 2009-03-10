@@ -7,8 +7,7 @@
  */
 
 #include <lib.h>
-#include <config.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
 #include <function.h>
 #include <medium.h>
@@ -49,9 +48,9 @@ private static mapping WornItems;
 private static class MagicProtection *Protection;
 static private int HeartModifier = 0;
 private static string PoliticalParty, BodyComposition;
-private static int Pacifist, rifleshot_wounds, gunshot_wounds, globalint1;
-private static int Size, BodyType;
-private int rifleshot_wounds, gunshot_wounds;
+private static int Pacifist, globalint1;
+private static mapping Dimensions = ([]);
+private int firearms_wounds;
 string *ExtraChannels;
 mixed Agent;
 
@@ -59,8 +58,7 @@ string GetRace();
 
 static void create(){
     PoliticalParty = "UNDECIDED";
-    rifleshot_wounds = 0;
-    gunshot_wounds = 0;
+    firearms_wounds = 0;
     DeathEvents = 0;
     NewBody(0);
     Protect = 0;
@@ -75,6 +73,7 @@ static void create(){
     LastHeal = time();
     Protection = ({});
     ExtraChannels = ({});
+    Dimensions = ([]);
 }
 
 varargs mixed eventBuy(mixed arg1, mixed arg2, mixed arg3){
@@ -87,16 +86,33 @@ int GetMass(){
     return body_mass::GetBodyMass();
 }
 
-int GetSize(){
-    int size = RACES_D->GetRaceSize(GetRace());
-    if(Size) return Size;
-    return size;
+int GetSize(int decimal){
+    int i;
+    if(!decimal && !undefinedp(Dimensions["Size"])){
+        return Dimensions["Size"];
+    }
+    if(decimal && !undefinedp(Dimensions["SizeDecimal"])){
+        return Dimensions["SizeDecimal"];
+    }
+    Dimensions["Size"] = RACES_D->GetRaceSize(GetRace());
+    if(!decimal){
+        return Dimensions["Size"];
+    }
+    i = 32;
+    while(i){
+        i--;
+        if((1 << i) & Dimensions["Size"]){
+            return (Dimensions["SizeDecimal"] = i);
+        }
+    }
+    return (Dimensions["SizeDecimal"] = i);
 }
 
 int GetBodyType(){
-    int body_type = RACES_D->GetRaceBodyType(GetRace());
-    if(BodyType) return BodyType;
-    return body_type;
+    if(!undefinedp(Dimensions["BodyType"])){
+        return Dimensions["BodyType"];
+    }
+    return (Dimensions["BodyType"] = RACES_D->GetRaceBodyType(GetRace()));
 }
 
 int SetMass(int i){
@@ -104,11 +120,11 @@ int SetMass(int i){
 }
 
 int SetSize(int i){
-    return Size = i;
+    return Dimensions["Size"] = i;
 }
 
 int SetBodyType(int i){
-    return BodyType = i;
+    return Dimensions["BodyType"] = i;
 }
 
 
@@ -243,41 +259,45 @@ void eventCheckEnvironment(){
             }
         }
     }
+
+    i = this_object()->CanBreathe();
+    if(undefinedp(i)) i = 1;
+
     if(env->GetMedium() == MEDIUM_SPACE){
         this_object()->SetPosition(POSITION_FLOATING);
         if(restype != R_VACUUM){
-            if(!this_object()->CanBreathe()){
+            if(!i){
                 breathdam = 1;
-                eventPrint("You are asphyxiating.");
-                this_object()->eventReceiveDamage("Outer space", ANOXIA, 200, 1);
+                j=this_object()->eventReceiveDamage("Outer space",ANOXIA,200,1);
+                if(j) eventPrint("You are asphyxiating.");
             }
         }
     }
     else if(env->GetMedium() == MEDIUM_WATER){
         if(restype != R_VACUUM && restype != R_WATER){
-            if(!this_object()->CanBreathe()){
+            if(!i){
                 breathdam = 1;
-                eventPrint("You are drowning.");
-                this_object()->eventReceiveDamage("Water", ANOXIA, 100, 1);
+                j=this_object()->eventReceiveDamage("Water", ANOXIA, 100, 1);
+                if(j) eventPrint("You are drowning.");
             }
         }
     }
     else if(restype == R_WATER && env->GetMedium() != MEDIUM_WATER){
-        if(!this_object()->CanBreathe()){
+        if(!i){
             breathdam = 1;
-            eventPrint("You are asphyxiating.");
-            this_object()->eventReceiveDamage("Air", ANOXIA, 100, 1);
+            j=this_object()->eventReceiveDamage("Air", ANOXIA, 100, 1);
+            if(j) eventPrint("You are asphyxiating.");
         }
     }
     if(!breathdam){
-        if(!(this_object()->CanBreathe())){
-            eventPrint("You cannot breathe!");
-            this_object()->eventReceiveDamage("asphyxia", ANOXIA, 200, 1);
+        if(!i){
+            j=this_object()->eventReceiveDamage("asphyxia", ANOXIA, 200, 1);
+            if(j) eventPrint("You cannot breathe!");
         }
     }
-    if( (i = env->GetPoisonGas()) > 0 ){
-        if( GetResistance(GAS) != "immune" ){
-            eventPrint("You choke on the poisonous gases.");
+    if(i && restype == R_AIR && (i = env->GetPoisonGas()) > 0 ){
+        if( this_object()->GetResistance(GAS) != "immune" ){
+            eventPrint("You choke on toxic gases.");
             this_object()->eventReceiveDamage("Poison gas", GAS, i, 1);
         }
     }
@@ -798,6 +818,11 @@ varargs int eventDie(mixed agent){
         death_annc = killer + " has slain "+ this_object()->GetName()+".";
     else death_annc = killer + " has destroyed "+ this_object()->GetName()+".";
 
+    if(killer == "asphyxia"){
+        tell_room(ROOM_ARCH, this_object()->GetName() + " asphyxiated "+
+                "in "+base_name(environment(this_object())));
+    }
+
     CHAT_D->eventSendChannel("SYSTEM","death",death_annc,0);
 
     if( Sleeping > 0 ) Sleeping = 0;
@@ -813,7 +838,7 @@ varargs int eventDie(mixed agent){
         object ob;
         string curr;
         int i;
-        object *riders = GetRiders();
+        object *riders = filter( deep_inventory(), (: living($1) :) );
 
         //I'd like to move the living body out first, but for now this
         //misfeature stays.
@@ -1712,25 +1737,15 @@ int GetMaxMagicPoints(){ return 0; }
 int AddLead(string ammo,int number){
     if( !intp(number) ) error("Bad argument 2 to AddLead().\n");
     if( !stringp(ammo) ) error("Bad argument 1 to AddLead().\n");
-    if( ammo == "gunshot_wounds" ) gunshot_wounds += number;
-    if( ammo == "rifleshot_wounds" ) rifleshot_wounds += number;
-    if( rifleshot_wounds + gunshot_wounds < 0 ){
-        gunshot_wounds = 0;
-        rifleshot_wounds = 0;
+    firearms_wounds += number;
+    if( firearms_wounds < 0 ){
+        firearms_wounds = 0;
     }
     return 1;
 }
 
 varargs int GetLead(string ammo){
-    int number;
-    number = 0;
-    if(!ammo || !stringp(ammo)){
-        number = gunshot_wounds + rifleshot_wounds;
-        return number;
-    }
-    if(ammo == "gunshot_wounds") return gunshot_wounds;
-    if(ammo == "rifleshot_wounds") return rifleshot_wounds;
-    return 0;
+    return firearms_wounds;
 }
 
 float AddStaminaPoints(mixed x){

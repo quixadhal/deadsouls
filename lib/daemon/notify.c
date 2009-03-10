@@ -6,29 +6,32 @@
 #include <lib.h>
 #include <save.h>
 #include "include/notify.h"
+#define MaxTime  (3600 * 24 * 60)
 
 inherit LIB_DAEMON;
 
-#define MaxTime  (3600 * 24 * 60)
-
 private mixed * Notes;
+static string SaveFile;
 
 static void create() {
     int x;
     daemon::create();
+    SaveFile = save_file(SAVE_NOTIFY);
     SetNoClean(1);
     Notes = ({});
-    if( unguarded((: file_size(SAVE_NOTIFY __SAVE_EXTENSION__) :)) > 0 )
-                                                                     unguarded((: restore_object(SAVE_NOTIFY) :));
+    if( unguarded((: file_exists(SaveFile) :) ) ){
+        unguarded((: RestoreObject(SaveFile) :));
+    }
     x = sizeof(Notes);
     while( sizeof(Notes) && (time() - Notes[0][Date]) > MaxTime )
         Notes -= ({ Notes[0] });
     if( x != sizeof(Notes) ) eventSaveNotices();
+    unguarded((: SaveObject(SaveFile) :));
 }
 
 static int eventSaveNotices() {
     if( !archp(this_player()) ) return 0;
-    else return unguarded((: save_object(SAVE_NOTIFY) :));
+    else return unguarded((: SaveObject(SaveFile) :));
 }
 
 int eventAddNotice(object who, string msg) {

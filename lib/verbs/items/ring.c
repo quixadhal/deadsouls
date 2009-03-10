@@ -1,5 +1,5 @@
 /*    /verbs/items/ring.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Created by Descartes of Borg 961017
  *    Version: @(#) ring.c 1.1@(#)
  *    Last modified: 96/10/17

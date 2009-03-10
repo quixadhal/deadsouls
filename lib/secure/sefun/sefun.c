@@ -4,12 +4,6 @@
  *    created by Descartes of Borg 940213
  */
 
-#ifndef DESTRUCT_LOGGING
-#define DESTRUCT_LOGGING 0
-#endif
-#ifndef MAX_CALL_OUTS
-#define MAX_CALL_OUTS 500
-#endif
 #define MAX_DUMMIES 8192
 #define MAX_OBJECT 1024
 
@@ -20,6 +14,7 @@
 #include <commands.h>
 #include <objects.h>
 #include <privs.h>
+#include <runtime_config.h>
 #include "./sefun.h"
 
 #include "/secure/sefun/absolute_value.c"
@@ -145,7 +140,8 @@ varargs object clone_object(string name, mixed args...){
 //a zero-length file as a 65535 length T_INVALID variable.
 //This tends to screw things up for Dead Souls.
 varargs string read_file(string file, int start_line, int number_of_lines){
-    if(file_size(file) == 0) return "";
+    int sz = file_size(file);
+    if(sz < 1 || sz >= get_config(__MAX_STRING_LENGTH__)) return "";
     return efun::read_file(file, start_line, number_of_lines);
 }
 
@@ -325,11 +321,14 @@ string *query_local_functions(mixed arg){
 object find_object( string str ){
     object ret;
     int err;
+    string thing;
     if(!str || !stringp(str)) return 0;
     err = catch(ret = efun::find_object(str));
     if(err || !ret) return 0;
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
+    thing = base_name(ret);
+    if(!strsrch(thing, "/domains/")) return ret;
     if(base_name(previous_object()) == SERVICES_D) return ret;
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
     if(base_name(ret) == "/secure/obj/snooper") return 0;
     if(archp(ret) && ret->GetInvis()) return 0;
     else return ret;
@@ -337,8 +336,9 @@ object find_object( string str ){
 
 object find_player( string str ){
     object ret = efun::find_player(str);
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
+    if(ret && !ret->GetInvis()) return ret;
     if(base_name(previous_object()) == SERVICES_D) return ret;
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
     if(ret && archp(ret) && ret->GetInvis()) return 0;
     else return ret;
 }
@@ -443,12 +443,15 @@ int destruct(object ob) {
     string *privs;
     string tmp;
     int ok;
-
+    if(!ob) return 0;
     privs = ({ file_privs(file_name(ob)) });
 
-    if((int)master()->valid_apply(({ "ASSIST" }) + privs)) ok = 1;
+    if(!previous_object() || previous_object() == master() ||
+            previous_object() == this_object()) ok = 1;
 
-    if(previous_object(0) && tmp = query_privs(previous_object(0))){
+    else if((int)master()->valid_apply(({ "ASSIST" }) + privs)) ok = 1;
+
+    else if(previous_object(0) && tmp = query_privs(previous_object(0))){
         if(previous_object(0) == ob) ok = 1;
         if(member_array(PRIV_SECURE, explode(tmp, ":")) != -1) ok = 1;
     }
@@ -466,16 +469,25 @@ int destruct(object ob) {
     else return 0;
 }
 
+static void shutdown_logic(int code){
+    efun::shutdown(code);
+}
+
 varargs void shutdown(int code) {
+    object *persistents;
     if(!((int)master()->valid_apply(({"ASSIST"}))) &&
             !((int)master()->valid_apply(({"SECURE"})))) return;
     if(code == -9) efun::shutdown(code);
+    else call_out( (: shutdown_logic :), 0, code);
     if(this_player())
         log_file("shutdowns", (string)this_player()->GetCapName()+
                 " shutdown "+mud_name()+" at "+ctime(time())+"\n");
     else log_file("shutdowns", "Game shutdown by "+
             file_name(previous_object(0))+" at "+ctime(time())+"\n");
-    efun::shutdown(code);
+    persistents = objects( (: $1->GetPersistent() :) );
+    //efun::shutdown(code);
+    //call_out( (: shutdown_logic :), 0, code);
+    persistents->SaveObject();
 }
 
 int valid_snoop(object snooper, object target){
@@ -524,7 +536,8 @@ int exec(object target, object src) {
     tmp = base_name(previous_object());
     if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE 
             && tmp != SU && tmp != RELOAD_D) return 0;
-    ret = efun::exec(target, src);
+    //tc("EXEC("+identify(target)+", "+identify(src)+"), prev: "+tmp);
+    if(objectp(target) && objectp(src)) ret = efun::exec(target, src);
     return ret;
 }
 
@@ -674,3 +687,7 @@ varargs mixed present_bonus(mixed str, mixed ob, int i){
     return 0;
 }
 
+int shadow_unhooked(){
+    object ob = previous_object();
+    return !(inherits(LIB_SHADOW_HOOK, ob));
+}

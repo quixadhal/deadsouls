@@ -1,5 +1,5 @@
 /*    /daemon/services/finger.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Intermud 3 finger service implementation
  *    created by Descartes of Borg 950624
  *    Version: @(#) finger.c 1.2@(#)
@@ -9,7 +9,7 @@
 #define SERVICE_FINGER
 
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <message_class.h>
 
 void eventReceiveFingerRequest(mixed array packet) {

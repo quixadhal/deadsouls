@@ -1,5 +1,5 @@
 /*    /lib/virtual/virt_land.c
- *    From Dead Souls Object Library
+ *    From Dead Souls Mud Library
  *    A virtual object for rooms
  *    Created by Dvarsk 980310
  *    Version: @(#) virt_land.c 1.4@(#)

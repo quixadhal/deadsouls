@@ -1,5 +1,5 @@
 /*    /lib/events/close.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    handles closing and opening events
  *    created by Descartes of Borg 960115
  *    Version: @(#) close.c 1.5@(#)

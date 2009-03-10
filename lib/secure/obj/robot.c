@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <network.h>
+#include NETWORK_H
 #include <socket_err.h>
 #define ANSI(p) sprintf("%c["+(p)+"m", 27)
 #define ESC(p) sprintf("%c"+(p), 27)
@@ -9,7 +9,7 @@ inherit LIB_ITEM;
 static int observing = 0;
 static int counter = 0, attempting, connected, socket ;
 static int dud_count = 0, spawning, last_action, loop_count = 0;
-static int maxbox = 80;
+static int maxbox = 128;
 static int newbot = 1;
 static object person, player;
 static string preset, name, passwd, gender;
@@ -728,6 +728,7 @@ int do_connect(string args)
 
     foreach(mixed element in socket_status()){
         if(intp(element[0]) && element[0] != -1 && !grepp(element[3],"*")){ 
+            if(!socks_array) socks_array = ({});
             socks_array += element[0];
         }
     }

@@ -6,7 +6,7 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
-    int x;
+    int x = this_player()->GetCharmode();
 
     if( args == "" || !args ) 
         args = user_path((string)this_player()->GetKeyName()) + "tmp.edit";
@@ -14,6 +14,12 @@ mixed cmd(string args) {
         message("system", "Someone tried to force you to edit "+ args +"\n" +
                 identify(previous_object(-1)), this_player());
         return 0;
+    }
+
+    if(!x){
+        write("Character mode is a requirement for using this "+  
+                "command. For more information, see: help charmode");
+        return 1;
     }
 
     if(!this_player()->GetProperty("cedWarned")){
@@ -29,7 +35,7 @@ mixed cmd(string args) {
                 this_player());
     else message("editor", args + ", " + x + " bytes\n", this_player());
     //this_player()->eventEdit(args, 1);
-    this_player()->SetCediting(1, args);
+    this_player()->SetCedmode(1, args);
     return 1;
 }
 

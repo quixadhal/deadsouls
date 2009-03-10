@@ -1,5 +1,5 @@
 /*    /lib/props/damage.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Things that do damage to other things
  *    Created by Descartes of Borg 970101
  *    Version: @(#) damage.c 1.1@(#)

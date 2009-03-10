@@ -8,7 +8,7 @@ int PreExit(mixed args...){
     if(sizeof(users()) > 210) return 1;
     livings = get_livings(this_object());
     foreach(object living in livings){
-        if(base_name(living) == "/domains/default/vehicles/strider" &&
+        if(base_name(living) == "/domains/default/vehicle/strider" &&
                 previous_object(2) != living ){
             write("The strider is in your way.");
             return 0;
@@ -29,7 +29,7 @@ static void create() {
                 ]) );
     AddExit("east", "/domains/default/virtual/arena/1,10", (: PreExit :));
     SetInventory(([
-                "/domains/default/vehicles/strider" : 1,
+                "/domains/default/vehicle/strider" : 1,
                 ]));
 
     SetProperty("no attack", 1);

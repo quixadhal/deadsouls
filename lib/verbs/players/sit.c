@@ -1,5 +1,5 @@
 /*    /verbs/players/sit.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 960711
  *    Version: @(#) sit.c 1.7@(#)
  *    Last Modified: 96/12/21

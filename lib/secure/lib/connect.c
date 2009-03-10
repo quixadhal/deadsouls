@@ -1,5 +1,5 @@
-/*    Installation object for Dead Souls V
- *    Copyright 1995 George Reese
+/*    Installation object for Dead Souls
+ *    Original author: George Reese
  */
 
 #include <lib.h>
@@ -7,6 +7,7 @@
 #include <dirs.h>
 #include <flags.h>
 #include <daemons.h>
+#include <runtime_config.h>
 
 string Name, CapName, Password;
 object Admin;
@@ -28,14 +29,14 @@ static void InputPassword(string str);
         if( !((int)BANISH_D->valid_name(Name = convert_name(CapName = str))) 
                 || lower_case(str) == "guest") {
             receive("That is not a valid name.\n");
-            receive("Name:\n ");
+            receive("Name: ");
             input_to((: InputName :));
             return;
         }
-        Admin = (object)master()->player_object(Name);
+        Admin = master()->player_object(Name);
         Admin->SetKeyName(Name);
         mkdir(DIR_PLAYERS "/" + Name[0..0]);
-        receive("\nPassword:\n ");
+        receive("\nPassword: ");
         input_to((: InputPassword :), I_NOECHO | I_NOESC);
     }
 
@@ -44,12 +45,12 @@ static void ConfirmPassword(string str);
 static void InputPassword(string str) {
     if( strlen(str) < 5 ) {
         receive("Password must be at least 5 letters.\n");
-        receive("Password:\n ");
+        receive("Password: ");
         input_to((: InputPassword :), I_NOECHO | I_NOESC);
         return;
     }
     Password = str;
-    receive("Confirm password:\n ");
+    receive("\nConfirm password: ");
     input_to((: ConfirmPassword :), I_NOECHO | I_NOESC);
 }
 
@@ -57,13 +58,13 @@ static void InputCapName(string str);
 
 static void ConfirmPassword(string str) {
     if( str != Password) {
-        receive("Passwords do not match.  Password:\n ");
+        receive("\nPasswords do not match.  Password: ");
         input_to((: InputPassword :), I_NOECHO | I_NOESC);
         return;
     }
     Admin->SetPassword(crypt(Password, 0));
     CapName = capitalize(CapName);
-    receive("\nEnter your display name (" + CapName + " is default):\n ");
+    receive("\nEnter your display name (" + CapName + " is default): ");
     input_to((: InputCapName :), I_NOESC);
 }
 
@@ -72,12 +73,12 @@ static void InputGender(string str);
 static void InputCapName(string str) {
     if( !str || str == "" ) str = CapName;
     if( convert_name(str) != Name ) {
-        receive("You cannot do that! Display name:\n ");
+        receive("\nYou cannot do that! Display name (hit Enter for default): ");
         input_to((: InputCapName :), I_NOESC);
         return;
     }
     Admin->SetCapName(CapName = capitalize(str));
-    receive("\nPlease choose a gender (male, female, neutral, or none): \n");
+    receive("\nPlease choose a gender (male, female, neutral, or none): ");
     input_to((: InputGender :), I_NOESC);
 }
 
@@ -87,8 +88,8 @@ static void InputGender(string str) {
     if( str ) str = lower_case(str);
     if( !str || str == "" || ((str[0] != 'f' && str[0] != 'm') &&
                 member_array(str, ({"male","female","neutral","none"})) == -1)){
-        receive("\nPlease choose a gender (male, female, neutral, or none): \n");
-        receive("Male, female, neutral or none?\n ");
+        receive("\nPlease choose a gender (male, female, neutral, or none): ");
+        receive("Male, female, neutral or none? ");
         input_to((: InputGender :));
         return;
     }
@@ -96,7 +97,7 @@ static void InputGender(string str) {
     else if( str[0] == 'm' ) Admin->SetGender("male");
     else if( str == "none" ) Admin->SetGender("neuter");
     else Admin->SetGender("neutral");
-    receive("What is your real name?\n ");
+    receive("What is your real name? ");
     input_to((: InputRealName :), I_NOESC);
 }
 
@@ -105,14 +106,16 @@ static void InputEmail(string str);
 static void InputRealName(string str) {
     if( !str || str == "" ) str = "Unknown";
     Admin->SetRealName(str);
-    receive("What is your email address?\n ");
+    receive("What is your email address? ");
     input_to((: InputEmail :), I_NOESC);
 }
 
 static void InputEmail(string str) {
     object ob, tool;
     string tmp = "";
-    int foo;
+    string filep = DIR_PLAYERS "/"+Name[0..0]+"/"+Name+__SAVE_EXTENSION__;
+    string filec = DIR_CRES "/"+Name[0..0]+"/"+Name+__SAVE_EXTENSION__;
+    int foo, err;
 
     if( !str || str == "" ) str = "Unknown";
     load_object("secure/cmds/admins/admintool")->eventChangeEmail(str,1);
@@ -141,16 +144,16 @@ static void InputEmail(string str) {
 
     tmp = "";
 
-    tmp = read_file("/secure/include/config.h");
+    tmp = read_file(CONFIG_H);
 
     if(sizeof(tmp)){
-        cp("/secure/include/config.h", "/secure/save/backup/config.bak");
-        rm("/secure/include/config.h");
+        cp(CONFIG_H, "/secure/save/backup/config."+__PORT__+".bak");
+        rm(CONFIG_H);
         tmp = replace_string(tmp, "DEBUG_NAME", Name);
-        write_file("/secure/include/config.h", tmp);
+        write_file(CONFIG_H, tmp);
     }
 
-    catch(cp("/secure/include/network.h","/secure/save/backup/network.orig"));
+    catch(cp(NETWORK_H,"/secure/save/backup/network."+__PORT__+".orig"));
 
     if( ob = find_object(LIB_CONNECT) ) destruct(ob);
     cp(DIR_SECURE_LIB "/connect.c", DIR_SECURE_LIB "/connect.first.c");
@@ -158,11 +161,21 @@ static void InputEmail(string str) {
     cp(DIR_SECURE_LIB "/connect.real", DIR_SECURE_LIB "/connect.c");
     destruct(Admin);
     mkdir(DIR_CRES "/" + Name[0..0]);
-    rename(DIR_PLAYERS "/" + Name[0..0] + "/" + Name + __SAVE_EXTENSION__,
-            DIR_CRES "/" + Name[0..0] + "/" + Name + __SAVE_EXTENSION__);
-    destruct(master());
+#if ENABLE_INSTANCES
+    filec = new_savename(filec);
+    filep = new_savename(filep);
+#endif
+    //tc("filec: "+filec);
+    //tc("filep: "+filep);
+    err = rename(filep, filec);
+    if(err){
+        receive("\nAn unfortunate error has ocurred. Mojo meditation: QQ\n");
+    }
+    //else tc("new savefile: "+filec);
     receive("\nYou will be disconnected and the MUD will shut down.\n");
     receive("Restart the MUD and login again as the admin character.\n");
+    flush_messages();
+    destruct(master());
     tool = load_object("/secure/cmds/admins/admintool");
     if(tool) foo = tool->eventChangeName("Dead_Souls_"+Name, 1); 
     if(foo){
@@ -172,12 +185,12 @@ static void InputEmail(string str) {
     else {
         receive("Mud name unchanged.\n");
     }
+    flush_messages();
     cp(IMC2_D+".c", "/secure/save/backup/imc2.orig");
     IMC2_D->eventChangeIMC2Passwords();
     PLAYERS_D->AddPlayerInfo(Name);
     shutdown();
     destruct(this_object());
-
 }
 
 string GetKeyName() { return Name; }

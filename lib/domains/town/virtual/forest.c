@@ -5,7 +5,7 @@
 
 inherit LIB_VIRT_LAND;
 
-static private int XPosition, YPosition;
+static private int XPosition, YPosition, found;
 
 varargs void SetLongAndItems(int x, int y, int z);
 
@@ -14,6 +14,18 @@ varargs int LimitTravel(int requested, int maximum, int lessthan){
     else if(lessthan && requested > maximum) return requested;
     else if(requested > maximum) return maximum;
     else return requested;
+}
+
+mixed SearchFun(object who, string str){
+    object ob;
+    if( found || !(ob = new("/domains/Ylsrim/etc/pole")))
+        return "You find nothing of interest.";
+    found = 1;
+    eventPrint((string)who->GetName() + " finds a fishing pole "                        "among the abandoned campsite.", who);
+    if( !((int)ob->eventMove(this_player())) ) {
+        ob->eventMove(this_object());
+    }
+    return "You find a fishing pole!";
 }
 
 varargs static void create(int x, int y) {
@@ -152,42 +164,21 @@ varargs void SetLongAndItems(int x, int y, int z) {
         AddItem("sign" , "This is a hastily-lettered sign planted on the ground.");
         SetRead( ({"sign"}) , "Beware th");
     }
-    if( !random(50) ) {
+    if( !random(50) ){
         str += "  Burnt wood, scattered rocks and twigs, and other signs "
             "of an abandoned camp site are scattered about.";
         AddItem( ({ "twigs", "sticks", "kindling", "wood", "burnt wood" }) , 
                 "Though long since burnt to nothing, scattered kindling "
                 "and burnt wood lie about as a memory of travellers who have "
                 "passed through");
-        if( random(2) ) {
-            string thing;
-
-            foreach(thing in ({ "twigs", "sticks", "kindling", "wood" })) 
-                SetSearch(thing, function(object who, string str) {
-                        object ob;
-                        string thing2;
-
-                        if( !(ob = new("/domains/Ylsrim"+ "/etc/pole")) )
-                        return 0;
-                        who->eventPrint("You find a fishing pole!");
-                        eventPrint((string)who->GetName() + " finds a fishing pole "
-                            "among the abandoned campsite.", who);
-                        foreach(thing2 in ({ "twigs", "sticks", "kindling", "wood"}))
-                        RemoveSearch(thing2);
-                        if( !((int)ob->eventMove(this_player())) ) {
-                        who->eventPrint("You drop the pole!");
-                        eventPrint((string)who->GetName() + " drops the pole.",
-                            who);
-                        ob->eventMove(this_object());
-                        }
-                        return;
-                        });
+        if( random(2) ){
+            SetSearch( (: SearchFun :) );
         }
     }
     else if( !random(10) ) 
         SetSmell("default", "You smell a distant camp fire.");
-    if( !random(25) )
-        inv["/domains/town/npc/forest_orc"] = random(3);
+    if( !random(55) )
+        inv["/domains/town/npc/forest_orc"] = random(2)+1;
     if( !random(45) )
         inv["/domains/town/npc/bear"] = 1;
     if( !random(15) )

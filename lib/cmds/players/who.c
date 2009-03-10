@@ -4,7 +4,6 @@
 
 #include <lib.h>
 #include <privs.h>
-#include <config.h>
 
 inherit LIB_DAEMON;
 
@@ -24,9 +23,11 @@ int cmd(string args) {
         obs=users();
 
         for (int i=0; i<sizeof(users()); i++) {
+            string fnm;
             if(!obs[i] || !environment(obs[i])) continue;
-            if(obs[i]->GetKeyName() != last_string_element(base_name(obs[i]),"/")) continue;
-            if(!obs[i]->GetInvis()) {
+            sscanf(last_string_element(base_name(obs[i]), "/"),"%s.%*s", fnm);
+            if(fnm && fnm != obs[i]->GetKeyName()) continue;
+            if(!obs[i]->GetInvis()){
                 if(archp(obs[i])) tmp+="[%^BLUE%^ARCH%^RESET%^]";
                 else if(creatorp(obs[i]) ) tmp+="[%^CYAN%^WIZ%^RESET%^]";
                 else if(avatarp(obs[i]) ) tmp+="[%^GREEN%^AVATAR%^RESET%^]";
@@ -47,7 +48,7 @@ int cmd(string args) {
                 else if (query_idle(obs[i])>240 && obs[i]->GetInCombat()!=1)  tmp+=" (%^YELLOW%^idle%^RESET%^)";
                 else if (in_edit(obs[i])) tmp+=" (%^RED%^edit%^RESET%^)";
                 else if(obs[i]->GetInCombat())  tmp+=" (%^RED%^combat%^RESET%^)";
-                tmp+="\n";
+                tmp+="%^RESET%^\n";
                 p++;
             }
         }

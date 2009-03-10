@@ -1,6 +1,6 @@
 #include <lib.h>
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_STORAGE;
 

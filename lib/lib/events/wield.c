@@ -1,5 +1,5 @@
 /*    /lib/events/wield.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles the wielding of things
  *    Created by Descartes of Borg 970101
  *    Version: @(#) wield.c 1.1@(#)

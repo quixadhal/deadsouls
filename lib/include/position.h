@@ -1,6 +1,7 @@
 #ifndef s_position_h
 #define s_position_h
 
+#define POSITION_NULL               (1 << 0)
 #define POSITION_STANDING           (1 << 1)
 #define POSITION_SITTING            (1 << 2)
 #define POSITION_LYING              (1 << 3)

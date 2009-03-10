@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/armor/shield.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    an example shield
  *    created by Lassondra@Dead Souls
  */

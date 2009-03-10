@@ -22,7 +22,8 @@ void create(){
     SetLanguage("Malkierien", 100);
     SetLanguage("English", 100);
     SetLanguage("Edhellen", 100);
-    AddTeachingLanguages( ({"Malkierien", "English", "Common", "Edhellen" }) );
+    AddTeachingLanguages( ({"Malkierien", "English", "Common",
+                "Edhellen", "Tangetto" }) );
     SetPolyglot(1);
     SetLanguage("common", 100);
     SetDefaultLanguage("common");

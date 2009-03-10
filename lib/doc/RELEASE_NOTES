@@ -1,8 +1,79 @@
+---- 2.9a15 (unreleased) ---
+- Prettified the tabbed file completion stuff.
+- Armor now makes more of an effort to resolve ambiguous
+  targets, such as "wear ring" when both hands can take a ring.
+- Added BaseLimbs to armor in order to resolve ambiguous situations
+  involving sets of limbs, such as a shield which needs a paired
+  arm and hand, plus torso. 
+- LIB_WORN_STORAGE now uses inherited LIB_BASE_ARMOR and 
+  LIB_BASE_STORAGE as inherited code to avoid discrepancies in 
+  behavior in duplicated code. Note this means that the majority
+  of the code for armor is now in LIB_BASE_ARMOR and the majority of the
+  code for "things that hold other things" is now in LIB_BASE_STORAGE.
+- Added GetMaxSkillLevel() to LIB_ABILITIES to consolidate the
+  calculation that was previously duplicated by multiple commands.
+- Fixed a bug that allowed skill levels in negative numbers.
+- Cleaned up some behavior with ANOXIA damage and respiration types.
+- Commands that queued when in combat (such as 'inventory') used
+  to hang indefinitely if you chased your quarry into a "no attack" 
+  room. This is no longer the case.
+- Persistent rooms no longer spawn excess copies of unique 
+  or MaxClone objects.
+- The fighter's hall in Ylsrim is now a proper, working class hall
+  with class joining and training available.
+- Fixed a bug in the flood object that generated performance
+  problems over time.
+- Fixed a bug in the flood object that failed to set the respiration
+  type correctly when a room became completely flooded.
+- Fixed a problem with warmboots that caused some doors to
+  have issues being locked/unlocked/manipulated.
+- Objects that drop into "void" due to a problem with their 
+  environment now are sent to individualized "virtual voids" if
+  the ROOMS_D can resolve that. This avoids some rare circumstances
+  where a huge number of npc's and players fall into a single 
+  "void" room and mayhem ensues. 
+- Fixed a conflict in QCS with customdefs.h that made it difficult
+  to modify your workroom.
+- The goto command now handles global coordinates, eg: goto 2,2
+- The command "imc2 list" now only returns muds currently connected,
+  to avoid a timeout receiving data from a long list of defunct muds.
+- Fixed a problem in scoped heartbeats that prevented players
+  from autosaving.
+- COMPAT BUSTER: debug() now just takes two args, making it 
+  more like tc(). Example:
+  debug on
+  eval debug("My skills: "+identify(this_player()->GetSkills()),"red")
+- It is now possible to carry living things. Creators can get creatures
+  of any size, but players can only pick up creatures smaller than them
+  by at least 2 size slots. Note that picking up an NPC you have not
+  befriended will make it attack you.
+- Fixed a bug in updating virtual rooms.
+- You can now run multiple instances of the same code without clobbering
+  savefiles. If you set ENABLE_INSTANCES in config.h, then reboot, 
+  objects will add the mud's port to their save name, for example
+  "rooms.6666.o" rather than "rooms.o". Obviously this means that the
+  different instances need to be on different ports. For an example
+  of how to do it: help instances
+- Clepius can now extract bullets, if you give him an excision slip.
+- Fixed a carried weight conflict in vehicles and mounts.
+- tell_room() now works on string names of virtual rooms.
+- Fixed a parsing peculiarity when trying to read one book when
+  others are available.
+- Added a hint book to Kim's bookstore.
+- If you were in a virtual room during a warmboot, you are returned
+  to it after the warmboot completes.
+- Creators can now keep track of things sneaking in and out of their
+  inventory with call me->SetParanoia("inventory_monitoring", 1). They
+  can also keep track of where they might be silently moved to with
+  call me->SetParanoia("move_monitoring", 1). Note that these are not
+  foolproof, and the proper way to deal with mischief is not paranoia
+  but extreme violence and harsh language.
+
 ---- 2.9a14 ---
 - Released 2009-02-04
 - Driver is now a slightly modified FluffOS 2.15.
-- Added an experimental screen-mode inheritabable editor, see 
-  0IB_CEDIT and: help ced . It's still a bit quirky and buggy, and
+- Added an experimental screen-mode inheritable editor, see 
+  LIB_CEDIT and: help ced . It's still a bit quirky and buggy, and
   incomplete (handles wrapping poorly, doesn't do search/replace,
   etc). For now it's a proof-of-concept/prototype with saving disabled
   (thx to Tricky and Raudhrskal for advice on terminal control). Will

@@ -76,6 +76,20 @@ int SetLevel(int x){
     return (Level = x);
 }
 
+int GetMaxSkillLevel(string skill){
+    int ret, cls = 4;
+#ifdef MAX_SKILL_LEVEL
+#if MAX_SKILL_LEVEL
+    ret = MAX_SKILL_LEVEL;
+    return ret;
+#endif
+#endif
+    cls -= (Skills[skill]["class"] || 4);
+    if(cls < 0) cls = 0;
+    ret = ((GetLevel()+cls) *2);
+    return ret;
+}
+
 int GetMaxSkillPoints(string skill, int level){
     if( !Skills[skill] ){
         return 0;
@@ -277,24 +291,16 @@ int AddSkillPoints(string name, int x){
         }
         else {
             int tmp;
-
-            tmp = --Skills[name]["level"];
-            Skills[name]["points"] += GetMaxSkillPoints(name, tmp);
-            if( Skills[name]["class"] == 1 ){
+            if(Skills[name]["level"] > 1){
+                tmp = --Skills[name]["level"];
+                Skills[name]["points"] += GetMaxSkillPoints(name, tmp);
             }
+            else break;
         }
     }
     y = GetMaxSkillPoints(name, Skills[name]["level"]);
     while( Skills[name]["points"] > y ){
-        int max;
-
-        if( Skills[name]["class"] == 1 ){
-            max = 2;
-        }
-        else {
-            max = 1;
-        }
-        if( Skills[name]["level"] >= ((GetLevel()+max) *2) ){
+        if( Skills[name]["level"] >= GetMaxSkillLevel(name) ){
             Skills[name]["points"] = y;
         }
         else {
@@ -302,8 +308,6 @@ int AddSkillPoints(string name, int x){
                     name + ".");
             Skills[name]["level"]++;
             Skills[name]["points"] -= y;
-            if( Skills[name]["class"] == 1 ){
-            }
         }
         y = GetMaxSkillPoints(name, Skills[name]["level"]);
     }

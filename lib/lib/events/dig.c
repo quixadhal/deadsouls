@@ -1,5 +1,5 @@
 /*    /lib/events/dig.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles things that can be dug
  *    Created by Descartes of Borg 961231
  *    Version: @(#) dig.c 1.1@(#)

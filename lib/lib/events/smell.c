@@ -1,5 +1,5 @@
 /*    /lib/events/smell.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles items with smells
  *    Created by Descartes of Borg 951008
  *    Version: @(#) smell.c 1.7@(#)

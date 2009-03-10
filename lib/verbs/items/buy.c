@@ -1,5 +1,5 @@
 /*    /verbs/items/buy.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Allows players to buy things from living vendors
  *    Created by Descartes of Borg sometime in 1996
  *    Version: @(#) buy.c 1.2@(#)

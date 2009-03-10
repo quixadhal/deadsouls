@@ -8,7 +8,7 @@
 
 #include <lib.h>
 
-inherit LIB_SHADOW_HOOK;
+//inherit LIB_SHADOW_HOOK;
 inherit LIB_CLEAN;
 inherit LIB_DESCRIPTION;
 inherit LIB_ID;
@@ -21,7 +21,7 @@ inherit LIB_TOUCH;
 inherit LIB_SHOOT;
 
 mixed CanDest(){
-    if(environment() && environment() != environment(this_player()) &&
+    if(environment() != environment(this_player()) &&
             environment() != this_player())
         return "#That's not accessible to you.";
     else return 1;

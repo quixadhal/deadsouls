@@ -7,11 +7,10 @@
  */
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <damage_types.h>
 #include <message_class.h>
 #include <daemons.h>
-#include <config.h>
 #include <vision.h>
 #include <position.h>
 #include "include/player.h"
@@ -266,16 +265,6 @@ int eventMove(mixed dest){
     return ret;
 }
 
-int eventReceiveObject(object foo){
-    object ob;
-
-    ob = previous_object();
-    if( !ob || !interactive::eventReceiveObject() ) return 0;
-    AddCarriedMass((int)ob->GetMass());
-    if(environment()) environment()->AddCarriedMass((int)ob->GetMass());
-    return 1;
-}
-
 int eventReleaseObject(object foo){
     object ob;
 
@@ -510,6 +499,10 @@ string SetShort(string irrelevant){
     else title += Titles[0];
     if( i > 1 && TitleLength > 1 ) title += " and " + Titles[1];
     return interactive::SetShort(title);
+}
+
+string GetPlainShort(){
+    return interactive::GetShort();
 }
 
 int SetUndead(int x){

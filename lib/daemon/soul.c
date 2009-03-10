@@ -435,4 +435,5 @@ static void create() {
             parse_add_rule(verb, rle);
         }
     }
+    eventSave();
 }

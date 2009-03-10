@@ -1,0 +1,26 @@
+How to get a second instance of your mud running if the
+new port is 8888 and your name is "you":
+
+- Get the mud running the normal way. Create an admin char, etc.
+- Once it's up, copy a new mudos.cfg into bin/ . Call it something
+  like mudos.8888
+- Change the mud name in mudos.8888
+- Change the port in mudos.8888 to 8888
+- Change the global include file in mudos.8888 so that instead of <global.h>
+  it has <global.8888>
+- Go to /lib/secure/include/ and copy global.h to global.8888
+- Edit global.8888 so that the defines for NETWORK_H and CONFIG_H look like:
+
+#define CONFIG_H "/secure/include/config.8888"
+#define NETWORK_H "/secure/include/network.8888"
+#define ROOMS_H "/secure/include/rooms.8888"
+
+- Copy network.h to network.8888
+- Copy config.h to config.8888
+- Copy rooms.h to rooms.8888
+- Edit config.8888 and set ENABLE_INSTANCES to 1
+- Go to /secure/save/creators/y
+- Copy you.o to you.8888.o (or whatever-your-name-is.8888.o)
+- Go back to bin/ and type: ./driver ./mudos.8888
+- Enjoy!
+

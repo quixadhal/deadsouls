@@ -2,7 +2,7 @@
 #include <commands.h>
 #include <socket.h>
 #include <daemons.h>
-#include <network.h>
+#include NETWORK_H
 #include "./server_log.h"
 
 inherit LIB_DAEMON;

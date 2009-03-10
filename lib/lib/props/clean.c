@@ -7,7 +7,7 @@
  */
 
 #include <clean_up.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_SAVE;
 
@@ -33,16 +33,18 @@ static int SetNoClean(int x){
  */
 static int Destruct(){
     object env, furn; 
+    int pers;
 
     if( !this_object() ){
         return 1;
     }
 
     env = environment();
+    pers = this_object()->GetPersistent();
 
     foreach(object ob in all_inventory()){
         if( ob ){
-            if(env) ob->eventMove(env);
+            if(env && !pers) ob->eventMove(env);
             else ob->eventMove(ROOM_FURNACE);
         }
     }
@@ -59,7 +61,7 @@ static int Destruct(){
 
 int eventDestruct(){
     save::eventDestruct();
-    return Destruct();
+    return unguarded( (: Destruct() :) );
 }
 
 /* ******************* clean.c driver applies ********************* */

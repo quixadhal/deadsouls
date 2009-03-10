@@ -1,5 +1,5 @@
 /*    /daemon/news.c
- *    from the Dead Soulsr2 Object Library
+ *    from the Dead Souls Object Library
  *    responsible for leading players through news
  *    created by Descartes of borg 951104
  */

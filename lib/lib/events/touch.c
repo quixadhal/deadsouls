@@ -1,5 +1,5 @@
 /*    /lib/touch.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    for touching things 
  *    created by Descartes of Borg 951008
  *    Version: @(#) touch.c 1.8@(#)

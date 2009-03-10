@@ -1,5 +1,5 @@
 /*    /lib/chair.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    A thing you can sit in
  *    Created by Descartes of Borg 961221
  *    Version: @(#) chair.c 1.1@(#)

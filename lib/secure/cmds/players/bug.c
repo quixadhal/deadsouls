@@ -1,5 +1,5 @@
 /*    /secure/cmds/player/bug.c
- *    from the Dead Soulsr1 Object Library
+ *    from the Dead Souls Object Library
  *    the command interface to the NM IV bug tracking system
  *    created by Descartes of Borg 950925
  */

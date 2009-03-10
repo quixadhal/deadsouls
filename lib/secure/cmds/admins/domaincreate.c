@@ -2,10 +2,11 @@
 #include <daemons.h>
 
 inherit LIB_DAEMON;
+string gfilecont;
 
 mixed cmd(string args) {
     string domain_path;
-    string *subdirs = ({"save","room","weap","armor","npc","etc","adm","doors","meals","obj"});
+    string *subdirs = ({"save","room","weap","armor","npc","etc","adm","doors","meals","obj","virtual/void", "chamber", "vehicle"});
     string *alphabet = ({",", "#", ";", "^", "&", "(", ")","\"","\'","\`","?", " " });
     subdirs += ({"txt","virtual"});
     alphabet += ({ "@", "!", "$", "%", "=", "{", "}", "[", "]", ":", "<", ">", "\*" });
@@ -42,12 +43,12 @@ mixed cmd(string args) {
         return 1;
     }
 
-    mkdir(domain_path);
+    mkdir_recurse(domain_path);
 
     foreach(string dir in subdirs){
         string newdir = domain_path + "/" + dir;
         write("Creating: "+newdir);
-        mkdir(newdir);
+        mkdir_recurse(newdir);
     }
 
     cp("/obj/room.c",domain_path+"/room/start.c");
@@ -57,6 +58,12 @@ mixed cmd(string args) {
     cp("/std/freezer.c",domain_path+"/room/freezer.c");
     cp("/std/furnace.c",domain_path+"/room/furnace.c");
     cp("/std/wiz_hall.c",domain_path+"/room/wiz_hall.c");
+    gfilecont = read_file("/std/server.txt");
+    gfilecont = replace_string(gfilecont,"CHANGEME",args);
+    write_file(domain_path+"/virtual/server.c",gfilecont,1);
+    gfilecont = read_file("/std/virtual_void.txt");
+    gfilecont = replace_string(gfilecont,"CHANGEME",args);
+    write_file(domain_path+"/virtual/void.c",gfilecont,1);
 
     write("Ok.");
     return 1;

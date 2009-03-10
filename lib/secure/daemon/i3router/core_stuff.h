@@ -1,4 +1,4 @@
-#include <network.h>
+#include NETWORK_H
 #include <daemons.h>
 #include <save.h>
 
@@ -42,7 +42,7 @@ static void create(){
     //tc("sserver: "+identify(sserver));
     SetNoClean(1);
     connected_muds = ([]);
-    unguarded( (: restore_object, SAVE_ROUTER, 1 :) );
+    unguarded( (: RestoreObject, SAVE_ROUTER, 1 :) );
     if(!mudinfo) mudinfo = ([]);
     if(!mudinfo_updates) mudinfo_updates = ([]);
     if(!mudinfo_update_counter) mudinfo_update_counter = 1;
@@ -85,7 +85,7 @@ void heart_beat(){
     this_object()->check_graylist();
     if(!(heart_count % 60)) {
         this_object()->check_discs();
-        save_object(SAVE_ROUTER);
+        SaveObject(SAVE_ROUTER);
     }
     if(heart_count > 3600){
         heart_count = 0;
@@ -98,7 +98,7 @@ void heart_beat(){
 
 static void setup(){
     if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
-        unguarded( (: restore_object, SAVE_ROUTER, 1 :) );
+        unguarded( (: RestoreObject, SAVE_ROUTER, 1 :) );
     call_out("SetList",1);
 }
 

@@ -49,7 +49,7 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
         mapping exits = env->GetExitMap();
         exits += env->GetEnterMap();
         gwhat = what;
-        if(exits[gwhat]){
+        if(exits && exits[gwhat]){
             gwhat = exits[gwhat];
         }
         if(!unguarded( (: directory_exists(path_prefix(gwhat)) :) ) ){

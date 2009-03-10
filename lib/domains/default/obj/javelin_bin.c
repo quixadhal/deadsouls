@@ -19,6 +19,7 @@ void create() {
     SetMaxCarry(3500);
     SetNoClean(1);
 }
+
 void init(){
     ::init();
 }

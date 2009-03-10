@@ -1,7 +1,7 @@
 #define SERVICE_AUTH
 
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <message_class.h>
 
 void eventReceiveAuthReply(mixed array packet) {

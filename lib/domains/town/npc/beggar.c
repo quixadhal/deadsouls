@@ -46,7 +46,13 @@ int GiveMap(object ob){
             member_array(ob->GetRace(),RACES_D->GetRaces(1)) != -1 &&
             !creatorp(ob) &&
             !stringp(ob->CanManipulate()) ){
-        eventForce("say here, you might need this");
+        if(ob->GetGender() == "male"){
+            eventForce("say take this, brother. May it serve you well.");
+        }
+        else if(ob->GetGender() == "female"){
+            eventForce("say take this, sister. May it serve you well.");
+        }
+        else eventForce("say here, you might need this");
         eventForce("give my first map to "+ob->GetKeyName());
     }
     if(map = present("map",this_object())) {

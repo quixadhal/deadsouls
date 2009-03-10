@@ -1,10 +1,9 @@
 /*    /secure/cmds/players/history.c
- *    from the Dead Souls  Object Library
+ *    from the Dead Souls Object Library
  *    command to view history information
  *    created by Descartes of Borg 960511
  */
 
-#include <config.h>
 #include <lib.h>
 #include <message_class.h>
 

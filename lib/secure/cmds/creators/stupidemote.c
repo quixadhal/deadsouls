@@ -1,5 +1,5 @@
 /*    /secure/cmds/admins/stupidemote.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Adds lame emotes
  *    Created by Descartes of Borg 961214
  *    Version: @(#) stupidemote.c 1.4@(#)

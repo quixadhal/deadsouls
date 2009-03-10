@@ -1,5 +1,5 @@
 /*    /verbs/rooms/go.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    go STR
  *    go into STR
  *    created by Descartes of Borg 951104

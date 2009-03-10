@@ -1,5 +1,5 @@
 /*    /verbs/rooms/fly.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    Like go, except for flying around
  *    created by Descartes of Borg 961013
  *    Version: @(#) fly.c 1.2@(#)

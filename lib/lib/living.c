@@ -10,10 +10,11 @@
 #include <daemons.h>
 #include <position.h>
 #include <message_class.h>
-#include <config.h>
 #include "include/living.h"
 
 inherit LIB_CARRY;
+inherit LIB_DROP;
+inherit LIB_GET;
 inherit LIB_COMBAT;
 inherit LIB_CURRENCY;
 inherit LIB_FOLLOW;
@@ -145,12 +146,23 @@ mixed direct_free_liv_from_obj(){
 mixed direct_resurrect_obj(){ return 1; }
 mixed indirect_resurrect_obj(){ return 1; }
 
-mixed direct_get_obj(){
-    return "You can't get a living thing!";
+mixed direct_get_obj(mixed args...){
+    int mysize = this_object()->GetSize(1);
+    int theirsize = this_player()->GetSize(1);
+    if(archp(this_player())) return 1;
+    if(creatorp(this_player()) && !creatorp(this_object())){
+        return 1;
+    }
+    if(interactive(this_player()) && creatorp(this_object())){
+        return "NO.";
+    }
+    if(this_object()->GetBefriended(this_player())) return 1;
+    if((theirsize - mysize) > 1) return 1;
+    return "It's too big!";
 }
 
-mixed direct_get_obj_from_obj(){
-    return "You can't get a living thing!";
+mixed direct_get_obj_from_obj(mixed args...){
+    return direct_get_obj(args...);
 }
 
 mixed direct_show_liv_obj(){
@@ -701,11 +713,11 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
     int check = GUARD_D->CheckMove(this_object(), dest, dir);
 
     if(!check){
-        //tc("0");
+        //tc("eventMoveLiving("+identify(dest)+", "+identify(dir)+")");
         eventPrint("You remain where you are.", MSG_SYSTEM);
         return 0;
     }
-
+    //else tc("hmmm. dest: "+identify(dest)+", dir: "+identify(dir));
     if(omsg && stringp(omsg)){
         omsg = replace_string(omsg, "$N", this_object()->GetName());
     }
@@ -855,5 +867,13 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
     }
     eventMoveFollowers(environment(this_object()));
     TRACKER_D->TrackLiving(this_object());
+    return 1;
+}
+
+string GetEquippedShort(){
+    return this_object()->GetHealthShort();
+}
+
+int GeteventPrints(){
     return 1;
 }

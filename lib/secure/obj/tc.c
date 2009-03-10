@@ -1,6 +1,6 @@
 #include <lib.h>
-#include <network.h>
-#define DS_IP "204.209.44.3 8000"
+#include NETWORK_H
+#define DS_IP "66.197.134.110 8000"
 //#include <socket_err.h>
 inherit LIB_ITEM;
 

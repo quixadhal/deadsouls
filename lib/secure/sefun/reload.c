@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <daemons.h>
 #include <modules.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <commands.h>
 mixed mx;
 mixed next;

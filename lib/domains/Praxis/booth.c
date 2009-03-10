@@ -24,7 +24,7 @@ void create() {
 
     SetExits( (["down" : "/domains/Praxis/adv_main"]) );
     vote=([]);
-    restore_object(BOOTH_VOTES);
+    RestoreObject(BOOTH_VOTES);
 }
 
 void init() {
@@ -55,14 +55,14 @@ int vote(string str) {
         vote[me]="a";
         a++;
         write("Vote counted.  Thank you.");
-        save_object(BOOTH_VOTES);
+        SaveObject(BOOTH_VOTES);
         return 1;
     }
     if(str=="b") {
         vote[me]="b";
         b++;
         write("Vote counted.  Thank you.");
-        save_object(BOOTH_VOTES);
+        SaveObject(BOOTH_VOTES);
         return 1;
     }
 

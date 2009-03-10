@@ -1,5 +1,5 @@
 /*    /secure/lib/ftp_data_connection.c
- *    From the Nightmare V Object Library
+ *    From the Dead Souls Object Library
  *    Created by Descartes of Borg 950428
  *    Modified by Dvarsk to add read,write and close settable functions.
  *    Modified by Zaxan@Haven to add PASV support.
@@ -7,7 +7,7 @@
  */
 
 #include <lib.h>
-#include <network.h>
+#include NETWORK_H
 
 inherit LIB_DAEMON;
 

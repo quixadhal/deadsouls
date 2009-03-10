@@ -1,5 +1,5 @@
 /*    /lib/events/press.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    handles people pressing things
  *    created by Descartes of Borg 960114
  *    Version: @(#) press.c 1.3@(#)

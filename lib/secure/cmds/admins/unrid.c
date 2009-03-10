@@ -14,10 +14,10 @@ mixed cmd(string str) {
     if(!archp(previous_object())) return 0;
     if( !sizeof(str) ) return "Unrid whom?";
     str = convert_name(str);
-    file = DIR_RID + "/" + str + __SAVE_EXTENSION__;
+    file = save_file(DIR_RID + "/" + str);
     if( !file_exists(file) ) 
         return (file + ": file not found.  Cannot unrid.");
-    if( rename(file, save_file(str) + __SAVE_EXTENSION__) ) {
+    if( rename(file, player_save_file(str)) ){
         this_player()->eventPrint("Unrid failed, security "
                 "violation logged.");
         log_file("security", "\n**** Unrid violation attempted\n"

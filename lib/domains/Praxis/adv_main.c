@@ -1,6 +1,6 @@
-#include <config.h>
+#include <lib.h>
 
-inherit "/lib/std/room";
+inherit STD_ROOM;
 
 int get_exp(int lev);
 int train_player(object tp, string which, int amount);

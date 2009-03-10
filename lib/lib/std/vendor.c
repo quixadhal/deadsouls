@@ -394,6 +394,14 @@ mixed eventAsk(object who, string str){
     object *obs;
     object ob;
     string cmd, args, tmp;
+    string lang, prof, orig = str;
+
+    lang = who->GetDefaultLanguage();
+    prof = who->GetLanguageLevel(lang);
+    str = translate(str, prof);
+    prof = this_object()->GetLanguageLevel(lang);
+    str = translate(str, prof);
+    //debug("vendor eventAsk("+identify(who)+", "+str+")");
 
     if( !str || str == "" ){
         eventForce("say what do you want from me?");
@@ -438,7 +446,7 @@ mixed eventAsk(object who, string str){
 
         default:
         //Thx Raudhrskal
-        if(!sentient::eventAsk(who,str))
+        if(!sentient::eventAsk(who,orig))
             eventForce("say I am not quite sure what you want from me");
     }
 }

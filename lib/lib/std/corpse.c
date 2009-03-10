@@ -8,6 +8,7 @@
 
 #include <lib.h>
 #include <medium.h>
+#include <respiration_types.h>
 #include <message_class.h>
 
 inherit LIB_SURFACE;
@@ -25,14 +26,17 @@ mixed direct_resurrect_obj(){ return 1; }
 mixed indirect_resurrect_obj(){ return 1; }
 
 int eventDecay(){
-    int smell;
+    int smell, medium, rtype;
     if(nodecay) return 0;
-    if( !environment() ){
+    if( !room_environment() ){
         Destruct();
         return 0;
     }
+    medium = environment()->GetMedium();
+    rtype = environment()->GetRespirationType();
     Fresh = 0;
-    if(environment()->GetMedium() == MEDIUM_LAND) smell = 1;
+    if(rtype & R_AIR) smell = 1;
+    if(medium == MEDIUM_SPACE && random(100) < 90) return 0;
     switch(Count){
         case 10:
             if(smell){
@@ -103,6 +107,10 @@ void SetCorpse(object who){
         if(Equipped[file_name(thing)]) continue;
         Equipped[file_name(thing)] = 
             ([ "object" : thing, "where" : thing->GetWorn() ]); 
+    }
+    if(Player){
+        SetNoClean(1);
+        slowdecay = 50; 
     }
 }
 

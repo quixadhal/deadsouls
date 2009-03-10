@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/kaliid7.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example simple room with an item in it
  *    Created by Descartes of Borg 970101
  */

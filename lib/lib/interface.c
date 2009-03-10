@@ -14,7 +14,9 @@
 inherit LIB_CHAT;
 inherit LIB_COMMAND;
 inherit LIB_EDITOR;
+inherit LIB_CHARIO;
 inherit LIB_NMSH;
+inherit LIB_CEDIT;
 
 private string Terminal;
 private mapping Blocked;
@@ -183,9 +185,55 @@ varargs int eventPauseMessages(int x, int exceptions){
     return PauseMessages;
 }
 
+static varargs int PassengerPrint(string msg, mixed arg2, 
+        mixed arg3, object *riders){
+    object *targs = ({});
+    if(riders && sizeof(riders)){
+        int i1, rider_source;
+        //tc("riders: "+identify(riders));
+        if(!arg2) arg2 = 0;
+        if(!arg3) arg3 = 0;
+        if(sizeof(riders)){
+            if(arg2 && intp(arg2)){
+                object *tmp_riders = riders;
+                if(arg2 & MSG_CONV || arg2 & MSG_ENV){
+                    foreach(object ob in previous_object(-1)){
+                        if(member_array(ob,riders) != -1){
+                            tmp_riders -= ({ ob });
+                            rider_source = 1;
+                        }
+                    }
+                }
+                if((arg2 & MSG_CONV))  true();
+                else {
+                    if(objectp(arg2)) targs = tmp_riders - ({ arg2 });
+                    else if(arrayp(arg2)) targs =  tmp_riders - arg2;
+                    else targs = tmp_riders;
+                    targs->eventPrint(msg, arg3);
+                }
+            }
+            i1 = sizeof(previous_object(-1)) -1;
+            if(i1 < 0) i1 = 0;
+            if(sizeof(previous_object(-1)) &&
+                    (member_array(previous_object(),riders) != -1 ||
+                     member_array(previous_object(-1)[i1],riders) != -1) &&
+                    (!intp(arg2) || (!(arg2 & MSG_CONV) && !(arg2 & MSG_ENV))) && 
+                    member_array(this_object(),previous_object(-1)) == -1){ 
+                if(objectp(arg2)) targs = riders - ({ arg2 });
+                else if(arrayp(arg2)) targs = riders - arg2;
+                else targs = riders;
+                environment()->eventPrint(msg, arg2, arg3);
+                //else targs->eventPrint(msg, arg2);
+            }
+        }
+    }  
+    return 1;
+}
+
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     int msg_class;
     string prompt = "";
+    object *passengers = filter(all_inventory(this_object()), (: living :) );
     if(this_object()->GetProperty("reprompt")){
         //if(!in_edit(this_object())){
         prompt = this_object()->GetPrompt(1);
@@ -199,6 +247,9 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     }
     else if( !intp(arg2) ) msg_class = MSG_ENV;
     else msg_class = arg2;
+    if(sizeof(passengers) && (msg_class & MSG_ENV || msg_class & MSG_CONV)){
+        //PassengerPrint(msg, arg2, arg3, passengers);
+    } 
     if( !(msg_class & MSG_NOBLOCK) && GetBlocked("all") ) return 0;
 
     if((msg_class & MSG_ANNOYING) && annoyblock) return 0;
@@ -332,5 +383,75 @@ int SetAnnoyblock(int i){
 
 int GetAnnoyblock(){
     return annoyblock;
+}
+
+static int rArrow(string str){
+    int ret, cedmode = this_object()->GetCedmode();
+    //tc("interface rArrow(\""+str+"\"), cedmode: "+cedmode);
+    switch(cedmode){
+        case 0 : ret = nmsh::rArrow(str); break;
+        case 1 : ret = cedit::rArrow(str); break;
+    }
+    return ret;
+}
+
+static int rCtrl(string str){
+    int ret, cedmode = this_object()->GetCedmode();
+    //tc("interface rCtrl(\""+str+"\"), cedmode: "+cedmode);
+    switch(cedmode){
+        case 0 : ret = nmsh::rCtrl(str); break;
+        case 1 : ret = cedit::rCtrl(str); break;
+    }
+    return ret;
+}
+
+static int rBackspace(){
+    int ret, cedmode = this_object()->GetCedmode();
+    //tc("interface rBackspace(), cedmode: "+cedmode);
+    switch(cedmode){
+        case 0 : ret = nmsh::rBackspace(); break;
+        case 1 : ret = cedit::rBackspace(); break;
+    }
+    return ret;
+}
+
+static int rEnter(){
+    int ret, cedmode = this_object()->GetCedmode();
+    //tc("interface rEnter(), cedmode: "+cedmode);
+    switch(cedmode){
+        case 0 : ret = nmsh::rEnter(); break;
+        case 1 : ret = cedit::rEnter(); break;
+    }
+    return ret;
+}
+
+static int rAscii(string str){
+    int ret, cedmode = this_object()->GetCedmode();
+    //tc("interface rAscii(\""+str+"\"), cedmode: "+cedmode);
+    switch(cedmode){
+        case 0 : ret = nmsh::rAscii(str); break;
+        case 1 : ret = cedit::rAscii(str); break;
+    }
+    return ret;
+}
+
+static int rDel(){
+    int ret, cedmode = this_object()->GetCedmode();
+    //tc("interface rDel(), cedmode: "+cedmode);
+    switch(cedmode){
+        case 0 : ret = nmsh::rDel(); break;
+        case 1 : ret = cedit::rDel(); break;
+    }
+    return ret;
+}
+
+static int rAnsi(string str){
+    int ret, cedmode = this_object()->GetCedmode();
+    //tc("interface rAnsi(\""+str+"\"), cedmode: "+cedmode);
+    switch(cedmode){
+        case 0 : ret = nmsh::rAnsi(str); break;
+        case 1 : ret = cedit::rAnsi(str); break;
+    }
+    return ret;
 }
 

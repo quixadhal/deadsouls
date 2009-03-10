@@ -1,5 +1,5 @@
 /*    /lib/events/buy.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Things that get bought from
  *    Created by Descartes of Borg 970103
  *    Version: @(#) buy.c 1.1@(#)

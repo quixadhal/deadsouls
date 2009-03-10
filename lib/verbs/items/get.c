@@ -1,5 +1,5 @@
 /*    /verbs/items/get.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 950113
  *    Version: @(#) get.c 1.5@(#)
  *    Last Modified: 96/11/12
@@ -47,6 +47,7 @@ mixed eventCheckLight(object who) {
 }
 
 mixed can_get_obj(string verb) {
+    //if(this_player()->GetKeyName()=="cratylus") tc("??","red");
     return eventCheckLight(this_player());
 }
 
@@ -113,6 +114,7 @@ mixed can_get_wrd_from_obj(mixed args...) {
 }
 
 mixed do_get_obj(object ob) {
+    //if(this_player()->GetKeyName()=="cratylus") tc("wtf: "+identify(ob),"red");
     return ob->eventGet(this_player());
 }
 

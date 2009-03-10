@@ -9,7 +9,7 @@
 #define SERVICE_CHANNEL
 
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <message_class.h>
 
 static private string *local_chans = ({"newbie","cre","gossip","admin","error",

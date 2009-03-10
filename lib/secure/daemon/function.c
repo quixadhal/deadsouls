@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <config.h>
+#include <save.h>
 #include <daemons.h>
 #include <runtime_config.h>
 
@@ -7,13 +7,14 @@ inherit LIB_DAEMON;
 
 static string globaltmp;
 static string *files = ({});
-static string SaveFuns = "/secure/save/functions.o";
+static string SaveFuns = save_file(SAVE_FUNCTIONS);
 static int seeking = 0;
 static int count = 0;
 mapping FileSize = ([]);
 mapping FunctionCache = ([]);
 mixed *Functions = ({});
 mapping LCFunctions = ([]);
+mapping TmpMap = ([]);
 
 static private void validate() {
     if(!this_player()) return 0;
@@ -33,12 +34,12 @@ void heart_beat(){
                 return ;
             }
         }
-        unguarded( (: save_object(SaveFuns) :) );
+        unguarded( (: SaveObject(SaveFuns) :) );
         seeking = 0;
     }
     count++;
     if(count > 700){
-        unguarded( (: save_object(SaveFuns) :) );
+        unguarded( (: SaveObject(SaveFuns) :) );
         count = 0;
     }
 }
@@ -52,6 +53,41 @@ mixed SendFiles(string *arr){
         load_object("/secure/cmds/creators/showfuns")->cmd(sub);
     }
     return 1;
+}
+
+mixed SendFiles2(string *arr){
+    string prefix, file, tmpfile, ret = "";
+    object ob;
+    mixed deffed = ({});
+    int err;
+
+    foreach(string element in arr){
+        if(!strsrch(element, "/lib/")){
+            prefix = path_prefix(element);
+            file = replace_string(element, prefix, "");
+            tmpfile = prefix+"/"+file+alpha_crypt(5)+time()+".c";
+            write_file(tmpfile, "#pragma save_types\n", 1);
+            write_file(tmpfile, read_file(element));
+            err = catch( ob = load_object(tmpfile) );
+            if(err || !ob){
+                rm(tmpfile);
+                tmpfile = 0;
+                err = catch( ob = load_object(element) );
+            }
+            if(err || !ob) continue;
+            filter(functions(ob, 1), (: TmpMap[$1[0]] = $1[1..] :) );
+            foreach(string fun in functions(ob)){
+                if(function_exists(fun, ob) == base_name(ob)){
+                    deffed += ({ fun });
+                }
+            }
+            foreach(string mos in deffed){
+                ret += TmpMap[mos][1]+" "+mos+"("+  
+                    implode(TmpMap[mos][2..], ", ")+")\n";
+            }
+        }
+    }
+    return ret;
 }
 
 mixed ReadFuns(string str){
@@ -83,16 +119,17 @@ mixed ReadFuns(string str){
 
 static void create() {
     daemon::create();
-    restore_object(SaveFuns);
+    unguarded( (: RestoreObject(SaveFuns) :) );
     if(query_os_type() == "windows" || !(MASTER_D->GetPerfOK())){
         return;
     }
     validate();
+    TmpMap = ([]);
     call_out((: ReadFuns,"/lib/" :), 1);
-    call_out((: ReadFuns,"/secure/sefun/" :), 30);
-    call_out((: ReadFuns,"/secure/lib/" :), 60);
-    call_out((: ReadFuns,"/verbs" :), 90);
-    call_out((: ReadFuns,"/spells" :), 120);
+    //call_out((: ReadFuns,"/secure/sefun/" :), 30);
+    //call_out((: ReadFuns,"/secure/lib/" :), 60);
+    //call_out((: ReadFuns,"/verbs" :), 90);
+    //call_out((: ReadFuns,"/spells" :), 120);
     set_heart_beat(1);
 }
 
@@ -145,7 +182,7 @@ varargs mixed GetLCFunctions(string str, int subs){
 }
 
 int eventDestruct(){
-    unguarded( (: save_object(SaveFuns) :) );
+    unguarded( (: SaveObject(SaveFuns) :) );
     return ::eventDestruct();
 }
 

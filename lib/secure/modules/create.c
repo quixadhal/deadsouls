@@ -9,7 +9,7 @@
 #include <daemons.h>
 #include <modules.h>
 #include <commands.h>
-#include <rooms.h>
+#include ROOMS_H
 
 
 int eventDelete(object ob, string value);

@@ -12,7 +12,7 @@ BlackDawn       LPMud  MudOS v22.2b13- BlackDawn 3.0      202.147.140.30 6666
 BrellRantsMUD   LPMud  MudOS v22.2b14- Dead Souls 2.4.2   207.210.64.176 4242
 DW_Clone        LPMud  FluffOS v2.8alp Discworld 17.0a    82.47.24.252 4242
 DarkeDS         LPMud  FluffOS v2.7-ds Dead Souls 2.6     206.212.239.65 5659
-Dead Souls      LPMud  MudOS v22.2b14  Dead Souls 2.6     204.209.44.3 8000
+Dead Souls      LPMud  MudOS v22.2b14  Dead Souls 2.6     66.197.134.110 8000
 Dead Souls Demo LPMud  FluffOS v2.7-ds Dead Souls 2.6     67.186.167.188 6666
 Dead Souls Omeg LPMud  FluffOS v2.7-ds Dead Souls 2.6     67.186.167.188 7777
 Dead_Souls_ming LPMud  FluffOS v2.7-ds Dead Souls 2.6     72.39.195.147 6666

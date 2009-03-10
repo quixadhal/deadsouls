@@ -9,7 +9,6 @@
 string file_privs(string file) {
     string *path;
 
-
     if(!sizeof(path = explode(file, "/"))) return 0;
     switch(path[0]) {
         case "adm": return PRIV_SECURE;

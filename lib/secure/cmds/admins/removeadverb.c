@@ -1,5 +1,5 @@
 /*    /secure/cmds/admins/removeadverb.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Command for removing adverbs from the soul
  *    Created by Descartes of Borg 961214
  *    Version: @(#) removeadverb.c 1.1@(#)

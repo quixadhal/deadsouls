@@ -1,5 +1,5 @@
 /*    /lib/events/lock.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    Handles lock/unlock/pick events
  *    Created by Descartes of Borg 961221
  *    Version: @(#) lock.c 1.4@(#)

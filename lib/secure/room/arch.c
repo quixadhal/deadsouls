@@ -30,7 +30,10 @@ string ReadScreen(){
     string ret = "Top loaded objects:\n";
     int hbs, hbs2, rooms, npcs, meminf;
     mixed *foo = ({});
+    object *floods = ({});
     validate();
+    floods = objects( (: (base_name($1) == LIB_FLOW || inherits(LIB_FLOW, $1))
+                && clonep($1) :) );
     ulist = ({});
     umap = ([]);
     if(sizeof(objects()) < 8192){
@@ -63,6 +66,7 @@ string ReadScreen(){
     ret += "File descriptors in use: "+
         (sizeof(explode(dump_file_descriptors(),"\n"))-3)+"\n";
     ret += "Nonlivings with heartbeats: "+hbs+", !rooms: "+hbs2+"\n";
+    ret += "Flood objects: "+sizeof(floods)+"\n";
     if(true()){
         string tmp;
         meminf = memory_info()/1000000;

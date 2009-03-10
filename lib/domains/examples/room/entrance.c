@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include "ex.h"
 
 inherit LIB_ROOM;

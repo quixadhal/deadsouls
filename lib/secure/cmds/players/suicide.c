@@ -1,5 +1,5 @@
 /*  /secure/cmds/player/suicide.c
- *  from the Dead Soulsr2 Object Library
+ *  from the Dead Souls Object Library
  *  Allows players to obliterate their character
  *  created by Blitz@Dead Souls
  */
@@ -9,7 +9,7 @@
 #include <flags.h>
 #include <privs.h>
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <message_class.h>
 
 inherit LIB_DAEMON;
@@ -93,7 +93,7 @@ static private void GetYesOrNo(string input) {
 static private void EndSuicide(string who) {
     string tmp, file, newfile;
     object *ob;
-    string whocheck = last_string_element(base_name(this_player()),"/");
+    string whocheck = cleaned_end(base_name(this_player()));
     if(who != whocheck){
         write("There seems to be a conflict in determining your identity.");
         write("Suicide aborted.");
@@ -114,8 +114,8 @@ static private void EndSuicide(string who) {
     if( file_exists(file) ) rm(file);
     log_file("suicide", who+" suicided at "+ctime(time())
             +". (from "+query_ip_name(this_player())+")\n");
-    tmp = save_file(who) + __SAVE_EXTENSION__;
-    unguarded((: rename, tmp, DIR_SUICIDE + "/" + who + __SAVE_EXTENSION__ :));
+    tmp = player_save_file(who);
+    unguarded((: rename, tmp, save_file(DIR_SUICIDE + "/" + who) :));
     if(home_dir && directory_exists(home_dir)){
         object *purge_array = filter(objects(), (: !strsrch(base_name($1), home_dir) :) );
         foreach(object tainted in purge_array){

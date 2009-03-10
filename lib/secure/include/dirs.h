@@ -52,6 +52,7 @@
 #define DIR_LVS                 DIR_LIB "/lvs"
 #define DIR_PROPS               DIR_LIB "/props"
 #define DIR_STD                 DIR_LIB "/std"
+#define DIR_OLD_STD             "/std"
 #define DIR_USER                DIR_LIB "/user"
 #define DIR_VIRT                DIR_LIB "/virtual"
 

@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/kaliid4.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    A simple example room
  *    Created by Descartes of Borg 950929
  */
@@ -19,6 +19,7 @@ static void create() {
                 "east" : "/domains/Ylsrim/room/kaliid3",
                 "south" : "/domains/Ylsrim/room/bazaar",
                 "west" : "/domains/Ylsrim/room/kaliid5",
+                "north" : "/domains/Ylsrim/room/adv_hall",
                 ]) );
     AddItem("hall", "A small building which serves as the focal point for "
             "the adventuring activities for which Ylsrim's support "
@@ -30,7 +31,6 @@ static void create() {
     AddItem("vendor", "There are many vendors wandering about the bazaar.");
     AddItem("town", "A new town, north of here.");
     AddItem("road", "The main street for Ylsrim.", ({ "kaliid" }));
-    SetEnters( ([ "hall" : "/domains/Ylsrim/room/"+ "adv_hall" ]));
 }
 
 void init(){

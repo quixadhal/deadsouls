@@ -1,5 +1,5 @@
 /*    /lib/events/poison.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Objects which can respond to poisoning
  *    Created by Descartes of Borg 970101
  *    Version: @(#) poison.c 1.1@(#)

@@ -7,9 +7,8 @@
  *    Last modified: 96/12/14
  */
 
-#include <config.h>
 #include <runtime_config.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <cfg.h>
 #include <lib.h>
 #include <objects.h>
@@ -18,7 +17,7 @@
 #include <save.h>
 #include <daemons.h>
 #include <commands.h>
-#include <network.h>
+#include NETWORK_H
 #include <parser_error.h>
 #include <message_class.h>
 #include <function.h>
@@ -40,22 +39,27 @@
 #ifndef CONSOLE_TRACE
 #define CONSOLE_TRACE 0
 #endif
+#define INST_DEBUG 0
+
+inherit LIB_DAEMON;
 
 private static int incept_date, ResetNumber, heart_count, in_reset;
 private static int eval_threshold, reset_handle = -1;
-private int PerformanceScore;
+private int PerformanceScore, globalpmsg;
 private static object Unguarded, gguy;
-private static string PlayerName, rlog, gcmd,bname;
+private static string PlayerName, rlog, gcmd, bname, gstr;
 private static object NewPlayer;
 private static mapping Groups, ReadAccess, WriteAccess, CostErr;
 private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "powers" });
 private static string array efuns_arr = ({});
+private static string SaveFile;
 
 static void Setup(){
-    if(!PerformanceScore && file_exists(SAVE_MASTER+__SAVE_EXTENSION__)){
-        restore_object(SAVE_MASTER);
+    SaveFile = save_file(SAVE_MASTER);
+    if(!PerformanceScore && unguarded( (: file_exists(SaveFile) :) )){
+        unguarded( (: RestoreObject(SaveFile) :) );
     }
-    else save_object(SAVE_MASTER);
+    unguarded( (: SaveObject(SaveFile) :) );
 }
 
 void create() {
@@ -175,17 +179,18 @@ void flag(string str) {
         return;
     }
     if(sscanf(str, "call %s %s", file, arg)) {
-        write("Got "+(string)call_other(file, arg)+" back.\n");
+        write("Got "+call_other(file, arg)+" back.\n");
         return;
     }
     write("Master: unknown flag.\n");
 }
 
-string *epilog(int i) {
+string *epilog(int nopreload) {
     string *lines, *files;
     string content;
+    int i;
 
-    if(!(content = read_file(CFG_PRELOAD))) return ({});
+    if(nopreload || !(content = read_file(CFG_PRELOAD))) return ({});
     i = sizeof(lines = explode(content, "\n"));
     files = ({});
     while(i--) {
@@ -196,24 +201,34 @@ string *epilog(int i) {
 }
 
 string privs_file(string file) {
-    string nom = 0;
-
-    if( !strsrch(file, DIR_PLAYERS) ) sscanf(file, DIR_PLAYERS "/%*s/%s",nom);
-    else if( !strsrch(file, DIR_CRES) ) sscanf(file, DIR_CRES "/%*s/%s",nom);
+    string tmp, nom = 0;
+    mixed ret;
+    if( !strsrch(file, DIR_PLAYERS) ) sscanf(file, DIR_PLAYERS "/%*s/%s",tmp);
+    else if( !strsrch(file, DIR_CRES) ) sscanf(file, DIR_CRES "/%*s/%s",tmp);
+    if(tmp && grepp(tmp, ".")) nom = cleaned_name(tmp);
+    else nom = tmp;
+    //if(tmp || globalpmsg) debug_message("\n---->"+file+"<----");
+    //if(tmp || globalpmsg) debug_message("---->"+tmp+"<----");
+    //if(tmp || globalpmsg) debug_message("---->"+nom+"<----");
     if( nom ) {
-        if( file == DIR_CRES + "/" + nom[0..0] + "/" + nom ) {
+        if(!grepp(file,".")) file += ".";
+        if(!strsrch(file, DIR_CRES + "/" + nom[0..0] + "/" + nom + ".")){
             string str, grp;
 
             str = nom;
             foreach( grp in keys(Groups) )
                 if( member_array(nom, Groups[grp]) != -1) str = str + ":" + grp;
-            return str;
+            ret = str;
         }
-        else if( file == DIR_PLAYERS + "/" + nom[0..0] + "/" + nom ) 
-            return nom;
-        else return 0;
+        else if( !strsrch(file, DIR_PLAYERS + "/" + nom[0..0] + 
+                    "/" + nom + "."))
+            ret = nom;
+        else ret = 0;
     }
-    return file_privs(file);
+    if(undefinedp(ret)) ret = file_privs(file);
+    //if(tmp || globalpmsg) debug_message("---->"+ret+"<----\n");
+    //if(!ret) debug_message("\n*\n!!!--->"+file+"<---!!!\n*\n");
+    return ret;
 }
 
 void preload(string str) {
@@ -241,22 +256,33 @@ void preload(string str) {
 #endif
         write("(done)\n");
     }
-    save_object(SAVE_MASTER);
+    unguarded( (: SaveObject(SaveFile) :) );
 }
 
 int valid_write(string file, object ob, string fun) {
     string *ok;
-    if( ob == master() ) return 1;
+    int ret;
+    if( ob == master() ) ret = 1;
     ok = match_path(WriteAccess, file);
-    return check_access(ob, fun, file, ok, "write");
+    if(!ret) ret = check_access(ob, fun, file, ok, "write");
+    if(INST_DEBUG && grepp(file, "ratylus")){
+        tc("ok: "+identify(ok));
+        tc("valid_write("+file+", "+identify(ob)+", "+fun+"): "+ret);
+    }
+    return ret;
 }
 
 int valid_read(string file, object ob, string fun) {
     string *ok;
     int ret;
-    if( ob == master() ) return 1;
+    if( ob == master() ) ret = 1;
     ok = match_path(ReadAccess, file);
-    ret = check_access(ob, fun, file, ok, "read");
+    if(!ret) ret = check_access(ob, fun, file, ok, "read");
+    if(INST_DEBUG && !ret){
+        debug_message("OK: "+identify(ok));
+        debug_message("VALID_READ FAIL ("+file+", "+identify(ob)+", "+fun+"): "+ret);
+        debug_message("\n===\nstack: "+get_stack()+"\n===\n");
+    }
     return ret;
 }
 
@@ -273,31 +299,66 @@ int valid_link(string from, string to) {
 }
 
 int valid_apply(string *ok) {
-    return check_access(previous_object(1),0,previous_object(0), ok, "apply");
+    int ret;
+    ret = check_access(previous_object(1),0,previous_object(0), ok, "apply");
+    if(INST_DEBUG && !ret){
+        tc("FAILED VALID APPLY. ok: "+identify(ok)+", args: "+identify(previous_object(1))+", "+identify(previous_object(0)));
+        tc("stack: "+get_stack());
+    }
+    return ret;
 }
 
 int check_access(object ob, string fun, mixed file, string *ok, string oper) {
     object *stack;
     string *privs;
-    string priv;
-    int i;
+    string priv, tmp;
+    int i, dbg;
 
-    if( objectp(file) ) file = base_name(file);
+    if( objectp(file) ) tmp = base_name(file);
+    if(tmp) file = tmp;
+    if(INST_DEBUG){
+        dbg = 1;
+    }
+    if(dbg){
+        //tc("stack: "+get_stack(1));
+        tc("CHECK_ACCESS file: "+file,"blue");
+        tc("CHECK_ACCESS ok: "+identify(ok),"blue");
+        tc("CHECK_ACCESS ob: "+identify(ob),"blue");
+        tc("CHECK_ACCESS tmp: "+identify(tmp),"blue");
+    }
     if( ok && sizeof(ok) && ok[0] == "all" ) return 1;
-    if( Unguarded == ob ) {
-        string tmp;
-
-        if( (tmp = base_name(ob)) == LIB_PLAYER || tmp == LIB_CREATOR) {
+    if( Unguarded == ob ){
+        tmp = base_name(ob);
+        if(dbg) tc("tmp: "+tmp, "black");
+        if( tmp == LIB_PLAYER || tmp == LIB_CREATOR){
+            string sfilep, sfilec;
+            if(dbg) tc("hi. wtf.","red");
+            sfilep = DIR_PLAYERS+"/"+PlayerName[0..0]+"/"+ PlayerName + __SAVE_EXTENSION__;
+            sfilec = DIR_CRES+"/"+PlayerName[0..0]+"/"+ PlayerName + __SAVE_EXTENSION__;
+            if(dbg){
+                tc("CHECK_ACCESS file: "+file,"green");
+                tc("CHECK_ACCESS sfilep: "+sfilep,"green");
+                tc("CHECK_ACCESS sfilec: "+sfilec,"green");
+                tc("CHECK_ACCESS ob: "+identify(ob),"green");
+            }
             if( !PlayerName ) i = sizeof(stack = ({ob})+previous_object(-1));
-            else if( file == DIR_PLAYERS+"/"+PlayerName[0..0]+"/"+
-                    PlayerName + __SAVE_EXTENSION__ )
+            else if( file == sfilep ) return 1;
+            else if( file == sfilec ) return 1;
+#if ENABLE_INSTANCES
+            else if( file == new_savename(sfilep) ){
                 return 1;
-            else if( file == DIR_CRES+"/"+PlayerName[0..0]+"/"+
-                    PlayerName + __SAVE_EXTENSION__ )
+            }
+            else if( file == new_savename(sfilec) ){
                 return 1;
+            }
+#endif
             else i = sizeof(stack = ({ ob }));
         }
+        else if( tmp == file ) return 1;
         else if( tmp + __SAVE_EXTENSION__ == file ) return 1;
+#if ENABLE_INSTANCES
+        else if( new_savename(tmp) == file ) return 1;
+#endif
         else i = sizeof(stack = ({ ob }));
     }
     else if(Unguarded && base_name(ob) == SEFUN) {
@@ -307,13 +368,19 @@ int check_access(object ob, string fun, mixed file, string *ok, string oper) {
     }
     else i = sizeof(stack = previous_object(-1) + ({ ob }));
     while(i--) {
+        if(dbg) tc("ooo stack["+i+"]: "+identify(stack[i]));
         if(!stack[i] || stack[i] == this_object()) {
             continue;
         }
         if(file_name(stack[i]) == SEFUN) {
             continue;
         }
+        if(dbg) globalpmsg = 1;
+        else globalpmsg = 0;
         if(!(priv = query_privs(stack[i]))) {
+            if(false()){
+                debug_message("\nSPLAT 1: "+identify(stack[i]));
+            }    
             return 0;
         }
         if(!ok && oper == "read") {
@@ -327,15 +394,22 @@ int check_access(object ob, string fun, mixed file, string *ok, string oper) {
             continue;
         }
         if(!ok && oper == "write") {
-            if(userp(stack[i]) && check_user(stack[i], fun, file, oper))
+            if(dbg) tc("hmm.","blue");
+            if(userp(stack[i]) && check_user(stack[i], fun, file, oper)){
                 continue;
-            else return 0;
+            }
+            else {
+                if(false()) debug_message("\nSPLAT 2\n");
+                return 0;
+            }
         }
+        if(dbg) tc("privs: "+identify(privs));
         if(sizeof(privs & ok)) {
             continue;
         }
         if(userp(stack[i]) && check_user(stack[i], fun, file, oper)) continue;
         if(userp(stack[i]) && check_domain(stack[i], fun, file,oper)) continue;
+        if(dbg) tc("SADFACE","red");
         return 0;
     }
     return 1;
@@ -352,7 +426,7 @@ nomask static int check_user(object ob, string fun, string file, string oper){
     if( sscanf(nom, "%s/%*s", tmp) ) nom = tmp;
     nom = user_path(nom)+"adm/access";
     if(strsrch(nom,"/tmp") && file_size(nom+".c") > 0)
-        catch(x = (int)call_other(nom, "check_access", ob, fun, file, oper));
+        catch(x = call_other(nom, "check_access", ob, fun, file, oper));
     return x;
 }
 
@@ -362,7 +436,7 @@ nomask static int check_domain(object ob, string fun, string file, string o) {
     if( !sscanf(file, DOMAINS_DIRS+"/%s/%*s", nom) ) return 0;
     nom = DOMAINS_DIRS+"/"+nom+"/adm/access";
     if(file_size(nom+".c") < 0) return 0;
-    catch(x = (int)call_other(nom, "check_access", ob, fun, file, o));
+    catch(x = call_other(nom, "check_access", ob, fun, file, o));
     return x;
 }
 
@@ -371,7 +445,6 @@ object connect(int port) {
     string err;
     string file;
 
-    true(port);
     file = LIB_CONNECT;
     if( err  = catch(ob = new(file)) ) {
         write("It looks like someone is working on the user object.\n");
@@ -382,9 +455,10 @@ object connect(int port) {
 }
 
 object compile_object(string str) {
-    string nom, tmp, where, which;
+    string nom, tmp, where, which, sfile;
     object ob;
-
+    //tc("HAI! compile_object: "+str, "red");
+    sfile = str+__SAVE_EXTENSION__;
     if(sscanf(str, REALMS_DIRS+"/%s/%*s", nom))
         tmp = sprintf("%svirtual/server", user_path(nom));
     else if(sscanf(str, DOMAINS_DIRS+"/%s/%*s", nom))
@@ -392,24 +466,58 @@ object compile_object(string str) {
     else if(strsrch(str, ESTATES_DIRS) == 0)
         tmp = sprintf("%s/virtual/server", ESTATES_DIRS);
     else if(sscanf(str, DIR_PLAYERS+"/%*s/%s", nom)) {
-        if(!NewPlayer) return 0;
-        if((string)NewPlayer->GetKeyName() != nom) return 0;
+        //tc("playa");
+        if(!NewPlayer){
+            //tc("NOT NEW PLAYA RETURN WAT");
+            return 0;
+        }
+#if ENABLE_INSTANCES
+        nom = old_savename(nom);
+#endif
+        if(last(nom,2) == ".o") nom = truncate(nom, 2);
+        if(last(sfile,4) == ".o.o") sfile = truncate(sfile, 2);
+        //tc("playa2 "+nom+", "+NewPlayer->GetKeyName());
+        if(NewPlayer->GetKeyName() != nom) return 0;
+        //tc("playa3 sfile: "+sfile);
         PlayerName = nom;
         ob = new(LIB_PLAYER);
-        if(file_size(str+__SAVE_EXTENSION__) > 0) ob->restore_player(nom);
-        else if(file_size(DIR_PLAYERS) != -2) mkdir(DIR_PLAYERS);
-        else if(file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2)
+        //tc("sfile: "+sfile);
+        //tc("new sfile: "+new_savename(sfile));
+        if(file_exists(sfile) || file_exists(new_savename(sfile))){ 
+            //tc("booyah");
+            ob->restore_player(nom);
+            //tc("ob: "+identify(ob));
+        }
+        else {
+            //tc("omg WAT WAT WAT");
+            if(file_size(DIR_PLAYERS) != -2) mkdir(DIR_PLAYERS);
+        }
+        if(file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2)
             mkdir(DIR_PLAYERS+"/"+nom[0..0]);
         ob->SetKeyName(nom);
         PlayerName = 0;
+        //tc("ob: "+identify(ob));
         return ob;
     }
     else if( sscanf(str, DIR_CRES+"/%*s/%s", nom) ) {
         if(!NewPlayer) return 0;
-        if((string)NewPlayer->GetKeyName() != nom) return 0;
+#if ENABLE_INSTANCES
+        nom = old_savename(nom);
+        if(last(nom,2) == ".o") nom = truncate(nom, 2);
+#endif
+        if(last(sfile,4) == ".o.o") sfile = truncate(sfile, 2);
+        if(NewPlayer->GetKeyName() != nom) return 0;
         PlayerName = nom;
         ob = new(LIB_CREATOR);
-        if(file_size(str+__SAVE_EXTENSION__) > 0) ob->restore_player(nom);
+        //tc("sfile: "+sfile);
+        //tc("new sfile: "+new_savename(sfile));
+        if(file_exists(sfile) || file_exists(new_savename(sfile))){
+            //tc("WIIIN");
+            ob->restore_player(nom);
+        }
+        else {
+            //tc("FAAALEEEE");
+        }
         ob->SetKeyName(nom);
         PlayerName = 0;
         return ob;
@@ -421,9 +529,9 @@ object compile_object(string str) {
         else if(sscanf(str, DOMAINS_DIRS+"/%s/%*s", nom))
             tmp = sprintf("%s/%s/virtual/%s_server", DOMAINS_DIRS, nom, which);
         if(file_size(tmp+".c") < 0) return 0;
-        else return (object)call_other(tmp, "compile_object", where);
+        else return call_other(tmp, "compile_object", where);
     }
-    return (object)call_other(tmp, "compile_object", str);               
+    return call_other(tmp, "compile_object", str);               
 }
 
 static void crash(mixed args...) {
@@ -431,7 +539,6 @@ static void crash(mixed args...) {
     string guilty_stack = get_stack(1);
     string guilty_obs = identify(previous_object(-1));
     if(sizeof(args)) err = args[0];
-    //tc("CRASH: "+identify(args),"red");
     write_file(DIR_LOGS "/crashes",
             mud_name() + " crashed " + ctime(time()) + " with error " +
             err+".\n"+guilty_stack+"\n"+guilty_obs+"\n---\n");
@@ -441,12 +548,15 @@ static void crash(mixed args...) {
 }
 
 int valid_bind(object binder, object old_owner, object new_owner) {
-    true(old_owner,new_owner);
-    if( binder == master() ) return 1;
-    if( base_name(binder) == SEFUN ) return 1;
-    if( member_array(PRIV_SECURE, explode(query_privs(binder), ":")) != -1 )
-        return 1;
-    return 0;
+    int ret;
+    mixed privs;
+    if(!binder) ret = 0;
+    else if( binder == this_object() ) ret = 1;
+    else if( base_name(binder) == SEFUN ) ret = 1;
+    else if( member_array(PRIV_SECURE, 
+                explode((privs = query_privs(binder)), ":")) != -1 ) ret = 1;
+    if(!ret) tc("valid_bind("+identify(binder)+", "+identify(old_owner)+", "+identify(new_owner)+"): "+ret+" (privs: "+identify(privs)+"), stack: "+get_stack());
+    return ret;
 }
 
 int valid_hide(object who) {
@@ -457,20 +567,20 @@ int valid_hide(object who) {
     else return (member_array(PRIV_SECURE, explode(priv, ":")) != -1);
 }
 
-int valid_override(string file, string nom) { return (file == SEFUN); }
+int valid_override(string file, string nom){ 
+    return (file == SEFUN);
+}
 
-int valid_save_binary(string str) { return true(str); }
+int valid_save_binary(string str) { return 1; }
 
 int valid_shadow(object ob) {
     object targ = previous_object();
-    true(ob);
     return (!virtualp(targ) && !strsrch(file_name(targ), DIR_SHADOWS));
 }
 
 int valid_object(object ob) {
     string file, contents;
     file = file_name(ob);
-
     contents = read_file(base_name(ob)+".c");
     if(!contents) contents = "";
     if(strsrch(contents,"parse_add_rule") != -1 
@@ -479,11 +589,12 @@ int valid_object(object ob) {
         if(!sscanf(file,"/%s/%*s",prefix)) return 0;
         if(member_array(prefix, ParserDirs) == -1) return 0;
     }
-
     if( !strsrch(file, DIR_TMP) ) return 0;
     else if( !strsrch(file, DIR_FTP) ) return 0;
     else if( !strsrch(file, DIR_LOGS) ) return 0;
-    else if( !strsrch(file, DIR_SECURE_SAVE) ) return 0;
+    else if( !strsrch(file, DIR_SECURE_SAVE) ){
+        return 0;
+    }
     else return 1;
 }
 
@@ -492,7 +603,6 @@ int valid_socket(object ob, string fun, mixed *info) {
     int port;
     string tmp;
     int i;
-
     if( info && sizeof(info) == 4 ) {
         ob = info[1];
         port = info[3];
@@ -561,6 +671,9 @@ string error_handler(mapping mp, int caught) {
         debug_message(dbg);
     }
     if(mp && mp["error"]){
+        if(grepp(mp["error"], "Too deep recursion")){
+            debug_message("Too deep recursion\n"+get_stack());
+        }
         if(grepp(mp["error"], "Too many open files")){
             debug_message("Too many open files!\n");
             shutdown(-9);
@@ -592,13 +705,13 @@ string error_handler(mapping mp, int caught) {
         }
         else {
             if( !strsrch(file_name(this_player(1)), LIB_CONNECT) ) {
-                return "/log/login";
+                return "/log/login\n"+standard_trace(mp)+"\n--\n";
             }
             this_player()->eventPrint("A runtime error occurred.");
             CHAT_D->eventSendChannel("System", "error", "A runtime error "
                     "occurred to " + 
-                    (string)this_player(1)->GetCapName()+".");
-            rlog = "-----\n" +timestamp()+ ": "+(string)this_player(1)->GetCapName()+"\n";
+                    this_player(1)->GetCapName()+".");
+            rlog = "-----\n" +timestamp()+ ": "+this_player(1)->GetCapName()+"\n";
             rlog += load_object("/secure/cmds/creators/dbxwhere")->cmd(this_player(1)->GetKeyName());
             rlog += flat_map(this_player()->GetLastError())+"\n-----\n";
             unguarded( (: write_file("/log/player_errors", rlog) :) );
@@ -675,16 +788,21 @@ void master_log_file(string file, string msg) {
 }
 
 string make_path_absolute(string file) {
-    return absolute_path((string)this_player(1)->query_cwd(), file);
+    return absolute_path(this_player(1)->query_cwd(), file);
 }
 
 int player_exists(string nom) {
-    string str;
+    string sfilec, sfilep;
     if( !nom ) return 0;
-    str = DIR_PLAYERS "/" + nom[0..0] + "/" + nom + __SAVE_EXTENSION__;
-    if( file_size(str) > -1 ) return 1;
-    str = DIR_CRES "/" + nom[0..0] + "/" + nom + __SAVE_EXTENSION__;
-    return (file_size(str) > -1);
+    sfilec = DIR_CRES "/" + nom[0..0] + "/" + nom + __SAVE_EXTENSION__;
+    sfilep = DIR_PLAYERS "/" + nom[0..0] + "/" + nom + __SAVE_EXTENSION__;
+#if ENABLE_INSTANCES
+    sfilep = new_savename(sfilep);
+    sfilec = new_savename(sfilec);
+#endif
+    if(unguarded((: file_exists, sfilec :))) return 1;
+    if(unguarded((: file_exists, sfilep :))) return 1;
+    return 0;
 }
 
 string domain_file(string str) {
@@ -712,14 +830,14 @@ int save_ed_setup(object who, int code) {
     string file;
 
     if(!intp(code)) return 0;
-    rm(file = user_path((string)who->GetKeyName())+".edrc");
+    rm(file = user_path(who->GetKeyName())+".edrc");
     return write_file(file, code+"");
 }
 
 int retrieve_ed_setup(object who) {
     string file;
 
-    file = user_path((string)who->GetKeyName())+".edrc";
+    file = user_path(who->GetKeyName())+".edrc";
     if(!file_exists(file)) return 0;
     return to_int(read_file(file));    }
 
@@ -727,7 +845,7 @@ int retrieve_ed_setup(object who) {
         mixed str;
 
         if(!this_player(1)) return DIR_TMP+"/.dead.edit";
-        str = (string)this_player(1)->GetKeyName();
+        str = this_player(1)->GetKeyName();
         if(!str || !stringp(str)) return DIR_TMP+"/.dead.edit";
         if(file_size(user_path(str)) == -2)
             return user_path(str)+"dead.edit";
@@ -757,15 +875,15 @@ string parser_error_message(int type, object ob, mixed arg, int flag) {
     string err;
     object tmpob;
 #if CRAT_PARSE
-    tc("parser_error_message("+
+    debug("parser_error_message("+
         TYPES_D->eventCalculateTypes("parser_error",type)+", "+
         identify(ob)+", "+
         identify(arg)+", "+
         identify(flag)+") "
             ,"yellow");
-    tc("type: "+type,"green");
+    debug("type: "+type,"green");
 #endif
-    if( ob ) err = (string)ob->GetShort();
+    if( ob ) err = ob->GetShort();
     else err = "";
     switch(type) {
         string wut;
@@ -773,7 +891,7 @@ string parser_error_message(int type, object ob, mixed arg, int flag) {
 
         case 0:
 #if CRAT_PARSE
-        tc("WTF. An unhandled error?","red");
+        debug("WTF. An unhandled error?","red");
 #endif
         if(arg && objectp(arg)) wat = arg;
         if(!wat && arg && arrayp(arg) && sizeof(arg)){
@@ -798,7 +916,7 @@ string parser_error_message(int type, object ob, mixed arg, int flag) {
 
         case ERR_IS_NOT:
 #if CRAT_PARSE
-        tc(identify(this_player())+" ERR_IS_NOT: "+identify(ob)+", "+identify(arg)+", "+identify(flag),"green");
+        debug(identify(this_player())+" ERR_IS_NOT: "+identify(ob)+", "+identify(arg)+", "+identify(flag),"green");
 #endif
         if(flag || (arg && stringp(arg))){
             if(flag || get_object(arg, this_player())){
@@ -832,18 +950,18 @@ string parser_error_message(int type, object ob, mixed arg, int flag) {
                 return " ";
             }
 
-            obs = unique_array(arg, (: (string)$1->GetShort() :));
+            obs = unique_array(arg, (: $1->GetShort() :));
             if( sizeof(obs) == 1 )
                 err = "Which of the " +
-                    consolidate(sizeof(arg), (string)obs[0][0]->GetShort()) +
+                    consolidate(sizeof(arg), obs[0][0]->GetShort()) +
                     " do you mean?";
             else {
                 err = "Do you mean ";
                 for(i = 0; i<sizeof(obs); i++) {
                     if( sizeof(obs[i]) > 1 )
                         err += "one of the " +
-                            consolidate(sizeof(obs[i]),(string)obs[i][0]->GetShort());
-                    else err += (string)obs[i][0]->GetShort();
+                            consolidate(sizeof(obs[i]),obs[i][0]->GetShort());
+                    else err += obs[i][0]->GetShort();
                     if( i == (sizeof(obs)-2) ) err += " or ";
                     else if( i < sizeof(obs) - 1 ) err += ", ";
                 }
@@ -862,7 +980,7 @@ string parser_error_message(int type, object ob, mixed arg, int flag) {
 
         case ERR_THERE_IS_NO:
 #if CRAT_PARSE
-        tc(identify(this_player())+" ERR_THERE_IS_NO: "+identify(ob)+", "+identify(arg)+", "+identify(flag),"blue");
+        debug(identify(this_player())+" ERR_THERE_IS_NO: "+identify(ob)+", "+identify(arg)+", "+identify(flag),"blue");
 #endif
         if(flag || (arg && stringp(arg)) && environment(this_player())){
             if(tmpob = present(arg, environment(this_player()))){
@@ -883,8 +1001,7 @@ string parser_error_message(int type, object ob, mixed arg, int flag) {
 
 void create_save() {
     string str;
-
-    if(!stringp(str = (string)previous_object()->GetKeyName())) return;
+    if(!stringp(str = previous_object()->GetKeyName())) return;
     if(file_size(DIR_PLAYERS+"/"+str[0..0]) == -2) return;
     if(str[0] < 'a' || str[0] > 'z') return;
     mkdir(DIR_PLAYERS+"/"+str[0..0]);
@@ -894,17 +1011,48 @@ varargs object player_object(string nom, object stub) {
     object ob;
     string err, tmp;
     int old_limit;
-
+    string sfilec = DIR_CRES+ "/" + nom[0..0]+ "/" +nom+__SAVE_EXTENSION__;
+    string sfilep = DIR_PLAYERS+ "/" + nom[0..0]+ "/" +nom+__SAVE_EXTENSION__;
     tmp = base_name(ob = previous_object());
-    if( tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != LIB_CONNECT && tmp != RELOAD_D )
+    if( tmp != CMD_ENCRE && tmp != CMD_DECRE && tmp != LIB_CONNECT 
+            && tmp != RELOAD_D ){
+        tc("BOOOO!");
         return 0;
+    }
     old_limit = max_eval_cost();
     set_eval_limit(1000000000);
     if(tmp == RELOAD_D && stub) NewPlayer = stub;
     else NewPlayer = ob;
-    if(file_size(DIR_CRES+ "/" + nom[0..0]+ "/" +nom+__SAVE_EXTENSION__) > -1) 
-        err = catch(ob = load_object(DIR_CRES+"/"+nom[0..0]+"/"+nom));
-    else err = catch(ob = load_object(DIR_PLAYERS+"/"+nom[0..0]+"/"+nom));
+#if ENABLE_INSTANCES
+    if(file_exists(new_savename(sfilec))){
+        err = catch(ob = load_object(new_savename(sfilec)));
+        //tc("1: "+sfilec+": err: "+err+", ob: "+identify(ob));
+    }
+    else{
+        err = catch(ob = load_object(new_savename(sfilep)));
+        //tc("2: "+sfilep+": err: "+err+", ob: "+identify(ob));
+    }
+#else
+    if(ob == previous_object() && file_exists(sfilec)){
+        string tmpy;
+        if(last(sfilec,2) == ".o") tmpy = truncate(sfilec,2);
+        ob = load_object(tmpy);
+        //tc("3: "+tmpy+": err: "+err+", ob: "+identify(ob));
+        if(!ob) ob = load_object(sfilec);
+        //tc("4: "+tmpy+": err: "+err+", ob: "+identify(ob));
+    }
+    if(!ob || ob == previous_object()){
+        string tmpy;
+        if(last(sfilep,2) == ".o") tmpy = truncate(sfilep,2);
+        ob = load_object(tmpy);
+        //tc("5: "+tmpy+": err: "+err+", ob: "+identify(ob));
+        if(!ob) ob = load_object(sfilep);
+        //tc("6: "+sfilep+": err: "+err+", ob: "+identify(ob));
+    }
+#endif
+    if(!ob || ob == previous_object()){
+        //tc("7: WAT");
+    }
     NewPlayer = 0;
     set_eval_limit(old_limit);
     if(err) error(err);
@@ -912,11 +1060,22 @@ varargs object player_object(string nom, object stub) {
 }
 
 string player_save_file(string nom) { 
-    string tmp;
-
-    tmp = DIR_CRES + "/" + nom[0..0] + "/" + nom;
-    if( file_size(tmp + __SAVE_EXTENSION__) > -1 ) return tmp;
-    else return DIR_PLAYERS + "/" + nom[0..0] + "/" + nom;
+    string sfilec, sfilep;
+    sfilec = DIR_CRES + "/" + nom[0..0] + "/" + nom + ".o";
+    sfilep = DIR_PLAYERS + "/" + nom[0..0] + "/" + nom + ".o";
+#if ENABLE_INSTANCES
+    gstr = new_savename(sfilec);
+    if(unguarded( (: file_exists, gstr :) )){ 
+        return gstr;
+    }
+    return new_savename(sfilep);
+#endif
+    if(unguarded( (: file_exists, sfilec :) ) ){
+        //tc("player_save_file "+nom+": VANILLA CRE");
+        return sfilec;
+    }
+    //tc("player_save_file "+nom+": VANILLA PLAY");
+    return sfilep;
 }
 
 string *query_group(string grp) { return copy(Groups[grp]); }
@@ -931,7 +1090,6 @@ static void eventReset(){
 
     ResetNumber++;
     if(find_call_out("eventReset") == -1 && find_call_out(reset_handle) == -1){ 
-        //tc(ctime(time())+" scheduling reset for: "+ctime(time()+TIME_TO_RESET));
         reset_handle = call_out( (: eventReset :), TIME_TO_RESET );
     }
     x = reclaim_objects();
@@ -946,11 +1104,10 @@ static void eventReset(){
     foreach(ob in obs) {
         function f;
 
-        if( !ob ) {
-            y++;
+        if(ob) f = bind( (: call_other, ob, "clean_up" :), ob );
+        else {
             continue;
         }
-        f = bind( (: call_other, ob, "clean_up" :), ob );
         if( f ) catch(evaluate(f));
         if( !ob ) {
             y++;
@@ -981,7 +1138,7 @@ string *GetEfuns(){
 }
 
 object *parse_command_users() {
-    return filter(users(), (: creatorp($1) || (int)$1->is_living() :));
+    return filter(users(), (: creatorp($1) || $1->is_living() :));
 }
 
 int GetPerformanceScore(){

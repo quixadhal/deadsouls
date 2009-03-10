@@ -252,7 +252,7 @@ void clear(){
     validate();
     server_log("%^RED%^Clearing all mud data!"); 
     foreach(mudname in keys(mudinfo)) remove_mud(mudname,1); 
-    save_object(SAVE_ROUTER);    
+    SaveObject(SAVE_ROUTER);    
 }
 
 string GetRouterName(){
@@ -317,7 +317,7 @@ varargs string *SetList(){
         router_list = ({ ({ tmp, tmp_ip+" "+tmp_port }) });
     }
     server_log("Setting router list to: "+identify(router_list));
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     return router_list;
 }
 
@@ -335,7 +335,7 @@ string *AddBannedMud(string str){
     validate();
     banned_muds += ({ str });
     server_log(str+" has been BANNED");
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     return banned_muds;
 }
 
@@ -343,7 +343,7 @@ string *RemoveBannedMud(string str){
     validate();
     banned_muds -= ({ str });
     server_log(str+" has been unbanned.");
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     return banned_muds;
 }
 
@@ -361,7 +361,7 @@ varargs string *AddBlacklistedMud(string str, int perma){
     Blacklist[str] = perma;
     blacklisted_muds += ({ str });
     server_log(str+" has been BLACKLISTED");
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     return blacklisted_muds;
 }
 
@@ -371,7 +371,7 @@ string *RemoveBlacklistedMud(string str){
     if(Blacklist[str]) map_delete(Blacklist, str);
     blacklisted_muds -= ({ str });
     server_log(str+" has been unblacklisted.");
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     return blacklisted_muds;
 }
 
@@ -514,7 +514,7 @@ void clean_chans(){
         }
     }
     cleaned = distinct_array(cleaned);
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     trr("channel cleanup: cleaned from listening: "+implode(cleaned,"\n"));
 }
 
@@ -569,7 +569,7 @@ void clear_discs(){
 
 int eventDestruct(){
     validate();
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     server_log("I am being destructed by: \n"+get_stack()+
             "\n"+identify(previous_object(-1)));
     daemon::eventDestruct();
@@ -650,14 +650,14 @@ varargs void ReceiveList(mixed data, string type, string who){
             }
         }
     }
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
 }
 
 int purge_crud(){
     foreach(mixed key, mixed val in mudinfo){
         if(!mapp(val)) map_delete(mudinfo, key);
     }
-    save_object(SAVE_ROUTER);
+    SaveObject(SAVE_ROUTER);
     return sizeof(mudinfo);
 }
 

@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/roof.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of something people can jump from
  *    Created by Descartes of Borg 961222
  */

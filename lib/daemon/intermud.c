@@ -15,10 +15,9 @@
 #include <logs.h>
 #include <privs.h>
 #include <save.h>
-#include <config.h>
 #include <daemons.h>
-#include <network.h>
-#include <rooms.h>
+#include NETWORK_H
+#include ROOMS_H
 #include "include/intermud.h"
 
 inherit LIB_CLIENT;
@@ -31,12 +30,14 @@ private static int Tries;
 private static int SocketStat = -1;
 private static int Online = 0;
 private static string my_ip;
+static string SaveFile;
 
 mapping ExtraInfo();
 void ConvertLists();
 
 static void create(){
     client::create();
+    SaveFile = save_file(SAVE_INTERMUD);
     tn("INTERMUD_D: prev: "+identify(previous_object(-1)),"red");
     Password = 0;
     Tries = 0;
@@ -47,8 +48,9 @@ static void create(){
     MudList["List"] = ([]);
     ChannelList["ID"] = -1;
     ChannelList["List"] = ([]);
-    if( file_size( SAVE_INTERMUD __SAVE_EXTENSION__ ) > 0 )
-        unguarded( (: restore_object, SAVE_INTERMUD, 1 :) );
+    if(file_exists(SaveFile)){
+        unguarded( (: RestoreObject, SaveFile, 1 :) );
+    }
     ConvertLists();
     Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
     SetNoClean(1);
@@ -107,7 +109,7 @@ int GetConnectedStatus(){
         MudList["List"] = ([]);
         ChannelList["ID"] = -1;
         ChannelList["List"] = ([]);
-        save_object(SAVE_INTERMUD);
+        SaveObject(SaveFile);
     }
 
 static void eventRead(mixed *packet){
@@ -146,7 +148,7 @@ static void eventRead(mixed *packet){
         if( packet[6][0][0] == Nameservers[0][0] ){
             Nameservers = packet[6];
             Password = packet[7];
-            save_object(SAVE_INTERMUD);
+            SaveObject(SaveFile);
         }
         else {
             Nameservers = packet[6];
@@ -198,7 +200,7 @@ static void eventRead(mixed *packet){
                 map_delete(MudList["List"], cle);
             else if( val ) MudList["List"][cle] = val;
         }
-        save_object(SAVE_INTERMUD);
+        SaveObject(SaveFile);
         return;
         case "ping-req":
             SERVICES_D->eventReceiveAuthRequest(packet);
@@ -244,7 +246,7 @@ static void eventRead(mixed *packet){
                 CHAT_D->AddRemoteChannel(cle);
             }
         } 
-        save_object(SAVE_INTERMUD);
+        SaveObject(SaveFile);
         SERVICES_D->eventRegisterChannels(packet[7]);
         return;
         case "emoteto":
@@ -383,7 +385,7 @@ int AddBanned(string mud, string reason){
         return 0;
     }
     Banned[mud] = reason;
-    save_object(SAVE_INTERMUD);
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -434,14 +436,14 @@ void ConvertLists(){
         MudList = TmpMap;
         MudList["ID"] = -1;
         MudList["List"] = ([]);
-        save_object(SAVE_INTERMUD);
+        SaveObject(SaveFile);
     }
     if(classp(ChannelList)){
         mapping TmpMap = ([]);
         ChannelList = TmpMap;
         ChannelList["ID"] = -1;
         ChannelList["List"] = ([]);
-        save_object(SAVE_INTERMUD);
+        SaveObject(SaveFile);
     }
 }
 

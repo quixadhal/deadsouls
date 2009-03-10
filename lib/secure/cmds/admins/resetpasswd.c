@@ -42,10 +42,10 @@ mixed cmd(string args) {
         return 1;
     }
 
-    savefile = DIR_CRES + "/" + args[0..0] + "/" + args + ".o";
-    if(!file_exists(savefile)) {
+    savefile = save_file(DIR_CRES + "/" + args[0..0] + "/" + args);
+    if(!file_exists(savefile)){
         write("Couldn't find "+savefile+". Looking for alternate.");
-        savefile = DIR_PLAYERS + "/" + args[0..0] + "/"+ args + ".o";
+        savefile = save_file(DIR_PLAYERS + "/" + args[0..0] + "/"+ args);
     }
 
     if(!file_exists(savefile)){

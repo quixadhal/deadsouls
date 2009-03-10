@@ -1,5 +1,5 @@
 /*    /daemon/bugs.c
- *    from the Dead Soulsr1 Object Library
+ *    from the Dead Souls Object Library
  *    a management daemon for bug tracking
  *    created by Descartes of Borg 950925
  */
@@ -15,14 +15,17 @@ inherit LIB_DAEMON;
 
 private int NextID;
 private mapping Bugs;
+static string SaveFile;
 
 static void create() {
     mapping bug;
     int t, bug_id;
+    SaveFile = save_file(SAVE_BUGS);
 
     daemon::create();
-    if( file_size(SAVE_BUGS __SAVE_EXTENSION__) > 0 )
-        unguarded( (: restore_object, SAVE_BUGS :));
+    if(unguarded( (: file_exists(SaveFile) :) ) ){
+        unguarded( (: RestoreObject, SaveFile :));
+    }
     if( NextID < 1 || !Bugs ) {
         NextID = 1;
         Bugs = ([]);
@@ -37,7 +40,7 @@ static void create() {
                 map_delete(Bugs, bug_id);
         }
     }
-    unguarded( (: save_object, SAVE_BUGS :));
+    unguarded( (: SaveObject, SaveFile :));
 }
 
 int eventAssign(int bug, string who) {
@@ -46,14 +49,14 @@ int eventAssign(int bug, string who) {
     else who = capitalize(who);
     Bugs[bug]["assigned"] = who;
     Bugs[bug]["date assigned"] = time();
-    return unguarded( (: save_object, SAVE_BUGS :) );
+    return unguarded( (: SaveObject, SaveFile :) );
 }
 
 int eventComplete(int bug, string resolution) {
     if( !Bugs[bug] ) return 0;
     Bugs[bug]["date fixed"] = time();
     Bugs[bug]["resolution"] = resolution;
-    if( unguarded( (: save_object, SAVE_BUGS :) ) ) return 1;
+    if( unguarded( (: SaveObject, SaveFile :) ) ) return 1;
     else {
         Bugs[bug]["date fixed"] = 0;
         Bugs[bug]["resolution"] = 0;
@@ -67,9 +70,9 @@ int eventDelete(int bug) {
     if( !Bugs[bug] ) return 0;
     fu = copy(Bugs);
     map_delete(Bugs, bug);
-    if( !save_object(SAVE_BUGS) ) {
+    if( !SaveObject(SaveFile) ) {
         Bugs = fu;
-        return 0; /* some asshole tried to delete this bug */
+        return 0; /* someone tried to delete this bug */
     }
     else return 1;
 }
@@ -80,7 +83,7 @@ int eventReport(string who, string type, string bug, string data) {
     x = NextID++;
     Bugs[x] = ([ "who" : who, "type" : type, "bug" : bug, "data" : data, 
             "assigned" : 0, "date fixed" : 0, "resolution" : 0 ]);
-    if( unguarded( (: save_object, SAVE_BUGS :) ) ) return x;
+    if( unguarded( (: SaveObject, SaveFile :) ) ) return x;
     else {
         map_delete(Bugs, x);
         return 0;
@@ -106,7 +109,7 @@ string AddComment(int bug, string comment) {
     if( !Bugs[bug]["data"] ) Bugs[bug]["data"] = "";
     tmp = Bugs[bug]["data"];
     Bugs[bug]["data"] += "\n" + comment;
-    if( !unguarded( (: save_object, SAVE_BUGS :) ) ) {
+    if( !unguarded( (: SaveObject, SaveFile :) ) ) {
         Bugs[bug]["data"] = tmp;
         return 0;
     }

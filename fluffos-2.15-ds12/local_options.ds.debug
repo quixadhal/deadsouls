@@ -83,7 +83,7 @@
  *   * Incurs a fair amount of overhead (both memory and CPU)
  */
 #undef WRAPPEDMALLOC
-#undef DEBUGMALLOC
+#define DEBUGMALLOC
 
 /* The following add certain bells and whistles to malloc: */
 
@@ -115,7 +115,7 @@
  * bytes per malloc down to 8.  This macro has no effect if DEBUGMALLOC isn't
  * defined.
  */
-#undef DEBUGMALLOC_EXTENSIONS
+#define DEBUGMALLOC_EXTENSIONS
 
 /* CHECK_MEMORY: defining this (in addition to DEBUGMALLOC and
  * DEBUGMALLOC_EXTENSIONS) causes the driver to check for memory
@@ -339,7 +339,7 @@
  *
  * The only down side is some people like their logs shorter
  */
-#undef ARGUMENTS_IN_TRACEBACK
+#define ARGUMENTS_IN_TRACEBACK
 
 /* LOCALS_IN_TRACEBACK: similar to ARGUMENTS_IN_TRACEBACK, but for local
  *   variables.  The output looks more or less like:
@@ -349,7 +349,7 @@
  * Same as above.  Tends to produce even longer logs, but very useful for
  * tracking errors.
  */
-#undef LOCALS_IN_TRACEBACK
+#define LOCALS_IN_TRACEBACK
 
 /* MUDLIB_ERROR_HANDLER: If you define this, the driver doesn't do any
  *   handling of runtime errors, other than to turn the heartbeats of
@@ -899,10 +899,10 @@
 #undef PACKAGE_ASYNC
 
 #define PACKAGE_DSLIB
-#define PROG_REF_TYPE int
 #define PARSE_DEBUG
 #define FLUFFOS
+#define PROG_REF_TYPE int
 #define HAS_CONSOLE
 #define ANSI_SUBSTITUTE 0x1e
 #endif
-
+#undef IPV6

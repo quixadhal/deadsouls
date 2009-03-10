@@ -21,22 +21,22 @@ static void create() {
             "Ylsrim.  In addition, it serves as a place to recruit new "
             "fighters into the fold.  A magnificent oak door stands north.");
     SetExits( ([
-                "north" : ({ "/domains/Ylsrim/room/"+ "fighter", (: CheckFighter :) }),
-                "south" : "/domains/Ylsrim/room/"+ "kaliid5"
+                //"north" : ({ "/domains/Ylsrim/room/"+ "fighter", (: CheckFighter :) }),
+                "north" : "/domains/Ylsrim/room/fighter",
+                "south" : "/domains/Ylsrim/room/kaliid5",
                 ]) );
-    SetInventory(([ "/domains/Ylsrim/npc/fighter" : 1 ]));
+    SetInventory(([ "/domains/Ylsrim/npc/roshd" : 1 ]));
     SetItems( ([
                 ({ "meeting","room","hall","fighter hall" }) : 
                 "New adventurers may become fighters here.",
                 ]) );
     SetDoor( "north", "/domains/Ylsrim/etc/fighter_door");
-    SetListen("default","Sounds of old veterans recalling battles of "
-            "the past can be heard being told.");
+    //SetListen("default","Sounds of old veterans recalling battles of "
+    //        "the past can be heard being told.");
 }
 
 int CheckFighter(string dir) {
     object ob;
-
     if( (int)this_player()->ClassMember("fighter") ||
             (int)creatorp(this_player()) ) return 1;
     if( ob = present("fighter", this_object()) ) {

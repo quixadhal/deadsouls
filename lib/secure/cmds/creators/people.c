@@ -1,11 +1,10 @@
-/*    /cmd *    from Foundation II
+/*    /cmd *    from Dead Souls
  *    a listing of users for creators and ambassadors
  *    created by Descartes of Borg 940724
  */
 
 #include <lib.h>
 #include <localtime.h>
-#include <config.h>
 #include <dirs.h>
 #include <daemons.h>
 
@@ -20,7 +19,7 @@ string *args;
 
 string GetBaseName(object ob){
     string ret;
-    if(ob) ret = capitalize(last_string_element(base_name(ob),"/"));
+    if(ob) ret = capitalize(cleaned_end(base_name(ob)));
     if(!ret && ob) ret = ob->GetCapName();
     if(!ret) ret = "";
     return ret;

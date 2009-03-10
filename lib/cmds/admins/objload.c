@@ -1,5 +1,5 @@
 /*    /cmds/admins/objload.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Provides information about loaded objects to find where trouble might be
  *    Created by Descartes of Borg 961204
  *    Version: @(#) objload.c 1.4@(#)

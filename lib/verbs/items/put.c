@@ -1,5 +1,5 @@
 /*    /verbs/items/put.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    put OBJ in OBJ
  *    put OBJ into OBJ
  *    created by Descartes of Borg 950114

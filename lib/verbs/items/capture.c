@@ -1,5 +1,5 @@
 /*    /verbs/items/capture.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    A verb to allow people to capture or catch things with an object
  *    Creatd by Descartes of Borg 961010
  *    Version: @(#) capture.c 1.4@(#)

@@ -1,5 +1,5 @@
 /*    /lib/search.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    allows people to search things
  *    created by Descartes of Borg 951008
  *    Version: @(#) search.c 1.7@(#)
@@ -93,7 +93,8 @@ mapping RemoveSearch(string item){
         Search = 0;
     }
     else {
-        map_delete(Searches, item);
+        //map_delete(Searches, item);
+        Searches["item"] = "You find nothing.";
     }
     return Searches;
 }
@@ -142,7 +143,7 @@ varargs mixed SetSearch(mixed array args...){
 varargs mixed eventSearch(object who, string str){
     str = GetSearch(str, who);
     if( !str ){
-        who->eventPrint("There is nothing to search.");
+        who->eventPrint("You find nothing.");
         return 1;
     }
     environment(who)->eventPrint(who->GetName() + " searches "

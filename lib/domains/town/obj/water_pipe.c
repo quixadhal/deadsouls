@@ -27,7 +27,7 @@ void init(){
 int openpipe(int i){
     if(open && !i) open = 0;
     else open = 1;
-    debug("open: "+open,"red");
+    //debug("open: "+open,"red");
     if(open){
         object flow;
         int tmp;

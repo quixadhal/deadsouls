@@ -64,19 +64,26 @@ varargs mixed eventUnequip(object who) {
 
 int eventDecrementCharge(){
     int perc;
-    if(!GetWorn()) return 0;
+    string name;
+    object room, env = environment(this_object());
+    if(!env || !GetWorn()) return 0;
     if(previous_object() != breathershadow) return 0;
     if(charge < 1) charge = 0;
     else charge--;
+    if(living(env)) room = environment(env);
 
     perc = to_int(percent(charge, maxcharge));
     if(perc < 10){
-        tell_object(environment(this_object()),"The "+remove_article(GetShort())+" beeps loudly!");
+        tell_object(env,"The "+remove_article(GetShort())+" beeps loudly!");
+        if(room){
+            name = env->GetName();
+            tell_room(room, name+"'s breathing device beeps.", ({ env }));
+        }
         return charge;
     }
 
     if(perc < 20){
-        tell_object(environment(this_object()),"The "+remove_article(GetShort())+" beeps softly.");
+        tell_object(env,"The "+remove_article(GetShort())+" beeps softly.");
         return charge;
     }
 

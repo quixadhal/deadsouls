@@ -1,5 +1,5 @@
 /*    /verbs/items/press.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 960114
  *    Version: @(#) press.c 1.3@(#)
  *    Last modified: 96/10/18

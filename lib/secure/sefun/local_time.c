@@ -2,14 +2,9 @@
  * 21Mar06
  */
 
-#ifndef LOCAL_TIME
-#define LOCAL_TIME 1
-#endif
-
 #include <lib.h>
 #include <privs.h>
 #include <cfg.h>
-#include <config.h>
 #include <daemons.h>
 
 string tz;

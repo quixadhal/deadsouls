@@ -1,5 +1,5 @@
 /*    /secure/cmds/admins/unlink.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    unlink PLAYER
  *    created by Descartes of Borg 951216
  */

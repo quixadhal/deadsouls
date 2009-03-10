@@ -5,7 +5,8 @@ inherit LIB_DAEMON;
 
 mapping Guards = ([]);
 mapping Guarded = ([]);
-string *go_verbs = ({ "go", "crawl", "fly", "swim", "enter" });
+string *go_verbs = ({ "go", "crawl", "fly", "swim", "enter", "jump", 
+        "boost" });
 
 static void create() {
     daemon::create();
@@ -97,12 +98,25 @@ varargs int CheckMove(object who, mixed dest, mixed dir){
         if(err || !dest) return 0;
     }
     if(!(guards = Guarded["rooms"][dest])){
+        //tc("1");
         return 1;
     }
-    if(member_array(query_verb(),go_verbs) == -1) return 1;
+
+    //This was meant to have guards only prevent "go" type movement,
+    //but it wound up allowing add_actions that should have been stopped.
+    //if(member_array(query_verb(),go_verbs) == -1) return 1;
+
+    //Instead, we will assume that if a direction is specified by
+    //eventMoveLiving(), then it's a physical movement the guard
+    //should prevent.
+    if(!sizeof(dir)) return 1;
+
     guards = filter(guards, (: $1 && objectp($1) && environment($1) &&
                 environment($1) == environment($(who)) :) );
-    if(!sizeof(guards)) return 1;
+    if(!sizeof(guards)){
+        //tc("2");
+        return 1;
+    }
     foreach(object guard in guards){
         mixed f;
         int x;
@@ -120,6 +134,7 @@ varargs int CheckMove(object who, mixed dest, mixed dir){
             return 0;
         }
     }
+    //tc("3");
     return 1;
 }
 

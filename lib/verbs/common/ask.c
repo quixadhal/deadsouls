@@ -1,9 +1,7 @@
 /*    /verbs/common/ask.c
- *    from the Dead Souls  Object Library
+ *    from the Dead Souls Object Library
  *    created by Blitz@Dead Souls
  */
-
-
 
 #include <lib.h>
 #include <talk_type.h>

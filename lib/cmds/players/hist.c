@@ -71,10 +71,11 @@ mixed cmd(string args) {
     }
     if(lines > 100 && !creatorp(this_player())) lines = 100;
     if(sizeof(ret = (Prettify(explode(log_contents,"\n"), gfile))) < lines){
-        string *archive_array = get_dir(DIR_CHANNEL_LOGS +"/archive/");
+        string *archive_array;
+        archive_array = (get_dir(DIR_CHANNEL_LOGS +"/archive/") || ({}) );
         archive_array = filter(archive_array, (: !strsrch($1,gfile) :) );
         archive_array = sort_array(archive_array, -1);
-        archive_array = Prettify(archive_array, gfile );
+        //archive_array = Prettify(archive_array, gfile );
         foreach(string element in archive_array){
             string junk1, tmp;
             if(sizeof(ret) >= lines) break;
@@ -82,7 +83,7 @@ mixed cmd(string args) {
             if(truncate(junk1,1) != gfile) continue;
             tmp = read_file(DIR_CHANNEL_LOGS +"/archive/"+element);
             if(!tmp) continue;
-            ret = explode(tmp,"\n")+ret;
+            ret = Prettify(explode(tmp,"\n"), gfile)+ret;
         }
     }
     ret = ret[<lines..];

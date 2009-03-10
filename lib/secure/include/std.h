@@ -6,7 +6,9 @@
 #define LIB_ACCESS       DIR_SSTD "/access"
 #define LIB_ARMOR        DIR_STD  "/armor"
 #define LIB_BARKEEP      DIR_STD  "/barkeep"
+#define LIB_BASE_ARMOR   DIR_STD  "/base_armor"
 #define LIB_BASE_DUMMY   DIR_STD  "/base_dummy"
+#define LIB_BASE_STORAGE DIR_STD  "/base_storage"
 #define LIB_BOOBYTRAP_OBJECT    DIR_STD  "/boobytrap_object"
 #define LIB_BOOBYTRAP_SHADOW    DIR_STD  "/boobytrap_shadow"
 #define LIB_BOOK         DIR_STD  "/book"
@@ -30,5 +32,7 @@
 #define LIB_BOT_LIMB     DIR_STD  "/bot_limb"
 #define LIB_WORN_STORAGE DIR_STD  "/worn_storage"
 #define LIB_WOUND        DIR_STD  "/wound"
+
+#define STD_ROOM         DIR_OLD_STD "/room"
 
 #endif /* s_std_h */

@@ -4,8 +4,8 @@
 //      created by Daroki@Nightmare
 
 #include <lib.h>
-#include <config.h>
 #include <daemons.h>
+
 #define DONATORS_LIST ({ "Kalinash", "Kazmandu", "Ariel", "Mikla", "Ninja",\
         "Shambere", "Cair", "Drittz", "Beorn", "Vilesilencer", "Elwin", "Silenus",\
         "Corvar", "Lassondra", "Bohemund", "Maria", "Arugess", "Drakken", "Dana",\

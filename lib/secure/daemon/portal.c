@@ -1,6 +1,6 @@
 #include <lib.h>
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <save.h>
 
 inherit LIB_DAEMON;
@@ -9,6 +9,7 @@ object blue, orange, bportal, oportal;
 string oroom = "/domains/town/room/wtunnel3";
 string broom = "/domains/campus/room/hazlab";
 static int heart_count;
+static string SaveFile;
 
 void CheckPortals(){
     mixed *tmp;
@@ -123,21 +124,23 @@ void heart_beat(){
     }
     if(heart_count > 3600){
         heart_count = 0;
-        unguarded( (: save_object(SAVE_PORTAL, 1) :) );
+        unguarded( (: SaveObject(SaveFile, 1) :) );
     }
 }
 
 void create(){
     ::create();
+    SaveFile = save_file(SAVE_PORTAL);
     SetNoClean(1);
-    if( file_size( SAVE_PORTAL __SAVE_EXTENSION__ ) > 0 )
-        unguarded( (: restore_object, SAVE_PORTAL, 1 :) );
+    if(file_exists(SaveFile)){
+        unguarded( (: RestoreObject, SaveFile, 1 :) );
+    }
     CheckPortals();
     set_heart_beat(1);
 }
 
 int eventDestruct(){
-    unguarded( (: save_object(SAVE_PORTAL, 1) :) );
+    unguarded( (: SaveObject(SaveFile, 1) :) );
     return daemon::eventDestruct();
 }
 

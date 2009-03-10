@@ -1,5 +1,5 @@
 /*    /verbs/items/light.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    a command for lighting things which can be lit
  *    created by Descartes of Borg 960512
  */

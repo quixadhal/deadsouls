@@ -17,10 +17,10 @@ LIMB neck:torso:1:A_COLLAR,A_AMULET,A_CUSTOM
 LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET,A_CUSTOM
 LIMB left rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
 LIMB right rear leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
-LIMB right foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
-LIMB left foreleg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
-LIMB left forepaw:left foreleg:4::
-LIMB right forepaw:right foreleg:4::
+LIMB right fore leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
+LIMB left fore leg:torso:3:A_LONG_BOOT,A_BODY_ARMOR,A_PANTS,A_LONG_SOCK,A_CUSTOM
+LIMB left forepaw:left fore leg:4::
+LIMB right forepaw:right fore leg:4::
 LIMB left rear paw:left rear leg:4::
 LIMB right rear paw:right rear leg:4::
 MASS 500

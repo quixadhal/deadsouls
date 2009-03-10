@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/kaliid5.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    A simple room 
  *    Created by Descartes of Borg 960512
  */
@@ -24,8 +24,8 @@ static void create() {
             ({ "fighter", "fighters" }));
     AddItem("road", "The main street for Ylsrim.", ({ "kaliid" }));
     SetExits( ([ "east" : "/domains/Ylsrim/room/"+ "kaliid4",
-                "west" : "/domains/Ylsrim/room/"+ "kaliid6" ]));
-    SetEnters( ([ "hall" : "/domains/Ylsrim/room/"+ "fighter_hall" ]));
+                "west" : "/domains/Ylsrim/room/"+ "kaliid6",
+                "north" : "/domains/Ylsrim/room/"+ "fighter_hall" ]));
 }
 void init(){
     ::init();

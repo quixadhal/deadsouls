@@ -6,7 +6,8 @@
  */
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
+#include <daemons.h>
 
 inherit LIB_ROOM;
 
@@ -22,6 +23,6 @@ int CanReceive(object ob){
         ob->eventDestruct();
         return 1;
     }
-    ob->eventMove(ROOM_VOID);
+    ob->eventMove(ROOMS_D->GetVoid(ob));
     return 1;
 }

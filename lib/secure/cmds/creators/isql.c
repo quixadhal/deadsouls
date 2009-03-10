@@ -1,5 +1,5 @@
 /*    /secure/cmds/creators/isql.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    Interactive SQL interface for muds supporting LPC SQL
  *    created by Descartes of Borg 960301
  */

@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <council.h>
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
 

@@ -5,7 +5,6 @@
  */
 
 #include <lib.h>
-#include <config.h>
 #include <daemons.h>
 #include <localtime.h>
 

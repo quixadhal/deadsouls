@@ -5,7 +5,7 @@
 //      modified by Descartes of Borg for the race daemon 10 june 1993
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
 
 inherit LIB_ROOM;

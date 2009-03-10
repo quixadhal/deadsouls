@@ -1,10 +1,21 @@
 #include <lib.h>
+#include <talk_type.h>
 
 inherit LIB_DAEMON;
 
 mixed cmd(string str) {
     mapping FluencyMap = ([]);
     string *langs = this_player()->GetLanguages();
+
+    if(str){
+        mixed ret = this_player()->CanSpeak(0, TALK_LOCAL, "foo", str);
+        if(intp(ret)) {
+            this_player()->SetDefaultLanguage(str);
+            write("You are now speaking in "+capitalize(lower_case(str))+".");
+            return 1;
+        }
+        else return ret;
+    }
 
     foreach(string lang in langs){
         FluencyMap[lang] = this_player()->GetLanguageLevel(lang);
@@ -18,14 +29,19 @@ mixed cmd(string str) {
     foreach(string key, int val in FluencyMap){
         write(capitalize(key)+" with "+val+"% proficiency.");
     }
+    write("Your current default language is: "+
+            this_player()->GetDefaultLanguage()+".");
 
     return 1;
 }
 
 void help() {
     message("help",
-            "Syntax: language\n\n"
-            "This command reports which languages you speak and understand.\n\n",
+            "Syntax: language [LANGUAGE]\n\n"
+            "This command reports which languages you speak and understand.\n"
+            "If a language is specified and you know the language, it is "
+            "set as your default speaking language.\n\n"
+            "See also: languages, speak\n",
             this_player() );
 }
 

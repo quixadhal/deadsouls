@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/npc/traveller.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of a wandering sentient who steals
  *    Created by Descartes of Borg 960302
  */

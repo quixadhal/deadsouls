@@ -1,6 +1,6 @@
 #include <lib.h>
 #include <modules.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
 
 inherit LIB_DAEMON;

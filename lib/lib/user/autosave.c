@@ -1,5 +1,5 @@
 /*    /lib/user/autosave.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Object to save a player to file
  *    Created by Descartes of Borg 940216
  *    Version: @(#) autosave.c 1.3@(#)
@@ -7,7 +7,6 @@
  */
 
 #include <message_class.h>
-#include <config.h>
 #include <dirs.h>
 #include <privs.h>
 
@@ -17,6 +16,8 @@ private static int  LastSave  = time();
 // abstract methods
 string GetKeyName();
 varargs void eventPrint(string str, mixed args...);
+varargs int RestoreObject(mixed str, int i);
+varargs int SaveObject(mixed str, int i);
 // end abstract methods
 
 nomask void restore_inventory();
@@ -55,30 +56,32 @@ nomask void restore_inventory(){
 
 nomask int restore_player(string nom){
     string file;
+    int ret;
 
     if( previous_object(0) != master() ){
         return 0;
     }
-    file = save_file(nom);
-    return unguarded((: restore_object, file, 1 :));
+    file = player_save_file(nom);
+    ret = unguarded((: restore_object, file, 1 :));
+    return ret;
 }
 
 nomask void save_player(string nom){
     string file;
-
+    mixed ret;
     if( !nom || nom != GetKeyName() ){
         return;
     }
+    catch(this_object()->CalculateCarriedMass());
     Inventory = filter(map(all_inventory(), (: $1->GetSaveString() :)),
             (: $1 :));
-    file = save_file(GetKeyName());
-    unguarded((: save_object, file :));
+    file = player_save_file(GetKeyName());
+    ret = unguarded((: save_object, file, 1 :));
     Inventory = 0;
 }
 
 static void heart_beat(){
     int x = time();
-
     if( x - LastSave < AUTOSAVE_TIME ){
         return;
     }

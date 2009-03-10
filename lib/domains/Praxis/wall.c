@@ -28,7 +28,7 @@ void create() {
     SetExits( 
             (["south"	 : "/domains/Praxis/alley2"]) );
     call_out("fade", 900);
-    //restore_object("/domains/Praxis/data/wall");
+    //RestoreObject("/domains/Praxis/data/wall");
 }
 
 int scribble(string str) {
@@ -39,7 +39,7 @@ int scribble(string str) {
     }
     text_scan += ({ str });
     personal_log("graffitti: "+ (string)this_player()->query_name()+" "+ctime(time())+"\n"+str+"\n");
-    save_object("/domains/Praxis/data/wall");
+    SaveObject("/domains/Praxis/data/wall");
     message("my_action", sprintf("You scribble: %s", str), this_player());
     message("other_action", sprintf("%s scribbles some graffitti on the wall.",
                 (string)this_player()->query_cap_name()), this_object(),
@@ -89,5 +89,5 @@ void fade() {
     message("environment", "Some graffitti fades from the wall.",
             this_object());
     call_out("fade", 10000);
-    save_object("/domains/Praxis/data/wall");
+    SaveObject("/domains/Praxis/data/wall");
 }

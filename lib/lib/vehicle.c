@@ -1,6 +1,7 @@
 #include <lib.h>
+#include <daemons.h>
 #include <medium.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <position.h>
 
 #define SOBER_COMBAT
@@ -26,7 +27,8 @@ void create(){
 }
 
 void init(){
-    string exterior = ROOM_VOID;
+    string rvoid = ROOMS_D->GetVoid(this_object());
+    string exterior = rvoid;
     bot::init();
     if(environment()){
         exterior = file_name(environment());
@@ -49,7 +51,7 @@ mixed eventMount(object who){
     if(environment() && environment()->GetMedium() == MEDIUM_SPACE){
         weight = "mass";
     }
-    rider_weight = (who->GetCarriedMass()) + (who->GetMass() || 2000);
+    rider_weight = who->GetMass();
     if(!environment(this_object())) return 0;
     if(environment(who) && environment(who) == this_object()){
         return write("You are already mounted.");

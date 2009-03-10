@@ -174,7 +174,7 @@ int get_message(string str){
     cratty="";
     if(forwarding && forwardee){
         string localtemp;
-        debug("forwardee: "+forwardee+", owner: "+identify(owner));
+        //debug("forwardee: "+forwardee+", owner: "+identify(owner));
         cratty += "(forwarded to "+forwardee+") ";
         localtemp = "tell "+forwardee+" "+str;
         tempy = replace_string(localtemp,"tells you","");

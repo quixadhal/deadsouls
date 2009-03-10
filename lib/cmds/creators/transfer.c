@@ -1,5 +1,5 @@
 /*    /cmds/creators/transfer.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Moves object from one place to another
  *    created by Descartes of Borg 961008
  *    Version: @(#) transfer.c 1.2@(#)

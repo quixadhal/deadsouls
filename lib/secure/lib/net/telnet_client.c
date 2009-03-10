@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <network.h>
+#include NETWORK_H
 #include <socket_err.h>
 inherit LIB_ITEM;
 

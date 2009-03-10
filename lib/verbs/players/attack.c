@@ -1,5 +1,5 @@
 /*    /verbs/players/attack.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    a very violent command
  *    created by Descartes of Borg 960512
  *    Version: @(#) attack.c 1.3@(#)

@@ -817,4 +817,16 @@ int query_common_ascii(string str){
     return 0;
 }
 
+string cleaned_name(string str){
+    if(last(str, 2) == ".o") str = truncate(str, 2);
+    str = replace_string(str, "."+__PORT__, "");
+    return str;
+}
+
+string cleaned_end(string str){
+    str = last_string_element(str, "/");
+    str = cleaned_name(str);
+    return str;
+}
+
 

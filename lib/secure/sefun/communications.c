@@ -1,11 +1,10 @@
 /*    /secure/sefun/communications.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    some backwards compat sefuns
  */
 
 #include <message_class.h>
-#include <config.h>
-#include <rooms.h>
+#include ROOMS_H
 
 object *global_tmp_ob_arr;
 
@@ -34,38 +33,33 @@ void tell_player(mixed player, string msg){
     else tell_object(dude, msg);
 }
 
+static string tc_color_logic(string col){
+    string ret;
+    if(!col) col = "magenta";
+    ret = "%^BOLD%^"+upper_case(col)+"%^";
+    if(!grepp(ret, "B_")){
+        if(grepp(ret, "WHITE")) ret = "%^B_BLACK"+ret;
+        else if(grepp(ret, "BLACK")) ret = "%^B_WHITE"+ret;
+    }
+    return ret;
+}
+
 varargs void tc(string str, string col, object dude){
     string prefix;
     if(!col) col = "magenta";
-    switch(col){
-        case "red" : prefix = "%^BOLD%^RED%^";break;
-        case "cyan" : prefix = "%^BOLD%^CYAN%^";break;
-        case "blue" : prefix = "%^BOLD%^BLUE%^";break;
-        case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
-        case "green" : prefix = "%^BOLD%^GREEN%^";break;
-        case "white" : prefix = "%^B_BLACK%^BOLD%^WHITE%^";break;
-        default : prefix = "%^BOLD%^MAGENTA%^";break;
-    }
+    prefix = tc_color_logic(col);
     if(!dude) dude = find_player(DEBUGGER);
     if(dude){
-        tell_player(dude ,prefix+str+"%^RESET%^");
+        tell_player(dude, prefix+str+"%^RESET%^");
         if(dude) flush_messages(dude);
     }
-    debug_message(str);
+    debug_message(strip_colours(str));
 }
 
 varargs int tn(string str, string col, object room, int mclass){
     string prefix;
     if(!col) col = "magenta";
-    switch(col){
-        case "red" : prefix = "%^BOLD%^RED%^";break;
-        case "cyan" : prefix = "%^BOLD%^CYAN%^";break;
-        case "blue" : prefix = "%^BOLD%^BLUE%^";break;
-        case "yellow" : prefix = "%^BOLD%^YELLOW%^";break;
-        case "green" : prefix = "%^BOLD%^GREEN%^";break;
-        case "white" : prefix = "%^B_BLACK%^BOLD%^WHITE%^";break;
-        default : prefix = "%^BOLD%^MAGENTA%^";break;
-    }
+    prefix = tc_color_logic(col);
     if(!room) tell_object(load_object(ROOM_NETWORK) ,prefix+str+"%^RESET%^");
     else {
         if(!mclass) tell_object(room, prefix+str+"%^RESET%^");
@@ -80,20 +74,19 @@ varargs int trr(string str, string col, int mclass){
     return 1;
 }
 
-varargs int debug(mixed msg, mixed val, string color){
+varargs int debug(mixed msg, string color){
     object *players = filter(users(), (: $1->GetProperty("debug") :) );
-    string ret = "";
+    //string ret = "";
     string prevob = "";
     if(!sizeof(players)) return 0;
     prevob = file_name(previous_object());
-    if(msg && stringp(msg) && val) ret += msg;
-    else if(msg && !val) val = msg;
-    ret += " ";
-    if(val) ret += identify(val);
-    if(!color || !sizeof(color)) color = "green";
+    //if(msg && stringp(msg) && val) ret += msg;
+    //else if(msg && !val) val = msg;
+    //ret += " ";
+    if(!color || !sizeof(color)) color = "b_blue%^green";
     foreach(object guy in players){
-        tc("%^B_BLACK%^BOLD%^WHITE%^DEBUG: %^RESET%^ "+prevob,color,guy);
-        tc(ret, color, guy);
+        tc("%^B_BLACK%^BOLD%^WHITE%^DEBUG: %^RESET%^ " + prevob
+                + "\n" + tc_color_logic(color) + msg, color, guy);
     }
     return 1;
 }
@@ -112,10 +105,9 @@ varargs int tell_creators(string msg, string color){
     return 1;
 }
 
-varargs void tell_room(mixed ob, mixed str, mixed exclude) {
+varargs void tell_room(mixed ob, mixed str, mixed exclude){
     if(!ob ) return;
-    if(stringp(ob) && unguarded( (: !file_exists($(ob)) && !file_exists($(ob)+".c") :) )) return;
-    if(stringp(ob) &&!(ob = load_object(ob))) return;
+    if(stringp(ob) && catch(ob = load_object(ob))) return;
     if(ob) ob->eventPrint(str, MSG_ENV, exclude);
 }
 

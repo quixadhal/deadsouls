@@ -8,7 +8,6 @@
 
 #include <lib.h>
 #include <cfg.h>
-#include <config.h>
 #include <function.h>
 #include "include/seasons.h"
 

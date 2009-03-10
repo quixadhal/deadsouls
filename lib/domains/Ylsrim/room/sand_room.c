@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/sand_room.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of a room in which you can dig
  *    Created by Descartes of Borg 961231
  */

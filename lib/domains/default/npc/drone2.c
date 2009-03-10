@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <damage_types.h>
 #include <position.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_SENTIENT;
 inherit LIB_ACTIVATE;

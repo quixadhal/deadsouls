@@ -11,9 +11,11 @@
 #include <std.h>
 #include <user.h>
 
-
 #define LIB_AUTH           DIR_SECURE_LIB "/auth"
 #define LIB_BANK           DIR_LIB        "/bank"
+#define LIB_BASE_LEADER    DIR_LIB        "/base_leader"
+#define LIB_BASE_TEACHER   DIR_LIB        "/base_teacher"
+#define LIB_BASE_TRAINER   DIR_LIB        "/base_trainer"
 #define LIB_BATTERY        DIR_LIB        "/battery"
 #define LIB_BLANK          DIR_LIB        "/blank"
 #define LIB_BLANK_PILE     DIR_LIB        "/blank_pile"
@@ -23,7 +25,9 @@
 #define LIB_BOT            DIR_LIB        "/bot"
 #define LIB_BURN           DIR_LIB        "/burn"
 #define LIB_CAPTURE        DIR_LIB        "/capture"
+#define LIB_CHAMBER        DIR_LIB        "/chamber"
 #define LIB_CHAPEL         DIR_LIB        "/chapel"
+#define LIB_CHARIO         DIR_LIB        "/chario"
 #define LIB_CGI            DIR_LIB        "/cgi"
 #define LIB_CHAT           DIR_LIB        "/chat"
 #define LIB_CIGAR          DIR_LIB        "/cigar"
@@ -58,6 +62,7 @@
 #define LIB_FLASK          DIR_LIB        "/flask"
 #define LIB_FLOW           DIR_LIB        "/flow"
 #define LIB_FOLLOW         DIR_LIB        "/follow"
+#define LIB_FTP_CLIENT     DIR_SECURE_LIB "/net/ftp_client"
 #define LIB_FTP_DATA_CONN  DIR_SECURE_LIB "/net/ftp_data_connection"
 #define LIB_FUEL           DIR_LIB        "/fuel"
 #define LIB_GENETICS       DIR_LIB        "/genetics"
@@ -129,6 +134,7 @@
 #define LIB_USED_MEAL      DIR_LIB        "/used_meal"
 #define LIB_VEHICLE        DIR_LIB        "/vehicle"
 #define LIB_VERB           DIR_LIB        "/daemons/verb"
+#define LIB_VI             DIR_LIB        "/vi"
 #define LIB_VIRTUAL        DIR_LIB        "/virtual/virtual"
 #define LIB_WEB_CLIENT     DIR_SECURE_LIB "/net/web_client"
 

@@ -4,7 +4,7 @@
  * If your mud port is 6666, this will be on 6667
  */
 
-#include <network.h>
+#include NETWORK_H
 int port = PORT_ECHO;
 
 void StartServer();

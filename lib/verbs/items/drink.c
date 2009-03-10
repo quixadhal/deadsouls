@@ -1,5 +1,5 @@
 /*    /verbs/items/drink.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    drink
  *    drink OBJ
  *    created by Descartes of Borg 951113

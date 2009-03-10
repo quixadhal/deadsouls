@@ -1,5 +1,5 @@
 /*    /lib/props/id.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Attributes which identify objects
  *    Created by Descartes of Borg 961222
  *    Version: @(#) id.c 1.2@(#)

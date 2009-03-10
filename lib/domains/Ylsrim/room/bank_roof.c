@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/room/bank_room.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of a room with an item that allows jumping and climbing
  *    Created by Descartes of Borg 961010
  */

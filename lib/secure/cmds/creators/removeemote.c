@@ -1,5 +1,5 @@
 /*    /secure/cmds/admins/removeemote.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Command for removing commands from the soul
  *    Created by Descartes of Borg 961214
  *    Version: @(#) removeemote.c 1.2@(#)

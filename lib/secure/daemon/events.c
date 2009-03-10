@@ -1,12 +1,11 @@
 /*    /secure/daemon/events.c
- *    from the Foundation II LPC Library
+ *    from the Dead Souls Library
  *    an event monitoring daemon, for call outs across time
  *    created by Descartes of Borg 950501
  */
 
 #include <lib.h>
 #include <save.h>
-#include <config.h>
 #include <daemons.h>
 #include <privs.h>
 #include "events.h"
@@ -17,12 +16,14 @@ private int RebootInterval;
 private mapping Events;
 private static int InReboot = 0;
 private static int callout = -1;
+static string SaveFile;
 
 static void create() {
     daemon::create();
+    SaveFile = save_file(SAVE_EVENTS);
     SetNoClean(1);
-    if( file_exists(SAVE_EVENTS __SAVE_EXTENSION__) )
-        unguarded((: restore_object, SAVE_EVENTS :));
+    if( file_exists(SaveFile) )
+        unguarded((: RestoreObject, SaveFile :));
     if( !RebootInterval ) RebootInterval = 170;
     if( !Events ) Events = ([]);
     eventSave();
@@ -42,10 +43,10 @@ mixed eventCancelShutdown() {
 
 varargs static int eventSave(int ung) {
     if( ung ) {
-        unguarded( (: save_object, SAVE_EVENTS :) );
+        unguarded( (: SaveObject, SaveFile :) );
         return 1;
     }
-    else return save_object(SAVE_EVENTS);
+    else return SaveObject(SaveFile);
 }
 
 void DoSaves(){

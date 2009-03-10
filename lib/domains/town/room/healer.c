@@ -4,10 +4,11 @@ inherit LIB_AMBIANCE;
 
 int ReadList(){
     write("AVAILABLE PROCEDURES:\n"
-            "\thealing, cost 200:\tfacilitate rapid recovery from wounds\n"
+            "\thealing, cost 200:\t\tfacilitate rapid recovery from wounds\n"
             "\tregeneration, cost 1200:\tgrow back severed limbs\n"
+            "\texcision, cost 700:\t\tremove bullets\n"
             "\tpoison antidote, cost 200:\tmitigate the effects of poisoning\n"
-            "\tclaritin, cost 10:\talleviate cold symptoms\n"
+            "\tclaritin, cost 10:\t\talleviate cold symptoms\n"
             "\n"
             "Example: If you are badly hurt and need healing:\n\n"
             "\"buy healing slip from james\"\n"

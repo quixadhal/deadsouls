@@ -1,7 +1,6 @@
 #include <lib.h>
 #include <save.h>
 #include <sockets.h>
-#include <config.h>
 
 inherit LIB_DAEMON;
 

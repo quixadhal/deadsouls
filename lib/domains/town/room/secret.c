@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
 
@@ -11,6 +11,7 @@ void create() {
     SetLong("This appears to be a secret room for saving valuables. The "+
             "master bedroom is west.");
     SetExits( ([ "west" : "/domains/town/room/mansion_mbdroom" ]) );
+    SetNoClean(1);
     SetPersistent(1);
     RestoreObject();
 }

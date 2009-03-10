@@ -1,5 +1,5 @@
 /*    /verbs/items/eat.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 951113
  *    Version: @(#) eat.c 1.3@(#)
  *    Last modified: 96/11/03

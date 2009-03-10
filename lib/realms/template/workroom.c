@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include "./area/customdefs.h"
 
 inherit LIB_ROOM;
@@ -99,11 +99,12 @@ static int set_privacy(int i){
     return i;
 }
 
-static int mod_privacy(string str){
+int mod_privacy(string str){
     if(!archp(this_player()) &&
             this_player()->GetKeyName() != lower_case(privs)) {
         write("You lack the adequate privileges to do that.");
-        say(this_player()->GetName()+" is trying to muck around with the privacy field system.");
+        tell_room(this_object(), this_player()->GetName()+" is "+
+                "trying to muck around with the privacy field system.");
         return 1;
     }
     if(!str || str == ""){
@@ -113,14 +114,15 @@ static int mod_privacy(string str){
     if(str=="on" || str == "1"){
         set_privacy(1);
         write("You enable the privacy field.\n");
-        say(this_player()->GetName()+" enables a privacy force field around the
-                room.");
+        say(this_player()->GetName()+" enables a privacy force field "
+                "around the room.");
         return 1;
     }
     if(str=="off" || str == "0"){
         set_privacy(0);
         write("You disable the privacy field.\n");
-        say(this_player()->GetName()+" disables a privacy force field around the room.");
+        say(this_player()->GetName()+" disables a privacy force field "
+                "around the room.");
         return 1;
     }
 }

@@ -1,4 +1,3 @@
-#include <config.h>
 #include <cfg.h>
 #include <daemons.h>
 #include <localtime.h>

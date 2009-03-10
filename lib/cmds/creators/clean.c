@@ -1,5 +1,5 @@
 /*    /cmds/creator/clean.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Cleans out the inventory of an object, defaulting to this room
  *    created by Valodin@Dead Souls 930101
  *    Version: @(#) clean.c 1.2@(#)

@@ -1,5 +1,5 @@
 /*    /daemon/chat.c
- *    from the Nightmare 3.2 Mudlib
+ *    from the Dead Souls Mudlib
  *    daemon to handle all mud chat channels
  *    created by Descartes of Borg 931220
  *
@@ -21,7 +21,6 @@
 #endif
 
 #include <lib.h>
-#include <config.h>
 #include <pov.h>
 #include <daemons.h>
 #include <origin.h>
@@ -35,7 +34,7 @@ static private mapping Channels;
 static private mapping chanlast;
 
 static private string *local_chans = ({"newbie","cre","gossip","admin","error", "intermud",
-        "priest", "mage", "explorer", "thief", "fighter", "death", "connections", "muds" });
+        "cleric", "mage", "explorer", "thief", "fighter", "death", "connections", "muds" });
 static private string *remote_chans = ({ "Server01:ichat", "Server01:ibuild",
         "Server01:pchat", "Server02:i2chat", "Server02:i3chat", "Server02:icode",
         "Server02:igame", "Server02:inews", "Server02:imudnews", "Server02:irc", "Server02:ivent" });

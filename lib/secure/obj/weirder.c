@@ -5,12 +5,13 @@
 // problems it caused.
 
 #include <lib.h>
+#include <save.h>
 #include <daemons.h>
 #include <vendor_types.h>
 inherit LIB_ITEM;
 
 static int numstress = 1;
-string savefile = "/secure/save/weirder.o";
+string savefile = save_file(SAVE_WEIRDER);
 string *lib_dirs = ({ "/lib/comp","/lib/daemons","/lib/events/",
         "/lib/lvs", "/lib/lvs", "/lib/props", "/lib/std", 
         "/lib/user", "/lib/virtual", "/lib","/secure/lib","/secure/lib/net" });

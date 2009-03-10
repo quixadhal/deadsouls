@@ -1,11 +1,11 @@
 /*    /domains/Ylsrim/adm/cache.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    room where hidden objects are stored
  *    created by Descartes of Borg 960302
  */
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
 

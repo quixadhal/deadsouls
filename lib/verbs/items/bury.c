@@ -1,5 +1,5 @@
 /*    /verbs/items/bury.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Buries objects where no one can find them
  *    Created by Descartes of Borg 951030
  */

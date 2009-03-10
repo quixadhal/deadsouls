@@ -1,5 +1,5 @@
 /*    /lib/drop.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Makes an object something which can be dropped
  *    Created by Descartes of Borg 960113
  *    Version: @(#) drop.c 1.2@(#)
@@ -8,7 +8,7 @@
 
 #include <lib.h>
 #include <function.h>
-#include <rooms.h>
+#include ROOMS_H
 
 private mixed PreventDrop = 0;
 private mixed DestructOnDrop = 0;

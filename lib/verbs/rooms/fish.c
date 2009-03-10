@@ -1,5 +1,5 @@
 /*    /verbs/rooms/fish.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    fish with OBJ
  *    created by Descartes of Borg 951016
  */

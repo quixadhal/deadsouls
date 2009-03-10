@@ -1,6 +1,6 @@
 #include <lib.h>
-#include <config.h>
-#include <network.h>
+#include NETWORK_H
+#include <commands.h>
 
 inherit LIB_DAEMON;
 string gfile, ghost;
@@ -9,7 +9,7 @@ int max_outbound = 5;
 int max_retries = 200;
 mapping FilesMap = ([]);
 mapping FileQueue = ([]);
-string lucmd = "/secure/cmds/admins/liveupgrade";
+string lucmd = CMD_LIVEUPGRADE;
 
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE" })) ){

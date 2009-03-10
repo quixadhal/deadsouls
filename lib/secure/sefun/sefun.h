@@ -90,7 +90,8 @@ string query_time_of_day();
 int query_year(int x);
 string reflexive(mixed val);
 string remove_article(string str);
-string save_file(string str);
+string player_save_file(string who);
+string save_file(string what);
 varargs void say(mixed str, object ob);
 void set_eval_limit(int x);
 void set_privs(object ob, string str);
@@ -293,5 +294,11 @@ varargs string query_unique_name(mixed ob, int cloned);
 varargs string system_month(int i, int abbr);
 varargs string system_day(int i, int abbr);
 void write2(string str);
+mixed *remove_member(mixed *arr, int i);
+object sefun();
+string cleaned_name(string str);
+string cleaned_end(string str);
+string new_savename(string name);
+string old_savename(string name);
 
 #endif /* l_sefun_h */

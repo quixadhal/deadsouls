@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/weapon/orc_slayer.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of a weapon that is nasty against orcs
  *    Created by Descartes of Borg 970101
  */

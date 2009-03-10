@@ -6,7 +6,6 @@
 
 #include <lib.h>
 #include <privs.h>
-#include <config.h> 
 #include <objects.h>
 #include <daemons.h> 
 #include <save.h> 
@@ -16,6 +15,7 @@ inherit LIB_DAEMON;
 string *__Names, *__Sites, *__WatchNames, *__WatchSites; 
 string *__Allowed, *__Guests, *__IllegalSubStrings; 
 mapping __TmpBanish;
+static string SaveFile;
 
 static private int valid_access(object ob);
 void register_site(string str);
@@ -44,7 +44,6 @@ void add_guest(string str);
 void remove_guest(string str);
 string *query_guests();
 static private void save_banish();
-static private void restore_banish();
 int GetGuest(string str);
 int valid_name(string str);
 int eventConnect(string nom, string ip);
@@ -53,6 +52,7 @@ static private int match_ip(string ip, string *sites);
 void create() { 
     daemon::create();
     SetNoClean(1);
+    SaveFile = save_file(SAVE_BANISH);
     __Names = ({"template"}); 
     __Sites = ({}); 
     __WatchNames = ({}); 
@@ -61,8 +61,9 @@ void create() {
     __Guests = ({}); 
     __IllegalSubStrings = ({}); 
     __TmpBanish=([]);
-    if(file_exists(SAVE_BANISH+__SAVE_EXTENSION__))
-        restore_banish();
+    if(unguarded( (: file_exists(SaveFile) :) )){
+        RestoreObject(SaveFile);
+    }
     if(!__TmpBanish) __TmpBanish = ([]);
     clean_temp_sites();
 } 
@@ -261,11 +262,7 @@ string *query_guests() {
 } 
 
 static private void save_banish() { 
-    save_object(SAVE_BANISH);
-} 
-
-static private void restore_banish() { 
-    restore_object(SAVE_BANISH);
+    SaveObject(SaveFile);
 } 
 
 int GetGuest(string str) { 

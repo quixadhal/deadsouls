@@ -1,10 +1,9 @@
-/*    /cmd *    from the Dead Souls Mudlib 3.2
+/*    /cmd *    from the Dead Souls Mudlib
  *    Shows when the next reboot occurs
  *    created by Descartes of Borg 940130
  */
 
 #include <lib.h>
-#include <config.h>
 #include <daemons.h>
 
 inherit LIB_DAEMON;

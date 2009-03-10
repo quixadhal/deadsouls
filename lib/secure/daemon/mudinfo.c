@@ -1,9 +1,9 @@
 #include <daemons.h>
 #include <lib.h>
 #include <save.h>
-#include <network.h>
+#include NETWORK_H
 
-inherit LIB_COMMAND;
+inherit LIB_DAEMON;
 
 mapping MudList = ([]);
 mapping Unconnected = ([]);
@@ -14,6 +14,7 @@ object person, player;
 string preset;
 int age, probing;
 string *queue = ({});
+static string SaveFile;
 
 int SetQueue(string str){
     if(file_exists(str)){
@@ -45,26 +46,22 @@ int PrintMudInfo(string str){
     mapping borg;
     string mud, tempy;
     int all = 0;
-
-    if( unguarded( (: file_size( SAVE_MUDINFO __SAVE_EXTENSION__ ) :)) > 0 )
-                                                                         unguarded( (: restore_object, SAVE_MUDINFO, 1 :) );
-
+    if(!MudList && unguarded((: file_exists(SaveFile) :))){
+        unguarded( (: RestoreObject, SaveFile, 1 :) );     
+    }
     if(!MudList) MudList = ([]);
-    //tc("str: "+str);
     if(!str || str == "all"){
         write("Total muds: "+sizeof(MudList));
         write("Muds: "+implode(sort_array(keys(MudList), 1),", "));
         return 1;
     }
 
-#if 1
     list = INTERMUD_D->GetMudList();
     if(mapp(list)){
         foreach(mixed key, mixed val in list){
             MudList[key] = val;
         }
     }
-#endif
 
     if(sizeof(str) && sizeof(tempy = INTERMUD_D->GetMudName(str) )) str = tempy;
     if(!tempy){
@@ -129,21 +126,21 @@ void GenerateConnectionPage(){
 
 void create(){
     mapping list = INTERMUD_D->GetMudList();
+    SaveFile = save_file(SAVE_MUDINFO);
     attempting = 0 ;
     connected = 0 ;
     socket = 0 ;
     person = 0 ;
     set_heart_beat(1);
-
-    if( unguarded( (: file_size( SAVE_MUDINFO __SAVE_EXTENSION__ ) :)) > 0 )
-                                                                         unguarded( (: restore_object, SAVE_MUDINFO, 1 :) );
-
+    if(unguarded((: file_exists(SaveFile) :))){
+        unguarded( (: RestoreObject, SaveFile, 1 :) );
+    }
     if(mapp(list)){
         foreach(mixed key, mixed val in list){
             if(!MudList[key]) MudList[key] = val;
         }
     }
-    unguarded( (: save_object(SAVE_MUDINFO) :) );
+    unguarded( (: SaveObject(SaveFile) :) );
 }
 
 int PrintUnconnectedInfo(){

@@ -25,6 +25,7 @@ void create(){
 }
 
 void init(){
+    ::init();
     if( living(environment()) && environment()->GetKeyName() != "clepius"){
         patient = environment()->GetKeyName();
     }

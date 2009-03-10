@@ -1,4 +1,4 @@
-#include <network.h>
+#include NETWORK_H
 #include <cfg.h>
 
 inherit LIB_DAEMON;

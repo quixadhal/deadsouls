@@ -1996,6 +1996,8 @@ parse_identifier:
                         ident_hash_elem_t *ihe;
                         if ((ihe = lookup_ident(yytext))) {
                             if (ihe->token & IHE_RESWORD) {
+                                int temptok;
+                                
                                 if (function_flag) {
                                     function_flag = 0;
                                     add_input(yytext);
@@ -2003,7 +2005,14 @@ parse_identifier:
                                     return L_FUNCTION_OPEN;
                                 }
                                 yylval.number = ihe->sem_value;
-                                return ihe->token & TOKEN_MASK;
+                                
+                                temptok = ihe->token & TOKEN_MASK;
+                                
+                                if(temptok == L_BASIC_TYPE || temptok == L_TYPE_MODIFIER)
+                                {
+                                    yylval.type = ihe->sem_value;
+                                }
+                                return temptok;
                             }
                             if (function_flag) {
                                 int val;
@@ -2120,6 +2129,16 @@ void add_predefines()
     lpc_predef_t *tmpf;
 
     add_predefine("MUDOS", -1, "");
+    get_version(save_buf);
+    add_quoted_predefine("__VERSION__", save_buf);
+    sprintf(save_buf, "%d", external_port[0].port);
+    add_predefine("__PORT__", -1, save_buf);
+    for (i = 0; i < 2 * NUM_OPTION_DEFS; i += 2) {
+        add_predefine(option_defs[i], -1, option_defs[i+1]);
+    }
+    add_quoted_predefine("__ARCH__", ARCH);
+    add_quoted_predefine("__COMPILER__", COMPILER);
+    add_quoted_predefine("__OPTIMIZATION__", OPTIMIZE);
     add_predefine("FLUFFOS", -1, "");
 #ifdef WIN32
     add_predefine("__WIN32__", -1, "");
@@ -2148,16 +2167,6 @@ void add_predefines()
     sprintf(save_buf, "%d", 64);
 #endif
     add_predefine("__FD_SETSIZE__", -1, save_buf);
-    get_version(save_buf);
-    add_quoted_predefine("__VERSION__", save_buf);
-    sprintf(save_buf, "%d", external_port[0].port);
-    add_predefine("__PORT__", -1, save_buf);
-    for (i = 0; i < 2 * NUM_OPTION_DEFS; i += 2) {
-        add_predefine(option_defs[i], -1, option_defs[i+1]);
-    }
-    add_quoted_predefine("__ARCH__", ARCH);
-    add_quoted_predefine("__COMPILER__", COMPILER);
-    add_quoted_predefine("__OPTIMIZATION__", OPTIMIZE);
 
     /* Backwards Compat */
 #ifndef CDLIB

@@ -1,8 +1,7 @@
 #include <lib.h>
 #include <privs.h>
 #include <save.h>
-#include <rooms.h>
-#include <config.h>
+#include ROOMS_H
 
 inherit LIB_DAEMON;
 
@@ -16,14 +15,17 @@ mapping Watchers = ([]);
 int count = 0;
 int just_loaded = 1;
 object *prevusers;
+static string SaveFile;
 
 void eventLoadRogues();
 
 static void create() {
     daemon::create();
+    SaveFile = save_file(SAVE_SNOOP);
     //debug("SNOOP_D restarted.","red");
-    if( file_size( SAVE_SNOOP __SAVE_EXTENSION__ ) > 0 )
-        unguarded( (: restore_object, SAVE_SNOOP, 1 :) );
+    if(file_exists(SaveFile)){
+        unguarded( (: RestoreObject, SaveFile, 1 :) );
+    }
     SetNoClean(1);
     SnoopClean();
     set_heart_beat(1);
@@ -38,14 +40,14 @@ void RegisterSnooper(){
     object registrant = previous_object();
     if(base_name(registrant) == "/secure/obj/snooper" &&
             member_array(registrant,snoopers) == -1) snoopers += ({ registrant });
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    unguarded( (: SaveObject, SaveFile, 1 :) );
 }
 
 void UnregisterSnooper(){
     object registrant = previous_object();
     if(base_name(registrant) == "/secure/obj/snooper" &&
             member_array(registrant,snoopers) != -1) snoopers -= ({ registrant });
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    unguarded( (: SaveObject, SaveFile, 1 :) );
 }
 
 void eventLoadRogues(){
@@ -77,7 +79,7 @@ int CheckBot(string str){
         if(archp(find_player(str)) && GLOBAL_MONITOR == 2) return 0;
         cloan=new("/secure/obj/snooper");
         cloan->eventStartSnoop(str);
-        err = catch(unguarded( (: save_object, SAVE_SNOOP, 1 :) ));
+        err = catch(unguarded( (: SaveObject, SaveFile, 1 :) ));
     }
     return 1;
 }
@@ -175,7 +177,7 @@ int AddWatcher(string watcher, string target){
     }
     if(member_array(target,snooped) == -1) snooped += ({target});
     CheckBot(target);
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    unguarded( (: SaveObject, SaveFile, 1 :) );
     return 1;
 }
 
@@ -211,13 +213,13 @@ int RemoveWatcher(string watcher, mixed target){
         }
     }
     CheckBot("adsfgrertgrsgnfxmy");
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    unguarded( (: SaveObject, SaveFile, 1 :) );
     return 1;
 }
 
 int AddMonitor(string requestor, string target){
     if(member_array(target, monitored) == -1) monitored += ({ target });
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    unguarded( (: SaveObject, SaveFile, 1 :) );
     CheckBot(target);
     return 1;
 }
@@ -225,14 +227,14 @@ int AddMonitor(string requestor, string target){
 int RemoveMonitor(object requestor, string target){
     if(!archp(requestor)) return 0;
     monitored -= ({ target });
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    unguarded( (: SaveObject, SaveFile, 1 :) );
     if(Watchers[target] && sizeof(Watchers[target])) return 1;
     foreach(object snoopbox in snoopers){
         if(snoopbox->GetSnooped() == target) snoopbox->eventDestruct(); 
     }
     if(Watchers[target] && !sizeof(Watchers[target])) map_delete(Watchers, target);
     CheckBot("asreg54eqwhtrbsf");
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    unguarded( (: SaveObject, SaveFile, 1 :) );
     return 1;
 }
 
@@ -242,7 +244,7 @@ int ReportLinkDeath(string str){
             if(snoopbox->GetSnooped() == str) snoopbox->eventDestruct(); 
         }
         map_delete(Watchers, str);
-        unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+        unguarded( (: SaveObject, SaveFile, 1 :) );
         return 1;
     }
     return 0;
@@ -255,7 +257,7 @@ int ReportReconnect(string str){
         }
         map_delete(Watchers, str);
         CheckBot(str);
-        unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+        unguarded( (: SaveObject, SaveFile, 1 :) );
         return 1;
     }
     return 0;

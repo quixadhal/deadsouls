@@ -1,5 +1,5 @@
 /*    /verbs/items/skin.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Verb for skinging things
  *    Created by Descartes of Borg 951030
  *    Version: @(#) skin.c 1.2@(#)

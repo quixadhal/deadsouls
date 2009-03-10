@@ -1,5 +1,5 @@
 /*    /lib/comp/weapon.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    This object combines the ability to be wielded with damage doing
  *    Created by Descartes of Borg 960211
  *    Version: @(#) weapon.c 1.13@(#)

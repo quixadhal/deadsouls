@@ -1,7 +1,11 @@
 #ifndef __GLOBAL_H
 #define __GLOBAL_H
 
-#include <config.h>
+#define CONFIG_H "/secure/include/config.h"
+#define NETWORK_H "/secure/include/network.h"
+#define ROOMS_H "/secure/include/rooms.h"
+
+#include CONFIG_H
 #include <lib.h>
 
 #if COMPAT_MODE

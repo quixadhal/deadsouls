@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/flu.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of how to build a germ
  *    created by Descartes of Borg 961216
  */

@@ -1,5 +1,5 @@
 /*    /secure/sefun/messaging.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Messaging efuns, based on ideas shamelessly borrowed from Lima
  *    Created by Descartes of Borg 961029
  *    Version: @(#) messaging.c 1.10@(#)

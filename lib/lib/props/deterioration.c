@@ -1,5 +1,5 @@
 /*    /lib/props/deterioriation.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles the deterioration of objects
  *    Created by Descartes of Borg 970101
  *    Version: @(#) deterioration.c 1.1@(#)

@@ -1,5 +1,5 @@
 /*    /secure/daemon/inet.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    A daemon to handle the start and stop of inet servers
  *    Created by Descartes of Borg 961219
  *    Version: @(#) inet.c 1.1@(#)

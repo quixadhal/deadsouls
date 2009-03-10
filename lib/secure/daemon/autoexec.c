@@ -1,6 +1,6 @@
 #include <lib.h>
+#include <save.h>
 #include <daemons.h>
-#include <config.h>
 
 inherit LIB_DAEMON;
 
@@ -31,7 +31,7 @@ static void eventRun() {
     t = time(); 
     load_object("/secure/cmds/creators/update")->cmd("-r /lib/creator");
     if(RESET_INTERMUD){
-        rm("/save/intermud.o");
+        rm(save_file(SAVE_INTERMUD));
         update("/daemon/intermud");
     }
     if(member_array(mud_name(),noobnames) == -1){

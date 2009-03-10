@@ -1,5 +1,5 @@
 /*    /cmds/common/help.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 951021
  *    Version: @(#) help.c 1.3@(#)
  *    Last Modified: 96/12/13

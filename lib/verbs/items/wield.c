@@ -1,5 +1,5 @@
 /*    /verbs/items/wield.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    The command to allow people to wield weapons
  *    Created by Descartes of Borg 951018
  *    Version: @(#) wield.c 1.2@(#)

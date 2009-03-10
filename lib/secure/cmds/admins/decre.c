@@ -6,7 +6,7 @@
 
 #include <lib.h>
 #include <privs.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
 
 inherit LIB_DAEMON;
@@ -29,7 +29,7 @@ mixed cmd(string args) {
     nom = convert_name(args);
     if( !user_exists(nom) ) return capitalize(nom) + " is not a member of " +
         possessive_noun(mud_name()) + " reality.";
-    if( !strsrch(file = save_file(nom), DIR_PLAYERS) )
+    if( !strsrch(file = player_save_file(nom), DIR_PLAYERS) )
         return "You cannot make "+capitalize(args)+" a player.";
 
     if(!ob = find_player(nom)){
@@ -66,7 +66,7 @@ mixed cmd(string args) {
         //
         if( file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2) 
             mkdir(DIR_PLAYERS+"/"+nom[0..0]);
-        if(rename(file+__SAVE_EXTENSION__, DIR_PLAYERS+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
+        if(rename(file, save_file(DIR_PLAYERS+"/"+nom[0..0]+"/"+nom))) 
             return "You failed due to lack of write access to "+DIR_PLAYERS+".";
         //Remove their homedir, save it to a backup dir.
         if(home_dir && directory_exists(home_dir))
