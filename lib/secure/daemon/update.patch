@@ -1,8 +1,6 @@
 #include <lib.h>
 #include <daemons.h>
-#include <save.h>
 
-inherit LIB_DAEMON;
 mapping EventsMap = ([]);
 mixed *event_funs = ({});
 int connect_warn;
@@ -98,6 +96,7 @@ void deletes(){
     rm("/cmds/players/locate.c");
     rm("/secure/daemon/map.c");
     rm("/secure/cmds/creators/sed.c");
+    rm("/cmds/creators/which.c");
     rm("/secure/sefun/base_name.c");
     rm("/secure/sefun/convert_name.c");
     rm("/secure/sefun/query_names.c");
@@ -105,6 +104,8 @@ void deletes(){
     rm("/domains/town/room/room.c");
     rm("/domains/default/obj/flow.c");
     rm("/secure/cmds/admins/coordset.c");
+    if(directory_exists("/domains/default/vehicles") &&
+      !directory_exists("/domains/default/vehicle"))
     catch( rename("/domains/default/vehicles",
                 "/domains/default/vehicle") );
 }
@@ -245,6 +246,11 @@ varargs static void eventUpdate(object whom){
         if(query_os_type() == "windows" || uptime() < 240){
             tell_player(whom,"Rebooting now is a good idea.");
         }
+        else if(!strsrch(mudlib_version(),"2.8")){
+            tell_player(whom,"Reboot is MANDATORY and happening now.");
+            catch(flush_messages());
+            shutdown(-9);
+        }
         else tell_player(whom,"Initiating warm boot.");
     }
 
@@ -258,7 +264,6 @@ varargs static void eventUpdate(object whom){
 
 static void create() {
     object whom;
-    daemon::create();
     catch( load_object("/secure/cmds/admins/removeraces")->cmd());
     catch( load_object("/secure/cmds/admins/addraces")->cmd());
     if(this_player()) whom = this_player();

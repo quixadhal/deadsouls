@@ -167,7 +167,6 @@ string *CompileCreList(){
 #else
     cres = filter(cres, (: sscanf($1, "%*s.%*s.o") == 1 :) );
 #endif
-    //tc("cres: "+identify(cres));
     foreach(string cre in cres){
         string sub;
 #if ENABLE_INSTANCES
@@ -176,13 +175,11 @@ string *CompileCreList(){
 #else
         sub = replace_string(cre, ".o","");
 #endif
-        //tc("sub: "+sub,"red");
         if(sub && !grepp(sub, ".") && 
                 (member_array(sub, user_list) == -1 ||
                  member_array(sub, creators) == -1)){
             cache += ({ sub });
         }
-        //tc("cache: "+identify(cache), "blue");
 
         if(sizeof(cache) > 20){
             call_out("ScheduledPlayerAdd", i, cache);
@@ -210,7 +207,6 @@ string *CompilePlayerList(){
 #else
     plays = filter(plays, (: sscanf($1, "%*s.%*s.o") == 1 :) );
 #endif
-    //tc("plays: "+identify(plays),"cyan");
     foreach(string play in plays){
         string sub;
 #if ENABLE_INSTANCES
@@ -219,13 +215,11 @@ string *CompilePlayerList(){
 #else
         sub = replace_string(play, ".o","");
 #endif
-        //tc("sub: "+sub,"green");
         if(sub && !grepp(sub, ".") && 
                 (member_array(sub, user_list) == -1 ||
                  member_array(sub, players) == -1)){
             cache += ({ sub });
         }
-        //tc("cache: "+identify(cache), "yellow");
 
         if(sizeof(cache) > 20){
             call_out("ScheduledPlayerAdd", i, cache);
@@ -304,13 +298,17 @@ int CheckAdvance(object ob){
     return 0;
 }
 
-void AddPlayerInfo(mixed arg) {
-    if(!objectp(arg) && !stringp(arg)) return ;
+void AddPlayerInfo(mixed arg){
+    if(!objectp(arg) && !stringp(arg)){
+        return ;
+    }
     if(!creators) creators = ({});
     if(!players) players = ({});
     if(!user_list) user_list = ({});
     if(objectp(arg)){
-        if(base_name(previous_object())!=LIB_CONNECT &&!interactive(arg)) return;
+        if(base_name(previous_object())!=LIB_CONNECT &&!interactive(arg)){
+            return;
+        }
         else player_save_file = base_name(arg)+".o";
     }
     else {
@@ -527,8 +525,10 @@ mixed GetPlayerData(string player, string val){
     if(ob = find_player(player)){
         unguarded( (: ob->save_player(gplayer) :));
     }
+    unguarded((: SaveObject, SaveFile :));
     unguarded( (: LoadPlayer(gplayer) :) );
     ret = GetPlayerVariable(val);
+    unguarded((: RestoreObject, SaveFile :));
     return ret;
 }
 
@@ -543,7 +543,8 @@ string array GetAdminIPs(){
         string g,m;
         if(sizeof(line)) line = trim(line);
         if(sscanf(line,"(%s)%s",g,m) != 2) continue;
-        if(g == "SECURE") name_array = explode(trim(m),":");
+        if(g == "SECURE") name_array += explode(trim(m),":");
+        else if(g == "ASSIST") name_array += explode(trim(m),":");
     }
     if(!sizeof(name_array)) return name_array;
     foreach(string nombre in name_array){

@@ -35,12 +35,14 @@ mixed can_speak_str(string str) {
     if( strlen(str) > 3 && str[0..2] == "in " ) return 0;
     lang = (string)this_player()->GetDefaultLanguage() || 
         (string)this_player()->GetNativeLanguage();
+    if(this_player()->GetPolyglot()) return 100;
     return (mixed)this_player()->CanSpeak(0, TALK_LOCAL, str, lang);
 }
 
 mixed can_speak_in_wrd_str(string lang, string str) {
     if( !lang || !str ) return 0;
     if( !environment(this_player()) ) return "You are nowhere right now.";
+    if(this_player()->GetPolyglot()) return 100;
     return (mixed)this_player()->CanSpeak(0, TALK_LOCAL, str, lang);
 }
 

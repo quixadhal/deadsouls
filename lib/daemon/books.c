@@ -7,16 +7,20 @@ mapping Books = ([]);
 
 static string *globalheader;
 static string globalstr, globalstr2;
+string SaveFile = save_file(SAVE_BOOKS);
 
 static void create() {
     daemon::create();
-    SetSaveFile(SAVE_BOOKS);
+    if(unguarded( (: file_exists(SaveFile) :) ) ){
+        unguarded( (: RestoreObject(SaveFile) :) );
+    }
     if(!Books) Books = ([]);
     SetNoClean(1);
+    unguarded( (: SaveObject(SaveFile) :) );
 }
 
 int eventDestruct(){
-    eventSave(1);
+    unguarded( (: SaveObject(SaveFile) :) );
     return daemon::eventDestruct();
 }
 

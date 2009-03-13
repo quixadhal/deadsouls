@@ -15,6 +15,7 @@ inherit LIB_DAEMON;
 #define HTTP_PORT 80
 #define HTTP_PATH "/RELEASE_NOTES"
 #define NOTES_DELIM "----"
+#undef _DEBUG
 
 #define SAVE_FILE "/doc/RELEASE_NOTES_HTTP"
 
@@ -43,6 +44,7 @@ mixed ProcessHTTPResult(){
     string * arg_array;
     string * temp;
     parts = explode( results, NOTES_DELIM )[1..];
+    if(!sizeof(parts)) return 0;
     temp = explode( parts[0], "---" );
     player->eventPrint( "Current Version of "+mud_name()+": " + mudlib_version() );
     player->eventPrint( "Latest Version of Dead Souls: %^RED%^"+trim(temp[0])+ "%^RESET%^" );

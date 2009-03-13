@@ -13,8 +13,9 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
-    string  array dirs;
-    string dir, msg;
+    string array dirs;
+    mixed *aa;
+    string dir, msg = "", ret;
     int isverb;
     dirs = ({});
 
@@ -27,14 +28,30 @@ mixed cmd(string args) {
         dirs += ({ (VERBS_D->GetVerbs())[args] });
         isverb = 1;
     }
-    else if( !(dirs = CMD_D->GetPaths(args)) ) {
-        return args + ": not found.";
+    else dirs = CMD_D->GetPaths(args);
+    if(sizeof(dirs)){
+        msg += args + ":";
+        foreach(dir in dirs) {
+            if(isverb) msg += "\n\t" + dir;
+            else msg += "\n\t" + dir + "/" + args + ".c";
+        }
     }
-    msg = args + ":";
-    foreach(dir in dirs) {
-        if(isverb) msg += "\n\t" + dir;
-        else msg += "\n\t" + dir + "/" + args + ".c";
+    aa = filter(this_player()->GetCommands(), (: $1[0] == $(args) :) );
+    if(sizeof(aa)){
+        msg += "\n";
+        msg += args + " is an add_action() defined in "+identify(aa[0][2]);
     }
+    ret = this_player()->GetAlias(args);
+    if(ret){
+        msg += "\n"+ args + " is an alias that expands to: "+ret;
+    }
+    if( (ret = this_player()->GetXverb(args)) ){
+        msg += "\n"+ args + " is an xverb that expands to: "+ret;
+    }
+    if(member_array(args, SOUL_D->GetEmotes()) != -1){
+        msg += "\n"+ args + " is an emote, or 'feeling'.";
+    }
+    if(!sizeof(msg)) msg = args +": not found.";
     previous_object()->eventPrint(msg, MSG_SYSTEM);
     return 1;
 }

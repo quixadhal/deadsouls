@@ -527,6 +527,20 @@ nomask private static string do_alias(string str){
 
 } 
 
+string GetAlias(string alias){
+    string ret = Aliases[alias];
+    if(!this_player() || this_player() != this_object() ||
+            this_player()->GetForced()) return 0;
+    else return ret;
+}
+
+string GetXverb(string xverb){
+    string ret = Xverbs[xverb];
+    if(!this_player() || this_player() != this_object() ||
+            this_player()->GetForced()) return 0;
+    else return ret; 
+} 
+
 nomask static string replace_nickname(string str){ 
     if(str == "") return str; 
     if(str[0] == '\\') return str[1..(strlen(str)-1)]; 

@@ -13,12 +13,12 @@ static void create() {
                 ({ "sign" ,"sign on the wall" }): "A sign on the wall, meant for reading.",
                 ]));
     SetExits( ([
-                "south" : "/domains/town/room/vill_road2",
+                "south" : "/domains/cave/room/cavepass9",
                 "down" : "/domains/cave/room/shop2.c",
                 ]) );
     SetInventory(([
                 "/domains/cave/npc/gorm" : 1,
-                "/domains/town/obj/bbucket" : 1,
+                "/domains/cave/obj/bbucket" : 1,
                 ]));
     SetRead("sign", (: read_sign :) );
 }

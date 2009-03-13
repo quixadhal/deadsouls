@@ -22,7 +22,7 @@ stat is also raised by 1. Humans, however, have a strength
 stat class of 3, meaning a human player's strength stat
 is increased by 1 only every third level promotion.
 
-%^CYAN%^Deviation%^RESET%^:Starting in Dead Souls 2.9a16, a player can choose to
+%^CYAN%^Deviation%^RESET%^:Starting in Dead Souls 2.9a18, a player can choose to
 "deviate" from her race's default stat classes. For example,
 you *can* have an orc mage with a high-priority intelligence
 stat. To do so, you use the deviate command to set your

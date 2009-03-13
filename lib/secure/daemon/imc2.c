@@ -1225,7 +1225,7 @@ void start_logon(){
         string output;
         string mud,*muds;
 
-        muds = sort_array(keys(mudinfo),1);
+        muds = sort_array(filter(keys(mudinfo), (: stringp($1) :)),1);
         if (!mode==MODE_CONNECTED) {
             message("system",MUDNAME+" is not connected to the "+NETWORK_ID+" network!\n",towho);
             return;

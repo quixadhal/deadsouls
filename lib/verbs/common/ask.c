@@ -46,44 +46,55 @@ mixed can_ask_str(string str) {
 }
 
 mixed do_ask_liv_to_str(object ob, string str) {
-    message("my_action", "You ask "+(string)ob->GetName()+" to "+str+".",
+    string lang = this_player()->GetDefaultLanguage();
+    string pre = "In " + lang + ", ";
+    string msg = translate(str, this_player()->GetLanguageLevel(lang));
+    msg = translate(msg, ob->GetLanguageLevel(lang));
+    message("my_action", pre + "you ask "+ob->GetName()+" to "+str+".",
             this_player() );
-    message("other_action", (string)this_player()->GetName()+" asks "
-            "you to "+str+".", ob);
-    message("other_action", (string)this_player()->GetName()+" asks "+
-            (string)ob->GetName()+" to "+str+".",
+    message("other_action", pre + this_player()->GetName()+" asks "
+            "you to "+msg+".", ob);
+    message("other_action", pre + this_player()->GetName()+" asks "+
+            (string)ob->GetName()+" to do something.",
             environment(ob), ({ ob, this_player() }) );
     ob->eventAsk(this_player(), str);
     return 1;
 }
 
 mixed do_ask_liv_for_str(object ob, string str) {
-    message("my_action", "You ask "+(string)ob->GetName()+" for "+str+".",
+    string lang = this_player()->GetDefaultLanguage();
+    string pre = "In " + lang + ", ";
+    string msg = translate(str, this_player()->GetLanguageLevel(lang));
+    msg = translate(msg, ob->GetLanguageLevel(lang));
+    message("my_action", pre + "you ask "+ob->GetName()+" for "+str+".",
             this_player() );
-    message("other_action", (string)this_player()->GetName()+" asks "+
-            (string)ob->GetName()+" for "+str+".",
+    message("other_action", pre + this_player()->GetName()+" asks "+
+            ob->GetName()+" for something.",
             environment(ob), ({ ob, this_player() }) );
     if( !((int)ob->eventRequest(this_player(), str)) )
-        message("other_action", (string)this_player()->GetName()+" asks "
-                "you for "+str+".", ob);
+        message("other_action", pre + this_player()->GetName()+" asks "
+                "you for "+msg+".", ob);
     return 1;
 }
 
 mixed do_ask_liv_about_str(object ob, string str) {
-    message("my_action", "You ask "+(string)ob->GetName()+" about "+str+".",
+    string lang = this_player()->GetDefaultLanguage();
+    string pre = "In " + lang + ", ";
+    string msg = translate(str, this_player()->GetLanguageLevel(lang));
+    msg = translate(msg, ob->GetLanguageLevel(lang));
+    message("my_action", pre + "you ask "+ob->GetName()+" about "+str+".",
             this_player() );
-    message("other_action", (string)this_player()->GetName()+" asks "+
-            (string)ob->GetName()+" about "+str+".",
+    message("other_action", pre + this_player()->GetName()+" asks "+
+            ob->GetName()+" about something.",
             environment(ob), ({ ob, this_player() }) );
     if( !((int)ob->eventConsult(this_player(), str)) )
-        message("other_action", (string)this_player()->GetName()+" asks "
-                "you about "+str+".", ob);
+        message("other_action", pre + this_player()->GetName()+" asks "
+                "you about "+msg+".", ob);
     return 1;
 }
 
 mixed do_ask_liv_str(object ob, string str) {
     mixed tmp;
-
     if( sscanf(str, "to %s", tmp) ) return do_ask_liv_to_str(ob, tmp);
     if( sscanf(str, "for %s", tmp) ) return do_ask_liv_for_str(ob, tmp);
     if( sscanf(str, "about %s", tmp) ) return do_ask_liv_about_str(ob, tmp);

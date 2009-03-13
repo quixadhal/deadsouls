@@ -7,8 +7,8 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("Fort Road");
-    SetNightLong("You are on a road at the northern edge of the village. To the south is the heart of the town. The First Village Bank stands here on the east side of the road.");
-    SetDayLong("You are on a road running north and south. To the south is the heart of the town. To the north the road runs along a narrow ridge, leading up to what looks like a fortress. The First Village Bank stands here on the east side of the road.");
+    SetNightLong("You are on a road at the northern edge of the village. To the south is the heart of the town. The First Village Bank stands here on the east side of the road. To the west is the post office.");
+    SetDayLong("You are on a road running north and south. To the south is the heart of the town. To the north the road runs along a narrow ridge, leading up to what looks like a fortress. The First Village Bank stands here on the east side of the road. To the west is the post office.");
     SetItems( ([
                 ({"rubble","stone","stones","road"}) : "Looks like "
                 "the road is still being built. Further travel north "
@@ -18,7 +18,8 @@ static void create() {
                 ]) );
     SetExits( ([
                 "south" : "/domains/town/room/road",
-                "east" : "/domains/town/room/bank.c",
+                "east" : "/domains/town/room/bank",
+                "west" : "/domains/town/room/postoffice.c",
                 ]) );
     AddTerrainType(T_ROAD);
     SetFlyRoom("/domains/town/virtual/sky/28,2,1");

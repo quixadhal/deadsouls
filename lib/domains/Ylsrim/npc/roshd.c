@@ -58,7 +58,7 @@ static void create() {
     if( clonep() ) {
         AddChannel("fighter");
     }
-    AddCommandResponses( ([
+    SetCommandResponses( ([
                 "train" : (: eventTrain :),
                 "teach" : (: eventTrain :),
                 "default" : (: eventHelp :),

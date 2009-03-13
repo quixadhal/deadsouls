@@ -1,5 +1,15 @@
+HTTP/1.1 200 OK
+Date: Thu, 12 Mar 2009 20:01:20 GMT
+Server: Apache/2.2.4 (Ubuntu)
+Last-Modified: Wed, 11 Mar 2009 02:39:00 GMT
+ETag: "1f1781-19d4a-c51e9900"
+Accept-Ranges: bytes
+Content-Length: 105802
+Connection: close
+Content-Type: text/plain
+
 ---- 2.9a16 ---
-- Released 2009-03-12
+- Released 2009-03-15
 - Prettified the tabbed file completion stuff.
 - Armor now makes more of an effort to resolve ambiguous
   targets, such as "wear ring" when both hands can take a ring.
@@ -69,8 +79,6 @@
   call me->SetParanoia("move_monitoring", 1). Note that these are not
   foolproof, and the proper way to deal with mischief is not paranoia
   but extreme violence and harsh language.
-- The "which" command now identifies aliases, add_actions, etc.
-- Finally nailed a mysterious data overwrite problem in PLAYERS_D.
 
 ---- 2.9a15 ---
 - Liveupgrade only.

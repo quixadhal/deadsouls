@@ -106,7 +106,7 @@ int Setup(){
     interface::Setup();
     add_action((: cmdQuit :), "quit");
     add_action((: cmdParseRefresh :), "parserefresh");
-    HostSite = query_ip_name(this_object());
+    HostSite = query_ip_number(this_object());
     LoginTime = time();
     SetId(({}));
     autosave::Setup();
@@ -183,7 +183,7 @@ static void net_dead(){
 void eventReconnect(){
     interface::eventReconnect();
     LastAge = time();
-    HostSite = query_ip_name(this_object());
+    HostSite = query_ip_number(this_object());
     eventPrint("Reconnected.", MSG_SYSTEM);
     if(!(archp(this_object()) && this_object()->GetInvis())){
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);

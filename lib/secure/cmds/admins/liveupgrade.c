@@ -7,8 +7,6 @@
 
 #define WEB_SOURCE_PORT 80
 
-inherit LIB_DAEMON;
-
 string array allnames = ({});
 string array tmpnames;
 string reverts_dir, revert_name;
@@ -19,44 +17,70 @@ static string upgrades_files = "/secure/upgrades/files";
 static int i = 0;
 static int oob = 0;
 static object player = 0;
-int transver = 0;
+int patched, transver = 0;
 static mapping NewFiles = ([]);
+static string SaveFile;
 
 void create(){
-    daemon::create();
-    SetSaveFile(SAVE_LIVEUPGRADE);
-    eventRestore(1);
-}
+#ifdef ENABLE_INSTANCES
+    SaveFile = save_file(SAVE_LIVEUPGRADE);
+    if( unguarded( (: file_exists(SaveFile) :) ) ){
+        unguarded( (: restore_object(SaveFile) :) );
+    }
+#endif
 
-int eventBackup(string file){
-    string tmp, time_str,short_name,filename;
-    if(!file) return 0;
-    if(!file_exists(file)) return -1;
-    if( !(tmp = read_file(file)) ) return -2;  
-    time_str = time()+"."+random_numbers(5);
-    short_name = last_string_element(file,"/");
-    if(!revert_name){
-        revert_name = itoa(time());
-    }
-    if(!reverts_prefix){
-        reverts_prefix = "/secure/upgrades/reverts/"+mudlib_version();
-    }
-    if(!directory_exists("/secure/upgrades/reverts/")){
-        mkdir("/secure/upgrades/reverts");
-    }
-    if(!directory_exists(reverts_prefix)){
-        mkdir(reverts_prefix);
-    }
-    if(!directory_exists(reverts_prefix+"/"+revert_name)){
-        mkdir(reverts_prefix+"/"+revert_name);
-    }
-    filename = reverts_prefix+"/"+revert_name+
-        "/"+short_name+"."+time_str;
-    write_file(reverts_prefix+"/"+revert_name+"/"+
-            "/bk.db",short_name+"."+time_str+" : "+file+"\n");
-    cp(file,filename);
-    return 1;
-}
+    if(false()){
+        object uu = find_object("/secure/daemon/update");
+        tc("Patching...");
+        if(uu) uu->eventDestruct();
+        if(uu) destruct(uu);
+        if(uu) tc("Patching may be failing :(");
+                patched = 1;
+                unguarded( (: cp("/secure/daemon/update.patch",
+                            "/secure/daemon/update.c") :) );
+                unguarded( (: reload("/secure/daemon/update.c") :) );
+                }
+                }
+
+                int eventDestruct(){
+#ifdef ENABLE_INSTANCES
+                if(directory_exists(path_prefix(SaveFile))){
+                unguarded( (: save_object(SaveFile) :) );
+                }
+#endif
+                destruct();
+                return 1;
+                }
+
+                int eventBackup(string file){
+                string tmp, time_str,short_name,filename;
+                if(!file) return 0;
+                if(!file_exists(file)) return -1;
+                if( !(tmp = read_file(file)) ) return -2;  
+                time_str = time()+"."+random_numbers(5);
+                short_name = last_string_element(file,"/");
+                if(!revert_name){
+                    revert_name = itoa(time());
+                }
+                if(!reverts_prefix){
+                    reverts_prefix = "/secure/upgrades/reverts/"+mudlib_version();
+                }
+                if(!directory_exists("/secure/upgrades/reverts/")){
+                    mkdir("/secure/upgrades/reverts");
+                }
+                if(!directory_exists(reverts_prefix)){
+                    mkdir(reverts_prefix);
+                }
+                if(!directory_exists(reverts_prefix+"/"+revert_name)){
+                    mkdir(reverts_prefix+"/"+revert_name);
+                }
+                filename = reverts_prefix+"/"+revert_name+
+                    "/"+short_name+"."+time_str;
+                write_file(reverts_prefix+"/"+revert_name+"/"+
+                        "/bk.db",short_name+"."+time_str+" : "+file+"\n");
+                cp(file,filename);
+                return 1;
+                }
 
 int eventRevert(string revert_path){
     string *files;
@@ -197,6 +221,12 @@ mixed cmd(string str) {
     if(!foo || foo < 2) file = str;
     if(str == "apply"){
         string *files = ({});
+        string nlu=upgrades_files+"/0^0secure0^0cmds^0admins0^0liveupgrade.c";
+        object nlob;
+        if(file_exists(nlu)){
+            catch( nlob = load_object(nlu) );
+            if(nlob && nlob->GetDeferment()) return 1;
+        }
         player->eventPrint("I hope you backed up...\n");
         foreach(string element in get_dir(upgrades_files+"/")){
             if(element == "0^0secure0^0sefun0^0mud_info.c"){
@@ -226,6 +256,7 @@ mixed cmd(string str) {
             if(last(contents,1) != "\n") contents += "\n";
             write_file(element, contents, 1);
             //eventBackup(NewFiles[element]);
+            reset_eval_cost();
             call_out( (: eventBackup :), 0, NewFiles[element]);
             if(directory_exists(NewFiles[element])) true();
             else {
@@ -237,6 +268,7 @@ mixed cmd(string str) {
         }
         if(member_array(INET_D,preload_file) == -1 && inet) inet->eventDestruct();
         call_out( (: eventReloads :), 10);
+        patched = 0;
         RELOAD_D->eventReload(this_object(), 15);
         rm("/secure/upgrades/txt/list.txt");
         player->eventPrint("\nAlmost done...");

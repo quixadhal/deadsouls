@@ -555,7 +555,7 @@ int valid_bind(object binder, object old_owner, object new_owner) {
     else if( base_name(binder) == SEFUN ) ret = 1;
     else if( member_array(PRIV_SECURE, 
                 explode((privs = query_privs(binder)), ":")) != -1 ) ret = 1;
-    if(!ret) tc("valid_bind("+identify(binder)+", "+identify(old_owner)+", "+identify(new_owner)+"): "+ret+" (privs: "+identify(privs)+"), stack: "+get_stack());
+    //if(!ret) tc("valid_bind("+identify(binder)+", "+identify(old_owner)+", "+identify(new_owner)+"): "+ret+" (privs: "+identify(privs)+"), stack: "+get_stack());
     return ret;
 }
 

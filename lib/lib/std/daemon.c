@@ -19,7 +19,7 @@ string GetSaveFile(){
 }
 
 static string SetSaveFile(string str){
-    return (DaemonSaveFile = str);
+    return (DaemonSaveFile = save_file(str));
 }
 
 /* ********************* daemon.c events ************************* */

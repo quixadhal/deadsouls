@@ -14,7 +14,7 @@ static void create(){
     SetLong("This is a small office containing rows of mailboxes and "+
             "various other postal implements. There is a sign on the wall behind the "+
             "counter, outlining instructions for how to mail other users. "+
-            "Village road is north of here.");
+            "Fort road is east of here.");
     SetItems( ([ 
                 ({"box","boxes","mailboxes","mailbox"}) : "Rows of mailboxes for "+
                 "the denizens of Frontiers.",
@@ -24,7 +24,8 @@ static void create(){
                 "implements" : "Ink, paper, etc.",
                 "instructions" : "Try reading them.",
                 "counter" : "A counter folks use to lean on while writing messages." ]) );
-    SetExits( ([ 
+    SetExits( ([
+                "east" : "/domains/town/room/mountain_road.c",
                 ]) );
     SetProperty("no attack", 1);
 }
