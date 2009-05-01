@@ -27,7 +27,7 @@ string *answers = ({
         "Outlook not so good.",
         "My reply is no.",
         "Don't count on it.",
-        });
+});
 
 void create(){
     ::create();

@@ -168,7 +168,7 @@ void start_edit(string file)                // ¦Ÿ»Ï˜€­¡Ë•ú¼À¬×­˜€­¡
 {
     int  i;
     mapping me;
-    tc("starting edit of "+file);
+    //tc("starting edit of "+file);
 
     if (objectp(EditedFiles[file]))
     {
@@ -294,14 +294,14 @@ protected void _input(string str, object pl, int fresh) // µÂ´È×„®‹ÚÙ³«
     int    i, size, bs=0;
     string *chars;
     mapping me=pl->GetProperty("me");
-    tc("_input("+identify(str)+", "+identify(pl)+", "+identify(fresh)+")");
+    //tc("_input("+identify(str)+", "+identify(pl)+", "+identify(fresh)+")");
     if (fresh)
     {        // ÙÛ©†©¡È†
         _refresh_screen(pl, me["iS_Row"], me["iE_Row"], me["iS_Col"]);
         get_char("_input", HIDE, pl);
         return;
     }
-    tc("1");
+    //tc("1");
     me["is_Substituted"] = 1;       // Î®Ğˆµ¿³”©©ıõÃ‹ËŒ˜Š
     if (str == "")                  // ³”©©´Ÿ Backspace/Ctrl-Backspace
     {
@@ -390,7 +390,7 @@ protected void _input(string str, object pl, int fresh) // µÂ´È×„®‹ÚÙ³«
                              } // else
         } // switch
         // »½Ú¬©©ßß´ıÚÙ³«İÍ´»¸ÙÊĞÙ¹Â¦¯×»³ªÁú¼™ó´®³²µÂ®íÎÃ¹÷×„®‹
-        tc("me[\"sChar\"]: "+me["sChar"], "blue");
+        //tc("me[\"sChar\"]: "+me["sChar"], "blue");
         if (_dispatcher(pl) && i==size-1) get_char("_input", HIDE, pl);
     } // for
 } // input()

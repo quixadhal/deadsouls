@@ -108,7 +108,8 @@ water flood into the well, and solving the quest!
 It may be that someone has already been fooling with the water lock, though.
 If the door was already open when you got there, push the lever, wait a 
 few minutes for water to flood the lock, then pull the lever. It could
-take a while depending on the water pressure for the lock to fill up.
+take a while depending on the water pressure for the lock to fill up, so
+if it's dry, close it again and wait a while before opening again.
 
 
 %^CYAN%^Alternate Resolution%^RESET%^
@@ -181,26 +182,26 @@ Now, return to the well (4n) then enter the well and go west.
 You'll need to tell the zombie to leave the water lock and operate it:
 
 
-say go east
-yell push lever
-enter mech
-drive west
-direct mech to open grate
+%^GREEN%^say go east%^RESET%^
+%^GREEN%^yell push lever%^RESET%^
+%^GREEN%^enter mech%^RESET%^
+%^GREEN%^drive west%^RESET%^
+%^GREEN%^direct mech to open grate%^RESET%^
 
 Woohoo! If you don't have the mech, of course, you just
 walk your own self west, drink your strength potions, and
 open the grate yourself. If you *do* have the mech, let's get it out
 of harm's way...
 
-drive east
-out
-go west
+%^GREEN%^drive east%^RESET%^
+%^GREEN%^out%^RESET%^
+%^GREEN%^go west%^RESET%^
 
 All righty, now let's go resolve this well problem. Go down
 and you'll see the metal wheel and the water pipe. To get the water
 flowing again, turn the wheel. Then very quickly get yourself back to 
 the water lock...the area will fill with water soon! When water 
-gets to the lock: %^GREEN%^yell pull level%^RESET%^
+gets to the lock: %^GREEN%^yell pull lever%^RESET%^
 Your zombie will then open the east door, allowing you and the water to
 get to the well, and solving the Town Well Quest. Congratulations!
 

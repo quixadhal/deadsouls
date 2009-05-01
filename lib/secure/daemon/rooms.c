@@ -24,6 +24,9 @@ void create(){
     object vvoid;
 #if GRID
     SaveFile = save_file(SAVE_ROOMS);
+    if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
+        cp(old_savename(SaveFile), SaveFile);
+    }
     if(!WorldMap) WorldMap = ([]);
     if(!WorldGrid) WorldGrid = ([]);
     if(file_exists(SaveFile)){

@@ -11,6 +11,9 @@ static string SaveFile;
 void create(){
 #if WIZMAP
     SaveFile = save_file(SAVE_MAP);
+    if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
+        cp(old_savename(SaveFile), SaveFile);
+    }
     if(file_exists(SaveFile)){
         unguarded( (: RestoreObject, SaveFile, 1 :) );
     }

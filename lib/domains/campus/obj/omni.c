@@ -54,15 +54,19 @@ mixed eventPress(object who, string where) {
 }
 
 void heart_beat(){
-    object *holders = filter(containers(this_object()),
+    object env = environment();
+    object *holders;
+    if(!env) return;
+    holders = filter(containers(this_object()),
             (: interactive($1) :) );
-    if(sizeof(holders)) vanish_count--;
+    if(interactive(env)) vanish_count--;
+    else if(sizeof(holders) && random(100) > 80) vanish_count--;
     if(vanish_count < 0){
-        tell_object(environment(),"The omni glows brightly and disappears!");
+        tell_object(env,"The omni glows brightly and disappears!");
         this_object()->eventDestruct();
     }
     if(vanish_count == 5){
-        tell_object(environment(),"The omni begins to glow a dull red.");
+        tell_object(env,"The omni begins to glow a dull red.");
         this_object()->SetLong("This is a small, round metal device, copper in color, "+
                 "and similar in appearance to a pocket watch. There is a blinking red light "+
                 "next to the tiny metal button at its top. It is glowing a dull red.");

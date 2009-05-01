@@ -34,14 +34,20 @@ static void create(){
     TitleLength = 1;
 }
 
-
 static void heart_beat(){
-    mixed heartping = this_object()->GetProperty("keepalive");
+    mixed heartping = GetProperty("keepalive");
     heartcount++;
 
     if(!interactive(this_object())){
         set_heart_beat(0);
         return;
+    }
+    if(GetProperty("reply")){
+        int t;
+        if(t = GetProperty("reply_time") && (time() - t) > 900){
+            RemoveProperty("reply");
+            RemoveProperty("reply_time");
+        }
     }
     interactive::heart_beat();
     if( IDLE_TIMEOUT && query_idle(this_object()) >= IDLE_TIMEOUT 
@@ -337,9 +343,9 @@ int Setup(){
                 AddChannel(classes);
         if( avatarp() ) AddChannel(({ "avatar" }));
         if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
-        if( newbiep() ) AddChannel( ({ "newbie" }) );
+        if( GetLevel() < 5 ) AddChannel( ({ "newbie" }) );
         else {
-            RemoveChannel( ({ "newbie" }) );
+            //RemoveChannel( ({ "newbie" }) );
         }
         AddChannel( ({ "gossip" }) );
         if( councilp() ) AddChannel( ({ "council" }) );
@@ -393,6 +399,8 @@ int Setup(){
         SetShort("First Admin $N");
     }
     if(!creatorp(this_object())) this_object()->SetInvis(0);
+    RemoveProperty("reply");
+    RemoveProperty("reply_time");
     return 1;
 }
 

@@ -22,6 +22,7 @@ static void create() {
 void init(){
     ::init();
     add_action("regenerate","regenerate");
+    add_action("regenerate","choose");
     add_action("wander","wander");
     this_object()->CheckChat();
 }
@@ -61,5 +62,12 @@ int CanRelease(object ob){
         ob->eventRevive();
     }
     return 1;
+}
+
+int CanReceive(object ob){
+    if(!living(ob)){
+        return 0;
+    }
+    return ::CanReceive(ob);
 }
 

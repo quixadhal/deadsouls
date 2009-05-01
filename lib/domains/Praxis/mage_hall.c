@@ -139,7 +139,7 @@ string get_female(int lev) {
             "the apprentice conjuress",
             "the inexperienced magic user",
             "the novice mage"
-            });
+    });
     if(lev>20) lev = 20;
     return female_title[20-lev];
 }

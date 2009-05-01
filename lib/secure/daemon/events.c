@@ -21,6 +21,9 @@ static string SaveFile;
 static void create() {
     daemon::create();
     SaveFile = save_file(SAVE_EVENTS);
+    if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
+        cp(old_savename(SaveFile), SaveFile);
+    }
     SetNoClean(1);
     if( file_exists(SaveFile) )
         unguarded((: RestoreObject, SaveFile :));

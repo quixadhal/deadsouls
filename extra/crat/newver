@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export INDENT=$3
 export NEWLIB=$2
 export OLDLIB=$1
 
@@ -63,24 +64,33 @@ mkdir /tmp/foo/next/lib/domains/cave/adm
 mkdir /tmp/foo/next/lib/domains/cave/save
 mkdir /tmp/foo/next/lib/domains/cave/txt
 mkdir /tmp/foo/next/lib/domains/cave/virtual
+mkdir /tmp/foo/next/doc/phints
 
 cd /tmp/foo
 
-\cp -f new/lib/secure/daemon/update.patch new/lib/secure/daemon/update.patch
+\cp -f new/lib/secure/daemon/update.patch next/lib/secure/daemon/update.patch
 \mv -f new/lib/secure/lib/connect.c new/lib/secure/lib/connect.real
 \cp -f new/lib/secure/lib/connect.first.c new/lib/secure/lib/connect.c
 \cp -f new/lib/secure/save/backup/config.orig new/lib/secure/include/config.h
+\cp -f new/lib/secure/save/backup/secrets.orig new/lib/secure/include/secrets.h
 \rm -f next/lib/lib/remote.c
 \rm -f new/lib/lib/remote.c
 
-cd new/lib
+if [ $3 ]
+then
+echo "indenting"
+cd $NEWLIB/lib
 /contrib/indentall
-cd ../../next/lib
+cd ../../$OLDLIB/lib
 /contrib/indentall
 cd ../../
+else
+echo "not indenting"
+fi
 
 #/opt/sfw/bin/gdiff -rq new/lib next/lib > diff.txt
-gdiff -rq new/lib next/lib > diff.txt
+cd /tmp/foo
+diff -rq new/lib next/lib > diff.txt
 
 perl -pi -e s/"\:\ "/"\/"/g diff.txt
 perl -pi -e s/"\ and\ "/"\ "/g diff.txt
@@ -97,7 +107,7 @@ perl -pi -e s/"Only\ in\ "/"\\\\cp\ \-rf\ "/g diff.txt
 perl -pi -e s/"Files\ "/"diff\ "/g diff.sh.1
 
 
-cat diff.txt | grep -v "lib/core" |grep -v "\.o"|grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff2.txt
+cat diff.txt | grep -v "\.prime" | grep -v "lib/core" |grep -v "\.o"|grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff2.txt
 cat diff.sh.1 | grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff.sh
 
 chmod 755 diff.sh

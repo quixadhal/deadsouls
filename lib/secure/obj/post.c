@@ -54,7 +54,7 @@ void create() {
              "listing from menus:" ]),    
             ([ "key":"read", "value":({"N","Y"}), "desc":"Read letter when you make "    
              "it current:" ])    
-            });    
+    });    
 }    
 
 string tmpmail(){

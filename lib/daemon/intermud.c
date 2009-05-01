@@ -22,7 +22,7 @@
 
 inherit LIB_CLIENT;
 
-private int Password;
+static private int Password;
 private mapping MudList, ChannelList;
 private mapping Banned;
 private mixed *Nameservers;
@@ -37,9 +37,9 @@ void ConvertLists();
 
 static void create(){
     client::create();
+    Password = SECRETS_D->GetSecret("I3_SERVER_PW");
     SaveFile = save_file(SAVE_INTERMUD);
     tn("INTERMUD_D: prev: "+identify(previous_object(-1)),"red");
-    Password = 0;
     Tries = 0;
     Banned = ([]);
     MudList = ([]);
@@ -148,6 +148,7 @@ static void eventRead(mixed *packet){
         if( packet[6][0][0] == Nameservers[0][0] ){
             Nameservers = packet[6];
             Password = packet[7];
+            SECRETS_D->SetSecret("I3_SERVER_PW", Password);
             SaveObject(SaveFile);
         }
         else {
@@ -191,7 +192,7 @@ static void eventRead(mixed *packet){
                 tn(tmp);
                 //tn(tmp,"cyan",ROOM_ARCH);
                 if(val && sizeof(val) > 5 && arrayp(val))
-                    tmp = (val[0] ? "%^GREEN%^online" : "%^RED%^offline")+ 
+                    tmp = (val[0] ? "%^BLUE%^online" : "%^RED%^offline")+ 
                         "%^RESET%^, lib: "+lib+", driver: "+val[7];
                 else tmp = "removed from mudlist.";
                 CHAT_D->eventSendChannel(cle+"@i3","muds",tmp,0);

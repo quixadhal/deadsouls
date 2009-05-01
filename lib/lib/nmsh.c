@@ -289,6 +289,13 @@ varargs int erase_prompt(int x){
     return receive("\e[2K\e["+GetScreen()[1]+";"+1+"H\e[2K");
 }
 
+string GetPromptString(){
+    string ret = Prompt;
+    if(!sizeof(ret)) return "";
+    ret = replace_string(ret,"%^","%%^^");
+    return ret;
+}
+
 varargs nomask string GetPrompt(int withbuff){
     string ret, ret2 = "";
     mixed tmp;

@@ -18,7 +18,7 @@ private int LoginTime, Level, Btime, BirthTime, CreatorBirth, WhereBlock;
 private string CurrentUser, Short, CapName, RealName, Email;
 private string Town, Race, Gender, HostSite;
 private string Class, Clan, Long;
-private string Rank, WebPage;
+private string Rank, WebPage, tmpfile;
 private string array Titles, Religion;
 private class marriage array Marriages;
 
@@ -32,6 +32,8 @@ varargs string GetFinger(string who, int html) {
     object ob;
     string ret;
     mixed creator;
+
+    tmpfile = 0;
 
     if( !who ) {
         object array people;
@@ -64,8 +66,29 @@ varargs string GetFinger(string who, int html) {
     }
     if( who != CurrentUser ) {
         creator = 0;
-        if( !user_exists(who) )
+        if( !user_exists(who) ){
+            string *cdir = get_dir(DIR_CRES "/"+who[0..0]+"/");
+            string *pdir = get_dir(DIR_PLAYERS "/"+who[0..0]+"/");
+            if(sizeof(cdir)){
+                foreach(string sub in cdir){
+                    if(!strsrch(sub, who+".")){
+                        tmpfile = DIR_CRES "/"+who[0..0]+"/"+sub;
+                    }
+                }
+            }
+            if(!tmpfile && sizeof(pdir)){
+                foreach(string sub in pdir){
+                    if(!strsrch(sub, who+".")){
+                        tmpfile = DIR_PLAYERS "/"+who[0..0]+"/"+sub;
+                    }
+                }
+            }
+        }        
+        if( !user_exists(who) && !tmpfile )
             return capitalize(who) + " has never visited " + mud_name() + ".";
+        if(tmpfile){
+            unguarded( (: restore_object(tmpfile) :) );
+        }
         else if( !unguarded( (: RestoreObject, DIR_PLAYERS "/" + who[0..0] +
                         "/" + who :)) &&
                 !(creator = unguarded( (: RestoreObject, DIR_CRES "/" +
@@ -120,7 +143,7 @@ varargs string GetFinger(string who, int html) {
         sprintf("In real life: %:-30s %%^/TD%%^TD%%^Email: %s", RealName ,
                 (Email[0]!='#' || (this_player(1) && archp(this_player(1))))
                 ? (Email[0] == '#' ? Email[1..] : Email) : "Unlisted") +
-                                                            "%^/TD%^/TR%^\n";
+        "%^/TD%^/TR%^\n";
     ret += "%^TR%^TD%^" +
         sprintf("Religion: %:-34s %%^/TD%%^TD%%^Spouse: %s",
                 (!creator && Religion[1]) ? Religion[1] : "Agnostic",
@@ -133,8 +156,10 @@ varargs string GetFinger(string who, int html) {
         else ret += "On since " + ctime(LoginTime);
     }
     else ret += "Last on " + ctime(LoginTime);
-    if( this_player(1) && creatorp(this_player(1)) )
+    if( this_player(1) && creatorp(this_player(1)) && (!AUTO_WIZ ||
+                master()->valid_apply(({ "SECURE", "ASSIST" }))) ){
         ret += " from " + HostSite + "%^BR%^\n";
+    }
     else ret += "%^BR%^\n";
     mail_stat = (mapping)FOLDERS_D->mail_status(who);
     if( mail_stat["unread"] )

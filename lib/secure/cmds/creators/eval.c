@@ -39,6 +39,7 @@ int cmd( string a )
     file =
     ""+
     "#include <lib.h>\n"+
+    "#include <dirs.h>\n"+
     "#include <privs.h>\n"+
     "#include <virtual.h>\n"+
     "#include <cfg.h>\n"+
@@ -47,6 +48,7 @@ int cmd( string a )
     "#include ROOMS_H\n"+
     "#include <localtime.h>\n"+
     "#include <daemons.h>\n"+
+    "#include <news.h>\n"+
     "#include <objects.h>\n"+
     "#include <commands.h>\n"+
     "#include <armor_types.h>\n"+

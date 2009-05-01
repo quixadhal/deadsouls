@@ -46,35 +46,40 @@ static void process_startup_req(int protocol, mixed info, int fd){
     trr("Number of muds with the same ip: "+sizeof(brethren));
     if(sizeof(brethren) > MAXMUDS && !mudinfo[info[2]]){
         write_data(fd,({ "error", 5, router_name, 0, info[2], 0,
-            "not-allowed", "Too many muds from your IP.", info }) );
+                    "not-allowed", "Too many muds from your IP.", info }) );
         return;
     }
 
-    if(fd && member_array(fd,keys(this_object()->query_connected_fds())) != -1){
+    if(member_array(fd,keys(this_object()->query_connected_fds())) != -1){
         string existing_mud = this_object()->query_connected_fds()[fd];
         trr("Socket status: "+identify(socket_status(fd)),"red");
-        server_log("%^RED%^FD CONFLICT, MUD: "+info[2]+", FD: "+fd);
+        server_log("%^RED%^FD CONFLICT, NEW MUD: "+info[2]+", FD: "+fd);
+        server_log("%^RED%^FD CONFLICT, OLD MUD: "+existing_mud+", FD: "+fd);
         trr("---\n","blue");
-        if(mudinfo[existing_mud]) mudinfo[existing_mud]["disconnect_time"] = time();
+        if(mudinfo[existing_mud]){
+            mudinfo[existing_mud]["disconnect_time"] = time();
+        }
+        if(!existing_mud || existing_mud != info[2]){
         map_delete(connected_muds, existing_mud);
         //broadcast_mudlist(existing_mud);
         schedule_broadcast(existing_mud);
+        }
     }
 
     if(sizeof(info)<18){ 
         // smallest protocol is protocol 1/2 which have size 18
         //trr("THIS SHOULDNT BE HERE");
         write_data(fd,({
-            "error",
-            5,
-            router_name,
-            0,
-            info[2],
-            0,
-            "bad-pkt",
-            "Bad startup_req packet",
-            info
-          }));
+                    "error",
+                    5,
+                    router_name,
+                    0,
+                    info[2],
+                    0,
+                    "bad-pkt",
+                    "Bad startup_req packet",
+                    info
+                    }));
         return;
     }
     //trr("fd is:" +fd,"cyan");
@@ -82,162 +87,162 @@ static void process_startup_req(int protocol, mixed info, int fd){
     site_ip = clean_fd(site_ip);
     //trr("site_ip: "+site_ip,"cyan");
     newinfo = ([
-      "name":info[2],
-      "ip":site_ip,
-      "connect_time":time(),
-      "disconnect_time":0,
-      "password":info[6],
-      "old_mudlist_id":info[7],
-      "old_chanlist_id":info[8],
-      "player_port":info[9],
-      "imud_tcp_port":info[10],
-      "imud_udp_port":info[11],
-      "mudlib":info[12],
-      "base_mudlib":info[13],
-      "driver":info[14],
-      "mud_type":info[15],
-      "open_status":info[16],
-      "protocol":protocol,
-      "restart_delay":-1,
-      "router" : my_name,
-    ]);
+            "name":info[2],
+            "ip":site_ip,
+            "connect_time":time(),
+            "disconnect_time":0,
+            "password":info[6],
+            "old_mudlist_id":info[7],
+            "old_chanlist_id":info[8],
+            "player_port":info[9],
+            "imud_tcp_port":info[10],
+            "imud_udp_port":info[11],
+            "mudlib":info[12],
+            "base_mudlib":info[13],
+            "driver":info[14],
+            "mud_type":info[15],
+            "open_status":info[16],
+            "protocol":protocol,
+            "restart_delay":-1,
+            "router" : my_name,
+            ]);
     //trr("newinfo: "+identify(newinfo));
 
     if(protocol == 2 && sizeof(info) == 20 ) protocol = 3;
 
     switch(protocol){
-    case 1:
-    case 2:
-        if(sizeof(info)!=18){
-            server_log("error: wrong size packet. Got: "+sizeof(info)+", wanted 18");
-            trr("---\n","blue");
-            write_data(fd,({
-                "error",
-                5,
-                router_name,
-                0,
-                info[2],
-                0,
-                "bad-pkt",
-                "Bad startup_req packet",
-                info
-              }));
-            return;
-        }
-        newinfo["services"]=info[17];
-        newinfo["admin_email"]="Unknown"; // only in protocol 3
-        newinfo["other_data"]=0; // only in protocol 3
-        break;
-    case 3:
-        if(sizeof(info)!=20){
-            server_log("error. wrong size packet. Got: "+sizeof(info)+", wanted 20");
-            trr("---\n","blue");
+        case 1:
+        case 2:
+            if(sizeof(info)!=18){
+                server_log("error: wrong size packet. Got: "+sizeof(info)+", wanted 18");
+                trr("---\n","blue");
+                write_data(fd,({
+                            "error",
+                            5,
+                            router_name,
+                            0,
+                            info[2],
+                            0,
+                            "bad-pkt",
+                            "Bad startup_req packet",
+                            info
+                            }));
+                return;
+            }
+            newinfo["services"]=info[17];
+            newinfo["admin_email"]="Unknown"; // only in protocol 3
+            newinfo["other_data"]=0; // only in protocol 3
+            break;
+        case 3:
+            if(sizeof(info)!=20){
+                server_log("error. wrong size packet. Got: "+sizeof(info)+", wanted 20");
+                trr("---\n","blue");
+
+                write_data(fd,({
+                            "error",
+                            5,
+                            router_name,
+                            0,
+                            info[2],
+                            0,
+                            "bad-pkt",
+                            "Bad startup_req packet",
+                            info
+                            }));
+                return;
+            }
+            newinfo["admin_email"]=info[17];
+            newinfo["services"]=info[18];
+            newinfo["other_data"]=info[19];
+            break;
+        default:
+            server_log("error. I dunno what.");
 
             write_data(fd,({
-                "error",
-                5,
-                router_name,
-                0,
-                info[2],
-                0,
-                "bad-pkt",
-                "Bad startup_req packet",
-                info
-              }));
+                        "error",
+                        5,
+                        router_name,
+                        0,
+                        info[2], // mud name
+                        0,
+                        "not-imp",
+                        "unknown protocol: "+protocol,
+                        info
+                        }));
             return;
-        }
-        newinfo["admin_email"]=info[17];
-        newinfo["services"]=info[18];
-        newinfo["other_data"]=info[19];
-        break;
-    default:
-        server_log("error. I dunno what.");
-
-        write_data(fd,({
-            "error",
-            5,
-            router_name,
-            0,
-            info[2], // mud name
-            0,
-            "not-imp",
-            "unknown protocol: "+protocol,
-            info
-          }));
-        return;
     }
     // Check valid values...
     if(
-      !stringp(newinfo["open_status"]) ||
-      !stringp(newinfo["admin_email"]) ||
-      !stringp(newinfo["mud_type"]) ||
-      !stringp(newinfo["driver"]) ||
-      !stringp(newinfo["base_mudlib"]) ||
-      !stringp(newinfo["mudlib"]) ||
-      !mapp(newinfo["services"]) ||
-      !intp(newinfo["imud_udp_port"]) ||
-      !intp(newinfo["imud_tcp_port"]) ||
-      !intp(newinfo["player_port"]) ||
-      !intp(newinfo["password"]) ||
-      !intp(newinfo["old_chanlist_id"]) ||
-      !intp(newinfo["old_mudlist_id"]) ||
-      (!mapp(newinfo["other_data"]) && newinfo["other_data"]!=0)
-    ){
+            !stringp(newinfo["open_status"]) ||
+            !stringp(newinfo["admin_email"]) ||
+            !stringp(newinfo["mud_type"]) ||
+            !stringp(newinfo["driver"]) ||
+            !stringp(newinfo["base_mudlib"]) ||
+            !stringp(newinfo["mudlib"]) ||
+            !mapp(newinfo["services"]) ||
+            !intp(newinfo["imud_udp_port"]) ||
+            !intp(newinfo["imud_tcp_port"]) ||
+            !intp(newinfo["player_port"]) ||
+            !intp(newinfo["password"]) ||
+            !intp(newinfo["old_chanlist_id"]) ||
+            !intp(newinfo["old_mudlist_id"]) ||
+            (!mapp(newinfo["other_data"]) && newinfo["other_data"]!=0)
+      ){
         write_data(fd,({
-            "error",
-            5,
-            router_name,
-            0,
-            info[2],
-            0,
-            "bad-pkt",
-            "Bad startup_req packet",
-            info
-          }));
+                    "error",
+                    5,
+                    router_name,
+                    0,
+                    info[2],
+                    0,
+                    "bad-pkt",
+                    "Bad startup_req packet",
+                    info
+                    }));
         return;
     }
-    if(connected_muds[info[2]]){
+    if(!undefinedp(connected_muds[info[2]])){
         // if MUD is already connected
         trr("ROUTER_D: mud already connected on fd"+connected_muds[info[2]],"red");
         trr("ROUTER_D: Xref back: mud on fd"+connected_muds[info[2]]+" is "+
-          "supposed to be "+this_object()->query_connected_fds()[this_object()->query_connected_muds()[info[2]]],"red");
+                "supposed to be "+this_object()->query_connected_fds()[this_object()->query_connected_muds()[info[2]]],"red");
         server_log("mud already connected");
         trr("---\n","blue");
         if(this_object()->query_mudinfo()[info[2]]["ip"] != explode(socket_address(fd)," ")[0] ||
-          mudinfo[info[2]]["password"] != newinfo["password"]){
+                mudinfo[info[2]]["password"] != newinfo["password"]){
             write_data(fd,({
-                "error",
-                5,
-                router_name,
-                0,
-                info[2], // mud name
-                0,
-                "bad-proto", // doesn't seem to me like it should be bad-proto...
-                // see what the official one uses for this
-                // it might just boot the earlier MUD off?
-                "MUD already connected", // Error message
-                info
-              }));
+                        "error",
+                        5,
+                        router_name,
+                        0,
+                        info[2], // mud name
+                        0,
+                        "bad-proto", // doesn't seem to me like it should be bad-proto...
+                        // see what the official one uses for this
+                        // it might just boot the earlier MUD off?
+                        "MUD already connected", // Error message
+                        info
+                        }));
 
             //This message to the already-connected mud serves 
             //to alert the legit mud that something may be wrong, and
             //also will trigger a closure of the socket if it turns out
             //to actually be in a zombie state.
             write_data(connected_muds[info[2]],({
-                "error",
-                5,
-                router_name,
-                0,
-                info[2], // mud name
-                0,
-                "bad-mojo", 
-                "Another mud is trying to be you.", 
-                ({ explode(socket_address(fd)," ")[0], info[12], info[13], info[17], info[9] })
-              }));
+                        "error",
+                        5,
+                        router_name,
+                        0,
+                        info[2], // mud name
+                        0,
+                        "bad-mojo", 
+                        "Another mud is trying to be you.", 
+                        ({ explode(socket_address(fd)," ")[0], info[12], info[13], info[17], info[9] })
+                        }));
             return;
         }
         if(this_object()->query_mudinfo()[info[2]]["ip"] == explode(socket_address(fd)," ")[0] &&
-          mudinfo[info[2]]["password"] == newinfo["password"] ){
+                mudinfo[info[2]]["password"] == newinfo["password"] ){
             server_log("Since it's the same ip and password, I'll remove the current connection");
             //this_object()->remove_mud(info[2],1);
             if(mudinfo[info[2]]) mudinfo[info[2]]["disconnect_time"] = time();
@@ -253,13 +258,13 @@ static void process_startup_req(int protocol, mixed info, int fd){
             // same IP as last time and it isn't Dead Souls
             server_log("Wrong password, but right IP");
             trr("Expected "+mudinfo[info[2]]["password"]+
-              " but got "+newinfo["password"]);
+                    " but got "+newinfo["password"]);
             write_data(fd,({
-                "error",5,router_name,0,info[2],0,
-                "warning", // nothing in error summary that seems applicable?
-                // Change later if I find a better error code
-                "wrong password, but I'll allow you since it's the same IP as last time",0
-              }));
+                        "error",5,router_name,0,info[2],0,
+                        "warning", // nothing in error summary that seems applicable?
+                        // Change later if I find a better error code
+                        "wrong password, but I'll allow you since it's the same IP as last time",0
+                        }));
         }
         else{
             trr("wrong password, and from a new IP","red");
@@ -273,16 +278,16 @@ static void process_startup_req(int protocol, mixed info, int fd){
             }
             server_log("%^RED%^WRONG PASSWORD, AND FROM A NEW IP");
             write_data(fd,({
-                "error",
-                5,
-                router_name,
-                0,
-                info[2], // mud name
-                0,
-                "not-allowed", // Change later!
-                "wrong password, and from a new IP", // Error message
-                info
-              }));
+                        "error",
+                        5,
+                        router_name,
+                        0,
+                        info[2], // mud name
+                        0,
+                        "not-allowed", // Change later!
+                        "wrong password, and from a new IP", // Error message
+                        info
+                        }));
             return;
         }
     }

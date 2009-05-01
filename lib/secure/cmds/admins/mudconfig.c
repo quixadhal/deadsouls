@@ -575,8 +575,8 @@ static int ProcessModal(string which, string arg){
     if(which == "LOG_LOCAL_CHANS" || which == "LOG_REMOTE_CHANS"){
         reload(CHAT_D,1,1);
     }
-
     if(which == "DISABLE_IMC2"){
+        IMC2_D->UnSetAutoDisabled(1);
         if(!junk) reload(IMC2_D);
         else IMC2_D->remove();
         reload(CHAT_D);

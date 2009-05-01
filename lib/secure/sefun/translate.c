@@ -25,7 +25,7 @@
         "ecgum", "eyne", "sobre","dupa","zum","schlampe","jodio","con",\
         "narfle", "garthak", "hokanda-matuso","oota-goota","mafi","makka",\
         "shukran", "akbar", "mokele", "dapku", "loituma","plurdled",\
-        "curiae", "aethelingas", "eorlas","carajo","oder",\
+    "curiae", "aethelingas", "eorlas","carajo","oder",\
     "ae","aroha","awarua","atua","tenei", "dsfargeg",\
     "tangata","koa","kora","hupane","upane","krankor",\
     "baardaap","droogkloot","reetketelsteenbeeldhouwer","asbak","haka",\

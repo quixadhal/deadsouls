@@ -36,7 +36,7 @@ static void create() {
                 "bottom of this tunnel is the result of garbage and waste "+
                 "processing. In liquid form, this garbage flows in here "+
                 "from the east.",
-                ]) );
+                                                  ]) );
     SetSmell( ([ "default" : "The stench of sewage and waste hangs here."]) );
     SetListen("default","You hear faint echoes of dripping water.");
     SetExits( ([ "east" : "/domains/campus/room/sewer1.c"

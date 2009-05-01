@@ -3,6 +3,10 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string str) {
+    if(!sizeof(str)){
+        write(this_player()->GetPromptString());
+        return 1;
+    }
     this_player()->SetPrompt(str);
     this_player()->reset_prompt();
     return 1;

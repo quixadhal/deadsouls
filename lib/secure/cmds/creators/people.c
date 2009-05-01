@@ -255,6 +255,7 @@ static string map_info(object ob, string formatString) {
     else if(x >= 3600) idle = sprintf("%:-3d h", x/3600);
     else idle = sprintf("%:-2d m", x/60);
     ip = query_ip_name(ob);
+    if(ip == "0.0.0.0" || ip == "w.x.y.z") ip = "";
     if(!room_env(ob)) env = "no environment";
     else env = file_name(room_env(ob));
     if(!strsrch(env, REALMS_DIRS)) 

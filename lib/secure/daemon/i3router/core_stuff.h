@@ -1,3 +1,7 @@
+#ifndef IMC2_SERVER_ENABLED
+#define IMC2_SERVER_ENABLED 0
+#endif
+
 #include NETWORK_H
 #include <daemons.h>
 #include <save.h>
@@ -96,10 +100,10 @@ void heart_beat(){
     }
 }
 
-static void setup(){
-    if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
-        unguarded( (: RestoreObject, SAVE_ROUTER, 1 :) );
-    call_out("SetList",1);
-}
+    static void setup(){
+        if( file_size( SAVE_ROUTER __SAVE_EXTENSION__ ) > 0 )
+            unguarded( (: RestoreObject, SAVE_ROUTER, 1 :) );
+        call_out("SetList",1);
+    }
 
 int query_prevent_shadow(object ob){ return true(ob); }

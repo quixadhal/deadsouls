@@ -66,37 +66,47 @@ static void create(){
 
 void CheckEncounter(){
     string *enemies;
+    object env = environment(this_object());
+    object *dudes;
+
+    if(!env) return;
+
+    dudes = get_livings(env) + ({ this_player() });
 
     if( !query_heart_beat() ){
         eventCheckHealing();
         set_heart_beat( GetHeartRate() );
     }
-    if( sizeof(enemies = GetEnemyNames()) ){
-        if( member_array((string)this_player()->GetKeyName(),enemies) != -1 ){
-            eventExecuteAttack(this_player());
-            return;
-        }
-    }
 
-    if( Encounter && !query_invis(this_player(),this_object())){
-        int x = 0;
-
-        if( functionp(Encounter) ){
-            x = (int)evaluate(Encounter, this_player());
-        }
-        else if( arrayp(Encounter) ){	    
-            if( member_array(this_player()->GetKeyName(), Encounter) > -1 ){
-                x = 1;
-            }
-            else {
-                x = 1;
+    foreach(object dude in dudes){
+        object denv = environment(dude);
+        if(!denv || denv != env || dude->GetInvis()) continue;
+        if( sizeof(enemies = GetEnemyNames()) ){
+            if( member_array(dude->GetKeyName(),enemies) != -1 ){
+                eventExecuteAttack(dude);
+                continue;
             }
         }
-        else if( (int)this_player()->GetStatLevel("charisma") < Encounter ){
-            x = 1;
-        }
-        if( x ){
-            SetAttack(this_player());
+        if( Encounter ){
+            int x = 0;
+
+            if( functionp(Encounter) ){
+                x = (int)evaluate(Encounter, dude);
+            }
+            else if( arrayp(Encounter) ){	    
+                if( member_array(dude->GetKeyName(), Encounter) > -1 ){
+                    x = 1;
+                }
+                else {
+                    x = 1;
+                }
+            }
+            else if( dude->GetStatLevel("charisma") < Encounter ){
+                x = 1;
+            }
+            if( x ){
+                SetAttack(dude);
+            }
         }
     }
 }

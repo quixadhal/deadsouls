@@ -515,10 +515,10 @@ void pit_part_two(object who) {
     (DIR_STANDARD_DOMAIN+"/square")->SetProperty("no bump", 1);
     orig_long = (DIR_STANDARD_DOMAIN+"/square")->GetLong();
     (DIR_STANDARD_DOMAIN+"/square")->AddExit("down",
-                                             DIR_STANDARD_DOMAIN+"/spider_pit", (: "prevent_down" :) );
+            DIR_STANDARD_DOMAIN+"/spider_pit", (: "prevent_down" :) );
     (DIR_STANDARD_DOMAIN+"/square")->SetLong(
-                                             orig_long+"\n\nA large, deep pit has been uncovered in "
-                                             "the middle of the square.");
+            orig_long+"\n\nA large, deep pit has been uncovered in "
+            "the middle of the square.");
     clone_guards(2)->move(DIR_STANDARD_DOMAIN+"/square");
     call_out("pit_part_three", 3, ({ who, orig_long }));
 }

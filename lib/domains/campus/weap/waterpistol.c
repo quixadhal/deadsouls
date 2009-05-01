@@ -22,7 +22,7 @@ static void create() {
     SetMass(10);
     SetDollarCost(5);
     SetVendorType(VT_WEAPON);
-    SetClass(20);
+    SetClass(10);
     SetDamageType(BLUNT);
     SetFirearmType("auto");
     SetWeaponType("blunt");

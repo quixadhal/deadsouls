@@ -55,8 +55,8 @@ static int ReceiveChars(string str){
     if(!CharStuff["charbuffer"]) CharStuff["charbuffer"] = "";
 
 #if CHAR_DEBUG
-    if(sizeof(str) > 1) tc("unexpected string: "+str);
-    else tc("CHARIO received: "+s+", aka: "+c, "black");
+    if(sizeof(str) > 1) debug("unexpected string: "+str);
+    else debug("CHARIO received: "+s+", aka: "+c, "black");
 #endif
 
     if(!sizeof(CharStuff["escape"]) && (c > 31 && c < 127)){ 

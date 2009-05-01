@@ -38,8 +38,10 @@ string GetHelp(string str) {
     return ("Syntax: <customize>\n"
             "        <customize STAT AMOUNT>\n\n"
             "Allows you to spend customization points to boost the "
-            "stats with which you were born.  Once you are down to 0 "
-            "customization points, you never get any back.\n"
+            "stats with which you were born. "
             "Using this command without arguments tells you how many "
-            "points you have left to spend.");
+            "points you have left to spend."
+            "\nNOTE: Once spent, that's it. You will not receive "
+            "more customization points.\n"
+            "See also: stats, stat, skills, deviation");
 }

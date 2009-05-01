@@ -7,6 +7,7 @@
  */
 
 #include <function.h>
+#include <daemons.h>
 #include <lib.h>
 #include <vision.h>
 
@@ -69,16 +70,14 @@ mixed SetInvis(mixed val){
                     ob->CheckEncounter();
                 }
             }
-            return 1;
         }
-        return (Invisible = val);
+        else Invisible = val;
     }
     else if( functionp(val) && !Invisible ){
-        return (Invisible = val);
+        Invisible = val;
     }
-    else {
-        return Invisible;
-    }
+    INSTANCES_D->UpdateInvis( (Invisible ? 1 : 0) );
+    return Invisible;
 }
 
 varargs mixed AddItem(mixed item, mixed val){

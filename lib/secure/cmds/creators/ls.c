@@ -213,5 +213,5 @@ void help() {
             "    Time last modified\n"
             "    Size of the file\n"
             "    File name\n\nSee also: cd, mkdir, mv, pwd, rm, rmdir", 
-            this_player());
+        this_player());
 }

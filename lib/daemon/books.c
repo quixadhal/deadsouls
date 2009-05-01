@@ -7,7 +7,7 @@ mapping Books = ([]);
 
 static string *globalheader;
 static string globalstr, globalstr2;
-string SaveFile = save_file(SAVE_BOOKS);
+static string SaveFile = save_file(SAVE_BOOKS);
 
 static void create() {
     daemon::create();

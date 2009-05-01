@@ -9,13 +9,15 @@
 #include <lib.h>
 #include <cfg.h>
 #include <save.h>
+#include <daemons.h>
 #include <privs.h>
 #include "include/classes.h"
 
 inherit LIB_DAEMON;
 
 private mapping Classes = ([]);
-string SaveFile;
+private int converted = 0;
+static string SaveFile;
 
 static void create() {
     daemon::create();
@@ -23,9 +25,10 @@ static void create() {
     if( unguarded((: file_exists(SaveFile) :)) ){
         unguarded((: RestoreObject(SaveFile) :));
     }
-    if( !Classes ) Classes = ([]);
-    if(!sizeof(Classes)){
+    if(!Classes) Classes = ([]);
+    if(!converted || !sizeof(Classes)){
         string *classes = get_dir(CFG_CLASSES+"/");
+        Classes = ([]);
         foreach(string element in classes){
             string str = CFG_CLASSES+"/"+element;
             if(file_exists(str)) {
@@ -33,6 +36,7 @@ static void create() {
             }
         }
     }
+    converted = 1;
     unguarded((: SaveObject(SaveFile) :));
 }
 
@@ -42,7 +46,7 @@ static void create() {
     }
 
 int ClassMember(string my_class, string query_class) {
-    class Class cls;
+    mapping cls;
 
     if( my_class == query_class ) {
         return 1;
@@ -51,11 +55,11 @@ int ClassMember(string my_class, string query_class) {
     if( !cls ) { // query class is a multi-class, thus must be equal to mine
         return 0; // This should change for triple classing
     }
-    return (member_array(my_class, values(cls->Multis)) != -1);
+    return (member_array(my_class, values(cls["Multis"])) != -1);
 }
 
 void AddClass(string file) {
-    class Class cls;
+    mapping cls = ([]);
     string array lines, tmp;
     string class_name;
 
@@ -76,21 +80,21 @@ void AddClass(string file) {
             });
     class_name = lines[0];
     if( Classes[class_name] ) error("Class already exists");
-    cls = new(class Class);
     Classes[class_name] = cls;
     lines = lines[1..];
-    cls->Multis = ([]);
+    cls["Multis"] = ([]);
     while( sizeof(tmp = explode(lines[0], ":")) == 2 ) {
-        cls->Multis[tmp[0]] = tmp[1];
+        cls["Multis"][tmp[0]] = tmp[1];
         lines = lines[1..];
     }
-    cls->Skills = ([]);
+    cls["Skills"] = ([]);
     while(sizeof(tmp = explode(lines[0], ":")) == 3) {
-        class Skill s = new (class Skill);
+        mapping s = ([]);
 
-        s->Average = to_int(tmp[1]);
-        s->SkillClass = to_int(tmp[2]);
-        cls->Skills[tmp[0]] = s;
+        s["Average"] = to_int(tmp[2]);
+        s["SkillClass"] = to_int(tmp[1]);
+        cls["Skills"][tmp[0]] = s;
+        SKILLS_D->SetSkill(tmp[0], class_name, tmp[1]);
         if( sizeof(lines) == 1 ) {
             lines = ({});
             break;
@@ -99,7 +103,7 @@ void AddClass(string file) {
             lines = lines[1..];
         }
     }
-    cls->Complete = 1;
+    cls["Complete"] = 1;
     SaveObject(SaveFile);
 }
 
@@ -110,59 +114,59 @@ void RemoveClass(string class_name) {
 }
 
 void SetClass(string class_name, mixed array args) {
-    class Class cls = Classes[class_name];
+    mapping cls = Classes[class_name];
     mixed array primes, ots;
-
-    if( !cls || !cls->Complete || sizeof(args) != 3 ) return;
-    args[0] = cls->Multis;
+    //tc("CLASSES_D SetClass("+identify(class_name)+", "+identify(args)+")");
+    if( !cls || !cls["Complete"] || sizeof(args) != 3 ){
+        //tc("bad","red");
+        return;
+    }
+    args[0] = cls["Multis"];
     primes = ({});
     ots = ({});
-    foreach(string key, class Skill skill in cls->Skills) {
-        if( skill->SkillClass == 1 ) {
-            primes = ({ primes..., ({ key, skill->Average, 1 }) });
-        }
-        else {
-            ots = ({ ots..., ({ key, skill->Average, skill->SkillClass }) });
-        }
+    foreach(string key, mapping skill in cls["Skills"]) {
+        ots = ({ots..., ({ key, skill["Average"], skill["SkillClass"] })});
     }
-    args[1] = primes;
-    args[2] = ots;
+    args[1] = ots;
 }
 
 void SetComplete(string class_name) {
-    class Class cls;
-
+    mapping cls;
     validate();
     if( !Classes[class_name] ) error("No such class");
     else cls = Classes[class_name];
-    cls->Complete = 1;
+    cls["Complete"] = 1;
     SaveObject(SaveFile);
 }
 
 varargs string array GetClasses() {
-    return filter(keys(Classes), (: ((class Class)Classes[$1])->Complete :));
+    return filter(keys(Classes), (: Classes[$1]["Complete"] :));
+}
+
+mixed GetClass(string str){
+    return copy(Classes[str]);
 }
 
 string GetHelp(string class_name) {
-    class Class cls = Classes[class_name];
+    mapping cls = Classes[class_name];
     string help = "Class: " + class_name + "\n\n";
 
     if( !cls ) return 0;
-    if( !sizeof(cls->Multis) ) {
+    if( !sizeof(cls["Multis"]) ) {
         help += capitalize(class_name) + " cannot multi-class.\n";
     }
     else {
         help += capitalize(pluralize(class_name)) + " can multi-class with " +
             "the following primary classes:\n";
-        foreach(string prime, string other in cls->Multis) {
+        foreach(string prime, string other in cls["Multis"]) {
             help += "\t" + capitalize(class_name) + " + " + prime + " = " +
                 other +  "\n";
         }
     }
     help += "\n" + capitalize(pluralize(class_name)) + " has the following " +
         "primary skills:\n";
-    foreach(string skill, class Skill s in cls->Skills) {
-        if( s->SkillClass == 1 ) {
+    foreach(string skill, mapping s in cls["Skills"]) {
+        if( s["SkillClass"] == 1 ) {
             help += "\t" + skill + "\n";
         }
     }

@@ -1,15 +1,15 @@
 #include <lib.h>
 #include NETWORK_H
-#define DS_IP "66.197.134.110 8000"
-//#include <socket_err.h>
 inherit LIB_ITEM;
 
 int attempting, connected, socket ;
 object person, player;
 string preset;
+string DS_IP = "66.197.134.110 8000";
 
 static void create()
 {
+    string myname = mud_name();
     item::create();
     SetKeyName("telnet_room_client");
     SetShort( "a telnet client" ) ;
@@ -20,12 +20,15 @@ static void create()
             "[connect|telnet] : start telnet session.\nreset [client]"
             " : reset the telnet client.\nreconnect : reconnect to session"
             " (if you go netdead)\n");
-    SetMass( 5 ) ;
+    SetMass(0) ;
     attempting = 0 ;
     connected = 0 ;
     socket = 0 ;
     person = 0 ;
     set_heart_beat(2);
+    if(!strsrch(myname, "Dead Souls") && myname != "Dead Souls Prime"){
+        DS_IP = "66.197.134.110 6666";
+    }
 }
 
 void heart_beat(){

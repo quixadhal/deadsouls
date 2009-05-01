@@ -1,5 +1,73 @@
+---- 2.9a17 ---
+- Released 2009-05-01
+- Driver is now a slightly modified FluffOS 2.16.
+- Converted structs to mappings in CLASSES_D.
+- Fixed CLASSES_D bug that inverted the position of "importance" and
+  "average starting level" of classes.
+- Instances now share local channels.
+- Users on different instances can now tell to each other.
+- Users on different instances can now get "finger" info on each other.
+- Users on different instances can now see each other in "who".
+- Added commands: instconfig, deviate, destfile
+- New players can't create a character if the same name is used
+  on another instance. 
+- Added sefuns: remote_users(), local_users()
+- The actions map elements in LIB_ROOM now actually fire based on
+  their individual "chance" rather than the overall ActionChance
+  (thx Raudhrskal!).
+- IMC2 tells now work like i3 tells, no need to use the "imc2" command.
+- AUTO_WIZ set above 1 now forces new users to become creators, rather
+  than providing the choice to do so.
+- IP addresses of users are no longer displayed to creators on
+  AUTO_WIZ muds.
+- Users on different instances can now shout to each other.
+- Fixed problems in the router code when a mud's fd is 0.
+- IMC2 client host/port info now does a better job of being correct.
+- IRN nodes now periodically send each other mud and chan lists.
+- Some password thingies like i3 and IMC2 are now handled by a
+  secrets daemon, to improve security.
+- The non-quitting non-net-dead destruction of users is now announced
+  and logged (for example, if you "dest" a creator).
+- Suicide notes now save somewhere more reasonable.
+- Paths in read.cfg and write.cfg can now have wildcard files.
+- Added STATS_D and SKILLS_D. They are meant to keep track of which
+  stats and skills have been used in the mud, and when possible, 
+  maintain information the "importance" of a stat to a race and a
+  skill to a class, derived by RACES_D and CLASSES_D respectively. 
+  This allows a centralized repository of stat/skill information
+  that the DEVIATION_D can rely on for deviation calculation.
+- Added a stat deviation system. A player can now have an improved
+  stat class, but at a cost of some percentage of earned XP. See:
+  help deviation
+- The hist command now reverts to the old "query the chat cache"
+  behavior if the mud doesn't log the type of channel being queried.
+  Note that by default, remote channels are not logged.
+- Fixed an odd display problem in the hist command.
+- SNOOP_D can now ignore ip's (good for running bot tests from a known
+  ip), and admins can now be monitored if set to be so explicitly,
+  overriding GLOBAL_MONITOR == 2.
+- Fixed userlist generation in PLAYERS_D in an instance.
+- Since IMC2 servers do not handle usernames with spaces well, IMC2_D
+  now strips spaces from names before sending channel messages.
+- Stargates can now register with the stargate daemon only if they are
+  in /domains/ or /secure/, to avoid dozens of accidental newbie 
+  stargates to creator realms.
+- The prompt command without an argument now returns the raw prompt
+  string, rather than setting a null prompt.
+- Added improvements to the colors command by Raudhrskal.
+- Cleaned up the lines command.
+- Reply target is now reset on login, and ages out after 15 minutes
+  of not replying and not receiving a message from that target.
+- Inventory output now has worn things at the bottom, and wielded
+  things just above worn things.
+- SetEncounter() on aggro npc's now keys on GetInvis() rather than
+  query_invis() for somewhat more predictable results when trying
+  to sneak around.
+- Players on instances no longer get booted off during warmboots.
+
 ---- 2.9a16 ---
 - Released 2009-03-12
+- The "locate" command is now "i3locate".
 - Prettified the tabbed file completion stuff.
 - Armor now makes more of an effort to resolve ambiguous
   targets, such as "wear ring" when both hands can take a ring.

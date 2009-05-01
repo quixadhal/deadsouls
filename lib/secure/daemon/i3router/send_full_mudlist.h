@@ -2,11 +2,11 @@ void send_full_mudlist(string mud){
     int interval = 0;
     mixed *package = ({});
     mixed *names = ({});
-    if(!connected_muds[mud]) return;
+    if(undefinedp(connected_muds[mud])) return;
     //trr("trying to send full mudlist to "+mud);
     foreach(string mudname in keys(mudinfo)){
         int mudstat;
-        if(!connected_muds[mudname] && mudinfo[mudname]){
+        if(undefinedp(connected_muds[mudname]) && mudinfo[mudname]){
             if(!mudinfo[mudname]["disconnect_time"]) mudstat = -1;
             else mudstat = 0;
         }
@@ -15,23 +15,23 @@ void send_full_mudlist(string mud){
         }
 
         package += ({ ({ "mudlist", 5, router_name, 0, 0, 0, mudinfo_update_counter,([
-              mudname:({
-                mudstat,
-                // -1=up, 0=down, n=down for n secs
-                mudinfo[mudname]["ip"], // ip_addr
-                mudinfo[mudname]["player_port"], // player_port
-                mudinfo[mudname]["imud_tcp_port"], // imud_tcp_port
-                mudinfo[mudname]["imud_udp_port"], // imud_udp_port
-                mudinfo[mudname]["mudlib"], // mudlib
-                mudinfo[mudname]["base_mudlib"], // base_mudlib
-                mudinfo[mudname]["driver"], // driver
-                mudinfo[mudname]["mud_type"], // mud_type
-                mudinfo[mudname]["open_status"], // open_status
-                mudinfo[mudname]["admin_email"], // admin_email
-                mudinfo[mudname]["services"], // services
-                mudinfo[mudname]["other_data"], // other_data
-              })
-            ]) }) });
+                        mudname:({
+                            mudstat,
+                            // -1=up, 0=down, n=down for n secs
+                            mudinfo[mudname]["ip"], // ip_addr
+                            mudinfo[mudname]["player_port"], // player_port
+                            mudinfo[mudname]["imud_tcp_port"], // imud_tcp_port
+                            mudinfo[mudname]["imud_udp_port"], // imud_udp_port
+                            mudinfo[mudname]["mudlib"], // mudlib
+                            mudinfo[mudname]["base_mudlib"], // base_mudlib
+                            mudinfo[mudname]["driver"], // driver
+                            mudinfo[mudname]["mud_type"], // mud_type
+                            mudinfo[mudname]["open_status"], // open_status
+                            mudinfo[mudname]["admin_email"], // admin_email
+                            mudinfo[mudname]["services"], // services
+                            mudinfo[mudname]["other_data"], // other_data
+                            })
+                        ]) }) });
     }
     while(sizeof(package)){
         //trr("package: "+sizeof(package),"white");

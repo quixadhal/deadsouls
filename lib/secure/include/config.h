@@ -76,8 +76,6 @@
 #define SEFUN_PLURALIZE          0
 #define LOG_REMOTE_CHANS         0
 #define LOG_LOCAL_CHANS          1
-#define IMC2_CLIENT_PW           "clientpass"
-#define IMC2_SERVER_PW           "serverpass"
 #define ENABLE_CGI               0
 #define WWW_DIR_LIST             0
 #define ENABLE_CREWEB            0

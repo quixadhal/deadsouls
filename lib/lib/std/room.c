@@ -97,7 +97,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3);
 void CheckActions(){
     if(sizeof(ActionsMap)){
         foreach(mixed key, mixed val in ActionsMap){
-            if( ActionChance > random(100) ){
+            if( val > random(100) ){
                 if(functionp(key)) evaluate(key);
                 else eventPrint(key);
             }

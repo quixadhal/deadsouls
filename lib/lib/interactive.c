@@ -40,7 +40,7 @@ private string Password, Email, RealName, Rank, LoginSite, HostSite, WebPage;
 private static string globaltmp;
 private mapping News;
 private class marriage *Marriages;
-private static int LastAge, Setup;
+private static int LastAge, Setup, quitting;
 private static object NetDiedHere;
 private static mapping LastError;
 private static string *UserId;
@@ -144,8 +144,8 @@ int Setup(){
     if( !(tmp = GetMessage("login")) )
         tmp = GetName() + " enters " + mud_name() + ".";
     if(!(archp(this_object()) && this_object()->GetInvis())){
-        log_file("enter", GetCapName()+" (enter): "+ctime(time())+
-                " : "+query_ip_name(this_object())+"\n");
+        PLAYERS_D->PlayerUpdate(GetKeyName(), 1);
+        log_file("enter", GetCapName()+" (enter): "+ctime(time())+"\n");
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
     }
 
@@ -168,7 +168,8 @@ static void net_dead(){
     NetDiedHere = environment(this_object());
     save_player(GetKeyName());
     if(!(archp(this_object()) && this_object()->GetInvis())){
-        log_file("enter", GetCapName() + " (net-dead): " + ctime(time()) + "\n");
+        PLAYERS_D->PlayerUpdate(GetKeyName(), -1);
+        log_file("enter", GetCapName() + " (net-dead): "+ctime(time())+"\n");
         environment()->eventPrint(GetName() + " suddenly disappears into "
                 "a sea of irreality.", MSG_ENV, this_object());
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
@@ -185,6 +186,7 @@ void eventReconnect(){
     LastAge = time();
     HostSite = query_ip_number(this_object());
     eventPrint("Reconnected.", MSG_SYSTEM);
+    PLAYERS_D->PlayerUpdate(GetKeyName(), 1);
     if(!(archp(this_object()) && this_object()->GetInvis())){
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);
         environment()->eventPrint(GetCapName() + " has rejoined this reality.",
@@ -196,18 +198,31 @@ void eventReconnect(){
 }
 
 int eventDestruct(){
-    object ob;
-
+    object ob, env = environment();
+    int ret, inter = interactive(), arc = archp();
+    int invis = this_object()->GetInvis();
+    string name = GetCapName(), stack = get_stack();
     interface::eventDestruct();
     foreach(ob in deep_inventory(this_object())){
         if( ob ) catch(ob->eventDestruct());
     }
-    return object::Destruct();
+    ob = this_object();
+    INSTANCES_D->UpdateInvis();
+    if(inter && !(arc && invis) && !quitting){
+        log_file("enter", name + " (dested): "+ctime(time())+"\n");
+        log_file("dests", name + " "+ctime(time())+" "+
+                stack+"\n---\n\n");
+        CHAT_D->eventSendChannel("SYSTEM","connections","[" +
+                name + " has been destructed]", 0);
+        if(env) env->eventPrint(name + " disintegrates!",
+                MSG_ENV, (ob || ({})));
+    }
+    ret = object::Destruct();
+    return ret;
 }
 
 mixed eventDivorce(){
     class marriage m;
-
     m = Marriages[0];
     m->DivorceDate = time();
     return 1;
@@ -216,7 +231,6 @@ mixed eventDivorce(){
 mixed eventMarry(object who, object to_whom){
     class marriage m;
     object env;
-
     if( (env = previous_object()) != environment() ) return 0;
     m = new(class marriage);
     m->Spouse = (string)to_whom->GetCapName();
@@ -230,7 +244,6 @@ mixed eventMarry(object who, object to_whom){
 int eventMove(mixed dest){
     string str;
     int x;
-
     x = move::eventMove(dest);
     if( x ){
         if( !(str = (string)environment()->GetProperty("login")) ){
@@ -260,6 +273,7 @@ int cmdQuit(){
                 this_object());
         return 0;
     }
+    quitting = 1;
     tell_object(this_object(),"Please come back another time!");
     if(!creatorp(this_object())){
         foreach(object ob in all_inventory(this_object())){
@@ -274,6 +288,7 @@ int cmdQuit(){
             " is gone from this reality!");
     save_player(GetKeyName());
     if(!(archp(this_object()) && this_object()->GetInvis())){
+        PLAYERS_D->PlayerUpdate(GetKeyName(), 0);
         log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
         if(env) message("environment", tmp, env, ({this_object()}));
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
@@ -290,7 +305,6 @@ int cmdQuit(){
 
 int GetAge(){
     int x;
-
     if(!interactive(this_object())) return Age;
     x = time() - LastAge;
     Age += x;
@@ -500,19 +514,14 @@ string SetWebPage(string page){
 
 varargs nomask static void validate_paranoia(int prev){
     object ob = ( prev ? previous_object() : this_player() );
-    //tc("this_player(): "+identify(this_player()));
-    //tc("archp(this_player()): "+identify(archp(this_player())));
-    //tc("ob: "+identify(ob));
     if( !this_player() || (!archp(this_player()) &&
                 ob != this_object()) ){
-        //tc("FAIL","red");
         error("Illegal attempt to access paranoia: "+get_stack()+
                 " "+identify(previous_object(-1)));
         log_file("adm/pause",timestamp()+" Illegal attempt to access "+
                 "paranoia settings on "+identify(this_object())+
                 " by "+identify(previous_object(-1))+"\n");
     }
-    //tc("PASS","green");
 }
 
 mixed GetParanoia(string str){
@@ -538,9 +547,6 @@ static nomask void NotifyReceipt(object ob){
 
 nomask int eventReceiveObject(object ob){
     int ret = container::eventReceiveObject(ob);
-    //tc("ret: "+ret,"blue");
-    //tc("ob: "+identify(ob),"blue");
-    //tc("im: "+identify(GetParanoia("inventory_monitoring")),"blue");
     if(ret && GetParanoia("inventory_monitoring")){
         tell_player(this_object(),"%^YELLOW%^NOTICE:%^RESET%^ "+identify(ob)+
                 " enters your inventory.");

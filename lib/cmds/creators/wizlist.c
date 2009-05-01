@@ -5,12 +5,13 @@ inherit LIB_COMMAND;
 
 int cmd(string str){
     string *raw_array;
-    string *grps = groups();
+    string *grps = sort_array(groups(), 1);
     string ret = "";
-    PLAYERS_D->CompileCreList();
     raw_array = sort_array(PLAYERS_D->GetCreatorList(),1);
-    foreach(string wiz in raw_array){
-        string tmp = wiz;
+    foreach(mixed wiz in raw_array){
+        string tmp;
+        if(!wiz || !stringp(wiz)) continue;
+        tmp = wiz;
         foreach(string group in grps){
             if(member_group(wiz, group)) tmp += " "+group+",";
         }

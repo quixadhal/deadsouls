@@ -87,10 +87,10 @@ mixed can_get_wrd_wrd_out_of_obj(mixed args...) {
         if(args[5]) ob = to_object(args[5]);
         else if(args[3]) ob = to_object(args[3]);
 
-        if(ob && ob->GetClosed()){
-            return "The "+remove_article(ob->GetShort())+" is closed." ;
-        }
-        return ret;
+    if(ob && ob->GetClosed()){
+        return "The "+remove_article(ob->GetShort())+" is closed." ;
+    }
+    return ret;
 }
 
 //mixed can_get_wrd_wrd_from_obj(string num, string curr) {

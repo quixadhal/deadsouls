@@ -258,6 +258,8 @@ int GroupsMenu(){
     tmp += "\t\tw) Show groups\n\n";
     tmp += "\t\tz) return to main menu\n";
     tmp += "\t\tq) quit\n";
+    tmp += "\n\nNote that this menu is %^RED%^DEPRECATED%^RESET%^.\n";
+    tmp += "You should use the \"groupmod\" command instead.\n";
 
     this_player()->eventPrint(tmp, "foo");
     input_to((: process_input :));
@@ -807,7 +809,7 @@ int ChangeName(){
 
 varargs int eventChangeName(string newname, int automated){
     string *line_array;
-    string nameline, newline, newfile, line_string, junk, name;
+    string mconfig, nameline, newline, newfile, line_string, junk, name;
 
     validate();
     if(!newname || newname == "") {
@@ -822,7 +824,15 @@ varargs int eventChangeName(string newname, int automated){
             return 0;
     }
 
-    line_string = read_file("/secure/cfg/mudos.cfg");
+    if(!find_object(INSTANCES_D) || !ENABLE_INSTANCES || 
+            INSTANCES_D->GetMyInstanceName() == "global"){
+        mconfig = "/secure/cfg/mudos.cfg";
+    }
+    else {
+        mconfig = "/secure/cfg/mudos."+query_host_port()+".cfg";
+    }
+
+    line_string = read_file(mconfig);
     if(!sizeof(line_string)) write("Couldn't read file.");
     line_array = explode(line_string, "\n");
     if(!sizeof(line_array)) write("Array is zero length.");
@@ -840,7 +850,7 @@ varargs int eventChangeName(string newname, int automated){
 
     if(!nameline || sscanf(nameline,"%s : %s",junk, name) < 2) {
         write("Operation failed. You need to copy over "+
-                "/secure/cfg/mudos.cfg immediately with an original.");
+                mconfig+" immediately with an original.");
         if(!automated) Menu();
         return 0;
     }
@@ -848,13 +858,13 @@ varargs int eventChangeName(string newname, int automated){
     if(automated){
         if(name != "DeadSoulsWin" && name != "DeadSouls" &&
                 name != "Dead Souls" && name != "DeadSoulsNew") newname = name;
-        cp("/secure/cfg/mudos.cfg","/secure/cfg/mudos.orig");
+        cp(mconfig,"/secure/cfg/mudos.orig");
     }
 
     newline = junk + " : " + newname;
     newfile = replace_string(line_string, nameline, newline);
-    write_file("/secure/cfg/mudos.cfg",newfile,1);
-    cp("/secure/cfg/mudos.cfg","/secure/cfg/mudos.autobak");
+    write_file(mconfig,newfile,1);
+    cp(mconfig,"/secure/cfg/mudos.autobak."+query_host_port());
     write("\n");
     if(!automated)  {
         write("\nMUD's name changed. Reboot the MUD to activate new name.\n");
@@ -866,9 +876,17 @@ varargs int eventChangeName(string newname, int automated){
 
 int ChangePort(){
     validate();
-    write("Current MUD network port is "+query_host_port());
-    write("Please enter the new network port for your MUD:\n");
-    input_to( (: eventChangePort :) );
+    if(!find_object(INSTANCES_D) || !ENABLE_INSTANCES ||
+            INSTANCES_D->GetMyInstanceName() == "global"){
+        write("Current MUD network port is "+query_host_port());
+        write("Please enter the new network port for your MUD:\n");
+        input_to( (: eventChangePort :) );
+    }
+    else {
+        write("Port changing in admintool is disabled for instances.");
+        Menu();
+    }
+
     return 1;
 }
 
@@ -1021,11 +1039,11 @@ int eventAddGroup(string str){
                 }
 
                 int RemoveGroup(){
-                validate();
-                write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
-                write("\nWhat is the name of the group you'd like to remove?\n");
-                input_to( (: eventRemoveGroup :) );
-                return 1;
+                    validate();
+                    write("\nCurrent groups file: \n"+read_file("/secure/cfg/groups.cfg")+"\n\n");
+                    write("\nWhat is the name of the group you'd like to remove?\n");
+                    input_to( (: eventRemoveGroup :) );
+                    return 1;
                 }
 
 int eventRemoveGroup(string str){
@@ -1147,6 +1165,7 @@ int eventEditGroup(string members){
     string *dudes;
 
     validate();
+    members = lower_case(members);
     top_array = ({});
     bottom_array = ({});
 
@@ -1173,6 +1192,7 @@ int eventEditGroup(string members){
         }
         if(strsrch(members,":") != -1) dudes = explode(members,":");
         else dudes = ({ members });
+        //tc("dudes: "+identify(dudes));
 
         if(member_array(this_player()->GetKeyName(),dudes) == -1) {
             write("You can only modify this line with admintool if you include yourself in it. Modification cancelled.\n");

@@ -53,7 +53,7 @@ void create() {
                 "the music by which the shadows cavort and dance. ",
                 "stands" : "The stands are made of %^BLACK%^%^BOLD%^black%^RESET%^ iron and are of plain construction. "
                 "Each stand holds between three to four lit candles. ",
-                ]));
+                    ]));
 }
 
 void exaaltar() {

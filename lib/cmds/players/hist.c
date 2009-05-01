@@ -7,15 +7,15 @@ string gfile;
 
 varargs string *Prettify(string *arr, string chan){
     string *ret = ({});
-    string colorchan, stamp, mess, junk, remotechan;
+    string colorchan = "", stamp, mess, junk, remotechan;
     chan = CHAT_D->GetLocalChannel(chan);
     remotechan = CHAT_D->GetRemoteChannel(chan);
-    if(!chan || !(colorchan = CHAT_D->GetTag(chan))){
-        if(!colorchan && !(colorchan = CHAT_D->GetTag(remotechan))){
+    if(!chan || !(CHAT_D->GetTag(chan))){
+        if(!(colorchan = CHAT_D->GetTag(remotechan))){
             colorchan = "%^B_BLACK%^YELLOW%^<"+chan+">%^RESET%^";
         }
     }
-    colorchan += "<" + chan + ">%^RESET%^";
+    else colorchan += "<" + chan + ">%^RESET%^";
 
     foreach(string line in arr){
         int i = sscanf(line,"%s.%s]%s", junk, stamp, mess);
@@ -45,6 +45,16 @@ mixed cmd(string args) {
     if(!strsrch(args, "tell")){
         load_object("/secure/cmds/players/tell")->cmd("hist");
         return 1;
+    }
+
+    if(!LOG_REMOTE_CHANS && 
+      member_array(args, CHAT_D->GetRemoteChannels(1)) != -1){
+        return CHAT_D->cmdLast(args);
+    }
+
+    if(!LOG_LOCAL_CHANS && 
+      member_array(args, CHAT_D->GetRemoteChannels()) == -1){
+        return CHAT_D->cmdLast(args);
     }
 
     i = sscanf(args,"%s %d", gfile, lines);
@@ -92,7 +102,12 @@ mixed cmd(string args) {
 }
 
 string GetHelp(string topic) {
-    return ("Syntax: hist CHANNEL [number]\n"
-            "        hist [ say | whisper | tell | yell | shout ]\n\n"
-            "Gives you the backscroll of the specified communication.");
+    string ret = "Syntax: hist CHANNEL [number]\n"
+        "        hist [ say | whisper | tell | yell | shout ]\n\n"
+        "Gives you the backscroll of the specified communication.\n";
+    if(!LOG_REMOTE_CHANS){
+        ret += "Note that remote channel logging is not enabled on "
+            "this mud, so hist for intermud channels will not work.";
+    }
+    return ret;
 }

@@ -428,6 +428,10 @@ varargs mixed do_verb_rule(string verb, string rle, mixed args...) {
 static void create() {
     SetSaveFile(SAVE_SOUL);
     daemon::create();
+    if(!file_exists(GetSaveFile()) && 
+            file_exists(old_savename(GetSaveFile()))){
+        cp(old_savename(GetSaveFile()), GetSaveFile());
+    }
     SetNoClean(1);
     parse_init();
     foreach(string verb, class emote data in Emotes) {

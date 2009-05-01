@@ -61,6 +61,7 @@ mkdir $OLDLIB/lib/domains/cave/save
 mkdir $OLDLIB/lib/domains/cave/txt
 mkdir $OLDLIB/lib/domains/cave/virtual
 mkdir $OLDLIB/lib/domains/cave/weap
+mkdir $OLDLIB/lib/doc/phints
 
 if [ $3 ]
 then

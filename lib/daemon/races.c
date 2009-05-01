@@ -9,6 +9,7 @@
 #include <lib.h>
 #include <cfg.h>
 #include <save.h>
+#include <daemons.h>
 #include <privs.h>
 #include <armor_types.h>
 #include <mouth_types.h>
@@ -305,6 +306,7 @@ void AddRace(string file, int player) {
             case "SKILL":      
                 tmp = explode(replace_string(line, "SKILL ", ""), ":");
             res["Skills"][tmp[0]] = ({ tmp[1], tmp[2], tmp[3], tmp[4] });
+            SKILLS_D->SetSkill(tmp[0], race, tmp[2], 1);
             break;
 
             case "MASS":
@@ -341,6 +343,7 @@ void AddRace(string file, int player) {
             s["Average"] = copy(to_int(tmp[1]));
             s["Class"] = copy(to_int(tmp[2]));
             res["Stats"][tmp[0]] = s;
+            STATS_D->SetStat(tmp[0], race, s["Class"]);
             break;
 
             case "MOUTH":

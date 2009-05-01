@@ -7,6 +7,7 @@
  */
 
 #include <talk_type.h>
+#include <commands.h>
 #include <daemons.h>
 #include <message_class.h>
 #include "include/talk.h"
@@ -76,7 +77,8 @@ int eventTellHist(string str){
     if(!tz || !valid_timezone(tz)) tz = query_tz();
     if(!TalkHist) TalkHist = ([]);
     if(!TalkHist["tell"]) TalkHist["tell"] = ({});
-    if(pob != SERVICES_D && pob != "/secure/cmds/players/tell" &&
+    if(pob != SERVICES_D && pob != CMD_TELL &&
+            pob != IMC2_D && pob != INSTANCES_D &&
             stack != "eventTellHist eventHearTalk eventSpeak cmd cmdAll <function>" &&
             stack != "eventTellHist eventHearTalk eventSpeak cmd cmd cmdAll <function>"){
         return 0; 
@@ -318,8 +320,9 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang){
                 msg + "%^RESET%^\"";
             eventTalkHist(tmp, "shout");
             this_object()->eventPrint(tmp, MSG_CONV); 		
+            INSTANCES_D->eventSendShout(msg, lang);
             (users() - ({ this_object() }))->eventHearTalk(this_object(), target,
-                                                           cls,"shout", msg, lang);
+                    cls,"shout", msg, lang);
             return 1;
 
         default:

@@ -358,6 +358,7 @@ string SetTerminal(string terminal){
         case "console": case "ibm-3278-2":
             terminal = "unknown";
         break;
+        case "html" : terminal = "html"; break;
         default:
         log_file("terminals", "Unknown terminal type: " + terminal + "\n");
         terminal = Terminal;

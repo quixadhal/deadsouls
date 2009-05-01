@@ -233,14 +233,14 @@ mixed get_info(int auto) {
         "\nrouter_list"+identify(router_list)+
         "\nchannel_update_counter: "+ channel_update_counter+
         ((sizeof(channels)) ? "\nchannels:"+implode(sort_array(keys(channels),1),", ") : "")+
-            "\nmudinfo_update_counter: "+ mudinfo_update_counter+
-                "\nsockets: "+socks+
-                "\nmuds: "+muddies+
-                "\nRouter socket daemon uptime: "+
-                time_elapsed(time()-RSOCKET_D->GetInceptDate())+
-                ", up since "+ctime(RSOCKET_D->GetInceptDate())+
-                sret+
-                "\n"+Report();
+        "\nmudinfo_update_counter: "+ mudinfo_update_counter+
+        "\nsockets: "+socks+
+        "\nmuds: "+muddies+
+        "\nRouter socket daemon uptime: "+
+        time_elapsed(time()-RSOCKET_D->GetInceptDate())+
+        ", up since "+ctime(RSOCKET_D->GetInceptDate())+
+        sret+
+        "\n"+Report();
 
     if(auto) return ret;
     write(ret);
@@ -411,7 +411,7 @@ void check_graylist(){
     //tc("Checking graylist");
     if(sizeof(graylisted_muds)){
         graylisted_muds = distinct_array(graylisted_muds);
-        tc("removing graylisted  "+graylisted_muds[0]);
+        tn("i3 router: removing graylisted  "+graylisted_muds[0]);
         graylisted_muds -= ({ graylisted_muds[0] });
     }
 }
@@ -421,7 +421,7 @@ void check_discs(){
     int i = 1;
 
     foreach(string mudname in keys(mudinfo)){
-        if(!connected_muds[mudname] && mudinfo[mudname]["router"]){
+        if(undefinedp(connected_muds[mudname]) && mudinfo[mudname]["router"]){
             if(mudinfo[mudname]["router"] != my_name &&
                     member_array(mudinfo[mudname]["router"],keys(irn_connections)) == -1){
                 if(!mudinfo[mudname]["disconnect_time"]){
@@ -441,18 +441,20 @@ void check_discs(){
             if(!intp(element)) continue;
             if(!socket_status(element) ||
                     socket_status(element)[1] == "CLOSED" || !GetRemoteIP(element) ||
-                    GetRemoteIP(element) != mudinfo[query_connected_fds()[element]]["ip"]){
+                    ( mudinfo[query_connected_fds()[element]] && GetRemoteIP(element) != mudinfo[query_connected_fds()[element]]["ip"])){
                 foreach(string key, mixed val in mudinfo){
-                    if(!connected_muds[key] && mudinfo[key]["router"]){
+                    if(undefinedp(connected_muds[key]) 
+                            && mudinfo[key]["router"]){
                         if(mudinfo[key]["router"] == my_name){
-                            server_log("Cleaning connection info from "+key);
+                            server_log("Cleaning my connection info from "+key);
                             if(!mudinfo[key]["disconnect_time"])
                                 mudinfo[key]["disconnect_time"] = time();
                             if(mudinfo[key]["connect_time"]) 
                                 mudinfo[key]["connect_time"] = 0;
                         }
                         else {
-                            server_log("Cleaning connection info from "+key);
+                            server_log("Cleaning "+ mudinfo[key]["router"]+
+                                    " connection info from "+key);
                             if(!mudinfo[key]["disconnect_time"])
                                 mudinfo[key]["disconnect_time"] = 0;
                             if(mudinfo[key]["connect_time"]) 
@@ -529,7 +531,7 @@ void clear_discs(){
     foreach(mudname in keys(mudinfo)) {
         int deadsince = time() - mudinfo[mudname]["disconnect_time"];
 
-        if(!connected_muds[mudname] && mudinfo[mudname]["router"]){
+        if(undefinedp(connected_muds[mudname]) && mudinfo[mudname]["router"]){
             if(mudinfo[mudname]["router"] != my_name && 
                     member_array(mudinfo[mudname]["router"],keys(irn_connections)) == -1){
                 if(!mudinfo[mudname]["disconnect_time"])
@@ -611,7 +613,7 @@ varargs void ReceiveList(mixed data, string type, string who){
             mudinfo_update_counter++;
             //if(mudinfo[key] && mudinfo[key]["router"] &&
             //  mudinfo[key]["router"] == router_name) continue;
-            if(!connected_muds[key]){
+            if(undefinedp(connected_muds[key])){
                 trr("%^B_GREEN%^%^BLACK%^accepting "+key+
                         " update from "+(mudinfo[key] ? mudinfo[key]["router"] : who ));
                 mudinfo_updates[key] = mudinfo_update_counter;

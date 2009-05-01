@@ -6,6 +6,8 @@
  *    Last modified: 97/01/03
  */
 
+#include <daemons.h>
+
 inherit LIB_LEVEL;
 
 private int            Level       = 1;
@@ -72,7 +74,6 @@ int SetLevel(int x){
             SetSkill(skill, 2*x);
         }
     }
-
     return (Level = x);
 }
 
@@ -166,7 +167,7 @@ void RemoveSkill(string skill){
     map_delete(Skills, skill);
 }
 
-/* varargs void SetSkill(string skill, int level, int classes)
+/* varargs void SetSkill(string skill, int level, int cls)
  * string skill - the name of the skill being set (required)
  * int level - the level to which that skill is being set (required)
  * int classes - the class to which the skill is being set (optional)
@@ -181,8 +182,9 @@ void RemoveSkill(string skill){
  * useful mostly for monster types, probably should have override
  * protections in the user object (should use AddSkill() for users)
  */
-varargs void SetSkill(string skill, int level, mixed cls){
+varargs void SetSkill(string skill, int level, int cls){
     int tmp;
+    SKILLS_D->SetSkill(skill);
     if(cls && !intp(cls)){
         tmp = 1;
         cls = tmp;

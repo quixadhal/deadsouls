@@ -89,6 +89,8 @@ static void close_callback(int fd){
 
     if(!find_object(ROUTER_D)) return;
 
+    ROUTER_D->close_notify(fd);
+
     muds_on_this_fd = ROUTER_D->query_connected_muds();
     foreach(mixed key, mixed val in muds_on_this_fd){
         if(val != fd) map_delete(muds_on_this_fd, key);

@@ -49,6 +49,7 @@ int make_empties(){
             "/doc/help/law",
             "/doc/faq",
             "/log/author_stats",
+            "/log/suicides",
             "/realms/template/tmp",
             "/realms/template/log",
             "/realms/template/area/etc",
@@ -94,6 +95,8 @@ int make_empties(){
 
 void deletes(){
     rm("/cmds/players/locate.c");
+    rm("/cmds/creators/last.c");
+    rm("/cmds/players/newbie.c");
     rm("/secure/daemon/map.c");
     rm("/secure/cmds/creators/sed.c");
     rm("/cmds/creators/which.c");
@@ -223,6 +226,9 @@ varargs static void eventUpdate(object whom){
     newfile = read_file("/secure/cfg/read.cfg");
     if(!grepp(newfile,"/domains/cave/")){
         newfile += "(/domains/cave/) ASSIST:CMDS:CAVE\n";
+    }
+    if(!grepp(newfile,"/secure/include/secrets")){
+        newfile += "(/secure/include/secrets*) SECURE\n";
     }
     write_file("/secure/cfg/read.cfg",newfile,1);
 

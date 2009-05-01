@@ -72,9 +72,9 @@ void create()
                 "forlock" : "The Great Enforcer, donning a great black robe "
                 "lined with a deep red sheath.  The deep stare of "
                 "Forlock fills you with all that is good and just.",
-                "descartes" : "Descartes of Borg, in his most noble position "
-                    "upon a great white horse, is the embodiment of "
-                    "great wisdom and knowlege.",
+                                           "descartes" : "Descartes of Borg, in his most noble position "
+                                               "upon a great white horse, is the embodiment of "
+                                               "great wisdom and knowlege.",
                                            "lassondra" : "Long, black wavy hair drape down upon a "
                                                "great green cloak upon her broad sholders.  "
                                                "The warm smile and loving eyes depict equality "

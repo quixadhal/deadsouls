@@ -119,6 +119,9 @@ mixed ReadFuns(string str){
 
 static void create() {
     daemon::create();
+    if(!file_exists(SaveFuns) && file_exists(old_savename(SaveFuns))){
+        cp(old_savename(SaveFuns), SaveFuns);
+    }
     unguarded( (: RestoreObject(SaveFuns) :) );
     if(query_os_type() == "windows" || !(MASTER_D->GetPerfOK())){
         return;

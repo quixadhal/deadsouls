@@ -49,12 +49,12 @@ int is_lpmud(string mud){
     mapping info = ROUTER_D->query_mudinfo()[truename];
     if(!info) return 0;
     if(stringp(info["mud_type"]) && grepp(info["mud_type"],"LP")){
-        tc("woot 1","red");
+        //tc("woot 1","red");
         return 1;
     }
     if(info["other_data"] && stringp(info["other_data"]["versionid"])){
         if(!strsrch(info["other_data"]["versionid"],"Tim's LPC")){
-            tc("woot 2","red");
+            //tc("woot 2","red");
             return 1;
         }
     }
@@ -274,7 +274,7 @@ mixed translate_packet(mixed data, int fd){
             who_ret = replace_string(who_ret,"\n","\\n");
         }
         //who_ret = "fart";
-        tc("who_ret: "+identify(who_ret));
+        //tc("who_ret: "+identify(who_ret));
         ret = "*@"+imc2_name(data[2])+" "+time()+" "+
             imc2_name(data[2])+" who-reply "+ capitalize(data[5])+
             "@"+imc2_name(data[4])+" text=\""+ who_ret+"\"";
@@ -501,14 +501,14 @@ void read_callback(mixed fd, mixed info){
         foreach(string element in explode(tmp,"\n")){
             tmp_ret += ({ ({ element, 0, "" }) });
         }
-        tc("tmp_ret: "+identify(tmp_ret));
+        //tc("tmp_ret: "+identify(tmp_ret));
         ret = ({ "who-reply", 5, packet[2], 0, packet[4],
                 packet[5], tmp_ret });
-        tc("trying to write to fd "+fd+" "+identify(ret),"white");
+        //tc("trying to write to fd "+fd+" "+identify(ret),"white");
         ROUTER_D->read_callback(fd, ret);
     }
     if(packet[0] == "who"){
-        tc("PACKIT: "+identify(packet));
+        //tc("PACKIT: "+identify(packet));
         ret = ({ "who-req", 5, packet[2], packet[3], packet[4], 0 });
         ROUTER_D->read_callback(fd, ret);
     }

@@ -52,8 +52,10 @@ ELDER, TEST.
 
 
 #define AUTO_WIZ                 0
-    If this is a nonzero integer, new users are given the option to
-join your mud as either players or creators, as they choose.
+    If this is a 1, new users are given the option to
+join your mud as either players or creators, as they choose. If
+it is anything other than 0 or 1, new users are automatically
+made creators, without being given the option to be players.
 
 
 #define RESTRICTED_INTERMUD      0
@@ -485,6 +487,38 @@ Note that users in the LOCKED_ACCESS_ALLOWED groups defined
 above are allowed to log in despite the player cap.
     To find out the current limit:
 eval return LIB_CONNECT->GetMaxPlayers()
+
+
+#define MIN_PERF                 2000
+    Some fancy stuff, like object matching and overhead mapping,
+require your mud server to have a minimum performance score for the
+feature to work properly. This is where that score is set. The
+closer to 0, the faster the computer. 2000 is a rather slow computer.
+
+
+#define MINIMAP                  1
+    Whether players can have the minimap show up as part of their
+room description data.
+
+
+#define WIZMAP                   1
+    Whether creators can have the wizmap show up as part of their
+room description data.
+
+
+#define GRID                     1
+    Whether the mud grid system is enabled for your mud. This will
+be overridden by the "minimum performance" score. If your computer
+is too slow, the grid is disabled regardless of what this setting is.
+
+
+#define ENABLE_INSTANCES         0
+    If 1, the mud will assume it is an instance, and will apply
+special naming conventions to savefiles. Your "dev instance"
+should have this set to 0. Your "player instance" should have this
+set to 1. If you don't know what this stuff means, LEAVE IT AT 0.
+For more info: help instances
+
 
 #endif /* s_config_h */
     End configuration.

@@ -160,169 +160,169 @@ static void cmdPage(string str, mapping file){
                 return;
             }
             else cmdPage("g" + file["Marks"][args], file);
-            return;
+        return;
 
-            case "/":
-                if( file["CurrentLine"] >= (file["Size"] - 1) ){
-                    eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
-                    input_to((: cmdPage :), file);
-                    return;
-                }
-            if( !args && !(file["LastSearch"]) ){
+        case "/":
+            if( file["CurrentLine"] >= (file["Size"] - 1) ){
                 eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
                 input_to((: cmdPage :), file);
                 return;
             }
-            if( !args ) args = file["LastSearch"];
-            tmp = regexp(file["Lines"][file["CurrentLine"]..], args);
-            if( !sizeof(tmp) ){
-                eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
-                input_to((: cmdPage :), file);
-                return;
+        if( !args && !(file["LastSearch"]) ){
+            eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
+            input_to((: cmdPage :), file);
+            return;
+        }
+        if( !args ) args = file["LastSearch"];
+        tmp = regexp(file["Lines"][file["CurrentLine"]..], args);
+        if( !sizeof(tmp) ){
+            eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
+            input_to((: cmdPage :), file);
+            return;
+        }
+        for(x = file["CurrentLine"]; x < file["Size"]; x++){
+            if( tmp[0] == file["Lines"][x] ) break;
+        }
+        if( x == file["Size"] ){
+            eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
+            input_to((: cmdPage :), file);
+            return;
+        }
+        file["CurrentLine"] = (x ? x-1 : x);
+        file["LastSearch"] = args;
+        Page(file);
+        return;
+
+        case "?":
+            x = file["CurrentLine"] - GetScreen()[1] - 3;
+        if( x < 1 ){
+            eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
+            input_to((: cmdPage :), file);
+            return;
+        }
+        if( !args && !(file["LastSearch"]) ){
+            eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
+            input_to((: cmdPage :), file);
+            return;
+        }
+        if( !args ) args = file["LastSearch"];
+        tmp = regexp(file["Lines"][0..x], args);
+        if( !sizeof(tmp) ){
+            x = -1;
+        }
+        else {
+            for( ; x > -1; x--){
+                if( tmp[<1] == file["Lines"][x] ) break;
             }
-            for(x = file["CurrentLine"]; x < file["Size"]; x++){
-                if( tmp[0] == file["Lines"][x] ) break;
-            }
-            if( x == file["Size"] ){
-                eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
-                input_to((: cmdPage :), file);
-                return;
-            }
-            file["CurrentLine"] = (x ? x-1 : x);
-            file["LastSearch"] = args;
+        }
+        if( x == -1 ){
+            eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
+            input_to((: cmdPage :), file);
+            return;
+        }
+        file["CurrentLine"] = (x ? x - 1 : x);
+        if( file["CurrentLine"] < 0 ) file["CurrentLine"] = 0;
+        file["LastSearch"] = args;
+        Page(file);
+        return;
+
+        case "b": 
+            scrlen = GetScreen()[1];
+        if( (file["CurrentLine"] - (2*(scrlen-3))) < 1 ){
+            eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
+            input_to((: cmdPage :), file);
+            return;
+        }
+        else {
+            file["CurrentLine"] -= (2 * (scrlen-3));
             Page(file);
-            return;
+        }
+        return;
 
-            case "?":
-                x = file["CurrentLine"] - GetScreen()[1] - 3;
-            if( x < 1 ){
-                eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
-                input_to((: cmdPage :), file);
-                return;
-            }
-            if( !args && !(file["LastSearch"]) ){
-                eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
-                input_to((: cmdPage :), file);
-                return;
-            }
-            if( !args ) args = file["LastSearch"];
-            tmp = regexp(file["Lines"][0..x], args);
-            if( !sizeof(tmp) ){
-                x = -1;
-            }
+        case "g": case "<": case "G": case ">":
+            if( cmd == "g" || cmd == "<" ) x = 1;
             else {
-                for( ; x > -1; x--){
-                    if( tmp[<1] == file["Lines"][x] ) break;
-                }
+                x = (file["Size"] - (GetScreen()[1] - 3));
+                if( x < 1 ) x = 1;
             }
-            if( x == -1 ){
-                eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
-                input_to((: cmdPage :), file);
-                return;
-            }
-            file["CurrentLine"] = (x ? x - 1 : x);
-            if( file["CurrentLine"] < 0 ) file["CurrentLine"] = 0;
-            file["LastSearch"] = args;
-            Page(file);
-            return;
-
-            case "b": 
-                scrlen = GetScreen()[1];
-            if( (file["CurrentLine"] - (2*(scrlen-3))) < 1 ){
-                eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
-                input_to((: cmdPage :), file);
-                return;
-            }
-            else {
-                file["CurrentLine"] -= (2 * (scrlen-3));
-                Page(file);
-            }
-            return;
-
-            case "g": case "<": case "G": case ">":
-                if( cmd == "g" || cmd == "<" ) x = 1;
-                else {
-                    x = (file["Size"] - (GetScreen()[1] - 3));
-                    if( x < 1 ) x = 1;
-                }
-            if( !args ) args = x + "";
-            else if( args[0] == ' '){
-                if( strlen(args) == 1 ) args = x + "";
-                else args = trim(args);
-            }
-            if( ((x = to_int(args)) < 1) || (x > file["Size"]) ){
-                eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
-                input_to((: cmdPage :), file);
-                return;
-            }
-            file["CurrentLine"] = x - 1;
-            Page(file);
-            return;
-
-            case "h": case "H":
-                eventPrint(GetHelp("pager"), MSG_HELP);
-            eventPrint(GetPagerPrompt(file), MSG_PROMPT);
+        if( !args ) args = x + "";
+        else if( args[0] == ' '){
+            if( strlen(args) == 1 ) args = x + "";
+            else args = trim(args);
+        }
+        if( ((x = to_int(args)) < 1) || (x > file["Size"]) ){
+            eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
+        }
+        file["CurrentLine"] = x - 1;
+        Page(file);
+        return;
 
-            case "m":
-                if( !args ){
-                    eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
-                    input_to((: cmdPage :), file);
-                    return;
-                }
-            file["Marks"][args] = file["CurrentLine"];
-            eventPrint("Mark " + args + " set to line " +
-                    (file["CurrentLine"] + 1) + ".", file["MessageClass"]);
-            eventPrint(GetPagerPrompt(file), MSG_PROMPT);
-            input_to((: cmdPage :), file);
-            return;
+        case "h": case "H":
+            eventPrint(GetHelp("pager"), MSG_HELP);
+        eventPrint(GetPagerPrompt(file), MSG_PROMPT);
+        input_to((: cmdPage :), file);
+        return;
 
-            case "n":
-                fp = functionp(file["Callback"]);
-            if( !fp || (fp == FP_OWNER_DESTED) ){
+        case "m":
+            if( !args ){
                 eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
                 input_to((: cmdPage :), file);
                 return;
             }
-            if( file["Args"] ) evaluate(file["Callback"], file["Args"]...);
-            else evaluate(file["Callback"]);
-            return;
+        file["Marks"][args] = file["CurrentLine"];
+        eventPrint("Mark " + args + " set to line " +
+                (file["CurrentLine"] + 1) + ".", file["MessageClass"]);
+        eventPrint(GetPagerPrompt(file), MSG_PROMPT);
+        input_to((: cmdPage :), file);
+        return;
 
-            case "p": case "%":
-                if( args ) x = to_int(args);
-            if( !args || x < 1 || x > 100 ){
-                eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
-                input_to((: cmdPage :), file);
-                return;
-            }
-            x = ((file["Size"] - 1) * x)/100 - 1;
-            if( x < 0 ) x = 0;
-            else if( x > ((file["Size"] - 1) - (GetScreen()[1] - 3)) )
-                x = ((file["Size"] - 1) - (GetScreen()[1] - 3));
-            file["CurrentLine"] = x;
-            Page(file);
-            return;
-
-            case "q":
-                fp = functionp(file["Callback"]);
-            if( !fp || (fp == FP_OWNER_DESTED) ) return;
-            if( file["Args"] ) evaluate(file["Callback"], file["Args"]...);
-            else evaluate(file["Callback"]);
-            return;
-
-            case "v":
-                eventPrint("Dead Souls Pager v3.0 by Descartes of Borg 951104",
-                        MSG_HELP);
-            eventPrint(GetPagerPrompt(file), MSG_PROMPT);
+        case "n":
+            fp = functionp(file["Callback"]);
+        if( !fp || (fp == FP_OWNER_DESTED) ){
+            eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
             input_to((: cmdPage :), file);
             return;
+        }
+        if( file["Args"] ) evaluate(file["Callback"], file["Args"]...);
+        else evaluate(file["Callback"]);
+        return;
+
+        case "p": case "%":
+            if( args ) x = to_int(args);
+        if( !args || x < 1 || x > 100 ){
+            eventPrint("\a" + GetPagerPrompt(file), MSG_PROMPT);
+            input_to((: cmdPage :), file);
+            return;
+        }
+        x = ((file["Size"] - 1) * x)/100 - 1;
+        if( x < 0 ) x = 0;
+        else if( x > ((file["Size"] - 1) - (GetScreen()[1] - 3)) )
+            x = ((file["Size"] - 1) - (GetScreen()[1] - 3));
+        file["CurrentLine"] = x;
+        Page(file);
+        return;
+
+        case "q":
+            fp = functionp(file["Callback"]);
+        if( !fp || (fp == FP_OWNER_DESTED) ) return;
+        if( file["Args"] ) evaluate(file["Callback"], file["Args"]...);
+        else evaluate(file["Callback"]);
+        return;
+
+        case "v":
+            eventPrint("Dead Souls Pager v3.0 by Descartes of Borg 951104",
+                    MSG_HELP);
+        eventPrint(GetPagerPrompt(file), MSG_PROMPT);
+        input_to((: cmdPage :), file);
+        return;
 
         default:
-            eventPrint("\a'h' for help", MSG_ERROR);
-            eventPrint(GetPagerPrompt(file), MSG_PROMPT);
-            input_to((: cmdPage :), file);
-            return;
+        eventPrint("\a'h' for help", MSG_ERROR);
+        eventPrint(GetPagerPrompt(file), MSG_PROMPT);
+        input_to((: cmdPage :), file);
+        return;
     }
 }
 

@@ -108,7 +108,7 @@ call me->AddChannel("dutch")
 call me->AddChannel("ibuild")
 call me->AddChannel("ichat")
 call me->AddChannel("imudnews")
-call me->AddChannel("ivent")
+call me->AddChannel("ifree")
 call me->AddChannel("pchat")
 call me->AddChannel("i2chat")
 call me->AddChannel("i3chat")
@@ -157,7 +157,7 @@ wizvision on
 call me->SetSkill("magic attack",100)
 call me->SetSkill("magic defense",100)
 call me->SetSkill("conjuring",100)
-screen 200 200
+screen 80 24
 history 100
 automap on
 showgrid on

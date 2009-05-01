@@ -34,7 +34,7 @@ static void create() {
                 "bottom of this tunnel is the result of garbage and waste "+
                 "processing. In liquid form, this garbage flows "+
                 "west from here.",
-                ]) );
+                                                  ]) );
     SetExits( ([
                 "west" : "/domains/campus/room/sewer1",
                 "up" : "/domains/campus/room/sewer3.c",

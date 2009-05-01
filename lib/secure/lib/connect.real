@@ -14,17 +14,18 @@
 #include <daemons.h>
 #include <message_class.h>
 #include "include/connect.h"
+#include "mssp.h"
 
 inherit LIB_PAGER;
 
 static private int CrackCount, NetDead, MaxPlayers; 
 static private string name, Name, Terminal, raza, TrueName, trabajo; 
-static private string Passwort, Gendre, CapNamen, E_Mail; 
+static private string Passwort, Gendre, CapNamen, E_Mail, my_ip; 
 static private object Player, pile; 
 static private mapping LastError;
 static private int *Screen;
 static private int rescue, yescre;
-static private string *ip_permitted = ({});
+static private string *ip_permitted = ({}), instname;
 
 //Change this to 1 to enable color codes in /news/welcome
 //then update the connect.c file.
@@ -41,8 +42,8 @@ static void InputClass(string str);
 static void eventSelectClass();
 
 int CheckIp(){
-    string my_ip = query_ip_number();
     int ips = 0;
+    my_ip = query_ip_number();
     if(!ip_permitted) ip_permitted = ({});
     ip_permitted += PLAYERS_D->GetAdminIPs();
     if(!SAME_IP_MAX) return 1;
@@ -82,6 +83,9 @@ static void create(int binary) {
     Name = "";
     Player = 0;
     NetDead = 0;
+    if(ENABLE_INSTANCES){
+        instname = INSTANCES_D->GetMyInstanceName();
+    }
     ip_permitted = explode(read_file(CFG_IP_UNRESTRICT),"\n");
 }
 
@@ -92,11 +96,16 @@ varargs static void logon(mixed foo) {
     else welcome += ".\n";
 
     call_out((: eventTimeout :), LOGON_TIMEOUT);
-    if(mud_name() == "Dead Souls" || mud_name() == "Dead Souls Demo" ){
+    if(mud_name() == "Dead Souls" || mud_name() == "Dead Souls Dev" ){
         welcome += read_file(DS_WELCOME) || "Welcome to " + mud_name() + "!";
     }
     else {
-        welcome += read_file(NEWS_WELCOME) || "Welcome to " + mud_name() + "!";
+        string wfile;
+        if(instname && instname != "global"){
+            wfile = NEWS_WELCOME+"."+__PORT__;
+        }
+        if(!wfile || !file_exists(wfile)) wfile = NEWS_WELCOME;
+        welcome += read_file(wfile) || "Welcome to " + mud_name() + "!";
     }
     if(AllowColorSplash){
         receive(terminal_colour(welcome,TERMINAL_D->query_term_info("ansi")));
@@ -142,6 +151,14 @@ static void InputName(string namen, string kill_me) {
             input_to((: InputName :), I_NOESC, "kill me");
             return;
         }
+    }
+    if(grepp(name, "MSSP-REQUEST")){
+        log_file("mssp",timestamp()+" "+my_ip+"\n");
+        receive(mssp_reply());
+        flush_messages();
+        input_to((: InputName :), I_NOESC);
+        //Destruct();
+        return;
     }
     if(sscanf(name,"%s_rescue",temp_name) == 1) {
         name = temp_name;
@@ -213,8 +230,9 @@ static void InputPassword(string pass, string cap) {
             receive("\nInvalid password.\n");
             if( ++CrackCount > MAX_PASSWORD_TRIES ) {
                 receive("\nNo more attempts allowed\n");
-                log_file("security", "Maximum password tries exceeded by " +
-                        Name + " from " + query_ip_number() + "\n");
+                unguarded( (: log_file("/secure/log/security", 
+                  "Maximum password tries exceeded by " +
+                        Name + " from " + query_ip_number() + "\n") :) );
                 filter(users(), (: archp :))->eventPrint("System %^MAGENTA%^"
                         "<error>%^RESET%^ Maximum password "
                         "attempts exceeded by " + cap +
@@ -250,7 +268,8 @@ static void InputPassword(string pass, string cap) {
 }
 
 static void eventCreatePlayer(string cap) {
-    if( !((int)BANISH_D->valid_name(lower_case(Name))) ) {
+    string tmpdir, lcname = lower_case(Name);
+    if( !((int)BANISH_D->valid_name(lcname)) ) {
         receive(capitalize(cap) + " is not a valid name.\n");
         receive(mud_name() + " requires that all names meet the following "
                 "requirements:\n");
@@ -261,6 +280,17 @@ static void eventCreatePlayer(string cap) {
         receive("\nPlease enter a new name: \n");
         input_to( (: InputName :), I_NOESC );
         return;
+    }
+    tmpdir = DIR_PLAYERS "/" + lcname[0..0] + "/";
+    if(directory_exists(tmpdir)){
+        string *tmpfiles = get_dir(tmpdir);
+        foreach(string tmpfile in tmpfiles){
+            if(!strsrch(tmpfile, lcname+".")){
+                receive("\nThat name is taken. Please choose a new one.\n");
+                input_to( (: InputName :), I_NOESC );
+                return;
+            }
+        } 
     }
     if( !((int)BANISH_D->eventConnect(Name, query_ip_number())) ) {
         string news;
@@ -281,8 +311,9 @@ static void AgeCheck(string ans, string cap) {
         Destruct();
         return;
     }
-    log_file("new_players", Name + " from " + query_ip_number() + " (" +
-        ctime(time()) + ")\n");
+    log_file("new_players", Name + " (" + ctime(time()) + ")\n");
+    unguarded( (: log_file("/secure/log/new_players", Name + " from " 
+      + query_ip_number() + " (" + ctime(time()) + ")\n") :) );
     receive("\nCreate a password of at least 5 letters: \n");
     input_to((: CreatePassword :), I_NOECHO | I_NOESC, cap);
 } 
@@ -311,6 +342,8 @@ static void eventReEnterGame(string cap) {
             if(sizeof(deep_inventory(Player))) 
                 deep_inventory(Player)->eventMove(ROOM_FURNACE);
         log_file("enter", cap + " (exec): " + ctime(time()) + "\n"); 
+        unguarded( (: log_file("/secure/log/enter", Name + " (exec): " + 
+          ctime(time()) + " from " + query_ip_number()+ "\n") :) );
         Player->eventReconnect();
         Player->RemoveProperty("afk");
         Player->CancelCharmode();
@@ -332,11 +365,11 @@ static void ConfirmReconnect(string ans, string cap) {
     }
     if(rescue)
         if(sizeof(deep_inventory(Player))) deep_inventory(Player)->eventMove(ROOM_FURNACE);
-    log_file("enter", cap + " (reconnect) from " + query_ip_number() + " (" +
-        ctime(time()) + ")\n");
+    log_file("enter", cap + " (reconnect) ("+ctime(time())+")\n");
+    unguarded( (: log_file("/secure/log/enter", Name + " (reconnect) from " 
+      + query_ip_number() + " (" + ctime(time()) + ")\n") :) );
     exec(tmp = new(LIB_PLAYER), Player); 
     exec(Player, this_object()); 
-    //tc("PLAYA: "+identify(Player));
     destruct(tmp);
     Player->eventPrint("\nAllowing login.\n", MSG_SYSTEM);
     Destruct();
@@ -554,6 +587,7 @@ static void cmdPick(string args) {
         }
         eventCompleteChar();
     }
+    if(AUTO_WIZ == 2) InputCre("creator");
     else {
         receive("This mud has enabled AUTO_WIZ.\n");
         receive("This means that if you wish, you may be automatically \n");
@@ -662,7 +696,7 @@ static void cmdPickClass(string args) {
 
 int eventCre(string str){
     mixed mixt;
-    if(yescre && AUTO_WIZ == 1){
+    if(yescre && AUTO_WIZ > 0){
         mixt = load_object("/secure/cmds/admins/encre")->cmd(str);
     }
     destruct(this_object());
@@ -693,7 +727,11 @@ void InputCre(string str){
         input_to((: InputCre :), I_NOESC);
         return;
     }
-    if(str == "creator") yescre = 1;
+    if(str == "creator"){
+        yescre = 1;
+        receive("\n---\nYou will automatically be made a creator shortly");
+        receive(" after login.\n---\n");
+    }
     if(CLASS_SELECTION){
         eventSelectClass();
         return;

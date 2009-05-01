@@ -21,25 +21,41 @@ void eventInventory();
 
 void eventInventory() {
     mapping borg;
-    string *shorts;
+    string *items, *wieldeds, *worns, *shorts;
     string ret;
     int i;
 
-    shorts = map(filter(all_inventory(this_player()), 
-                (: !((int)$1->GetInvis(this_player())) :)),
+    items = map(filter(all_inventory(this_player()), 
+                (: !((int)$1->GetInvis(this_player())) &&
+                !($1->GetWorn()) :)),
             (: (string)$1->GetEquippedShort() :));
-    borg = ([]);
+    wieldeds = map(filter(all_inventory(this_player()),
+                (: !((int)$1->GetInvis(this_player())) &&
+                ($1->GetWielded()) :)),
+            (: (string)$1->GetEquippedShort() :));
+    worns = map(filter(all_inventory(this_player()),
+                (: !((int)$1->GetInvis(this_player())) &&
+                !($1->GetWielded()) && $1->GetWorn() :)),
+            (: (string)$1->GetEquippedShort() :));
+    shorts = items + wieldeds + worns;
     if( !(i = sizeof(shorts)) ) {
         message("system", "You are carrying nothing.", this_player());
         return;
     }
     if( i == 1 ) ret = "You are carrying just this one item:\n";
     else ret = "You are carrying the following items:\n";
-    while(i--) if( shorts[i] ) borg[shorts[i]]++;
-    i = sizeof(shorts = keys(borg));
-    while(i--) ret += capitalize(consolidate(borg[shorts[i]], shorts[i]))+"\n";
+    foreach(shorts in ({ items, wieldeds, worns })){
+        i = sizeof(shorts);
+        if(!i) continue;
+        borg = ([]);
+        while(i--) if( shorts[i] ) borg[shorts[i]]++;
+        i = sizeof(shorts = keys(borg));
+        while(i--) ret += capitalize(consolidate(borg[shorts[i]], 
+            shorts[i]))+"\n";
+    }
     message("look", ret, this_player());
-    if(!this_player()->GetInvis() && !environment(this_player())->GetProperty("meeting room"))
+    if(!this_player()->GetInvis() && 
+      !environment(this_player())->GetProperty("meeting room"))
         message(MSG_ANNOYING, (string)this_player()->GetName() + " checks " +
                 possessive(this_player()) + " possessions.", 
                 environment(this_player()), ({ this_player() }));

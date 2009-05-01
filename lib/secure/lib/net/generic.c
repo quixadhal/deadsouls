@@ -5,7 +5,7 @@
  */
 
 #include NETWORK_H
-int port = 6667;
+int port = 789;
 
 void StartServer();
 void StopServer();

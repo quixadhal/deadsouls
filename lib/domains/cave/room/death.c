@@ -63,3 +63,10 @@ int CanRelease(object ob){
     return 1;
 }
 
+int CanReceive(object ob){
+    if(!living(ob)){
+        return 0;
+    }
+    return ::CanReceive(ob);
+}
+

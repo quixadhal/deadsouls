@@ -9,6 +9,7 @@ mixed cmd(string str) {
     int x, y, z;
     int x2, y2, z2;
     int x3, y3, z3;
+    if(!sizeof(str)) str = "me";
     if(str == "me" || str == "myself") str = this_player()->GetKeyName();
     player = find_player(str);
     if(!player){

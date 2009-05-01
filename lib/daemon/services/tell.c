@@ -50,7 +50,10 @@ void eventReceiveTell(mixed *packet) {
             ob->eventPrint(ret, MSG_CONV);
         }
         ob->eventTellHist(ret);
-        if(!sizeof(adverb)) ob->SetProperty("reply", packet[6] + "@" + packet[2]);
+        if(!sizeof(adverb)){
+            ob->SetProperty("reply", packet[6] + "@" + packet[2]);
+            ob->SetProperty("reply_time", time());
+        }
     }
 }
 

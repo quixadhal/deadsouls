@@ -4,15 +4,16 @@
 inherit LIB_DAEMON;
 
 string new_config_file = "";
+string dudename;
 
 mixed cmd(mixed args) {
     string config_file, str;
-    string groupname, dudename, s1, s2;
+    string groupname, s1, s2;
     string *line_array;
     string *top_array;
     string *bottom_array;
     string *cles = ({});
-    int action = 0;
+    int reload_player, action = 0;
     mapping GroupsMap = ([]);
 
     if( !this_player() || !((int)master()->valid_apply(({ "ASSIST" }))) )
@@ -85,6 +86,7 @@ mixed cmd(mixed args) {
             write("Only full admins may do this.");
             return 1;
         }
+        reload_player = 1;
     }
 
     if(!GroupsMap[str] && (abs(action) < 2)){
@@ -153,6 +155,19 @@ mixed cmd(mixed args) {
     load_object("/secure/cmds/creators/update")->cmd("/secure/lib/connect");
     if(str == "SNOOPER") SNOOP_D->SnoopClean();
     new_config_file = "";
+    //tc("reload_player: "+reload_player);
+    //tc("dudename: "+dudename);
+    if(reload_player){
+        object player = unguarded((: find_player(dudename) :));
+        //tc("player: "+identify(player));
+        if(player){
+            tell_player(player, "You've had your group membership changed "+
+                    "in an important way.\n\nYour user object will be reloaded in "+
+                    "a few moments.\n\n");
+             RELOAD_D->eventReload(player, 3);
+        }
+    }
+    dudename = "";
     return 1;
 }
 

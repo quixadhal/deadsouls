@@ -1,15 +1,38 @@
 HTTP/1.1 200 OK
-Date: Thu, 12 Mar 2009 20:01:20 GMT
+Date: Thu, 30 Apr 2009 23:07:41 GMT
 Server: Apache/2.2.4 (Ubuntu)
-Last-Modified: Wed, 11 Mar 2009 02:39:00 GMT
-ETag: "1f1781-19d4a-c51e9900"
+Last-Modified: Sun, 29 Mar 2009 01:57:34 GMT
+ETag: "cc03a-1a217-4a15ff80"
 Accept-Ranges: bytes
-Content-Length: 105802
+Content-Length: 107031
 Connection: close
 Content-Type: text/plain
 
+---- 2.9a17 (unreleased) ---
+- Converted structs to mappings in CLASSES_D.
+- Fixed CLASSES_D bug that inverted the position of "importance" and
+  "average starting level" of classes.
+- Instances now can share local channels.
+- Users on different instances can now tell to each other.
+- Users on different instances can now get "finger" info on each other.
+- Users on different instances can now see each other in "who".
+- Added command: instconfig
+- New players can't create a character if the same name is used
+  on another instance. 
+- Added sefuns: remote_users(), local_users()
+- The actions map elements in LIB_ROOM now actually fire based on
+  their individual "chance" rather than the overall ActionChance
+  (thx Raudhrskal!).
+- IMC2 tells now work like i3 tells, no need to use the "imc2" command.
+- AUTO_WIZ set above 1 now forces new users to become creators, rather
+  than providing the choice to do so.
+- IP addresses of users are no longer displayed to creators on
+  AUTO_WIZ muds.
+- Users on different instances can now shout to each other.
+
 ---- 2.9a16 ---
-- Released 2009-03-15
+- Released 2009-03-12
+- The "locate" command is now "i3locate".
 - Prettified the tabbed file completion stuff.
 - Armor now makes more of an effort to resolve ambiguous
   targets, such as "wear ring" when both hands can take a ring.
@@ -79,6 +102,8 @@ Content-Type: text/plain
   call me->SetParanoia("move_monitoring", 1). Note that these are not
   foolproof, and the proper way to deal with mischief is not paranoia
   but extreme violence and harsh language.
+- The "which" command now identifies aliases, add_actions, etc.
+- Finally nailed a mysterious data overwrite problem in PLAYERS_D.
 
 ---- 2.9a15 ---
 - Liveupgrade only.

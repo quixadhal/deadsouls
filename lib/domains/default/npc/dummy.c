@@ -6,7 +6,7 @@ inherit LIB_NPC;
 static void create(){
     npc::create();
     SetKeyName("dummy");
-    SetId( ({"dummy","mokujin"}) );
+    SetId( ({"dummy","mokujin","buster"}) );
     SetShort("a training dummy");
     SetLong("This is a magical sparring partner. It is made of "+
             "logs, cut to the proportions of a human's "+

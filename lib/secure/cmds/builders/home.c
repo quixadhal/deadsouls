@@ -9,6 +9,7 @@
 #include <daemons.h>
 
 inherit LIB_DAEMON;
+string arg;
 
 mixed GoHome(string str) {
     object ob, prev;
@@ -21,7 +22,8 @@ mixed GoHome(string str) {
     str = user_path(who);
     if(!directory_exists(str)) return "That person has no home dir.";
     str = user_path(who)+"workroom.c";
-    if(!file_exists(str))
+    arg = str;
+    if(!unguarded((: file_exists(arg) :)))
         return capitalize(who)+" has no active workroom.";
     ob = load_object(str);
     if(!ob){

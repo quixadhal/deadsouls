@@ -38,6 +38,7 @@ string GetGagged(){
 
 mixed cmd(string args) {
     object player = this_player();
+    mixed replee = player->GetProperty("reply");
     write("Screen: \t\t"+identify(this_player()->GetScreen()));
     write("Terminal: \t\t"+this_player()->GetTerminal());
     write("Brief mode: \t\t"+ ( (this_player()->GetBriefMode()) ? "on" : "off" ));
@@ -73,6 +74,9 @@ mixed cmd(string args) {
         write("Wizmap mode: \t\t"+ ( this_player()->GetProperty("wizmapping") ? "on" : "off" ));
         write("Noclip mode: \t\t"+ ( this_player()->GetProperty("noclip") ? "on" : "off" ));
 #endif
+    }
+    if(replee){
+         write("Reply target: \t\t"+replee+"\n");
     }
     return 1;
 }

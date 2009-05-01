@@ -1,0 +1,84 @@
+By default, Dead Souls uses body characteristics of different races
+(e.g. ogres, deer, fish, human) to calculate all sorts of things...
+combat effectiveness, learning proficiency, etc. Some of these
+characteristics are "stats", like strength or intelligence.
+
+For example, orcs can be formidable warriors because their
+starting strength stats tend to be very high. In addition, 
+strength is high in importance to the orc body...its "stat class",
+or how important it is, is 1, which is the highest level of
+importance. This means that orc players increase the strength
+stat by one point every time they are promoted one player level.
+
+Therefore an orc player who started with a strength stat of 40
+would have a strength stat of 50 upon reaching level 11.
+
+Humans, however, have a low starting strength and the human
+stat class for strength is 3, meaning that human players get a
+strength point added every 3 level promotions. A human with
+a starting strength stat of 15 would, upon reaching level 11,
+have reached a strength stat of 18.
+
+This can seem a little unfair to a person that wants to play
+a human warrior...and in a way it *is* somewhat unfair, since it's
+entirely possible for there to be freakishly strong humans or
+humans who devote themselves to becoming very very strong.
+
+One way to make up for this is to use "customization points".
+They allow you to add a small number of stat points to the
+stats you feel are most important. But you only get 15 customization
+points ever, and they go quick. And even if you use all of them
+to jack up a stat...if that stat has a low stat class you'll
+always be lagging behind.
+
+For example, if our human warrior jacks up her strength from
+15 to 30 by using up all her customization points in that stat,
+she'll still be struggling somewhat against physically stronger
+races of her same player level.
+
+Similarly, orcs tend to have low starting intelligence and
+a dismal intelligence stat class. This makes playing an orc
+mage a torturous experience, such that it would be quite
+rare to ever see a player choose that race and class combination.
+But orc mages do exist in some settings, and making it practically
+impossible seems a bit unfair.
+
+Stat deviation is a way of helping make it possible to have
+these unusual class and race combinations without torturing
+players unnecessarily for them. Stat deviation is an alteration
+of a player's stat class which allows them to gain stat points
+more quickly than her racial defaults normally would allow. This
+alteration comes at the cost of a percentage of experience points 
+gained while so deviated.
+
+For example, our human warrior princess could choose to deviate
+her stat class from the default of 3 to a more favorable 2, 
+allowing her to gain a strength point every other level, rather than
+every third level.
+
+Each deviation point comes at a 22% cost of XP gained, meaning that
+once she deviates by one point, killing a monster that would normally
+earn her 1000 XP now earns her 780 XP. If she wants to max out on 
+the strength stat class and use 2 deviations on it, it'll cost her
+44% of the XP she gains from then on, meaning a 1000 XP monster 
+for her is now just worth 560 XP.
+
+Clearly deviations are severely expensive, and will tend to slow
+down a player's overall advancement, but they do offer the possibility
+of playing the kind of race with the kind of class you prefer, facing
+opponents with a more class appropriate set of attributes. Rather
+than it being, for example, practically impossible to reach level
+20 as an orc mage, and being nearly useless as an orc mage even at
+that level, deviating right would actually *allow* you to reasonably
+hope you could get to that level one day, and that at that level you
+would actually be able to stand up to nearly-level-appropriate opponents.
+
+Since deviation is something that involves your character's devotion
+to improving herself and doing things in a way that is different from
+others of her race, it makes sense that there is a cost (XP) but
+also that it cannot be revoked. Once you deviate, you're a deviant
+forever, so think long and hard before using the "deviate" command.
+You may not miss the XP now, but you might miss them later, when you're
+a mighty player and that 22% is now thousands of XP.
+
+See also: deviate, customize, stat, score

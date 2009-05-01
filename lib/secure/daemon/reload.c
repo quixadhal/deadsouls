@@ -76,7 +76,9 @@ varargs void eventDestructEmptyRooms(object room, int last){
     if(room){
         if(objectp(room) && !sizeof(get_livings(room,1))){
             object *subs = get_livings(room,2);
-            if(sizeof(subs)) subs->eventDestruct();
+            if(sizeof(subs)){
+                subs->eventDestruct();
+            }
             reset_eval_cost();
             catch( room->eventDestruct() );
         }
@@ -122,7 +124,6 @@ int ReloadBaseSystem(){
     reset_eval_cost();
     foreach(string file in sefun_files){
         int err;
-        //tc("file: "+file,"red");
         err = catch(update(file));
         if(err){ 
             debug("file: "+file);
@@ -160,7 +161,6 @@ varargs mixed ReloadPlayer(mixed who, int deep){
     string name, pwb_room;
     object tmp_bod, new_bod;
     int err;
-
     validate();
 
     if(stringp(who)) who = find_player(who);
@@ -231,7 +231,10 @@ varargs int eventUpdate(mixed what){
     if(what->GetVirtual()){
         return what->eventDestruct();
     }
-    if(!inherits(LIB_ROOM, what)) return update(base_name(what));
+    if(!inherits(LIB_ROOM, what)){
+        if(!interactive(what)) return update(base_name(what));
+        else return 0;
+    }
     else {
         tmpwhat = base_name(what);
         what->eventDestruct();
@@ -309,7 +312,12 @@ void heart_beat(){
         if(time() >= val){
             map_delete(Reloadees,key);
             key = find_object(key);
-            reload(key);
+            if(!interactive(key)){
+                reload(key);
+            }
+            else {
+                call_out("ReloadPlayer", 0, key, 1);
+            }
         }
     }
 }
@@ -367,7 +375,6 @@ int ReloadUsers(){
     validate();
     mx = reload(load_object(LIB_CREATOR), 1, 1);
     if(!mx) error("OHFUC-");
-
     if(virtual_void){
         UnisolateUsers();
     }
@@ -375,7 +382,8 @@ int ReloadUsers(){
     foreach(object player in users()){
         int invis = player->GetInvis();
         string pstr = base_name(player);
-        reset_eval_cost();         player->SetInvis(0);
+        reset_eval_cost();
+        player->SetInvis(0);
         err = catch(RELOAD_D->ReloadPlayer(player));
         if(err){
             debug("problem reloading "+pstr,"red");

@@ -35,9 +35,7 @@ static private mapping chanlast;
 
 static private string *local_chans = ({"newbie","cre","gossip","admin","error", "intermud",
         "cleric", "mage", "explorer", "thief", "fighter", "death", "connections", "muds" });
-static private string *remote_chans = ({ "Server01:ichat", "Server01:ibuild",
-        "Server01:pchat", "Server02:i2chat", "Server02:i3chat", "Server02:icode",
-        "Server02:igame", "Server02:inews", "Server02:imudnews", "Server02:irc", "Server02:ivent" });
+static private string *remote_chans = ({});
 static string *syschans = ({ "intermud", "death", "connections", "muds" });
 
 static private mapping localchans = ([
@@ -64,7 +62,7 @@ static private mapping localchans = ([
         "Server02:inews": "i2news",
         "Server02:imudnews": "imudnews",
         "Server02:irc": "irc",
-        "Server02:ivent": "ivent",
+        "Server02:ifree": "ifree",
         ]);
 
 static private mapping remotechans = ([
@@ -91,7 +89,7 @@ static private mapping remotechans = ([
         "i2news" : "Server02:inews",
         "imudnews" : "Server02:imudnews",
         "irc" : "Server02:irc",
-        "ivent" : "Server02:ivent",
+        "ifree" : "Server02:ifree",
         ]);
 
 static private mapping tags = ([
@@ -119,10 +117,23 @@ static private mapping tags = ([
         "i2news"      : "%^B_YELLOW%^%^BLUE%^",
         "imudnews"    : "%^B_YELLOW%^%^CYAN%^",
         "irc"         : "%^B_BLUE%^%^GREEN%^",
-        "ivent"         : "%^B_BLUE%^%^GREEN%^",
+        "ifree"         : "%^B_BLUE%^%^GREEN%^",
 
         "default"     : "%^BOLD%^BLUE%^",
         ]);
+
+static void Setup(){
+    remote_chans = ({});
+
+    if(find_object(INTERMUD_D)){
+        if(arrayp(INTERMUD_D->GetChannels()))
+            remote_chans += INTERMUD_D->GetChannels();
+    }
+    if(find_object(IMC2_D)){
+        if(arrayp(IMC2_D->GetChanList()))
+            remote_chans += IMC2_D->GetChanList();
+    }
+}
 
 static void create() {
     object pl;
@@ -131,10 +142,7 @@ static void create() {
     SetNoClean(1);
     Channels = ([]);
 
-    if(find_object(INTERMUD_D)){
-        if(arrayp(INTERMUD_D->GetChannels()))
-            remote_chans += INTERMUD_D->GetChannels();
-    }
+    call_out("Setup", 10);
 
     foreach(string kanal in local_chans + syschans){
         if( !Channels[kanal] ) Channels[kanal] = ({});
@@ -183,8 +191,13 @@ string *RemoveRemoteChannel(mixed chan){
     return copy(distinct_array(remote_chans -= chan));
 }
 
-string *GetRemoteChannels(){
-    return copy(remote_chans);
+varargs string *GetRemoteChannels(int localized){
+    mixed *ret = ({});
+    if(!localized) return copy(remote_chans);
+    foreach(string chan in remote_chans){
+        ret += ({ GetLocalChannel(chan) });
+    }
+    return ret;
 }
 
 string decolor(string str){
@@ -312,7 +325,7 @@ varargs int eventAddLast(string feep, string str, string pchan, string pmsg, str
     return 1;
 }
 
-int cmdChannel(string verb, string str) {
+int cmdChannel(string verb, string str){
     string msg, name, rc, target, targetkey, target_msg, emote_cmd, remains;
     string *exploded;
     mixed array msg_data;
@@ -357,9 +370,7 @@ int cmdChannel(string verb, string str) {
         verb = replace_string(verb,";","forcedemote");
     }
 
-
     if(sizeof(str) > 2){
-
         if((str[0..0] == ":" || str[0..0] == ";") &&
                 alphap(str[1..1]) && str[2..2] != " "){
             if(str[0..0] == ";" && !grepp(verb,"forcedemote")) 
@@ -367,7 +378,6 @@ int cmdChannel(string verb, string str) {
             else if(str[0..0] == ":" && !grepp(verb,"emote")) verb += "emote";
             str = str[1..];
         }
-
     }
 
     //******LIST******
@@ -660,6 +670,7 @@ int cmdChannel(string verb, string str) {
     if(member_array(GetRemoteChannel(verb), remote_chans) != -1
             && member_array(verb, local_chans) == -1){
         if (rc[0..5] == "Server") { //It's an IMC2 channel
+            name = replace_string(name, " ", "");
             if( ob ) {
                 IMC2_D->channel_out(name, rc, replace_string(replace_string(str,"$N ",""),"$O",target), emote);
             } else if ( targetkey ) {
@@ -675,6 +686,9 @@ int cmdChannel(string verb, string str) {
             }
         }
     }
+    else {
+        //INSTANCES_D->eventSendChannel(name, rc, str, emote, convert_name(targetkey), target_msg);
+    }
 
     return 1;
 }
@@ -682,10 +696,21 @@ int cmdChannel(string verb, string str) {
 varargs void eventSendChannel(string who, string ch, string msg, int emote,
         string target, string targmsg) {
     object channeler = find_player(lower_case(who));
+    int terminal;
+    string prev = base_name(previous_object());
     string pchan,pmsg;
-
     string chatlayout = "%s %s<%s>%s %s"; //Default: "%s %s<%s>%s %s" -> "Name COLOR<channel>RESET talks."
     string emotelayout = "%s<%s>%s %s"; //Default: "%s<%s>%s %s" -> "COLOR<channel>RESET Name emotes."
+
+    if(prev == INSTANCES_D) terminal = 1;
+    if(prev == SERVICES_D) terminal = 1;
+    if(prev == IMC2_D) terminal = 1;
+    if(!terminal){
+        string rch = GetRemoteChannel(ch);
+        if(member_array(rch, remote_chans) == -1){
+            INSTANCES_D->eventSendChannel(who,ch,msg,emote,target,targmsg);
+        }
+    }
 
     //Uncomment these next two lines instead of the two above for another channel chat format
     //string chatlayout = "%s says, %s(%s)%s '%s'"; //Default: "%s %s<%s>%s %s" -> "Name COLOR<channel>RESET talks."
@@ -693,7 +718,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 
     pchan=ch;
     if(!channeler) channeler = this_player();
-
     if(!strsrch(msg,"-.--. . -. -.-. --- -.. . -.. -.--.- ---...")) msg = unmorse(msg);
     if(targmsg && !strsrch(targmsg,"-.--. . -. -.-. --- -.. . -.. -.--.- ---..."))
         targmsg = unmorse(targmsg);
@@ -720,10 +744,12 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     else if( origin() != ORIGIN_LOCAL && previous_object() != master() &&
             file_name(previous_object()) != PARTY_D && 
             file_name(previous_object()) != UPDATE_D && 
+            file_name(previous_object()) != INSTANCES_D && 
             member_array(ch, syschans) == -1){
         return;
     }
-    if(!Channels[ch] && file_name(previous_object()) != SERVICES_D){
+    prev = file_name(previous_object());
+    if(!Channels[ch] && prev != SERVICES_D && prev != INSTANCES_D){
         return;
     }
     if( emote ) {

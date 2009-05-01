@@ -11,16 +11,19 @@ int RemoveWatcher(string watcher, mixed target);
 string *snooped = ({});
 object *snoopers = ({});
 string *monitored  = ({}); 
+string *ignored = ({});
+static string *ignored_ips=({"66.197.134.110","192.168.0.224"});
 mapping Watchers = ([]);
 int count = 0;
 int just_loaded = 1;
-object *prevusers;
+object *prevusers, gfoo;
 static string SaveFile;
 
 void eventLoadRogues();
 
 static void create() {
     daemon::create();
+    if(!ignored) ignored = ({});
     SaveFile = save_file(SAVE_SNOOP);
     //debug("SNOOP_D restarted.","red");
     if(file_exists(SaveFile)){
@@ -75,8 +78,20 @@ int CheckBot(string str){
             }
         }
     }
+    //tc("0: "+str);
     if(!already_watched && foo && (GLOBAL_MONITOR > 0 || member_array(str, monitored) != -1 || member_array(str, snooped) != -1 )){
-        if(archp(find_player(str)) && GLOBAL_MONITOR == 2) return 0;
+        string ip;
+        gfoo = foo;
+        ip = unguarded( (: query_ip_number(gfoo) :) );
+        gfoo = 0;
+        //tc("1: "+str);
+        if(member_array(str, (ignored || ({}))) != -1) return 0;
+        //tc("2: "+str);
+        if((member_array(ip, (ignored_ips||({}))) != -1 ||
+           (archp(foo) && GLOBAL_MONITOR == 2)) &&
+           member_array(str, monitored) == -1 &&
+           member_array(str, snooped) == -1 ) return 0;
+        //tc("3: "+str);
         cloan=new("/secure/obj/snooper");
         cloan->eventStartSnoop(str);
         err = catch(unguarded( (: SaveObject, SaveFile, 1 :) ));

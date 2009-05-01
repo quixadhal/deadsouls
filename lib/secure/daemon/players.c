@@ -71,7 +71,7 @@ static mapping LevelTitles = ([
         18:"the Praetor",
         19:"the Quaestor",
         20:"the Caesar"
-        ]);
+]);
 
 static mapping QuestLevels = ([
         10:5,
@@ -163,7 +163,7 @@ string *CompileCreList(){
         cres += unguarded( (: get_dir,DIR_CRES+"/"+subdir+"/" :) );
     }
 #if ENABLE_INSTANCES
-    cres = filter(cres, (: grepp($1, __PORT__) :) );
+    cres = filter(cres, (: grepp($1, ""+__PORT__) :) );
 #else
     cres = filter(cres, (: sscanf($1, "%*s.%*s.o") == 1 :) );
 #endif
@@ -203,7 +203,7 @@ string *CompilePlayerList(){
         plays += unguarded( (: get_dir,DIR_PLAYERS+"/"+subdir+"/" :) );
     }
 #if ENABLE_INSTANCES
-    plays = filter(plays, (: grepp($1, __PORT__) :) );
+    plays = filter(plays, (: grepp($1, ""+__PORT__) :) );
 #else
     plays = filter(plays, (: sscanf($1, "%*s.%*s.o") == 1 :) );
 #endif
@@ -580,4 +580,16 @@ string GetUserPath(mixed name){
         ret = DIR_ESTATES + "/"+name[0..0]+"/"+name+"/";
     }
     return ret;
+}
+
+static void UserUpdate(string name, int status){
+    object ob = find_player(name);
+    if(member_array(name, local_users()) != -1) status = 1;
+    else if(ob && !interactive(ob)) status = -1;
+    else status = 0;
+    INSTANCES_D->SendWhoUpdate(name, status);
+}
+
+void PlayerUpdate(string name, int status){
+    call_out("UserUpdate", 1, name, status);
 }

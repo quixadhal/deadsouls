@@ -19,7 +19,7 @@ static private void GetYesOrNo(string input);
 static private void EndSuicide(string who);
 
 string home_dir = "";
-string gwho = "";
+string newfile, tmp, gwho = "";
 
 int eventHoseDude(object dude){
     if(dude) dude->eventDestruct();
@@ -74,7 +74,7 @@ static private void GetPassword(string input) {
 }
 
 static private void GetYesOrNo(string input) {
-    string tmp = (string)this_player()->GetKeyName();
+    tmp = (string)this_player()->GetKeyName();
     if( !sizeof(input) || (input = lower_case(input))[0] != 'y' ) {
         if( input && input[0] == 'a' ) {
             this_player()->eventPrint("Suicide has been aborted.");
@@ -91,9 +91,11 @@ static private void GetYesOrNo(string input) {
 }
 
 static private void EndSuicide(string who) {
-    string tmp, file, newfile;
+    string file;
     object *ob;
     string whocheck = cleaned_end(base_name(this_player()));
+    tmp = "";
+    newfile = "";
     if(who != whocheck){
         write("There seems to be a conflict in determining your identity.");
         write("Suicide aborted.");
@@ -104,12 +106,15 @@ static private void EndSuicide(string who) {
     if(!directory_exists(DIR_TMP + "/suicide/")) mkdir (DIR_TMP + "/suicide/");
 
     file = DIR_TMP + "/" + who;
-    newfile = DIR_TMP + "/suicide/" + who;
+    newfile = "/log/suicides/" + who;
     if( file_size(file) > 0 ) {
         tmp = possessive_noun(who)+" suicide note.\n"
             "Dated: "+ctime(time())+"\n";
         tmp += read_file(file);
-        write_file(newfile, tmp, 1);
+        if(!directory_exists("/log/suicides")){
+            unguarded( (: mkdir("/log/suicides") :) );
+        }
+        unguarded( (: write_file(newfile, tmp, 1) :) );
     }
     if( file_exists(file) ) rm(file);
     log_file("suicide", who+" suicided at "+ctime(time())

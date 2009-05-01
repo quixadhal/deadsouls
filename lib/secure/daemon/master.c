@@ -158,13 +158,31 @@ private static void load_access(string cfg, mapping resource) {
             error("Error in loading config file " + cfg + ".");
         }
         ac = trim(ac);
-        if(last(fl,3) == "/*/"){
+        if(last(fl,1) == "*" && last(fl,2) != "/*"){
+            string camino = (path_prefix(fl) || "");
+            string targ = truncate(replace_string(fl, camino, ""), 1);
+            string *pool = get_dir(camino+"/");
+            string *targs;
+            if(sizeof(targ)) targ = targ[1..];
+            //tc("targ: "+targ);
+            //tc("pool: "+identify(pool));
+            targs = regexp(pool,"^"+targ);
+            //tc("targs: "+identify(targs));
+            pool = ({});
+            foreach(string element in targs){
+                pool += ({ camino + "/" + element });
+            }
+            foreach(string element in pool){
+                //tc("element: "+element);
+                if(sizeof(element)) resource[element] = explode(ac, ":");
+            }
+        }
+        else if(last(fl,3) == "/*/"){
             string tmp = truncate(fl,2);
             foreach(string element in get_dir(tmp)){
                 resource[tmp+element+"/"] = explode(ac, ":");
             }
         }
-
         else resource[fl] = explode(ac, ":");
     }
 }

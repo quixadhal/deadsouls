@@ -4,6 +4,7 @@
 #define CONFIG_H "/secure/include/config.h"
 #define NETWORK_H "/secure/include/network.h"
 #define ROOMS_H "/secure/include/rooms.h"
+#define SECRETS_H "/secure/include/secrets.h"
 
 #include CONFIG_H
 #include <lib.h>

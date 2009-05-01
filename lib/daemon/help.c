@@ -240,44 +240,44 @@ string GetHelpByIndex(string index, string topic) {
                     else if( file_exists( DIR_ADMIN_CMDS + "/" + topic + ".c") )
                         file = DIR_ADMIN_CMDS + "/" + topic;
                     else file = DIR_SECURE_ADMIN_CMDS + "/" + topic;
-                    break;
+                break;
 
-                    case "creator commands":
-                        if( file_exists( DIR_CREATOR_VERBS + "/" + topic + ".c") )
-                            file = DIR_CREATOR_VERBS + "/" + topic;
-                        else if( file_exists(DIR_CREATOR_CMDS + "/" + topic + ".c") )
-                            file = DIR_CREATOR_CMDS + "/" + topic;
-                        else file = DIR_SECURE_CREATOR_CMDS + "/" + topic;
-                        break;      
+                case "creator commands":
+                    if( file_exists( DIR_CREATOR_VERBS + "/" + topic + ".c") )
+                        file = DIR_CREATOR_VERBS + "/" + topic;
+                    else if( file_exists(DIR_CREATOR_CMDS + "/" + topic + ".c") )
+                        file = DIR_CREATOR_CMDS + "/" + topic;
+                    else file = DIR_SECURE_CREATOR_CMDS + "/" + topic;
+                break;      
 
-                        case "builder commands":
-                            if( file_exists( DIR_BUILDER_VERBS + "/" + topic + ".c") )
-                                file = DIR_BUILDER_VERBS + "/" + topic;
-                            else if( file_exists(DIR_BUILDER_CMDS + "/" + topic + ".c") )
-                                file = DIR_BUILDER_CMDS + "/" + topic;
-                            else file = DIR_SECURE_BUILDER_CMDS + "/" + topic;
+                case "builder commands":
+                    if( file_exists( DIR_BUILDER_VERBS + "/" + topic + ".c") )
+                        file = DIR_BUILDER_VERBS + "/" + topic;
+                    else if( file_exists(DIR_BUILDER_CMDS + "/" + topic + ".c") )
+                        file = DIR_BUILDER_CMDS + "/" + topic;
+                    else file = DIR_SECURE_BUILDER_CMDS + "/" + topic;
+                break;
+
+                case "commands":
+                    foreach(string directory in ({ DIR_COMMON_VERBS,
+                                DIR_COMMON_CMDS,
+                                DIR_SECURE_COMMON_CMDS,
+                                DIR_ITEM_VERBS,
+                                DIR_PLAYER_VERBS,
+                                DIR_PLAYER_CMDS,
+                                DIR_SECURE_PLAYER_CMDS,
+                                DIR_ROOM_VERBS,
+                                DIR_SPELL_VERBS })) {
+                        if( file_exists(directory + "/" + topic + ".c") ) {
+                            file = directory + "/" + topic;
                             break;
+                        }
+                    }
+                break;
 
-                            case "commands":
-                                foreach(string directory in ({ DIR_COMMON_VERBS,
-                                            DIR_COMMON_CMDS,
-                                            DIR_SECURE_COMMON_CMDS,
-                                            DIR_ITEM_VERBS,
-                                            DIR_PLAYER_VERBS,
-                                            DIR_PLAYER_CMDS,
-                                            DIR_SECURE_PLAYER_CMDS,
-                                            DIR_ROOM_VERBS,
-                                            DIR_SPELL_VERBS })) {
-                                    if( file_exists(directory + "/" + topic + ".c") ) {
-                                        file = directory + "/" + topic;
-                                        break;
-                                    }
-                                }
-                            break;
-
-                            case "undead commands":
-                                file = DIR_UNDEAD_VERBS + "/" + topic;
-                            break;      
+                case "undead commands":
+                    file = DIR_UNDEAD_VERBS + "/" + topic;
+                break;      
             }
         if( !file_exists(file + ".c") ) {
             Error = "No such " + index[0..<2] + " exists.";

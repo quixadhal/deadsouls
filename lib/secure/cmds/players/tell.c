@@ -1,19 +1,30 @@
 /*    /secure/cmds/player/tell.c
- *    from the Nightmare IV LPC Library
+ *    from the Dead Souls LPC Library
  *    the tell command
  *    created by Descartes of Borg 950523
  */
 
 #include <lib.h>
 #include <talk_type.h>
+#include <message_class.h>
 #include <daemons.h>
 
 inherit LIB_DAEMON;
 
 int CheckMud(string name){
-    if(!(name = (string)INTERMUD_D->GetMudName(name)) ) return 0;
-    if(!INTERMUD_D->GetMudList()[name][0]) return 0;
-    return 1;
+    int ret = 3;
+    string *imc2list, tmpname;
+    //tc("name: "+name);
+    if(!(tmpname = INTERMUD_D->GetMudName(name)) ) ret = 0;
+    if(tmpname && !INTERMUD_D->GetMudList()[tmpname][0]) ret = 0;
+    if(ret){
+        //tc("ret: "+ret, "blue");
+        return ret;
+    }
+    if(sizeof(IMC2_D->GetMudName(name, 1))) ret = 2;
+    else ret = 0;
+    //tc("ret: "+ret, "red");
+    return ret;
 }
 
 mixed cmd(string str) {
@@ -37,10 +48,15 @@ mixed cmd(string str) {
         return 1;
     }
     mud = 0;
-    if((maxi=sizeof(words = explode(str, "@"))) > 1) {
+    if((maxi=sizeof(words = explode(str, "@"))) > 1){
+        string tmpmsg, tmpmud;
         who = convert_name(words[0]);
         if(maxi > 2) words[1] = implode(words[1..maxi-1], "@");
         maxi = sizeof(words = explode(words[1], " "));
+        if(CheckMud(words[0]) == 2){
+            tmpmud = words[0];
+            tmpmsg = implode(words[1..]," ");
+        }
         for(i=0; i<maxi; i++) {
             tmp = lower_case(implode(words[0..i], " "));
             tmp2 = lower_case(implode(words[0..i+1], " "));
@@ -52,15 +68,29 @@ mixed cmd(string str) {
                 break;
             }
         }
+        if(!mud && tmpmud){
+            mud = IMC2_D->GetMudName(tmpmud);
+            msg = tmpmsg;
+        }
         if(msg == "") return notify_fail("Syntax: <tell [who] [message]>\n");
         if(!mud) mud = -1;
     }
-    if(!mud || mud == -1) {
+    if(!mud || mud == -1){
+        int memb;
+        object npc;
         maxi = sizeof(words = explode(str, " "));
         who = 0;
-        for(i=0; i<maxi; i++) {
+        for(i=0; i<maxi; i++){
             retname = words[0];
-            if(ob=find_living(tmp=convert_name(implode(words[0..i], " ")))) {
+            tmp = convert_name(implode(words[0..i], " "));
+            memb = member_array(tmp, remote_users());
+            //tc("tmp: "+identify(tmp));
+            //tc("memb: "+memb,"blue");
+            ob = find_player(tmp);
+            if(!ob) npc = find_living(tmp);
+            if(ob || memb != -1 || npc){
+                if(!ob && memb == -1 && npc) ob = npc;
+                //tc("crunt", "red");
                 who = tmp;
                 if(i+1 < maxi) msg = implode(words[i+1..maxi-1], " ");
                 else msg = "";
@@ -73,6 +103,7 @@ mixed cmd(string str) {
                 msg = implode(words," ");
                 this_player()->eventTellHist("You tried to tell "+retname+": "+
                         "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
+                //tc("1");
                 write("Tell whom what?");
                 return 1;
             }
@@ -87,11 +118,17 @@ mixed cmd(string str) {
         }
     }
     else {
-        if(!creatorp(this_player())) this_player()->AddMagicPoints(-15);
-        SERVICES_D->eventSendTell(who, mud, msg);
+        if(CheckMud(mud) == 3){
+            if(!creatorp(this_player())) this_player()->AddMagicPoints(-15);
+            SERVICES_D->eventSendTell(who, mud, msg);
+        }
+        else {
+            IMC2_D->command("tell "+who+"@"+mud+" "+msg);
+        }
         return 1;
     }
-    if(ob) {
+    //tc("who: "+who);
+    if(ob){
         mixed err;
         if(archp(ob) || (!archp(this_player()) && creatorp(ob))) 
             me = capitalize(this_player()->GetKeyName());
@@ -114,6 +151,7 @@ mixed cmd(string str) {
             if(ob && !creatorp(ob)) this_player()->AddMagicPoints(15);
             this_player()->eventTellHist("You tried to tell "+retname+": "+
                     "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
+            //tc("2");
             return err || "Tell whom what?";
         }
         if( ob->GetInvis() && ( ( archp(ob) && !archp(this_player()) ) 
@@ -125,10 +163,13 @@ mixed cmd(string str) {
             }
             ob->eventTellHist(inv_ret);
             ob->SetProperty("reply", lower_case(me));
+            ob->SetProperty("reply_time", time());
             this_player()->eventTellHist("You tried to tell "+retname+": "+
                     "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
+            //tc("3");
             if(query_verb() == "tell") return "Tell whom what?";
             else {
+                //tc("4");
                 write("Tell whom what?");
                 return 1;
             }
@@ -142,6 +183,7 @@ mixed cmd(string str) {
 #endif
         else this_player()->eventSpeak(ob, TALK_PRIVATE, msg);
         ob->SetProperty("reply", lower_case(me));
+        ob->SetProperty("reply_time", time());
         if(!archp(ob) && userp(ob) && (query_idle(ob) > 60))
             message("my_action", (string)ob->GetName()+
                     " is idle and may not have been paying attention.", this_player());
@@ -155,6 +197,15 @@ mixed cmd(string str) {
         else if(ob->GetSleeping())
             message("my_action", (string)ob->GetCapName()+" is sleeping "+
                     "and is unable to respond.", this_player());
+    }
+    else {
+        string ret;
+        //tc("yay");
+        ret = "%^BOLD%^RED%^You tell " + capitalize(who) +
+            ":%^RESET%^ " + msg;
+        this_player(1)->eventPrint(ret, MSG_CONV);
+        this_player(1)->eventTellHist(ret);
+        INSTANCES_D->SendTell(who, msg);
     }
     return 1;
 }

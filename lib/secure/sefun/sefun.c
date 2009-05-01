@@ -51,8 +51,7 @@
 #include "/secure/sefun/time.c"
 #include "/secure/sefun/to_object.c"
 #include "/secure/sefun/translate.c"
-#include "/secure/sefun/user_exists.c"
-#include "/secure/sefun/user_path.c"
+#include "/secure/sefun/users.c"
 #include "/secure/sefun/visible.c"
 #include "/secure/sefun/tail.c"
 #include "/secure/sefun/sockets.c"
@@ -297,10 +296,22 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     return ret;
 }
 
+string query_ip_number(object ob){
+    if(!ob) ob = previous_object();
+    if(!AUTO_WIZ || ob == previous_object()) return efun::query_ip_number(ob);
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+        return efun::query_ip_number(ob);
+    return "0.0.0.0";
+}
+
 //addr_server calls don't work well on Solaris and spam stderr
 string query_ip_name(object ob){
+    if(!ob) ob = previous_object();
     if(!strsrch(architecture(), "Solaris")) return query_ip_number(ob);
-    else return efun::query_ip_name(ob);
+    if(!AUTO_WIZ || ob == previous_object()) return efun::query_ip_name(ob);
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+        return efun::query_ip_name(ob);
+    return "w.x.y.z";
 }
 
 string *query_local_functions(mixed arg){

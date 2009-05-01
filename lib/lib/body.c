@@ -1764,7 +1764,10 @@ int GetStaminaPoints(){ return to_int(StaminaPoints); }
 float GetMaxStaminaPoints(){  return 0; }
 
 int AddExperiencePoints(mixed x){
+    int dev;
     if( !intp(x)) error("Bad argument 1 to AddExperiencePoints().\n");
+    dev = DEVIATION_D->GetDeviationCost(this_object(), x);
+    x -= dev;
     if((ExperiencePoints += x) < 0) ExperiencePoints = 0;
     return ExperiencePoints;
 }

@@ -31,11 +31,11 @@ static void create() {
             "%^GREEN%^bed%^RESET%^: "+MODULES_CREATE->GetSettings("bed")+"\n--\n"
             "%^GREEN%^table%^RESET%^: "+MODULES_CREATE->GetSettings("table")+"\n--\n"
             "%^GREEN%^container%^RESET%^: "+MODULES_CREATE->GetSettings("storage")+"\n----\n"
-            "%^GREEN%^meal%^RESET%^: "+MODULES_CREATE->GetSettings("meal")+"\n----\n"
-            "%^GREEN%^drink%^RESET%^: "+MODULES_CREATE->GetSettings("meal")+"\n----\n"
-            "%^GREEN%^door%^RESET%^: "+MODULES_CREATE->GetSettings("door")+"\n----\n"
-            "%^GREEN%^book%^RESET%^: "+MODULES_CREATE->GetSettings("book")+"\n----\n"
-            "\nSee also: copy, create, delete, reload, initfix, add");
+                                                                               "%^GREEN%^meal%^RESET%^: "+MODULES_CREATE->GetSettings("meal")+"\n----\n"
+                                                                               "%^GREEN%^drink%^RESET%^: "+MODULES_CREATE->GetSettings("meal")+"\n----\n"
+                                                                               "%^GREEN%^door%^RESET%^: "+MODULES_CREATE->GetSettings("door")+"\n----\n"
+                                                                               "%^GREEN%^book%^RESET%^: "+MODULES_CREATE->GetSettings("book")+"\n----\n"
+                                                                               "\nSee also: copy, create, delete, reload, initfix, add");
 }
 
 mixed can_modify_obj_str(string str) { 

@@ -35,6 +35,10 @@ mixed can_sell_liv_obs() {
 }
 
 mixed do_sell_obj_to_liv(object ob, object vendor) {
+    if(ob->GetWorn()){
+        write("Remove or unwield items before trying to sell them.");
+        return 1;
+    }
     return vendor->eventBuy(this_player(), ({ ob }));
 }
 

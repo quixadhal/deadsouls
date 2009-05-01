@@ -161,6 +161,9 @@ static void create() {
     return 0;
 #endif
     daemon::create();
+    if(!file_exists(SaveFiles) && file_exists(old_savename(SaveFiles))){
+        cp(old_savename(SaveFiles), SaveFiles);
+    }
     if(file_exists(SaveFiles)){
         RestoreObject(SaveFiles);
     }

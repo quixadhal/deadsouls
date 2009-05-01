@@ -31,56 +31,56 @@ void create(){
 
     if(false()){
         object uu = find_object("/secure/daemon/update");
-        tc("Patching...");
+        //tc("Patching...");
         if(uu) uu->eventDestruct();
         if(uu) destruct(uu);
-        if(uu) tc("Patching may be failing :(");
-                patched = 1;
-                unguarded( (: cp("/secure/daemon/update.patch",
-                            "/secure/daemon/update.c") :) );
-                unguarded( (: reload("/secure/daemon/update.c") :) );
-                }
-                }
+        //if(uu) tc("Patching may be failing :(");
+        patched = 1;
+        unguarded( (: cp("/secure/daemon/update.patch",
+                        "/secure/daemon/update.c") :) );
+        unguarded( (: reload("/secure/daemon/update.c") :) );
+    }
+}
 
-                int eventDestruct(){
+int eventDestruct(){
 #ifdef ENABLE_INSTANCES
-                if(directory_exists(path_prefix(SaveFile))){
-                unguarded( (: save_object(SaveFile) :) );
-                }
+    if(directory_exists(path_prefix(SaveFile))){
+        unguarded( (: save_object(SaveFile) :) );
+    }
 #endif
-                destruct();
-                return 1;
-                }
+    destruct();
+    return 1;
+}
 
-                int eventBackup(string file){
-                string tmp, time_str,short_name,filename;
-                if(!file) return 0;
-                if(!file_exists(file)) return -1;
-                if( !(tmp = read_file(file)) ) return -2;  
-                time_str = time()+"."+random_numbers(5);
-                short_name = last_string_element(file,"/");
-                if(!revert_name){
-                    revert_name = itoa(time());
-                }
-                if(!reverts_prefix){
-                    reverts_prefix = "/secure/upgrades/reverts/"+mudlib_version();
-                }
-                if(!directory_exists("/secure/upgrades/reverts/")){
-                    mkdir("/secure/upgrades/reverts");
-                }
-                if(!directory_exists(reverts_prefix)){
-                    mkdir(reverts_prefix);
-                }
-                if(!directory_exists(reverts_prefix+"/"+revert_name)){
-                    mkdir(reverts_prefix+"/"+revert_name);
-                }
-                filename = reverts_prefix+"/"+revert_name+
-                    "/"+short_name+"."+time_str;
-                write_file(reverts_prefix+"/"+revert_name+"/"+
-                        "/bk.db",short_name+"."+time_str+" : "+file+"\n");
-                cp(file,filename);
-                return 1;
-                }
+int eventBackup(string file){
+    string tmp, time_str,short_name,filename;
+    if(!file) return 0;
+    if(!file_exists(file)) return -1;
+    if( !(tmp = read_file(file)) ) return -2;  
+    time_str = time()+"."+random_numbers(5);
+    short_name = last_string_element(file,"/");
+    if(!revert_name){
+        revert_name = itoa(time());
+    }
+    if(!reverts_prefix){
+        reverts_prefix = "/secure/upgrades/reverts/"+mudlib_version();
+    }
+    if(!directory_exists("/secure/upgrades/reverts/")){
+        mkdir("/secure/upgrades/reverts");
+    }
+    if(!directory_exists(reverts_prefix)){
+        mkdir(reverts_prefix);
+    }
+    if(!directory_exists(reverts_prefix+"/"+revert_name)){
+        mkdir(reverts_prefix+"/"+revert_name);
+    }
+    filename = reverts_prefix+"/"+revert_name+
+        "/"+short_name+"."+time_str;
+    write_file(reverts_prefix+"/"+revert_name+"/"+
+            "/bk.db",short_name+"."+time_str+" : "+file+"\n");
+    cp(file,filename);
+    return 1;
+}
 
 int eventRevert(string revert_path){
     string *files;

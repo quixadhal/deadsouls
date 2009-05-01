@@ -43,6 +43,18 @@ void eventLoad(){
 
 int SetStargate(string address, string destination){
     mapping tmp = ([]);
+    object prevob = previous_object();
+    string prev;
+
+    if(!prevob) return 0;
+    prev = base_name(prevob);
+
+    //Only gates installed in /domains/ or /secure/ are allowed
+    //to register.
+    if(strsrch(prev, "/domains/") && strsrch(prev, "/secure/")){
+        return 0;
+    }
+
     Stargates[address] = tmp;
     if (address == "" || destination == "") return 1;
     if(sizeof(Stargates[address])) return 1;

@@ -11,11 +11,15 @@
 #include <daemons.h>
 #include <message_class.h>
 
+#ifndef SAVE_IMC2
+#define SAVE_IMC2 "/secure/save/imc2"
+#endif
+
 //This is the LPMuds.net experimental IMC2 server. If you are
 //already connected to LPMuds.net intermud using Intermud-3, do
 //not use the LPMuds.net IMC2 server.
 //#define HOSTPORT 8888
-//#define HOSTIP "66.197.134.110"
+//#define HOSTIP "97.107.133.86"
 
 // Connection data for Davion's server
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
@@ -144,8 +148,8 @@
 
 inherit LIB_DAEMON;
 
-string tmpstr, host, who_str;;
-static string SaveFile;
+string tmpstr, host, who_str;
+static string SaveFile, serverpass, clientpass;
 
 static int socket_num, counter;
 static int heart_count = 0;
@@ -158,7 +162,7 @@ string buf=""; // Buffer for incoming packets (aren't always sent 1 at a time)
 // Variables
 static int xmit_to_network_room = 1; //enable this to make a lot of noise
 static string hub_name, network_name;
-string server_pass, server_version;
+string server_version;
 mapping chaninfo;
 mapping localchaninfo; // (["chan": ([ "perm":1, "name":"something", "users":({ }) ]) ])
 mapping mudinfo;
@@ -296,7 +300,7 @@ void read_callback(int socket, mixed info){
             send_keepalive_request();
             send_ice_refresh();
         } else if(sscanf(info, "PW %s %s version=%d %s\n",
-            hub_name, server_pass, server_version, network_name)==4){
+            hub_name, serverpass, server_version, network_name)==4){
             mode = MODE_CONNECTED;
             send_is_alive("*");
             send_keepalive_request();
@@ -520,14 +524,20 @@ private void send_text(string text){
 
 void create(){
 #if DISABLE_IMC2
+    tn("IMC2: destruicted "+ctime(time()));
     unguarded( (: destruct() :) );
 #else
     SaveFile = save_file(SAVE_IMC2);
+    SetSaveFile(SaveFile);
+    //tc("SaveFile1: "+SaveFile);
     set_heart_beat(10);
     counter = time();
-    //tn("IMC2: created "+ctime(time()));
+    tn("IMC2: created "+ctime(time()));
     if(unguarded( (: file_exists(SaveFile) :) )) 
         unguarded( (: RestoreObject(SaveFile) :) );
+    if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
+        cp(old_savename(SaveFile), SaveFile);
+    }
     call_out( (: Setup :), 1);
 #endif
 }
@@ -549,9 +559,12 @@ void Setup(){
         return;
     }
     else {
-        my_ip = INTERMUD_D->GetMyIp();
+        clientpass = SECRETS_D->GetSecret("IMC2_CLIENT_PW");
+        serverpass = SECRETS_D->GetSecret("IMC2_SERVER_PW");
+        if(sizeof(host)) my_ip = host;
+        else my_ip = INTERMUD_D->GetMyIp();
         if(my_ip == "127.0.0.1"){
-            my_ip = "alcatraz.wolfpaw.com";
+            my_ip = "dead-souls.net";
             my_port = 8000;
         }
         else my_port = query_host_port();
@@ -573,7 +586,7 @@ void Setup(){
     if(!tells) tells=([ ]);
     ping_requests=([ ]);
     mode = MODE_WAITING_ACCEPT;
-    if(my_ip == "alcatraz.wolfpaw.com"){
+    if(my_ip == "dead-souls.net"){
         catch( host = query_intermud_ip() );
         if(!sizeof(host)) host = "dead-souls.net";
     }
@@ -621,14 +634,25 @@ void heart_beat(){
 
 void remove(){
     // This object is getting destructed.
+    tn("removing imc2. stack: "+get_stack(1));
     mode=2;
-    SaveObject(SaveFile, 1);
+    unguarded( (: SaveObject(SaveFile, 1) :) );
     socket_close(socket_num);
     //	if(imc2_socket) imc2_socket->remove();
 #ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"IMC2 OBJECT REMOVED\n");
 #endif
     //destruct(this_object());
+}
+
+static mixed GetChanInfo(){
+    mixed foo = copy(chaninfo);
+    return 1;
+}
+
+string *GetChanList(){
+    if(!chaninfo) return ({});
+    return keys(chaninfo);
 }
 
 int eventDestruct(){
@@ -684,16 +708,16 @@ void start_logon(){
         send_text(sprintf("PW %s %s version=%d autosetup %s\n",
 #endif
             MUDNAME,
-            IMC2_CLIENT_PW, 2
+            clientpass, 2
 #ifndef NOT_AUTO
-            , IMC2_SERVER_PW
+            , serverpass
 #endif
           ));
         buf="";
         /* For invitation-only networks.
            send_text(sprintf("PW %s %s version=%d %s\n",
            MUDNAME,
-           IMC2_CLIENT_PW, 2, "hub03"
+           clientpass, 2, "hub03"
            ));
          */
         sequence=time();
@@ -779,6 +803,7 @@ void start_logon(){
       void send_packet(string sender, string packet_type, string target, string destination, string data){
           // Sends a packet in the format that IMC2 uses.
           sequence++;
+          //tc("sender: "+sender, "blue");
           send_text(sprintf("%s@%s %d %s %s %s@%s %s\n",
               sender,	MUDNAME, sequence, MUDNAME, packet_type,
               target, destination, data));
@@ -831,22 +856,30 @@ void start_logon(){
     }
 
     varargs static void tell_out(object from, string targname, string targmud, string msg, int reply, int emote){
+        string ret = "%^BOLD%^RED%^You tell " + capitalize(targname) +
+          "@" + targmud + ":%^RESET%^ " + msg;
         // Send outgoing tell.
         if(!reply) reply=0;
         send_packet(capitalize(from->GetKeyName()),"tell",targname,targmud,
           sprintf("level=%d text=%s reply=%d emote=%d", level(from),escape(msg),reply,emote));
-        from->eventPrint("%^BOLD%^RED%^You tell " + capitalize(targname) + "@" + targmud + ":%^RESET%^ " + msg, MSG_CONV);
+        from->eventPrint(ret, MSG_CONV);
+        from->eventTellHist(ret);
     }
 
     void tell_in(string sender, string origin, string target, mapping data){
         // Incoming tell. Parse and display to user
         object who;
         int sz;
-        string blmsg;
+        string blmsg, ret, eret;
         who=FIND_PLAYER(lower_case(target));
         target=GET_CAP_NAME(who);
         data["text"]=imc2_to_pinkfish(data["text"]);
         who->SetProperty("reply",sender+"@"+origin);
+        who->SetProperty("reply_time", time());
+        eret = "%^BOLD%^RED%^" + sender + "@" + origin +
+          " %^RESET%^ " + data["text"];
+        ret = "%^BOLD%^RED%^" + sender + "@" + origin +
+          " tells you:%^RESET%^ " + data["text"];
         if(who
 #ifdef INVIS
           && VISIBLE(who)
@@ -855,21 +888,20 @@ void start_logon(){
         ){
             switch(data["isreply"]){
             case 2: // emote
-                who->eventPrint("%^BOLD%^RED%^" + sender + "@" + origin + " %^RESET%^ " + data["text"], MSG_CONV);
-                //IMC2_MSG(sprintf("%%^CYAN%%^%s@%s%%^RESET%%^ %s\n", NETWORK_ID,sender,origin,data["text"]), who);
+                ret = eret;
+                who->eventPrint(ret, MSG_CONV);
                 blmsg=sprintf("%s@%s %s\n",sender,origin,data["text"]);
                 break;
             case 1: // reply
-                who->eventPrint("%^BOLD%^RED%^" + sender + "@" + origin + " tells you:%^RESET%^ " + data["text"], MSG_CONV);
-                //IMC2_MSG(sprintf("%s %%^CYAN%%^%s@%s%%^RESET%%^ replies to you: %s\n", NETWORK_ID,sender,origin,data["text"]), who);
+                who->eventPrint(ret, MSG_CONV);
                 blmsg=sprintf("%s@%s replied to you: %s\n", NETWORK_ID,sender,origin,data["text"]);
                 break;
             default:
-                who->eventPrint("%^BOLD%^RED%^" + sender + "@" + origin + " tells you:%^RESET%^ " + data["text"], MSG_CONV);
-                //IMC2_MSG(sprintf("%s %%^CYAN%%^%s@%s%%^RESET%%^ tells you: %s\n", NETWORK_ID,sender,origin,data["text"]), who);
+                who->eventPrint(ret , MSG_CONV);
                 blmsg=sprintf("%s@%s told you: %s\n", sender,origin,data["text"]);
                 break;
             }
+            who->eventTellHist(ret);
             if(!tells[target])
                 tells[target]=([ ]);
             tells[target]["reply"] = sprintf("%s@%s",sender,origin);
@@ -1674,15 +1706,19 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
     void eventChangeIMC2Passwords(){
         string cpass = alpha_crypt(10);
         string spass = alpha_crypt(10);
-        string filename = CONFIG_H;
-        string file = read_file(filename);
+        //string filename = CONFIG_H;
+        //string file = read_file(filename);
+        //if(!file || !sizeof(file)) return;
+        //file = replace_string(file,"clientpass",cpass);
+        //file = replace_string(file,"serverpass",spass);
+        //write_file(filename, file, 1);
 
-        if(!file || !sizeof(file)) return;
-
-        file = replace_string(file,"clientpass",cpass);
-        file = replace_string(file,"serverpass",spass);
-
-        write_file(filename, file, 1);
+        if( ((int)master()->valid_apply(({ "SECURE" }))) ){
+        SECRETS_D->SetSecret("IMC2_CLIENT_PW", cpass);
+        SECRETS_D->SetSecret("IMC2_SERVER_PW", spass);
+        clientpass = cpass;
+        serverpass = spass;
+}
 
         return;
     }
@@ -1691,8 +1727,11 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
         //This is just for taking away automatic disablement.
         //For enabling/disabling, see the mudconfig command.
         if(x) autodisabled = 0;
-        SaveObject(SaveFile,1);
-        RELOAD_D->eventReload(this_object(), 2, 1);
+        if(!sizeof(SaveFile)) return autodisabled;
+        if(unguarded((:directory_exists(path_prefix(SaveFile)):))){
+            unguarded( (: SaveObject(SaveFile,1) :) );
+            RELOAD_D->eventReload(this_object(), 2, 1);
+        }
         return autodisabled;
     }
 
@@ -1704,3 +1743,21 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
         return !(DISABLE_IMC2);
     }
 
+varargs string *GetMudList(int online){
+   mixed muds = filter(keys(mudinfo), (: stringp($1) :));
+   if(online) muds = filter(muds, (: mudinfo[$1]["online"] :));
+   return muds;
+}
+
+varargs string GetMudName(string name, int online){
+   mixed muds = filter(keys((mudinfo || ([]))), (: stringp($1) :));
+   if(member_array(name, muds) != -1) return name;
+   foreach(string mud in muds){
+       if(lower_case(mud) == lower_case(name)){
+           if(!online) return mud;
+           else if(mudinfo[mud]["online"]) return mud;
+       }
+   }
+   return 0;
+}
+    

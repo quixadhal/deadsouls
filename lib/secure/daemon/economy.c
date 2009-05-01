@@ -6,13 +6,13 @@
 #include <lib.h>
 #include <save.h>
 #include <privs.h>
-//#include <clock.h>
 
 inherit LIB_DAEMON;
 
 private mapping Currencies;
 int LastInflation;
-string oba, SaveFile;
+string oba; 
+static string SaveFile;
 
 static void create() {
     string *borg;
@@ -23,6 +23,10 @@ static void create() {
     SetNoClean(1);
     Currencies = ([]);
     SaveFile = save_file(SAVE_ECONOMY);
+    SetSaveFile(SaveFile);
+    if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
+        cp(old_savename(SaveFile), SaveFile);
+    }
     unguarded( (: RestoreObject(SaveFile) :) );
     i = sizeof(borg = keys(Currencies));
     temps = percent(time()-LastInflation, 4800000)* 0.01;

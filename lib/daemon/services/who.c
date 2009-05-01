@@ -42,19 +42,24 @@ void eventReceiveWhoReply(mixed *packet) {
 
 void eventReceiveWhoRequest(mixed *packet) {
     mixed *msg;
-    string *real_users = ({});
     string ret = "";
     mini = 0;
-    real_users = filter(users(), (: $1->GetKeyName() == last_string_element(base_name($1),"/") :));
-    if( file_name(previous_object()) != INTERMUD_D ) return;
-    if(sizeof(real_users) > 100) mini = 1;
-    msg = map(filter(real_users, (: (environment($1) && !((int)$1->GetInvis()))  :)),
+    if( file_name(previous_object()) != INTERMUD_D &&
+            file_name(previous_object()) != INSTANCES_D){
+        //tc("fonk");
+        return;
+    }
+    if(sizeof(users()) > 100) mini = 1;
+    msg = map(filter(users(),(: (environment($1) && !((int)$1->GetInvis())) :)),
             (: ({ (string)$1->GetCapName(), query_idle($1),
                 (mini ? "" : (string)$1->GetShort()) }) :));
+    //tc("msg: "+identify(msg),"red");
     if(sizeof(identify(msg)) >= __LARGEST_PRINTABLE_STRING__){
         msg = ({({"Number of users: "+sizeof(msg), 0, "Too many results." })});
     }
+    //tc("msg: "+identify(msg),"green");
     write_file("/tmp/thingy.txt",identify(msg),1);
+    //tc("msg: "+identify(msg),"blue");
     INTERMUD_D->eventWrite(({ "who-reply", 5, mud_name(), 0, packet[2],
                 packet[3], msg }));
     foreach(string *entry in msg){

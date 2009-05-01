@@ -815,54 +815,54 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
                             this_object());
                 else message("environment", "The air is getting a bit cooler.",
                         this_object());
-                break;
-                case "tropical":
-                    if( newclim != "arid" )
-                        message("environment", "The air is not quite as humid.",
-                                this_object());
-                    else message("environment", "The air has become suddenly dry.",
+            break;
+            case "tropical":
+                if( newclim != "arid" )
+                    message("environment", "The air is not quite as humid.",
                             this_object());
-                    break;
-                    case "sub-tropical":
-                        if( newclim == "arid" )
-                            message("environment", "The air has become suddenly dry.",
-                                    this_object());
-                        else if( newclim == "tropical" )
-                            message("environment","The air has gotten a bit more humid.",
-                                    this_object());
-                        else message("environment", "The air is not quite as humid.",
-                                this_object());
-                        break;
-                        case "temperate":
-                            if( newclim == "arid" )
-                                message("environment", "The air is a bit drier and warmer.",
-                                        this_object());
-                            else if( newclim == "tropical" )
-                                message("environment", "The air is much more humid.",
-                                        this_object());
-                            else if( newclim == "sub-tropical" )
-                                message("environment", "The air is a bit more humid.",
-                                        this_object());
-                            else message("environment", "The air is a bit colder now.",
-                                    this_object());
-                            break;
-                            case "sub-arctic":
-                                if( newclim == "arid" || newclim == "tropical" ||
-                                        newclim == "sub-tropical" )
-                                    message("environment", "It has suddenly grown very hot.",
-                                            this_object());
-                                else if( newclim == "arctic" )
-                                    message("environment", "It is a bit cooler than before.",
-                                            this_object());
-                                else message("environment", "It is not quite as cold as "
-                                        "before.", this_object());
-                                break;
-                                case "arctic":
-                                    if( newclim == "sub-arctic" )
-                                        message("environment", "It is not quite as cold now.",
-                                                this_object());
-                                    else message("environment", "It is suddenly much warmer than "
-                                            "before.", this_object());
+                else message("environment", "The air has become suddenly dry.",
+                        this_object());
+            break;
+            case "sub-tropical":
+                if( newclim == "arid" )
+                    message("environment", "The air has become suddenly dry.",
+                            this_object());
+                else if( newclim == "tropical" )
+                    message("environment","The air has gotten a bit more humid.",
+                            this_object());
+                else message("environment", "The air is not quite as humid.",
+                        this_object());
+            break;
+            case "temperate":
+                if( newclim == "arid" )
+                    message("environment", "The air is a bit drier and warmer.",
+                            this_object());
+                else if( newclim == "tropical" )
+                    message("environment", "The air is much more humid.",
+                            this_object());
+                else if( newclim == "sub-tropical" )
+                    message("environment", "The air is a bit more humid.",
+                            this_object());
+                else message("environment", "The air is a bit colder now.",
+                        this_object());
+            break;
+            case "sub-arctic":
+                if( newclim == "arid" || newclim == "tropical" ||
+                        newclim == "sub-tropical" )
+                    message("environment", "It has suddenly grown very hot.",
+                            this_object());
+                else if( newclim == "arctic" )
+                    message("environment", "It is a bit cooler than before.",
+                            this_object());
+                else message("environment", "It is not quite as cold as "
+                        "before.", this_object());
+            break;
+            case "arctic":
+                if( newclim == "sub-arctic" )
+                    message("environment", "It is not quite as cold now.",
+                            this_object());
+                else message("environment", "It is suddenly much warmer than "
+                        "before.", this_object());
         }
     }
     eventMoveFollowers(environment(this_object()));

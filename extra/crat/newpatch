@@ -11,8 +11,8 @@ rm -rf /tmp/foo/*
 
 cd /tmp/foo
 
-unzip -qd $OLDLIB /misc/data/mud/deadsouls/$OLDLIB.zip
-unzip -qd $NEWLIB /misc/data/mud/deadsouls/$NEWLIB.zip
+unzip -qd $OLDLIB $HOME/mud/$OLDLIB.zip
+unzip -qd $NEWLIB $HOME/mud/$NEWLIB.zip
 
 mv $OLDLIB/*/* $OLDLIB/
 
@@ -22,8 +22,13 @@ mv $NEWLIB/*/* $NEWLIB/
 #\rm -f $OLDLIB/lib/secure/include/config.h
 #\rm -f $NEWLIB/lib/secure/include/config.h
 
-\rm -f $OLDLIB/lib/secure/cfg/*.cfg
-\rm -f $NEWLIB/lib/secure/cfg/*.cfg
+\rm -f $OLDLIB/lib/secure/cfg/groups.cfg
+\rm -f $OLDLIB/lib/secure/cfg/mudos.cfg
+\rm -f $OLDLIB/lib/secure/cfg/mudos.win32
+
+\rm -f $NEWLIB/lib/secure/cfg/groups.cfg
+\rm -f $NEWLIB/lib/secure/cfg/mudos.cfg
+\rm -f $NEWLIB/lib/secure/cfg/mudos.win32
 
 \rm -r $NEWLIB/lib/core  $OLDLIB/lib/core
 \rm -r $NEWLIB/lib/secure/sefun/native_version.c  $OLDLIB/lib/secure/sefun/native_version.c
@@ -57,14 +62,22 @@ mkdir $OLDLIB/lib/domains/cave/save
 mkdir $OLDLIB/lib/domains/cave/txt
 mkdir $OLDLIB/lib/domains/cave/virtual
 mkdir $OLDLIB/lib/domains/cave/weap
+mkdir $OLDLIB/lib/doc/phints
 
+if [ $3 ]
+then
+echo "indenting"
 cd $NEWLIB/lib
 /contrib/indentall
 cd ../../$OLDLIB/lib
 /contrib/indentall
 cd ../../
+else
+echo "not indenting"
+fi
 
-gdiff -rq $OLDLIB/lib $NEWLIB/lib > diff.txt
+cd /tmp/foo
+diff -rq $OLDLIB/lib $NEWLIB/lib > diff.txt
 
 perl -pi -e s/"\:\ "/"\/"/g diff.txt
 
@@ -98,7 +111,7 @@ mv $NEWLIB/*/* $NEWLIB/
 cd $OLDLIB
 tar xfp ../patch.tar
 cd ..
-gdiff -rq $OLDLIB/ $NEWLIB/ > diff2.txt
+diff -rq $OLDLIB/ $NEWLIB/ > diff2.txt
 echo "Anything after this is an imperfection except for the connect.c"
 cat diff2.txt
 \mv -f lib lib.foo

@@ -17,7 +17,7 @@ private mapping __MailQueue;
 static private mapping __IncomingMail; 
 mapping Old = ([]);
 mapping Outgoing = ([]);
-string SaveFile;
+static string SaveFile;
 
 static int count = 0;
 

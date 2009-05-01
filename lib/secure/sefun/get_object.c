@@ -69,7 +69,7 @@ varargs object get_object( string str, object player, int living )
                     return what;
                 }
                 gstr = str;
-                candidates = filter(all_inventory(player),
+                candidates = filter((all_inventory(player)+all_inventory(env)),
                         (: member_array(gstr, $1->GetCanonicalId()) != -1 :) );
                 if(living){
                     candidates = filter(candidates, (: living($1) :) );
