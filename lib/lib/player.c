@@ -43,8 +43,8 @@ static void heart_beat(){
         return;
     }
     if(GetProperty("reply")){
-        int t;
-        if(t = GetProperty("reply_time") && (time() - t) > 900){
+        int t = GetProperty("reply_time");
+        if(t > 1 && (time() - t) > 900){
             RemoveProperty("reply");
             RemoveProperty("reply_time");
         }

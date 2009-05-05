@@ -1,3 +1,8 @@
+---- 2.9a18 ---
+- Released 2009-05-05
+- Fixed a problem with the new reply aging system.
+- Fixed a bug in liveupgrading that overwrote SECRETS_H.
+
 ---- 2.9a17 ---
 - Released 2009-05-01
 - Driver is now a slightly modified FluffOS 2.16.

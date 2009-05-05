@@ -33,24 +33,18 @@ string suspect,site,chan;
 static private mapping Channels;
 static private mapping chanlast;
 
-static private string *local_chans = ({"newbie","cre","gossip","admin","error", "intermud",
-        "cleric", "mage", "explorer", "thief", "fighter", "death", "connections", "muds" });
+static private string *local_chans = ({});
 static private string *remote_chans = ({});
-static string *syschans = ({ "intermud", "death", "connections", "muds" });
+static string *syschans = ({});
 
 static private mapping localchans = ([
         //I3 Channels
         "imud_code": "intercre",
         "imud_gossip": "intergossip",
         "ie_flibcode": "foundation",
-        "dutch": "dutch",
         "dead_test4": "ds_test",
         "dead_souls": "ds",
 
-        //"free_speech": "fs",
-        //"discworld-chat": "dw",
-        //"discworld-cre": "dwcre",
-        "lpuni": "lpuni",
         //IMC2 Channels
         "Server01:ibuild": "ibuild",
         "Server01:ichat": "ichat",
@@ -73,10 +67,6 @@ static private mapping remotechans = ([
         "dutch": "dutch",
         "ds_test": "dead_test4",
         "ds": "dead_souls",
-        //"fs": "free_speech",
-        //"dw": "discworld-chat",
-        //"dwcre": "discworld-cre",
-        "lpuni": "lpuni",
 
         //IMC2 Channels
         "ibuild" : "Server01:ibuild",
@@ -124,6 +114,11 @@ static private mapping tags = ([
 
 static void Setup(){
     remote_chans = ({});
+    local_chans = ({"newbie","cre","gossip","admin","error", "intermud",
+        "death", "connections", "muds" });
+    syschans = ({ "intermud", "death", "connections", "muds" });
+
+    local_chans += CLASSES_D->GetClasses();
 
     if(find_object(INTERMUD_D)){
         if(arrayp(INTERMUD_D->GetChannels()))
@@ -132,6 +127,12 @@ static void Setup(){
     if(find_object(IMC2_D)){
         if(arrayp(IMC2_D->GetChanList()))
             remote_chans += IMC2_D->GetChanList();
+    }
+
+    foreach(string foo in remote_chans){
+        if(member_array(foo, local_chans) != -1){
+            remote_chans -= ({ foo });
+        }
     }
 }
 

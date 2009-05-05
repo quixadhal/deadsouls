@@ -49,12 +49,14 @@ mixed cmd(string args) {
 
     if(!LOG_REMOTE_CHANS && 
       member_array(args, CHAT_D->GetRemoteChannels(1)) != -1){
-        return CHAT_D->cmdLast(args);
+        ret = CHAT_D->cmdLast(args);
+        if(sizeof(ret)) return ret;
     }
 
     if(!LOG_LOCAL_CHANS && 
       member_array(args, CHAT_D->GetRemoteChannels()) == -1){
-        return CHAT_D->cmdLast(args);
+        ret = CHAT_D->cmdLast(args);
+        if(sizeof(ret)) return ret;
     }
 
     i = sscanf(args,"%s %d", gfile, lines);
@@ -85,7 +87,6 @@ mixed cmd(string args) {
         archive_array = (get_dir(DIR_CHANNEL_LOGS +"/archive/") || ({}) );
         archive_array = filter(archive_array, (: !strsrch($1,gfile) :) );
         archive_array = sort_array(archive_array, -1);
-        //archive_array = Prettify(archive_array, gfile );
         foreach(string element in archive_array){
             string junk1, tmp;
             if(sizeof(ret) >= lines) break;

@@ -45,7 +45,6 @@ int cmd(string str) {
         else local += ({ chan });
     }
     if(sizeof(remote)){
-        //remote = sort_array(remote, 1);
         ret += "REMOTE CHANNELS\n---------------\n";
         if(sizeof(imc2)){
             imc2 = sort_array(imc2, 1);
@@ -77,6 +76,7 @@ int cmd(string str) {
         ret = "No channels found.";
     }
     write(ret);
+    return 1;
 }		
 
 void help(){

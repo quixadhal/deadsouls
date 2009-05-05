@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <dirs.h>
 #include <cfg.h>
+#include <commands.h>
 #include <save.h>
 #include <daemons.h>
 #include NETWORK_H
@@ -31,10 +32,8 @@ void create(){
 
     if(false()){
         object uu = find_object("/secure/daemon/update");
-        //tc("Patching...");
         if(uu) uu->eventDestruct();
         if(uu) destruct(uu);
-        //if(uu) tc("Patching may be failing :(");
         patched = 1;
         unguarded( (: cp("/secure/daemon/update.patch",
                         "/secure/daemon/update.c") :) );
@@ -219,13 +218,30 @@ mixed cmd(string str) {
     i = 0;
     foo = sscanf(str,"%s %s",file, mud);
     if(!foo || foo < 2) file = str;
-    if(str == "apply"){
+    if(str == "apply" || str == "deferred"){
         string *files = ({});
-        string nlu=upgrades_files+"/0^0secure0^0cmds^0admins0^0liveupgrade.c";
+        string nlu, secs = upgrades_files+"/0^0secure0^0include0^0secrets.h";
         object nlob;
+        if(file_exists(secs) && file_exists(SECRETS_H)){
+            rm(secs);
+        }
+        nlu = upgrades_files+"/0^0secure0^0cmds0^0admins0^0liveupgrade.c";
         if(file_exists(nlu)){
             catch( nlob = load_object(nlu) );
-            if(nlob && nlob->GetDeferment()) return 1;
+            if(nlob && nlob->GetDeferment() && str != "deferred"){
+                nlob->eventDestruct();
+                return 1;
+            }
+            if(nlob) nlob->eventDestruct();
+            if(!rename(nlu, CMD_LIVEUPGRADE)){
+                write("The liveupgrade command has been updated.");
+                write("Please wait five seconds, then again type:\n");
+                write("liveupgrade apply");
+                if(!(this_object()->eventDestruct())){
+                    RELOAD_D->eventReload(this_object(), 0);
+                }
+                return 1;
+            }
         }
         player->eventPrint("I hope you backed up...\n");
         foreach(string element in get_dir(upgrades_files+"/")){
@@ -404,6 +420,14 @@ mixed cmd(string str) {
 
 void eventReceiveReport(string str){
     if(player) player->eventPrint(str);
+}
+
+int GetDeferment(){
+    string secs = upgrades_files+"/0^0secure0^0include0^0secrets.h";
+    if(file_exists(secs) && file_exists(SECRETS_H)){
+        rm(secs);
+    }
+    return 0;
 }
 
 string GetHelp() {

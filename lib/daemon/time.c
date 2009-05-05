@@ -38,6 +38,7 @@ static void create() {
 }
 
 int GetOffset(string tzone) {
+    if(LOCAL_TIME) return 0;
     if(!tzone) tzone = query_tz();
     if( !Zones[tzone] ) return 0;
     else return Zones[tzone]["offset"];
