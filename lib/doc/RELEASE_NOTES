@@ -1,3 +1,12 @@
+---- 2.9a19 (unreleased) ---
+- The idle command can now be used without an argument as
+  a connection keepalive.
+- i3router: IRN chanlist now tries to prune duplicated entries in the
+  data packet before transmission.
+- i3router: channel-add packets with invalid channel types are
+  now rejected.
+- The mudconfig command now handles mud name and port changes.
+
 ---- 2.9a18 ---
 - Released 2009-05-05
 - Fixed a problem with the new reply aging system.

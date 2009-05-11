@@ -71,8 +71,8 @@ void read_callback(mixed fd, mixed info){
                         info);
             }
             graylisted_muds += ({ ip_addr });
+            trr("flood packet: "+identify(info[0]),"red");
             return;
-            tc("Flood detected from "+ip_addr,"red");
         }
     }
     if(sizeof(blacklisted_muds)){

@@ -28,7 +28,7 @@ static mapping routers = ([
         "*wpr" : ([ "ip" : "195.242.99.94", "port" : 8080, "password" : IRN_PASSWORD4 ]),
         "*i4" : ([ "ip" : "204.209.44.3", "port" : 8080, "password" : IRN_PASSWORD4 ]),
         "*yatmim" : ([ "ip" : "149.152.218.102", "port" : 23, "password" : IRN_PASSWORD2 ]),
-        "*dalet" : ([ "ip" : "66.197.134.110", "port" : 8787, "password" : IRN_PASSWORD3 ])
+        "*dalet" : ([ "ip" : "97.107.133.86", "port" : 8787, "password" : IRN_PASSWORD3 ])
         ]);
 #endif
 
@@ -628,7 +628,10 @@ static varargs void SendList(mixed data, int fd, string type){
     mapping tmp = ([]);
     if(!type || !sizeof(type)) type = "irn-mudlist-delta";
     if(type == "mudlist") type = "irn-mudlist-delta";
-    if(type == "chanlist") type = "irn-chanlist-delta";
+    if(type == "chanlist"){
+        type = "irn-chanlist-delta";
+        this_object()->clean_chans();
+    }
     //trr("list type: "+type);
     //trr("%^RESET%^irn: trying to send list: "+identify(keys(data)));
     if(!irn_enabled) return;

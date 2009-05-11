@@ -1,5 +1,10 @@
 // This file written mostly by Tim Johnson (Tim@TimMUD)
 #include <save.h>
+#include <daemons.h>
+
+#ifndef FILTER_D
+#define FILTER_D "/secure/daemon/filter"
+#endif
 
 static void process_channel(mixed fd, mixed *info){
     string mudname;
@@ -132,7 +137,7 @@ static void process_channel(mixed fd, mixed *info){
             return;
         }
 
-        info[8] = "/secure/daemon/filter"->eventFilter(info[8]);
+        info[8] = FILTER_D->eventFilter(info[8]);
 
         foreach(mudname in keys(connected_muds)){
             if(listening[info[6]] && member_array(mudname, listening[info[6]])!=-1)
@@ -149,52 +154,54 @@ static void process_channel(mixed fd, mixed *info){
         // since I can't test at the moment.
         return;
         case "add":
-            // check if already exists...
-            if(!info[6] || (info[6] && !stringp(info[6]))) return;
+            if(!stringp(info[4])) info[4] = this_object()->GetRouterName();
+        // check if already exists...
+        if(!info[6]) return;
         if(channels[info[6]]){
-            //trr(info[3]+"@"+info[2]+" failed to create the channel: "+info[6]+ "because it already exists.","red");
+            send_error(info[2],info[3],"not-allowed",
+                    "Channel already exists: "+info[6],info);
+            trr(info[3]+"@"+info[2]+" failed to create the channel: "
+                    +info[6]+ " because it already exists.","red");
             return;
         }
-        // check if a valid channel name (illegal characters?)
+        // check if a valid channel name (illegal characters?
+        if(!stringp(info[6]) || sizeof(info[6]) > 80){
+            send_error(info[2],info[3],"not-allowed",
+                    "Invalid channel name: "+identify(info[6]),info);
+            trr(info[3]+"@"+info[2]+" failed to create the channel: "
+                    +info[6]+ "because it has an invalid name.","red");
+            return;
+        } 
         // check if other stuff is valid, like channel_type is 0,1,2
+        if(!intp(info[7]) || (info[7] < 0 || info[7] > 2)){
+            send_error(info[2],info[3],"not-allowed",
+                    "Invalid channel type: "+identify(info[7]),info);
+            trr(info[3]+"@"+info[2]+" failed to create the channel: "
+                    +info[6]+ "because it has an invalid type.","red");
+            return;
+        }
         // at this point, is being successfully added...
         channel_update_counter++;
-        channels[info[6]]=({ info[7], info[2], ({}) });
+        channels[info[6]]=({ distinct_array(info[7]), info[2], ({}) });
         channel_updates[info[6]] = channel_update_counter;
         //trr(info[3]+"@"+info[2]+" created the channel: "+info[6],"yellow");
         server_log(info[3]+"@"+info[2]+" created the channel: "+info[6]+"\n");
         // broadcast an update saying that this channel is added or changed now
         // chanlist-reply packet to everybody (who has a channel service?)
         broadcast_chanlist(info[6]);
-        SendList( ([ "channels" : ([ info[6] : channels[info[6]] ]), "listening" : ([]) ]),
+        SendList( ([ "channels" : ([ info[6] : channels[info[6]] ]), 
+                "listening" : ([]) ]),
                 0, "chanlist" );
-        //			broadcast_data(muds_not_on_this_fd(fd), ({
-        //				"chanlist-reply",5,router_name,0,
-        //				0, // should be mudname, I think 0 would work just as well?
-        //				0, channel_update_counter,
-        //				([ info[6]:({ info[2], info[7] }) ])
-        //			}));
-        //			write_data(fd,({
-        //				"chanlist-reply",5,router_name,0,
-        //				0, // should be mudname, I think 0 would work just as well?
-        //				0, channel_update_counter,
-        //				([ info[6]:({ info[2], info[7] }) ])
-        //			}));
         SaveObject(SAVE_ROUTER);
         return;
         case "remove":
-            if(!channels[info[6]]){ // error, channel is not registered!
-                send_error(info[2],info[3],"unk-channel",
-                        "Unknown channel: "+info[6],info);
-                return;
-            }
-        //trr("test1: "+clean_fd(socket_address(fd)));
-        //trr("test2: "+router_ip);
-        //trr("test3: "+channels[info[6]][1]);
-        //trr("test4: "+info[2]);
-
-        if(channels[info[6]][1]!=info[2] && 
-                info[2] != mud_name() &&
+            if(!stringp(info[4])) info[4] = this_object()->GetRouterName();
+        if(!channels[info[6]]){ // error, channel is not registered!
+            send_error(info[2],info[3],"unk-channel",
+                    "Unknown channel: "+info[6],info);
+            return;
+        }
+        if(channels[info[6]][1] != info[2] && 
                 clean_fd(socket_address(fd)) != router_ip ){
             send_error(info[2],info[3],"not-allowed","Channel "+
                     info[6]+" owned by: "+channels[info[6]][1],info);
@@ -204,8 +211,6 @@ static void process_channel(mixed fd, mixed *info){
         channel_update_counter++;
         map_delete(channels,info[6]);
         map_delete(channel_updates,info[6]);
-        //channel_updates[info[6]] = channel_update_counter;
-        //trr(info[3]+"@"+info[2]+" deleted the channel: "+info[6],"yellow");
         server_log(info[3]+"@"+info[2]+" deleted the channel: "+info[6]+"\n");
         // broadcast an update saying that this channel is gone now
         broadcast_chanlist(info[6]);
@@ -214,12 +219,10 @@ static void process_channel(mixed fd, mixed *info){
                 0, "chanlist" );
         return;
         case "admin":
-            // add/delete muds from the 2 lists...
-            //trr("test1: "+clean_fd(socket_address(fd)));
-            //trr("test2: "+router_ip);
-            //trr("test3: "+channels[info[6]][1]);
-            //trr("test4: "+info[2]);
-            if(info[2] == "Divided Sky") return;
+        if(!stringp(info[4])) info[4] = this_object()->GetRouterName();
+        // Sry guys, but wtf
+        if(info[2] == "Divided Sky") return;
+        // add/delete muds from the 2 lists...
         if(channels[info[6]][1]!=info[2] && 
                 clean_fd(socket_address(fd)) != router_ip ){
             send_error(info[2],info[3],"not-allowed","Channel "+
@@ -228,34 +231,28 @@ static void process_channel(mixed fd, mixed *info){
         }
         if(!listening[info[6]]) listening[info[6]] = ({});
         if(sizeof(info[7])){ // add to list...
-            //trr("planning to add.","white");
             channels[info[6]][2] += info[7];
+            channels[info[6]][2] = distinct_array(channels[info[6]][2]);
             // if add to ban list, unlisten...
             if(channels[info[6]][0]==0){ // type 0 means selective ban
-                //trr(identify(info[7]) +" has been banned from "+info[6],"yellow");
                 listening[info[6]] -= info[7];
+                listening[info[6]] = distinct_array(listening[info[6]]);
             }
-            //else //trr(identify(info[7]) +" has been unbanned from "+info[6],"yellow");
         }
         if(sizeof(info[8])){ // remove from list...
-            //trr("channels[info[6]]: "+identify(channels[info[6]]),"white");
-            //trr("planning to remove","white");
-            //trr("info: "+identify(info),"white");
             channels[info[6]][2] -= info[8];
-            //trr("channels[info[6]]: "+identify(channels[info[6]]), "white");
+            channels[info[6]][2] = distinct_array(channels[info[6]][2]);
             if(channels[info[6]][0]!=0){ // type 0 means selective ban...
                 // selective allow and filtered are the same though...
                 // so if not selective ban, then act like selective allow...
                 // if removed from allow list, unlisten...
                 listening[info[6]] -= info[8];
-                //trr(identify(info[8])+" has been banned from "+info[6],"yellow");
+                listening[info[6]] = distinct_array(listening[info[6]]);
             }
-            //else //trr(identify(info[8])+" has been unbanned from "+info[6],"yellow");
-            //else listening[info[6]] += info[8];
         }
-        //trr("Channel data for "+info[6]+": "+identify(channels[info[6]]), "white");
         SendList( ([ "channels" : ([ info[6] : channels[info[6]] ]),
-                    "listening" : ([ info[6] : listening[info[6]] ]) ]), 0, "chanlist" );
+                    "listening" : ([ info[6] : listening[info[6]] ]) ]), 
+                    0, "chanlist" );
         SaveObject(SAVE_ROUTER);
         return;
         case "listen": // mudname=info[2], channame=info[6], on_or_off=info[7]
@@ -274,7 +271,6 @@ static void process_channel(mixed fd, mixed *info){
             if(member_array(info[2],listening[info[6]])==-1)
                 return; // already NOT listening, ignore them
         }
-        //trr("listening change on chan:"+info[6]+", mud="+info[2]+", on_or_off="+info[7]);
         // only CHANGES should get to this point
         switch(channels[info[6]][0]){
             case 0: // selectively banned
@@ -282,7 +278,6 @@ static void process_channel(mixed fd, mixed *info){
                     // in list, you're banned...
                     send_error(info[2],0,"not-allowed",
                             "Banned from "+info[6],info);
-                    //SaveObject(SAVE_ROUTER);
                     return;
                 }
                 // not in ban list at this point
@@ -290,6 +285,7 @@ static void process_channel(mixed fd, mixed *info){
                     listening[info[6]] += ({ info[2] });
                 else
                     listening[info[6]] -= ({ info[2] });
+                listening[info[6]] = distinct_array(listening[info[6]]);
                 SaveObject(SAVE_ROUTER);
                 SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
                         0, "chanlist" );
@@ -307,6 +303,7 @@ static void process_channel(mixed fd, mixed *info){
                     listening[info[6]] += ({ info[2] });
                 else
                     listening[info[6]] -= ({ info[2] });
+                listening[info[6]] = distinct_array(listening[info[6]]);
                 SaveObject(SAVE_ROUTER);
                 SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
                         0, "chanlist" );
@@ -325,6 +322,7 @@ static void process_channel(mixed fd, mixed *info){
                     listening[info[6]] += ({ info[2] });
                 else
                     listening[info[6]] -= ({ info[2] });
+                listening[info[6]] = distinct_array(listening[info[6]]);
                 SaveObject(SAVE_ROUTER);
                 SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
                         0, "chanlist" );
@@ -333,8 +331,15 @@ static void process_channel(mixed fd, mixed *info){
         default: // trying to do "channel-blah"
         send_error(info[2],info[3],"unk-type","I don't know what "+info[0]+
                 " means.",info);
-        //trr("Don't know what the ["+info[0]+"] packet means.", "yellow");
         return;
     }
-    //trr("can't get here?");
+}
+
+void list_chans(){
+    mapping tmp_chans = channels;
+    foreach(mixed key, mixed val in tmp_chans){
+        tc("Key: "+identify(key));
+        tc("Val: "+identify(val));
+        tc("--\n","red");
+    }
 }

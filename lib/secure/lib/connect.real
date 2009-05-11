@@ -27,10 +27,13 @@ static private int *Screen;
 static private int rescue, yescre;
 static private string *ip_permitted = ({}), instname;
 
-//Change this to 1 to enable color codes in /news/welcome
+//Change this to 0 to disable color codes in /news/welcome
 //then update the connect.c file.
-//Note that it may look weird or broken on some people's terminals.
-static private int AllowColorSplash = 0;
+static private int AllowColorSplash = 1;
+
+//Change this to 1 to change your welcome screen to /news/moved
+//and to disable the standard login prompts.
+static private int Moved = 0;
 
 int eventCheckPending(string str);
 void eventCompleteChar();
@@ -91,7 +94,6 @@ static void create(int binary) {
 
 varargs static void logon(mixed foo) {
     string welcome = "Connected to "+mud_name()+", an LP mud";
-    //tc(typeof(foo)+" foo: "+identify(foo));
     if(sizeof(architecture())) welcome += " running on "+architecture()+".\n";
     else welcome += ".\n";
 
@@ -107,16 +109,27 @@ varargs static void logon(mixed foo) {
         if(!wfile || !file_exists(wfile)) wfile = NEWS_WELCOME;
         welcome += read_file(wfile) || "Welcome to " + mud_name() + "!";
     }
+    if(Moved){
+        string wfile;
+        if(instname && instname != "global"){
+            wfile = NEWS_MOVED+"."+__PORT__;
+        }
+        if(!wfile || !file_exists(wfile)) wfile = NEWS_MOVED;
+        welcome = read_file(wfile) || "Welcome to " + mud_name() + "!";
+    }
     if(AllowColorSplash){
         receive(terminal_colour(welcome,TERMINAL_D->query_term_info("ansi")));
     }
     else {
         receive(welcome);
     }    
-    receive("\n" + center("Driver: " + version() + "               Mudlib: "+
-                mudlib() + " " + mudlib_version()) + "\n");
+    if(!Moved){
+        receive("\n" + center("Driver: " + version() + 
+                    "               Mudlib: "+
+                    mudlib() + " " + mudlib_version()) + "\n");
+    }
     if(CheckIp()){ 
-        receive("\nWhat name do you wish? ");
+        if(!Moved) receive("\nWhat name do you wish? ");
         input_to((: InputName :), I_NOESC); 
     }
     else {
@@ -124,7 +137,6 @@ varargs static void logon(mixed foo) {
         receive("Please try again later.\n");
         flush_messages();
         Destruct();
-        //call_out("Destruct",0);
         return;
     }
 } 
@@ -141,13 +153,15 @@ static void InputName(string namen, string kill_me) {
 
     if( !name || name == "" ) {
         if( kill_me ) {
-            receive("\nPerhaps try another time then?\n");
+            if(!Moved) receive("\nPerhaps try another time then?\n");
             Destruct();
             return;
         }
         else {
-            receive("\nYou must enter a name in order to join!\n");
-            receive("\nWhat name do you wish? ");
+            if(!Moved){
+                receive("\nYou must enter a name in order to join!\n");
+                receive("\nWhat name do you wish? ");
+            }
             input_to((: InputName :), I_NOESC, "kill me");
             return;
         }
@@ -157,7 +171,6 @@ static void InputName(string namen, string kill_me) {
         receive(mssp_reply());
         flush_messages();
         input_to((: InputName :), I_NOESC);
-        //Destruct();
         return;
     }
     if(sscanf(name,"%s_rescue",temp_name) == 1) {
@@ -224,8 +237,6 @@ static void InputPassword(string pass, string cap) {
         }
 
         control = PLAYERS_D->GetPlayerData(Name,"Password");
-        //tc("control: "+control);
-        //tc("pass: "+pass);
         if( control != crypt(pass, control) ) {
             receive("\nInvalid password.\n");
             if( ++CrackCount > MAX_PASSWORD_TRIES ) {
@@ -249,7 +260,6 @@ static void InputPassword(string pass, string cap) {
         if(rescue) unguarded( (: wipe_inv(name) :) );
     }
 
-    //tc("PO 1");
     Player = (object)master()->player_object(Name);
     if( !Player ) {
         receive("\nIt seems some work is being done right now, try later.\n");
@@ -335,9 +345,7 @@ static void eventReEnterGame(string cap) {
         input_to((: ConfirmReconnect :), I_NOESC, cap);
         return;
     }
-    //tc(".5?");
     if( exec(Player, this_object()) ) {
-        //tc("Player: "+identify(Player));
         if(rescue) 
             if(sizeof(deep_inventory(Player))) 
                 deep_inventory(Player)->eventMove(ROOM_FURNACE);
@@ -385,7 +393,6 @@ static int CanLogin() {
 }
 
 static private void eventEnterGame() { 
-    //tc("eventEnterGame Player: "+identify(Player));
     if(!exec(Player, this_object())) { 
         debug("problem connecting");
         receive("\nProblem connecting.\n"); 
@@ -393,7 +400,6 @@ static private void eventEnterGame() {
         destruct(this_object());
         return; 
     } 
-    //tc("Spieler: "+identify(Player));
     if( Terminal ) Player->SetTerminal(Terminal);
     if( Screen ) Player->SetScreen(Screen[0], Screen[1]);
     Player->Setup();
@@ -426,7 +432,6 @@ static void CreatePassword(string pass, string cap) {
 
 static void ConfirmPassword(string control, string cap, string pass) {
     if( control == pass ) {
-    //tc("PO 2");
         Player = master()->player_object(Name);
         pass = crypt(pass, 0);
         Passwort = pass;
@@ -826,7 +831,6 @@ static void GetGuestName(string nom) {
         return;
     }
     ob->SetCapName(nom);
-    //tc("??");
     exec(ob, this_object());
     ob->Setup();
 }

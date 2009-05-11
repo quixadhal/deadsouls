@@ -42,14 +42,12 @@ static void process_startup_req(int protocol, mixed info, int fd){
         if(mudinfo[element] && mudinfo[element]["ip"] == clean_fd(socket_address(fd)))
             brethren += ({ element });
     }
-
     trr("Number of muds with the same ip: "+sizeof(brethren));
     if(sizeof(brethren) > MAXMUDS && !mudinfo[info[2]]){
         write_data(fd,({ "error", 5, router_name, 0, info[2], 0,
                     "not-allowed", "Too many muds from your IP.", info }) );
         return;
     }
-
     if(member_array(fd,keys(this_object()->query_connected_fds())) != -1){
         string existing_mud = this_object()->query_connected_fds()[fd];
         trr("Socket status: "+identify(socket_status(fd)),"red");

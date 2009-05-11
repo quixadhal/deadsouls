@@ -329,8 +329,19 @@ varargs nomask string GetPrompt(int withbuff){
         ret = this_object()->eventDisplayStatus(1) + " > ";
         return ret + ret2;
     }
-    if(grepp(ret,"$g")) ret = replace_string(ret,"$g",itoa(this_object()->GetMagicPoints()));
-    if(grepp(ret,"$G")) ret = replace_string(ret,"$G",itoa(this_object()->GetMaxMagicPoints()));
+    if(grepp(ret,"$g")) 
+        ret = replace_string(ret,"$g",itoa(this_object()->GetMagicPoints()));
+    if(grepp(ret,"$G")) 
+        ret = replace_string(ret,"$G",itoa(this_object()->GetMaxMagicPoints()));
+    if(grepp(ret,"$M"))
+        ret = replace_string(ret, "$M", mud_name());
+    if(grepp(ret,"$m"))
+        ret = replace_string(ret, "$m", lower_case(mud_name()));
+    if(grepp(ret,"$N"))
+        ret = replace_string(ret,"$N",capitalize(this_object()->GetKeyName()));
+    if(grepp(ret,"$n"))
+        ret = replace_string(ret, "$n", GetKeyName());
+
     if(grepp(ret,"$V")){
         if(GetInvis())
             ret = replace_string(ret,"$V","INVIS");
@@ -557,10 +568,6 @@ nomask static string replace_nickname(string str){
 
 void reset_prompt(){ 
     if(!stringp(Prompt)) Prompt = "> ";
-    Prompt =replace_string(Prompt, "$M", mud_name()); 
-    Prompt =replace_string(Prompt, "$m", lower_case(mud_name())); 
-    Prompt =replace_string(Prompt, "$N", capitalize(this_object()->GetKeyName())); 
-    Prompt =replace_string(Prompt, "$n", GetKeyName());
 } 
 
 string query_cwd(){ return CurrentWorkingDirectory; } 

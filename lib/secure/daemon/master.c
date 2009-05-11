@@ -53,8 +53,10 @@ private static mapping Groups, ReadAccess, WriteAccess, CostErr;
 private static string *ParserDirs = ({ "secure", "verbs", "daemon", "lib", "powers" });
 private static string array efuns_arr = ({});
 private static string SaveFile;
+private string MudName;
 
 static void Setup(){
+    if(uptime() < 30) MudName = 0;
     SaveFile = save_file(SAVE_MASTER);
     if(!PerformanceScore && unguarded( (: file_exists(SaveFile) :) )){
         unguarded( (: RestoreObject(SaveFile) :) );
@@ -1168,4 +1170,16 @@ int GetPerfOK(){
             (time() - incept_date) < 5) return 0;
     if(PerformanceScore <= MIN_PERF) return 1;
     return 0;
+}
+
+string GetMudName(){
+    return MudName;
+}
+
+int SetMudName(string name){
+    if(!valid_apply(({ "SECURE" }))){
+        return 0;
+    }
+    MudName = name;
+    return 1;
 }

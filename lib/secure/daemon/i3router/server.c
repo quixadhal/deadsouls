@@ -511,7 +511,8 @@ void clean_chans(){
     foreach(mixed key, mixed val in channels){
         mixed *tmp_chan = ({});
         if(sizeof(val) == 3){
-            tmp_chan = ({ val[0], val[1], distinct_array(val[2]) });
+            tmp_chan = ({ (intp(val[0]) ? val[0] : 0), 
+              val[1], distinct_array(val[2]) });
             channels[key] = tmp_chan;
         }
     }

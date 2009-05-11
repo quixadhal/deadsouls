@@ -15,7 +15,7 @@
 #define TIME_TO_RESET            3600
 #define RESET_ALL                0
 #define GMT_OFFSET               -32000
-#define LOCAL_TIME               1
+#define LOCAL_TIME               0
 #define EXTRA_TIME_OFFSET        0
 #define MAX_LOG_SIZE             150000
 #define MAX_NET_DEAD_TIME        1800

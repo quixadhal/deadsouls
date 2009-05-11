@@ -14,12 +14,15 @@ string array bools = ({ "enable","disable","on","off","1","0" });
 string array yesbools = ({ "enable","on","1","yes" });
 string array nobools = ({ "disable","off","0","no" });
 string array restrict_tokens = ({ "restrict","unrestrict" });
-string array nonmodals = ({ "liveupgrade", "prompt","status","email","websource",
+string array nonmodals = ({ "liveupgrade", "prompt","status","email",
+        "websourceip", "websourcename", "mudname", "mudport",
         "debugger", "access", "pinging", "pinginterval",
         "imc2serverpass", "imc2clientpass" });
 string array antimodals = ({ "imc2" });
-string array modals = antimodals + ({ "channelpipes", "fastcombat", "catchtell","matchcommand", "matchobject", "autowiz", "locked",
-        "localtime", "justenglish", "justhumans", "encumbrance", "pk", "compat", "exitsbare", "nmexits",
+string array modals = antimodals + ({ "channelpipes", "fastcombat", 
+        "catchtell","matchcommand", "matchobject", "autowiz", "locked",
+        "localtime", "justenglish", "justhumans", "encumbrance", "pk", 
+        "compat", "exitsbare", "nmexits", 
         "cgi", "dirlist", "creweb", "selectclass", "severable",
         "retain", "defaultparse", "disablereboot", "loglocal", "logremote",
         "questrequired","autoadvance" });
@@ -35,6 +38,7 @@ static int ProcessOther(string which, string arg);
 static int ProcessString(string which, string arg);
 int ProcessInet(string which, string arg);
 varargs static int ModDefaultDomain(string which, string arg);
+varargs static int ModCfg(string which, string arg);
 
 static private void validate() {
     if(!this_player()) return 0;
@@ -91,9 +95,12 @@ mixed cmd(string str) {
         case "liveupgrade" : which = "LIVEUPGRADE_SERVER";ProcessString(which,arg);break;
         case "mudstatus" : which = "MUD_STATUS";ProcessString(which,arg);break;
         case "debugger" : which = "DEBUGGER";ProcessString(which,arg);break;
-        case "websource" : which = "WEB_SOURCE";ProcessString(which,arg);break;
+        case "websourceip" : which = "WEB_SOURCE_IP";ProcessString(which,arg);break;
+        case "websourcename" : which = "WEB_SOURCE_NAME";ProcessString(which,arg);break;
         case "imc2clientpass" : which = "IMC2_CLIENT_PW";ProcessString(which,arg);break;
         case "imc2serverpass" : which = "IMC2_SERVER_PW";ProcessString(which,arg);break;
+        case "mudname" : ModCfg("name", arg);break;
+        case "mudport" : ModCfg("port", arg);break;
         default : NotImplemented(which);break;
     }
     return 1;
@@ -440,7 +447,7 @@ static int ProcessOther(string which, string arg){
         reload("/secure/sefun/time",0,1);
         reload("/secure/sefun/timestamp",0,1);
         reload("/secure/sefun/sefun",0,1);
-        reload("/daemon/time",0,1);
+        RELOAD_D->eventReload("/daemon/time",2);
         reload("/secure/cmds/creators/people",0,1);
         reload("/cmds/players/date",0,1);
         reload("/cmds/players/nextreboot",0,1);
@@ -475,7 +482,8 @@ static int ProcessString(string which, string arg){
         }
         config2 += ({ element });
     }
-    if(which == "WEB_SOURCE" && ob = find_object("/secure/cmds/admins/liveupgrade")){
+    if(!strsrch(which, "WEB_SOURCE") 
+            && ob = find_object("/secure/cmds/admins/liveupgrade")){
         ob->eventDestruct();
     }
     CompleteConfig();
@@ -809,6 +817,102 @@ int ProcessInet(string which, string arg){
     return 1;
 }
 
+varargs static int ModCfg(string which, string arg){
+    int port, oldport, newport, ret;
+    string *line_array;
+    string mconfig, nameline, portline, newline, newfile;
+    string line_string, junk, name;
+    object ob;
+    if(!find_object(INSTANCES_D) || !ENABLE_INSTANCES ||
+            INSTANCES_D->GetMyInstanceName() == "global"){
+        port = 0;
+        mconfig = "/secure/cfg/mudos.cfg";
+    }
+    else {
+        port = query_host_port();
+        mconfig = "/secure/cfg/mudos."+port+".cfg";
+    }
+    line_string = read_file(mconfig);
+    if(!sizeof(line_string)) write("Couldn't read file.");
+    line_array = explode(line_string, "\n");
+    if(!sizeof(line_array)) write("Array is zero length.");
+
+    if(!sizeof(line_array) || !sizeof(line_string)) {
+        return 1;
+    }
+
+    foreach(string line in line_array){
+        if(!strsrch(line,"name :")){
+            nameline = line;
+            if(which == "name") break;
+        }
+        if(!strsrch(line,"external_port_")){
+            portline = line;
+            if(which == "port"){
+                newport = atoi(arg);
+                break;
+            }
+        }
+    }
+
+    if(which == "name"){
+        if(!nameline || sscanf(nameline,"%s : %s",junk, name) < 2) {
+            write("Operation failed. You need to copy over "+
+                    mconfig+" immediately with an original.");
+            return 1;
+        }
+
+        newline = junk + " : " + arg;
+        newfile = replace_string(line_string, nameline, newline);
+        write_file(mconfig,newfile,1);
+        cp(mconfig,"/secure/cfg/mudos.autobak."+query_host_port());
+        if(query_windows()){
+            if(port){
+                cp(mconfig,"/secure/cfg/mudos."+port+".win32");
+            }
+            else {
+                cp(mconfig,"/secure/cfg/mudos.win32");
+            }
+        }
+        ret = MASTER_D->SetMudName(arg);
+        write("\n");
+        write("\nMUD's name is now: "+mud_name());
+        if(ob = find_object(IMC2_D) && !DISABLE_IMC2){
+            write("Reloading IMC2...");
+            catch(reload(ob));
+        }
+        if(ob = find_object(INTERMUD_D) && !DISABLE_INTERMUD){
+            write("Reloading Intermud-3...");
+            catch(reload(ob));
+        }
+    }
+
+    if(which == "port"){
+        if(!portline || sscanf(portline,"%s : telnet %d",junk, oldport) < 2){
+            write("Operation failed. You need to copy over "+
+                    "/secure/cfg/mudos.cfg immediately with an original.");
+            return 1;
+        }
+
+        newline = junk + " : telnet " + newport;
+        newfile = replace_string(line_string, portline, newline);
+        write_file("/secure/cfg/mudos.cfg",newfile,1);
+        cp(mconfig,"/secure/cfg/mudos.autobak."+query_host_port());
+        if(query_windows()){
+            if(port){
+                cp(mconfig,"/secure/cfg/mudos."+newport+".win32");
+            }
+            else {
+                cp(mconfig,"/secure/cfg/mudos.win32");
+            }
+        }
+        write("\nMUD's port changed. Reboot the MUD to activate new port.");
+        write("NOTE: If the port you selected is 1024 or below, your OS "+
+                "may require the MUD to run as a privileged user.");
+    }
+    return 1;
+}
+
 void help() {
     message("help",
             "Syntax: mudconfig PARAMETER VALUE \n\n"
@@ -850,7 +954,8 @@ void help() {
             "\nmudconfig email <the admin's email address>"
             "\nmudconfig liveupgrade <the default liveupgrade mud's name>"
             "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
-            "\nmudconfig websource <the remote web server's ip address (eg 111.222.333.444)>"
+            "\nmudconfig websourceip <the remote web server's ip address (eg 111.222.333.444)>"
+            "\nmudconfig websourcename <the remote web server's ip name (eg a.b.com)>"
             "\nmudconfig channelpipes [ enable | disable ] (whether to allow piping messages. not recommended.)"
             "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
             "\nmudconfig imc2 [ enable | disable ]"
@@ -867,6 +972,8 @@ void help() {
             "\nmudconfig creweb [ enable | disable ] (Allow web based editing [requires cgi and dirlist])"
             "\nmudconfig loglocal [ enable | disable ] (whether local channels are logged)"
             "\nmudconfig logremote [ enable | disable ] (whether remote channels are logged)"
+            "\nmudconfig mudname <name>"
+            "\nmudconfig mudport <port>"
             "\n\nSee also: admintool, config", this_player()
             );
 }

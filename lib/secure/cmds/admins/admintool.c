@@ -234,7 +234,7 @@ int DriverMenu(){
     tmp = "\tDead Souls Admin Tool Driver Menu\n";
     tmp += "\t^^^^^^^^^^^^^^^^^^^^^^*******^^^^^\n";
     tmp += "\t\n\n";
-    tmp += "\t\tr) change the MUD's name\n";
+    tmp += "\t\tr) display the MUD's name\n";
     tmp += "\t\ts) change the MUD's connection port\n\n";
     tmp += "\t\tz) return to main menu\n";
     tmp += "\t\tq) quit\n";
@@ -802,9 +802,13 @@ int eventUnBanishUser(string str){
 int ChangeName(){
     validate();
     write("Current MUD name is "+mud_name());
-    write("Please enter the new name for your MUD:\n");
-    input_to( (: eventChangeName :) );
+    write("To change the mud's name, use the command: ");
+    write("mudconfig mudname <name>");
+    Menu();
     return 1;
+    //write("Please enter the new name for your MUD:\n");
+    //input_to( (: eventChangeName :) );
+    //return 1;
 }
 
 varargs int eventChangeName(string newname, int automated){
@@ -865,6 +869,9 @@ varargs int eventChangeName(string newname, int automated){
     newfile = replace_string(line_string, nameline, newline);
     write_file(mconfig,newfile,1);
     cp(mconfig,"/secure/cfg/mudos.autobak."+query_host_port());
+    if(automated && query_windows()){
+        cp(mconfig,"/secure/cfg/mudos.win32");
+    }
     write("\n");
     if(!automated)  {
         write("\nMUD's name changed. Reboot the MUD to activate new name.\n");
