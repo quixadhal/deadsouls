@@ -39,8 +39,6 @@ void init(){
     object ob;
     object *inv;
     ::init();
-    //add_action("startLoad","load");
-    //add_action("startUnload","unload");
     this_object()->CalculateAmmoSize();
     namen=this_object()->GetId();
     if(FirearmType=="revolver"
@@ -266,32 +264,21 @@ int eventFire(mixed str){
         if(Caliber){
             float tmp;
             int extradam = this_object()->GetMagnum();
-            //debug("extradam: "+extradam);
             if(to_float(Caliber) < 1.00) Caliber = to_float(Caliber) * 100.00;
-            //debug("Caliber: "+Caliber);
             if(Caliber > 99) tmp = to_float(Caliber) * 0.10;
-            //else tc(Caliber +" is not larger than 99");
-            //debug("tmp: "+tmp);
             dam = to_int(tmp);
-            //debug("pre magnum dam: "+dam);
             if(extradam) dam += (random(extradam/2) + extradam/2);
-            //debug("post magnum dam: "+dam);
         }
         if(Millimeter){
             dam = Millimeter;
             dam *= random(10);
         }
         if(!dam) dam = 7;
-        //debug("pre modifiers dam: "+dam);
 
         dam += random(environment(this_object())->GetStatLevel("coordination"));
-        //debug("post coordination check dam: "+dam);
         dam += environment(this_object())->GetSkillLevel("projectile attack");
-        //debug("post skill level check dam: "+dam);
         dam -= random(ob->GetStatLevel("luck"));
-        //debug("post luck check on target dam: "+dam);
         dam -= random(ob->GetSkillLevel("projectile defense"));
-        //debug("post skill level check on target dam: "+dam);
 
         if(creatorp(this_player())) write("you do "+dam+" points of damage");
 

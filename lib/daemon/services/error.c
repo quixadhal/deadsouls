@@ -4,12 +4,15 @@
  *    created by Descartes of Borg 950715
  */
 
+#include <logs.h>
+#include <daemons.h>
+
 void eventReceiveError(mixed *packet) {
     object ob;
     string error_code, mud, target, msg;
 
     tn("ERROR RECEIVED: "+identify(packet));
-    log_file("/secure/log/intermud/i3error",timestamp()+" "+identify(packet)+"\n");
+    LOG_D->LogSpecial(LOG_I3ERR ,timestamp()+" "+identify(packet)+"\n");
     if( packet[5] ) {
         tn("exceptio probat regulam");
         target = convert_name(packet[5]);

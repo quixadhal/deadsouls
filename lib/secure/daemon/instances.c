@@ -15,32 +15,34 @@ mapping InstData = ([]);
 mapping sockets = ([]);
 static string SaveFile;
 string Name, Myname;
-static int verbose = 1;
+static int verbose = 0;
 static private int icp_socket;
 
 varargs static void yenta(string arg, string clr){
     if(verbose){
-        //tc(arg, (clr || "magenta"));
+        debug_message(arg);
     }
-    log_file("/secure/log/icp", timestamp()+" "+strip_colours(arg)+"\n");
+    unguarded( (: log_file("/secure/log/icp", timestamp() +
+      " " + strip_colours($(arg)) + "\n") :) );
 }
 
-varargs static void validate(int i){
-    //tc("validate "+mud_name()+" socket_status("+i+"): "+identify(socket_status(i)), "blue");
+varargs static int validate(int i, int soft){
     if(!undefinedp(i)){
-        //tc("socket_status("+i+"): "+identify(socket_status(i)), "blue");
         if(!socket_status(i) || !socket_status(i)[5]){
             yenta(mud_name()+" stack: "+get_stack());
             yenta("%B_BLACK%^BAD SOCKET ALERT. fd "+i+":  "+
                     identify(socket_status(i))+"\n","red");
-            error("Bad socket, fd "+i);
+            if(!soft) error("Bad socket, fd "+i);
+            return 0;
         }
     }
     if(previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
         yenta("SECURITY ALERT: validation failure in INSTANCES_D.\n","red");
+        if(soft) return 0;
         error("Illegal attempt to access router socket daemon: "+get_stack()+
                 " "+identify(previous_object(-1)));
     }
+    return 1;
 }
 
 static void create() {
@@ -55,10 +57,8 @@ static void create() {
     }
     SetNoClean(1);
     if(file_exists(SaveFile)){
-        //tc("SaveFile: "+SaveFile);
-        unguarded((: RestoreObject(SaveFile) :));
+        RestoreObject(SaveFile);
     }
-    //else tc("hmm.");
     if(ENABLE_INSTANCES){
     }
     call_out("Setup", 0);
@@ -83,18 +83,17 @@ mixed InstCreate(string name, string addy, int port){
         }
     }
     InstData[name] = ([ "addy" : addy, "port" : port ]);
-    unguarded( (: SaveObject, SaveFile, 1 :) );
+    SaveObject(SaveFile, 1);
     cp(NETWORK_H, "/secure/include/network."+port+".h");
     cp(ROOMS_H, "/secure/include/rooms."+port+".h");
     cp(SECRETS_H, "/secure/include/secrets."+port+".h");
-    cp(SAVE_IMC2+".o", SAVE_IMC2 + "." + port + ".o");
-    cp(SAVE_MAP+".o", SAVE_MAP + "." + port + ".o");
-    cp(SAVE_ROOMS+".o", SAVE_ROOMS + "." + port + ".o");
-    cp(SAVE_RACES+".o", SAVE_RACES + "." + port + ".o");
-    cp(SAVE_CLASSES+".o", SAVE_CLASSES + "." + port + ".o");
-    cp(NEWS_WELCOME, NEWS_WELCOME + "." +port);
-    //tc("pfile: "+pfile);
-    cp(pfile+".o", pfile+"."+port+".o");
+    catch( cp(SAVE_IMC2+".o", SAVE_IMC2 + "." + port + ".o") );
+    catch( cp(SAVE_MAP+".o", SAVE_MAP + "." + port + ".o") );
+    catch( cp(SAVE_ROOMS+".o", SAVE_ROOMS + "." + port + ".o") );
+    catch( cp(SAVE_RACES+".o", SAVE_RACES + "." + port + ".o") );
+    catch( cp(SAVE_CLASSES+".o", SAVE_CLASSES + "." + port + ".o") );
+    catch( cp(NEWS_WELCOME, NEWS_WELCOME + "." +port) );
+    catch( cp(pfile+".o", pfile+"."+port+".o") );
     newglobal = read_file("/secure/cfg/global_template.cfg");
     if(newglobal){
         newglobal = replace_string(newglobal, "TEMPLATE_CONFIG",
@@ -131,7 +130,7 @@ mixed InstCreate(string name, string addy, int port){
         }
         write_file("/secure/include/config."+port+".h", newconf, 1);
     }
-    if(!query_windows()){
+    if(true()){
         string newcfg = read_file("/secure/cfg/instance_template.cfg");
         string oldcfg = read_file("/secure/cfg/mudos.cfg");
         if(newcfg && oldcfg){
@@ -147,9 +146,16 @@ mixed InstCreate(string name, string addy, int port){
             newcfg = replace_string(newcfg, "TEMPLATE_GLOBAL", 
                     "global."+port+".h");
             write_file("/secure/cfg/mudos."+port+".cfg", newcfg, 1);
+            write_file("/secure/cfg/mudos."+port+".win32", newcfg, 1);
+        }
+        newcfg = read_file("/secure/cfg/runmud_template.bat");
+        if(newcfg && query_windows()){
+            newcfg = replace_string(newcfg, "TEMPLATE_MUDOS",
+              "mudos."+port+".win32");
+            write_file("/secure/cfg/runmud_"+port+".bat", newcfg, 1);
         }
     }
-    unguarded( (: SaveObject, SaveFile, 1 :) );
+    SaveObject(SaveFile, 1);
     return 1;
 }
 
@@ -183,7 +189,7 @@ mixed InstDelete(mixed arg){
         rm(NEWS_WELCOME + "." + port);
         this_object()->ProcessClose(which);
         InstData[which] = 0;
-        unguarded( (: SaveObject, SaveFile, 1 :) );
+        SaveObject(SaveFile, 1);
         return 1;
     }
     else return "No such instance exists.";
@@ -203,16 +209,15 @@ mapping GetInstData(){
 
 static void SendData(mixed fd, mixed data){
     int array targets = ({});
-    //tc("SendData "+fd+", "+identify(data));
     if(stringp(fd) && !undefinedp(InstData[fd])) fd = InstData[fd]["fd"];
-    if(fd < 0){
+    if(fd == -2) return;
+    if(fd == -1){
         foreach(string name in keys(InstData)){
             if(name && InstData[name]) targets += ({ InstData[name]["fd"] });
         }
     }
     else targets = ({ fd });
     foreach(int target in targets){
-        //tc("target: "+target, "blue");
         this_object()->write_data(target, data);
     }
 }
@@ -234,27 +239,30 @@ varargs void SendWhoUpdate(string name, int status){
         else data["status"] = -1;
     }
     else data["status"] = 0;
-    //tc("SendWhoUpdate("+name+", "+identify(data)+")","green");
     SendData(-1, ({ "who-update", 5, Myname, name, 0, 0, data }) );
 } 
 
 void UpdateInvis(int i){
     object ob = previous_object();
     string name;
-    //tc("UpdateInvis: "+identify(ob));
     if(!ob || !interactive(ob)) return;
     name = ob->GetKeyName(); 
     if(!sizeof(name)) return;
-    //tc("UpdateInvis: "+identify(name));
     call_out("SendWhoUpdate", 0, name);
 }
 
-void SendTell(string who, string msg){
-    object ob = this_player();
+varargs void SendTell(string who, string msg, string interwho){
+    object prev, ob = this_player();
     string sender, vname;
+    if(interwho){
+        ob = previous_object();
+        if(base_name(ob) != SERVICES_D) return;
+        sender = interwho;
+        vname = interwho;
+    }
     if(!ob || ob->GetForced()) return;
-    sender = ob->GetKeyName();
-    vname = ob->GetName();
+    if(!sender) sender = ob->GetKeyName();
+    if(!vname) vname = ob->GetName();
     SendData(-1, ({ "tell", 5, Myname, sender, 0, who, vname, msg }) );
 }
 
@@ -273,23 +281,20 @@ static void ProcessStartup(mixed data, string addy, int port, int fd){
     }
     if(ENABLE_INSTANCES){
         Myname = data[4];
-        //tc("startup from global processed for "+name+": "+identify(InstData[name]),"white");
         call_out("SendStartup", 1, fd);
     }
-    else {
-        //tc("startup from non-global processed for "+name+": "+identify(InstData[name]),"black");
-    } 
 }
 
 static void ProcessClose(string name){
     if(!sizeof(InstData[name])) return;
-    this_object()->close_connection(InstData[name]["fd"]);
+    if(InstData[name]["fd"] > -1){
+        this_object()->close_connection(InstData[name]["fd"]);
+    }
     InstData[name]["fd"] = -1;
     InstData[name]["online"] = 0;
 }
 
 static void ProcessWhoUpdate(mixed data){
-    //tc("ProcessWhoUpdate("+identify(data)+")", "blue");
     if(!sizeof(InstData[data[2]])) return;
     if(!sizeof(InstData[data[2]]["users"])){
         InstData[data[2]]["users"] = ([]);
@@ -321,44 +326,29 @@ string GetName(){
 
 static void ReceiveICPData(mixed data, string addy, int port, int fd){
     string name;
-    //tc("%^B_BLACK%^ReceiveICPData: "+identify(data),"cyan");
     if(!arrayp(data)) return;
-    //tc("-2");
     if(sizeof(data) < 7) return;
-    //tc("-1");
     name = data[2];
-    //tc("name: "+name);
     if(data[0] != "startup-req"){
-        //tc("a");
         if( InstData[name] && InstData[name]["online"]){
-            //tc("b");
             if(InstData[name]["addy"] != addy) return;
-            //tc("c");
             if(InstData[name]["port"] != port ) return;
-            //tc("d");
             if(!undefinedp(InstData[name]["fd"]) && 
                     InstData[name]["fd"] != fd) return;
-            //tc("e");
         }
         else{
-            //tc("f");
             return;
         }
-        //tc("g");
     }
-    //tc("win so far", "red");
     switch(data[0]){
         case "startup-req" :
-            //tc("STARTUP YALL: "+identify(data),"green");
             if(data[6] != INSTANCE_PW) return;
             else ProcessStartup(data, addy, port, fd);
         break;
         case "channel-p" :
-            //tc("chan!");
             CHAT_D->eventSendChannel(data[6]...);
         break;
         case "who-update":
-            //tc("who!");
             ProcessWhoUpdate(data);
         break;
         case "tell":
@@ -372,7 +362,6 @@ static void ReceiveICPData(mixed data, string addy, int port, int fd){
         break;
 
         default :
-        //tc("i dono");
         break;
     }
     if(undefinedp(InstData[name]["fd"])) InstData[name]["fd"] = fd;
@@ -391,12 +380,6 @@ void eventSendChannel(string name, string ch, string msg, int emote,
         string target, string targmsg){
     mixed packet = ({ name, ch, msg, emote, target, targmsg });
     if(base_name(previous_object()) != CHAT_D) return;
-    //tc("name: "+name);
-    //tc("ch: "+ch);
-    //tc("msg: "+msg);
-    //tc("emote: "+emote);
-    //tc("target: "+target);
-    //tc("targmsg: "+targmsg);
     SendData(-1, ({ "channel-p", 5, Myname, 0, 0, 0, packet }) );
 }
 
@@ -416,8 +399,8 @@ static void eventWrite(mixed *packet){
 static void close_connection(int fd){
     int sockerr;
     mixed *sockstat = ({});
-    //tc("close_connection("+fd+")");
     validate();
+    if(fd < 0) return;
     sockstat = socket_status(fd);
     if(!sockstat || !sizeof(sockstat)) return;
     if(sockstat[1] == "LISTEN") return;
@@ -431,9 +414,8 @@ static void close_connection(int fd){
 }
 
 static void close_callback(int fd){
-    //tc("close_callback("+fd+")");
-    //validate(fd);
     yenta("close_callback: fd="+fd+"\n");
+    if(fd < 0 || !sizeof(socket_status(fd))) return;
     if(socket_status(fd)[1] == "LISTEN") return;
     if(socket_status(fd)[1] == "DATA_XFER") return;
     close_connection(fd);
@@ -441,11 +423,9 @@ static void close_callback(int fd){
 
 static void listen_callback(int fd){
     mixed fdstat,newfd;
-    //tc("LISTEN CALLBACK("+fd+")");
     validate();
 
     if ((newfd = socket_accept(fd, "read_callback", "write_callback")) < 0) {
-        //tc("listen_callback couldn't accept socket "+fd+", errorcode "+newfd);
         return;
     }
     else {
@@ -458,10 +438,7 @@ static void read_callback(int fd, mixed info){
     mixed sstat;
     string addy;
     int port;
-    //tc("read_callback("+fd+")");
-    //tc("%^B_BLUE%^read_callback for fd "+fd+", info: "+identify(info),"yellow");
     validate(fd);
-    //tc("%^B_BLUE%^passed validation", "red");
     sstat = socket_status(fd);
     if(sizeof(sstat) > 3){
         string a, b, c, d;
@@ -472,18 +449,15 @@ static void read_callback(int fd, mixed info){
             addy = a+"."+b+"."+c+"."+d;
         }
     }
-    //tc("1");
     if(bufferp(info)){
         yenta("fd "+fd+" is sending me buffer data!");
         yenta("As far as I can tell, it is: "+identify(read_buffer(info)),"blue");
     }
     else yenta("%^WHITE%^data from fd "+fd+":\n%^BLUE%^"+identify(info));
-    //tc("2");
     ReceiveICPData(info, addy, port, fd);
 }
 
 static void write_callback(int fd){
-    //tc("%^B_GREEN%^write_callback("+fd+")","yellow");
     validate(fd);
     if(!sockets[fd]) return;
     if(sockets[fd]["write_status"] == EEALREADY) {
@@ -498,10 +472,9 @@ static void write_callback(int fd){
 static void write_data_retry(int fd, mixed data, int counter){
     int rc;
     int maxtry = 20;
-    //tc("write_data_retry");
+    if(fd < 0) return;
     validate(fd);
     if (counter == maxtry) {
-        //tc("Could not write data.");
         return;
     }
     rc = socket_write(fd, data);
@@ -510,7 +483,6 @@ static void write_data_retry(int fd, mixed data, int counter){
         sockets[fd]=([]);
     }
     sockets[fd]["write_status"] = rc;
-    //tc("fd"+fd+" socket_error("+rc+"): "+socket_error(rc));
     switch (rc) {
         case EESUCCESS:
             break;
@@ -530,8 +502,6 @@ static void write_data_retry(int fd, mixed data, int counter){
         default:
             if (counter < maxtry) {
                 if(counter < 2 || counter > maxtry-1)
-                    //tc("ICP_D write_data_retry "+counter+" to "+
-                    //INSTANCES_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
                     call_out( (: write_data_retry :), 2 , fd, data, counter + 1 ); 
                 return;
             }
@@ -540,36 +510,29 @@ static void write_data_retry(int fd, mixed data, int counter){
 
 static int write_data(int fd, mixed data){
     int ret;
-    //tc("write_data "+fd,"black");
-    validate(fd);
-    //tc("write_data: "+fd,"white");
+    if(fd < 0) return;
+    if(!validate(fd, 1)) return 0;
     write_data_retry(fd, data, 0);
-    //ret = socket_write(fd, data);
-    //tc("write_data: "+ret);
     return ret;
 }
 
 static void Setup(){
-    yenta("icp setup got called");
+    //yenta("icp setup got called");
     if ((icp_socket = socket_create(MUD, "read_callback", "close_callback")) < 0){
         log_file("/secure/log/icp","setup: Failed to create socket.\n");
-        //tc("Failed to create socket");
         return;
     }
     if (socket_bind(icp_socket, PORT_ICP) < 0) {
         socket_close(icp_socket);
         log_file("/secure/log/icp","setup: Failed to bind socket to port.\n");
-        //tc("Failed to bind socket to port");
         return;
     }
     if (socket_listen(icp_socket, "listen_callback") < 0) {
         socket_close(icp_socket);
         log_file("/secure/log/icp","setup: Failed to listen to socket.\n");
-        //tc("Failed to listen to socket");
         return;
     }
     log_file("/secure/log/icp","icp setup ended\n");
-    //tc("icp setup success on "+icp_socket);
 }
 
 int eventCreateSocket(string host, int port){
@@ -580,10 +543,8 @@ int eventCreateSocket(string host, int port){
         yenta("Error in socket_create(): "+socket_error(x));
         return 0;
     }
-    //tc("x1: "+x);
     ret = x;
     x = socket_bind(x, 0);
-    //tc("x2: "+x);
     if( x != EESUCCESS ) {
         socket_close(ret);
         log_file("/secure/log/icp", "Error in socket_bind(): "+x);
@@ -591,13 +552,11 @@ int eventCreateSocket(string host, int port){
     }
     x = socket_connect(ret, host + " " + (port + OFFSET_ICP), 
             "read_callback", "close_callback");
-    //tc("x3: "+x);
     if( x != EESUCCESS ) {
         socket_close(ret);
         yenta("Error in socket_connect(): "+socket_error(x));
         return x;
     }
-    //tc("x4: yay!");
     return ret;
 }
 
@@ -605,7 +564,6 @@ int DoConnect(string ip, int port, string myname, string name){
     int sstat;
     validate();
     sstat = eventCreateSocket(ip, port);
-    //tc("sstat: "+sstat);
     if( sstat < 0 ) return;
     if(!sockets) sockets = ([]);
     sockets[sstat] = ([]);
@@ -615,28 +573,23 @@ int DoConnect(string ip, int port, string myname, string name){
 static void InstConnect(string wat){
     int ret = DoConnect(InstData[wat]["addy"],
             InstData[wat]["port"],"global",wat);
-    //tc("ret: "+ret);
     if(ret > -1){
         InstData[wat]["fd"] = ret;
         call_out("SendStartup", 1, ret);
-        //this_object()->SendStartup(ret);
     }
     else{
-        //tc("InstConnect FAIL", "red");
         yenta("InstConnect FAIL", "red");
     }
 }
 
 static void SendStartup(int fd){
     string name;
-    //tc("SendStartup("+fd+")");
     foreach(mixed key, mixed val in InstData){
         if(key && val["fd"] == fd){
             name = key;
             break;
         }
     }
-    //tc(ctime(time())+" sending startup to: "+name,"white");
     SendData(fd, 
             ({"startup-req", 5, Myname, 0, name, 0, INSTANCE_PW, local_users()}));
     foreach(string user in local_users()){
@@ -645,7 +598,7 @@ static void SendStartup(int fd){
 }
 
 static void CheckConnections(){
-    mixed socks = socket_status();
+    mixed socks = socket_names();
     mapping conns = ([]);
     if(ENABLE_INSTANCES){
         return;
@@ -662,11 +615,11 @@ static void CheckConnections(){
             if(i < 5) continue;
             foreach(mixed key, mixed val in InstData){
                 if(key && mapp(val)){
-                    //tc(key+"[\"port\"]: "+val["port"]);
-                    //tc("p: "+p);
+                    InstData[key]["fd"] = -2;
                     if(val["port"] == (p - OFFSET_ICP) &&
                             val["addy"] == a+"."+b+"."+c+"."+d){
-                        conns[key] = val;
+                        InstData[key]["fd"] = arr[0];
+                        conns[key] = copy(InstData[key]);
                     }
                 }
             }
@@ -675,7 +628,8 @@ static void CheckConnections(){
     foreach(string foo in keys(InstData)){
         if(!foo || !InstData[foo]) continue;
         InstData[foo]["online"] = 0;
-        if(member_array(foo, keys(conns)) == -1){
+        if(member_array(foo, keys(conns)) == -1 
+          || InstData[foo]["fd"] == -1){
             InstConnect(foo);
         }
         else InstData[foo]["online"] = 1;

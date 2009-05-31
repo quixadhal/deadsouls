@@ -24,7 +24,6 @@ static string SetSaveFile(string str){
 
 /* ********************* daemon.c events ************************* */
 int eventDestruct(){
-    //tc(identify(this_object())+" eventDestruct() stack: \n"+get_stack(),"red");
     if( !master()->valid_apply(({ PRIV_ASSIST })) ){
         return 0;
     }
@@ -36,7 +35,7 @@ varargs int eventRestore(int do_not_zero_out){
         return 0;
     }
     if( unguarded((: file_exists(DaemonSaveFile) :)) ){
-        return unguarded((: RestoreObject, DaemonSaveFile, do_not_zero_out :));
+        return RestoreObject(DaemonSaveFile, do_not_zero_out);
     }
     else {
         return 1;
@@ -47,7 +46,7 @@ varargs int eventSave(int save_zero_values){
     if( !DaemonSaveFile ){
         return 0;
     }
-    return unguarded((: SaveObject, DaemonSaveFile, save_zero_values :));
+    return SaveObject(DaemonSaveFile, save_zero_values);
 }
 
 /* ******************* daemon.c driver applies ********************* */

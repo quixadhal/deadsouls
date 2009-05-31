@@ -12,15 +12,15 @@ static string SaveFile = save_file(SAVE_BOOKS);
 static void create() {
     daemon::create();
     if(unguarded( (: file_exists(SaveFile) :) ) ){
-        unguarded( (: RestoreObject(SaveFile) :) );
+        RestoreObject(SaveFile);
     }
     if(!Books) Books = ([]);
     SetNoClean(1);
-    unguarded( (: SaveObject(SaveFile) :) );
+        SaveObject(SaveFile);
 }
 
 int eventDestruct(){
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
     return daemon::eventDestruct();
 }
 
@@ -50,7 +50,6 @@ string array ExtractChapterName(string path){
         line = globalstr;
     }
     if(!line) chap = "unknown";
-    //debug("line: "+line);
     if(!strsrch(line,"Chapter")) line=replace_string(line,"Chapter","chapter",1);
     if(sscanf(line,"chapter %s %s", chap, foo) != 2) chap = "unknown";
     if(sscanf(chap,"%d",num) != 1) num = 0;
@@ -65,7 +64,6 @@ mixed *LoadChapters(string Source){
         if(previous_object() && base_name(previous_object()) != LIB_BOOK)
             Books[Source]["object"] = base_name(previous_object());
         else Books[Source]["object"] = "null";
-        //tc("Books["+Source+"][\"object\"] == "+Books[Source]["object"],"cyan");
     }
     if(!Books[Source]["items"]) Books[Source]["items"] = ([]);
     if(!Books[Source]["reads"]) Books[Source]["reads"] = ([]);
@@ -77,13 +75,11 @@ mixed *LoadChapters(string Source){
         if(sizeof(statinfo) != 3 || !intp(statinfo[1]) ||
                 (Books[Source][this_path] && Books[Source][this_path] 
                  == statinfo[1])){
-            //debug(this_path+" already cached.");
             continue;
         }
         else {
             Books[Source][this_path] = statinfo[1]; 
             Books[Source]["index"] = 0;
-            //debug("reading");
         }
 
         globalheader = ExtractChapterName(this_path);
@@ -131,7 +127,6 @@ string ReturnRead(string file, string what){
         foreach(mixed key, mixed val in Books[file]["reads"]){
             if(member_array(what, key) != -1){
                 ret = val;
-                //debug("Win! "+file+" "+what+"! woo!");
                 break;
             }
         }
@@ -141,7 +136,6 @@ string ReturnRead(string file, string what){
 }
 
 string GetBookRead(string name, mixed arg){
-    //debug("arg: "+identify(arg),"white");
     if(arrayp(arg) && sizeof(arg)) arg = arg[0];
     if(!sizeof(arg) || !Books[name] || !Books[name]["reads"]){
         return "There is no such thing to read there.";

@@ -110,15 +110,15 @@ call me->AddChannel("ichat")
 call me->AddChannel("imudnews")
 call me->AddChannel("ifree")
 call me->AddChannel("pchat")
-call me->AddChannel("i2chat")
-call me->AddChannel("i3chat")
-call me->AddChannel("i2code")
 call me->AddChannel("i2game")
 call me->AddChannel("i2news")
 call me->AddChannel("irc")
 call me->RemoveChannel("havenlib")
 call me->AddChannel("muds")
-muds
+chan block muds
+chan block i2game
+chan unblock inews
+chan unblock i2news
 alias intermud intergossip http://lpmuds.net/intermud.html
 alias porch goto /domains/town/room/porch
 prompt $T %^BOLD%^%^BLUE%^$M%^RESET%^ %^BOLD%^$P%^RESET%^ > 
@@ -126,6 +126,7 @@ alias crat source /secure/scripts/crat.src
 alias crat2 source -q /secure/scripts/crat2.src
 alias crat3 source -q /secure/scripts/crat3.src
 alias testmud source -q /secure/scripts/testmud.src
+alias ruckus source -q /secure/scripts/ruckus.src
 alias bedlam source -q /secure/scripts/bedlam.src
 alias mayhem source -q /secure/scripts/mayhem.src
 alias indentall source /secure/scripts/indent.src

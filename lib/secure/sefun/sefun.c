@@ -496,8 +496,6 @@ varargs void shutdown(int code) {
     else log_file("shutdowns", "Game shutdown by "+
             file_name(previous_object(0))+" at "+ctime(time())+"\n");
     persistents = objects( (: $1->GetPersistent() :) );
-    //efun::shutdown(code);
-    //call_out( (: shutdown_logic :), 0, code);
     persistents->SaveObject();
 }
 
@@ -547,7 +545,6 @@ int exec(object target, object src) {
     tmp = base_name(previous_object());
     if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE 
             && tmp != SU && tmp != RELOAD_D) return 0;
-    //tc("EXEC("+identify(target)+", "+identify(src)+"), prev: "+tmp);
     if(objectp(target) && objectp(src)) ret = efun::exec(target, src);
     return ret;
 }
@@ -642,11 +639,9 @@ varargs void input_to(mixed fun, int flag, mixed args...){
 #endif
     }
     if(sizeof(gargs)){
-        //tc("lol1");
         efun::input_to(gfun, gdelay, gargs...);
     }
     else {
-        //tc("lol2");
         efun::input_to(gfun, gdelay);
     }
 }

@@ -46,17 +46,8 @@ static private mapping localchans = ([
         "dead_souls": "ds",
 
         //IMC2 Channels
-        "Server01:ibuild": "ibuild",
-        "Server01:ichat": "ichat",
-        "Server01:pchat": "pchat",
-        "Server02:i2chat": "i2chat",
-        "Server02:i3chat": "i3chat",
-        "Server02:icode": "i2code",
         "Server02:igame": "i2game",
         "Server02:inews": "i2news",
-        "Server02:imudnews": "imudnews",
-        "Server02:irc": "irc",
-        "Server02:ifree": "ifree",
         ]);
 
 static private mapping remotechans = ([
@@ -69,17 +60,8 @@ static private mapping remotechans = ([
         "ds": "dead_souls",
 
         //IMC2 Channels
-        "ibuild" : "Server01:ibuild",
-        "ichat" : "Server01:ichat",
-        "pchat" : "Server01:pchat",
-        "i2chat" : "Server02:i2chat",
-        "i3chat" : "Server02:i3chat",
-        "i2code" : "Server02:icode",
         "i2game" : "Server02:igame",
         "i2news" : "Server02:inews",
-        "imudnews" : "Server02:imudnews",
-        "irc" : "Server02:irc",
-        "ifree" : "Server02:ifree",
         ]);
 
 static private mapping tags = ([
@@ -132,6 +114,15 @@ static void Setup(){
     foreach(string foo in remote_chans){
         if(member_array(foo, local_chans) != -1){
             remote_chans -= ({ foo });
+        }
+        if(!strsrch(foo, "Server")){
+            int i, x;
+            string local, remote;
+            i = sscanf(foo, "Server0%d:%s", x, local);
+            if(i == 2 && !localchans[foo]){
+                localchans[foo] = local;
+                remotechans[local] = foo;
+            }
         }
     }
 }

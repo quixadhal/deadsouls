@@ -64,7 +64,7 @@ int eventBeginPlay(){
     eventForce("say I've switched "+percent(switches,runs)+"% "
             "of the time. My win rate is "+
             percent(wins,run)+"%.");
-    unguarded( (: SaveObject(SaveFile,1) :) );
+    SaveObject(SaveFile,1);
     eventForce("push a button on a pedestal");
     eventForce("push button on pedestal");
     return 1;

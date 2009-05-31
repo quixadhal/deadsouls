@@ -54,7 +54,6 @@ int cmd(string str) {
     if(flags&GREP_NUMBERED_LINES){
         for(i=0, borg = ([]); i<max; i++) {
             if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
-                //r_files = (string *)wild_card(files[i]+"/"+file);
                 r_files = (string *)wild_card(files[i]+"/*");
                 if(max + sizeof(r_files) > max_files){
                     write("Too many files in the recurse. Aborting grep.");
@@ -64,7 +63,6 @@ int cmd(string str) {
                 max += sizeof(r_files);
                 continue;
             }
-            //tc("file: "+identify(files[i]));
             if(file_size(files[i]) > MAX_FILE_SIZE){
                 write(files[i]+": too large. Skipping.");
                 continue;
@@ -98,9 +96,7 @@ int cmd(string str) {
     }
     else {
         for(i=0, borg = ([]); i<max; i++) {
-            //tc("thingy: "+identify(files[i]+"/"+file));
             if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
-                //r_files = (string *)wild_card(files[i]+"/"+file);
                 r_files = (string *)wild_card(files[i]+"/*");
                 if(max + sizeof(r_files) > max_files){
                     write("Too many files in the recurse. Aborting grep.");
@@ -110,7 +106,6 @@ int cmd(string str) {
                 max += sizeof(r_files);
                 continue;
             }
-            //tc("FILE: "+identify(files[i]));
             if(file_size(files[i]) > MAX_FILE_SIZE){
                 write(files[i]+": too large. Skipping.");
                 continue;

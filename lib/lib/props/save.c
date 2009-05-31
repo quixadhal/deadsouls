@@ -27,21 +27,19 @@ int GetLastSave(){
 
 static varargs int SaveObject(mixed str, int i){
     int ret;
-    //debug("SaveObject("+str+", "+i+")");
     savename = GetSaveName();
     if(!undefinedp(str) && intp(str)) i = str;
     if(str) savename = str;
 #if ENABLE_INSTANCES
     savename = new_savename(savename);
 #endif
-    if(!savename) return 0;
+    if(!sizeof(savename) || savename[0..0] == ".") return 0;
     if(PersistentInventoryEnabled){
         PersistentInventory = filter(map(all_inventory(),
                     (: $1->GetSaveString() :)), (: $1 :));
     }
     ret = unguarded( (: save_object, savename, i :) );
     LastSave = time();
-    //debug("SaveObject("+str+", "+i+"), savename: "+savename+", ret: "+ret);
     return ret;
 }
 
@@ -114,7 +112,7 @@ varargs void create(){
 
 int eventDestruct(){
     if(PersistentInventoryEnabled){
-        unguarded( (: SaveObject() :) );
+        SaveObject();
     }
     return 1;
 }

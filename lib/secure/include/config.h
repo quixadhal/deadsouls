@@ -88,10 +88,11 @@
 #define MEMUSE_SOFT_LIMIT        0
 #define MEMUSE_HARD_LIMIT        0
 #define MAX_USERS                0
-#define MIN_PERF                 2000
+#define MIN_PERF                 400
 #define MINIMAP                  1
 #define WIZMAP                   1
 #define GRID                     1
 #define ENABLE_INSTANCES         0
+#define CED_DISABLED             1
 
 #endif /* s_config_h */

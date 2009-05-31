@@ -187,11 +187,11 @@ static private string *local_targets(string *str) {
 } 
 
 static private void save_mailqueue() { 
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
 } 
 
 static private void restore_mailqueue() { 
-    unguarded((: RestoreObject, SaveFile :));
+    RestoreObject(SaveFile);
 } 
 
 string *convert_names(string *noms) {

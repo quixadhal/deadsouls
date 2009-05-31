@@ -621,22 +621,16 @@ mixed RecalculateHist(int x){
         command_hist = ([ 0 : "" ]);
         histsize = 1;
     }
-    //tc("1");
     if(histmatch > 0 && sizeof(charbuffer) && !sizeof(recalled_command_sub)){
         mixed tmpvals;
-        //tc("2");
         tmpvals = filter(values(command_hist), 
                 (: $1 && !strsrch($1, this_object()->GetCharbuffer()) :));
         if(sizeof(tmpvals)){
-            //tc("3");
             recalled_command_sub = charbuffer;
         }
-        //tc("4");
     }
-    //tc("5: "+recalled_command_num);
     if(x) recalled_command_num++;
     else recalled_command_num--;
-    //tc("6: "+recalled_command_num);
     if(recalled_command_num < 0) recalled_command_num = (histsize - 1);
     if(recalled_command_num > (histsize - 1)) recalled_command_num = 0;
     recalled_command = command_hist[recalled_command_num];
@@ -720,7 +714,6 @@ static int rEnter(){
 
 static int rCtrl(string str){
     string charbuffer = this_object()->GetCharbuffer();
-    //debug("nmsh rCtrl "+str,0,"blue");
     if(str == "d"){ /* Ctrl-D */
         write("Canceling charmode!");
         this_object()->CancelCharmode();
@@ -773,7 +766,7 @@ static int rCtrl(string str){
                     /* It's a command! Let's see if it's a file
                      * manipulating kind of command.
                      */
-                    file_cmds = ({ "clone", "goto", "rehash", "reset",
+                    file_cmds = ({ "ced", "clone", "goto", "rehash", "reset",
                             "showtree", "bk", "cat", "cp", "diff", "ed", 
                             "grep", "head", "indent", "longcat", "more", "mv",
                             "rm", "sed", "showfuns", "source", "tail", "update" });
@@ -792,22 +785,15 @@ static int rCtrl(string str){
                          * to use it to guess which file/dir to
                          * manipulate.
                          */
-                        //debug("lastarg: "+lastarg,0,"black");
                         if(lastarg){
                             if(lastarg[0..0] == "/"){ 
-                                //debug("BING",0, "green");
                                 pre = path_prefix(lastarg);
-                                //debug("lastarg: "+lastarg,0,"green");
-                                //debug("pre: "+pre,0,"green");
                                 abso = 1;
                             }
 #if 0
                             if(lastarg[0..2] == "../"){
-                                //debug("BONG",0, "red");
                                 lastarg = my_path + "/";
                                 pre = path_prefix(my_path) + "/";
-                                //debug("lastarg: "+lastarg,0,"red");
-                                //debug("pre: "+pre,0,"red");
                                 abso = 1;
                             }
 #endif
@@ -819,18 +805,11 @@ static int rCtrl(string str){
                         else {
                             pre = my_path;
                         }
-                        //debug("pre: "+pre,0,"white");
-                        //debug("post: "+post,0,"white");
-                        //debug("lastarg: "+lastarg,0,"white");
                         if(!sizeof(post)) post = lastarg;
                         candidates = get_dir(pre + "/");
-                        //debug("candidates: "+identify(candidates));
                         if(sizeof(post) && sizeof(candidates)){
-                            //debug("hi",0,"red");
                             candidates = regexp(candidates, "^"+post);
                         }
-                        //debug("candidates: "+identify(candidates));
-                        //debug("post: "+identify(post));
                         if(sizeof(candidates) == 1){
                             string tmplast;
                             post = last_string_element(lastarg, "/");
@@ -868,21 +847,13 @@ static int rCtrl(string str){
                                 i = sort_array(keys(Matches), -1)[0];
                                 tmp_str = Matches[i][0..i];
                             }
-                            //debug("lastarg: "+lastarg,0,"red");
                             if(sizeof(lastarg) && sizeof(tmp_str)) lastarg = tmp_str;
-                            //debug("lastarg: "+lastarg,0,"green");
                             if(abso && sizeof(lastarg) &&
                                     lastarg[0..0] != "/"){
                                 lastarg = "/"+lastarg;
                             }
-                            //debug("lastarg: "+lastarg,0,"blue");
-                            //ret_arr = sort_array(ret_arr, 1);
-                            //write(implode(ret_arr, " "));
-                            write(format_page(ret_arr, 4));
+                            write(format_page2(ret_arr, 4));
                         }
-                        //debug("pre: "+pre);
-                        //debug("post: "+post);
-                        //debug("lastarg: "+lastarg);
                         if(!lastarg) lastarg = "";
                         if(grepp(lastarg,"/")){
                             lastarg = last_string_element(lastarg, "/");
@@ -906,9 +877,7 @@ static int rCtrl(string str){
                             if(sizeof(lastarg) && last(lastarg,1) != "/"){
                                 lastarg += "/";
                             }
-                            //ret_arr = sort_array(ret_arr, 1);
-                            //write(implode(ret_arr, " "));
-                            write(format_page(ret_arr, 4));
+                            write(format_page2(ret_arr, 4));
                         }
                         else if(sizeof(tmp_str) && last(tmp_str,1) == "/"){
                             lastarg = truncate(tmp_str, 1);
@@ -992,9 +961,7 @@ static int rCtrl(string str){
 
 static int rArrow(string str){
     string charbuffer;
-    //debug("nmsh rArrow(\""+str+"\")",0, "blue");
     if(!str) return 0;
-    //charbuffer = this_object()->GetCharbuffer();
     switch(str){
         case "up" :
             charbuffer = RecalculateHist(0);
@@ -1029,7 +996,6 @@ static int rArrow(string str){
 }
 
 static int rAscii(string str){
-    //debug("nmsh received: "+str,0, "blue");
     if(!histmatch) histmatch = 1;
     erase_prompt();
     write_prompt();
@@ -1037,7 +1003,6 @@ static int rAscii(string str){
 }
 
 static int rAnsi(string str){
-    //debug("nmsh ansi received: "+str,0,"blue");
     return 1;
 }
 

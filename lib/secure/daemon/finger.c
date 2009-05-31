@@ -89,10 +89,9 @@ varargs string GetFinger(string who, int html) {
         if(tmpfile){
             unguarded( (: restore_object(tmpfile) :) );
         }
-        else if( !unguarded( (: RestoreObject, DIR_PLAYERS "/" + who[0..0] +
-                        "/" + who :)) &&
-                !(creator = unguarded( (: RestoreObject, DIR_CRES "/" +
-                            who[0..0] + "/" + who :) ) )) return 0;
+        else if( !RestoreObject(DIR_PLAYERS "/" + who[0..0] + "/" + who) &&
+                !(creator = RestoreObject(DIR_CRES "/" +
+                            who[0..0] + "/" + who) )) return 0;
         CurrentUser = who;
     }
     else if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;
@@ -185,10 +184,9 @@ mixed array GetRemoteFinger(string who) {
     if( who != CurrentUser ) {
         creator = 0;
         if( !user_exists(who) ) return 0;
-        else if( !unguarded( (: RestoreObject, DIR_PLAYERS "/" + who[0..0] +
-                        "/" + who :)) &&
-                !(creator = unguarded( (: RestoreObject, DIR_CRES "/" +
-                            who[0..0] + "/" + who :) ) )) return 0;
+        else if( !RestoreObject(DIR_PLAYERS "/" + who[0..0] + "/" + who) &&
+                !(creator = RestoreObject(DIR_CRES "/" +
+                            who[0..0] + "/" + who)) ) return 0;
         CurrentUser = who;
     }
     else if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;

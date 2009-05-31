@@ -11,7 +11,7 @@
 void eventReceiveEmote(mixed *packet) {
     object ob;
     string who;
-
+    PING_D->SetOK();
     tn("eventReceiveEmote: "+identify(packet), "green");
     if( file_name(previous_object()) != INTERMUD_D ) return;
     who = convert_name(packet[5]);

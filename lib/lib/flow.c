@@ -58,7 +58,6 @@ void eventFlood(mixed targets){
     foreach(mixed room in scramble_array(targets)){
         mixed flooder;
         object arch = load_object(ROOM_ARCH);
-        //tc("room: "+identify(room),"white");
         if(!room) break;
         if(environment() == room) continue;
         if(press < 2) break;
@@ -71,16 +70,12 @@ void eventFlood(mixed targets){
         else {
             int flood;
             flooder = new(ThisFile);
-            //tc("flooder: "+identify(flooder),"green");
             flooder->SetProperty("LastLocation", base_name(env)); 
             flood = flooder->eventMove(room);
             if(!flood) continue;
             tell_room(room,"This area starts flooding with water!");
             tell_room(arch,base_name(room)+" has been flooded.");
-            //tc("flooder: "+identify(flooder)+", env: "+
-            //identify(environment(flooder)),"cyan");
         }
-        //tc("flooder","blue");
         if(flooder->GetPressure() < press){
             if(press && flooder->AddPressure(1)) press--;
             if(press < 2){ 
@@ -100,7 +95,6 @@ void CheckRooms(){
         return;
     }
     if(clonep() && environment() && !living(environment()) && press > 1){
-        //shb(5);
     }
     if(env){
         Exits = env->GetExitMap(); 
@@ -109,25 +103,17 @@ void CheckRooms(){
             mixed door = env->GetDoor(key);
             int ok =1;
             if(door){
-                //shb(1);
                 if(DoorStopped && door->GetClosed() && !door->GetPerforated()){
-                    //tc("NOT OK");
                     ok = 0;
                 }
                 else{
-                    //tc("door: "+identify(door)+", closed: "+door->GetClosed()+
-                    //", perforated: "+door->GetPerforated(),"cyan");
-                    //tc("key: "+identify(key)+", val: "+identify(val)+
-                    //"env: "+identify(env),"white");
                 }
             }
             if(ok) ret += ({ val });
         }
     }
     if(sizeof(ret)) rooms = ret;
-    //tc("rooms: "+implode(rooms," "));
     if(press > 1){
-        //tc("whee "+identify(this_object()),"red");
         rooms = ({});
         foreach(mixed key, mixed val in Exits){
             if(member_array(val, ret) == -1) continue;
@@ -135,10 +121,8 @@ void CheckRooms(){
             else if(key == "up") fourth += ({ load_object(val) });
             else rooms += ({ load_object(val) });
         }
-        //tc("rooms: "+identify(rooms),"yellow");
         foreach(mixed room in rooms){
             mixed flooder;
-            //tc("room: "+identify(room),"white");
             if(press < 2) break;
             flooder = filter(all_inventory(room),
                     (: base_name($1) == ThisFile :) );
@@ -156,18 +140,15 @@ void heart_beat(){
     object env;
     if(!clonep()) return;
     env = environment();
-    //tc("%^B_BLACK%^hb fires for: "+identify(this_object()),"cyan");
     if(!env || living(env) || press < 2){
         shb(240);
         return;
     }
     CheckRooms();
     if(press > 1 && env){
-        //env->SetMedium(MEDIUM_WATER);
         env->SetRespirationType(R_WATER);
     }
     else if(env){
-        //env->SetMedium(orig_medium);
         env->SetRespirationType(orig_resp);
     }
     shb(90);
@@ -188,13 +169,11 @@ int AddPressure(int x){
         }
         press += x;
     }
-    //if(press) shb(5);
     return press;
 }
 
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     msg = lower_case(msg);
-    //tc("i am "+identify(this_object())+" and I recive: "+msg);
     if(grepp(msg, "opens") || grepp(msg, "closes") ){
         CheckRooms();
         shb(5);
@@ -256,7 +235,6 @@ int eventMove(mixed dest){
     object env;
     int ret = ::eventMove(dest);
     if(ret && env = room_environment(this_object())){
-        //orig_medium = env->GetMedium();
         orig_resp = env->GetRespirationType();
     }
     return ret;

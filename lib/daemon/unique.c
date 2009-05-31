@@ -17,7 +17,7 @@ static void create() {
     SaveFile = save_file(SAVE_UNIQUE);
     Objects = ([]);
     if(file_exists(SaveFile)){
-        unguarded( (: RestoreObject, SaveFile :) );
+        RestoreObject(SaveFile);
     }
 }
 
@@ -27,7 +27,7 @@ void eventTouchObject() {
     if( !((int)previous_object()->GetUnique()) ) return;
     fn = base_name(previous_object());
     Objects[fn] = time();
-    unguarded( (: SaveObject, SaveFile :) );
+    SaveObject(SaveFile);
 }
 
 object GetUniqueCopy(string fn, int rare) {
@@ -38,13 +38,13 @@ object GetUniqueCopy(string fn, int rare) {
         ob = new(fn);
         if( !((int)ob->GetUnique()) ) return ob;
         else Objects[fn] = time();
-        unguarded( (: SaveObject, SaveFile :) );
+        SaveObject(SaveFile);
         return ob;
     }
     x = time() - Objects[fn];
     if( x < (86400 * rare) ) return 0;
     if( ob = new(fn) ) Objects[fn] = time();
-    unguarded( (: SaveObject, SaveFile :) );
+    SaveObject(SaveFile);
     return ob;
 }
 
@@ -54,5 +54,5 @@ mapping GetUniques(){
 
 mapping ResetUniques(){
     Objects = ([]);
-    unguarded( (: SaveObject, SaveFile :) );
+    SaveObject(SaveFile);
 }

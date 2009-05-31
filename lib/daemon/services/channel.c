@@ -18,6 +18,8 @@ static private string *local_chans = ({"newbie","cre","gossip","admin","error",
 
 void eventReceiveChannelWhoReply(mixed array packet) {
     object ob;
+
+    PING_D->SetOK();
     tn("eventReceiveChannelWhoReply: "+identify(packet),"green");
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
@@ -35,6 +37,7 @@ void eventReceiveChannelWhoReply(mixed array packet) {
 void eventReceiveChannelWhoRequest(mixed array packet) {
     string array who;
     string ret = "";
+    PING_D->SetOK();
     if( file_name(previous_object()) != INTERMUD_D ) return;
     who = (string array)CHAT_D->GetChannelList(packet[6]);
     INTERMUD_D->eventWrite(({ "chan-who-reply", 5, mud_name(), 0, packet[2],
@@ -53,6 +56,7 @@ void eventReceiveChannelUserRequest(mixed array packet) {
     object ob;
     string visname;
     int gender;
+    PING_D->SetOK();
     if( file_name(previous_object()) != INTERMUD_D ) return;
     tn("eventReceiveChannelUserRequest: "+identify(packet),"green");
     if( !(ob = find_player(packet[6])) ) {
@@ -72,6 +76,7 @@ void eventReceiveChannelUserRequest(mixed array packet) {
 }
 
 void eventReceiveChannelMessage(mixed array packet) {
+    PING_D->SetOK();
     tn("eventReceiveChannelMessage: "+identify(packet),"green");
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
@@ -84,6 +89,7 @@ void eventReceiveChannelMessage(mixed array packet) {
 }
 
 void eventReceiveChannelEmote(mixed array packet) {
+    PING_D->SetOK();
     tn("eventReceiveChannelEmote: "+identify(packet),"green");
 
     if( file_name(previous_object()) != INTERMUD_D ) return;
@@ -96,6 +102,7 @@ void eventReceiveChannelEmote(mixed array packet) {
 
 void eventReceiveChannelTargettedEmote(mixed array packet) {
     string target;
+    PING_D->SetOK();
     tn("eventReceiveChannelTargettedEmote: "+identify(packet),"green");
 
     if( file_name(previous_object()) != INTERMUD_D ) return;

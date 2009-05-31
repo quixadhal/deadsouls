@@ -101,8 +101,7 @@ static private void eventProcess(int fd, string str) {
             map_delete(Connections, fd);
             return;
         }
-        unguarded( (: RestoreObject, DIR_CRES "/" + username[0..0] + "/" +
-                    username :) );
+        RestoreObject(DIR_CRES "/" + username[0..0] + "/" + username);
         if( Password != crypt(password, Password) ) {
             log_file("remote", "Failed attempt to login as " + username 
                     + "\n");

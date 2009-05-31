@@ -41,7 +41,6 @@ varargs mixed SetRead(mixed arg1, mixed desc){
         Reads = expand_keys(arg1);
         if( Reads["default"] ){
             Read = Reads["default"];
-            //map_delete(Reads, "default");
         }
     }
     if( !desc ){
@@ -96,10 +95,8 @@ mixed GetLanguage(){
 varargs mixed eventRead(object who, mixed str){
     mixed ret;
     mixed val;
-    //debug("who: "+identify(who)+", str: "+identify(str), "red");
     if(str) val = GetRead(str);
     else val = GetRead("default");
-    //debug("val: "+identify(val), "green");
     if( arrayp(val) ){
         val = val[query_night()];
     }

@@ -54,7 +54,6 @@ int eventReceiveDamage(mixed agent, int type, int amt, int i, mixed array l){
     int x = -1;
     mixed worn = this_object()->GetWorn();
     mapping temp_prot = this_object()->GetProtectionMap();
-    //tc("I am "+identify(this_object())+", eventReceiveDamage("+identify(agent)+", "+type+", "+amt+", "+i+", "+identify(l)+")");
     if(undefinedp(DamagePoints)) return 0;
     if(query_verb() == "pick") return 0;
     if(objectp(agent)){
@@ -78,7 +77,6 @@ int eventReceiveDamage(mixed agent, int type, int amt, int i, mixed array l){
         DamagePoints = MaxDamagePoints;
         eventDeteriorate(type);
     }
-    //tc("returning "+x);
     return x;
 }
 

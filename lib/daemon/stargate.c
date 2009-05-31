@@ -26,17 +26,17 @@ static void create(){
     eventLoad();
     set_heart_beat(60);
     if (!Stargates) Stargates = ([]);
-    unguarded( (: SaveObject, SaveFile, 1 :) );
+    SaveObject(SaveFile, 1);
 }
 
 void eventSave(){
-    unguarded( (: SaveObject, SaveFile, 1 :) );
+    SaveObject(SaveFile, 1);
     return;
 }
 
 void eventLoad(){
     if(file_exists(SaveFile)){
-        unguarded( (: RestoreObject, SaveFile :) );
+        RestoreObject(SaveFile);
     }
     return;
 }

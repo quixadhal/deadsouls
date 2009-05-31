@@ -110,7 +110,6 @@ string *LimbGuess(object who){
     string *base_limbs = this_object()->GetBaseLimbs();
 
     limbs = ({});
-    //tc("base_limbs: "+identify(base_limbs));
     if(sizeof(base_limbs)){
         tmp = who->GetLimbs();
         if(member_array("hand", base_limbs) != -1 &&
@@ -132,8 +131,6 @@ string *LimbGuess(object who){
                 }
             } 
         }
-        //tc("base_limbs: "+identify(base_limbs));
-        //tc("limbs: "+identify(limbs),"red");
         if(member_array("foot", base_limbs) != -1 &&
                 member_array("leg", base_limbs) != -1){
             string *feet = filter(tmp, (: last($1, 4) == "foot" :) );
@@ -153,28 +150,21 @@ string *LimbGuess(object who){
                 }
             }
         }
-        //tc("base_limbs: "+identify(base_limbs));
-        //tc("limbs: "+identify(limbs),"green");
         if(sizeof(base_limbs)){
             foreach(limb in who->GetLimbs()){
                 if(sscanf(reverse_string(limb),"%s %*s",tmp) != 2){
                     tmp = limb;
                 }
                 else tmp = reverse_string(tmp);
-                //tc("limb: "+limb, "white");
                 if((memb = member_array(tmp, base_limbs)) != -1 &&
                         who->CanWear(this_object(), ({ limb })) == 1){
-                    //tc("TMP: "+tmp);
                     base_limbs = remove_member(base_limbs, memb);
                     limbs += ({ limb });
                 }
             }
         }
-        //tc("base_limbs: "+identify(base_limbs));
-        //tc("limbs: "+identify(limbs),"blue");
     }
     else {
-        //tc("foo. limbs: "+identify(limbs),"black");
         foreach(limb in who->GetLimbs()){
             mapping data = who->GetLimb(limb);
 
@@ -277,18 +267,15 @@ string array GetBaseLimbs(){
 }
 
 string array SetBaseLimbs(string array limbs){
-    //tc("1","green");
     return (BaseLimbs = limbs);
 }
 
 string array GetSave(){
-    //tc("\n---\nBING BING\n---\n", "red");
     return persist::GetSave();
 }
 
 static mixed array AddSave(mixed array vars){
     if(!vars) vars = ({});
-    //tc("base_armor AddSave("+identify(vars)+")","green");
     my_save = distinct_array( my_save + vars );
     return persist::AddSave(my_save);
 }
@@ -313,7 +300,6 @@ mixed CanEquip(object who, string array limbs){
         string array guess = who->GetLimbs();
         int armor = GetArmorType();
         string limb;
-        //tc("FUUK");
         if( !guess ){
             return "You have no limbs!";
         }
@@ -331,9 +317,6 @@ mixed CanEquip(object who, string array limbs){
         if( equip::CanEquip(who, limbs) != 1 ){
             string ret = "#Wear " + GetDefiniteShort() + " on which ";
             int type = this_object()->GetArmorType();
-            //tc("limbs: "+identify(limbs),"red");
-            //tc("foo: "+equip::CanEquip(who, limbs));
-            //tc("stack: "+get_stack(1),"red");
             if(type & A_RING) ret += "hand?";
             else ret += "limb?";
             return ret;
@@ -350,9 +333,6 @@ mixed CanEquip(object who, string array limbs){
                 if( which = who->GetLimbParent(limbs[0]) ){
                     limbs = ({ limbs[0], "torso", which });
                 }
-                //tc("which: "+identify(which));
-                //tc("limbs: "+identify(limbs));
-                //tc(identify(who)+"->GetLimbParent("+identify(limbs[0])+"): "+identify(who->GetLimbParent(limbs[0])));
                 break;
 
             case A_LONG_GLOVE: case A_LONG_BOOT:
@@ -417,7 +397,6 @@ mixed eventEquip(object who, string array limbs){
     }
     else if( sizeof(limbs) == 1 ){
         string which;
-        //tc("confuzzled");
         switch(GetArmorType()){
             case A_SHIELD:
                 if( which = who->GetLimbParent(limbs[0]) ){
@@ -531,7 +510,6 @@ varargs mixed eventUnequip(object who){
 
 varargs int restrict(mixed arg, int i){
     if(!arg) return 1;
-    //tc("2","blue");
     if(arg && i) SetBaseLimbs(arg);
     else if(arg) SetRestrictLimbs(arg);
     return 2;

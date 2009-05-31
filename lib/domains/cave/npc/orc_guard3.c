@@ -36,20 +36,17 @@ void init(){
 void heart_beat(){
     object env = room_environment(this_object());
     if(throwing) throwing--;
-    //tc("beating for "+identify(this_object()));
     if(GetInCombat()){
         object targ;
         object jav = present("javelin",this_object());
         object *targs = filter(get_livings(env), 
                 (: member_array($1, GetEnemies()) != -1 :) );
-        //tc("env: "+identify(env));
         if(sizeof(targs)) targ = targs[random(sizeof(targs)-1)];
         if(present("javelin", env)){
             eventForce("get a javelin");
             jav = present("javelin",this_object());
         }
         if(jav && targ && !throwing){
-            //eventForce("say trying to throw at "+targ->GetKeyName());
             eventForce("throw a javelin at "+targ->GetKeyName());
             throwing = 10;
         }

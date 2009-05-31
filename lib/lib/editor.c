@@ -16,13 +16,9 @@ static void create(){
 varargs void eventEdit(string file, function callback){
     EditCallback = callback;
 #ifdef __DSLIB__
-    //tc("THIS SHOUL CANCEL WTF","red");
     if(this_object()->GetCharmode()){
-        //tc("hmmm...","red");
         this_object()->SetProperty("was_charmode", 1);
         this_object()->CancelCharmode();
-        //tc("charmode: "+this_object()->GetCharmode());
-        //tc("was_charmode: "+this_object()->GetProperty("was_charmode"));
     } 
 #endif
     ed_start(file, !creatorp());

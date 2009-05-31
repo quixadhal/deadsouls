@@ -82,7 +82,6 @@ varargs mixed eventMount(object who, int quiet, int forced){
     int rider_weight;
     string weight = "weight";
     if(!who){
-        //tc("bad 1");
         return 0;
     }
     if(environment() && environment()->GetMedium() == MEDIUM_SPACE){
@@ -90,26 +89,22 @@ varargs mixed eventMount(object who, int quiet, int forced){
     }
     rider_weight = who->GetMass();
     if(!environment(this_object())){
-        //tc("bad 2");
         return 0;
     }
     if(environment(who) && environment(who) == this_object()){
         if(!forced && !quiet){
-            //tc("bad 3");
             return who->eventPrint("You are already mounted.", MSG_ERROR);
         }
     }
     if((rider_weight + this_object()->GetCarriedMass()) > 
             this_object()->GetMaxCarry()){
         if(!forced && !quiet){
-            //tc("bad 4");
             return write(this_object()->GetShort()+
                     " cannot handle that much "+weight+".");
         }
     }
     if(this_object()->GetMountOwner() != who){
         if(!forced && !quiet){
-            //tc("bad 5");
             write(this_object()->GetName()+" doesn't know you well "
                     "enough to let you ride "+objective(this_object())+".");
             return 0;
@@ -120,7 +115,6 @@ varargs mixed eventMount(object who, int quiet, int forced){
         write("You mount "+this_object()->GetShort()+".");
         say(who->GetName()+" mounts "+this_object()->GetShort()+".");
     }
-    //tc("hmm");
     who->SetProperty("mount", this_object());
     if(who->eventMove(this_object())) return AddRider(who);
     if(forced) return AddRider(who);

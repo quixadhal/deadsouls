@@ -86,7 +86,6 @@ static int ReceiveChars(string str){
             this_object()->rAnsi(esc);
         }
         else if(sizeof(esc) > 2 && esc[1] == 91){
-            //tc("\nesc[2]: "+esc[2]+"\n");
             switch(esc[2]){
                 case 65 : this_object()->rArrow("up"); cl = 1; break;
                 case 66 : this_object()->rArrow("down"); cl = 1; break;
@@ -131,11 +130,17 @@ static int ReceiveChars(string str){
         case 24 : this_object()->rCtrl("x"); break;
         case 25 : this_object()->rCtrl("y"); break;
         case 26 : this_object()->rCtrl("z"); break;
-        case 28 : this_object()->rCtrl("4"); break;
+        case 28 : this_object()->rCtrl("28"); break;
         case 30 : rEsc(); break;
-        case 31 : this_object()->rCtrl("7"); break;
+        case 31 : this_object()->rCtrl("31"); break;
     }
 
+    //debug_message("esc char: "+c);
+
+    if(!this_object()){
+        // Probably a warmboot or userload
+        return 0;
+    }
     if(in_edit(this_object())) CharStuff["noecho"] = 0;
     else CharStuff["noecho"] = 1;
 
@@ -166,6 +171,7 @@ int SetCharmode(int x){
     if(!x) CharStuff["charmode"] = 0;
 #ifdef __GET_CHAR_IS_BUFFERED__
     else CharStuff["charmode"] = 1;
+    remove_get_char(this_object());
     if(!(this_object()->GetCedmode())){
         get_char("ReceiveChars", CharStuff["noecho"]);
     }

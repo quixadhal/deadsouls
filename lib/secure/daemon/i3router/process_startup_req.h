@@ -14,11 +14,7 @@ static void process_startup_req(int protocol, mixed info, int fd){
     // router name is info[4], I'll just pretend I'm every router though, ha-ha!
     // also, should verify that all the fields are the right type
 
-    //trr("info: "+identify(info));
-    //trr("Incoming data from fd("+fd+"), address "+socket_address(fd)+".","blue");
     check_discs();
-    //trr("The known status of that fd is "+identify(socket_status(fd)),"blue");
-    //trr("muds on that fd: "+identify(filter(keys(this_object()->query_connected_muds()), (: this_object()->query_connected_muds()[$1] == $(fd) :) )),"blue");
     server_log("%^BLUE%^process_startup_req: protocol="+protocol+", mud="+info[2]);
 
     if(member_array(info[2], banned_muds) != -1) {
@@ -33,10 +29,6 @@ static void process_startup_req(int protocol, mixed info, int fd){
         return;
     }
 
-    //    brethren = 
-    //filter(keys(mudinfo), 
-    //(: mudinfo[$1]["ip"] == 
-    //clean_fd(socket_address($(fd))) :) ); 
     foreach(mixed element in keys(mudinfo)){
         if(member_array(element,keys(connected_muds)) == -1) continue;
         if(mudinfo[element] && mudinfo[element]["ip"] == clean_fd(socket_address(fd)))
@@ -59,14 +51,12 @@ static void process_startup_req(int protocol, mixed info, int fd){
         }
         if(!existing_mud || existing_mud != info[2]){
         map_delete(connected_muds, existing_mud);
-        //broadcast_mudlist(existing_mud);
         schedule_broadcast(existing_mud);
         }
     }
 
     if(sizeof(info)<18){ 
         // smallest protocol is protocol 1/2 which have size 18
-        //trr("THIS SHOULDNT BE HERE");
         write_data(fd,({
                     "error",
                     5,
@@ -80,10 +70,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
                     }));
         return;
     }
-    //trr("fd is:" +fd,"cyan");
     site_ip=socket_address(fd);
     site_ip = clean_fd(site_ip);
-    //trr("site_ip: "+site_ip,"cyan");
     newinfo = ([
             "name":info[2],
             "ip":site_ip,
@@ -104,7 +92,6 @@ static void process_startup_req(int protocol, mixed info, int fd){
             "restart_delay":-1,
             "router" : my_name,
             ]);
-    //trr("newinfo: "+identify(newinfo));
 
     if(protocol == 2 && sizeof(info) == 20 ) protocol = 3;
 
@@ -242,10 +229,8 @@ static void process_startup_req(int protocol, mixed info, int fd){
         if(this_object()->query_mudinfo()[info[2]]["ip"] == explode(socket_address(fd)," ")[0] &&
                 mudinfo[info[2]]["password"] == newinfo["password"] ){
             server_log("Since it's the same ip and password, I'll remove the current connection");
-            //this_object()->remove_mud(info[2],1);
             if(mudinfo[info[2]]) mudinfo[info[2]]["disconnect_time"] = time();
             map_delete(connected_muds, info[2]);
-            //broadcast_mudlist(info[2]);
             schedule_broadcast(info[2]);
         }
     }
@@ -293,17 +278,14 @@ static void process_startup_req(int protocol, mixed info, int fd){
         // if new MUD, assign it a password
         newinfo["password"]=random_numbers(9,1);
         trr("ROUTER_D: Assigning password "+newinfo["password"],"white");
-        //trr("Ok. this is the password: "+newinfo["password"],"white");
         // Change this maybe... see if the password is supposed to be in a certain range
     }
     else {
         trr("ROUTER_D: password: Known: "+mudinfo[info[2]]["password"]+", current: "+newinfo["password"],"green");
     }
     // MUD should be okay at this point.
-    //trr("about to update the mudinfo...","white");
     mudinfo[info[2]]=newinfo; // update the mudinfo
     connected_muds[info[2]] = fd; // add this MUD to list of connected muds
-    //trr("about to send the startup reply...","white");
     send_startup_reply(info[2]); // reply to MUD
     mudinfo_update_counter++;
     mudinfo_updates[info[2]]=mudinfo_update_counter;
@@ -311,21 +293,12 @@ static void process_startup_req(int protocol, mixed info, int fd){
     send_full_mudlist(info[2]);
     broadcast_mudlist(info[2]);
     broadcast_chanlist("foo",info[2]);
-    if(this_object()->query_imc(info[2])){ 
-        //tc(info[2]+" is a imc2 thing","cyan");
-        //IMC2_SERVER_D->acknowledge_startup(fd, info[2]);
-    }
     if(bad_connects[newinfo["ip"]]) bad_connects[newinfo["ip"]] = 0;
     if(member_array("channel", keys(newinfo["services"])) != -1){
-        //send_chanlist_reply(info[2], ( newinfo["old_chanlist_id"]) ? newinfo["old_chanlist_id"] : (random(1138) * 1138)  );
 
     }
     else {
-        //trr("-------------------------------","blue");
         trr("It looks like "+info[2]+" doesn't have a channel service?!?","blue");
-        //trr("These are the services reported: "+identify(newinfo["services"]),"blue");
-        //trr("This is what newinfo looks like: "+identify(newinfo),"blue");
-        //trr("-------------------------------","blue");
     }
     trr(timestamp()+" process_startup_req: for mud: "+info[2]+" complete.\n---\n","blue");
 }

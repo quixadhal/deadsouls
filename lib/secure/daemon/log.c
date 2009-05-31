@@ -1,9 +1,17 @@
 #include <lib.h>
+#include <daemons.h>
+#include <logs.h>
+
 inherit LIB_DAEMON;
+mapping SpecialLogs = ([]);
 
 static void create() {
     daemon::create();
     SetNoClean(1);
+    SpecialLogs = ([
+      INTERMUD_D : ({ LOG_I3, LOG_I3ERR }),
+      SERVICES_D : ({ LOG_I3, LOG_I3ERR }),
+    ]);
 }
 
 int RotateLogs(){
@@ -23,10 +31,27 @@ int RotateLogs(){
                 if( file_size(path+"archive") != -2 ) mkdir(path+"archive");
                 cp(foopath,path+"archive/"+fooname);
                 rm(foopath);
-                //tc("temppath: "+temppath);
                 write_file(temppath, "", 1); 
             }
         }
     }
     return 1;
 }
+
+#if 1
+int LogSpecial(string file, string content){
+    int ret;
+    object prev = previous_object();
+    string prevname, *specials = ({});
+    if(!prev) return 0;
+    specials = keys(SpecialLogs);
+    if(!sizeof(specials)) return;
+    prevname = base_name(prev);
+    if(!sizeof(prevname) || member_array(prevname, specials) == -1){
+        return 0;
+    }
+    if(member_array(file, SpecialLogs[prevname]) == -1) return 0;
+    ret = unguarded( (: write_file($(file), $(content)) :) );
+    return ret;
+}
+#endif

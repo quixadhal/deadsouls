@@ -32,26 +32,31 @@ void read_callback(mixed fd, mixed info){
 
     if(!packet_counter) packet_counter = ([]);
 
-    //trr("read_callback, fd"+fd+", info: "+identify(info));
     if(!strsrch(info[0],"irn-")){
-        //trr("spotted irn packet: "+info[0],"blue");
         irn_read_callback(fd, info);
         return;
     }
 
     if(stringp(fd) && member_array(info[0],logspam) == -1)
-        //trr("Received IRN data "+info[0]+" for "+info[4]+" from "+info[2]);
 
         if(info[4] && !grepp(info[0],"startup-req") && 
                 member_array(info[4], keys(connected_muds)) == -1 &&
                 member_array(info[2], keys(connected_muds)) == -1){
-            //trr(info[4]+" is not on this router. Dropping from read_callback.");
             return;
         }
     validate();
-    //tc("passed validation");
+    if(sizeof(blacklisted_muds)){
+        if(member_array(info[2], blacklisted_muds) != -1) return;
+        if(intp(fd)){
+            if(member_array(ip_addr, blacklisted_muds) != -1) return;
+            foreach(string bmud in blacklisted_muds){
+                if(sscanf(bmud, "%*d.%*s") && !strsrch(ip_addr, bmud)){
+                    return;
+                }
+            }
+        }
+    }
     if(!packet_counter[info[2]]){
-        //tc("Adding "+info[2]+" to packet_counter");
         packet_counter[info[2]] = ([ "time" : time(), "count" : 0 ]);
     }
     if(packet_counter[info[2]]["time"] != time()){
@@ -59,37 +64,35 @@ void read_callback(mixed fd, mixed info){
         packet_counter[info[2]]["time"] = time();
     }
     if(info[0] != "channel-listen"){
-        packet_counter[info[2]]["count"]++;
-    }
-    //tc(info[2]+" count: "+packet_counter[info[2]]["count"]);
-    if(packet_counter[info[2]]["count"] > 10 &&
-            member_array(fd, keys(ROUTER_D->query_irn_sockets())) == -1){
-        if(true()){
-            if(info[2] && member_array(info[2], keys(connected_muds)) != -1){
-                send_error(info[2],info[3],"not-allowed",
-                        "Flood detected! Your packets will be temporarily ignored.",
-                        info);
-            }
-            graylisted_muds += ({ ip_addr });
-            trr("flood packet: "+identify(info[0]),"red");
-            return;
+        if(!strsrch(info[0], "startup-req")){
+            packet_counter[info[2]]["count"] += 6;
         }
-    }
-    if(sizeof(blacklisted_muds)){
-        if(member_array(info[2], blacklisted_muds) != -1) return;
-        if(intp(fd) && member_array(ip_addr, blacklisted_muds) != -1) return;
+        else packet_counter[info[2]]["count"]++;
     }
     if(sizeof(graylisted_muds)){
         if((info[2] && member_array(info[2], graylisted_muds) != -1) ||
-                (intp(fd) && member_array(ip_addr, graylisted_muds) != -1)){ 
+                (intp(fd) && member_array(ip_addr, graylisted_muds) != -1)){
             if(info[2] && member_array(info[2], keys(connected_muds)) != -1){
-                send_error(info[2],info[3],"not-allowed",
-                        "Your packets are being temporarily dropped due to flooding.",
-                        info);
+                if(packet_counter[info[2]]["count"] < 2){
+                    send_error(info[2],info[3],"not-allowed",
+                        "Your packets are being temporarily dropped "+
+                        "due to flooding.", info);
+                }
             }
-            tc("Dropping packet from "+ip_addr,"yellow");
             return;
         }
+    }
+
+    if(packet_counter[info[2]]["count"] > 10 &&
+            member_array(fd, keys(ROUTER_D->query_irn_sockets())) == -1){
+        if(info[2] && member_array(info[2], keys(connected_muds)) != -1){
+            send_error(info[2],info[3],"not-allowed",
+                    "Flood detected! Your packets will be temporarily ignored.",
+                    info);
+        }
+        graylisted_muds += ({ info[2] });
+        trr("Graylisting "+identify(info[2])+" from "+ip_addr,"red");
+        return;
     }
     if(member_array(info[0],logspam) == -1 && strsrch(info[0],"irn-")){
         string foo = "IRN";
@@ -160,13 +163,11 @@ void read_callback(mixed fd, mixed info){
     // at this point, I guess it has a valid origin and stuff
     if(sscanf(info[0],"channel-%*s")==1){ // command has a "channel-" prefix
         // special case for channel stuff
-        //trr("calling process_channel...");
         process_channel(fd,info);
         return;
     }
     if(info[0]=="chan-filter-reply"){
         if(!stringp(info[6]) || sizeof(info[7])<9 ){
-            //trr("wtf2");
             // avoid out-of-bounds
             send_error(info[2],info[3],"bad-pkt",
                     "Invalid chan-filter-reply packet.",info);
@@ -273,6 +274,5 @@ void read_callback(mixed fd, mixed info){
     if(tmp > -1){
         write_data(connected_muds[info[4]], info);
     }
-    //trr("%^B_BLUE%^tmp: "+tmp+", info[4]: "+info[4]);
     return;
 }

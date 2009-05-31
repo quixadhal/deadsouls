@@ -1,38 +1,42 @@
 #include <lib.h>
 #include <save.h>
 #include <daemons.h>
+#include <commands.h>
 
 inherit LIB_DAEMON;
 
-int hasrun = 0;
+int t, BootScore, PerformanceScore, hasrun = 0;
 
 string RateScore(int i){
     string ret;
     if(!i) ret = "No score available.";
-    else if(i < 500) ret = "Spectacular.";
-    else if(i < 1000) ret = "Excellent.";
-    else if(i < 1500) ret = "Good.";
-    else if(i < 3000) ret = "Fair.";
-    else if(i < 5000) ret = "Poor.";
-    else ret = "Very poor.";
+    else if(i < 51) ret = "Spectacular.";
+    else if(i < 101) ret = "Excellent.";
+    else if(i < 201) ret = "Very good.";
+    else if(i < 301) ret = "Good.";
+    else if(i < 401) ret = "Fair.";
+    else if(i < 501) ret = "Poor.";
+    else if(i < 601) ret = "Very poor.";
+    else if(i < 701) ret = "Bad.";
+    else ret = "Execrable.";
     return ret;
 }
 
 static void eventRun() {
     string ret = "";
-    int t, PerformanceScore = MASTER_D->GetPerformanceScore();
     mapping before, after;
     string *noobnames = ({ "Dead_Souls_"+DEBUGGER, "DeadSoulsNew",
             "DeadSoulsWin" });
     debug_message("\nRunning autoexec, please wait...");
+    BootScore = MASTER_D->GetBootScore();
 #ifdef __HAS_RUSAGE__
     before = rusage();
 #endif
     t = time(); 
-    load_object("/secure/cmds/creators/update")->cmd("-r /lib/creator");
+    load_object(CMD_UPDATE)->cmd("-r /lib/creator");
     if(RESET_INTERMUD){
         rm(save_file(SAVE_INTERMUD));
-        update("/daemon/intermud");
+        update(INTERMUD_D);
     }
     if(member_array(mud_name(),noobnames) == -1){
         mixed foo;
@@ -63,9 +67,20 @@ static void eventRun() {
 #else 
     ret =  "Autoexec daemon run complete.\n";
 #endif
-    if(PerformanceScore){
-        float secs = ((PerformanceScore + t ) * 0.001);
+    debug_message(ret);
+    call_out("perfreport", 1);
+}
+
+void perfreport(){
+    string ret = "";
+    float secs;
+    if(!PerformanceScore) PerformanceScore = MASTER_D->GetPerformanceScore();
+    if(!BootScore) BootScore = MASTER_D->GetBootScore();
+    if(BootScore){
+        secs = ((BootScore + t ) * 0.001);
         ret += "CPU time in boot: " + sprintf("%.2f",secs)+ " seconds.";
+    }
+    if(PerformanceScore){
         ret += " (Performance score: " + (RateScore(PerformanceScore))+")\n";
     }
     debug_message(ret);
@@ -73,6 +88,7 @@ static void eventRun() {
 
 static void create() {
     daemon::create();
+    PerformanceScore = MASTER_D->GetPerformanceScore();
     if(hasrun){
         return;
     }

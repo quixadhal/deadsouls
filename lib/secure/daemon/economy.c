@@ -27,7 +27,7 @@ static void create() {
     if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
         cp(old_savename(SaveFile), SaveFile);
     }
-    unguarded( (: RestoreObject(SaveFile) :) );
+    RestoreObject(SaveFile);
     i = sizeof(borg = keys(Currencies));
     temps = percent(time()-LastInflation, 4800000)* 0.01;
     while(i--) { 
@@ -36,7 +36,7 @@ static void create() {
     }
     LastInflation = time();
     if(sizeof(Currencies)){
-        unguarded( (: SaveObject(SaveFile) :) );
+        SaveObject(SaveFile);
     }
 }
 
@@ -60,7 +60,7 @@ void add_currency(string type, float rate, float infl, float wt) {
     if(!type || !rate || !infl || !wt || Currencies[type]) return;
     Currencies[type] = ([ "rate":rate, "inflation":infl, "weight":wt ]);
     if(sizeof(Currencies)){
-        unguarded( (: SaveObject(SaveFile) :) );
+        SaveObject(SaveFile);
     }
 }
 
@@ -69,7 +69,7 @@ void remove_currency(string type) {
     if(!mapp(Currencies)) return;
     map_delete(Currencies, type);
     if(sizeof(Currencies)){
-        unguarded( (: SaveObject(SaveFile) :) );
+        SaveObject(SaveFile);
     }
 }
 
@@ -81,7 +81,7 @@ void change_currency(string type, string key, float x) {
     if(!Currencies[type][key]) return;
     Currencies[type][key] = x;
     if(sizeof(Currencies)){
-        unguarded( (: SaveObject(SaveFile) :) );
+        SaveObject(SaveFile);
     }
 }
 

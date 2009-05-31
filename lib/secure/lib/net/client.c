@@ -108,7 +108,7 @@ static void eventWriteCallback(int fd) {
     }
 }
 
-void eventWrite(mixed val) {
+static void eventWrite(mixed val) {
     if( !Socket ) return;
     if( Socket->Buffer ) Socket->Buffer += ({ val });
     else Socket->Buffer = ({ val });

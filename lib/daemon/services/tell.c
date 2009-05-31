@@ -14,9 +14,11 @@ void eventReceiveTell(mixed *packet) {
     string who, ret;
     string adverb = "";
     string machine_message;
+    PING_D->SetOK();
     tn("eventReceiveTell: "+identify(packet),"yellow");
     if( file_name(previous_object()) != INTERMUD_D ) return;
     who = convert_name(packet[5]);
+    INSTANCES_D->SendTell(who, packet[7], packet[6] + "@" + packet[2]);
     if( !(ob = find_player(who)) || (int)ob->GetInvis() ) {
         INTERMUD_D->eventWrite(({ "error", 5, mud_name(), 0, packet[2],
                     packet[3], "unk-user", 
@@ -26,7 +28,6 @@ void eventReceiveTell(mixed *packet) {
         if(!(ob = find_player(who))) return;
         adverb = " %^BOLD%^MAGENTA%^unknowingly%^BOLD%^RED%^";
     }
-
     machine=present("answering machine",ob);
     if(machine && base_name(machine) == "/secure/obj/machine"){
         int parse_it;

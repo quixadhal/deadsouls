@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Dead Souls Charmode FAQ</title>
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+</head>
+<body>
+<pre style="font-family: courier new,courier,monospace;"><big><big><span
+ style="font-weight: bold;">Dead Souls Character Mode FAQ, v1</span></big><br><br>Written by Cratylus @ Dead Souls, May 2009<br><br><br><a
+ href="#1">What is Dead Souls Character Mode? </a><br><br><a href="#2">What is it for?</a><br><br><a
+ href="#3">Who can use it?</a><br><br><a href="#4">How do I use it?</a><br><br><a
+ href="#5">What can I do with it?</a><br>	<a href="#reprompt">Reprompt</a><br>	<a
+ href="#recall">Command recall</a><br>	<a href="#context_recall">Context-sensitive command recall</a><br>	<a
+ href="#tab">Tab completion</a><br>	<a href="#ced">Character mode editor</a><br><br><a
+ href="#broken">What's broken in it?</a><br><br><a href="#7">What is chario? Why do my errors keep pointing to it?</a><br><a
+ href="#3"></a></big><big><br><br><span
+ style="font-weight: bold; text-decoration: underline;"><a name="1"></a>What is Dead Souls Character Mode?</span> <br><br>	Telnet</big><big>. Wow.<br><br>	It's a neat protocol that can do a lot more than<br>people realize. Character mode is one of the two most<br>common ways to use telnet for mud communication.<br><br>	The mode that most people are used to is "line mode".<br>What this means is that when you type a command into your<br>mud client, the mud client handles all the details of<br>putting one character after another, and then when you press<br>&lt;Enter&gt;, the client sends that whole line as a unit to <br>the mud for processing. It's so common that it seems to be the<br>default even for telnet clients that are not designed for mudding.<br><br>	Character mode communicates in a different way. Instead<br>of sending data line by line, a character mode connection has<br>your client send your characters to the mud right when you<br>type them, so that by the time you hit &lt;Enter&gt; the mud already<br>has the complete line you wish to execute, and the &lt;Enter&gt; just<br>tells it to go ahead and do so.<br>&nbsp;<br><br></big><big><br><span
+ style="font-weight: bold; text-decoration: underline;"></span></big><big><span
+ style="font-weight: bold; text-decoration: underline;"><a name="2"></a></span></big><big><span
+ style="font-weight: bold; text-decoration: underline;">What is it for?</span><br><br>	The main usefulness of character mode in a mud is sending <br>special control characters and sequences. This allows you to,<br>for example, have a mud where players can enter a special "pilot"<br>mode where the arrow keys control an airplane. <br><br>	In Dead Souls, the default application of character mode<br>is mostly creator oriented. Being a developer, and being a UNIX<br>guy, I've sorely missed being able to use filename completion and<br>such while on my mud. Character mode allows for the extension of<br>the "Nightmare Shell", or nmsh, into something more homey.<br><br><br><br></big><big><span
+ style="font-weight: bold; text-decoration: underline;"><a name="3"></a></span></big><big><span
+ style="font-weight: bold; text-decoration: underline;">Who can use it?</span><br><br>	Not every mud client supports character mode. For example,<br>trying to use charmode in MUSHclient or TinyFugue will result in<br>disappointment and confusion. I've heard that some clients do <br>handle it, but I don't know which and I can't vouch for how well<br>they do so. Before trying to use charmode with your favorite mud<br>client, read its documentation to see how to enter character mode<br>with it.<br><br>	I use DS charmode from terminal windows, like xterm,<br>gnome-terminal, and Windows cmd.exe. Other standard terminal clients<br>like Putty probably support it too.<br><br><br><br></big><big><span
+ style="font-weight: bold; text-decoration: underline;"><a name="4"></a></span></big><big><span
+ style="font-weight: bold; text-decoration: underline;">How do I use it?</span><br><br>	Pretty simple, really. One you are logged in to your<br>mud with a terminal client (or a mud client you are sure handles<br>character mode), type the command:<br><br><span
+ style="font-weight: bold;">charmode on</span><br><br>	This sets your connection to character mode and sets your<br>player object to interpret your input in that manner. To exit<br>charmode you can either <span
+ style="font-weight: bold;">charmode off</span> or &lt;Ctrl&gt;-<span
+ style="font-weight: bold;">D</span>. To cancel a<br>command you've decided not to issue, &lt;Ctrl&gt;-<span
+ style="font-weight: bold;">C</span>.<br><br>	In the inevitable circumstance that someone tries to, say,<br>use charmode with Zmud32 from 1996, and then becomes hopelessly<br>entangled in problems and errors while trying to use advanced<br>charmode functions, your "charmode" flag is reset when you disconnect.<br>If you get lost or stuck in charmode, just disconnect and reconnect,<br>and you'll be in linemode again.<br><br><br></big><big><br></big><big><span
+ style="font-weight: bold; text-decoration: underline;"><a name="5"></a></span></big><big><span
+ style="font-weight: bold; text-decoration: underline;">What can I do with it?</span><br><br><br><span
+ style="text-decoration: underline;"><a name="reprompt"></a>Reprompt<br><br></span>This is where DS charmode has its origins. A while back some<br>dudes where complaining along the lines of how the number one<br>reason LP muds suck is the terrible awful handling of prompts.<br>I was like "pffshyeah right" but once their complaints were<br>explained to me in a way I understood, I realized it wasn't<br>that hard to accommodate that preference...it was just a matter<br>of erasing the prompt line before printing anything. Not<br>rocket science. Then it occurred to me to take it a step further.<br>If the screen receives data while you're in the middle of typing<br>a command, and you're in reprompt mode, what you typed will be<br>invisible. You'll just have to remember what it was. This seemed<br>like it shouldn't be super hard to fix.<br><br>A few weeks and efuns later, character mode and character mode<br>reprompt were available. So now just entering charmode:<br><br><span
+ style="font-weight: bold;">charmode on</span><br><br>Enables reprompt mode for you in a way that lets you keep your<br>prompt at the bottom of the screen, <span
+ style="font-style: italic;">and</span> see your input even if<br>interrupted by incoming text, <span
+ style="font-style: italic;">and</span> backspace to fix typos.<br><br><br></big><big><span
+ style="text-decoration: underline;"><a name="recall"></a>Command recall<br><br></span>It may sound weird but command recall is one of just two things<br>I like mud clients for (the other is sound triggers). Now that<br>DS has it integrated server side, I don't even bother with <br>clients much.<br><br>Basically charmode command recall lets you use your up and down<br>keyboard arrows to summon entries in your command history<br>that you can then issue again or modify.<br><br><br><span
+ style="text-decoration: underline;"><a name="context_recall"></a>Context sensitive command recall<br><br></span>If, for example, you typed:<br><br><span
+ style="font-weight: bold;">give a red ball to the troll</span><br><br>a few commands ago, and now you want to give it<br>another one, you can type:<br><br><span
+ style="font-weight: bold;">give a</span><br><br>and then hit your uparrow key. The command recall system will now<br>cycle through commands in your history that started with<br>the string "give a".<br><br><br><span
+ style="text-decoration: underline;"><a name="tab"></a>Tab completion</span><br><br>I've wanted this in my mud for a long time, and charmode finally<br>allows me to do it. The most obvious kind of tab completion is<br>command completion. For example, you can type:<br><br><span
+ style="font-weight: bold;">inv</span>&lt;Tab&gt;<br><br>(Where &lt;Tab&gt; means you hit the Tab key)<br><br>And the mud will present you with this:<br><br>({ "inventory", "invis" })<br><br>To let you know which commands you might mean. Type one more<br>matching letter:<br><br><span
+ style="font-weight: bold;">inve</span>&lt;Tab&gt;<br><br>And the mud will complete the "inventory" typing for you.<br><br>DS charmode also does filename completion. If you want to<br>see the contents of the welcome file, for example, you can:<br><br><span
+ style="font-weight: bold;">cd /ne</span>&lt;Tab&gt;<br><br>Which will auto complete to<br><br><span
+ style="font-weight: bold;">cd /news/</span><br><br>Hit &lt;Enter&gt;, then<br><br><span
+ style="font-weight: bold;">more wel</span></big><big>&lt;Tab&gt;</big><big><span
+ style="font-weight: bold;"></span><br><br>Which will auto complete to <br><br><span
+ style="font-weight: bold;">more /news/welcome</span><br><br>Or, more typically, you'd:<br><br><span
+ style="font-weight: bold;">more /n</span>&lt;Tab&gt;<span
+ style="font-weight: bold;">we</span>&lt;Tab&gt;<br><br><br>DS charmode also does object name completion, so if you're<br>in a room with a zyqxuwy, you can type:<br><br><span
+ style="font-weight: bold;">dest zy</span>&lt;Tab&gt;<br><br>Note that object name completion only works for creators,<br>since giving this to players could result in trivial <br>revelation of otherwise concealed information.<br><br><br><span
+ style="text-decoration: underline;"><a name="ced"></a>The character mode editor, "ced"</span><br><br>One of the favorite pet peeves of LP wizards for years has<br>been the difficulty in getting used to the standard in-game<br>editor, <span
+ style="font-weight: bold;">ed</span>. As a line editor<span
+ style="font-weight: bold;">,</span> ed can feel like ancient <br>arcana and it tends to deter new folks from getting elbow<br>deep in code like we used to do back in the day.<br><br>What ced does is give you an editing interface that uses<br>a more natural-feeling input mode. Rather than, say, issuing<br>the commands: <br><br>1z<br>3c<br><br>To view code and edit line 3, with ced you just use the <br>arrow keys to navigate where you need to go. Rather than<br>replace an entire line just to fix a typo, with ced you<br>just move the cursor to the typo and overwrite it.<br><br>For more details on the use of ced, type:<br><br><span
+ style="font-weight: bold;">help ced</span><br><br><span
+ style="text-decoration: underline;"><a name="ced_note1"></a>IMPORTANT NOTE</span>: ced is not vi, nor modeled on vi. For<br>"simple to learn and use", vi isn't much different than<br>ed for the purposes of a mud, and I saw no advantage to<br>making ced a vi-alike. It would displease people who don't<br>know vi because vi is weird and difficult. It would displease<br>people who <span
+ style="font-weight: bold; font-style: italic;">do</span> know vi because it wouldn't actually <span
+ style="font-weight: bold; font-style: italic;">be</span> vi and<br>therefore it would be wrong in any number of ways for them.<br>Having said that, I like vi and intend to eventually add a<br>vi-ish editor, but don't hold your breath.<br><br><span
+ style="text-decoration: underline;"><a name="ced_note2"></a>IMPORTANT NOTE 2</span>: If you're used to vi, you will wind up<br>eventually hitting &lt;esc&gt; while in ced. This is going to lead<br>to confusion, because now ced is waiting for the rest of your<br>escape sequence. Hit an arrow key a few times until you see<br>the cursor move again.<br><br><span
+ style="text-decoration: underline;"><a name="ced_note3"></a>IMPORTANT NOTE 3</span>: Since ced is still somewhat experimental<br>as of DS 2.10, it is disabled by default. To enable it<br>and try it, type:<br><br><span
+ style="font-weight: bold;">help ced </span>(you should see a warning about disabled stuff)<br
+ style="font-weight: bold;"><span style="font-weight: bold;">mudconfig ced on</span><br
+ style="font-weight: bold;"><span style="font-weight: bold;">userload me<br>charmode on<br
+ style="font-weight: bold;"></span><span style="font-weight: bold;">help ced </span>(warning should be gone)<br><br>You should see these as your control characters:<br>Ctrl-Q -- quit without saving<br>Ctrl-X -- quit and save<br>Ctrl-S -- save<br>Ctrl-I -- enable insert mode<br>Ctrl-O -- enable overstrike mode<br>Ctrl-L -- refresh the page<br>Ctrl-F -- scroll forward one page<br>Ctrl-B -- scroll backward one page<br>Ctrl-D -- delete current line<br>Ctrl-G -- Specify a line to go to<br>Ctrl-/ -- Search for a string<br><br><span
+ style="font-weight: bold;">cd</span><br style="font-weight: bold;"><span
+ style="font-weight: bold;">cp workroom.c wk1.c</span><br
+ style="font-weight: bold;"><span style="font-weight: bold;">ced wk1.c.<br><br></span><a
+ name="ced_note4"></a><span style="text-decoration: underline;">IMPORTANT NOTE 4</span>: Since you're editing inside a mud, you'll <br>eventually get some messages on your screen that you do not want<br>while editing in ced. To clear your screen of such unwanted<br>crud, use the "refresh" command: &lt;Ctrl&gt;-<span
+ style="font-weight: bold;">L</span>. See also: <span
+ style="font-weight: bold;">help codeblock</span><br><br></big><big><br></big><big><span
+ style="font-weight: bold; text-decoration: underline;"><a name="broken"></a></span></big><big><span
+ style="font-weight: bold; text-decoration: underline;">What's broken in it?</span><br><br><br>A few caveats and fixmes:<br><br>- You can use backspace to fix your typos when issuing commands,<br>but side-arrow keys for full "command line editing" aren't yet supported<br>as of DS 2.10.<br><br>- Command recall tends not to include commands issued by add_action().<br>It also can expand your alias to "what the alias was" rather than "what<br>I literally typed" depending on your DS version. These idiosyncrasies<br>can make your command history appear to be out of order at times, and<br>will be made more standard in future releases.<br><br>- Using ".." in tabbed file completion yields non-useful<br>results. This will be fixed in later versions.<br><br>- Copying and pasting large amounts of data into the screen while<br>in charmode will result in a very slow experience for you. This is<br>because the mud is accepting each char one at a time while at the<br>same time performing whatever other vital mud functions are going<br>on that don't include you. This is not actually a "bug" so much as<br>just how it works. If you need to paste large text into the mud<br>through your terminal, don't use charmode to do it.<br><br>- The ced editor doesn't handle wrapping at all. If your lines extend<br>past your screen's width, you'll just have to use your imagination<br>for now.<br><br><br><a
+ name="7"></a><span
+ style="font-weight: bold; text-decoration: underline;">What is chario? Why do my errors keep pointing to it?</span><br><br>Think of LIB_CHARIO as a traffic cop. <br><br>The original design of charmode had all character data being<br>sent to LIB_NMSH for interpretation. This was fine for<br>development and testing, but very soon it became apparent<br>that LIB_NMSH was doing a lot more work than intended. There<br>was also the problem of having nmsh shunt off input to the<br>editor. This setup became unwieldy fairly quickly.<br><br>LIB_CHARIO is the object that identifies which characters<br>the mud has received from the user, if charmode is enabled<br>for that user. Depending on whether the user is editing,<br>chario (character input/output) determines which lib object<br>should receive the input, nmsh or ced. <br><br>If you use charmode, get used to seeing chario and nmsh<br>showing up in your runtime error chain. Even though they<br>themselves may not be the source of the error, the fact that<br>your command went through them means they are part of<br>the function/object stack that caused the error to be<br>generated, and so they'll show up in the error log.<br><br><br></big><big></big><big>&nbsp;</big><big><br></big></pre>
+<big style="font-family: courier new,courier,monospace;">The end.<br>
+<br>
+<a href="/"><small>Dead Souls Homepage</small></a><br>
+</big>
+<br>
+</body>
+</html>

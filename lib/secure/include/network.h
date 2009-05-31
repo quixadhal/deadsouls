@@ -15,7 +15,7 @@
 #define OFFSET_FTP                -1
 #define OFFSET_ECHO               2
 #define OFFSET_FLASH              3
-#define OFFSET_OOB                5
+#define OFFSET_OOB               6
 #define OFFSET_ICP                6
 
 #define PORT_ADMIN                17010

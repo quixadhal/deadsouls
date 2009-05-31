@@ -13,7 +13,7 @@ Souls Creator FAQ</span><br>
 <br>
 Written by Cratylus @ Dead Souls<br>
 <br>
-Updated May 2008.<br>
+Updated May 2009.<br>
 <span style="font-weight: bold; text-decoration: underline;"><br>
 </span>Note: commands are
 displayed in boldface, like this: <span style="font-weight: bold;">ls
@@ -311,9 +311,11 @@ things like Town and race and starting money set for new players?</big></a><br>
 make my NPC respawn sooner than the reset interval?</big></a><br>
 <br>
 <a href="#2.78"><big style="font-family: courier new;">2.78 My
-TalkResponse NPC doesn't work, but it really really should!</big></a><big
- style="font-family: courier new;"><br>
+TalkResponse NPC doesn't work, but it really really should!</big></a><br>
 <br>
+<a href="#2.79"><big style="font-family: courier new;">2.79 How do I
+load an object?</big></a><br>
+<big style="font-family: courier new;"><br>
 </big><big style="font-family: courier new;"><br>
 <span style="font-weight: bold;">Section 3:
 Intermud and channel stuff</span><br>
@@ -521,12 +523,12 @@ channel, like this:<br>
 flux capacitor use verbs or add_actions?</span><br>
 <br>
 To know what local channels are
-available on your<br>
+available to you on your<br>
 mud, type: <span style="font-weight: bold;">lines</span><br>
 <br>
 <br>
 <span style="font-weight: bold;">2)</span> Your mud is probably on the
-intermud3
+Intermud-3
 network. If<br>
 your administrator has not
 restricted intermud channels,<br>
@@ -770,8 +772,12 @@ ds channel is too spammy. It's distracting me.</span><br>
 Enable or disable a channel by
 typing just its name. Like:<br>
 <br>
-<span style="font-weight: bold;">ds</span><br>
+<span style="font-weight: bold;">ds<br>
 <br>
+</span>or:<span style="font-weight: bold;"><br>
+<br>
+chan block ds<br>
+</span><br>
 <br style="font-weight: bold; text-decoration: underline;">
 <span style="font-weight: bold; text-decoration: underline;"></span><a
  name="1.3"></a><span
@@ -849,7 +855,8 @@ tutor</a><a href="http://dead-souls.net/editor.html">ial</a>. It should
 ease the pain a little.<br>
 <br>
 If you're using a relatively recent version of Dead Souls, you<br>
-can avoid some of the pain of the ed.c line editor by enabling "CreWeb".<br>
+can avoid some of the pain of the <span style="font-weight: bold;">ed</span>
+line editor by enabling "CreWeb".<br>
 <br>
 CreWeb is a web-based application that can run from the built-in<br>
 Dead Souls webserver, allowing you to edit and upload files<br>
@@ -863,6 +870,11 @@ For screenshots:<br>
 <a href="http://lpmuds.net/homedir.jpg">Your home directory</a><br>
 <br>
 <a href="http://lpmuds.net/editing.jpg">Editing a file</a><br>
+<br>
+<br>
+If you use a character-mode compliant telnet client, you might<br>
+also avail yorself of <a
+ href="http://dead-souls.net/ds-charmode-faq.html#ced">ced</a>.<br>
 <br>
 <br>
 <br>
@@ -1230,8 +1242,7 @@ hosed up.<br>
  style="font-weight: bold; text-decoration: underline;">What
 are the known bugs and problems in Dead Souls?</span><br>
 <br>
-Please see the <a href="http://dead-souls.net/issues.html">Known
-Issues page</a>.<br>
+I don't remember.<br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"><a
@@ -1281,8 +1292,6 @@ This is typically the result of your columns screen <br>
 setting being very large. Type:<br>
 <br>
 <span style="font-weight: bold;">screen 80 24</span><br>
-<br>
-This is fixed in Dead Souls 2.5a18 and above.<br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"><a
@@ -1600,6 +1609,8 @@ the same everywhere.<br>
 do I turn the integer 42 into the string "forty-two"?</span><br>
 <br>
 cardinal(42)<br>
+<br>
+There is no function to do the reverse.<br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"></span><a
@@ -2137,7 +2148,7 @@ foreach() and filter() efuns.<br>
 should I do or not do in my code?</span><br>
 <br>
 1) Avoid using call_out() as much
-as humanly possible.<br>
+as possible.<br>
 Use heart_beat() to time things
 instead.<br>
 <br>
@@ -2160,9 +2171,7 @@ and harder to screw up.<br>
 economical than if()<br>
 for multiple evaluations.<br>
 <br>
-6) Don't use callouts.<br>
-<br>
-7) Don't use add_action for
+6) Don't use add_action for
 something that already<br>
 has a verb. There is no point in
 making an add_action<br>
@@ -2173,9 +2182,7 @@ behave the way<br>
 "throw" does everywhere else on
 the mud.<br>
 <br>
-8) Callouts are bad, mkay?<br>
-<br>
-9) Don't code delays by using
+7) Don't code delays by using
 loops. This affects the<br>
 whole mud. If an action is to be
 delayed, use heart_beat().<br>
@@ -2197,12 +2204,12 @@ This DVD movie is in NTSC format,
 so my TV can handle it, right?<br>
 <br>
 The terms used roughly
-correspond to the same<br>
-general thing, but the assumption
-here is that there is a<br>
-"stock" LPC, and you can
-transplant code from one LP mud to <br>
-another. <br>
+correspond to the same general thing, <br>
+but the assumption
+here is that there is a "stock" LPC, and you <br>
+can
+transplant code from one LP mud to another. <br>
+<br>
 Sometimes these transplants can
 be done. Oftentimes not.<br>
 This is because LPC has been
@@ -2238,6 +2245,7 @@ make sense. And each coder<br>
 could probably visit the other
 mud and work with a very<br>
 small learning curve.<br>
+<br>
 But the code itself would
 probably require substantial<br>
 retooling to be interchanged.<br>
@@ -2250,10 +2258,11 @@ there a way to change the "default exit" room messages?</span><br>
 A lot of folks don't like having
 default exits displayed at the<br>
 top. The muds they're used to display them at the bottom of the room<br>
-descriptions, and that's how they want their DS mud to look.<br>
+descriptions, and that's how they want their DS mud to look. They<br>
+don't like the obvious exits up top.<br>
 <br>
-In Dead Souls 2.4.1 this is no longer the default behavior.<br>
-Now obvious exits are displayed at the bottom, in a <br>
+In the current version of Dead Souls this is no longer the default <br>
+behavior. Now obvious exits are displayed at the bottom, in a <br>
 more "natural" style closer to the way LPmuds have historically<br>
 done it.<br>
 <br>
@@ -2411,7 +2420,7 @@ CLAN_D, and more<br>
 sophisticated error handling to
 prevent character<br>
 file corruption. For now (version
-2.0 of Dead Souls),<br>
+2.x of Dead Souls),<br>
 just avoid using it.<br>
 <br>
 <br>
@@ -2459,24 +2468,6 @@ or make your character<br>
 a fighter with: <span style="font-weight: bold;">call
 me-&gt;ChangeClass("fighter")</span><br>
 <br>
-Please note that <a href="#4.21">carrying anything at all
-tends to <br>
-seriously hamper your ability to fight</a>. Drop anything<br>
-you're not carrying or wielding,
-or put it in a backpack.<br>
-<br>
-Even slips of paper and a bag of feathers. Anything at all<br>
-in your possession will make it super hard to fight.<br>
-<br>
-An admin can change this so that encumbrance has no effect<br>
-at all. On ds2.1a15 and above, this is done with the command:<br>
-<br>
-<span style="font-weight: bold;">mudconfig encumbrance off<br>
-<br>
-</span>and a reboot. On Dead Souls 2.4.1 and above, combat encumbrance
-is<br>
-disabled by default.<br>
-<span style="font-weight: bold;"></span><br>
 <br>
 <a name="2.43"></a><span
  style="font-weight: bold; text-decoration: underline;">My
@@ -2515,12 +2506,15 @@ look like this:<br>
 <span style="font-weight: bold;">int
 CanReceive(object ob){<br>
 <br style="font-weight: bold;">
-&lt;if blah return 1&gt;</span><br style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; &lt;if blah return 1&gt;</span><br
+ style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp;
 <span style="font-weight: bold;">&lt;if bleh
 return 0&gt;</span><br style="font-weight: bold;">
-<span style="font-weight: bold;">&lt;etc and so
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">&lt;etc and so
 on&gt;</span><br style="font-weight: bold;">
 <br style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp;
 <span style="font-weight: bold;">return
 ::CanReceive();</span><br style="font-weight: bold;">
 <span style="font-weight: bold;">}</span><br>
@@ -2623,7 +2617,7 @@ and SetBodyComposition() is absent, it may not leave<br>
 any remains at all upon death, unless it has a composition<br>
 set by default in /lib/races.c <br>
 <br>
-Dead Souls alpha libs have the following additional racial options:<br>
+There are also the following additional racial options:<br>
 </big>
 <small> </small><small> </small><small> </small><small> </small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small><small></small>
 <table style="width: 100%; text-align: left; font-family: courier new;"
@@ -3081,6 +3075,14 @@ the action is triggered.<br>
  style="font-weight: bold; text-decoration: underline;">I
 need a list of all the functions available.</span><br>
 <br>
+Type the following:<br>
+<br>
+<span style="font-weight: bold;">efuns</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">lfuns </span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">sefuns</span><br>
+<br>
 If you read the section on efuns
 and sefuns, you have an<br>
 idea of what they are. They are
@@ -3359,14 +3361,18 @@ key rules to keep in mind when <br>
 doing this:<br>
 </big>
 <ol style="font-family: courier new;">
-  <small> </small><big> </big> <li><big>Always inherit
+  <small> </small><big> </big>
+  <li><big>Always inherit
 LIB_BASE_DUMMY first.</big></li>
-  <small> </small><big> </big> <li><big>Always invoke
+  <small> </small><big> </big>
+  <li><big>Always invoke
 dummy::create()
 before other ::creates()'s.</big></li>
-  <small> </small><big> </big> <li><big>Make sure you have CanGet()
+  <small> </small><big> </big>
+  <li><big>Make sure you have CanGet()
 return an error string.</big></li>
-  <small> </small><big> </big> <li><big>Make sure the item is
+  <small> </small><big> </big>
+  <li><big>Make sure the item is
 SetInvis(1).</big></li>
 </ol>
 <ol style="font-family: courier new;">
@@ -3959,7 +3965,22 @@ To make an NPC understand all languages, add this to his create() apply:<br>
 <br>
 SetPolyglot(1);<br>
 <br>
+</big><big style="font-family: courier new;"><br>
 <br>
+</big><big style="font-family: courier new;"><a name="2.79"></a><span
+ style="font-weight: bold; text-decoration: underline;">How do I load
+an object?</span><br>
+<br>
+Some LP libs use the command "load" to read an object's code into<br>
+memory. On Dead Souls, "load" is a verb used to do things like<br>
+put bullets in a gun.<br>
+<br>
+The command to have the mud read an object's code into memory is
+"update":<br>
+<br>
+<span style="font-weight: bold;">update /path/to/object<br>
+<br>
+</span><br>
 </big>
 <hr style="width: 100%; height: 2px; font-family: courier new;"><big
  style="font-family: courier new;">Section 3: Intermud and channel stuff<br>
@@ -4044,23 +4065,20 @@ If you talk on <span style="color: rgb(102, 102, 0);">&lt;intercre&gt;</span>,
 be polite, and use the same rules<br>
 of common sense and intelligent
 questioning that you need<br>
-to follow for <span style="color: rgb(0, 0, 153);">&lt;ds&gt;</span>. <span
- style="color: rgb(102, 102, 0);">&lt;intercre&gt;</span> is for code
+to follow for <span style="color: rgb(255, 255, 0); font-weight: bold;">&lt;ds&gt;</span>.
+<span style="color: rgb(102, 102, 0);">&lt;intercre&gt;</span> is for
+code
 and technical<br>
 questions <span style="font-weight: bold;">ONLY</span>. Do not ever
 spam it or use it for
 chatting.<br>
 <br>
 I strongly discourage you from
-talking on <span style="color: rgb(153, 51, 153);">&lt;intergossip&gt;</span>.
+talking on <span style="color: rgb(51, 204, 0);">&lt;intergossip&gt;</span>.
 I<br>
 assure you nothing good will come
-of it. This warning only<br>
-applies to the old intermud.org
-router, known as *gjs. The<br>
-intermud channel on the new
-*yatmim router is much<br>
-friendlier to newbies.<br>
+of it. <br>
+<br>
 <br>
 <a name="3.5"></a><span
  style="text-decoration: underline; font-weight: bold;">How
@@ -4103,7 +4121,7 @@ hist. For example:<br>
 <span style="font-weight: bold;">hist ds</span><br>
 <br>
 To see older stuff, look in
-/log/chan<br>
+/log/chan/archive<br>
 <br>
 <br>
 <span style="font-weight: bold;"><span style="color: rgb(204, 0, 0);"></span></span><span
@@ -4132,10 +4150,10 @@ do this. I'd rather you expose <span style="color: rgb(0, 0, 153);">&lt;dchat&gt
 to your boredom <br>
 than <span style="color: rgb(153, 153, 0);">&lt;ds&gt;</span>. <br>
 <br>
-You can also try out <span style="color: rgb(0, 0, 153);">&lt;intergossip&gt;</span>.
+You can also try out <span style="color: rgb(51, 204, 0);">&lt;intergossip&gt;</span>.
 Ask your admin<br>
 for details on that, as well. Be warned that <span
- style="color: rgb(0, 0, 153);">&lt;intergossip&gt;</span><br>
+ style="color: rgb(51, 204, 0);">&lt;intergossip&gt;</span><br>
 can be expected to contain extremely coarse language and<br>
 attitudes. You're really much better off not going there.<br>
 <br>
@@ -4159,6 +4177,7 @@ access. In extreme cases,<br>
 your mud may find itself banned
 from the channel in <br>
 question.<br>
+<br>
 I can only appeal to your sense
 of fair play.<br>
 Spamming hurts people who have
@@ -4279,20 +4298,14 @@ post your question on the <a href="http://lpmuds.net/forum/">forum</a>.<br>
  style="font-weight: bold; text-decoration: underline;">How come people
 on IMC2 can't rwho me?</span><br>
 <br>
-Dead Souls 2.5a16 and above include Shadyman@QuantumScape's<br>
-updates to Tim@TimMUD's IMC2 client. It works great for<br>
-connecting and chatting on IMC2 channels.<br>
-<br>
-There may be a few kinks remaining with the other functions<br>
-of IMC2 clients. This is something I hope to improve on<br>
-an ongoing basis.<br>
+This is fixed in the current stable version.<br>
 <br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;"><a
  name="3.14"></a>How do I find someone on Intermud-3?</span><br>
 <br>
 Type:<br>
-<span style="font-weight: bold;">locate joe</span><br>
+<span style="font-weight: bold;">i3locate joe</span><br>
 </big><big style="font-family: courier new;"><br>
 <br>
 </big>
@@ -4750,17 +4763,7 @@ reference.<br>
 <br>
 It means you don't have read
 access to that<br>
-file or directory. I've someone
-make a stink about<br>
-how a file they can't read
-shouldn't be visible to them<br>
-or some such thing. However, I
-think he was just<br>
-being difficult. Some files you
-can't read, even<br>
-though you have access to the
-directory they're in.<br>
-That's the story.<br>
+file or directory. <br>
 <br>
 <br>
 <a name="4.20"></a><span

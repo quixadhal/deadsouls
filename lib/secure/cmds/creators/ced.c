@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <commands.h>
 #ifndef CED_DISABLED 
 #define CED_DISABLED 1
 #endif
@@ -34,21 +35,21 @@ mixed cmd(string args) {
         message("editor", args + ", new file, starting in input mode.\n",
                 this_player());
     else message("editor", args + ", " + x + " bytes\n", this_player());
-    //this_player()->eventEdit(args, 1);
+    CMD_BK->cmd(args);
     this_player()->SetCedmode(1, args);
     return 1;
 }
 
 void help() {
     string ret = "";
-    ret += "Syntax: sed FILE\n\n";
-    ret += "This command starts a screen-mode editing session on the "+
+    ret += "Syntax: ced FILE\n\n";
+    ret += "This command starts a character-mode editing session on the "+
         "specified file. Note that without charmode enabled, this "+
         "will not work. Special commands are issued by pressing the "+
         "\"Control\" key and another key at the same time. For "+
         "example, to quit without saving, you press and hold "+
         "the control key, then the 'q' key. This is known as Ctrl-Q. "+
-        "The special commands for sed are:\n\n"+
+        "The special commands for ced are:\n\n"+
         "Ctrl-Q -- quit without saving\n"+
 #if CED_DISABLED
         "Ctrl-X -- %^RED%^DISABLED FUNCTION%^RESET%^\n"+
@@ -64,10 +65,10 @@ void help() {
         "Ctrl-B -- scroll backward one page\n"+
         "Ctrl-D -- delete current line\n"+
         "Ctrl-G -- Specify a line to go to\n"+
+        "Ctrl-/ -- Search for a string\n"+
         "\nTo navigate in the screen, use the arrow keys on your keyboard. "+
-        "Note that sed is extremely basic and experimental. Do not "+
-        "expect things like search and replace to work."+
-        "\nSee also: ed, charmode"+
+        "Note that ced is extremely basic and experimental. "+
+        "\nSee also: ed, charmode, bk, restore, env"+
 #if CED_DISABLED
         "\n\n Please note that due to its alpha status, saving files in "+
         "ced is disabled for now."+

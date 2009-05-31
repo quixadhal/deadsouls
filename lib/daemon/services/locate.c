@@ -28,7 +28,7 @@ void eventReceiveLocateRequest(mixed array packet) {
     string status;
     int idl = 0;
     object ob;
-
+    PING_D->SetOK();
     if( file_name(previous_object()) != INTERMUD_D ) return;
     //tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has issued a locate request for %^BOLD%^YELLOW%^"+capitalize(packet[6])+".%^RESET%^\"");
     tn("Locate request received: "+identify(packet),"white");
@@ -54,7 +54,7 @@ void eventReceiveLocateReply(mixed array packet) {
     object ob;
     string m;
     int idl;
-
+    PING_D->SetOK();
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( !packet[5] || !(ob = find_player(convert_name(eventLookupLocateUser(packet[5])))) ){
         return;

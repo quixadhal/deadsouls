@@ -11,12 +11,10 @@ int CanReceive(object ob){
     int ret, level;
     level = ob->GetLevel();
     if((creatorp(ob) && !archp(ob)) || (userp(ob) && level > 20)){
-        //tc("denying: "+identify(ob));
         write("Sorry. This area is for normal players.");
         return 0;
     }
     ret = room::CanReceive(ob);
-    //if(this_player() && this_player() != ob) ret = 0;
     if(ret){
         object *inv = deep_inventory(ob);
         foreach(object element in inv){
@@ -31,7 +29,6 @@ int CanReceive(object ob){
                 element->eventMove(ROOM_FURNACE);
             }
         }
-        //ob->ChangeClass(ob->GetClass());
     }
     return ret;    
 }

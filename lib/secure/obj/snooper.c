@@ -83,8 +83,6 @@ int eventDestruct(){
 }
 
 string GetSnooped(){
-    //debug("I am snooping ",guy,"green");
     if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE", "SNOOP_D" }))) ) return "";
     else return guy;
-    //return guy;
 }

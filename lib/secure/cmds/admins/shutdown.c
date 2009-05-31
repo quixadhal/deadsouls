@@ -36,7 +36,6 @@ int cmd(string str) {
     }
     if(str == "cancel"){
         int cancel = EVENTS_D->eventCancelShutdown();
-        //tc("cancel: "+cancel);
         if(cancel == -1){
             write("There was no shutdown in progress.");
         }

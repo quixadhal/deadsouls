@@ -25,7 +25,6 @@ mixed cmd(string str){
     }
     i = sscanf(str, "%s %s", cmd, args);
     if(!i) cmd = str;
-    //tc("str: "+str+", cmd: "+cmd+", args: "+args);
     if(cmd == "create"){
         i = sscanf(args,"%s %s %d", name, addy, port);
         if(i != 3) i = sscanf(args,"%s %d", name, port);
@@ -73,7 +72,6 @@ mixed cmd(string str){
             ret = "The instance daemon is aware of no configured instances.";
         }
         write(ret);   
-        //tc("instances: "+identify(INSTANCES_D->GetInstData()));
         return 1;
     }
 }

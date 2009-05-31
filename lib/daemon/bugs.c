@@ -24,7 +24,7 @@ static void create() {
 
     daemon::create();
     if(unguarded( (: file_exists(SaveFile) :) ) ){
-        unguarded( (: RestoreObject, SaveFile :));
+        RestoreObject(SaveFile);
     }
     if( NextID < 1 || !Bugs ) {
         NextID = 1;
@@ -40,7 +40,7 @@ static void create() {
                 map_delete(Bugs, bug_id);
         }
     }
-    unguarded( (: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
 }
 
 int eventAssign(int bug, string who) {
@@ -49,14 +49,14 @@ int eventAssign(int bug, string who) {
     else who = capitalize(who);
     Bugs[bug]["assigned"] = who;
     Bugs[bug]["date assigned"] = time();
-    return unguarded( (: SaveObject, SaveFile :) );
+    return SaveObject(SaveFile);
 }
 
 int eventComplete(int bug, string resolution) {
     if( !Bugs[bug] ) return 0;
     Bugs[bug]["date fixed"] = time();
     Bugs[bug]["resolution"] = resolution;
-    if( unguarded( (: SaveObject, SaveFile :) ) ) return 1;
+    if( SaveObject(SaveFile) ) return 1;
     else {
         Bugs[bug]["date fixed"] = 0;
         Bugs[bug]["resolution"] = 0;
@@ -83,7 +83,7 @@ int eventReport(string who, string type, string bug, string data) {
     x = NextID++;
     Bugs[x] = ([ "who" : who, "type" : type, "bug" : bug, "data" : data, 
             "assigned" : 0, "date fixed" : 0, "resolution" : 0 ]);
-    if( unguarded( (: SaveObject, SaveFile :) ) ) return x;
+    if( SaveObject(SaveFile) ) return x;
     else {
         map_delete(Bugs, x);
         return 0;
@@ -109,7 +109,7 @@ string AddComment(int bug, string comment) {
     if( !Bugs[bug]["data"] ) Bugs[bug]["data"] = "";
     tmp = Bugs[bug]["data"];
     Bugs[bug]["data"] += "\n" + comment;
-    if( !unguarded( (: SaveObject, SaveFile :) ) ) {
+    if( !SaveObject(SaveFile) ) {
         Bugs[bug]["data"] = tmp;
         return 0;
     }

@@ -39,45 +39,50 @@ string GetGagged(){
 mixed cmd(string args) {
     object player = this_player();
     mixed replee = player->GetProperty("reply");
-    write("Screen: \t\t"+identify(this_player()->GetScreen()));
-    write("Terminal: \t\t"+this_player()->GetTerminal());
-    write("Brief mode: \t\t"+ ( (this_player()->GetBriefMode()) ? "on" : "off" ));
-    write("Channel message colors: "+ ( (this_player()->GetNoChanColors()) ? "off" : "on" ));
-    write("Playerkiller mode: \t"+ ( (this_player()->GetPK()) ? "on" : "off" ));
-    write("Mute mode: \t\t"+ GetMuted() );
-    write("Gag mode: \t\t"+ GetGagged() );
-    write("Wimpy mode: \t\t"+ ( ((int)this_player()->GetWimpy()) ? "on" : "off" ));
+    string ret = "";
+    string *tmp;
+    ret += "Screen: \t\t"+identify(this_player()->GetScreen())+"\n";
+    ret += "Terminal: \t\t"+this_player()->GetTerminal()+"\n";
+    ret += "Brief mode: \t\t"+ ( (this_player()->GetBriefMode()) ? "on" : "off" )+"\n";
+    ret += "Channel message colors: "+ ( (this_player()->GetNoChanColors()) ? "off" : "on" )+"\n";
+    ret += "Playerkiller mode: \t"+ ( (this_player()->GetPK()) ? "on" : "off" )+"\n";
+    ret += "Mute mode: \t\t"+ GetMuted()+" \n";
+    ret += "Gag mode: \t\t"+ GetGagged()+" \n";
+    ret += "Wimpy mode: \t\t"+ ( ((int)this_player()->GetWimpy()) ? "on" : "off" )+"\n";
 #if MINIMAP
-    write("Minimap mode: \t\t"+ ( this_player()->GetProperty("minimapping") ? "on" : "off" ));
+    ret += "Minimap mode: \t\t"+ ( this_player()->GetProperty("minimapping") ? "on" : "off" )+"\n";
 #endif
-    write("Annoyblock: \t\t"+ ( (this_player()->GetAnnoyblock()) ? "on" : "off" ));
-    write("Reprompt mode: \t\t"+ ( this_player()->GetProperty("reprompt") ? "on" : "off" ));
-    write("Timezone: \t\t"+ ( this_player()->GetProperty("timezone") ? 
-                this_player()->GetProperty("timezone") : "None specified" ));
+    ret += "Annoyblock: \t\t"+ ( (this_player()->GetAnnoyblock()) ? "on" : "off" )+"\n";
+    ret += "Reprompt mode: \t\t"+ ( this_player()->GetProperty("reprompt") ? "on" : "off" )+"\n";
+    ret += "Timezone: \t\t"+ ( this_player()->GetProperty("timezone") ? 
+                this_player()->GetProperty("timezone") : "None specified" )+"\n";
 #ifdef __GET_CHAR_IS_BUFFERED__
-    write("Charmode: \t\t"+ 
-            //( (query_charmode(player) > 0) ? "on" : "off" ));
-        ( (player->GetCharmode()) ? "on" : "off" ));
+    ret += "Charmode: \t\t"+ 
+            //( (query_charmode(player) > 0) ? "on" : "off" )+"\n";
+        ( (player->GetCharmode()) ? "on" : "off" )+"\n";
 #endif
-    write("Commandecho: \t\t"+ ( this_player()->GetProperty("commandecho") ? this_player()->GetProperty("commandecho") : "off" ));
+    ret += "Commandecho: \t\t"+ ( this_player()->GetProperty("commandecho") ? this_player()->GetProperty("commandecho") : "off" )+"\n";
 #ifdef __DSLIB__
-    write("Keepalive mode: \t"+ ( this_player()->GetProperty("keepalive") 
-                ? this_player()->GetProperty("keepalive") : "off" ));
+    ret += "Keepalive mode: \t"+ ( this_player()->GetProperty("keepalive") 
+                ? this_player()->GetProperty("keepalive") : "off" )+"\n";
 #endif
 
     if(creatorp(this_player())){ 
-        write("Debug mode: \t\t"+ ( (this_player()->GetProperty("debug")) ? "on" : "off" ));
-        write("Godmode: \t\t"+ ( (this_player()->GetGodMode()) ? "on" : "off" ));
-        write("Wizvision: \t\t"+ ( (this_player()->GetWizVision()) ? "on" : "off" ));
+        ret += "Debug mode: \t\t"+ ( (this_player()->GetProperty("debug")) ? "on" : "off" )+"\n";
+        ret += "Godmode: \t\t"+ ( (this_player()->GetGodMode()) ? "on" : "off" )+"\n";
+        ret += "Wizvision: \t\t"+ ( (this_player()->GetWizVision()) ? "on" : "off" )+"\n";
 #if GRID
-        write("Showgrid: \t\t"+ ( (this_player()->GetVisibleGrid()) ? "on" : "off" ));
-        write("Wizmap mode: \t\t"+ ( this_player()->GetProperty("wizmapping") ? "on" : "off" ));
-        write("Noclip mode: \t\t"+ ( this_player()->GetProperty("noclip") ? "on" : "off" ));
+        ret += "Showgrid: \t\t"+ ( (this_player()->GetVisibleGrid()) ? "on" : "off" )+"\n";
+        ret += "Wizmap mode: \t\t"+ ( this_player()->GetProperty("wizmapping") ? "on" : "off" )+"\n";
+        ret += "Noclip mode: \t\t"+ ( this_player()->GetProperty("noclip") ? "on" : "off" )+"\n";
 #endif
     }
     if(replee){
-         write("Reply target: \t\t"+replee+"\n");
+         ret += "Reply target: \t\t"+replee+"\n";
     }
+    tmp = sort_array(explode(ret, "\n"),1);
+    ret = implode(tmp, "\n");
+    write(ret);
     return 1;
 }
 

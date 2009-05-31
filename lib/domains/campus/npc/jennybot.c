@@ -153,7 +153,7 @@ int refreshlist(){
         mooch = 0;
     }
     watchlist = distinct_array(watchlist);
-    unguarded( (: SaveObject(save_file,1) :) );
+    SaveObject(save_file,1);
     return 1;
 }
 

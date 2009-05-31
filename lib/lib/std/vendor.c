@@ -401,7 +401,6 @@ mixed eventAsk(object who, string str){
     str = translate(str, prof);
     prof = this_object()->GetLanguageLevel(lang);
     str = translate(str, prof);
-    //debug("vendor eventAsk("+identify(who)+", "+str+")");
 
     if( !str || str == "" ){
         eventForce("say what do you want from me?");
@@ -494,8 +493,6 @@ mixed eventSell(object who, mixed what){
             return 1;
         }
     }
-    //tc("ob: "+identify(ob));
-    //tc("ob location: "+identify(environment(ob)));
     cost=to_int(ob->GetBaseCost(GetLocalCurrency()));
     if(!cost || cost < 0){
         cost = 0; 

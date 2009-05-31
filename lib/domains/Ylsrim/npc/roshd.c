@@ -25,7 +25,7 @@ int CheckVisitor(object who){
 
 static void create() {
     trainer::create();
-    unguarded( (: RestoreObject(save_file) :) );
+    RestoreObject(save_file);
     if(!ok_join) ok_join = ({});
     SetKeyName("roshd burlyneck");
     SetId("roshd", "roshd burlyneck");
@@ -125,7 +125,7 @@ mixed EnableJoin(object player, object thing){
     if(member_array(keyname, ok_join) == -1){
         name = lower_case(player->GetName());
         ok_join += ({ keyname });
-        unguarded( (: SaveObject(save_file,1) :) );
+        SaveObject(save_file,1);
         if(name != keyname) keyname = capitalize(name);
         if(sizeof(present_file(quest_object, this_object(), 1)) > 1){
             eventForce("say Nice. I'm all set for now, though, so "+

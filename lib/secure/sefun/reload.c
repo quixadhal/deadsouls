@@ -33,7 +33,7 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
         ob = find_object(filename);
         if(!ob) ob = load_object(filename);
     }
-    if(!ob || !objectp(ob)) {
+    if((!ob || !objectp(ob)) && !quiet) {
         write("No such object.");      
         return 0;
     }
@@ -51,7 +51,9 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
     if(!grepp(unguarded( (: read_file(filename) :) ),"void init()" || !grepp(unguarded( (: read_file(filename) :) ),"::init()"))) { 
         if(clonep(ob) && !inherits(LIB_ROOM,ob)){
             if(!strsrch(filename,"/lib/") || ob->isDummy() || inherits(LIB_DAEMON,ob)) true(); 
-            else write("This object lacks a working init function. Please run initfix on it as soon as possible.");
+            else if(!quiet)
+                write("This object lacks a working init function. "
+                "Please run initfix on it as soon as possible.");
         }
     }
     if(inherits(LIB_ROOM,ob)){
@@ -63,7 +65,7 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
             }
         }
         unguarded( (: mx = catch(load_object(CMD_UPDATE)->cmd(args + filename)) :) );
-        if(mx) {
+        if(mx && !quiet) {
             write("There appears to be a problem updating one or more files.");
             write("Reload failed.");
         }
@@ -82,7 +84,7 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
         return 1;
     }
     mx = unguarded( (: load_object(CMD_UPDATE)->cmd(args + " "+ filename) :) );
-    if(!mx || !intp(mx) || mx == 0) {
+    if((!mx || !intp(mx) || mx == 0) && !quiet) {
         write("There appears to be a problem updating one or more files.");
         write("Reload failed.");
         return 0;

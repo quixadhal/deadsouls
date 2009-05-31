@@ -77,7 +77,7 @@ static private void save_letter() {
 
     x = strlen(__LetterId)-1;
     file = sprintf("%s/%s/%s", DIR_LETTERS,__LetterId[x..x],__LetterId); 
-    unguarded((: SaveObject, file :));
+    SaveObject(file);
 } 
 
 static private int restore_letter(string id) { 
@@ -90,7 +90,7 @@ static private int restore_letter(string id) {
     if(!unguarded((: file_exists, save_file(dir+"/"+id) :))) {
         return 0; 
     }
-    unguarded((: RestoreObject, dir+"/"+id :));
+    RestoreObject(dir+"/"+id);
     __LetterId = id;
     if(__Undeleted) {
         x = sizeof(__Undeleted);

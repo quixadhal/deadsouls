@@ -9,17 +9,12 @@ private static mixed *my_save = ({});
 
 void create(){
     mixed a_save, s_save;
-    //base_storage::create();
     base_armor::create();
     SetSaveRecurse(1);
     a_save = base_armor::GetSave();
     s_save = base_storage::GetSave();
     my_save = distinct_array(a_save + s_save);
-    //tc("a_save: "+identify(a_save));
-    //tc("s_save: "+identify(s_save));
-    //tc("%^B_BLACK%^my_save: "+identify(my_save));
     base_armor::AddSave(my_save);
-    //tc("%^B_BLACK%^base_armor::GetSave(): "+identify(base_armor::GetSave()),"red");
     base_storage::PutCheck();
 }
 

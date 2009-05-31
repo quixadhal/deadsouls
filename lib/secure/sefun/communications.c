@@ -76,13 +76,9 @@ varargs int trr(string str, string col, int mclass){
 
 varargs int debug(mixed msg, string color){
     object *players = filter(users(), (: $1->GetProperty("debug") :) );
-    //string ret = "";
     string prevob = "";
     if(!sizeof(players)) return 0;
     prevob = file_name(previous_object());
-    //if(msg && stringp(msg) && val) ret += msg;
-    //else if(msg && !val) val = msg;
-    //ret += " ";
     if(!color || !sizeof(color)) color = "b_blue%^green";
     foreach(object guy in players){
         tc("%^B_BLACK%^BOLD%^WHITE%^DEBUG: %^RESET%^ " + prevob

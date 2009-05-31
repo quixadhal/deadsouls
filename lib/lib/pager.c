@@ -96,8 +96,6 @@ static int Page(mixed tmpfile){
     mapping file = ([]);
     int waschar = this_object()->GetCharmode();
     foreach(mixed clef, mixed val in tmpfile){
-        //WTF was the point of the following line?
-        //if(sizeof(val) == 1) val = ({});
         if(clef) file += ([ clef : val ]);
     }
     key = "enter";
@@ -137,7 +135,6 @@ static void cmdPage(string str, mapping file){
     string *tmp;
     string cmd, args;
     int fp, x, scrlen;
-    //tc("I am "+identify(this_object())+", cmdPage("+str+", "+identify(file)+")","green");
 
     if( !str || trim(str) == "" ){
         if( file["CurrentLine"] >= (file["Size"]) ){

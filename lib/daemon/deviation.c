@@ -7,15 +7,6 @@ inherit LIB_DAEMON;
 static string SaveFile;
 mapping StatDeviation = ([]);
 
-//fixme is this needed?
-static private void validate() {
-    if( !((int)master()->valid_apply(({ PRIV_ASSIST }))) ){
-        //write(identify(previous_object(-1)));
-        //error("Illegal attempt to modify deviation data");
-        //tc("deviation failed validation");
-    }
-}
-
 static void create() {
     daemon::create();
     SaveFile = save_file(SAVE_DEVIATION);
@@ -23,9 +14,9 @@ static void create() {
     if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
         cp(old_savename(SaveFile), SaveFile);
     }
-    unguarded( (: RestoreObject(SaveFile) :) );
+    RestoreObject(SaveFile);
     if(sizeof(StatDeviation)){
-        unguarded( (: SaveObject(SaveFile) :) );
+        SaveObject(SaveFile);
     }
     call_out("SetDeviations", 10);
 }
@@ -55,18 +46,15 @@ varargs int GetDeviationCost(object who, int xp){
           StatDeviation[key][race]) continue;
         dev = (StatDeviation[key][race] - val["class"]);
         if(dev > 0){
-            //tc("Deviation for "+key+": "+dev);
             subt += (fxp * GetStatDeviation(dev));
-            //tc("subt: "+subt);
         }
     }
-    //tc("subt: "+subt);
     return to_int(subt);
 }
         
 void SetDeviations(){
     mapping tmpmap = STATS_D->GetStats();
     if(sizeof(tmpmap)) StatDeviation = tmpmap;
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
 } 
 

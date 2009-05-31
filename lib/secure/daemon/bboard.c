@@ -35,7 +35,7 @@ static private void save_board() {
             if((__CurrentID[i] < 'a' || __CurrentID[i] > 'z') && __CurrentID[i] != '_')
                 error("Illegal bulletin board id.");
     }
-    unguarded((: SaveObject, save_file(DIR_BOARDS+"/"+__CurrentID) :));
+    SaveObject(save_file(DIR_BOARDS+"/"+__CurrentID));
 }
 
 static private void restore_board() {
@@ -44,7 +44,7 @@ static private void restore_board() {
         __Owner = query_privs(previous_object(0));
         __Posts = ({});
     }
-    else unguarded((: RestoreObject, save_file(DIR_BOARDS+"/"+__CurrentID) :));
+    else RestoreObject(save_file(DIR_BOARDS+"/"+__CurrentID));
 }
 
 static private int valid_access() {

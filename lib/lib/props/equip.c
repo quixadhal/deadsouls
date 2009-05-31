@@ -33,18 +33,15 @@ string array GetSave(){
 }
 
 string array GetWorn(){
-    //tc("Worn: "+identify(Worn));
     return Worn;
 }
 
 static string array SetWorn(string array limbs){
     Worn = limbs;
-    //tc("SetWorn("+identify(limbs)+"): "+identify(Worn));
     return Worn;
 }
 
 mixed CanEquip(object who, string array limbs){
-    //tc("stack: "+get_stack(1),"blue");
     if( GetWorn() ){
         return "#You are already using " + GetDefiniteShort() + ".";
     }
@@ -60,7 +57,6 @@ mixed CanUnequip(object who){
 
 mixed eventEquip(object who, string array limbs){
     mixed tmp = who->eventWear(this_object(), limbs);
-    //tc("eventEquipt tmp: "+identify(tmp));
     if( tmp != 1 ){
         return tmp;
     }

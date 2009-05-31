@@ -165,13 +165,10 @@ static void InputEmail(string str) {
     filec = new_savename(filec);
     filep = new_savename(filep);
 #endif
-    //tc("filec: "+filec);
-    //tc("filep: "+filep);
     err = rename(filep, filec);
     if(err){
         receive("\nAn unfortunate error has ocurred. Mojo meditation: QQ\n");
     }
-    //else tc("new savefile: "+filec);
     receive("\nYou will be disconnected and the MUD will shut down.\n");
     receive("Restart the MUD and login again as the admin character.\n");
     flush_messages();

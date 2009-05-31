@@ -14,11 +14,7 @@ string strip_colours(string str){
             "B_YELLOW":"", "B_BLACK":"", "B_CYAN":"","B_WHITE":"", "B_GREEN":"",
             "B_MAGENTA":"", "STATUS":"", "WINDOW":"", "INITTERM": "", "B_BLUE":"",
             "ENDTERM":""]);
-    //tc("sizeof(str): "+sizeof(str));
-    //tc("strlen(str): "+strlen(str));
     ret = terminal_colour(str, Uncolor);
-    //tc("sizeof(ret): "+sizeof(ret));
-    //tc("strlen(ret): "+strlen(ret));
     return replace_string(ret, "\b", "");
 }
 

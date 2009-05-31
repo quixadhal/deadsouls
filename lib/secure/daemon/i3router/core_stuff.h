@@ -24,7 +24,6 @@ static void create(){
                 alternates += tmp;
             }
             alternates = sort_array(alternates, 1);
-            tc("alternates: "+identify(alternates)); 
         }
     }
     if(!rsock){
@@ -41,9 +40,6 @@ static void create(){
         catch( sserver = load_object(IMC2_SERVER_D) );
     }
     if(!rsock && (!ssock || !sserver)) return;
-    //tc("rsock: "+identify(rsock));
-    //tc("ssock: "+identify(ssock));
-    //tc("sserver: "+identify(sserver));
     SetNoClean(1);
     connected_muds = ([]);
     unguarded( (: RestoreObject, SAVE_ROUTER, 1 :) );
@@ -85,12 +81,15 @@ void heart_beat(){
         this_object()->check_discs();
         SaveObject(SAVE_ROUTER);
     }
-    if(heart_count > 3600){
-        heart_count = 0;
+    if(!(heart_count % 3600)){
         this_object()->clean_ghosts();
         this_object()->clean_chans();
         this_object()->clear_discs();
         this_object()->check_blacklist();
+    }
+    if(heart_count > 90000){
+        heart_count = 0;
+        this_object()->clean_ghosts(1);
     }
 }
 

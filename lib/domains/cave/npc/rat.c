@@ -3,10 +3,8 @@
 inherit LIB_SENTIENT;
 
 int RatEncounter(mixed val){
-    //tc("val: "+identify(val));
     if(!val) return 0;
     if(!objectp(val)) return 0;
-    //tc("race of "+identify(val)+": "+val->GetRace());
     if(val->GetRace() == "orc" || val->GetRace() == "rodent") return 0;
     else {
         if(!this_object()->GetLeader() && sizeof(filter(val->GetFollowers(),

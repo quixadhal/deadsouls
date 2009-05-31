@@ -10,11 +10,11 @@ name : DeadSoulsNew
 # port number to accept users on
 external_port_1 : telnet 6666
 
-# absolute pathname of mudlib
-mudlib directory : /CHANGE/THIS/PATH/lib
+# pathname of mudlib
+mudlib directory : ../lib
 
-# absolute pathname of driver/config dir
-binary directory : /CHANGE/THIS/PATH/bin
+# pathname of driver/config dir
+binary directory : ../bin
 
 # the address server is an external program that lets the mud translate
 # internet names to numbers (and vice versa).  select an unused port.

@@ -49,7 +49,7 @@ static string process_input(string cmd){
 /*  ***************  /lib/command.c command lfuns  ***************  */
 
 static int cmdAll(string args){
-    object old_agent;
+    object old_agent, env;
     mixed err;
     string verb, file;
     string *talks = ({ "say", "whisper", "yell", "shout", "speak" });
@@ -88,8 +88,8 @@ static int cmdAll(string args){
             return 1;
         }
     }
-
-    if(BARE_EXITS && environment()){
+    env = environment();
+    if(BARE_EXITS && env){
         localcmds = ({});
         filter(this_player()->GetCommands(), (: localcmds += ({ $1[0] }) :));
         if(member_array(verb,CMD_D->GetCommands()) == -1 &&
@@ -98,8 +98,10 @@ static int cmdAll(string args){
             string dir;
             if(args) dir = verb + " " + args;
             else dir = verb;
-            if(member_array(dir,environment(this_player())->GetExits()) != -1) verb = "go "+verb;
-            if(member_array(dir,environment(this_player())->GetEnters()) != -1) verb = "enter "+verb;
+            if(member_array(dir, (env->GetExits() || ({}))) != -1) 
+                verb = "go "+verb;
+            if(member_array(dir, (env->GetEnters() || ({}))) != -1) 
+                verb = "enter "+verb;
         }
     }
 
@@ -117,7 +119,7 @@ static int cmdAll(string args){
             if(!line[i]) error("String handling error in old style plural parser.");
             element = line[i];
             if(sscanf(element,"%d.%s",numba,tmp_ret) == 2){
-                if(present(numba+ordinal(numba)+" "+tmp_ret,environment(this_player()))){
+                if(present(numba+ordinal(numba)+" "+tmp_ret,env)){
                     args = replace_string(args,element,numba+ordinal(numba)+" "+tmp_ret);
                     continue;
                 }
@@ -128,7 +130,7 @@ static int cmdAll(string args){
                 e1 = numba+ordinal(numba);
                 e2 = line[i-1];
                 o1 = present(e2+" "+numba,this_player());
-                if(!o1) o1 = present(e2+" "+numba,environment(this_player()));
+                if(!o1) o1 = present(e2+" "+numba,env);
                 if(o1){
                     tmp_ret = e1+" "+e2;
                     args = replace_string(args,e2+" "+numba,tmp_ret);

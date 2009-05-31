@@ -71,7 +71,6 @@ void heart_beat(){
     if(!clonep(this_object())) return;
     if(name && !owner){
         if(!(owner = unguarded( (: find_player(name) :) ))){
-            //tc("destructing "+identify(this_object()));
             this_object()->eventDestruct();
         }
     }
@@ -157,36 +156,23 @@ int query_answer(){
 }
 
 int do_tell(string wut){
-    //tc("wut: "+wut);
     owner->eventForce(wut);
     return 1;
 }
 
 int get_message(string str){
     object prev = previous_object();
-    //tc(identify(previous_object())+" calls "+identify(this_object())+
-    //"->get_messsage("+str+")");
     if(!prev || 
             (base_name(prev) != CMD_TELL && base_name(prev) != SERVICES_D)){ 
-        //tc("LOLOLOLOL!","red");
         return 0;
     }
     cratty="";
     if(forwarding && forwardee){
         string localtemp;
-        //debug("forwardee: "+forwardee+", owner: "+identify(owner));
         cratty += "(forwarded to "+forwardee+") ";
         localtemp = "tell "+forwardee+" "+str;
         tempy = replace_string(localtemp,"tells you","");
-        //tc("tempy: "+tempy);
         unguarded( (: do_tell, tempy :) );
-        //unguarded( (: owner->eventForce(tempy) :));
-        //owner->eventForce(tempy);
-        //unguarded( (: owner->eventForce("tell "+forwardee+" "+
-        //"(FORWARDED) "+tempy) :) );
-        //unguarded( (: owner->eventDescribeEnvironment() :) );
-        //unguarded( (: owner->eventForce("smile") :) );
-        //owner->eventForce("tell "+forwardee+" "+"(FORWARDED) "+tempy);
     }
     tempy = 0;
     cratty += str;
@@ -212,14 +198,9 @@ static int final(){
     if(!blocked){
         message("info",final+"\n", environment(this_object()));
     }
-    if(short){
-        //message("info",a1+" telled to you.", environment(this_object()));
-    }
     if(logged){
         unguarded( (: this_object()->log_it(tempy) :) );
     }
-    //tc("cratty: "+cratty,"green");
-    //tc("tempy: "+tempy,"green");
     cratty = 0;
     tempy = 0;
     return 1;
@@ -246,7 +227,6 @@ int get_ann(){
             "answer your tell right now. Your message has been recorded "+
             "and "+nominative(owner)+" will get back to you as soon as possible.";
     }
-    //tc("announce: "+announce,"blue");
     return 1;
 }
 

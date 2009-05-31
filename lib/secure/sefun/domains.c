@@ -43,7 +43,6 @@ varargs string domain(mixed val, int path) {
     }
     nom = (objectp(val) ? file_name(val) : (string)val);
     if((hits = (sscanf(nom, DOMAINS_DIRS+"/%s/%*s", tmp)))){
-        //tc("5: "+tmp+" hits: "+hits);
         if(path) return DOMAINS_DIRS+"/"+tmp;
         return tmp;
     }
@@ -51,13 +50,11 @@ varargs string domain(mixed val, int path) {
     if((hits = sscanf(nom, REALMS_DIRS+"/%s/%s/%*s", foo, tmp)) > 1 &&
             unguarded( (: directory_exists(path_prefix(gnom)) :)) ){
         string ret = foo+"/"+tmp;
-        //tc("6: "+tmp+" hits: "+hits);
         if(path) return REALMS_DIRS+"/"+ret;
         return ret;
     }
     if((hits = sscanf(nom, ESTATES_DIRS+"/%s/%s/area/%*s", foo, tmp)) > 1 &&
             unguarded( (: directory_exists(path_prefix(gnom)) :) )){
-        //tc("7: "+tmp+" hits: "+hits);
         if(path) return ESTATES_DIRS+"/"+foo+"/"+tmp+"/area";
         return tmp;
     }

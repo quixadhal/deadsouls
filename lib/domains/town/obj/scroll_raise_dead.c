@@ -99,6 +99,9 @@ varargs mixed eventRead(object reader, mixed str){
     }
     npc->SetPosition(POSITION_LYING);
     npc->eventMove(environment(this_player()));
+    npc->DisableActions(1);
+    npc->SetUndead(1);
+    npc->SetUndeadType("zombie");
     ob->eventMove(ROOM_FURNACE);
     tell_room(environment(this_player()),"The scroll disintegrates into dust.");
     zombie->eventShadow(npc);

@@ -143,9 +143,7 @@ object room_environment(object ob){
     object ret;
     object *envs = containers(ob);
     int i = sizeof(envs);
-    //tc("envs: "+identify(envs));
     for(i--; i > 0; i--){
-        //tc("envs["+i+"]: "+identify(envs[i]));
         if(inherits(LIB_ROOM, envs[i])){
             return envs[i];
         }
@@ -165,11 +163,8 @@ int bearing(int x1, int y1, int x2, int y2){
     float ret;
     int y = y2 + ( 0 - y1 );
     int x = x2 + ( 0 - x1 );
-    //tc("x: "+x+", y: "+y);
     ret = atan(calculate_slope(0,0,x,y));
-    //tc("ret: "+ret);
     ret = abs(ret * (180/3.141592));
-    //tc("ret: "+ret);
     if(x1 < x2 && y1 < y2){
         ret = 90 - ret;
     }

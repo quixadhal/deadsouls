@@ -408,7 +408,6 @@ void check_blacklist(){
 }
 
 void check_graylist(){
-    //tc("Checking graylist");
     if(sizeof(graylisted_muds)){
         graylisted_muds = distinct_array(graylisted_muds);
         tn("i3 router: removing graylisted  "+graylisted_muds[0]);
@@ -474,7 +473,7 @@ void check_discs(){
         }
 }
 
-void clean_ghosts(){
+varargs void clean_ghosts(int force){
     int tmp,i;
     object rsockd = find_object(RSOCKET_D);
     object ssockd = find_object(SSOCKET_D);
@@ -490,6 +489,12 @@ void clean_ghosts(){
         if(!incoming[i][5] || 
                 (incoming[i][5] != rsockd && incoming[i][5] != ssockd)) continue;
         if(member_array(i,legit_socks) == -1 && incoming[i][1] == "DATA_XFER"){ 
+            if(!force){
+                string ip = clean_fd(socket_address(i));
+                // keep blacklisted connections sandboxed, in case
+                // they're the reconnecting kind.
+                if(member_array(ip, blacklisted_muds) != -1) continue;
+            }                
             this_object()->close_connection(i);
         }
     }
@@ -594,7 +599,6 @@ int GetMaxRetries(){ return MAXIMUM_RETRIES; }
 
 varargs void ReceiveList(mixed data, string type, string who){
     string *cmuds = keys(connected_muds);
-    //trr("ReceiveList("+identify(data)+", "+identify(type)+", "+identify(who)+")");
     if(!type || !sizeof(type)) type = "mudlist";
     if(!mapp(data)){
         return;
@@ -612,8 +616,6 @@ varargs void ReceiveList(mixed data, string type, string who){
                 return;
             }
             mudinfo_update_counter++;
-            //if(mudinfo[key] && mudinfo[key]["router"] &&
-            //  mudinfo[key]["router"] == router_name) continue;
             if(undefinedp(connected_muds[key])){
                 trr("%^B_GREEN%^%^BLACK%^accepting "+key+
                         " update from "+(mudinfo[key] ? mudinfo[key]["router"] : who ));
@@ -697,11 +699,9 @@ varargs int purge_ips(int rude){
 }
 
 void update_imc2(string mud, mapping foo){
-    //tc("update_imc2("+identify(mud)+", "+identify(foo)+")");
     validate(); 
     if(!mudinfo[mud]) return;
     if(!mudinfo[mud]["other_data"]) mudinfo[mud]["other_data"] = ([]);
-    //tc("update_imc2("+identify(mud)+", "+identify(foo)+")","white");
     foreach(mixed key, mixed val in foo){
         mudinfo[mud]["other_data"][key] = val;
         if(key == "port") mudinfo[mud]["player_port"] = val;
@@ -712,6 +712,5 @@ void update_imc2(string mud, mapping foo){
             mudinfo[mud]["driver"] = "IMC2 client";
         }
     }
-    //tc(mud + " info: "+identify(mudinfo[mud]),"white");
     this_object()->broadcast_mudlist(mud);
 }

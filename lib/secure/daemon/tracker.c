@@ -22,7 +22,6 @@ int AddTrack(object trackee, object tracker){
     if(!trackee || !tracker) return 0;
     if(!living(trackee)) return 0;
     if(!Tracked[trackee]) TrackLiving(trackee);
-    //tc("Tracked["+identify(trackee)+"]: "+identify(Tracked[trackee]));
     Tracked[trackee]["trackers"] = 
         singular_array(Tracked[trackee]["trackers"] + ({ tracker }));
     return 1;
@@ -31,7 +30,6 @@ int AddTrack(object trackee, object tracker){
 int RemoveTrack(object trackee, object tracker){
     if(!trackee || !tracker) return 0;
     if(!Tracked[trackee]) TrackLiving(trackee);
-    //tc("Tracked["+identify(trackee)+"]: "+identify(Tracked[trackee]));
     Tracked[trackee]["trackers"] =
         singular_array(Tracked[trackee]["trackers"] - ({ tracker }));
     return 1;
@@ -53,7 +51,6 @@ int TrackLiving(object ob){
     if(env){
         coords = ROOMS_D->GetCoordinateMap(env);
     }
-    //tc("coords for "+identify(ob)+": "+identify(coords));
     if(sizeof(coords)){
         if(!Tracked[ob]) Tracked[ob] = ([ "trackers" : ({}) ]);
         Tracked[ob]["coords"] = coords;

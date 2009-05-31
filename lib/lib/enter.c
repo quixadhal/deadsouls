@@ -44,7 +44,6 @@ mixed direct_enter_into_obj(){
 }
 
 varargs mixed direct_lock_obj_with_obj(object target, object tool){
-    //tc("i be "+identify(this_object())+" Door is: "+identify(Door),"blue");
     if( !Door ){
         return 0;
     }
@@ -81,7 +80,6 @@ mixed direct_pick_str_on_obj_with_obj(string str, object ob, object w,
 }
 
 mixed direct_unlock_obj_with_obj(object target, object w){
-    //tc("me is "+identify(this_object())+" Door be: "+identify(Door));
     if( !Door ){
         return 0;
     }

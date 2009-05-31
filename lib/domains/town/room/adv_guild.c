@@ -54,7 +54,6 @@ mixed ReadSign(){
     string ret = read_file("/domains/town/txt/advancement.txt");
     ret += "\n";
     for(i=1;i<21;i++){
-        //tc("Levels["+i+"]: "+identify(Levels[i]));
         ret +=  sprintf("%:-3s     %:-28s %:-12s %:16s\n", i+"",
                 Levels[i]["title"], Levels[i]["xp"]+"", (Levels[i]["qp"] || "none")+"");
     }

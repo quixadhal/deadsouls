@@ -80,9 +80,7 @@ varargs int eventReceive(string message, int noprompt, int noerase){
     }
     else {
         if(!noerase && this_object()->GetProperty("reprompt")){
-            //if(!in_edit(this_object())){
             this_object()->erase_prompt();
-            //}
         }
         receive(message);
         this_object()->CheckCharmode();
@@ -177,7 +175,6 @@ varargs int eventPauseMessages(int x, int exceptions){
     if(x) PauseMessages = 1;
     else {
         if(PauseMessages){
-            //call_out( (: eventFlushQueuedMessages :), 1);
             eventFlushQueuedMessages();
         }
         PauseMessages = 0;
@@ -190,7 +187,6 @@ static varargs int PassengerPrint(string msg, mixed arg2,
     object *targs = ({});
     if(riders && sizeof(riders)){
         int i1, rider_source;
-        //tc("riders: "+identify(riders));
         if(!arg2) arg2 = 0;
         if(!arg3) arg3 = 0;
         if(sizeof(riders)){
@@ -223,7 +219,6 @@ static varargs int PassengerPrint(string msg, mixed arg2,
                 else if(arrayp(arg2)) targs = riders - arg2;
                 else targs = riders;
                 environment()->eventPrint(msg, arg2, arg3);
-                //else targs->eventPrint(msg, arg2);
             }
         }
     }  
@@ -235,9 +230,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     string prompt = "";
     object *passengers = filter(all_inventory(this_object()), (: living :) );
     if(this_object()->GetProperty("reprompt")){
-        //if(!in_edit(this_object())){
         prompt = this_object()->GetPrompt(1);
-        //}
     } 
     if( !msg ) return 0;
     if( !arg2 && !arg3 ) msg_class = MSG_ENV;
@@ -248,7 +241,6 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     else if( !intp(arg2) ) msg_class = MSG_ENV;
     else msg_class = arg2;
     if(sizeof(passengers) && (msg_class & MSG_ENV || msg_class & MSG_CONV)){
-        //PassengerPrint(msg, arg2, arg3, passengers);
     } 
     if( !(msg_class & MSG_NOBLOCK) && GetBlocked("all") ) return 0;
 
@@ -292,7 +284,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
 
 varargs int SetBlocked(string type, int flag){
     if( !type ) return 0;
-    if( !flag ) flag = !Blocked[type];
+    if( undefinedp(flag) ) flag = !Blocked[type];
     if( Blocked[type] == 2 && !archp(this_player()) ){
         this_player()->eventPrint("Unable to unblock " + type + ".");
         return -1;
@@ -388,7 +380,6 @@ int GetAnnoyblock(){
 
 static int rArrow(string str){
     int ret, cedmode = this_object()->GetCedmode();
-    //tc("interface rArrow(\""+str+"\"), cedmode: "+cedmode);
     switch(cedmode){
         case 0 : ret = nmsh::rArrow(str); break;
         case 1 : ret = cedit::rArrow(str); break;
@@ -398,7 +389,6 @@ static int rArrow(string str){
 
 static int rCtrl(string str){
     int ret, cedmode = this_object()->GetCedmode();
-    //tc("interface rCtrl(\""+str+"\"), cedmode: "+cedmode);
     switch(cedmode){
         case 0 : ret = nmsh::rCtrl(str); break;
         case 1 : ret = cedit::rCtrl(str); break;
@@ -408,7 +398,6 @@ static int rCtrl(string str){
 
 static int rBackspace(){
     int ret, cedmode = this_object()->GetCedmode();
-    //tc("interface rBackspace(), cedmode: "+cedmode);
     switch(cedmode){
         case 0 : ret = nmsh::rBackspace(); break;
         case 1 : ret = cedit::rBackspace(); break;
@@ -418,7 +407,6 @@ static int rBackspace(){
 
 static int rEnter(){
     int ret, cedmode = this_object()->GetCedmode();
-    //tc("interface rEnter(), cedmode: "+cedmode);
     switch(cedmode){
         case 0 : ret = nmsh::rEnter(); break;
         case 1 : ret = cedit::rEnter(); break;
@@ -428,7 +416,6 @@ static int rEnter(){
 
 static int rAscii(string str){
     int ret, cedmode = this_object()->GetCedmode();
-    //tc("interface rAscii(\""+str+"\"), cedmode: "+cedmode);
     switch(cedmode){
         case 0 : ret = nmsh::rAscii(str); break;
         case 1 : ret = cedit::rAscii(str); break;
@@ -438,7 +425,6 @@ static int rAscii(string str){
 
 static int rDel(){
     int ret, cedmode = this_object()->GetCedmode();
-    //tc("interface rDel(), cedmode: "+cedmode);
     switch(cedmode){
         case 0 : ret = nmsh::rDel(); break;
         case 1 : ret = cedit::rDel(); break;
@@ -448,7 +434,6 @@ static int rDel(){
 
 static int rAnsi(string str){
     int ret, cedmode = this_object()->GetCedmode();
-    //tc("interface rAnsi(\""+str+"\"), cedmode: "+cedmode);
     switch(cedmode){
         case 0 : ret = nmsh::rAnsi(str); break;
         case 1 : ret = cedit::rAnsi(str); break;

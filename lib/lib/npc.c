@@ -79,8 +79,9 @@ void CheckEncounter(){
     }
 
     foreach(object dude in dudes){
-        object denv = environment(dude);
-        if(!denv || denv != env || dude->GetInvis()) continue;
+        object denv;
+        if(dude) denv = environment(dude);
+        if(!denv || !dude || denv != env || dude->GetInvis()) continue;
         if( sizeof(enemies = GetEnemyNames()) ){
             if( member_array(dude->GetKeyName(),enemies) != -1 ){
                 eventExecuteAttack(dude);
@@ -245,8 +246,6 @@ varargs int eventDie(mixed agent){
     string death_action = "kill";
     string death_descriptor = "dead";
     object env = (environment() || load_object(ROOM_POD));
-
-    //tc("npc::eventDie("+identify(agent)+"), stack: "+get_stack(1));
 
     if(RACES_D->GetNonMeatRace(GetRace())){
         death_verb = "breaks down completely";

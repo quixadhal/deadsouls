@@ -10,12 +10,10 @@ static void process_channel(mixed fd, mixed *info){
     string mudname;
     string sendermsg, sendername, senderrealname, sendermud;
     string targetname, targetmud, targstr = "";
-    //trr("extra stuff is ["+info[0][8..]+"]");
     switch(info[0][8..]){ // what is after the "channel-"
         case "m": // message
             case "e": // emote
             case "t": // targetted emote
-            //trr("they want to do a message...");
             // (drop-through from m/e is intentional)
             // Probably should check if the target is 0@0 like it should be,
             // and give a warning if it's not... I don't carethough, I'll just
@@ -80,7 +78,6 @@ static void process_channel(mixed fd, mixed *info){
             // pretend they requested it... I'm gonna pretend...
             process_channel(fd,({ "channel-listen", 5, info[2], 0,
                         router_name, 0, info[6], 1 }));
-            //return;
         }
         if(channels[info[6]][0]==2){ // filtered channel
             if(channels[info[6]][1]!=info[2]){ // not from chan owner
@@ -113,7 +110,6 @@ static void process_channel(mixed fd, mixed *info){
             // IS from chan owner, just broadcast it...
             // drop through and broadcast like the other types do...
         }
-        //trr("CHAN: I think it's a good message at this point...");
         // at this point, they're wanting to do a message on a
         // selective banned/allowed channel, or else are the owner
         // of a filtered channel and they have not been
@@ -126,14 +122,12 @@ static void process_channel(mixed fd, mixed *info){
             // in list, you're banned...
             send_error(info[2],0,"not-allowed",
                     "Banned from "+info[6],info);
-            //SaveObject(SAVE_ROUTER);
             return;
         }
 
         if(intp(fd)) this_object()->SendMessage(info);
 
         else if(member_array(fd, this_object()->GetBannedMuds()) != -1){
-            //trr("router: banned mud "+fd+" tried to send a channel message");
             return;
         }
 
@@ -143,15 +137,6 @@ static void process_channel(mixed fd, mixed *info){
             if(listening[info[6]] && member_array(mudname, listening[info[6]])!=-1)
                 write_data(connected_muds[mudname],info);
         }
-
-        //broadcast_data(muds_not_on_this_fd(fd), info);
-        // send to all the other fd's that have a mud listening
-        //			write_data(fd,info);
-        // also send the message to the connection that this mud is on
-        // from too... why do this? 'cause I'm allowing multiple muds to
-        // log on from the same connection :)
-        // I think the normal I3 server does this too, but I don't know
-        // since I can't test at the moment.
         return;
         case "add":
             if(!stringp(info[4])) info[4] = this_object()->GetRouterName();
@@ -184,7 +169,6 @@ static void process_channel(mixed fd, mixed *info){
         channel_update_counter++;
         channels[info[6]]=({ distinct_array(info[7]), info[2], ({}) });
         channel_updates[info[6]] = channel_update_counter;
-        //trr(info[3]+"@"+info[2]+" created the channel: "+info[6],"yellow");
         server_log(info[3]+"@"+info[2]+" created the channel: "+info[6]+"\n");
         // broadcast an update saying that this channel is added or changed now
         // chanlist-reply packet to everybody (who has a channel service?)
@@ -220,8 +204,6 @@ static void process_channel(mixed fd, mixed *info){
         return;
         case "admin":
         if(!stringp(info[4])) info[4] = this_object()->GetRouterName();
-        // Sry guys, but wtf
-        if(info[2] == "Divided Sky") return;
         // add/delete muds from the 2 lists...
         if(channels[info[6]][1]!=info[2] && 
                 clean_fd(socket_address(fd)) != router_ip ){
@@ -250,8 +232,7 @@ static void process_channel(mixed fd, mixed *info){
                 listening[info[6]] = distinct_array(listening[info[6]]);
             }
         }
-        SendList( ([ "channels" : ([ info[6] : channels[info[6]] ]),
-                    "listening" : ([ info[6] : listening[info[6]] ]) ]), 
+        SendList( ([ "channels" : ([ info[6] : channels[info[6]] ]) ]),
                     0, "chanlist" );
         SaveObject(SAVE_ROUTER);
         return;
@@ -287,8 +268,6 @@ static void process_channel(mixed fd, mixed *info){
                     listening[info[6]] -= ({ info[2] });
                 listening[info[6]] = distinct_array(listening[info[6]]);
                 SaveObject(SAVE_ROUTER);
-                SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
-                        0, "chanlist" );
                 return;
             case 1: // selectively allowed
                 if(member_array(info[2],channels[info[6]][2])==-1 &&
@@ -305,8 +284,6 @@ static void process_channel(mixed fd, mixed *info){
                     listening[info[6]] -= ({ info[2] });
                 listening[info[6]] = distinct_array(listening[info[6]]);
                 SaveObject(SAVE_ROUTER);
-                SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
-                        0, "chanlist" );
                 return;
             case 2: // filtered... act like selectively allowed
                 if(member_array(info[2],channels[info[6]][2])==-1 &&
@@ -324,8 +301,6 @@ static void process_channel(mixed fd, mixed *info){
                     listening[info[6]] -= ({ info[2] });
                 listening[info[6]] = distinct_array(listening[info[6]]);
                 SaveObject(SAVE_ROUTER);
-                SendList( ([ "channels" : ([]), "listening" : ([ info[6] : listening[info[6]] ]) ]),
-                        0, "chanlist" );
                 return;
         } // switch
         default: // trying to do "channel-blah"
@@ -338,8 +313,8 @@ static void process_channel(mixed fd, mixed *info){
 void list_chans(){
     mapping tmp_chans = channels;
     foreach(mixed key, mixed val in tmp_chans){
-        tc("Key: "+identify(key));
-        tc("Val: "+identify(val));
-        tc("--\n","red");
+        trr("Key: "+identify(key));
+        trr("Val: "+identify(val));
+        trr("--\n","red");
     }
 }

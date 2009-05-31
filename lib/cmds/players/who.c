@@ -96,6 +96,7 @@ int cmd(string args) {
         ret+=SEP;
         ret+=tmp;
         instances = INSTANCES_D->GetInstances();
+        if(ENABLE_INSTANCES) instances = ({ "global" });
         tmp = INSTANCES_D->GetMyInstanceName();
         if(tmp && instances) instances -= ({ tmp });
         tmp = "";
@@ -109,11 +110,12 @@ int cmd(string args) {
             players = ({});
             guys = ({});
             instinfo = INSTANCES_D->GetInstData()[inst];
-            if(inst == "global") inst = "dev";
+            //if(inst == "global") inst = "dev";
             tmp += "\n"+center("--- Instance: "+capitalize(inst)+" ---\n");
             if(!sizeof(instinfo) || !mapp(instinfo["users"])) continue;
             foreach(string name, mapping data in instinfo["users"]){
                 if(!name) continue;
+                if(!mapp(data)) continue;
                 if(data["arch"]) arches += ({ name });
                 else if(data["creator"]) cres += ({ name });
                 else players += ({ name });

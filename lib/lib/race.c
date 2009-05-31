@@ -129,8 +129,6 @@ mixed CanDrink(object ob){
 varargs int eventDie(mixed agent){
     int x;
 
-    //tc("race::eventDie("+identify(agent)+")");
-
     if( (x = body::eventDie(agent)) != 1 ) return x;
     return 1;
 }
@@ -238,7 +236,6 @@ varargs int GetMaxHealthPoints(string limb){
     int ret = 1;
     if(!limb && MaximumHealth) ret = MaximumHealth;
     else if(!limb && !MaximumHealth){
-        //tc("1");
         ret = ( 50 + (GetStatLevel("durability") * 10) );
     }
     else {
@@ -247,10 +244,8 @@ varargs int GetMaxHealthPoints(string limb){
         if(!x) x = 5;
         if(MaximumHealth) ret = ( (1 + MaximumHealth) / x );
         else ret = ( (1 + GetStatLevel("durability")/x) * 10 );
-        //tc("2: "+limb+" "+ret);
     }
     if(ret < 1) ret = 1;
-    //tc("3: "+ret);
     return ret;
 }
 

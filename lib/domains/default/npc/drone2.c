@@ -58,7 +58,6 @@ int eventShootDude(object ob){
 int eventHoseTarget(object target){
     int repeat = 10;
     if(!target) return 0;
-    //write("Hosing target: "+identify(target));
     while(repeat && !(target->GetDying())){
         eventShootDude(target);
         repeat--;
@@ -155,8 +154,6 @@ int eventTurnOff(){
     }
     else {
         write("It seems this killbot cannot be deactivated.");
-        //write("You deactivate the killbot.");
-        //active = 0;
     }
     return 1;
 }
@@ -183,7 +180,6 @@ void heart_beat(){
             target = rooms[random(sizeof(rooms)-1)];
             success = this_object()->eventMoveLiving(target);
         }
-        //tc(identify(this_object())+" teleported to "+identify(target));
     }
     eventTargetScan();
 }

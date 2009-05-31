@@ -27,7 +27,6 @@ varargs int CanBreathe(mixed args...){
     rtype = ob->GetRespiration();
 
     if(breatherob && breatherob->GetRemainingCharge()){
-        //tc("charged!","green");
         if(rtype & R_AIR){
             breatherob->eventDecrementCharge();
             return 1;
@@ -35,9 +34,6 @@ varargs int CanBreathe(mixed args...){
         if(rtype & R_VACUUM) ret = 1;
         else if(rtype & R_WATER || rtype & R_METHANE) ret = 0;
     }
-    //tc("ret: "+ret);
-    //tc("NOT CHARGED","red");
-    //tc("%^B_BLACK%^returning "+identify(ob)+"->CanBreathe("+identify(args)+"): "+identify(ob->CanBreathe(args...)),"red");
     if(!undefinedp(ret)) return ret;
     return ob->CanBreathe(args...);
 }

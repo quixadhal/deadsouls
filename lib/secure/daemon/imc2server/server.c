@@ -25,7 +25,7 @@ static void validate(){
 void create(){
     ::create();
     if(object_file(SAVE_IMC2_SERVER)){
-        unguarded( (: RestoreObject, SAVE_IMC2_SERVER, 1 :) );
+        RestoreObject(SAVE_IMC2_SERVER, 1);
     }
 }
 
@@ -49,12 +49,10 @@ int is_lpmud(string mud){
     mapping info = ROUTER_D->query_mudinfo()[truename];
     if(!info) return 0;
     if(stringp(info["mud_type"]) && grepp(info["mud_type"],"LP")){
-        //tc("woot 1","red");
         return 1;
     }
     if(info["other_data"] && stringp(info["other_data"]["versionid"])){
         if(!strsrch(info["other_data"]["versionid"],"Tim's LPC")){
-            //tc("woot 2","red");
             return 1;
         }
     }
@@ -107,11 +105,8 @@ mapping string_to_mapping(string str){
                 i++;
             }
             // now are 1 space past quote
-            //                    write("i="+i+"\n");
             data=rest[1..(i-1)]; // skip opening and closing quotes
             rest=rest[(i+2)..]; // skip past space
-            //                    write("new data="+data+"\n");
-            //                    write("new rest="+rest+"\n");
             // Data is now what was in the quotes... now to un-escape the
             //data...
             out[what]=unescape(data);
@@ -136,7 +131,6 @@ mixed packetize(string str){
     string tmp, seq, route, type, data;
     int i = sscanf(str,"%s %s %s %s %s %s", src, seq, route, type, targ, data);
     if(i < 6){
-        //tc("BAD PACKET SIZE","red");
         return 0;
     }
     if( (i = sscanf(src,"%s@%s",who, tmp)) == 2) src = tmp;
@@ -181,25 +175,19 @@ mixed translate_packet(mixed data, int fd){
     mapping i3info, tmpinfo;
     mixed ret = ({});
     string router_name = ROUTER_D->GetRouterName();
-    //trr("IMC2_SERVER_D data to translate: "+identify(data),"blue");
     if(!mudinfo) mudinfo = ([]);
     tmpinfo = copy(mudinfo);
     if(stringp(data)) return data;
     if(!arrayp(data) || sizeof(data) < 6) return 0;
     if(data[0] == "mudlist"){
         mapping tmpret = data[7];
-        //tc("%^B_RED%^%^YELLOW%^"+identify(data));
         foreach(mixed key, mixed val in tmpret){
-            //tc("%^B_WHITE%^key: "+key+", val[0]: "+val[0],"black");
             if(!key) continue;
             if(sizeof(val) && val[0] > -1 ){
-                //trr("%^B_YELLOW%^%^BLACK%^"+identify(key));
                 ret += ({ "*@" + router_name + " " + time() + " " +
                         router_name + " close-notify *@* host=" + imc2_name(key) });
             }
             else {
-                //trr("%^B_RED%^%^YELLOW%^"+identify(key));
-                //trr("%^B_YELLOW%^%^RED%^"+identify(val));
                 if(!tmpinfo[key]){
                     i3info = ROUTER_D->query_mudinfo()[key];
                     if(!sizeof(i3info)) continue;
@@ -210,7 +198,7 @@ mixed translate_packet(mixed data, int fd){
                     tmpinfo[key]["port"] = i3info["player_port"];
                 }
                 ret += ({ "*@"+imc2_name(key)+" "+time()+" "+imc2_mud_name()+
-                        //"!"+router_name+
+                        "!"+router_name+
                         " is-alive *@"+ targ + " versionid=\""+
                         tmpinfo[key]["versionid"]+
                         "\" networkname=\"LPMuds.net\" url=\""+
@@ -221,11 +209,9 @@ mixed translate_packet(mixed data, int fd){
                         "\n\r" });
             }
         }
-        //tc("mudlist packet: "+identify(ret),"yellow");
     }
     else trr("IMC2_SERVER_D data to translate: "+identify(data),"blue");
     if(data[0] == "chanlist-reply"){
-        //tc("packet: "+identify(data));
         foreach(mixed foo in data){
             string hub = data[2];
             string rname = "LPMuds.net";
@@ -273,8 +259,6 @@ mixed translate_packet(mixed data, int fd){
         if(!is_lpmud(data[4])){
             who_ret = replace_string(who_ret,"\n","\\n");
         }
-        //who_ret = "fart";
-        //tc("who_ret: "+identify(who_ret));
         ret = "*@"+imc2_name(data[2])+" "+time()+" "+
             imc2_name(data[2])+" who-reply "+ capitalize(data[5])+
             "@"+imc2_name(data[4])+" text=\""+ who_ret+"\"";
@@ -291,33 +275,22 @@ varargs void write_data(int fd, mixed data){
     validate();
     targetmud = ROUTER_D->query_connected_fds()[fd];
     if(arrayp(data)){
-        //tc("avoiding array write to "+fd+", type: "+data[0],"green");
         if(!(ret = translate_packet(data, fd))){
-            //tc("Packet translation failure.");
             return;
         }
     }
     if(ret) data = ret;
     if(!arrayp(data)) data = ({ data });
-    //tc("targetmud: "+identify(targetmud));
-    //tc("fd: "+identify(fd));
     if(!sstat || sstat[1] != "DATA_XFER" || !ssock || sstat[5] != ssock) return;
     if(member_array(fd, keys(ROUTER_D->query_irn_sockets())) == -1){ 
         foreach(mixed element in data){
             if(sizeof(element) && last(element,2) != "\n\r") element += "\n\r";
-            //if(sizeof(element) && last(element,2) != "\r") element += "\r";
-            //if(sizeof(element) && last(element,2) != "\n") element += "\n";
-            //tc("writing "+identify(element)+" to "+identify(fd),"red");
             SSOCKET_D->write_data(fd, element);
         }
-    }
-    else  {
-        //tc("wtf");
     }
 }
 
 static void close_connection(int fd){
-    //trr("connection close request for fd "+fd+", stack: "+get_stack(),"red");
     SSOCKET_D->close_connection(fd);
 }
 
@@ -336,7 +309,7 @@ string SetRouterPort(string str){
 
 int eventDestruct(){
     validate();
-    unguarded( (: SaveObject(SAVE_IMC2_SERVER) :) );
+    SaveObject(SAVE_IMC2_SERVER);
     server_log("I am being destructed by: \n"+get_stack()+
             "\n"+identify(previous_object(-1)));
     daemon::eventDestruct();
@@ -389,14 +362,11 @@ varargs void construct_startup(mixed fd, mixed info, string client){
     }
     passwd = mudinfo[s1]["password"];
     if(mudinfo[s1]["port"]) pport = mudinfo[s1]["port"];
-    //tc("other: "+identify(other));
     foreach(mixed key, mixed val in mudinfo[s1]){
         if(member_array(key, nix) == -1){
-            //tc("key: "+key+", val: "+val);
             other[key] = val;
         }
     }
-    //tc("other: "+identify(other));
     packet = ({ "startup-req-3", 5, s1, 0, router, 0, passwd, 1, 1,
             pport, 0, 0, " ", " ", " ", " ", " ", " ",
             (["channel" : 1, "who" : 1, "tell" : 1]), other });
@@ -501,14 +471,11 @@ void read_callback(mixed fd, mixed info){
         foreach(string element in explode(tmp,"\n")){
             tmp_ret += ({ ({ element, 0, "" }) });
         }
-        //tc("tmp_ret: "+identify(tmp_ret));
         ret = ({ "who-reply", 5, packet[2], 0, packet[4],
                 packet[5], tmp_ret });
-        //tc("trying to write to fd "+fd+" "+identify(ret),"white");
         ROUTER_D->read_callback(fd, ret);
     }
     if(packet[0] == "who"){
-        //tc("PACKIT: "+identify(packet));
         ret = ({ "who-req", 5, packet[2], packet[3], packet[4], 0 });
         ROUTER_D->read_callback(fd, ret);
     }

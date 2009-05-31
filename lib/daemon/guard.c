@@ -18,7 +18,6 @@ static void create() {
 
 varargs mixed AddGuard(object guard, mixed what, mixed action){
     string which;
-    //tc("AddGuard("+identify(guard)+", "+identify(what)+", "+identify(action),"red");
     if(!what || !objectp(guard) || interactive(guard)){
         return 0;
     }
@@ -92,13 +91,11 @@ int ClearGuards(){
 
 varargs int CheckMove(object who, mixed dest, mixed dir){
     mixed guards;
-    //tc("CheckMove("+identify(who)+", "+identify(dest)+", "+identify(dir),"green");
     if(!objectp(dest)){
         int err = catch( dest = load_object(dest) );
         if(err || !dest) return 0;
     }
     if(!(guards = Guarded["rooms"][dest])){
-        //tc("1");
         return 1;
     }
 
@@ -114,7 +111,6 @@ varargs int CheckMove(object who, mixed dest, mixed dir){
     guards = filter(guards, (: $1 && objectp($1) && environment($1) &&
                 environment($1) == environment($(who)) :) );
     if(!sizeof(guards)){
-        //tc("2");
         return 1;
     }
     foreach(object guard in guards){
@@ -134,13 +130,11 @@ varargs int CheckMove(object who, mixed dest, mixed dir){
             return 0;
         }
     }
-    //tc("3");
     return 1;
 }
 
 varargs int CheckGet(object who, object what){
     mixed guards;
-    //tc("CheckGet("+identify(who)+", "+identify(what),"blue");
     if(!(guards = Guarded["objects"][what])){
         return 1;
     }

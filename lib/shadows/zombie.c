@@ -10,10 +10,7 @@ void heart_beat(){
     object env = room_environment(GetShadowedObject());
     if(!env) return;
     count--;
-    //tc("count: "+count);
-    //if(!env) return;
     this_object()->eventPrint("You hunger for brains.");
-    //GetShadowedObject()->heart_beat(); 
     if(!(count % 10) && env){
         tell_room(env,this_object()->GetName()+" shudders and groans.",
                 ({ this_object() }) );
@@ -23,7 +20,6 @@ void heart_beat(){
         mixed *inv = all_inventory(GetShadowedObject());
         tell_room(env,this_object()->GetName()+" falls apart!",
                 ({ this_object() }) );
-        //tc("inv: "+identify(inv));
         if(sizeof(inv)) inv->eventMove(env);
         foreach(mixed element in this_object()->GetLimbs()){
             this_object()->RemoveLimb(element,"decay",1);
@@ -39,7 +35,6 @@ int eventForce(string cmd){
 
 int ProcessTalk(mixed args...){
     string speech = lower_case(args[2]);
-    //tc("got: "+identify(args),"green");
     if(sizeof(speech) > 1) speech = truncate(speech,1);
     //No commanding players plz
     if(interactive(GetShadowedObject())) return 0;

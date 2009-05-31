@@ -15,4 +15,4 @@ mudconfig questrequired on
 mudconfig logremote on
 mudconfig selectclass on
 mudconfig maxidle 3600
-#mudconfig monitor 1
+mudconfig ced 1

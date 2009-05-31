@@ -37,18 +37,18 @@ mixed cmd(string args) {
     else who = this_player();
 
     ret = who->GetShort() + ", level " +
-        (int)who->GetLevel();
-    if( (tmp = (string)who->GetClass()) ) 
+        who->GetLevel();
+    if( (tmp = who->GetClass()) ) 
         ret += " " + capitalize(tmp);
     else ret += " Drifter";
     ret += " (" + who->GetRace() + ")\n";
-    stats = map((string)who->GetStats(),
+    stats = map(sort_array(who->GetStats(), 1),
             (: sprintf("%:-20s: %:-3d", $1, 
-                       (int)who->GetStatLevel($1)) :));
+                       who->GetStatLevel($1)) :));
     i = sizeof(stats);
     while(i--) if( (y = strlen(stats[i])) > x ) x = y;
-    x = ((int *)this_player()->GetScreen())[0]/(x+2);
-    ret += format_page(stats, x);
+    x = (this_player()->GetScreen())[0]/(x+2);
+    ret += format_page2(stats, x);
     message("system", ret, this_player());
     return 1;
 }
@@ -57,8 +57,8 @@ void help() {
     if(creatorp(this_player())){
         message("help", "Syntax: stats [player]\n\n"
                 "Lists the stats of the specified player as well as "
-                "the stat level. With no argument, it defaults to your own stats."
-                "\n\n"
+                "the stat level. With no argument, it defaults to your "
+                "own stats.\n"
                 "See also: stat, status, score", this_player());
     }
     else {

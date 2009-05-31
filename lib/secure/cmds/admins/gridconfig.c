@@ -15,8 +15,6 @@ mixed findit(string str){
         file = lpc_file(str);
         tmpfile = str;
     }
-    //tc("tmpfile: "+identify(tmpfile),"red");
-    //tc("file: "+identify(file),"red");
     if(!file_exists(file) && str != "here"){
         file = lpc_file(this_player()->query_cwd()+"/"+str);
         if(!directory_exists(path_prefix(str))){
@@ -24,8 +22,6 @@ mixed findit(string str){
         }
     }
     if(file_exists(file)) return file;
-    //tc("tmpfile: "+identify(tmpfile));
-    //tc("file: "+identify(file));
     err = catch(room = load_object(tmpfile));
     if(room) return room;
     return 0;

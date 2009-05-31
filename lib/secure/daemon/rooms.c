@@ -30,7 +30,7 @@ void create(){
     if(!WorldMap) WorldMap = ([]);
     if(!WorldGrid) WorldGrid = ([]);
     if(file_exists(SaveFile)){
-        unguarded( (: RestoreObject, SaveFile, 1 :) );
+        RestoreObject(SaveFile, 1);
     }
     set_heart_beat(300);
 #endif
@@ -42,7 +42,7 @@ void create(){
 }
 
 static void heart_beat(){
-    unguarded( (: SaveObject(SaveFile, 1) :) );
+    SaveObject(SaveFile, 1);
 }
 
 string GetVoid(mixed ob){
@@ -76,7 +76,7 @@ mixed GenerateNames(int x){
 }
 
 int eventDestruct(){
-    unguarded( (: SaveObject(SaveFile, 1) :) );
+    SaveObject(SaveFile, 1);
     return daemon::eventDestruct();
 }
 
@@ -94,7 +94,6 @@ mixed validate_last_room(string room, object player){
     mapping origin_room = ([]);
     mapping origin_room_exits = ([]);
     mixed tmp, ret;
-    if(debugging) tc("validate "+room+"?","blue");
     if(player) location_str=player->GetProperty("LastLocation");
     if(!location_str) return 0;
     if(location_str) location_ob=load_object(location_str);
@@ -102,12 +101,6 @@ mixed validate_last_room(string room, object player){
     if(tmp) origin_room = this_object()->GetGrid(tmp);
     current_room = room_environment(player);
     current_room_name = base_name(room_environment(player));
-    if(debugging){
-        tc("Last Location: "+location_str);
-        tc("Last Location coords: "+ tmp);
-        if(sizeof(tmp) > 1)
-            tc("What those coordinates grid as: "+identify(origin_room));
-    }
 
     if(room == ROOM_ZERO || (mapp(origin_room) &&
                 origin_room["room"] && origin_room["room"] == location_str)){
@@ -123,11 +116,9 @@ mixed validate_last_room(string room, object player){
             }
         }
         if(ret){
-            if(debugging) tc("validation passed. ret: "+identify(ret),"blue");
             return ret;
         }
     }
-    if(debugging) tc("validation failed. ret: "+identify(ret),"red");
     return 0;
 #else
     return 0;
@@ -138,7 +129,7 @@ void zero(){
     WorldMap = ([]);
     WorldGrid = ([]);
     Workrooms = ([]);
-    unguarded( (: SaveObject(SaveFile, 1) :) );
+    SaveObject(SaveFile, 1);
     ROOM_ZERO->init();
 }
 
@@ -200,10 +191,6 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
     }
 
     if(!player->GetProperty("LastLocation")) return 0;
-    if(debugging){
-        tc("SetGrid received: "+room+", "+coord+", "+
-                identify(player)+", "+unset,"blue");
-    }
     sscanf(coord,"%d,%d,%d",x,y,z);
     xarr = GenerateNames(x);
     yarr = GenerateNames(y);
@@ -227,22 +214,15 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
     if(!WorldGrid[a][b][c][d][e][f][g][h]) WorldGrid[a][b][c][d][e][f][g][h] = ([]);
     if(!WorldGrid[a][b][c][d][e][f][g][h][i]) WorldGrid[a][b][c][d][e][f][g][h][i] = ([]);
     if(unset && sizeof(WorldGrid[a][b][c][d][e][f][g][h][i])){
-        if(debugging){
-            tc("Unsetting: "+identify(WorldGrid[a][b][c][d][e][f][g][h][i]),"red");
-        }
         WorldGrid[a][b][c][d][e][f][g][h][i] = 0;
         return 1;
     }
     if(sizeof(WorldGrid[a][b][c][d][e][f][g][h][i]) ||
             sizeof(this_object()->GetCoordinates(coord))){
-        if(debugging) tc("SetGrid coord "+coord+
-                " is already "+ identify(WorldGrid[a][b][c][d][e][f][g][h][i]));
         return WorldGrid[a][b][c][d][e][f][g][h][i];
     }
     else {
         if(global_manual || validate_last_room(room, player)){ 
-            if(debugging) tc("Setting coord "+coord+
-                    " as "+room, "green");
             MAP_D->RemoveCache(coord);
             global_manual = 0;
             WorldGrid[a][b][c][d][e][f][g][h][i] =
@@ -283,11 +263,8 @@ mixed GetGrid(string str){
             !WorldGrid[a][b][c][d][e][f][g] ||
             !WorldGrid[a][b][c][d][e][f][g][h] ||
             !WorldGrid[a][b][c][d][e][f][g][h][i]){
-        if(debugging) tc("No joy for "+str,"red");
         return ([]);
     }
-    if(debugging) tc("Joy! "+str+" is "+
-            identify(WorldGrid[a][b][c][d][e][f][g][h][i]),"white");
     return copy(WorldGrid[a][b][c][d][e][f][g][h][i]);
 #else
     return ([]);
@@ -389,7 +366,6 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
         }
     }
     if(!WorldMap[prefix]){
-        if(debugging) tc("Creating WorldMap["+identify(prefix)+"]","yellow");
         WorldMap[prefix] = ([]);
     }
     if(!WorldMap[prefix][room_name]){
@@ -397,8 +373,6 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
                 "coords" : ([ "x" : 0, "y" : 0, "z" : 0 ]),
                 "exits" : ob->GetExitMap(),
                 ]);
-        if(debugging) tc("Creating WorldMap["+identify(prefix)+"]"+
-                "["+identify(room_name)+"]: "+identify(WorldMap[prefix][room_name]),"cyan");
     }
     if(debugging){
     }
@@ -422,7 +396,6 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
         int res, x, y, z;
         res = sscanf(manual,"%d,%d,%d",x,y,z);
         if(res == 3){
-            if(debugging) tc("Setting manually.","red");
             WorldMap[prefix][room_name]["coords"] =
                 ([ "x" : x, "y" :y, "z" : z ]);
             global_manual = 1;
@@ -438,18 +411,9 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
     tmpexits = WorldMap[prefix][room_name]["exits"];
     if(!sizeof(tmpexits) || member_array(player->GetProperty("LastLocation"),
                 values(tmpexits)) == -1){
-        if(debugging)
-            tc("USING BACKUP DIRECTION: "+identify(backup_direction),"red");
         tmpexits = backup_direction;
     }
-    else {
-        if(debugging){
-            tc("Using tmpexits from WorldMap[\""+prefix+"\"][\""+
-                    room_name+"\"] which is: "+identify(WorldMap[prefix][room_name]["exits"]),"white");
-        }
-    }
     if(!mapp(tmpexits)) tmpexits = ([]);
-    if(debugging) tc("tmpexits: "+identify(tmpexits),"white");
 
     /* Now we try to guess our coordinate from the
      * set coordinate of an adjacent room.
@@ -459,19 +423,6 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
         string sub_name = last_string_element(val, "/");
         int breakout;
         if(member_array(key, cards) == -1) continue;
-        if(debugging){
-            tc("sub_pre: "+sub_pre);
-            tc("sub_name: "+sub_name);
-            if(WorldMap[sub_pre] && WorldMap[sub_pre][sub_name])
-                tc("WorldMap["+identify(sub_pre)+"]["+identify(sub_name)+
-                        "]: "+identify(WorldMap[sub_pre][sub_name]));
-            tc("prefix: "+prefix,"yellow");
-            tc("room_name: "+room_name,"yellow");
-            if(WorldMap[prefix] && WorldMap[prefix][room_name])
-                tc("WorldMap["+identify(prefix)+"]["+identify(room_name)+
-                        "]: "+identify(WorldMap[prefix][room_name]),"yellow");
-
-        }
 
         if(WorldMap[sub_pre] && WorldMap[sub_pre][sub_name]){
             mapping cmap = WorldMap[sub_pre][sub_name]["coords"];
@@ -617,25 +568,16 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
             x2 = x - xd;
             y2 = y - yd;
             z2 = z - zd;
-            if(debugging){
-                tc("I am "+roomname);
-                tc("I found "+a+","+b+","+c);
-                tc("which is "+x+","+y+","+z);
-                tc("different by "+xd+","+yd+","+zd);
-                tc("meaning I am "+x2+","+y2+","+z2);
-            }
             WorldMap[prefix][room_name] = ([]);
             WorldMap[prefix][room_name]["coords"] =
                 ([ "x" : x2, "y" :y2, "z" : z2 ]);
             global_manual = 1;
             manual = x2+","+y2+","+z2;
-            if(debugging) tc("manual: "+manual,"green");
             SetGrid(name, manual, player);
             return ({ x2, y2, z2 });
         }
         else {
         }
-        if(debugging) tc("Unknown origin. Not mapping.","red");
         if(WorldMap[prefix] && WorldMap[prefix][room_name] &&
                 StrCoord(WorldMap[prefix][room_name]["coords"]) == "0,0,0"){
             WorldMap[prefix][room_name] = 0;
@@ -644,10 +586,6 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
     }
     /* end virt extrapolation */
 
-    if(debugging){
-        tc("SetRoom About to send: SetGrid("+identify(name)+", "+
-            identify(coord)+", "+identify(player)+")");
-    }
     if(coord == "0,0,0" && name != ROOM_ZERO){
         true();
     }
@@ -733,12 +671,6 @@ varargs mixed GetDirectionRoom(mixed origin, string direction, int noclip){
     int x, y, z;
     string dir_coords;
     mixed ret, room = GetRoom(origin);
-    if(debugging){
-        tc("origin: "+identify(origin));
-        tc("direction: "+identify(direction));
-        tc("noclip: "+identify(noclip));
-        tc("room: "+identify(room));
-    }
     if(!room || !sizeof(room) || !mapp(room)) return 0;
     if(sizeof(room["exits"]) && room["exits"][direction]){
         return room["exits"][direction];

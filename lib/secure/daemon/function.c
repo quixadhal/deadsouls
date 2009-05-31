@@ -34,12 +34,12 @@ void heart_beat(){
                 return ;
             }
         }
-        unguarded( (: SaveObject(SaveFuns) :) );
+        SaveObject(SaveFuns);
         seeking = 0;
     }
     count++;
     if(count > 700){
-        unguarded( (: SaveObject(SaveFuns) :) );
+        SaveObject(SaveFuns);
         count = 0;
     }
 }
@@ -122,7 +122,7 @@ static void create() {
     if(!file_exists(SaveFuns) && file_exists(old_savename(SaveFuns))){
         cp(old_savename(SaveFuns), SaveFuns);
     }
-    unguarded( (: RestoreObject(SaveFuns) :) );
+    RestoreObject(SaveFuns);
     if(query_os_type() == "windows" || !(MASTER_D->GetPerfOK())){
         return;
     }
@@ -185,7 +185,7 @@ varargs mixed GetLCFunctions(string str, int subs){
 }
 
 int eventDestruct(){
-    unguarded( (: SaveObject(SaveFuns) :) );
+    SaveObject(SaveFuns);
     return ::eventDestruct();
 }
 

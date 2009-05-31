@@ -8,6 +8,7 @@ static void create() {
     ::create();
     foreach(string str in get_dir("/secure/include/")){
         if(str == "object.h") continue;
+        if(last(str, 2) != ".h") continue;
         includes += ({ "#include <"+str+">" });
     }
     foreach(string str in get_dir("/include/")){
@@ -30,7 +31,9 @@ static void create() {
 string GetDefine(string str){
     mixed tmpret, ret;
     int err;
-    if(!str || !stringp(str)) return ret;
+    if(!str || !stringp(str) || grepp(str, "/") || grepp(str, ".")){ 
+        return ret;
+    }
     file = DIR_DAEMONS "/tmp/" + str + ".c";
     if( !unguarded((: file_exists($(file)) :)) ) {
         contents = header+program;

@@ -8,7 +8,6 @@ string *query_custom_path(){
 
 string query_custom_command(string str){
     string custom_path;
-    //tc("str: "+identify(str));
     if(!str) str = "";
     custom_path = "/realms/"+this_player()->GetKeyName()+"/cmds";
     if( file_size(custom_path) != -2 ) return "";

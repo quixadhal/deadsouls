@@ -11,13 +11,13 @@
 
 inherit LIB_DAEMON;
 
-static void EndRid(string str);
+varargs static void EndRid(string str, string reason);
 
-int cmd(string who) {
-    object ob;
-    string str, file;
+varargs int cmd(string who, string reason) {
+    object ob = previous_object();
+    string str, file, targetdir;
 
-    if(!archp(previous_object())) return 0;
+    if(!archp(ob) && base_name(ob) != PLAYERS_D) return 0;
     if( !who || who == "" ) {
         write("Rid whom?");
         return 1;
@@ -36,19 +36,27 @@ int cmd(string who) {
     }
 
     if( ob = find_player(str) ) {
-        who = (string)ob->GetCapName();
+        who = ob->GetCapName();
         message("system", "You are being ridded from " + mud_name() + ".",
           ob);
         if( !((int)ob->eventDestruct()) ) destruct(ob);
     }
     file = player_save_file(str);
-    if( rename(file, save_file(DIR_RID + "/" + str)) ) {
+    targetdir = DIR_RID + "/" + str[0..0] + "/" + str; 
+    mkdir_recurse(targetdir);
+    if( rename(file, save_file(targetdir + "/" + str + ".bak")) ) {
         write("Rename failed, security violation logged.");
         log_file("security", "\n*****\nRid violation attempted\n"
           "Target: " + who + "\nCall stack:\n" + 
           sprintf("%O\n", previous_object(-1)));
         return 1;
     }
+    
+    if(reason){
+        EndRid(who, reason);
+        return 1;
+    }
+
     write("Enter reason for ridding " + who + ".");
     file = DIR_TMP + "/" + (string)this_player()->GetKeyName();
     rm(file);
@@ -56,14 +64,23 @@ int cmd(string who) {
     return 1;
 }
 
-static void EndRid(string who) {
-    string file, str;
+varargs static void EndRid(string who, string reason) {
+    string file, str, actor;
+    object foo = previous_object();
 
-    file = DIR_TMP + "/" + (string)this_player()->GetKeyName();
-    if( !(str = read_file(file)) ) str = "No comment.\n";
-    log_file("rid", "\n" + who + " by " + (string)this_player()->GetCapName() +
+    if(this_player()) actor = this_player()->GetCapName();
+    else if(foo) actor = base_name(foo);
+    else actor = "UNKNOWN";
+
+    if(!reason){
+        file = DIR_TMP + "/" + this_player()->GetKeyName();
+        if( !(str = read_file(file)) ) str = "No comment.\n";
+    }
+    else str = reason;
+    log_file("rid", "\n" + who + " by " + actor +
       "\n" + str + "\n");
     write(who + " has been ridded from " + mud_name() + ".");
+    PLAYERS_D->RemovePendingEncre(lower_case(who));
     PLAYERS_D->RemoveUser(lower_case(who));
 }
 

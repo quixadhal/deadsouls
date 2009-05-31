@@ -20,7 +20,7 @@ static void create() {
     SaveFile = save_file(SAVE_PARTIES);
     Parties = ([]);
     if( unguarded((: file_exists(SaveFile) :)) ){
-        unguarded((: RestoreObject(SaveFile) :));
+        RestoreObject(SaveFile);
     }
     SetNoClean(1);
     foreach(mixed key, mixed val in Parties){
@@ -28,7 +28,7 @@ static void create() {
         members -= ({ 0 });
         if(!sizeof(members)) map_delete(Parties, key);
     }
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
 }
 
 mixed array GetParties(){
@@ -48,7 +48,7 @@ mixed CanChangeLeader(object who, object targ) {
         return "You must be the party leader in order to change leaders.";
     if( member_array(targ, p->Members) == -1 )
         return (string)targ->GetName() + " is not in the party.";
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -126,7 +126,7 @@ mixed eventChangeLeader(object who, object targ) {
     p->Leader = targ;
     CHAT_D->eventSendChannel("System", pname, (string)targ->GetName() + " is now "
             "the leader.");
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -141,7 +141,7 @@ mixed eventCreateParty(object who, string name) {
     this_party->Invited = ({});
     Parties[name] = this_party;
     who->eventPrint("Party " + name + " successfully created.", MSG_SYSTEM);
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -158,7 +158,7 @@ mixed eventInviteMember(object who, object targ) {
     targ->eventPrint("You have been invited to join the party \"" + name +
             "\".\nType \"party join " + name + "\" in 60 "
             "seconds to join.", MSG_SYSTEM);
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -174,13 +174,13 @@ mixed eventJoinParty(object who, string name) {
     this_party->Members += ({ who });
     CHAT_D->eventSendChannel("System", name, (string)who->GetName() +
             " has joined the party.");    
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
     return 1;
 }
 
 mixed eventLeaveParty(object who) {
     mixed ret = eventRemoveMember(who, who);
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
     return ret;
 }
 
@@ -210,7 +210,7 @@ mixed eventRemoveMember(object who, object targ) {
     }
     targ->eventPrint("You are no longer a member of the party " + name +
             ".", MSG_SYSTEM);
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -224,7 +224,7 @@ mixed eventRemoveParty(object who) {
     foreach(ob in ((class party)Parties[name])->Members)
         ob->SetParty(0);
     map_delete(Parties, name);
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
     return 1;
 }
 

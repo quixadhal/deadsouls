@@ -47,6 +47,7 @@ void create_save();
 object player_object(string nom);
 static void eventReset();
 int GetResetNumber();
+int ReadName();
 
 #endif /* __MASTER_H */
 

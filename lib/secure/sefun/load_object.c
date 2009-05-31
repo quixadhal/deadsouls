@@ -31,7 +31,6 @@ object load_object(string str) {
     if(ob = find_object(str)) return ob;
     if(grepp(str, "cratylus")){
         string proof = read_file(str,4,3);
-        //tc("proof2: "+proof);
     }
     catch(call_other(str, "???"));
     return find_object(str);

@@ -14,16 +14,13 @@ inherit LIB_DAEMON;
 int CheckMud(string name){
     int ret = 3;
     string *imc2list, tmpname;
-    //tc("name: "+name);
     if(!(tmpname = INTERMUD_D->GetMudName(name)) ) ret = 0;
     if(tmpname && !INTERMUD_D->GetMudList()[tmpname][0]) ret = 0;
     if(ret){
-        //tc("ret: "+ret, "blue");
         return ret;
     }
     if(sizeof(IMC2_D->GetMudName(name, 1))) ret = 2;
     else ret = 0;
-    //tc("ret: "+ret, "red");
     return ret;
 }
 
@@ -31,11 +28,10 @@ mixed cmd(string str) {
     string *words;
     mixed mud;
     object ob, machine;
-    int i, maxi;
+    int i, maxi, insttell;
     string who, msg, tmp, tmp2, machine_message, retname, me;
 
     if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
-
     if(str == "hist" || str == "history"){
         string ret = "Your tell history: \n\n"; 
         ret += implode(this_player()->GetTellHistory(),"\n");
@@ -84,13 +80,10 @@ mixed cmd(string str) {
             retname = words[0];
             tmp = convert_name(implode(words[0..i], " "));
             memb = member_array(tmp, remote_users());
-            //tc("tmp: "+identify(tmp));
-            //tc("memb: "+memb,"blue");
             ob = find_player(tmp);
             if(!ob) npc = find_living(tmp);
             if(ob || memb != -1 || npc){
                 if(!ob && memb == -1 && npc) ob = npc;
-                //tc("crunt", "red");
                 who = tmp;
                 if(i+1 < maxi) msg = implode(words[i+1..maxi-1], " ");
                 else msg = "";
@@ -103,7 +96,8 @@ mixed cmd(string str) {
                 msg = implode(words," ");
                 this_player()->eventTellHist("You tried to tell "+retname+": "+
                         "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
-                //tc("1");
+                insttell = 1;
+                INSTANCES_D->SendTell(retname, msg);
                 write("Tell whom what?");
                 return 1;
             }
@@ -127,9 +121,10 @@ mixed cmd(string str) {
         }
         return 1;
     }
-    //tc("who: "+who);
     if(ob){
         mixed err;
+        if(!insttell) INSTANCES_D->SendTell(who, msg);
+        insttell = 1;
         if(archp(ob) || (!archp(this_player()) && creatorp(ob))) 
             me = capitalize(this_player()->GetKeyName());
         else me = this_player()->GetName(); 
@@ -142,16 +137,12 @@ mixed cmd(string str) {
             if(parse_it){
                 machine->get_message(me+" tells you: "+msg+"\n");
                 machine_message=machine->send_message();
-
-                //message("info", machine_message, this_player());
-                //return 1;
             }
         }
         if( (err = (mixed)this_player()->CanSpeak(ob, "tell", msg)) != 1){
             if(ob && !creatorp(ob)) this_player()->AddMagicPoints(15);
             this_player()->eventTellHist("You tried to tell "+retname+": "+
                     "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
-            //tc("2");
             return err || "Tell whom what?";
         }
         if( ob->GetInvis() && ( ( archp(ob) && !archp(this_player()) ) 
@@ -164,12 +155,12 @@ mixed cmd(string str) {
             ob->eventTellHist(inv_ret);
             ob->SetProperty("reply", lower_case(me));
             ob->SetProperty("reply_time", time());
+            if(!insttell) INSTANCES_D->SendTell(who, msg);
+            insttell = 1;
             this_player()->eventTellHist("You tried to tell "+retname+": "+
                     "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
-            //tc("3");
             if(query_verb() == "tell") return "Tell whom what?";
             else {
-                //tc("4");
                 write("Tell whom what?");
                 return 1;
             }
@@ -200,12 +191,11 @@ mixed cmd(string str) {
     }
     else {
         string ret;
-        //tc("yay");
         ret = "%^BOLD%^RED%^You tell " + capitalize(who) +
             ":%^RESET%^ " + msg;
         this_player(1)->eventPrint(ret, MSG_CONV);
         this_player(1)->eventTellHist(ret);
-        INSTANCES_D->SendTell(who, msg);
+        if(!insttell) INSTANCES_D->SendTell(who, msg);
     }
     return 1;
 }

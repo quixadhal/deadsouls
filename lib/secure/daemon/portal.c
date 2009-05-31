@@ -124,7 +124,7 @@ void heart_beat(){
     }
     if(heart_count > 3600){
         heart_count = 0;
-        unguarded( (: SaveObject(SaveFile, 1) :) );
+        SaveObject(SaveFile, 1);
     }
 }
 
@@ -136,14 +136,14 @@ void create(){
     }
     SetNoClean(1);
     if(file_exists(SaveFile)){
-        unguarded( (: RestoreObject, SaveFile, 1 :) );
+        RestoreObject(SaveFile, 1);
     }
     CheckPortals();
     set_heart_beat(1);
 }
 
 int eventDestruct(){
-    unguarded( (: SaveObject(SaveFile, 1) :) );
+    SaveObject(SaveFile, 1);
     return daemon::eventDestruct();
 }
 

@@ -46,7 +46,6 @@ void init(){
 varargs int eventCalculateBonus(object ob, int take){
     int value, cls, sum, bonus, duration;
     object thingy, who = this_player();
-    //tc(get_stack(1),"red");
     if(!ob || !this_player()) return 0;
     if(this_player()->GetLevel() <= maxlevel) return 0;
     value = ob->GetBaseCost();
@@ -58,23 +57,13 @@ varargs int eventCalculateBonus(object ob, int take){
     if(duration > 1000) duration = 1000;
     if(take && bonus > 0) bonus = -bonus - (to_float(bonus) * 0.1);
     if(bonus > 0 && take) duration = -duration - (to_float(duration) * 0.1);
-    //tc("tp: "+identify(this_player())+" prev: "+identify(previous_object(-1))+" "+identify(ob));
-    //tc("value: "+value);
-    //tc("cls: "+cls);
-    //tc("sum: "+sum);
-    //tc("bonus: "+bonus);
-    //tc("duration: "+duration);
     if(sum >= 10000 || take){
         thingy = present_bonus("charity_bonus", who);
         if(thingy){
-            //tc("thingy->GetStats[\"luck\"]: "+thingy->GetStats()["luck"]);
-            //tc("thingy->GetDuration(): "+thingy->GetDuration());
             bonus += thingy->GetStats()["luck"];
             duration += thingy->GetDuration();
             if(bonus > 33) bonus = 33;
             if(duration > 5000) duration = 5000;
-            //tc("bonus: "+bonus);
-            //tc("duration: "+duration);
         }
         else thingy = new(LIB_BONUS);
         thingy->SetBonusName("charity_bonus");
@@ -82,7 +71,6 @@ varargs int eventCalculateBonus(object ob, int take){
                     "luck" : bonus,
                     ]) );
         thingy->SetBonusDuration(duration);
-        //tc("thingy: "+identify(thingy),"red");
         if(present(thingy, who) || thingy->eventMove(who)){
             object env = environment(this_object());
             object wenv = environment(who);
@@ -96,7 +84,6 @@ varargs int eventCalculateBonus(object ob, int take){
                 }
             }
         }
-        //else tc("hmm","cyan");
     }
     return 1;
 }

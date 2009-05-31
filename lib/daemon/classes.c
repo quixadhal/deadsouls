@@ -23,7 +23,7 @@ static void create() {
     daemon::create();
     SaveFile = save_file(SAVE_CLASSES);
     if( unguarded((: file_exists(SaveFile) :)) ){
-        unguarded((: RestoreObject(SaveFile) :));
+        RestoreObject(SaveFile);
     }
     if(!Classes) Classes = ([]);
     if(!converted || !sizeof(Classes)){
@@ -37,7 +37,7 @@ static void create() {
         }
     }
     converted = 1;
-    unguarded((: SaveObject(SaveFile) :));
+    SaveObject(SaveFile);
 }
 
     static private void validate() {
@@ -116,9 +116,7 @@ void RemoveClass(string class_name) {
 void SetClass(string class_name, mixed array args) {
     mapping cls = Classes[class_name];
     mixed array primes, ots;
-    //tc("CLASSES_D SetClass("+identify(class_name)+", "+identify(args)+")");
     if( !cls || !cls["Complete"] || sizeof(args) != 3 ){
-        //tc("bad","red");
         return;
     }
     args[0] = cls["Multis"];

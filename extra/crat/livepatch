@@ -16,6 +16,7 @@ cd /tmp/foo
 unzip -qd $OLDLIB $HOME/mud/$OLDLIB.zip
 #unzip -qd $NEWLIB /misc/data/mud/deadsouls/$NEWLIB.zip
 cd /mud/
+chmod -R 755 $NEWLIB/lib
 tar cfp - $NEWLIB|(cd /tmp/foo;tar xfp -)
 cd /tmp/foo
 
@@ -27,23 +28,25 @@ mv $OLDLIB/*/* $OLDLIB/
 #\rm -f $OLDLIB/lib/secure/include/config.h
 #\rm -f $NEWLIB/lib/secure/include/config.h
 
-\rm -f $OLDLIB/lib/secure/cfg/groups.cfg
-\rm -f $OLDLIB/lib/secure/cfg/mudos.cfg
-\rm -f $OLDLIB/lib/secure/cfg/mudos.win32
+\rm -f $OLDLIB/lib/secure/cfg/groups*cfg
+\rm -f $OLDLIB/lib/secure/cfg/mudos*cfg
+\rm -f $OLDLIB/lib/secure/cfg/mudos*win32
 
-\rm -f $NEWLIB/lib/secure/cfg/groups.cfg
-\rm -f $NEWLIB/lib/secure/cfg/mudos.cfg
-\rm -f $NEWLIB/lib/secure/cfg/mudos.win32
+\rm -f $NEWLIB/lib/secure/cfg/groups*cfg
+\rm -f $NEWLIB/lib/secure/cfg/mudos*cfg
+\rm -f $NEWLIB/lib/secure/cfg/mudos*win32
 
 \rm -rf $OLDLIB/lib/secure/save
 \rm -rf $OLDLIB/lib/save
 \rm -rf $OLDLIB/lib/secure/log
 \rm -rf $OLDLIB/lib/secure/upgrades
 \rm -rf $OLDLIB/lib/tmp
+\rm -rf $OLDLIB/lib/daemon/tmp
 \rm -rf $OLDLIB/lib/open
 \rm -rf $OLDLIB/lib/log
 \rm -rf $NEWLIB/lib/log
 \rm -rf $NEWLIB/lib/tmp
+\rm -rf $NEWLIB/lib/daemon/tmp
 \rm -rf $NEWLIB/lib/open
 \rm -rf $NEWLIB/lib/secure/save
 \rm -rf $NEWLIB/lib/secure/log
@@ -158,4 +161,5 @@ cp upgrades.txt /tmp/foo/
 \cp -f upgrades.txt /mud/$NEWLIB/lib/
 echo "-------"
 cat upgrades.txt
+chmod 755 upgrades.txt
 echo "-------"

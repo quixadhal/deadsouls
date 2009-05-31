@@ -88,17 +88,12 @@ void irn_checkstat(){
         if(!irn_connections[val["name"]] || 
                 irn_connections[val["name"]]["fd"] != key){
             trr("IRN checkstat: there is a conflicted record in irn_sockets.");
-            //map_delete(irn_sockets, key);
         }
     }
 
     foreach(mixed key, mixed val in irn_connections){
         if(!PingMap) PingMap = ([]);
         if(!key ||!sizeof(key)|| !val) continue;
-
-        if(PingMap[key] && !this_player()){
-            //trr("IRN pingmap for "+key+" is "+ctime(PingMap[key]));
-        }
 
         if(irn_ping_enabled && key != my_name && 
                 (time() - PingMap[key]) > irn_timeout ){
@@ -122,7 +117,6 @@ void irn_checkstat(){
         }
     }
 
-    //tc("Looking to disconnect dead irn sockets.");
     foreach(mixed key, mixed val in irn_sockets){
         int restart;
 
@@ -179,7 +173,6 @@ void irn_checkstat(){
 static int GoodPeer(int fd, mixed data){
     string ip = explode(socket_address(fd)," ")[0];
     if(!irn_enabled) return 0;
-    //trr("IRN: hit GoodPeer","yellow");
     if(member_array(ip,ok_ips) == -1){
         server_log("irn: bad ip: "+ip);
         server_log("ok_ips: "+identify(ok_ips));
@@ -205,7 +198,6 @@ static int GoodPeer(int fd, mixed data){
     }
     if(!irn_connections[data[2]]) irn_connections[data[2]] = ([]);
     irn_connections[data[2]]["fd"] = fd;
-    //trr("IRN: returning 1!","yellow");
     return 1;
 }
 
@@ -214,7 +206,6 @@ varargs static int ValidatePeer(int fd, mixed data, int outbound){
     mixed tmp;
     mixed name;
     if(!irn_enabled) return 0;
-    //trr("IRN: hit ValidatePeer","green");
     if(member_array(ip,ok_ips) == -1){
         server_log("IRN: bad ip: "+ip);
         server_log("ok_ips: "+identify(ok_ips));
@@ -241,7 +232,6 @@ varargs static int ValidatePeer(int fd, mixed data, int outbound){
         return 0;
     }
     if(sizeof(tmp = irn_connections[name])){
-        //tc("validation. fd: "+fd+", tmp: "+identify(tmp));
         if(!mapp(tmp)){
             trr("IRN ValidatePeer: wtf");
             return 0;
@@ -252,8 +242,6 @@ varargs static int ValidatePeer(int fd, mixed data, int outbound){
             return 0;
         }
     }
-    //else tc("validation. fd: "+fd+", no tmp? "+identify(tmp));
-    //trr("returning 1!","green");
     return 1;
 }
 
@@ -270,14 +258,12 @@ static string id_mud(int fd){
             foreach(mixed key, mixed val in irn_connections){
                 if(!key || !sizeof(key)) continue;
                 if(!irn_connections[key] || !irn_connections[key]["fd"]) continue;
-                //tc("irn_clear closing "+irn_connections[key]["fd"]);
                 this_object()->close_connection(irn_connections[key]["fd"]);
                 irn_connections[key]["connected"] = 0;
             }
         if(sizeof(irn_sockets))
             foreach(mixed key, mixed val in irn_sockets){
                 if(!key || !sizeof(key)) continue;
-                //tc("irn_clear (2) closing "+key);
                 this_object()->close_connection(key);
             }
 
@@ -287,11 +273,7 @@ static string id_mud(int fd){
         foreach(string key, mixed val in routers){
             if(!key || !sizeof(key)) continue;
             if(key == my_name){
-                //map_delete(routers, key);
-                continue;         }
-            //ok_ips += ({ routers[key]["ip"] });
-            if(!irn_connections[key]){
-                //irn_connections[key] = (["blocking" : 1, "type": MUD, "fd": -1, "data" : 0 ]);
+                continue;         
             }
         }
         SaveObject(SAVE_ROUTER);
@@ -300,7 +282,6 @@ static string id_mud(int fd){
 varargs void irn_setup(int clear, string whom){
     mapping which = ([]);
     if(!PingMap) PingMap = ([]);
-    //mapping tmpinfo = this_object()->query_mudinfo();
 
     server_log("%^RESET%^irn_setup("+clear+(whom ? (", "+whom ):"")+"): "+get_stack());
     foreach(mixed key, mixed val in PingMap){
@@ -314,12 +295,10 @@ varargs void irn_setup(int clear, string whom){
             foreach(mixed key, mixed val in irn_connections){
                 if(!irn_connections[key] || !irn_connections[key]["fd"]) continue;
                 irn_connections[key]["connected"] = 0;
-                //tc("irn_setup closing "+irn_connections[key]["fd"]);
                 this_object()->close_connection(irn_connections[key]["fd"]);
             }
         if(sizeof(irn_sockets))
             foreach(mixed key, mixed val in irn_sockets){
-                //tc("irn_setup closing "+key);
                 this_object()->close_connection(key);
             }
         irn_clear();
@@ -327,19 +306,15 @@ varargs void irn_setup(int clear, string whom){
 
     if(whom) which = ([ whom : routers[whom] ]);
     else which = routers;
-    //trr("irn_setup().which: "+identify(which));
 
     foreach(string key, mixed val in which){
-        //mapping owned_muds = ([]);
         if(key == my_name){
-            //map_delete(routers, key);
             continue;
         }
         ok_ips += ({ routers[key]["ip"] });
         server_log("ok_ips: "+identify(ok_ips));
         if(!irn_connections[key]){
             foreach(mixed key2, mixed val2 in mudinfo){
-                //if(val2["router"] == key) this_object()->disconnect_mud(key2, 1);
                 if(val2["router"] && val2["router"] == key &&
                         !mudinfo[key2]["disconnect_time"]){
                     trr(key+" is down, disconnecting: "+key2,"red");
@@ -353,7 +328,6 @@ varargs void irn_setup(int clear, string whom){
         int tmp_fd, sockstat;
 
         if(name == my_name){
-            //map_delete(routers, key);
             continue;
         }
         trr("About to try connecting to: "+identify(name));
@@ -429,7 +403,6 @@ varargs void eventSendStartup(int fd){
 }
 
 static void irn_write_callback(int fd){
-    //trr("hit irn_write_callback for fd"+fd);
 }
 
 static void irn_close_callback(int fd){
@@ -443,7 +416,6 @@ static void irn_close_callback(int fd){
     map_delete(irn_sockets, fd);
     trr("irn_sockets: "+identify(irn_sockets));
     trr("I'm wanting to close "+id_mud(fd)+" on fd"+fd+" now.");
-    //call_out( "eventSendStartup", 5);
 }
 
 static void irn_read_callback(int fd, mixed data){
@@ -454,23 +426,16 @@ static void irn_read_callback(int fd, mixed data){
     if(this_object()->query_mudinfo())
         MudList = this_object()->query_mudinfo();
     else MudList = ([ "wt" : "f" ]);
-    //trr("irn: hit irn_read_callback for fd"+fd+", "+id_mud(fd));
     if(!data || !sizeof(data)){
         trr("irn: no data");
     }
     else {
         if(bufferp(data)){
-            //trr("data buffer: "+identify(read_buffer(data)));
             for(i=0;i<sizeof(data);i++){
                 tmp += sprintf("%c",data[i]);
             }
         }
-        else {
-            //trr("data: "+identify(data));
-        }
     }
-    //trr("tmp: "+tmp);
-    //trr("mudinfo keys: "+identify(keys(MudList)));
     switch(data[0]){
         case "irn-startup-req" :
             trr("IRN got a startup request on fd"+fd);
@@ -478,12 +443,8 @@ static void irn_read_callback(int fd, mixed data){
         trr("IRN startup from "+data[2]+" accepted.");
         if(sizeof(irn_connections)){
             foreach(mixed key, mixed val in irn_connections){
-                //if(irn_connections[key] && irn_connections[key]["connected"]) return;
-                //trr("IRN: looking at: "+key+" "+identify(val),"green");
                 if(key == data[2] && fd != irn_connections[key]["fd"]){
-                    //this_object()->close_connection(irn_connections[key]["fd"]);
                     map_delete(irn_sockets, irn_connections[key]["fd"]);
-                    //map_delete(irn_connections, key);
                 }
             }
         }
@@ -491,11 +452,8 @@ static void irn_read_callback(int fd, mixed data){
             foreach(mixed key, mixed val in irn_sockets){
                 trr("IRN: looking at: "+key+" "+identify(val),"cyan");
                 if(val["name"] == data[2]){
-                    //this_object()->close_connection(key);
-                    //map_delete(irn_connections, data[2]);
                     if(fd != key){
                         map_delete(irn_sockets, key);
-                        //this_object()->close_connection(key);
                     } 
                 }
             }
@@ -512,30 +470,24 @@ static void irn_read_callback(int fd, mixed data){
         this_object()->clean_ghosts();
         return;
         case "irn-mudlist-altered" :
-            //trr("irn: received irn-mudlist-altered");
             if(!ValidatePeer(fd, data)) {
                 trr("irn: peer failed validation.");
                 this_object()->close_connection(fd);
                 if(irn_sockets[fd]) map_delete(irn_sockets, fd);
                 irn_checkstat();
-                //if(irn_connections[data[2]]) map_delete(irn_connections, data[2]);
                 return;
             }
-        //trr("got new delta. sending to router.");
         PingMap[data[2]] = time();
         this_object()->ReceiveList(data[7],"mudlist",data[2]);
         break;
         case "irn-mudlist-delta" :
-            //trr("irn: got mudlist delta");
             if(!ValidatePeer(fd, data)) {
                 trr("irn: peer failed validation.");
                 this_object()->close_connection(fd);
                 if(irn_sockets[fd]) map_delete(irn_sockets, fd);
                 irn_checkstat();
-                //if(irn_connections[data[2]]) map_delete(irn_connections, data[2]);
                 return;
             }
-        //trr("irn: got new delta. sending to router.");
         PingMap[data[2]] = time();
         this_object()->ReceiveList(data[7],"mudlist",data[2]);
         break;
@@ -546,10 +498,8 @@ static void irn_read_callback(int fd, mixed data){
             this_object()->close_connection(fd);
             if(irn_sockets[fd]) map_delete(irn_sockets, fd);
             irn_checkstat();
-            //if(irn_connections[data[2]]) map_delete(irn_connections, data[2]);
             return;
         }
-        //trr("got new delta. sending to router.");
         PingMap[data[2]] = time();
         this_object()->ReceiveList(data[7],"chanlist",data[2]);
         break;
@@ -560,10 +510,8 @@ static void irn_read_callback(int fd, mixed data){
             this_object()->close_connection(fd);
             if(irn_sockets[fd]) map_delete(irn_sockets, fd);
             irn_checkstat();
-            //if(irn_connections[data[2]]) map_delete(irn_connections, data[2]);
             return;
         }
-        //trr("irn: got new delta. sending to router.");
         trr("this_object()->ReceiveList("+identify(data[7])+", chanlist, "+identify(data[2]));
         PingMap[data[2]] = time();
         this_object()->ReceiveList(data[7],"chanlist",data[2]);
@@ -574,18 +522,13 @@ static void irn_read_callback(int fd, mixed data){
                 this_object()->close_connection(fd);
                 if(irn_sockets[fd]) map_delete(irn_sockets, fd);
                 irn_checkstat();
-                //if(irn_connections[data[2]]) map_delete(irn_connections, data[2]);
                 return;
             }
         PingMap[data[2]] = time();
-        //trr("irn: got new data, type: "+data[0]+". sending to router.");
         if(convert_channel && !strsrch(data[6][0],"chan") && strsrch(data[6][0],"chan-user")){
             if(irn_sockets[fd] && irn_sockets[fd]["name"] && chan_conv[irn_sockets[fd]["name"]]){
-                //trr("chan_conv");
                 foreach(string key, string val in chan_conv[irn_sockets[fd]["name"]]){
-                    //trr("data[6][6]: "+data[6][6]);
                     data[6][6] = replace_string(data[6][6],key,val);
-                    //tc("data[6][6]: "+data[6][6], "cyan");
                 }
             }
         } 
@@ -594,7 +537,6 @@ static void irn_read_callback(int fd, mixed data){
         this_object()->read_callback(data[6][2],data[6]);
         break;
         case "irn-ping" :
-            //trr("irn: got ping from "+data[2]+" on fd"+fd);
             if(!ValidatePeer(fd, data)){
                 trr("irn: "+data[2]+" failed validation.");
                 this_object()->close_connection(fd);
@@ -603,8 +545,6 @@ static void irn_read_callback(int fd, mixed data){
                 return;
             }
         PingMap[data[2]] = time();
-        //trr("irn: got ping from "+data[2]+" on fd"+fd+", PingMap: "+
-        //identify(PingMap)+", time: "+time());
         break;
         default : 
         if(!ValidatePeer(fd, data)) {
@@ -614,7 +554,6 @@ static void irn_read_callback(int fd, mixed data){
             if(irn_connections[data[2]]) map_delete(irn_connections, data[2]);
             return;
         }
-        //trr("irn: got i3 data, type: "+data[1][0]+". sending to router.");
         PingMap[data[2]] = time();
         if(arrayp(data[6])) this_object()->read_callback(data[6][2],data[6]);
         return;
@@ -632,14 +571,11 @@ static varargs void SendList(mixed data, int fd, string type){
         type = "irn-chanlist-delta";
         this_object()->clean_chans();
     }
-    //trr("list type: "+type);
-    //trr("%^RESET%^irn: trying to send list: "+identify(keys(data)));
     if(!irn_enabled) return;
     if(!mapp(data)){
         trr("irn: Tried to send a non-map. guilty stack: "+get_stack(),"cyan");
         return;
     }
-    //trr("1");
     tmp = copy(data);
     if(mapp(tmp)){
         foreach(mixed key, mixed val in tmp){
@@ -650,7 +586,6 @@ static varargs void SendList(mixed data, int fd, string type){
             }
             else {
                 if(type == "mudlist"){
-                    //if(member_array(key,cmuds) == -1) map_delete(data,key);
                     if(mudinfo[key] && mudinfo[key]["router"] &&
                             mudinfo[key]["router"] != my_name){
                         trr("Not sending "+key+"."+mudinfo[key]["router"]);
@@ -663,16 +598,10 @@ static varargs void SendList(mixed data, int fd, string type){
             }
         }
     }
-    //trr("2");
     if(!fd) targets = keys(irn_sockets);
     else targets = ({ fd });
     foreach(int router in targets){
         if(!irn_sockets[router] || !mapp(irn_sockets[router])) continue;
-        //trr("3");
-        if(type == "irn-chanlist-delta"){
-            //print_long_string(find_player("cratylus"),"I'm trying to send this: "+identify(data)+" to "+router);
-            //continue;
-        }
         write_data(router, ({
                     type,
                     5,
@@ -708,18 +637,14 @@ varargs void SendWholeList(int fd, string type){
         return;
     }
     foreach(mixed key, mixed val in tmp){
-        //trr("irn: Sending "+key,"white");
         if(type == "mudlist") if(mapp(val)){
-            //trr("scheduling "+key,"red");
             i++;
             call_out( (: SendList :), i, ([ key : val ]), fd, type );
-            //SendList( ([ key : val ]), fd, type );
         }
         if(type == "chanlist"){
             foreach(mixed key2, mixed val2 in val){
                 i++;
                 call_out( (: SendList :), i, ([ key : ([ key2 : val2 ]) ]), fd, type );
-                //SendList( ([ key : ([ key2 : val2 ]) ]), fd, type );
             }
         }
     }
@@ -746,19 +671,13 @@ static void SendMessage(mixed data){
         tmpdata = copy(data);
         if((convert_channel || convert_channel2) && !strsrch(tmpdata[0],"chan") && strsrch(tmpdata[0],"chan-user")){
             routername = irn_sockets[router]["name"];
-            //trr("looking at "+routername+" for conversion.");
             if(member_array(routername, keys(chan_conv)) != -1){
-                //trr("yep. it's: "+identify(chan_conv[routername]));
                 foreach(string key, string val in chan_conv[routername]){
                     if(convert_channel){
-                        //trr("conv1: tmpdata[6]: "+tmpdata[6]);
                         tmpdata[6] = replace_string(tmpdata[6],val,key);
-                        //trr("conv1: tmpdata: "+identify(tmpdata));
                     }
                     if(convert_channel2){
-                        //trr("conv2: tmpdata[6]: "+tmpdata[6]);
                         tmpdata[6] = replace_string(tmpdata[6],key,val);
-                        //trr("conv2: tmpdata: "+identify(tmpdata));
                     }
 
                 }
@@ -807,11 +726,6 @@ string Report(){
         ret += "\n";
     }
     ret += "ok_ips: "+identify(ok_ips)+"\n";
-    //trr("irn: irn_connections: "+identify(irn_connections),"green");
-    //trr("irn: irn_sockets: "+identify(irn_sockets),"cyan");
-    foreach(mixed element in keys(irn_sockets)){
-        //trr("socket_status("+element+"): "+identify(socket_status(element)),"green");
-    }
     foreach(mixed key, mixed val in PingMap){
         if(key == my_name) continue;
         ret += key+" lastping: "+time_elapsed(time()-val)+" ago\n";
@@ -853,12 +767,10 @@ int toggle_irn(int x){
 }
 
 varargs mixed irn_ping(mixed target, int code){
-    //return 1010011;
     if(!intp(target)){
         target = irn_connections[target];
         if(target && target["fd"]) target = target["fd"];
         else {
-            //trr("badping: "+identify(target));
             return 0;
         }
     }
@@ -866,7 +778,6 @@ varargs mixed irn_ping(mixed target, int code){
     if(!irn_sockets[target]) return 0;
     if(!code) code = time();
 
-    //trr("Sending ping to: "+irn_sockets[target]["name"]+" on fd"+target,"green");
     write_data(target, ({
                 "irn-ping",
                 5,

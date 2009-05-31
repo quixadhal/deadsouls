@@ -1,4 +1,21 @@
-#!/bin/sh
+#!/bin/bash
+
+if [ $1 ]
+then
+export DRIVER=$1
+else
+export DRIVER="driver"
+fi
+
+if [ $2 ]
+then
+export CFG="mudos."$2".cfg"
+else
+export CFG="mudos.cfg"
+fi
+
+echo "driver: "$DRIVER
+echo "cfg: "$CFG
 
 # Specify your mud dir here.
 MUDHOME=""
@@ -33,13 +50,13 @@ while [ true ]; do
     cat $MUDHOME/lib/log/runtime >> $MUDHOME/lib/log/runtime.boot
     rm $MUDHOME/lib/log/runtime
 
-    if [ $MUDHOME ] && [ -f $MUDHOME/bin/driver ]  && [ -f $MUDHOME/bin/mudos.cfg ]
+    if [ $MUDHOME ] && [ -f $MUDHOME/bin/$DRIVER ]  && [ -f $MUDHOME/bin/$CFG ]
         then
-        $MUDHOME/bin/driver $MUDHOME/bin/mudos.cfg 
+        $MUDHOME/bin/$DRIVER $MUDHOME/bin/$CFG 
         else
-        if [ -f ./driver ]  && [ -f ./mudos.cfg ] 
+        if [ -f ./$DRIVER ]  && [ -f ./$CFG ] 
             then
-            ./driver ./mudos.cfg
+            ./$DRIVER ./$CFG
             else
             break
         fi

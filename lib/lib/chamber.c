@@ -339,10 +339,6 @@ int eventMove(mixed dest){
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     object env = environment(this_object());
     if(this_object()->GetClosed() || GetOpacity() > 50) return 0;
-    //tc("prev: "+identify(previous_object()),"red");
-    //if(env && previous_object() == env) return 1;
-    //tc("env: "+identify(env),"green");
-    //tc("stack: "+get_stack(),"blue");
     return bot::eventPrint(msg, arg2, arg3);
 }
 
@@ -350,10 +346,6 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
         string msg, string lang){
     object env = environment(this_object());
     if(this_object()->GetClosed()) return 0;
-    //tc("prev: "+identify(previous_object()),"red");
-    //if(env && previous_object() == env) return 1;
-    //tc("env: "+identify(env),"green");
-    //tc("stack: "+get_stack(),"blue");
     return bot::eventHearTalk(who, target, cls, verb, msg, lang);
 }
 

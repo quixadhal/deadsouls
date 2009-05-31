@@ -71,11 +71,6 @@ string SetClass(string class_name){
      */
     CLASSES_D->SetClass(class_name, args);
 
-    if(interactive()){
-        //tc("Class: "+identify(Class),"red");
-        //tc("args: "+identify(args),"green");
-    }
-
     if( Class ){
         string multi;
 
@@ -97,12 +92,8 @@ string SetClass(string class_name){
         }
     }
     foreach(tmp in args[1]){
-        if(interactive()){
-            //tc("tmp: "+identify(tmp),"black");
-        }
         SetSkill(tmp...);
     }
-    //tc("Class: "+identify(Class));
     return (Class = class_name);
 }
 

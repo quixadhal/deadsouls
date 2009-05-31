@@ -1,5 +1,6 @@
 #include SECRETS_H
 #include <daemons.h>
+#include <commands.h>
 #include <lib.h>
 
 inherit LIB_DAEMON;
@@ -25,7 +26,6 @@ static varargs void ModSecret(string secret, mixed val){
 
     secfile = unguarded( (: read_file("/secure/include/secrets.h") :) );
     secarr = explode(secfile, "\n");
-    //tc("secfile: "+secfile, "red");
     if(!undefinedp(Secrets[secret])){
         type = typeof(Secrets[secret]);
     }
@@ -44,13 +44,11 @@ static varargs void ModSecret(string secret, mixed val){
         ret += ({ trim(line) });
     }
     secfile = implode(ret, "\n") + "\n";
-    //tc("secfile: "+secfile, "blue");
     unguarded( (: write_file("/secure/include/secrets.h", secfile, 1) :) );
 }
 
 mixed GetSecret(string secret){
     string prev = base_name(previous_object());
-    //tc("prev: "+prev+", secret: "+secret);
     if( (master()->valid_apply(({ "SECURE" }))) ){
         return copy(Secrets[secret]);
     }
@@ -79,7 +77,7 @@ mixed SetSecret(string secret, mixed val){
         ModSecret(secret, val);
         return copy(Secrets[secret]);
     }
-    if(!strsrch(secret, "IMC2_") && prev == IMC2_D){
+    if(!strsrch(secret, "IMC2_") && (prev == IMC2_D || prev == CMD_MUDCONFIG)){
         ModSecret(secret, val);
         return copy(Secrets[secret]);
     }

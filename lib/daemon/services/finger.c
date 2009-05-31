@@ -14,7 +14,7 @@
 
 void eventReceiveFingerRequest(mixed array packet) {
     mixed array ret;
-
+    PING_D->SetOK();
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( !(ret = (mixed array)FINGER_D->GetRemoteFinger(packet[6])) ) {
         INTERMUD_D->eventWrite(({ "error", 5, mud_name(), 0, packet[2],
@@ -35,7 +35,7 @@ void eventReceiveFingerReply(mixed array packet) {
     string fing;
     object ob;
     int i;
-
+    PING_D->SetOK();
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( !(ob = find_player(convert_name(packet[5]))) ) return;
     fing = "Finger information on " + packet[6] + " from " + packet[2] + ":\n";

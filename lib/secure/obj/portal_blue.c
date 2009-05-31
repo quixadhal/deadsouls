@@ -157,7 +157,6 @@ string DescribeLiving(mixed var) {
 }
 
 varargs mixed eventShowInterior(object who, object target){
-    //tc("who: "+identify(who)+", target: "+identify(target));
     eventDescribeEndpoint();
     return 1;
 }

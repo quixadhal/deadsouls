@@ -15,9 +15,9 @@ static void create() {
     if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
         cp(old_savename(SaveFile), SaveFile);
     }
-    unguarded( (: RestoreObject(SaveFile) :) );
+    RestoreObject(SaveFile);
     if(sizeof(Skills)){
-        unguarded( (: SaveObject(SaveFile) :) );
+        SaveObject(SaveFile);
     }
     else {
         call_out("SetSkills", 5);

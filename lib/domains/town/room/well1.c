@@ -61,7 +61,6 @@ void init(){
 int eventCompleteQuest(object ob){
     string *quests;
     quests = ob->GetQuests();
-    //tc("player: "+identify(ob));
     if(ob && !ob->GetQuest("Town Well Quest")){
         ob->AddQuest("the Plumber","Town Well Quest");
         tell_player(ob, "%^BOLD%^%^RED%^You have solved the Town Well Quest.");

@@ -40,7 +40,6 @@ void init(){
 }
 
 mixed CanPull(object who, string target) {
-    //tc("me: "+identify(this_object())+", who: "+identify(who)+", target: "+identify(target));
     if(!environment() || environment() != who ){
         return "#You do not have the grenade.";
     }

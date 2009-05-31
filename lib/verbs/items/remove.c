@@ -31,7 +31,7 @@ mixed can_remove_obj() {
         return "You cannot do anything.";
     }
     if(intp(check_light())) return this_player()->CanManipulate();
-    else return check_light();
+    else return 1;
 
 }
 

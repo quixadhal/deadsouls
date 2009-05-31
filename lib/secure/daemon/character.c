@@ -21,7 +21,7 @@ static void create() {
     SetNoClean(1);
     Links = ([]);
     if(unguarded((: file_exists(SaveFile) :))){
-        unguarded((: RestoreObject, SaveFile :));
+        RestoreObject(SaveFile);
     }
 }
 
@@ -133,7 +133,7 @@ mixed eventSaveTime() {
     }
     c->LastOnDate = time();
     c->LastOnWith = who;
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
     return 1;
 }
 

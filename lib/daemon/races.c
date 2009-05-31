@@ -45,17 +45,15 @@ static void create() {
     daemon::create();
     SaveFile = save_file(SAVE_RACES);
     if(file_exists(SaveFile)){
-        //tc("yes","green");
-        unguarded((: RestoreObject(SaveFile) :));
+        RestoreObject(SaveFile);
     }
-    //else tc("no","red");
     if( !sizeof(Races) ) ReloadRaces();
     if(!FlyingRaces) FlyingRaces = ({});
     if(!LimblessCombatRaces) LimblessCombatRaces = ({});
     if(!LimblessRaces) LimblessRaces = ({});
     if(!NonBitingRaces) NonBitingRaces = ({});
     if(!NonMeatRaces) NonMeatRaces = ({});
-    unguarded((: SaveObject(SaveFile) :));
+    SaveObject(SaveFile);
 }
 
     static private void validate() {
@@ -172,7 +170,6 @@ int GetRaceMass(string str){
 
 int GetRaceSize(string str){
     int Size;
-    //tc("str: "+str);
     Size = Races[str]["Size"];
     if(Size) return Size;
     else return 0;

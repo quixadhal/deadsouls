@@ -23,7 +23,7 @@ static void create() {
     SaveFile = save_file(SAVE_VOTES);
     SetNoClean(1);
     if( file_exists( SaveFile ) ) {
-        unguarded( (: RestoreObject, SaveFile :) );
+        RestoreObject(SaveFile);
         if( mapVoting["status"] == VOTE_RUNNING )
             call_out( (: eventNextDay :), DAY );
     }
@@ -46,7 +46,7 @@ static void create() {
 }
 
 mixed eventSave() {
-    unguarded( (: SaveObject, SaveFile :) );
+    SaveObject(SaveFile);
     return VOTE_SUCCESS;
 }
 

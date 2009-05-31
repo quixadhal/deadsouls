@@ -76,8 +76,11 @@ mixed direct_attack_liv(){
 }
 
 mixed CanAttack(){
+    if(this_player() == this_object()){
+        return "You can't attack yourself.";
+    }
     if( userp(this_player()) && userp(this_object()) ){
-        if(!(int)environment(this_player())->CanAttack(this_object())){
+        if(!(environment()->CanAttack(this_player(), this_object()))){
             return "Player killing is not permitted in this area!";
         }
         if(intp(Attackable) && !Attackable){
@@ -194,10 +197,10 @@ mixed indirect_give_obj_to_liv(object item){
     if( !item ) return 0;
     if( this_player() == this_object() ) return "Are you confused?";
     if( environment(item) != this_player() ) return "You don't have that!";
-    if(!CanCarry((int)item->GetMass())){
+    if(!CanCarry(item->GetMass())){
         return this_object()->GetName()+" is carrying too much.";
     }
-    else return CanCarry((int)item->GetMass());
+    else return CanCarry(item->GetMass());
 }
 
 mixed indirect_give_obj_liv(object item){
@@ -248,7 +251,7 @@ mixed indirect_steal_obj_from_liv(object item, mixed args...){
         return "You are too busy fighting at the moment.";
     tmp = (mixed)item->CanDrop(this_object());
     if( tmp != 1 )
-        return GetName() + " will not let go of " + (string)item->GetShort()+".";
+        return GetName() + " will not let go of " + item->GetShort()+".";
     return 1;
 }
 
@@ -515,7 +518,7 @@ mixed eventInfect(object germ){
 
 varargs mixed eventShow(object who, string str){
     who->eventPrint(this_object()->GetLong(str));
-    environment(who)->eventPrint((string)this_player()->GetName() +
+    environment(who)->eventPrint(this_player()->GetName() +
             " looks at " + this_object()->GetShort() + ".",
             ({ who, this_object() }));
     return 1;
@@ -537,8 +540,8 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill){
         skill2 += GetStatLevel("coordination");
         skill2 += GetStatLevel("charisma");
         skill2 += to_int(GetStatLevel("luck")/2);
-        if( ClassMember("rogue") ) skill2 += (int)GetLevel();
-        if( ClassMember("thief") ) skill2 += (int)GetLevel();
+        if( ClassMember("rogue") ) skill2 += GetLevel();
+        if( ClassMember("thief") ) skill2 += GetLevel();
 
         if( !stringp(what) ){
             int x;
@@ -558,7 +561,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill){
 
             /* You can't steal from this target */
             if( !tmp )
-                return "You cannot steal from " + (string)target->GetName() +".";
+                return "You cannot steal from " + target->GetName() +".";
 
             /* Steal from target was succesful */
             else if( tmp == 1 ){
@@ -571,7 +574,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill){
                 AddSkillPoints("stealth", random(sizeof(what)) * 20);
                 AddStaminaPoints(-2);
                 this_player()->eventPrint(sprintf("You steal %s from %s.",
-                            "something", (string)target->GetName()) );
+                            "something", target->GetName()) );
                 what->eventMove(this_object());
                 return 1;
             }
@@ -594,7 +597,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill){
 
         /* You can't steal from this target */
         if( !tmp )
-            return "You cannot steal from " + (string)target->GetName() + ".";
+            return "You cannot steal from " + target->GetName() + ".";
 
         /* Steal from target was succesful */
         else if( tmp == 1 ){
@@ -631,13 +634,13 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill){
     if( objectp(what) ) sr = 100 * sizeof(what);
     else sr = 100;
     if( random(sr) > skill ){
-        target->eventPrint("You notice " + (string)who->GetName() + " trying "
+        target->eventPrint("You notice " + who->GetName() + " trying "
                 "to steal from you!");
         if( !userp(this_object()) ){
-            who->eventPrint("%^RED%^" + (string)GetName() + "%^RED%^ "
+            who->eventPrint("%^RED%^" + GetName() + "%^RED%^ "
                     "notices your attempt at treachery!",
                     environment(who) );
-            eventForce("attack " + (string)who->GetKeyName());
+            eventForce("attack " + who->GetKeyName());
             this_object()->SetProperty("steal victim", 1);
         }
         return 2;
@@ -713,11 +716,9 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
     int check = GUARD_D->CheckMove(this_object(), dest, dir);
 
     if(!check){
-        //tc("eventMoveLiving("+identify(dest)+", "+identify(dir)+")");
         eventPrint("You remain where you are.", MSG_SYSTEM);
         return 0;
     }
-    //else tc("hmmm. dest: "+identify(dest)+", dir: "+identify(dir));
     if(omsg && stringp(omsg)){
         omsg = replace_string(omsg, "$N", this_object()->GetName());
     }
@@ -726,7 +727,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
     }
 
     if( prev = environment() ){
-        prevclim = (string)prev->GetClimate();
+        prevclim = prev->GetClimate();
         if( stringp(dest) ){
             if(dest[0] != '/'){
                 string *arr;
@@ -736,7 +737,6 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
             }
         }
         if( !eventMove(dest) ){
-            //tc("1");
             eventPrint("You remain where you are.", MSG_SYSTEM);
             return 0;
         }
@@ -744,7 +744,6 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
             inv = filter(all_inventory(prev), (: (!this_object()->GetInvis($1) 
                             && living($1) && !GetProperty("stealthy") && ($1 != this_object())) :));
         }
-        //if(!dir){
         if(!dir) dir = "away";
         if(query_verb() == "home" ){
             if(!omsg || omsg == "") omsg = GetMessage("telout");
@@ -763,11 +762,9 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
             if(!omsg || omsg == "") omsg = GetMessage("leave",dir);
             if(!imsg || imsg == "") imsg = GetMessage("come");
         }
-        //}
         if(sizeof(inv)) inv->eventPrint(omsg, MSG_ENV);
     }
     else if( !eventMove(dest) ){
-        //tc("2");
         eventPrint("You remain where you are.", MSG_SYSTEM);
         return 0;
     }
@@ -786,7 +783,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
         AddSkillPoints("stealth", 10 + GetSkillLevel("stealth")*2);
     }
     this_object()->eventDescribeEnvironment(this_object()->GetBriefMode());
-    newclim = (string)environment()->GetClimate();
+    newclim = environment()->GetClimate();
     if( !GetUndead() ) switch( newclim ){
         case "arid":
             if(!creatorp(this_object())) AddStaminaPoints(-0.3);

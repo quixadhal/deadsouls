@@ -43,3 +43,7 @@ void eventReceiveAuthRequest(mixed array packet) {
         tn("We have a new mud! "+packet[2]+" has joined intermud.","red");
     }
 }
+
+void eventSendAuthRequest(string target){
+    INTERMUD_D->eventWrite(({ "auth-mud-req", 5, mud_name(), 0, target, 0 }));
+}

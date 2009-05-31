@@ -155,11 +155,8 @@ mixed cmd(mixed args) {
     load_object("/secure/cmds/creators/update")->cmd("/secure/lib/connect");
     if(str == "SNOOPER") SNOOP_D->SnoopClean();
     new_config_file = "";
-    //tc("reload_player: "+reload_player);
-    //tc("dudename: "+dudename);
     if(reload_player){
         object player = unguarded((: find_player(dudename) :));
-        //tc("player: "+identify(player));
         if(player){
             tell_player(player, "You've had your group membership changed "+
                     "in an important way.\n\nYour user object will be reloaded in "+

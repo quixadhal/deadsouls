@@ -199,9 +199,6 @@ int GetAmbientLight(){
     else {
         a = ambiance::GetAmbientLight();
     }
-    if( GetClimate() != "indoors" ){
-        //a += SEASONS_D->GetRadiantLight() - GetShade();
-    }
 
     foreach(object ob in all_inventory()){
         a += ob->GetRadiantLight();
@@ -876,7 +873,6 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 
                 tmp = GetExit(exit);
                 if( !find_object(tmp) ) continue;
-                //if( (door = GetDoor(exit)) && (int)door->GetClosed() ) continue;
                 tmp->eventHearTalk(who, target, TALK_LOCAL, verb, msg, lang);
             }
             foreach(exit in GetEnters(1)){
@@ -952,7 +948,7 @@ static void create(){
 
 int eventDestruct(){
     if(GetPersistent()){
-        unguarded( (: SaveObject() :) );
+        SaveObject();
     }
     return ::eventDestruct();
 }
@@ -1221,20 +1217,15 @@ void CompileNeighbors(mixed coords){
     x2 = Coords[0]+2;
     y2 = Coords[1]+2;
     NeighborCoords = ({ });
-    //tc("Coords: "+identify(Coords));
     for(x = Coords[0]-1; x < x2; x++){
-        //tc("x: "+x,"red");
         for(y = Coords[1]-1; y < y2; y++){
-            //tc("y: "+y, "green");
             NeighborCoords += ({ ({ x, y, 0 }) });
-            //tc(x+","+y, "blue");
         }
     }
     NeighborCoords -= ({ Coords });
     foreach(mixed foo in NeighborCoords){
         mixed bar = ROOMS_D->GetGrid(foo[0]+","+foo[1]+","+foo[2]);
         if(bar && bar["room"]){
-            //tc("Neighbor: "+bar["room"], "black");
             Neighbors += ({ bar["room"] });
         }
     }
@@ -1276,7 +1267,6 @@ static void init(){
     }
 #if GRID
     if(this_object() && prev && (living(prev) || prev->GetMapper())){
-        //tc("trying to set "+identify(this_object()),"green");
         if(MASTER_D->GetPerfOK()){
             Coords = ROOMS_D->SetRoom(this_object(), prev);
             CompileNeighbors(Coords);

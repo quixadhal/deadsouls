@@ -7,15 +7,18 @@ mixed cmd(string str) {
     string target;
     if(!str || str == "") str = mud_name();
     target = INTERMUD_D->GetMudName(str);
+    if(!target){
+        write("Unknown target mud.");
+        return 1;
+    }
     this_player()->SetProperty("pinging",1);
-    INTERMUD_D->eventWrite(({ "auth-mud-req", 5, mud_name(), 0,target, 0 }));
-
+    SERVICES_D->eventSendAuthRequest(target);
     return 1;
 }
 
 void help() {
     message("help", "Syntax: ping <mudname>\n\n"
-            "Pings a mud to test connectivity. Only pings to "
+            "Pings a mud to test this mud's connectivity. Only pings to "
             "Dead Souls muds are supported and recommended.\n"
             "Note that you may receive a reply from a different "
             "mud than the one specified if someone else already "

@@ -47,7 +47,7 @@ int PrintMudInfo(string str){
     string mud, tempy;
     int all = 0;
     if(!MudList && unguarded((: file_exists(SaveFile) :))){
-        unguarded( (: RestoreObject, SaveFile, 1 :) );     
+        RestoreObject(SaveFile, 1);     
     }
     if(!MudList) MudList = ([]);
     if(!str || str == "all"){
@@ -73,7 +73,6 @@ int PrintMudInfo(string str){
     }
     info = INTERMUD_D->GetMudList()[tempy];
     if(!info) info = MudList[tempy];
-    //tc("info: "+identify(info));
     if(!info){
         write("No information available on "+tempy);
         return 1;
@@ -133,14 +132,14 @@ void create(){
     person = 0 ;
     set_heart_beat(1);
     if(unguarded((: file_exists(SaveFile) :))){
-        unguarded( (: RestoreObject, SaveFile, 1 :) );
+        RestoreObject(SaveFile);
     }
     if(mapp(list)){
         foreach(mixed key, mixed val in list){
             if(!MudList[key]) MudList[key] = val;
         }
     }
-    unguarded( (: SaveObject(SaveFile) :) );
+    SaveObject(SaveFile);
 }
 
 int PrintUnconnectedInfo(){
@@ -239,41 +238,28 @@ varargs int do_connect(string args, string mud){
                 error = "Unknown error code: " + new_socket + ".\n" ;
                 break ;
         }
-        //tc( "Unable to connect, problem with socket_create.\n"
-        //"Reason: " + error ) ;
         return 0 ;
     }
     sc_result = socket_connect( new_socket, ip_address + " " + port,
             "read_callback", "write_callback" ) ;
     if( sc_result != EESUCCESS ){
-        //tc( "Failed to connect.\n" ) ;
         return 0 ;
     }
     attempting = 1 ;
     socket = new_socket ;
     age = time();
-    //tc("trying "+mud+" at "+args);
     if(!Status) Status = ([]);
     Status[new_socket] = mud;
     return 1 ;
 }
 
 void read_callback( int fd, mixed message ){
-    //tc(message);
     if(!Confirmed) Confirmed = ([]);
     if(!Confirmed[Status[fd]]) Confirmed[Status[fd]] = (["banner" : message, ]);
     else Confirmed[Status[fd]]["banner"] +=  message;
 }
 
 void close_callback( int fd ){
-    //tc("close_callback("+fd+")");
-    if( connected ){
-        //tc("Connection closed by foreign host.\n");
-    }
-    if( attempting )
-    {       
-        //tc("Attempt failed.\n");
-    }
     socket_close( fd ) ;
     attempting = 0 ;
     connected = 0 ;
@@ -281,14 +267,12 @@ void close_callback( int fd ){
 }
 
 void write_callback( int fd ){
-    //tc("write_callback("+fd+")");
     attempting = 0 ;
     connected = 1 ;
 }
 
 int parse_comm( string str ){
     if(str=="dcon" || str=="quit"){
-        //tc("You return from your visit to another mud!\n");
         socket_close( socket ) ;
         attempting = 0 ;
         connected = 0 ;

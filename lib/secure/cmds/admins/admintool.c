@@ -806,9 +806,6 @@ int ChangeName(){
     write("mudconfig mudname <name>");
     Menu();
     return 1;
-    //write("Please enter the new name for your MUD:\n");
-    //input_to( (: eventChangeName :) );
-    //return 1;
 }
 
 varargs int eventChangeName(string newname, int automated){
@@ -1199,7 +1196,6 @@ int eventEditGroup(string members){
         }
         if(strsrch(members,":") != -1) dudes = explode(members,":");
         else dudes = ({ members });
-        //tc("dudes: "+identify(dudes));
 
         if(member_array(this_player()->GetKeyName(),dudes) == -1) {
             write("You can only modify this line with admintool if you include yourself in it. Modification cancelled.\n");

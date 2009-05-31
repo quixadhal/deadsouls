@@ -48,13 +48,11 @@ void create(){
 }
 
 int eventSink(){
-    //tc("trying to sink");
     if(!armed) return ::eventSink();
     return 0;
 }
 
 int eventFall(){
-    //tc("trying to fall");
     if(!armed) return ::eventFall();
     return 0;
 }
@@ -82,8 +80,6 @@ int detonate(){
     string *stuffs;
     int num;
     ob = environment(this_object());
-    //tc("detonation: "+identify(ob));
-    //tc("detonation: "+get_stack(1));
     if(living(ob) && !(RACES_D->GetNonMeatRace(ob->GetRace()))){
         stuffs=ob->GetLimbs();
         tell_object(ob, "\nKABOOM! You are torn to pieces by a torpedo!\n");
@@ -112,14 +108,12 @@ mixed eventNegotiateObstacles(){
     int medium;
     if(!env) return 1;
     if(!inherits(LIB_ROOM,env)){
-        //tc("1");
         detonate();
         return 0;
     }
     medium = env->GetMedium();
     if(medium != MEDIUM_SURFACE && medium != MEDIUM_WATER 
             && medium != MEDIUM_AIR && medium != MEDIUM_SPACE){
-        //tc("2");
         detonate();
         return 0;
     }
@@ -128,14 +122,12 @@ mixed eventNegotiateObstacles(){
         if(living(ob) && ob->GetPosition() != POSITION_LYING){
             if(random(100) > 20){
                 this_object()->eventMove(ob);
-                //tc("3: "+identify(ob));
                 detonate();
                 return 0;
             }
         }
         else if(ob->GetMass() > 1000){
             if(random(100) > 30){
-                //tc("4: "+identify(ob));
                 detonate();
                 return 0;
             }
@@ -153,7 +145,6 @@ int eventCruise(string str){
 }
 
 mixed eventEncounterBlock(){
-    //tc("5");
     detonate();
     return ::eventEncounterBlock();
 }
@@ -190,7 +181,6 @@ int SetArmed(int x){
 }
 
 mixed eventRunOut(){
-    //tc("6");
     return detonate();
 }
 

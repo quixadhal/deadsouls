@@ -39,8 +39,6 @@ int eventTurn(object who){
     object pipe, env = environment();
     if(env) pipe = present("water pipe", env);
     if(!who) who = this_player();
-    //tc("env: "+identify(env));
-    //tc("pipe: "+identify(pipe));
     if(!turned){
         if(pipe){
             write("You turn the wheel.");

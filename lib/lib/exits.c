@@ -32,7 +32,6 @@ mixed CanGo(object who, string str){
     if( !noclip && !Exits[str] && str != "up" && str != "down" &&
             !(sizeof(this_object()->GetFlyRoom())) &&
             !(sizeof(this_object()->GetSinkRoom())) ){
-        //tc("weak 1");
         return GoMessage;
     }
     else return 1;
@@ -115,10 +114,7 @@ mixed eventGo(object who, string str){
         if(!ndest){
             write("You cannot noclip in that direction.");
         }
-        //tc("pre: "+identify(environment(who)), "red");
         moved = who->eventMoveLiving(ndest,0,0,str);
-        //tc("moved: "+moved,"green");
-        //tc("post: "+identify(environment(who)), "blue");
         if(base_name(environment(who)) != ndest){
             write("You fail to noclip in that direction.");
         }

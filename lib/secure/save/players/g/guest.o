@@ -1,0 +1,126 @@
+#/secure/save/players/g/guest.c
+InternalDesc 0
+Opacity 0
+PersistentInventory 0
+PersistentInventoryEnabled 0
+ProperNoun 1
+Modify 1
+Short "$N the unaccomplished"
+CapName "Guest"
+ExternalDesc "$N is nondescript."
+Invisible 0
+Items ([])
+Properties (["minimapping":1,"brand_spanking_new":0,"LastLocation":"/domains/default/room/start",])
+Inventory ({"([\"Value\":0,\"Mass\":5,\"Worn\":({\"right leg\",\"left leg\",}),\"#base_name#\":\"/domains/default/armor/jeans\",\"Deterioration\":0,\"Broken\":0,\"Cost\":1,\"Properties\":([]),\"Poison\":0,])","([\"Value\":0,\"Mass\":5,\"Worn\":({\"torso\",}),\"#base_name#\":\"/domains/default/armor/shirt\",\"Deterioration\":0,\"Broken\":0,\"Cost\":1,\"Properties\":([]),\"Poison\":0,])","([\"Wielded\":0,\"Value\":0,\"Class\":1,\"Worn\":0,\"Deterioration\":0,\"Broken\":0,\"Poison\":0,\"Mass\":3,\"#base_name#\":\"/domains/default/obj/handbook\",\"Cost\":1000,\"Properties\":([\"no steal\":1,]),])",})
+Messages (["telin":"$N teleports in.","leave":"$N leaves $D.","telout":"$N teleports away.","vis":"$N appears.","home":"$N goes home.","invis":"$N disappears.","come":"$N enters.","dest":"$N dests $O.","clone":"$N clones $O.",])
+RestrictedChannels ({})
+NoChanColors 0
+local_mute 0
+remote_mute 0
+local_gag 0
+remote_gag 0
+Paused 0
+localcmds ({"parserefresh","quit","nickname","unalias","alias","",})
+next_command ({})
+HistorySize 50
+History ([3:"quit",2:"[A",1:"wear shirt",0:"wear jeans",])
+CurrentWorkingDirectory "/"
+PreviousWorkingDirectory 0
+Nicknames ([])
+Aliases (["east":"go east","northeast":"go northeast","southeast":"go southeast","mwhere":"findobj $*","prac":"skills","sco":"score","x":"look at $*","w":"go west","u":"go up","out":"go out","t":"tell $*","s":"go south","practice":"skills","vnum":"help find","p":"people","north":"go north","south":"go south","bio":"biography","n":"go north","l":"look $*","west":"go west","k":"kill $*","northwest":"go northwest","southwest":"go southwest","zlist":"domains","i":"inventory","owhere":"findobj $*","e":"go east","d":"go down","c":"cre $*","alist":"ls /domains","nw":"go northwest","inv":"inventory","examine":"look at $*","trophy":"kills","up":"go up","chat":"newbie $*","dc":"dchat $*","sw":"go southwest","exa":"look at $*","ig":"intergossip $*","loot":"get all from $*","ic":"intercre $*","peace":"quell","inf":"score","down":"go down","lp":"lpuni $*","ne":"go northeast","eq":"equipment","exit":"go out","se":"go southeast","sc":"status",])
+Xverbs (["'":"say $*","]":"] $*",":":"emote $*","\"":"say $*",])
+Prompt "status"
+Terminal "ansi"
+Blocked ([])
+Screen ({79,24,})
+MessageQueue 0
+PauseMessages 0
+annoyblock 0
+MessageExceptions 0
+BlockAnnoying 0
+Age 0
+WhereBlock 0
+Brief 0
+LoginTime 1242677746
+BirthTime 1242059073
+RescueBit 0
+Password "gidddacg!`fkangglfgdobdliill`namhb`bkmloi"
+Email "@"
+RealName "Unknown"
+Rank "citizen"
+LoginSite "/domains/default/room/start"
+HostSite "127.0.0.1"
+WebPage 0
+News (["general":1233549750,"fighter":1152072058,])
+Marriages ({})
+Paranoia ([])
+MaxCarry 0
+PreventDrop 0
+DestructOnDrop 0
+PreventGet 0
+Position 2
+Undead 0
+UndeadType 0
+Mount 0
+Riders ({})
+BodyMass 0
+SaveRecurse 0
+Saved ({"Properties",})
+HealthPoints 400
+MagicPoints 660
+ExperiencePoints 50
+melee 1
+godmode 0
+Alcohol 0
+Caffeine 0
+Food 98
+Drink 98
+Poison 0
+Sleeping 0
+DeathEvents 0
+StaminaPoints 400.000000
+Torso "torso"
+Biter 0
+keepalive 0
+Fingers (["right hand":5,"left hand":5,])
+Limbs (["left leg":(["children":({"left foot",}),"armors":1049761,"health":180,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":360,"class":1,"parent":0,]),"right foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":180,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":360,"class":1,"parent":"neck",]),"right hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"right arm",]),"neck":(["children":({"head",}),"armors":786433,"health":360,"class":1,"parent":"torso",]),"left arm":(["children":({"left hand",}),"armors":1253385,"health":180,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"left leg",]),"left hand":(["children":({}),"armors":98319,"health":90,"class":4,"parent":"left arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":180,"class":2,"parent":"torso",]),])
+MissingLimbs ([])
+firearms_wounds 0
+ExtraChannels ({"newbie","gossip","fighter",})
+Agent 0
+Blind 0
+Custom (["stats":15,"deviations":4,"deviating":0,])
+LightSensitivity ({25,7500,})
+Resistance (["low":0,"high":0,"immune":0,"medium":0,"none":134217726,])
+Stats (["agility":(["class":3,"points":0,"level":35,]),"wisdom":(["class":3,"points":0,"level":46,]),"speed":(["class":3,"points":0,"level":44,]),"intelligence":(["class":1,"points":0,"level":61,]),"strength":(["class":3,"points":0,"level":34,]),"durability":(["class":4,"points":0,"level":35,]),"charisma":(["class":2,"points":0,"level":57,]),"coordination":(["class":2,"points":0,"level":45,]),"luck":(["class":3,"points":0,"level":20,]),])
+Polyglot 0
+Languages (["english":(["native":1,"name":"English","points":0,"level":100,]),"common":(["native":0,"name":"Common","points":0,"level":100,]),])
+DefaultLanguage "Common"
+TalkHist ([])
+SpeakColor "CYAN%^"
+Town "Town"
+Race "human"
+Gender "male"
+Level 1
+Skills (["psionic defense":(["class":3,"points":0,"level":2,]),"multi-weapon":(["class":1,"points":0,"level":4,]),"melee defense":(["class":1,"points":0,"level":4,]),"projectile attack":(["class":1,"points":0,"level":1,]),"multi-hand":(["class":1,"points":0,"level":4,]),"blunt defense":(["class":1,"points":0,"level":4,]),"knife defense":(["class":1,"points":0,"level":4,]),"melee attack":(["class":1,"points":0,"level":4,]),"projectile defense":(["class":1,"points":0,"level":1,]),"blade defense":(["class":1,"points":0,"level":4,]),"bargaining":(["class":4,"points":0,"level":4,]),"blunt attack":(["class":1,"points":0,"level":4,]),"knife attack":(["class":1,"points":0,"level":4,]),"blade attack":(["class":1,"points":0,"level":4,]),])
+Morality 0
+Class "fighter"
+Clan 0
+SkillModifiers ([])
+Religion ({0,0,})
+Wimpy 0
+Dead 0
+WimpyCommand "go out"
+Currency (["silver":131,])
+Bank ([])
+SpellBook ([])
+QuestPoints 0
+QuestBook ([])
+isPK 0
+Attackable 1
+NoCondition 0
+Titles ({})
+Muffed ({})
+Deaths 0
+TrainingPoints 0
+TitleLength 1

@@ -127,6 +127,7 @@ private void eventCmdPasv(string arg)
     else passive = 0;
     if(Session->dataPipe) eventDestructDataPipe(0);
     Session->dataPipe = new(LIB_FTP_DATA_CONN);
+    Session->dataPipe->SetOwner(this_object());
     Session->dataPipe->SetSocketType(Session->binary?STREAM_BINARY:STREAM);
     Session->dataPipe->SetPassiveMode(1);
     Session->dataPipe->eventCreateSocket(0, PassivePort);

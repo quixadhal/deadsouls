@@ -36,7 +36,7 @@ void heart_beat(){
         }
     }
     Report();
-    unguarded( (: SaveObject(SaveFiles) :) );
+    SaveObject(SaveFiles);
     set_heart_beat(0);
 }
 
@@ -174,6 +174,6 @@ static void create() {
 }
 
 int eventDestruct(){
-    unguarded( (: SaveObject(SaveFiles) :) );
+    SaveObject(SaveFiles);
     return ::eventDestruct();
 }

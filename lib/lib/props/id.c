@@ -111,7 +111,6 @@ varargs string array SetId(mixed val...){
         Id += exclude;
     }
     if(tmp = this_object()->GetRace()){
-        //tc("rave: "+tmp);
         Id += ({ tmp });
     }
     if(tmp = this_object()->GetKeyName()){

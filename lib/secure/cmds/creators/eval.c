@@ -39,6 +39,7 @@ int cmd( string a )
     file =
     ""+
     "#include <lib.h>\n"+
+    "#include <cgi.h>\n"+
     "#include <dirs.h>\n"+
     "#include <privs.h>\n"+
     "#include <virtual.h>\n"+

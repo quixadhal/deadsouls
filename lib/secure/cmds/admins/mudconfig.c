@@ -2,6 +2,7 @@
 #include <cfg.h>
 #include <save.h>
 #include <daemons.h>
+#include <commands.h>
 #include NETWORK_H
 #include <sockets.h>
 void help();
@@ -18,14 +19,14 @@ string array nonmodals = ({ "liveupgrade", "prompt","status","email",
         "websourceip", "websourcename", "mudname", "mudport",
         "debugger", "access", "pinging", "pinginterval",
         "imc2serverpass", "imc2clientpass" });
-string array antimodals = ({ "imc2" });
+string array antimodals = ({ "imc2", "ced" });
 string array modals = antimodals + ({ "channelpipes", "fastcombat", 
         "catchtell","matchcommand", "matchobject", "autowiz", "locked",
         "localtime", "justenglish", "justhumans", "encumbrance", "pk", 
         "compat", "exitsbare", "nmexits", 
         "cgi", "dirlist", "creweb", "selectclass", "severable",
         "retain", "defaultparse", "disablereboot", "loglocal", "logremote",
-        "questrequired","autoadvance" });
+        "questrequired", "autoadvance" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
 static int NotImplemented(string which);
@@ -50,6 +51,12 @@ mixed cmd(string str) {
     string which, arg;
 
     validate();
+
+    if(!securep(this_player())){
+        write("This command is for full admins only. To become a "+
+          "full admin, you'll need to be added to the SECURE group.");
+        return 1;
+    }
 
     if(!str || sscanf(str, "%s %s", which, arg) != 2){
         help();
@@ -468,6 +475,15 @@ static int ProcessString(string which, string arg){
     object ob;
     validate();
 
+    if(!strsrch(which, "IMC2_")){
+        SECRETS_D->SetSecret(which, arg);
+        reload(SECRETS_D, 0, 1);
+        reload(IMC2_D, 0, 1);
+        config2 = config;
+        CompleteConfig();
+        return 1;
+    }
+
     foreach(string element in config){
         if(grepp(element, which)){
             string s1, s2, s3;
@@ -483,7 +499,7 @@ static int ProcessString(string which, string arg){
         config2 += ({ element });
     }
     if(!strsrch(which, "WEB_SOURCE") 
-            && ob = find_object("/secure/cmds/admins/liveupgrade")){
+            && ob = find_object(CMD_LIVEUPGRADE)){
         ob->eventDestruct();
     }
     CompleteConfig();
@@ -542,6 +558,7 @@ static int ProcessModal(string which, string arg){
         case "severable" : which = "SEVERABLE_LIMBS";break;
         case "questrequired" : which = "REQUIRE_QUESTING";break;
         case "autoadvance" : which = "AUTO_ADVANCE";break;
+        case "ced" : which = "CED_DISABLED";break;
         default : break;
     }
     foreach(string element in config){
@@ -571,6 +588,12 @@ static int ProcessModal(string which, string arg){
             reload("/domains/default/room/catchtell");
         return 1;
     }
+    if(which == "CED_DISABLED"){
+        reload(CMD_CED,1,1);
+        reload(LIB_CREATOR,1,1);
+        write("This configuration will take effect for each user "+
+          "the next time they log in.");
+    }
     if(which == "NM_STYLE_EXITS"){
         reload(LIB_ROOM,1,1);
         reload(LIB_CREATOR,1,1);
@@ -584,10 +607,14 @@ static int ProcessModal(string which, string arg){
         reload(CHAT_D,1,1);
     }
     if(which == "DISABLE_IMC2"){
+        object ob;
         IMC2_D->UnSetAutoDisabled(1);
-        if(!junk) reload(IMC2_D);
-        else IMC2_D->remove();
-        reload(CHAT_D);
+        ob = find_object(IMC2_D);
+        if(!junk && ob){
+            reload(ob, 0, 1);         
+            reload(find_object(CHAT_D), 0, 1);
+        }
+         else IMC2_D->remove();   
     }
     if(which == "FAST_COMBAT"){
         reload(LIB_CREATOR,1,1);
@@ -879,11 +906,11 @@ varargs static int ModCfg(string which, string arg){
         write("\nMUD's name is now: "+mud_name());
         if(ob = find_object(IMC2_D) && !DISABLE_IMC2){
             write("Reloading IMC2...");
-            catch(reload(ob));
+            catch(reload(ob, 0, 1));
         }
         if(ob = find_object(INTERMUD_D) && !DISABLE_INTERMUD){
             write("Reloading Intermud-3...");
-            catch(reload(ob));
+            catch(reload(ob, 0, 1));
         }
     }
 
@@ -943,6 +970,7 @@ void help() {
             "\nmudconfig maxidle <number of idle seconds before autoquit>"
             "\nmudconfig questrequired [ yes | no ]"
             "\nmudconfig autoadvance [ yes | no ]"
+            "\nmudconfig ced [ yes | no ] (toggles the fullscreen editor)"
             "\nmudconfig maxip <max connections per IP>"
             "\nmudconfig pinginterval <i3 ping interval in seconds>"
             "\nmudconfig monitor <monitoring level, 0 to 2>"

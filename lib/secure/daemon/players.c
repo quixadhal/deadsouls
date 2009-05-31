@@ -1,4 +1,8 @@
 #include <objects.h>
+#include <privs.h>
+#include <rooms.h>
+#include <cgi.h>
+#include <commands.h>
 #include <save.h>
 #include <lib.h>
 #include <cfg.h>
@@ -17,6 +21,7 @@
 inherit LIB_DAEMON;
 
 mapping PlayerDataMap = ([]);
+mapping UserData = ([]);
 string *PendingEncres = ({});
 string *PendingDecres = ({});
 string *players = ({});
@@ -25,7 +30,7 @@ string *user_list = ({});
 static object ob;
 static string gplayer, SaveFile;
 static int maxlevel;
-static string LevelList = "";
+static string home_dir, LevelList = "";
 
 string player_save_file;
 static string namestr = "";
@@ -95,7 +100,8 @@ static mapping QuestLevels = ([
 
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) &&
-            base_name(previous_object()) != "/www/cgi/login"){
+            base_name(previous_object()) != CGI_LOGIN &&
+            base_name(previous_object()) != CMD_RID){
         string offender = identify(previous_object(-1));
         debug("PLAYERS_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" PLAYERS_D breach: "+offender+" "+get_stack());
@@ -236,7 +242,7 @@ void create() {
     int ret;
     ::create();
     SaveFile = save_file(SAVE_PLAYER_LIST);
-    ret = unguarded( (: RestoreObject, SaveFile :) );
+    ret = RestoreObject(SaveFile);
     if(PendingEncres) PendingEncres = distinct_array(PendingEncres);
     if(PendingDecres) PendingDecres = distinct_array(PendingDecres);
     if(players) players = distinct_array(players);
@@ -245,18 +251,20 @@ void create() {
     else creators = ({});
     if(user_list) user_list = distinct_array(user_list);
     else user_list = ({});
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
     if(!Levels) Levels = ([]);
+    if(!UserData) UserData = ([]);
     call_out( (: CompileLevelList :), 3);
     call_out( (: CompileCreList :), 1);
     call_out( (: CompilePlayerList :), 5);
+    call_out( "SelektUsers", 604800, 1 );
 }
 
 string *eventCre(string str){
     str = lower_case(cleaned_name(str));
     if(member_array(str,creators) == -1) creators += ({ str });
     if(member_array(str,players) != -1) players -= ({ str });
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
     return copy(creators);
 }
 
@@ -264,7 +272,7 @@ string *eventDecre(string str){
     str = lower_case(str);
     if(member_array(str,creators) != -1) creators -= ({ str });
     if(member_array(str,players) == -1) players += ({ str });
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
     return players + ({});
 }
 
@@ -362,7 +370,7 @@ void AddPlayerInfo(mixed arg){
     if(member_array(namestr,user_list) == -1){
         user_list += ({ namestr }) ; 
     }
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
 }
 
 string *GetPlayerList(){
@@ -388,12 +396,51 @@ string GetLevels(){
 }
 
 int RemoveUser(string str){
+    string sfile, targetdir;
+    mixed purge_array;
+    object ob;
+    validate();
     if(!str || str == "") return 0;
     str = lower_case(str);
-    if(user_exists(str)) return 0;
+    home_dir = homedir(str);
+    if( member_group(str, PRIV_SECURE) || member_group(str, PRIV_ASSIST) ){
+        return 0;
+    }
+    debug("REMOVE USER REQUEST: "+str, "red");
+    if( ob = find_player(str) ) {
+        message("system", "You are being ridded from " + mud_name() + ".",
+          ob);
+        if( !((int)ob->eventDestruct()) ) destruct(ob);
+    }
+    purge_array = filter(objects(),(: !strsrch(base_name($1), home_dir) :));
+    foreach(object tainted in purge_array){
+        if(clonep(tainted)){
+            catch(tainted->eventMove(ROOM_FURNACE));
+            purge_array -= ({ tainted });
+        }
+    }
+    foreach(object tainted in purge_array){
+        catch(tainted->eventDestruct());
+        if(tainted) catch(destruct(tainted));
+    }
     if(member_array(str, players) != -1) players -= ({ str });
     if(member_array(str, creators) != -1) creators -= ({ str });
     if(member_array(str, user_list) != -1) user_list -= ({ str });
+    targetdir = DIR_RID + "/" + str[0..0];
+    if(directory_exists(targetdir+"/"+str)){
+        rename(targetdir+"/"+str, targetdir+"/"+str+"."+time());
+    }
+    mkdir_recurse(targetdir+"/"+str);
+    sfile = player_save_file(str);
+    if(file_exists(sfile)){
+        rename(sfile, targetdir+"/"+str+"/"+str+".bak");
+    }
+    sfile = REALMS_DIRS + "/" + str;
+    if(directory_exists(sfile)) rename(sfile, targetdir+"/"+str+"/realm");
+    sfile = ESTATES_DIRS + "/" + str[0..0] + "/" + str;
+    if(directory_exists(sfile)) rename(sfile, targetdir+"/"+str+"/estate");
+    log_file("rid", "\n" + str + 
+      " by PLAYERS_D as a trivial/unused account.\n");
     return 1;
 }
 
@@ -401,7 +448,7 @@ string *AddPendingEncre(string str){
     validate();
     if(!PendingEncres) PendingEncres = ({});
     if(str && str != "") PendingEncres += ({ lower_case(str) });
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
     return copy(PendingEncres);
 }
 
@@ -411,7 +458,7 @@ string *RemovePendingEncre(string str){
     if(!str || str == "") return copy(PendingEncres);
     str = lower_case(str);
     if(member_array(str, PendingEncres) != -1) PendingEncres -= ({ lower_case(str) });
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
     return copy(PendingEncres);
 }
 
@@ -425,7 +472,7 @@ string *AddPendingDecre(string str){
     validate();
     if(!PendingDecres) PendingDecres = ({});
     if(str && str != "") PendingDecres += ({ lower_case(str) });
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
     return copy(PendingDecres);
 }
 
@@ -435,7 +482,7 @@ string *RemovePendingDecre(string str){
     if(!str || str == "") return copy(PendingDecres);
     str = lower_case(str);
     if(member_array(str, PendingDecres) != -1) PendingDecres -= ({ lower_case(str) });
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
     return copy(PendingDecres);
 }
 
@@ -478,7 +525,7 @@ static int LoadPlayer(string str){
 
 int eventDestruct(){
     validate();
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
     return ::eventDestruct();
 }
 
@@ -525,10 +572,10 @@ mixed GetPlayerData(string player, string val){
     if(ob = find_player(player)){
         unguarded( (: ob->save_player(gplayer) :));
     }
-    unguarded((: SaveObject, SaveFile :));
+    SaveObject(SaveFile);
     unguarded( (: LoadPlayer(gplayer) :) );
     ret = GetPlayerVariable(val);
-    unguarded((: RestoreObject, SaveFile :));
+    RestoreObject(SaveFile);
     return ret;
 }
 
@@ -593,3 +640,91 @@ static void UserUpdate(string name, int status){
 void PlayerUpdate(string name, int status){
     call_out("UserUpdate", 1, name, status);
 }
+
+static mapping GatherUserData(){
+    mapping cands = ([]);
+    foreach(string user in user_list){         
+        reset_eval_cost();
+        gplayer = user;         
+        if(ob = find_player(gplayer)){
+            unguarded( (: ob->save_player(gplayer) :));
+        }
+        SaveObject(SaveFile);
+        unguarded( (: LoadPlayer(gplayer) :) );
+        cands[gplayer] = ([ "LoginTime" : LoginTime, "Age" : Age,
+          "BirthTime" : BirthTime, "Email" : Email, "HostSite" : HostSite,
+          "CreatorAge" : CreatorAge, "CreatorBirth" : CreatorBirth,
+          "RealName" : RealName ]);
+        RestoreObject(SaveFile);
+    }
+    UserData = cands;
+    return cands;
+}
+
+int SelektUsers(int gather){
+    mapping cands = ([]);
+    int last, count, interval;
+    validate();
+    if(gather){
+        CompilePlayerList();
+        CompileCreList();
+        cands = GatherUserData();
+    }
+    else cands = UserData;
+     
+    foreach(string user in sort_array(keys(cands),1)){
+        int purge = 0;
+        if(!cands[user]) continue;
+        count++;
+        if(!(count % 5)) interval++;
+
+        //bot
+        if(cands[user]["RealName"] == "John Smith" && 
+          cands[user]["Email"] == "me@here"){
+            reset_eval_cost();
+            SNOOP_D->NotifyBot(user);
+            reset_eval_cost();
+            purge = 1;
+        }
+
+        //They last logged in over 1 month ago, and their
+        //in-game time is less than 30 seconds.
+        else if(cands[user]["Age"] < 30 &&
+          (last = (time() - cands[user]["LoginTime"])) > 2592000){
+        debug("Purging: "+user+", age: "+time_elapsed(cands[user]["Age"])+
+        " last logged in "+ctime(cands[user]["LoginTime"])+", "+
+        time_elapsed(last)+" ago.", "green");
+            purge = 1;
+        }
+
+        //They last logged in over 6 months ago, and their in-game
+        //time is less than two minutes.
+        else if(cands[user]["Age"] < 121 && 
+          (last = (time() - cands[user]["LoginTime"])) > 15552000){ 
+        debug("Purging: "+user+", age: "+time_elapsed(cands[user]["Age"])+
+        " last logged in "+ctime(cands[user]["LoginTime"])+", "+
+        time_elapsed(last)+" ago.", "red"); 
+            purge = 1;
+        }
+
+        //They last logged in over a year ago, only once, and
+        //for less than one hour.
+        else if(cands[user]["Age"] < 3600 &&
+          (cands[user]["LoginTime"] - cands[user]["BirthTime"] < 100) &&
+          (last = (time() - cands[user]["LoginTime"])) > 31104000){
+        debug("Purging: "+user+", age: "+time_elapsed(cands[user]["Age"])+ 
+        " last logged in "+ctime(cands[user]["LoginTime"])+", "+
+        time_elapsed(last)+" ago.", "black");
+            purge = 1;
+        }
+
+        if(purge){
+            call_out("RemoveUser", interval, user);
+            purge = 0;
+        }
+    }
+    call_out( "SelektUsers", 604800, 1 );
+    return 1;
+}
+
+

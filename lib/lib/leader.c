@@ -29,7 +29,6 @@ mixed eventAsk(object who, string str){
     str = translate(str, prof);
     prof = this_object()->GetLanguageLevel(lang);
     str = translate(str, prof);
-    //debug("leader eventAsk("+identify(who)+", "+str+")");
 
     if( (tmp = sentient::eventAsk(who, orig)) == 1 ) return 1;
     if( !str || str == "" ){

@@ -38,7 +38,7 @@ static private void load_folder(string who, string folder) {
     else {
         __Folder = folder;
         __Owner = who;
-        if(!unguarded((: RestoreObject, file :))) __BoxInfo = ({});
+        if(!RestoreObject(file)) __BoxInfo = ({});
     }
 }
 
@@ -47,7 +47,7 @@ static private void save_folder() {
 
     if(!__Owner || !__Folder) return;
     file= sprintf("%s/%s/%s/%s", DIR_POSTAL, __Owner[0..0], __Owner, __Folder);
-    unguarded((: SaveObject, file :));
+    SaveObject(file);
 }
 
 mapping *query_box_info(string who, string folder) {

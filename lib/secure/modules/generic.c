@@ -230,7 +230,6 @@ int eventGeneralStuff(string str){
     unguarded( (: this_object()->eventAddInit(globalstr) :) );
     if(player && player = player->GetKeyName()){ /* tee hee */
         if(globalstr == "/realms/"+player+"/workroom.c" ){
-            //tc("ting");
             globalstr2 = replace_string(globalstr2, "./area/customdefs.h",
                     "/realms/"+player+"/area/customdefs.h");
         }

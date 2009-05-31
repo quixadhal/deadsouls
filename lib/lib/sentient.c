@@ -93,7 +93,6 @@ mapping SetCommandResponses(mapping mp){
 mapping AddCommandResponses(mapping mp){
     mapping ret = add_maps(CommandResponses, mp, -1);
     CommandResponses = ret;
-    //tc("AddCommandResponses: "+identify(CommandResponses));
     return ret;
 }
 
@@ -238,7 +237,6 @@ mixed eventAsk(object who, string str){
     str = translate(str, prof);
     prof = this_object()->GetLanguageLevel(lang);
     str = translate(str, prof);
-    //debug("eventAsk("+identify(who)+", "+str+")"); 
     if( sscanf(str, "%s %s", cmd, args) != 2 ){
         cmd = str;
         args = 0;
@@ -280,7 +278,6 @@ mixed eventConsult(object who, string str){
     str = translate(str, prof);
     prof = this_object()->GetLanguageLevel(lang);
     str = translate(str, prof);
-    //debug("eventConsult("+identify(who)+", "+str+")");
 
     if( !str || str == "" || !ConsultResponses) return 0;
     str = remove_article(str);
@@ -308,7 +305,6 @@ mixed eventRequest(object who, string str){
     str = translate(str, prof);
     prof = this_object()->GetLanguageLevel(lang);
     str = translate(str, prof);
-    //debug("eventRequest("+identify(who)+", "+str+")");
 
     if( !RequestResponses[str] ){
         if( !RequestResponses["default"] ) return 0;

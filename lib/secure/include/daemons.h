@@ -40,6 +40,7 @@
 #define INSTANCES_D          DIR_SECURE_DAEMONS "/instances"
 #define INTERMUD_D           DIR_DAEMONS "/intermud"
 #define LETTERS_D            DIR_SECURE_DAEMONS "/letters"
+#define LOG_D                DIR_SECURE_DAEMONS "/log"
 #define LOCALPOST_D          DIR_SECURE_DAEMONS "/localpost"
 #define LUGET_D              DIR_SECURE_DAEMONS "/luget"
 #define MAP_D                DIR_DAEMONS "/map"

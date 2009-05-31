@@ -5,7 +5,7 @@ inherit LIB_ARMOR;
 
 static void create(){
     armor::create();
-    SetKeyName("gold_ring");
+    SetKeyName("ring");
     SetId(({"ring","gold ring"}));
     SetAdjectives( ({"beautiful"}) );
     SetShort("a beautiful gold ring");

@@ -27,14 +27,12 @@ void init(){
 int openpipe(int i){
     if(open && !i) open = 0;
     else open = 1;
-    //debug("open: "+open,"red");
     if(open){
         object flow;
         int tmp;
         object env = environment(this_object());
         if(!env) return 0;
         flow = present("flow object", env);
-        //tc("meh");
         if(!flow){
             flow = new(LIB_FLOW);
             if(!flow) return;
@@ -49,11 +47,9 @@ int openpipe(int i){
 void heart_beat(){
     object env;
     if(!clonep() || !env) return;
-    //tc("1");
     if(open){
         object flow;
         int tmp;
-        //tc("2");
         env = environment(this_object());
         flow = present("flow object", env);
         if(!flow){  

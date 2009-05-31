@@ -61,6 +61,7 @@
 
 #define DIR_LOGS                "/log"
 #define DIR_SECURE_LOGS         DIR_SECURE "/log"
+#define DIR_SECURE_INTERMUD_LOGS DIR_SECURE_LOGS "/intermud"
 #define DIR_CHANNEL_LOGS        DIR_LOGS "/chan"
 #define DIR_DEBUG               DIR_LOGS "/debug"
 #define DIR_ERROR_LOGS          DIR_LOGS "/errors"

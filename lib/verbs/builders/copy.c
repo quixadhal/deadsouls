@@ -39,8 +39,6 @@ mixed do_copy_obj_str(object ob, string str) {
         write("in your workroom.");
         return 1;
     }
-    //debug("str: ",str);
-    //debug("path_prefix(str): ",path_prefix(str));
     if(userp(ob)){
         write("No.");
         return 1;
@@ -67,7 +65,6 @@ mixed do_copy_obj_str(object ob, string str) {
         write("That file no longer exists.");
         return 0;
     }
-    //else unguarded( (: success = cp(sourcefile, targetfile) :) );
     else unguarded( (: success = cp(sourcefile, targetfile) :) );
     if(success) {
         write("Copy successful.");
@@ -88,15 +85,10 @@ mixed do_copy_str(string str) {
         write("in your workroom.");
         return 1;
     }
-    //debug("str: ",str,"yellow");
     str2 = str;
     str = absolute_path((string)this_player()->query_cwd(), str);
-    //debug("str: ",str,"yellow");
-
-    //debug("path_prefix(str): ",path_prefix(str),"green");
 
     if(last(str,2) != ".c") str += ".c";
-    //debug("str: ",str,"yellow");
 
     if( !file_exists(str) ){
         str = path_prefix(base_name(environment(this_player())))+"/"+str2;

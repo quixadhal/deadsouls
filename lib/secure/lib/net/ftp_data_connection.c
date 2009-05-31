@@ -10,6 +10,7 @@
 #include NETWORK_H
 
 inherit LIB_DAEMON;
+object Owner;
 
 class data_conn {
     int Descriptor;
@@ -179,8 +180,14 @@ static void eventWriteCallback(int fd) {
     eventWriteDestruct();
 }
 
+void SetOwner(object ob){
+    if(Owner) return;
+    Owner = ob;
+}
 
 void eventWrite(mixed val) {
+    object prev = previous_object();
+    if(prev && prev != this_object() && prev != Owner) return;
     if( !Socket ) return;
     if( Socket->Buffer ) Socket->Buffer += ({ val });
     else Socket->Buffer = ({ val });

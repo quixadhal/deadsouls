@@ -126,7 +126,6 @@ void heart_beat(){
             }
             if(sizeof(obs) < howmany){
                 int count = howmany - sizeof(obs);
-                //tc("want to load "+count+" "+key);
                 eventLoadItem(key, count, 0);
             }
         }

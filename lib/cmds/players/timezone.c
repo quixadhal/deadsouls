@@ -9,9 +9,6 @@ mixed cmd(string args) {
     string tz = this_player()->GetProperty("timezone");
     if(!tz) tz = "No timezone set.";
 
-    //tc("zones: "+identify(zones_cfg));
-    //tc("tz: "+tz);
-
     if(!args){
         write("Your timezone is: "+tz);
         return 1;

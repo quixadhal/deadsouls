@@ -44,19 +44,17 @@ varargs int StatReport(string str){
         str = ScreenData["report"];
         ScreenData["report"] = "";
     }
-    if(str){
-        receive(str);
-    }
-    else {
+    if(!str){
 #if CED_DEBUG
-        receive("screen: "+ScreenData["row"]+","+ScreenData["col"]+
+        str = "screen: "+ScreenData["row"]+","+ScreenData["col"]+
                 " file: "+((FileData["topline"]+ScreenData["row"])-1)+
-                ","+ScreenData["col"]+", topline: "+FileData["topline"]);
+                ","+ScreenData["col"]+", topline: "+FileData["topline"];
 #else 
-        receive("line: "+((FileData["topline"]+ScreenData["row"])-1)+
-                " col: "+ScreenData["col"]+" file: "+ FileData["file"]);
+        str = "line: "+((FileData["topline"]+ScreenData["row"])-1)+
+                " col: "+ScreenData["col"]+" file: "+ FileData["file"];
 #endif
     }
+    receive(str);
     /* now return cursor to prev pos */
     receive("\r\e["+ScreenData["row"]+";"+ScreenData["col"]+"H");
     return 1;
@@ -78,20 +76,19 @@ varargs int RedrawScreen(int topline){
 
     if(!topline) topline = FileData["topline"];
     topline--;
-    //tc("redraw from "+topline);
     if(topline > lastline) return 0;
-    //tc("hmm! line: "+line+", ScreenData[\"maxrow\"]: "+ScreenData["maxrow"]);
     receive("\r\e[1;1H");
     receive("\r\e[2K");
-    receive("Editing "+FileData["file"]+"\n");
-    while(line < (ScreenData["maxrow"])){
-        //tc("line "+line);
-        //tc("line + topline: "+(line+topline));
+    while(line < (ScreenData["maxrow"] )){
+        string trunky; // patches for linewrapping are welcome
+        int extra;
         receive("\r\e["+line+";1H");
         receive("\e[2K");
         if(FileData["map"][(line+topline)]){
-            //tc("text: "+FileData["map"][line+topline]);
-            receive("\r\e[7l"+FileData["map"][line+topline]+"\n");
+            trunky = FileData["map"][(line+topline)];
+            extra = sizeof(trunky) - ScreenData["maxcol"];
+            if(extra > 0) trunky = truncate(trunky, extra);
+            receive("\r\e[7l"+trunky+"\n");
         }
         line++;
     }
@@ -101,8 +98,9 @@ varargs int RedrawScreen(int topline){
 }
 
 static int UpdateScreen(){
-    if(ScreenData["row"] > ScreenData["maxrow"]){ 
-        ScreenData["row"] = ScreenData["maxrow"];
+    if(ScreenData["row"] > (ScreenData["maxrow"] - 1)){ 
+        if(!ScreenData["goto"] && !ScreenData["searching"])
+            ScreenData["row"] = (ScreenData["maxrow"] - 1);
         if(FileData["topline"] < sizeof(FileData["map"])){
             FileData["topline"]++;
             RedrawScreen(FileData["topline"]);
@@ -126,21 +124,22 @@ static int UpdateScreen(){
                     FileData["topline"]) - 1])+1; /* lol */
         if(ScreenData["col"] < 1) ScreenData["col"] = 1;
     }
-    //tc("row: "+ScreenData["row"]+", col: "+ScreenData["col"],"green");
     receive("\r\e["+ScreenData["row"]+";"+ScreenData["col"]+"H"); 
     StatReport();
 }
 
-static int CeditCollate(){ /* when lines need to be resorted */
-    int i, sz = sizeof(FileData["map"]); 
+static varargs int CeditCollate(int x){ /* when lines need to be resorted */
+    int i; 
     string tmp = "";
-    if(!sz) return 0;
+    string *lns = sort_array(keys(FileData["map"]), 1);
+    if(!sizeof(lns)) return 0;
     FileData["contents"] = "";
-    for(i = 0; i < sz; i++){
-        if(FileData["map"][i]){
-            //tc("line["+i+"]: "+FileData["map"][i]);
-            tmp += FileData["map"][i]+"\n";
-        }
+    foreach(int l in lns){
+        if(!undefinedp(x) && !(l + x)) continue; /* remove a line */
+        tmp += FileData["map"][l]+"\n";
+        if(l == x) tmp += "\n"; /* add a line */
+    }
+    foreach(mixed key, mixed val in FileData["map"]){
     }
     tmp = replace_string(tmp,"\n","\n"+sprintf("%c",17));
     i = 1;
@@ -153,12 +152,13 @@ static int CeditCollate(){ /* when lines need to be resorted */
 
 static varargs int CeditSave(string file){
     string ret = "";
-    int i, sz = sizeof(FileData["map"]);
-    for(i = 0; i < sz; i++){
-        if(FileData["map"][i]){
-            //tc("line["+i+"]: "+FileData["map"][i]);
-            ret += FileData["map"][i]+"\n";
-        }
+    int i;
+    string *lns = sort_array(keys(FileData["map"]), 1);
+    if(!sizeof(lns)) return 0;
+    foreach(int l in lns){
+        ret += FileData["map"][l]+"\n";
+    }
+    foreach(mixed key, mixed val in FileData["map"]){
     }
 #if CED_DISABLED
     StatReport("This alpha editor is not yet in shape to save files.");
@@ -171,7 +171,6 @@ static varargs int CeditSave(string file){
 static int rBackspace(){
     int col, row;
     string begin, end;
-    //tc("cedit rBackspace()", "green");
     col = ScreenData["col"];
     row = (ScreenData["row"] + FileData["topline"]) - 1;
     if(FileData["map"][row]){
@@ -181,20 +180,60 @@ static int rBackspace(){
         receive("\r\e[2K");
         receive(FileData["map"][row]);
         ScreenData["col"]--;
+        if((ScreenData["maxrow"] - 1) != ScreenData["row"] &&
+          FileData["map"][row+1]){
+            receive("\r\e["+(ScreenData["row"]+1)+";"+ScreenData["col"]+"H");
+            receive("\r\e[2K");
+            receive(FileData["map"][row+1]);
+        }
         receive("\r\e["+ScreenData["row"]+";"+ScreenData["col"]+"H");
     }
     ScreenData["charbuffer"] = "";
     ScreenData["backspace"] = 0;
-    //RedrawScreen();
 } 
 
 static int rEnter(){
     if(!ScreenData["sessionbuffer"]) ScreenData["sessionbuffer"] = "";
+    if(ScreenData["searching"]){
+        int end, i, start = ScreenData["pregoto"][0];
+        end = sort_array(keys(FileData["map"]), 1)[<1];
+        ScreenData["searching"] = 0;
+        if(sizeof(ScreenData["search"])){
+            ScreenData["oldsearch"] = ScreenData["search"];
+            ScreenData["searchhit"] = 0;
+        }
+        else {
+            ScreenData["search"] = ScreenData["oldsearch"];
+            start = ScreenData["searchhit"] + 1;
+        }
+        i = start;
+        while(i <= end){
+            if(FileData["map"][i] && grepp(FileData["map"][i],
+              ScreenData["search"])){
+                ScreenData["goto"] = 1;
+                ScreenData["search"] = 0;
+                ScreenData["searchhit"] = i;
+                ScreenData["charbuffer"] = itoa(i);
+                break;
+            }
+            i++;
+        }
+#if CED_DEBUG
+        debug_message("ScreenData[\"search\"]: "+ScreenData["search"]);
+        debug_message("ScreenData[\"goto\"]: "+ScreenData["goto"]);
+        debug_message("ScreenData[\"charbuffer\"]: "+ScreenData["charbuffer"]);
+        debug_message("ScreenData[\"oldsearch\"]: "+ScreenData["oldsearch"]);
+#endif
+        if(!ScreenData["goto"]){
+            ScreenData["report"] = "String not found searching from line "+
+              start;
+        }
+    }
     if(ScreenData["goto"]){
         int top;
         int line = atoi(ScreenData["charbuffer"]);
         if(line && FileData["map"][line]){
-            StatReport("Going to "+ScreenData["charbuffer"]);
+            ScreenData["report"] = "Going to "+ScreenData["charbuffer"];
             top = line - ScreenData["pregoto"][0]; 
             if(top < 1) top = 1;
             FileData["topline"] = top;
@@ -202,7 +241,7 @@ static int rEnter(){
             ScreenData["col"] = 1;
         }
         else {
-            StatReport("No such line!");
+            ScreenData["report"] = "No such line!";
             ScreenData["row"] = ScreenData["pregoto"][0];
             ScreenData["col"] = ScreenData["pregoto"][1];
         }
@@ -210,12 +249,14 @@ static int rEnter(){
         ScreenData["goto"] = 0;
         ScreenData["pregoto"] = 0;
         this_object()->SetNoEcho(1);
-        RedrawScreen();
     }
     else {
         ScreenData["charbuffer"] = "\n";
         ScreenData["sessionbuffer"] += sprintf("%c", 13);
+        CeditCollate((FileData["topline"]+ScreenData["row"])-1);
     }
+    UpdateScreen();
+    RedrawScreen();
     return 1;
 }
 
@@ -224,7 +265,13 @@ static int rAscii(string c){
     int row, col, arrowed;
     if(!ScreenData["charbuffer"]) ScreenData["charbuffer"] = "";
     if(!ScreenData["sessionbuffer"]) ScreenData["sessionbuffer"] = "";
-    if(ScreenData["goto"]){
+    if(ScreenData["searching"]){
+        if(!ScreenData["search"]) ScreenData["search"] = "";
+        ScreenData["charbuffer"] += c;
+        ScreenData["search"] += c;
+        return 1;
+    }
+    else if(ScreenData["goto"]){
         ScreenData["charbuffer"] += c;
         return 1;
     }
@@ -238,13 +285,9 @@ static int rAscii(string c){
     if(sizeof(tmp) && tmp[0] != 30 && !ScreenData["sentinel"]){
         receive(tmp);
         if(tmp[0] == 91){
-            //tc("ALART "+tmp+", prev: "+ScreenData["sessionbuffer"][<1],"green");
         }
         if(sizeof(ScreenData["sessionbuffer"]) > 2){
             if(ScreenData["sessionbuffer"][<1] == 91){
-                //tc("SHITFUCK "+ScreenData["sessionbuffer"][<3]+" "+
-                //  ScreenData["sessionbuffer"][<2]+" "+
-                //  ScreenData["sessionbuffer"][<1], "red");
             }
         }
         if(ScreenData["insert"]){
@@ -262,16 +305,12 @@ static int rAscii(string c){
             col = ScreenData["col"];
             row = (ScreenData["row"] + FileData["topline"]) - 1;
             if(FileData["map"][row]){
-                //tc("wtf "+identify(ScreenData["charbuffer"]));
-                //tc("wtf2 "+identify(FileData["map"][row][col-1]));
                 if(sizeof(FileData["map"][row]) >= col){
                     FileData["map"][row][col-1] = ScreenData["charbuffer"][0];
                 }
                 else {
                     FileData["map"][row] += ScreenData["charbuffer"];
                 }
-                //ScreenData["charbuffer"][sizeof(ScreenData["charbuffer"])-1];
-                //ScreenData["charbuffer"];
             }
         }
         if(ScreenData["charbuffer"] == "\n"){
@@ -298,6 +337,12 @@ static int rDel(){
         FileData["map"][row]=begin+end;
         receive("\r\e[2K");
         receive(FileData["map"][row]);
+        if((ScreenData["maxrow"] - 1) != ScreenData["row"] &&
+          FileData["map"][row+1]){
+            receive("\r\e["+(ScreenData["row"]+1)+";"+ScreenData["col"]+"H");
+            receive("\r\e[2K");
+            receive(FileData["map"][row+1]);
+        }
         receive("\r\e["+ScreenData["row"]+";"+ScreenData["col"]+"H");
     }
     ScreenData["charbuffer"] = "";
@@ -319,10 +364,9 @@ int rCtrl(string c){
         FileData = ([ "file" : "", "map" : ([]) ]);
         ClearBuffers();
     }
-    if(c == "g"){ /* Ctrl-G for going to a line */
+    else if(c == "g"){ /* Ctrl-G for going to a line */
         string tmpstr = "Please type the line number then press enter.";
         int where = sizeof(tmpstr);
-        //StatReport(tmpstr);
         ScreenData["report"] = tmpstr;
         ScreenData["pregoto"] = ({ ScreenData["row"], ScreenData["col"] });
         ScreenData["row"] = (ScreenData["maxrow"]);
@@ -332,95 +376,127 @@ int rCtrl(string c){
         ScreenData["goto"] = 1;
         this_object()->SetNoEcho(0);
     }
-    if(c == "f"){ /* Ctrl-F */
-        int targettopline = FileData["topline"] + (ScreenData["maxrow"]);
-        int targetline = targettopline + ScreenData["row"];
-        int maxlines = sizeof(FileData["map"]);
+    else if(c == "f"){ /* Ctrl-F */
+        int targettopline, targetline, maxlines, lasty;
+        lasty = sort_array(keys(FileData["map"]), 1)[<1];
+        targettopline = FileData["topline"] + (ScreenData["maxrow"] - 1);
+        if(targettopline > (lasty - ScreenData["maxrow"]) + 1){
+            targettopline = (lasty - ScreenData["maxrow"]) + 1;
+        }
+        targetline = targettopline + ScreenData["row"];
+        maxlines = sizeof(FileData["map"]);
         if(targettopline > maxlines) targettopline = maxlines;
         if(targetline > maxlines) targetline = maxlines;
         FileData["topline"] = targettopline;
         ScreenData["row"] = targetline;
         RedrawScreen(FileData["topline"]);
-        StatReport();
     }
-    if(c == "b"){ /* Ctrl-B */
-        int targettopline = FileData["topline"] - (ScreenData["maxrow"]);
+    else if(c == "b"){ /* Ctrl-B */
+        int targettopline = FileData["topline"] - (ScreenData["maxrow"] - 1);
         int targetline = targettopline - ScreenData["row"];
         if(targettopline < 1) targettopline = 1;
         if(targetline < 1) targetline = 1;
         FileData["topline"] = targettopline;
         ScreenData["row"] = targetline;
         RedrawScreen(FileData["topline"]);
-        StatReport();
     }
-    if(c == "l"){ /* Ctrl-L */
+    else if(c == "l"){ /* Ctrl-L */
         RedrawScreen(FileData["topline"]);
-        StatReport();
         ScreenData["charbuffer"] = "";
     }
-    if(c == "d"){ /* Ctrl-D */
+    else if(c == "d"){ /* Ctrl-D */
         row = (ScreenData["row"] + FileData["topline"]) - 1;
         if(FileData["map"][row]){
-            FileData["map"][row] = 0;
-            CeditCollate();
+            CeditCollate(-((FileData["topline"]+ScreenData["row"])-1));
             RedrawScreen();
         }
         ScreenData["charbuffer"] = "";
         ScreenData["linedel"] = 0;
     }
-    if(c == "i"){ /* Ctrl-I */
+    else if(c == "i"){ /* Ctrl-I */
         if(!ScreenData["insert"]){
             ScreenData["insert"] = 1;
-            StatReport("Insert mode enabled");
+            ScreenData["report"] = "Insert mode enabled";
         }
     }
-    if(c == "o"){ /* Ctrl-O */
+    else if(c == "o"){ /* Ctrl-O */
         if(ScreenData["insert"]){
             ScreenData["insert"] = 0;
-            StatReport("Overstrike mode enabled");
+            ScreenData["report"] = "Overstrike mode enabled";
         }
     }
-    if(c == "x"){ /* Ctrl-X */
+    else if(c == "x"){ /* Ctrl-X */
         int ret;
 #if CED_DISABLED
-        StatReport("This alpha editor is not yet in shape to save files.");
+        ScreenData["report"] = "This alpha editor is not yet in shape to "+
+          "save files.";
 #else
         if(sizeof(FileData["file"]) && sizeof(FileData["map"])){
             ret = CeditSave();
             if(ret){
-                StatReport(FileData["file"]+" saved.");
-                write("Exiting screen editor.");
+                ScreenData["report"] = FileData["file"]+" saved.";
+                write("Exiting screen editor.\n");
                 ScreenData["cedmode"] = 0;
                 FileData = ([ "file" : "", "map" : ([]) ]);
                 ClearBuffers();
             }
-            else StatReport(FileData["file"]+" save FAILED.");
+            else ScreenData["report"] = FileData["file"]+" save FAILED.";
         }
 #endif
     }
-    if(c == "s"){ /* Ctrl-S */
+    else if(c == "s"){ /* Ctrl-S */
         int ret;
 #if CED_DISABLED
-        StatReport("This alpha editor is not yet in shape to save files.");
+        ScreenData["report"] = "This alpha editor is not yet in shape "+
+          "to save files.";
 #else
         if(sizeof(FileData["file"]) && sizeof(FileData["map"])){
             ret = CeditSave();
-            if(ret) StatReport(FileData["file"]+" saved.");
-            else StatReport(FileData["file"]+" save FAILED.");
+            if(ret) ScreenData["report"] = FileData["file"]+" saved.";
+            else ScreenData["report"] = FileData["file"]+" save FAILED.";
         }
 #endif
     }
-    if(c == "c"){ /* Ctrl-C */
+    else if(c == "c"){ /* Ctrl-C */
         ClearBuffers();
     }
-    UpdateScreen();
+    else if(c == "31"){ /* Ctrl-/ for a search */
+        string tmpstr = "Please type the word to search for: ";
+        int where = sizeof(tmpstr);
+        ScreenData["report"] = tmpstr;
+        ScreenData["pregoto"] = ({ ScreenData["row"], ScreenData["col"] });
+        ScreenData["row"] = (ScreenData["maxrow"]);
+        ScreenData["col"] = (where + 1);
+        receive("\r\e["+ScreenData["row"]+";"+ScreenData["col"]+"H");
+        ScreenData["charbuffer"] = "";
+        ScreenData["searching"] = 1;
+        this_object()->SetNoEcho(0);
+    }
+    else if(c == "28"){ /* Ctrl-\ */
+        ScreenData["report"] = "esc-28 received";
+    }
+    if(ScreenData["cedmode"]) UpdateScreen();
+    else {
+        this_object()->SetCharmode(1);
+        this_object()->erase_prompt();
+        this_object()->write_prompt();
+    }
     return 1;
 }
 
 static int rArrow(string str){
     switch(str){
+        int lasty;
         case "up" : ScreenData["row"]--; break;
-        case "down" : ScreenData["row"]++; break;
+        case "down" : 
+            if((ScreenData["row"] > (ScreenData["maxrow"] - 2) )){
+                lasty = sort_array(keys(FileData["map"]), 1)[<1];
+                if((FileData["topline"] > (lasty - ScreenData["maxrow"]) + 1)){
+                    break;
+                }
+            }
+            ScreenData["row"]++; 
+            break;
         case "left" : ScreenData["col"]--; break;
         case "right" : ScreenData["col"]++; break;
     }
@@ -432,7 +508,6 @@ static int rArrow(string str){
 varargs int SetCedmode(int x, string file){
     int num;
     mixed tmp, lines;
-    //tc("SetCedmode("+x+", "+identify(file)+")", "green");
 #ifndef __DSLIB__
     return 0;
 #else
@@ -442,12 +517,12 @@ varargs int SetCedmode(int x, string file){
     if(x){
         ClearBuffers();
         ScreenData["cedmode"] = x;
+        ScreenData["insert"] = 1;
         FileData["topline"] = 1;
         if(!FileData["map"]) FileData["map"] = ([]);
         if(true()){
             FileData["file"] = file;
             tmp = read_file(FileData["file"]);
-            //tc("tmp: "+identify(tmp),"cyan");
             if(!tmp){
                 string line = repeat_string(" ", ScreenData["maxcol"])+"\n";
                 lines = ScreenData["maxrow"];
@@ -458,6 +533,7 @@ varargs int SetCedmode(int x, string file){
                 }
             }
             tmp = replace_string(tmp,"\n","\n"+sprintf("%c",17));
+            tmp = replace_string(tmp,"\t","    ");
             lines = 1;
             foreach(mixed ln in explode(tmp,sprintf("%c",17))){
                 FileData["map"][lines] = replace_string(ln,"\n","");
@@ -468,6 +544,7 @@ varargs int SetCedmode(int x, string file){
         receive("\r\e[7l"); /* no wrapping */
         ScreenData["row"] = 1;
         ScreenData["col"] = 1;
+        ScreenData["report"] = "Editing "+FileData["file"];
         RedrawScreen(FileData["topline"]);
     }
     else {
@@ -482,7 +559,6 @@ int GetCedmode(){
 }
 
 static int rAnsi(string str){
-    debug_message("cedit ansi received: "+str);
     return 1;
 }
 

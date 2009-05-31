@@ -29,10 +29,6 @@ void init(){
 
 int eventMove(mixed foo){
     int ret;
-    //tc("env: "+identify(environment()),"blue");
-    //tc("wanna move to: "+identify(foo), "blue");
     ret = ::eventMove(foo);
-    //tc("ret: "+identify(ret), "blue");
-    //tc("env: "+identify(environment()),"blue");
     return ret;
 }

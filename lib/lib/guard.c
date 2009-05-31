@@ -40,7 +40,6 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
     PendingGuard += ({ ([ "what" : what, "action" : action,
                 "howlong" : howlong ]) });
     if(!env){
-        //tc("foo 1");
         return 0;
     }
 
@@ -53,12 +52,10 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
             gwhat = exits[gwhat];
         }
         if(!unguarded( (: directory_exists(path_prefix(gwhat)) :) ) ){
-            //tc("2");
             return 0;
         }
         err = catch( unguarded( (: gwhat = load_object(gwhat) :) ) );
         if(err || !gwhat){
-            //tc("3");
             return 0;
         }
     }
@@ -72,7 +69,6 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
         inv = filter(inv, (: base_name($1) == base_name(gwhat) :)); 
         inv = filter(inv, (: $1 && !interactive(environment($1)) :)); 
         if(!sizeof(inv)){ 
-            //tc("hmm");
             if(objectp(gwhat)) what = base_name(gwhat);
             GuardMap[random(20)] = ([ "base" : what, "action" : action ]);
         }
@@ -87,7 +83,6 @@ varargs mixed SetGuard(mixed what, mixed action, int howlong){
     }
     else GUARD_D->AddGuard(this_object(), gwhat, action);
     gwhat = 0;
-    //tc("GuardMap: "+identify(GuardMap),"blue");
     return 1;
 }
 
@@ -118,7 +113,6 @@ void CheckGuardeds(){
     }
     if(sizeof(GuardMap)){
         mapping RetMap = ([]), ReGuard = ([]);
-        //tc("woo! GuardMap: "+identify(GuardMap),"red");
         foreach(string key, mapping tmpmap in GuardMap){
             object ob, env;
             if(!(ob = find_object(key)) || !(env = environment(ob)) ||
@@ -126,12 +120,10 @@ void CheckGuardeds(){
                 ReGuard[tmpmap["base"]] = tmpmap["action"];
             }
             else RetMap[key] = tmpmap;
-            //tc("ob: "+identify(ob)+", env: "+identify(env)+", ReGuard["+tmpmap["base"]+"]: "+identify(tmpmap["action"]));
         }
         GuardMap = copy(RetMap);
         if(sizeof(ReGuard)){
             foreach(string key, mixed action in ReGuard){
-                //tc("SetGuyard("+key+", "+identify(action)+")", "white");
                 SetGuard(key, action);
             }
         }

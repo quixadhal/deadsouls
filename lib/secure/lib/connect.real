@@ -14,9 +14,9 @@
 #include <daemons.h>
 #include <message_class.h>
 #include "include/connect.h"
-#include "mssp.h"
 
 inherit LIB_PAGER;
+#include <mssp.h>
 
 static private int CrackCount, NetDead, MaxPlayers; 
 static private string name, Name, Terminal, raza, TrueName, trabajo; 

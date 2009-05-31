@@ -26,7 +26,7 @@ static void create() {
     }
     SetNoClean(1);
     if( file_exists(SaveFile) )
-        unguarded((: RestoreObject, SaveFile :));
+        RestoreObject(SaveFile);
     if( !RebootInterval ) RebootInterval = 170;
     if( !Events ) Events = ([]);
     eventSave();
@@ -45,11 +45,7 @@ mixed eventCancelShutdown() {
 }
 
 varargs static int eventSave(int ung) {
-    if( ung ) {
-        unguarded( (: SaveObject, SaveFile :) );
-        return 1;
-    }
-    else return SaveObject(SaveFile);
+    return SaveObject(SaveFile);
 }
 
 void DoSaves(){

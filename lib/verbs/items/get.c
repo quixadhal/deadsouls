@@ -47,11 +47,9 @@ mixed eventCheckLight(object who) {
 }
 
 mixed can_get_obj(string verb) {
-    //if(this_player()->GetKeyName()=="cratylus") tc("??","red");
     return eventCheckLight(this_player());
 }
 
-//varargs mixed can_get_obj_out_of_obj(string verb, string rule, object item, object container, mixed poo) {
 varargs mixed can_get_obj_out_of_obj(mixed args...) {
     mixed ret = eventCheckLight(this_player());
     object ob;
@@ -74,12 +72,10 @@ mixed can_get_obs_obj(string verb,string rule,mixed *item,object container){
     return can_get_obj_out_of_obj(verb, rule, item, container);
 }
 
-//mixed can_get_obj_from_obj(string verb, string rule, object item, object container) {
 mixed can_get_obj_from_obj(mixed args...) {
     return can_get_obj_out_of_obj(args...);
 }
 
-//mixed can_get_wrd_wrd_out_of_obj(string num, string curr) {
 mixed can_get_wrd_wrd_out_of_obj(mixed args...) {
     mixed ret = eventCheckLight(this_player());
     object ob;
@@ -93,7 +89,6 @@ mixed can_get_wrd_wrd_out_of_obj(mixed args...) {
     return ret;
 }
 
-//mixed can_get_wrd_wrd_from_obj(string num, string curr) {
 mixed can_get_wrd_wrd_from_obj(mixed args...) {
     return can_get_wrd_wrd_out_of_obj(args...);
 }
@@ -114,7 +109,6 @@ mixed can_get_wrd_from_obj(mixed args...) {
 }
 
 mixed do_get_obj(object ob) {
-    //if(this_player()->GetKeyName()=="cratylus") tc("wtf: "+identify(ob),"red");
     return ob->eventGet(this_player());
 }
 
@@ -187,7 +181,6 @@ mixed do_get_obs_obj(mixed *obs, object storage) {
     return do_get_obs_out_of_obj(obs, storage);
 }
 
-//mixed do_get_wrd_wrd_from_obj(string num, string curr, object pile) {
 mixed do_get_wrd_wrd_from_obj(mixed args...) {
     string num, curr;
     mixed pile;
@@ -205,7 +198,6 @@ mixed do_get_wrd_wrd_from_obj(mixed args...) {
     return pile->eventGetMoney(this_player(), to_int(num), curr);
 }
 
-//mixed do_get_wrd_wrd_out_of_obj(string num, string curr, object pile) {
 mixed do_get_wrd_wrd_out_of_obj(mixed args...) {
     return do_get_wrd_wrd_from_obj(args);
 }

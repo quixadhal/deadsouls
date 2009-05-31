@@ -76,12 +76,10 @@ int yeik(string str){
         nomore = 0;
         yeik = 1;
         if(err){
-            //tc("foo!");
         }
         if(!environment() || !archp(this_player())){
             error("no!");
         }
-        //tc("cloning");
         for(int i = 400;i>0;i--){
             call_out("yeik",1,"on");
             new(LIB_BLANK);
@@ -91,7 +89,6 @@ int yeik(string str){
         if(!nomore) cout = call_out("yeik",2);
         yeik = 0;
         if(sizeof(blanks)){
-            //cout = call_out("yeik",2);
             foreach(object blank in blanks){
                 destruct(blank);
             }
@@ -116,11 +113,6 @@ void create(){
     SetMass(20);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
-    //YES = 1000;
-    //NO = -1000;
-    if(file_exists(savefile)){
-        //unguarded( (: restore_object(savefile) :) );
-    }
 }
 void init(){
     ::init();
@@ -153,7 +145,6 @@ static int loadthing(string str){
         reset_eval_cost();
         catch( update(str) );
     }
-    //else tc("non lpc: "+str,"red");
     return 1;
 }
 
@@ -204,7 +195,6 @@ int loadnpcs(mixed args){
             loadee = npcsdir+"/"+npcfile;
             npcs += ({ loadee });
             while(x){
-                //tc("loading: "+loadee);
                 call_out("loadthing", 0, loadee);
                 x--;
             }
@@ -388,16 +378,10 @@ int startstress(){
              $1->GetMedium() < 2 && !$1->GetProperty("no attack") :) );
     int victims;
     tc("Starting stresstest, multiplier: "+numstress);
-    //tc("npcs: "+identify(npcs),"green");
-    //tc("rooms: "+identify(rooms),"blue");
     foreach(string npcfile in npcs){
         object npc;
         int err, x = numstress;
-        //tc("processing: "+npcfile);
         if(last(npcfile,2) != ".c") continue;
-        //err = catch(npc = new(npcfile));
-        //if(err) continue;
-        //else tc("Successfully cloned "+identify(npc));
         while(x){
             err = 0;
             npc = new(npcfile);
@@ -406,7 +390,6 @@ int startstress(){
                 object where;
                 if(numstress < 11) reset_eval_cost();
                 where = targetrooms[abs(random(sizeof(targetrooms))-1)];
-                //tc(x+" Moving "+identify(npc)+" to "+identify(where));
                 catch(err = npc->eventMove(where));
             }
             x--;
@@ -421,7 +404,6 @@ int startstress(){
         if(batch){
             err = catch(germ = new("/domains/town/obj/rage"));
             who = newbatch[abs(random(batch))];
-            //tc("Infecting "+identify(who)+" with "+identify(germ),"blue");
             if(who && germ) germ->eventInfect(who);
             victims--;
         }
@@ -432,7 +414,6 @@ int startstress(){
 }
 
 int eventDestruct(){
-    //unguarded( (: save_object(savefile) :) );
     return ::eventDestruct();
 } 
 
@@ -447,26 +428,18 @@ int yeik2(string str){
         write("Starting the bullshit. ob: "+identify(ob));
         sscanf(file_name(ob), "%s#%d", file, clone);
         if(!dirty) destruct(ob);
-        //if(clone > 5000){
-        //    tc("too many clones");
-        //    on = 0;
-        //}
         if(on){
-            //tc("on");
             call_out("yeik2", 2);
         }
         if(!on){
-            //tc("weird");
             return;
         }
         while(i) {
             i--;
             ob =new(what);
             sscanf(file_name(ob), "%s#%d", file, clone);
-            //tell_object(environment(this_object()), clone + " ");
             if(!dirty) destruct(ob);
         }
-        //tc("hmm");
     }
     else {
         write("Stopping the bullshit.");
@@ -508,7 +481,12 @@ int perfcheck(string foo){
     int sauber = 1, i, count = 1000000;
     validate();
     write("Testing performance...");
-    if(sizeof(foo)) sauber = 0;
+    write("Recorded perfscore: "+MASTER_D->GetPerformanceScore());
+    if(sizeof(foo)){
+        int tmp = atoi(foo);
+        sauber = 0;
+        if(tmp) count = tmp;
+    }
     if(sauber){
         i = time_expression {
             while(count){
@@ -520,7 +498,6 @@ int perfcheck(string foo){
         i = time_expression {
             while(count){
                 count--;
-                reset_eval_cost();
             }
         };
     }

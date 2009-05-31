@@ -18,7 +18,7 @@ int CheckOK(){
     if(DISABLE_INTERMUD) return 1;
     if(!OK){
         Retries++;
-        update("/daemon/intermud");
+        update(INTERMUD_D);
     }
     else {
         if(Retries > 0 && INTERMUD_D->GetConnectedStatus()){

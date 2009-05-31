@@ -16,6 +16,7 @@
 #include <privs.h>
 #include <save.h>
 #include <daemons.h>
+#include <commands.h>
 #include NETWORK_H
 #include ROOMS_H
 #include "include/intermud.h"
@@ -49,7 +50,7 @@ static void create(){
     ChannelList["ID"] = -1;
     ChannelList["List"] = ([]);
     if(file_exists(SaveFile)){
-        unguarded( (: RestoreObject, SaveFile, 1 :) );
+        RestoreObject(SaveFile, 1);
     }
     ConvertLists();
     Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
@@ -129,7 +130,7 @@ static void eventRead(mixed *packet){
     }
     switch(packet[0]){
         case "startup-reply":
-            log_file(LOG_I3,identify(packet));
+            LOG_D->LogSpecial(LOG_I3,timestamp()+" "+identify(packet)+"\n");
         tn("INTERMUD_D: "+identify(packet),"red");
         if( sizeof(packet) != 8 ){
             //tn("We don't like the mudlist packet size.","red");
@@ -456,6 +457,19 @@ string GetMyIp(){
     string ret = "127.0.0.1";
     if(my_ip) ret = my_ip;
     return ret;
+}
+
+void eventWrite(mixed val){
+    object prev = previous_object();
+    if(!prev || prev == this_object() 
+      || prev == find_object(PING_D)
+      || prev == find_object(SERVICES_D) 
+      || prev == find_object(CMD_CHANBAN)
+      || prev == find_object(CMD_CHANCREATE) 
+      || prev == find_object(CMD_CHANREMOVE) 
+      || prev == find_object(CMD_CHANUNBAN)){
+        ::eventWrite(val);
+    }
 }
 
 #endif /* __PACKAGE_SOCKETS__ */

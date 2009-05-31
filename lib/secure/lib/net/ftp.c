@@ -343,6 +343,7 @@ private void eventCmdPort(string arg){
     port = (to_int(parts[4]) << 8) + to_int(parts[5]);
     if(Session->dataPipe) eventDestructDataPipe(0);
     Session->dataPipe = new(LIB_FTP_CLIENT);
+    Session->dataPipe->SetOwner(this_object());
     Session->dataPipe->SetSocketType(Session->binary?STREAM_BINARY:STREAM);
     Session->dataPipe->eventCreateSocket(ip, port);
     Session->dataPipe->SetDestructOnClose(1);

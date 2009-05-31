@@ -35,14 +35,6 @@ just stop reading now and forget about them.
 What should I know in general?
 ------------------------------
 
-- Windows users will find the instructions below insufficient.
-They'll need to fiddle with new .bat files and make a new .cfg
-file. A Windows procedure is on the back burner because frankly
-right now the Windows DS version is pretty much supposed to be
-for testing and development anyway, making instances pretty
-moot to begin with. The chances of there being a production
-Windows DS mud anywhere are slim, and really to be discouraged.
-
 - Instances use a concept of a "global" instance and client
 instances. The global instance is the first instance: the mud
 you installed. Instances you create must be created from the
@@ -57,8 +49,8 @@ should leave that define alone in the global instance, and
 leave it alone also in the client instances.
 
 
-How do I get it going?
-----------------------
+How do I get it going on Linux?
+-------------------------------
 
 To get a second instance of your mud running if the
 new port is 8888 and the instance name is "Foo":
@@ -68,6 +60,22 @@ new port is 8888 and the instance name is "Foo":
 - Type: instconfig create Foo 8888
 - Copy /secure/cfg/mudos.8888.cfg into bin/
 - Go into bin/ and type: ./driver ./mudos.8888.cfg
+- Ta-daa!
+
+
+How do I get it going on Microsoft Windows?
+-------------------------------------------
+
+To get a second instance of your mud running if the
+new port is 9999 and the instance name is "Bar":
+
+- Get the mud running the normal way. Create an admin char, etc.
+- Once it's up, login as an administrator.
+- Type: instconfig create Bar 9999
+- Copy lib\secure\cfg\runmud_9999.bat into your mud's top-level
+  install directory (the same place you'll find runmud.bat)
+- Go into your mud's top-level install directory and double-
+  click on runmud_9999.bat
 - Ta-daa!
 
 

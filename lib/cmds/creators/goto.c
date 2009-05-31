@@ -13,10 +13,12 @@ inherit LIB_DAEMON;
 mixed cmd(string str) {
     object ob, dude;
     int err;
+    string tmp;
 
     if(!str) return "Goto where?";
+    tmp = DEFINES_D->GetDefine(str);
+    if(tmp) str = tmp;
     ob = find_player(lower_case(str));
-    //if(!ob) ob = find_living(lower_case(str));
     if(ob) dude = ob;
     if(ob && objectp(ob) && (!ob->GetInvis() || !archp(ob)) && 
             ob = room_environment(ob)) {
@@ -31,7 +33,6 @@ mixed cmd(string str) {
     if(ob && ob->GetInvis() && creatorp(ob) && !archp(this_player())) ob = 0;
     if(!ob) str = absolute_path((string)this_player()->query_cwd(), str);
     if(ob) {
-        //debug("ob: "+identify(ob),"red");
         this_player()->eventMoveLiving(ob);
         return 1;
     }
@@ -56,7 +57,6 @@ mixed cmd(string str) {
     }
 
     err = catch( ob = load_object(str) );
-
     if(err || !ob) {
         write("\n\nCould not load that location.");
         return 1;
@@ -67,7 +67,7 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-            "Syntax: <goto [living thing|file]>\n\n"
+            "Syntax: goto [living thing|file]\n\n"
             "This command will move you to where the living thing is if it can "
             "be found, otherwise it will search for the file named and try to "
             "move you into that file.\n\nSee also: home, move, trans, expel.",

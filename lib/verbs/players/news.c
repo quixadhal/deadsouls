@@ -25,9 +25,10 @@ mixed can_news_str(string str) {
     if(!str) return 0;
     if(!file_exists(DIR_NEWS + "/" + str)) return "No " + str + " news.";
     if(str == "general" || this_player()->ClassMember(str)) return 1;
+    if(str == "welcome") return 1;
     if(str == "creator" && creatorp(this_player())) return 1;
     if(archp(this_player())) return 1;
-    return "The " + str + " news is not for to your eyes.";
+    return "The " + str + " news is not for your eyes.";
 }
 
 mixed do_news() { return do_news_str("general"); }

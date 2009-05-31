@@ -47,7 +47,7 @@ void assure_box_exists(string who) {
     __MyGroups = ([]);
     __Options = (["notify":1]);
     __Owner = who;
-    unguarded((: SaveObject, file+"/postalrc" :));
+    SaveObject(file+"/postalrc");
 }
 
 static private void load_options(string who) {
@@ -59,13 +59,13 @@ static private void load_options(string who) {
     }
     __Owner = who;
     file = DIR_POSTAL+"/"+who[0..0]+"/"+who+"/postalrc";
-    unguarded((: RestoreObject, file :));
+    RestoreObject(file);
 }
 
 static private void save_options() {
     string file;
     file = DIR_POSTAL+"/"+__Owner[0..0]+"/"+__Owner+"/postalrc";
-    unguarded((: SaveObject, file :));
+    SaveObject(file);
 }
 
 void set_option(string who, string option, mixed value) {

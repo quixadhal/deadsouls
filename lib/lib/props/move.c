@@ -41,7 +41,6 @@ int eventMove(mixed dest){
                 if( creatorp() ){
                     eventPrint(str, MSG_ERROR);
                 }
-                //tc("let's see");
                 return 0;
             }
             ob = find_object(dest);
@@ -51,31 +50,14 @@ int eventMove(mixed dest){
         ob = dest;
     }
     if( !ob || ob == me ){
-        //tc("what");
         return 0;
     }
-    if( living(me) && living(ob) ){
-#if 0
-        if(!ob->GetMount()){
-            //tc("ob: "+identify(ob));
-            //tc("mount: "+identify(ob->GetMount()));
-            return 0;
-        }
-#endif
-    }
-    //tc("i");
     if( !ob->CanReceive(me) ){
-        //tc("it");
-        //tc("it");
         return 0;
     }
-    //tc("dont");
     if(sizeof(deep_inventory(ob)) > MAX_INVENTORY_SIZE){
-        //tc("be");
         return 0;
-        //tc("be");
     }
-    //tc("know");
     if( objectp(me) && LastEnvironment = environment() ){
         environment()->eventReleaseObject(me);
         if(!undefinedp(me->GetRecurseDepth()) && 
@@ -87,18 +69,14 @@ int eventMove(mixed dest){
         }
     }
     if(!objectp(me) ){
-        //tc("fee");
         return 0; 
     }
     prev = environment(me);
-    //tc("prev: "+identify(prev),"cyan");
     move_object(ob);
     tmp = ob->eventReceiveObject(me);
     if(environment() == prev){
-        //tc("fooo");
         return 0;
     }
-    //tc("tmp: "+identify(tmp));
     if(prev) prev->eventPostRelease(me);
     if( environment() ){
         foreach(object peer in all_inventory(environment())){
@@ -113,7 +91,6 @@ int eventMove(mixed dest){
                 prev_inv->ReceiveCanonicalId(ob->GetCanonicalId(), 1);
         }
     }
-    //tc("env: "+identify(environment()),"red");
     if(living(me) && furn = me->GetProperty("furniture_object"))
         if(objectp(furn)) furn->eventReleaseStand(me);
 
@@ -126,7 +103,6 @@ int eventMove(mixed dest){
     if(environment()->GetMedium() == MEDIUM_AIR &&
             me->GetPosition() != POSITION_FLYING){
         if(!(me->CanFly())){
-            //tc("delta");
             call_out("eventFall", 1);
         }
         else me->eventFly();
@@ -134,7 +110,6 @@ int eventMove(mixed dest){
     if(environment()->GetMedium() == MEDIUM_LAND &&
             (me->GetPosition() == POSITION_FLOATING ||
              me->GetPosition() == POSITION_SWIMMING)){
-        //tc("alpha");
         call_out("eventCollapse", 1, 1);
     }
     else if((environment()->GetMedium() == MEDIUM_WATER ||
@@ -150,19 +125,16 @@ int eventMove(mixed dest){
                     }
                 }
                 else {
-                    //tc("bravo");
                     call_out("eventSink", 1);
                 }
             }
         }
         else {
             if(!me->GetProperty("buoyant")){
-                //tc("charlie");
                 call_out("eventSink", 1);
             }
         }
     }
-    //tc("so wtf","green");
     ret = (LastEnvironment != environment());
     if(ret && living(this_object()) && living(environment())){
         if(!interactive(this_object()) &&

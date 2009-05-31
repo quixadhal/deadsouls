@@ -70,9 +70,8 @@ regularly. The following will always have the most recent versions.</p>
 <p>Download the stable version from the following:
 </p>
 <ul>
-  <big> </big> <li><big><a
- href="http://lpmuds.net/files/deadsouls/ds2.6.4.zip"><span
- style="text-decoration: underline;">http://lpmuds.net/files/deadsouls/ds2.6.4.zip</span></a></big></li>
+  <big> </big>
+  <li><a href="http://dead-souls.net/code/dead_souls.zip"><big>http://dead-souls.net/code/dead_souls.zip</big></a></li>
 </ul>
 <br>
 Download the latest alpha version here:<br>
@@ -410,13 +409,13 @@ directory and issue a chown
 command, like this: <br>
     <span class="command">su - root<br>
 cd /home/joe<br>
-chown -R joe ds2.1</span></li>
+chown -R joe ds2.10</span></li>
   <li>If you don't follow the instructions, and instead use a
 previously compiled driver, you may skip a step which copies a
 unix-compatible mudos.cfg file over the default Windows-compatible
 mudos.cfg. To correct this, copy the template config into the proper
 directory: <br>
-    <span class="command">cd /home/joe/ds2.1<br>
+    <span class="command">cd /home/joe/ds2.10<br>
 cp bin/mudos.cfg.orig lib/secure/cfg/mudos.cfg</span></li>
 </ul>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Then edit
@@ -457,7 +456,8 @@ may need to submit a problem ticket with your hosting service to
 resolve the issue. Let them know that the source compiles fine on
 various versions of SuSE and Fedora, as well as Solaris 8, 9, and 10,
 various BSD's, and even IRIX (!). If you can get them to give me a free
-temporary account for testing purposes, I'll take a look and see if I
+temporary account for testing purposes, I might take a look and see if
+I
 can help.</li>
   <li>If you've tried everything but the compile keeps breaking, try
 compiling as root (obviously a last resort, and just for testing).</li>
@@ -532,7 +532,7 @@ changes to the player object, for example, so the indiscriminate
 overwriting of the previous information with the updated files means
 that your work basically disappears.</p>
 <p>For this reason it is critical always to perform a <span
- style="text-decoration: underline; font-style: italic;">full backup</span>
+ style="font-style: italic; font-weight: bold;">full backup</span>
 of
 all your mud files before implementing a patch upgrade. Carefully
 follow the instructions included in the liveupgrade command to ensure

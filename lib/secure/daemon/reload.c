@@ -26,9 +26,9 @@ varargs void validate(){
 static void create() {
     daemon::create();
     occupied_rooms = ({});
-    unguarded( (: RestoreObject(savefile) :) );
+    RestoreObject(savefile);
     set_heart_beat(1);
-    unguarded( (: SaveObject(savefile) :) );
+    SaveObject(savefile);
 }
 
 int IsolateUsers(){

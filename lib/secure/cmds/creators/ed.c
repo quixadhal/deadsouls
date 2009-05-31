@@ -9,7 +9,6 @@
 inherit LIB_DAEMON;
 
 int ed_callback(object ob){
-    //tc("ed_callback("+identify(ob)+")");
     if(ob) ob->CheckCharmode();
     return 1;
 }

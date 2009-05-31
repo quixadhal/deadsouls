@@ -15,7 +15,7 @@ void create(){
         cp(old_savename(SaveFile), SaveFile);
     }
     if(file_exists(SaveFile)){
-        unguarded( (: RestoreObject, SaveFile, 1 :) );
+        RestoreObject(SaveFile, 1);
     }
     set_heart_beat(300);
 #endif
@@ -24,15 +24,15 @@ void create(){
 void zero(){
     MapMap = ([]);
     MapCache = ([]);
-    unguarded( (: SaveObject(SaveFile, 1) :) );
+    SaveObject(SaveFile, 1);
 }
 
 void heart_beat(){
-    unguarded( (: SaveObject(SaveFile, 1) :) );
+    SaveObject(SaveFile, 1);
 }
 
 int eventDestruct(){
-    unguarded( (: SaveObject(SaveFile, 1) :) );
+    SaveObject(SaveFile, 1);
     return daemon::eventDestruct();
 }
 
@@ -67,16 +67,12 @@ varargs mixed GetMap(mixed args, int size){
     }
     if(!size) size = 4;
     if(size > 15) size = 6;
-    //else tc("huh? "+ MASTER_D->GetPerformanceScore());
-    //tc(identify(previous_object())+" asked for a map of "+identify(args),"cyan");
     if(!args) args = base_name(environment(this_player()));
     if(objectp(args)) args = base_name(args);
     myspot=ROOMS_D->GetGridMap(args);
     mycoords = myspot["coord"];
     res = size;
     if(!MapCache) MapCache = ([]);
-    //tc("myspot[\"coords\"]: "+identify(myspot["coords"]));
-    //tc("mycoords: "+identify(mycoords));
     if(!myspot["coords"] || ( mycoords == "0,0,0" &&
                 ROOMS_D->GetRoomZero() != args )){
         ret = "%^RED%^Map unavailable.%^RESET%^";
@@ -213,8 +209,6 @@ varargs mixed GetMap(mixed args, int size){
             Lines[line+1] += pre + abs((x % 10));
             xcount--;
         }
-        //Lines[line-0] = repeat_string("-0",30);
-        //Lines[line+1] = repeat_string("+1",30);
         Lines[line+2] = repeat_string("+2",30);
     }
 

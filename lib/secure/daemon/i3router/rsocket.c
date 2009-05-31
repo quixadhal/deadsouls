@@ -115,13 +115,10 @@ static void listen_callback(int fd){
     else {
         server_log("socket_accepted: "+newfd+
                 ", "+identify(socket_status(newfd)),"rsocket");
-        //tc("listen_callback "+newfd+": "+identify(fdstat=socket_status(newfd)),"white");
 
         if(sizeof(fdstat) > 4){
             foreach(mixed foo in ROUTER_D->GetBlacklistedMuds()){
                 if(!strsrch(fdstat[4]+"",foo)){
-                    //tc("dropping blacklisted "+fdstat[4],"white");
-                    //socket_close(newfd);
                     badsocks += ({ newfd });
                     return;
                 }
@@ -129,7 +126,6 @@ static void listen_callback(int fd){
         }
 
         if(time() - last_connect < interval){
-            //tc("early connect from "+newfd+" noted","white");
             badsocks -= ({ newfd });
             socket_close(newfd);
             return;

@@ -20,18 +20,18 @@ static void create() {
     SetNoClean(1);
     Notes = ({});
     if( unguarded((: file_exists(SaveFile) :) ) ){
-        unguarded((: RestoreObject(SaveFile) :));
+        RestoreObject(SaveFile);
     }
     x = sizeof(Notes);
     while( sizeof(Notes) && (time() - Notes[0][Date]) > MaxTime )
         Notes -= ({ Notes[0] });
     if( x != sizeof(Notes) ) eventSaveNotices();
-    unguarded((: SaveObject(SaveFile) :));
+    SaveObject(SaveFile);
 }
 
 static int eventSaveNotices() {
     if( !archp(this_player()) ) return 0;
-    else return unguarded((: SaveObject(SaveFile) :));
+    else return SaveObject(SaveFile);
 }
 
 int eventAddNotice(object who, string msg) {

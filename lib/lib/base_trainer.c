@@ -126,7 +126,6 @@ int eventHelp(object who, string unused){
 }
 
 int eventTrain(object who, string verb, string skill){
-    //tc("who: "+identify(who)+", verb: "+identify(verb)+", skill: "+skill);
     if( !who || environment(who) != environment() ){
         return 0;
     }
@@ -177,8 +176,6 @@ int eventTrain(object who, string verb, string skill){
         return 0;
     }
     if( member_array(skill, me->GetTrainingSkills()) == -1 ){
-        //me->eventForce("speak I know nothing about the art of " +
-        //        skill + ".");
         me->eventHelp();
         return 0;
     }

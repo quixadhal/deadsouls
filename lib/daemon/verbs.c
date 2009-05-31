@@ -24,7 +24,6 @@ static int ScheduledVerbLoad(string *cache){
         string *verb_list;
         if( ob = find_object(verb) ) catch(ob->eventDestruct());
         if( !catch(ob = load_object(verb)) && ob ) {
-            //tc(verb,"green");
             if( !(verb_list = (string *)ob->GetVerbs()) )
                 verb_list = ({ explode(verb, "/")[<1][0..<3] });
             else if(verb_list && ob->GetSynonyms()) {
@@ -32,7 +31,6 @@ static int ScheduledVerbLoad(string *cache){
             }
             Verbs += expand_keys(([ verb_list : verb ]));
         }
-        //else tc(verb,"red");
     }
 }
 
@@ -51,16 +49,13 @@ varargs void eventReloadVerbs(mixed val) {
         verbs = ({});
         foreach(dir in get_dir(DIR_VERBS + "/")) { 
             dir = DIR_VERBS + "/" + dir;
-            //tc("dir: "+dir);
             if( file_size(dir) == -2 ) 
                 verbs += map(get_dir(dir + "/*.c"), (: $(dir) + "/" + $1 :));
-            //foreach(string v in verbs) tc("Verb: "+v,"blue");
         }
         foreach(dir in get_dir(DIR_SECURE_VERBS + "/")) {
             dir = DIR_SECURE_VERBS + "/" + dir;
             if( file_size(dir) == -2 )
                 verbs += map(get_dir(dir + "/*.c"), (: $(dir) + "/" + $1 :));
-            //foreach(string v in verbs) tc("Verb: "+v,"blue");
         }
     }
     cache = ({});
@@ -71,7 +66,6 @@ varargs void eventReloadVerbs(mixed val) {
         verbs -= ({ verb });
         if(sizeof(cache) > 9 || !sizeof(verbs)){
             call_out("ScheduledVerbLoad", 1, copy(cache));
-            //foreach(string v in cache) tc("Verb: "+v,"blue");
             cache = ({});
         }
     }

@@ -1,4 +1,11 @@
----- 2.9a19 (unreleased) ---
+---- 2.10 ---
+- Released 2009-06-01
+- Minor fixes to 2.9a19
+- Added pwiping to PLAYERS_D.
+- Minor faq updates.
+
+---- 2.9a19 ---
+- Released 2009-05-25
 - The idle command can now be used without an argument as
   a connection keepalive.
 - i3router: IRN chanlist now tries to prune duplicated entries in the
@@ -6,6 +13,34 @@
 - i3router: channel-add packets with invalid channel types are
   now rejected.
 - The mudconfig command now handles mud name and port changes.
+- IMC2 channels now have their remote names mapped to their local
+  names automatically, avoiding the need to hardcode the maps in CHAT_D.
+- Added commands: chan, rotatelogs
+- Updated the ced editor with some important fixes. It can now be
+  enabled with mudconfig (mudconfig ced on). Note that this is a highly
+  experimental editor, so it automatically backs up any file you edit
+  with it. See the help info for: ced, bk, restore, charmode
+- The windows install no longer needs the absolute path to be
+  c:\ds if the new default runmud.bat and mudos.win32 are used.
+- Instances on Windows are now supported.
+- Telopts MSSP support added, plaintext MSSP improved.
+  See: http://dead-souls.net/ds-admin-faq.html#145
+- i3router: the "listening" portion of irn channel updates is
+  no longer sent.
+- i3router: blacklisting of networks is now possible.
+- i3router: muds that attempt to reconnect more than once per second
+  are subject to automatic temporary graylisting.
+- Fixed an exploit reported by Ideysus that allowed local creators to
+  spoof intermud packets.
+- Removed command: mfinger
+- Updated the performance score calculation to make it more consistent.
+- i3router: packet floods are now handled somewhat more efficiently.
+- Added sefun: format_page2()
+- Alleviated some misfortunes in instance tells.
+- The mudconfig command now works properly with imc2 password setting
+  and the secrets daemon.
+- General cleanup of superfluous debugging statements.
+- Substring searching added to ced.
 
 ---- 2.9a18 ---
 - Released 2009-05-05

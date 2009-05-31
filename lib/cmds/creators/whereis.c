@@ -43,7 +43,6 @@ mixed cmd(string str) {
             int dist;
             float deg;
             subret = "";
-            //tc("bearing: "+bearing(x2,y2,x,y));
             deg = bearing(x2,y2,x,y);
             x3 = abs(x - x2);
             y3 = abs(y - y2);
