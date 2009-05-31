@@ -23,6 +23,6 @@ int cmd(string str){
 
 string GetHelp(string str) {
     return "Syntax: <bb>\n"
-    "This command tells you which boards have unread messages "
-    "on them.";
+        "This command tells you which boards have unread messages "
+        "on them.";
 }

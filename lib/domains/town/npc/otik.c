@@ -10,8 +10,8 @@ static void create() {
     SetShort("Otik, the keeper of the shop");
     SetLevel(12);
     SetLong("Otik is the owner of the local general store, an old and famous "
-      "trading post in the heart of town.  The brother of Lars, he also is an "
-      "unassuming fellow, and just as jovial.");
+            "trading post in the heart of town.  The brother of Lars, he also is an "
+            "unassuming fellow, and just as jovial.");
     SetGender("male");
     SetMorality(40);
     SetRace("human");

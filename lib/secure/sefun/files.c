@@ -4,7 +4,7 @@
  *    created by Descartes of Borg 940926
  */
 
-string gtempname, gfilename;
+string Port, gtempname, gfilename;
 
 int file_exists(string str) { 
     if(!str || !stringp(str)) return 0;
@@ -19,12 +19,33 @@ mixed lpc_file(string str){
     else return str;
 }
 
-int directory_exists(string str) { return (file_size(str) == -2); }
+mixed object_file(string str){
+    if(!file_exists(str)){
+        if(file_exists(str+".o")) return str+".o";
+        else return 0;
+    }
+    else return str;
+}
 
-string save_file(string who) {
+int directory_exists(string str){ 
+    if(!str || (sizeof(str) < 2 && str != "/")) return 0;
+    return (file_size(str) == -2);
+}
+
+string player_save_file(string who){
     if( !stringp(who) ) error("Bad argument 1 to save_file().");
     who = convert_name(who);
-    return (string)master()->player_save_file(who);
+    return master()->player_save_file(who);
+}
+
+string save_file(string what){
+    string ret;
+#if ENABLE_INSTANCES
+    ret = new_savename(what);
+#else
+    ret = old_savename(what);
+#endif
+    return ret;
 }
 
 int indent_file(string filename){
@@ -69,3 +90,28 @@ int mkdir_recurse(string path){
     }
     return 1;
 }
+
+string new_savename(string name){
+    string unoed, ported, bare;
+    int ret;
+    if(grepp(name, "."+__PORT__)) return name;
+    if(last(name,2) == ".o") unoed = truncate(name, 2);
+    else unoed = (name || "");
+    bare = replace_string(unoed, ""+__PORT__, "");
+    while(last(bare, 1) == "."){
+        bare = truncate(bare, 1);
+    }
+    ported = bare + "." + __PORT__ + ".o";
+    return ported;
+}
+
+string old_savename(string name){
+    string pre;
+    if(name){
+        sscanf(name, "%s.%*s", pre);
+        if(pre) return pre+".o";
+        return name+".o";
+    }
+    return 0;
+}
+

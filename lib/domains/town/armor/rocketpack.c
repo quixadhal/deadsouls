@@ -7,9 +7,9 @@ inherit "/domains/default/armor/rocketpack";
 
 string LongD(){
     string ret = "This is a small device worn on the back and designed to \"boost\" " +
-    "the wearer through the air or through space. For continuous operation, "+
-    "it should probably be activated.  The fuel gauge "+
-    "reads "+to_int(percent(charge,maxcharge))+" percent.";
+        "the wearer through the air or through space. For continuous operation, "+
+        "it should probably be activated.  The fuel gauge "+
+        "reads "+to_int(percent(charge,maxcharge))+" percent.";
     return ret;
 }
 

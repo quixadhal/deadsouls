@@ -13,7 +13,7 @@ mixed cmd(string args) {
     string rname;
 
     message("system", "Changing user information for " +
-      (string)previous_object()->GetCapName() + ": ", previous_object());
+            (string)previous_object()->GetCapName() + ": ", previous_object());
     rname = (string)previous_object()->GetRealName();
     message("prompt", "Real name [" + rname + "] ", previous_object());
     f = function(string str, string old, object ob) {
@@ -27,7 +27,7 @@ mixed cmd(string args) {
         else message("system", "Real name unchanged.", ob);
         str = (string)ob->GetEmail();
         message("prompt", "Email (preceed with # to make admin only) ["
-          + str + "] ", ob);
+                + str + "] ", ob);
         g = function(string str, string old, object ob) {
             function h;
 
@@ -85,6 +85,6 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <chfn>\n\n"
-      "Allows you to change your real life information.\n\n"
-      "See also: passwd", this_player());
+            "Allows you to change your real life information.\n\n"
+            "See also: passwd", this_player());
 }

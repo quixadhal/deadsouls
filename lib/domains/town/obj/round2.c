@@ -12,4 +12,6 @@ void create(){
     SetFirearmType("auto");
     SetAmmoType("acp");
     SetVendorType(VT_TREASURE);
+    SetMass(1);
+    SetBaseCost("silver", 1);
 }

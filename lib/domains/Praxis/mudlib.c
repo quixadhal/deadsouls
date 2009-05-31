@@ -8,12 +8,12 @@ void create() {
     SetProperty("indoors", 1);
     SetShort( "The Mudlib Room");
     SetLong(
-      "In this room you can see the status of work being done on "
-      "bugs in the game by the mudlib department, as well as report "
-      "bugs that have not been getting the attention you think the bug "
-      "deserves.");
+            "In this room you can see the status of work being done on "
+            "bugs in the game by the mudlib department, as well as report "
+            "bugs that have not been getting the attention you think the bug "
+            "deserves.");
     SetExits( 
-      (["down" : "/domains/Praxis/adv_inner"]) );
+            (["down" : "/domains/Praxis/adv_inner"]) );
 
     ob = new("/lib/bboard");
     ob->SetKeyName("board");

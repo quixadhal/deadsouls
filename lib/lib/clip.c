@@ -12,7 +12,7 @@ void create(){
     SetAdjectives(({"ammunition","pistol"}));
     SetShort("a pistol ammunition clip");
     SetLong("This is a slender, spring-loaded container for semiautomatic "+
-      "pistol ammunition.");
+            "pistol ammunition.");
     SetMass(10);
     SetValue(1);
     SetVendorType(VT_TREASURE);
@@ -67,7 +67,7 @@ varargs mixed eventLoad(object who, object where){
     int success, err;
     mixed type = where->GetFirearmType();
     if(base_name(where) != LIB_FIREARM &&
-      !inherits(LIB_FIREARM,where)){
+            !inherits(LIB_FIREARM,where)){
         write("This magazine is for a firearm.");
         return 1;
     }
@@ -91,8 +91,8 @@ varargs mixed eventLoad(object who, object where){
     else {
         write("You load your "+where->GetFirearmName()+".");
         say(this_player()->GetName()+" loads an ammunition "+
-          "clip into "+possessive(environment(this_object()))+" "+    
-          where->GetFirearmName()+".");
+                "clip into "+possessive(environment(this_object()))+" "+    
+                where->GetFirearmName()+".");
         where->SetLoaded(1);
     }
     return 1; 
@@ -105,7 +105,7 @@ varargs mixed eventUnload(mixed where){
     object prev = previous_object();
     env = environment();
     if((base_name(previous_object()) == LIB_ROUND ||
-        inherits(LIB_ROUND, previous_object())) && intp(where)){
+                inherits(LIB_ROUND, previous_object())) && intp(where)){
         if(!(inv = sizeof(all_inventory()))){
             write("It's already fully unloaded.");
             return 1;
@@ -118,8 +118,8 @@ varargs mixed eventUnload(mixed where){
         }
         else {
             write("You unload "+cardinal(where)+" "+
-              remove_article(previous_object()->GetShort())+" from the "+
-              remove_article(GetShort())+".");
+                    remove_article(previous_object()->GetShort())+" from the "+
+                    remove_article(GetShort())+".");
             return 1;
         }
     }

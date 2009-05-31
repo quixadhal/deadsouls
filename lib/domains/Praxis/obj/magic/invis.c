@@ -28,7 +28,7 @@ int test_invis(object who, object whom) {
     }
     if(__InvisTime < time()) {
         message("environment", "You are feeling more vulnerable now.",
-          __Invis[0]);
+                __Invis[0]);
         this_object()->reeventMove();
         return 0;
     }

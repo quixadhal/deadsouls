@@ -18,7 +18,7 @@ int cmd(string str) {
 
     if(!str) {
         write("The following sites are on temporary registration:\n"+
-          BANISH_D->query_temp_site_info());
+                BANISH_D->query_temp_site_info());
         return 1;
     }
 
@@ -37,10 +37,10 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: tempban [site] [time]\n\nThis will make new players from "
-      "[site] unable to log in for a period of time [time] "
-      "(given in minutes).  This will last across reboots and site ip "
-      "numbers should be entered in the same manner as the \"register\" "
-      "command requires.  See \"help register\" for more details.\n\n"
-      "Note: tempban without arguments will list all sites on temporary "
-      "registration along with their times of expiration.");
+            "[site] unable to log in for a period of time [time] "
+            "(given in minutes).  This will last across reboots and site ip "
+            "numbers should be entered in the same manner as the \"register\" "
+            "command requires.  See \"help register\" for more details.\n\n"
+            "Note: tempban without arguments will list all sites on temporary "
+            "registration along with their times of expiration.");
 }

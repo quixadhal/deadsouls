@@ -152,11 +152,11 @@ string PirateFilter(string str){
     //str = replace_string(str, "to ARRR", "to test");
     if(random(100) < 1){
         switch(random(5)){
-        case 0 : str = "Avast, me hearties! "+str;break;
-        case 1 : str += " ARRRR!!";break;
-        case 2 : str = "Well blow me down! "+str;break;
-        case 3 : str += " YO HO HO!";break;
-        case 4 : str += " Wench! Grog!";break;
+            case 0 : str = "Avast, me hearties! "+str;break;
+            case 1 : str += " ARRRR!!";break;
+            case 2 : str = "Well blow me down! "+str;break;
+            case 3 : str += " YO HO HO!";break;
+            case 4 : str += " Wench! Grog!";break;
         }
     }
     return str;
@@ -166,7 +166,7 @@ string PirateFilter(string str){
 string eventFilter(string str){
     if(!str || !sizeof(str) || !stringp(str)) return "";
     //comment out the following line to enable the filter
-    //return str;
+    return str;
     write_file("/secure/log/prefilter.txt",str+"\n");
     str = PirateFilter(str);
     write_file("/secure/log/postfilter.txt",str+"\n");

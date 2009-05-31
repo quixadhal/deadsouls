@@ -16,7 +16,7 @@ mixed cmd(string args) {
         int cols, i, maxi, x, y;
 
         message("help", mud_name() + " has the following FAQ lists:",
-          this_player());
+                this_player());
         cols = ((int *)this_player()->GetScreen())[0];
         i = sizeof(files = get_dir(DIR_FAQS "/"));
         while(i--) if( (y =strlen(files[i])) > x ) x = y;
@@ -48,14 +48,14 @@ static void GetFAQ(string args) {
 
 void help() {
     message("help", "Syntax: <faq ([FAQ])>\n\n"
-      "If you specify a particular FAQ to read, this command will "
-      "display that FAQ for you.  If you fail to specify a FAQ, it "
-      "will give you a list of FAQs from which to choose.  FAQ "
-      "stands for Frequently Asked Questions.  Reading the FAQs is "
-      "a good way of coming to understand topics basic to " +
-      mud_name() + ".\n\n"
-      "See also: help" + (creatorp(this_player()) ? ", man" : ""),
-      this_player());
+            "If you specify a particular FAQ to read, this command will "
+            "display that FAQ for you.  If you fail to specify a FAQ, it "
+            "will give you a list of FAQs from which to choose.  FAQ "
+            "stands for Frequently Asked Questions.  Reading the FAQs is "
+            "a good way of coming to understand topics basic to " +
+            mud_name() + ".\n\n"
+            "See also: help" + (creatorp(this_player()) ? ", man" : ""),
+            this_player());
 }
 
 

@@ -41,7 +41,6 @@ varargs mixed SetRead(mixed arg1, mixed desc){
         Reads = expand_keys(arg1);
         if( Reads["default"] ){
             Read = Reads["default"];
-            //map_delete(Reads, "default");
         }
     }
     if( !desc ){
@@ -93,12 +92,11 @@ mixed GetLanguage(){
     else return 0;
 }
 
-varargs mixed eventRead(object who, string str){
+varargs mixed eventRead(object who, mixed str){
     mixed ret;
     mixed val;
     if(str) val = GetRead(str);
     else val = GetRead("default");
-
     if( arrayp(val) ){
         val = val[query_night()];
     }
@@ -113,7 +111,7 @@ varargs mixed eventRead(object who, string str){
         if(!stringp(ret)) return 1;
     }
     environment(who)->eventPrint(who->GetName() + " reads " + GetShort() + ".",
-      who);
+            who);
     if(ret) val = ret;
     if( !val ){
         who->eventPrint("There is nothing to read.");
@@ -130,7 +128,7 @@ varargs mixed eventRead(object who, string str){
     } 
 
     if(Language && (this_player()->GetLanguageLevel(Language) < 100 &&
-        !(this_player()->GetPolyglot()))){
+                !(this_player()->GetPolyglot()))){
         if(sizeof(val) > 4800){
             val = "It is too long and you are too unfamiliar with the language to make sense of it.";
 
@@ -150,7 +148,7 @@ mixed direct_read_obj(){
     }
     else {
         if( environment() != this_player()  && environment(this_player()) !=
-          environment()){
+                environment()){
             return "#You don't have that!";
         }
         else return 1;
@@ -165,7 +163,21 @@ mixed direct_read_str_word_obj(string str){
     }
     else {
         if( environment() != this_player()  && environment(this_player()) !=
-          environment()){
+                environment()){
+            return "#You don't have that!";
+        }
+        else return 1;
+
+    }
+}
+
+mixed direct_read_obj_at_obj(object reader, object readee){
+    if( !Read ){
+        return 0;
+    }
+    else {
+        if( environment() != this_player()  && environment(this_player()) !=
+                environment()){
             return "#You don't have that!";
         }
         else return 1;

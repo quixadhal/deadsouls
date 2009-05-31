@@ -15,6 +15,12 @@ static void create(){
 
 varargs void eventEdit(string file, function callback){
     EditCallback = callback;
+#ifdef __DSLIB__
+    if(this_object()->GetCharmode()){
+        this_object()->SetProperty("was_charmode", 1);
+        this_object()->CancelCharmode();
+    } 
+#endif
     ed_start(file, !creatorp());
     if( !creatorp() || file_size(file) < 1 ) ed_cmd("$a");
 }

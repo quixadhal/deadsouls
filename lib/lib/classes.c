@@ -62,7 +62,15 @@ string SetClass(string class_name){
     mixed array args = allocate(3);
     mixed array tmp;
 
+    /* The following is an example of "pass by reference" being
+     * used on purpose in Dead Souls. It's generally a confusing
+     * concept for novice coders, and it's usually avoided in
+     * the lib. To have an understanding of why the "args" variable
+     * gets modified by the following line, please see the
+     * pass-by-ref/val FAQ: http://dead-souls.net/ds-creator-faq.html#2.63
+     */
     CLASSES_D->SetClass(class_name, args);
+
     if( Class ){
         string multi;
 
@@ -81,9 +89,6 @@ string SetClass(string class_name){
     else {
         if( !args[0] ){ // No such class
             return Class;
-        }
-        foreach(tmp in args[2]){
-            SetSkill(tmp...);
         }
     }
     foreach(tmp in args[1]){

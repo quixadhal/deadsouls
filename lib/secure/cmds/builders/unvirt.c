@@ -4,12 +4,12 @@
 
 inherit LIB_DAEMON;
 string *features = ({ "GetLong", "GetShort", "GetAmbientLight",
-  "GetDayLight", "GetNightLight", "GetDayLong", "GetNightLong",
-  "GetDayShort", "GetNightShort", "GetExitMap", "GetFlyRoom",
-  "GetSinkRoom", "GetClimate", "GetTerrainType", 
-  "GetItemsMap", "GetProperties", "GetSmellMap", "GetListenMap",
-  "GetGravity", "GetMedium", "GetPlayerKill", "GetTown",
-});
+        "GetDayLight", "GetNightLight", "GetDayLong", "GetNightLong",
+        "GetDayShort", "GetNightShort", "GetExitMap", "GetFlyRoom",
+        "GetSinkRoom", "GetClimate", "GetTerrainType", 
+        "GetItemsMap", "GetProperties", "GetSmellMap", "GetListenMap",
+        "GetGravity", "GetMedium", "GetPlayerKill", "GetTown",
+        });
 
 
 mixed cmd(string str){
@@ -44,11 +44,11 @@ mixed cmd(string str){
             //write(key+": "+identify(val));
             key = replace_string(key,"Get","Set",1);
             switch(key){
-            case "SetExitMap" : key = "SetExits"; break;
-            case "SetItemsMap" : key = "SetItems"; break;
-            case "SetSmellMap" : key = "SetSmell"; break;
-            case "SetListenMap" : key = "SetListen"; break;
-            default :
+                case "SetExitMap" : key = "SetExits"; break;
+                case "SetItemsMap" : key = "SetItems"; break;
+                case "SetSmellMap" : key = "SetSmell"; break;
+                case "SetListenMap" : key = "SetListen"; break;
+                default :
             }
             if(key == "SetTerrainType"){
                 tmp = implode(TYPES_D->eventCalculateTypes("terrain",val),"|");
@@ -58,7 +58,7 @@ mixed cmd(string str){
                 rm(base_name(environment(this_player()))+".c");
                 if(!grepp(file_contents,"terrain_types.h")){
                     write_file(base_name(environment(this_player()))+".c",
-                      "#include <terrain_types.h>\n",1);
+                            "#include <terrain_types.h>\n",1);
                 }
                 write_file(base_name(environment(this_player()))+".c",file_contents);
             }
@@ -70,7 +70,7 @@ mixed cmd(string str){
                 rm(base_name(environment(this_player()))+".c");
                 if(!grepp(file_contents,"medium.h")){
                     write_file(base_name(environment(this_player()))+".c",
-                      "#include <medium.h>\n",1);
+                            "#include <medium.h>\n",1);
                 }
                 write_file(base_name(environment(this_player()))+".c",file_contents);
 
@@ -91,11 +91,11 @@ mixed cmd(string str){
 
 void help() {
     message("help", "Syntax: unvirt\n\n"
-      "This command will gather the room data of the virtual room you "
-      "are standing in, and try to make a non-virtual room with it, "
-      "writing to the file that the virtual room is pretending to use. "
-      "If you lack write permissions to that file, the command will fail "
-      "in a rather ugly way."
-      "\n\n"
-      "See also: modify, create, delete, copy, areaclone, areagoto, arealist", this_player());
+            "This command will gather the room data of the virtual room you "
+            "are standing in, and try to make a non-virtual room with it, "
+            "writing to the file that the virtual room is pretending to use. "
+            "If you lack write permissions to that file, the command will fail "
+            "in a rather ugly way."
+            "\n\n"
+            "See also: modify, create, delete, copy, areaclone, areagoto, arealist", this_player());
 }

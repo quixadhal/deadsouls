@@ -12,25 +12,29 @@ static void create() {
     SetAdjectives(({"a.s.", "A.S.", "doctor","dr","Dr.","dr."}));
     SetShort("Clepius the healer");
     SetLong("Clepius is a kindly old man, legendary for his "
-      "nearly superhuman powers of healing. He is even "
-      "rumored capable of resurrecting the dead. He runs "
-      "a medical care service in town, and can be asked to "
-      "help when needed, though his help is not free.");
+            "nearly superhuman powers of healing. He is even "
+            "rumored capable of resurrecting the dead. He runs "
+            "a medical care service in town, and can be asked to "
+            "help when needed, though his help is not free.");
     SetLevel(50);
     SetRace("human");
     SetClass("mage");
     SetGender("male");
     SetInventory(([
-        "/domains/town/weap/rod":1,
-        "/domains/town/obj/medbag":1,
-        "/domains/town/armor/toga":"wear toga",
-      ]) );
+                "/domains/town/weap/rod":1,
+                "/domains/town/obj/medbag":1,
+                "/domains/town/armor/toga":"wear toga",
+                ]) );
     slips = ({});
     busy=0;
     SetPolyglot(1);
     SetLanguage("common", 100);
     SetDefaultLanguage("common");
     SetCustomXP(10);
+}
+
+void init(){
+    ::init();
 }
 
 int CanReceive() {
@@ -79,12 +83,12 @@ int ejectRabble(string str){
     }
     foreach(object bum in riffraff){
         if( bum->GetKeyName() != patient->GetKeyName() &&
-          bum->GetKeyName() != "clepius" ){
+                bum->GetKeyName() != "clepius" ){
             tell_object(bum,"The doctor ejects you from his office in order to "+
-              "treat "+patient->GetName()+".\n\n");
+                    "treat "+patient->GetName()+".\n\n");
             bum->eventMoveLiving("/domains/town/room/healer");
             tell_object(patient,"The doctor ejects "+bum->GetName()+" from "+
-              "his office in order to treat you.");
+                    "his office in order to treat you.");
         }
     }
     return 1;
@@ -94,9 +98,9 @@ int NextPatient(){
     eventForce("put my first slip in bin");
     environment()->SetProperty("busy",0);
     tell_room(load_object("/domains/town/room/healer"),"From the back room "+
-      "you hear the doctor holler: \"%^BOLD%^CYAN%^NEXT!%^RESET%^\"");
+            "you hear the doctor holler: \"%^BOLD%^CYAN%^NEXT!%^RESET%^\"");
     tell_room(environment(),"The doctor leans into the east doorway "+
-      "and hollers: \"%^BOLD%^CYAN%^NEXT!%^RESET%^\"");
+            "and hollers: \"%^BOLD%^CYAN%^NEXT!%^RESET%^\"");
     busy = 0;
     environment()->SetProperty("busy",0);
     return 1;
@@ -155,13 +159,12 @@ int PerformRegenerate(string dude){
 int PerformExcision(string dude){
     string what,whom;
     object person,thing,slug;
-    int rifleshot_wounds,firearms_wounds,wounds;
+    int firearms_wounds, wounds;
 
     person = present(dude,environment(this_object()));
     slug=present("firearms_wound",person);
     wounds=0;
-    wounds=person->GetLead("gunshot_wounds");
-    wounds+=person->GetLead("rifleshot_wounds");
+    wounds=person->GetLead();
     if(!slug){
         eventForce("say You have no foreign bodies.");
         eventForce("give my first slip to "+dude);
@@ -170,42 +173,24 @@ int PerformExcision(string dude){
 
     tell_room(environment(this_object()),"Clepius deftly extracts a lead slug from "+ dude+".", ({person}));
     tell_object(person,"Clepius deftly extracts a lead slug from your body.");
-    firearms_wounds=person->GetLead("firearms_wounds");
-    rifleshot_wounds=person->GetLead("rifleshot_wounds");
-    firearms_wounds=person->GetLead("firearms_wounds");
-    rifleshot_wounds=person->GetLead("rifleshot_wounds");
     slug=new("/domains/town/obj/spent");
-    if(person->GetLead("gunshot_wounds") > 0) {
-        person->AddLead("gunshot_wounds", -1);
-        slug->SetShort("a spent pistol slug");
+    if(wounds > 0) {
+        person->AddLead("firearms_wounds", -1);
+        slug->SetShort("a spent firearm slug");
         --wounds;
         slug->eventMove(this_object());
         if(person->GetLead() < 1){                                         
             slug=present("firearms_wound",person);
             if(slug) slug->eventDestruct();
-            return 1;
         }
         return 1;
     }
-    if(person->GetLead("rifleshot_wounds") > 0){                                 
-        person->AddLead("rifleshot_wounds", -1);
-        slug->SetShort("a spent rifle slug");                                 
-        --wounds;
-        slug->eventMove(this_object());                                 
-        if(person->GetLead() < 1){
-            if(slug) slug->eventDestruct();
-            slug=present("firearms_wound",person);
-            if(slug) slug->eventDestruct();
-            return 1;
-        }
-    }
+
     slug->eventMove(this_object());
     slug=present("firearms_wound",person);
     if(wounds < 1 && slug){                                 
         slug->eventDestruct();
-        return 1;                         
     }
-
     return 1;
 }
 
@@ -220,20 +205,15 @@ int DiagPatient(string dude, string problem){
     if(problem == "regenerate") {
         PerformRegenerate(dude);
         NextPatient();
-        return 1;
     }
-
     if(problem == "heal"){
         PerformHeal(dude);
         NextPatient();
-        return 1;
     }
-
-    if(problem == "excision"){
+    if(problem == "excise"){
         PerformExcision(dude);
         NextPatient();
-        return 1;
     }
-
+    return 1;
 }
 

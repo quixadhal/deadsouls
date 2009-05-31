@@ -16,7 +16,7 @@ static void create()  {
     SetStrength(10);
     SetBaseCost("silver",2);
     SetMealMessages("You drink your water, and feel refreshed.", "$N drinks "+
-      "$P water.");
+            "$P water.");
 }
 void init(){
     ::init();

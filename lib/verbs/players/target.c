@@ -10,14 +10,14 @@ static void create() {
     SetRules("LVS", "only LVS","LVS only");
     SetErrorMessage("Target whom?");
     SetHelp("Syntax: <target LIVING>\n"
-      "        <target all of LIVING>\n"
-      "        <target all>\n\n"
-      "This command initiates exclusive combat with a living "
-      "being or group of living beings using any wielded weapons "
-      "or your bare hands.  Anyone else in the room at the time "
-      "you issue this command will be ignored by you, even if "
-      "they attack you. \n\n"
-      "See also: attack, wimpy, ignore");
+            "        <target all of LIVING>\n"
+            "        <target all>\n\n"
+            "This command initiates exclusive combat with a living "
+            "being or group of living beings using any wielded weapons "
+            "or your bare hands.  Anyone else in the room at the time "
+            "you issue this command will be ignored by you, even if "
+            "they attack you. \n\n"
+            "See also: attack, wimpy, ignore");
 }
 
 mixed can_target_liv(object target) {
@@ -31,7 +31,7 @@ mixed can_target_liv(object target) {
     }
     if( (int)environment(this_player())->GetProperty("no target") ) {
         message("environment", "A mystical force prevents your malice.",
-          this_player());
+                this_player());
         return this_player()->CanManipulate();
     }
     return this_player()->CanManipulate();
@@ -79,8 +79,8 @@ varargs mixed do_target_lvs(mixed *targets, int exclusive) {
     tmp = item_list(obs);
     obs->eventPrint((string)this_player()->GetName() + " targets you!");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " targets " + tmp + "!",
-      ({ this_player(), obs... }));
+            " targets " + tmp + "!",
+            ({ this_player(), obs... }));
     this_player()->eventPrint("You target " + tmp + ".");
     return 1;
 }

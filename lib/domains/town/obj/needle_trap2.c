@@ -20,7 +20,7 @@ void create(){
     SetAdjectives( ({ "simple","armor", "poison", "needle" }) );
     SetShort("an armor trap");
     SetLong("It is a simple poison needle trap designed to trigger when "
-      "armor is worn.");
+            "armor is worn.");
     SetShadowObject("/shadows/needle_trap");
     SetTrapType(BOOBYTRAP_WIELD);
     SetMass(50);

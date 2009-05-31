@@ -10,12 +10,12 @@ static void create() {
     SetRules("LVS","");
     SetErrorMessage("Whom are you trying to ignore?");
     SetHelp("Syntax: <ignore LIVING>\n"
-      "        <ignore all>\n"	
-      "\n"
-      "Allows one to stop attacking a living being "
-      "or beings. Helpful for not wasting time on the "
-      "wrong targets.\n\n"
-      "See also: attack\n");
+            "        <ignore all>\n"	
+            "\n"
+            "Allows one to stop attacking a living being "
+            "or beings. Helpful for not wasting time on the "
+            "wrong targets.\n\n"
+            "See also: attack\n");
 }
 
 mixed can_ignore(){ return 1; }
@@ -42,8 +42,8 @@ mixed do_ignore_liv(object ob) {
         this_player()->eventPrint("You are now ignoring " + ob->GetName() + ".");
         ob->eventPrint((string)this_player()->GetName() + " ignores you!");
         environment(this_player())->eventPrint((string)this_player()->GetName() +
-          " ignores " + ob->GetName() + "!",
-          ({ this_player(), ob }));
+                " ignores " + ob->GetName() + "!",
+                ({ this_player(), ob }));
     }
     else this_player()->eventPrint("You are unable to ignore " + ob->GetName() + ".");
     return 1;
@@ -66,8 +66,8 @@ mixed do_ignore_lvs(mixed *targets) {
     tmp = item_list(obs);
     obs->eventPrint((string)this_player()->GetName() + " ignores you!");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " ignores" + tmp + "!",
-      ({ this_player(), obs... }));
+            " ignores" + tmp + "!",
+            ({ this_player(), obs... }));
     this_player()->eventPrint("You ignore " + tmp + ".");
     return 1;
 }

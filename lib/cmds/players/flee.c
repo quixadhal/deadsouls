@@ -13,8 +13,8 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: flee\n\n"
-      "If you need to leave combat in a hurry, and don't care which way you go.\n"
-      "This command doesn't work for creators.\n\n",
-      this_player() );
+            "Syntax: flee\n\n"
+            "If you need to leave combat in a hurry, and don't care which way you go.\n"
+            "This command doesn't work for creators.\n\n",
+            this_player() );
 }

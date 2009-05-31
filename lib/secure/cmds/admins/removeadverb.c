@@ -1,5 +1,5 @@
 /*    /secure/cmds/admins/removeadverb.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Command for removing adverbs from the soul
  *    Created by Descartes of Borg 961214
  *    Version: @(#) removeadverb.c 1.1@(#)
@@ -25,8 +25,8 @@ mixed cmd(string args) {
 
 string GetHelp(string args) {
     return ("Syntax: <removeadverb ADVERB>\n\n"
-      "Allows you to remove an adverb from the list of"
-      "system adverbs that can be used as adverbs in most soul "
-      "commands.\n\n"
-      "See also: addadverb, addemote, removeemote");
+            "Allows you to remove an adverb from the list of"
+            "system adverbs that can be used as adverbs in most soul "
+            "commands.\n\n"
+            "See also: addadverb, addemote, removeemote");
 }

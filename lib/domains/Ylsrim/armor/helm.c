@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/armor/helm.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 960302
  */
 
@@ -19,8 +19,8 @@ static void create() {
     SetAdjectives( ({ "sandy", "brown" }) );
     SetShort("a dusty helm");
     SetLong("This helm is the Desert helm, bestowed upon honoured "
-      "knights of the desert.  It is made from a magic sand bound "
-      "together to protect the heads of the righteous.");
+            "knights of the desert.  It is made from a magic sand bound "
+            "together to protect the heads of the righteous.");
     SetDamagePoints(3000);
     SetVendorType(VT_ARMOR);
     SetMass(200);

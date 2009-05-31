@@ -11,11 +11,11 @@ static void create() {
     SetRules("OBJ to STR", "OBJ");
     SetErrorMessage("Use what to do what?");
     SetHelp("Syntax: <use OBJ to CMD>\n\n"
-      "Certain objects, like scrolls, allow you to perform acts beyond "
-      "your naturaly abilities.  Of course, the only way to know if an "
-      "object can so empower you is either to try it or to somehow "
-      "detect its magic.\n\n"
-      "See also: detect, discern");
+            "Certain objects, like scrolls, allow you to perform acts beyond "
+            "your naturaly abilities.  Of course, the only way to know if an "
+            "object can so empower you is either to try it or to somehow "
+            "detect its magic.\n\n"
+            "See also: detect, discern");
 }
 
 mixed can_use_obj(mixed arg) { return 1; }

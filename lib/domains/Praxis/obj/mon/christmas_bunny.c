@@ -17,11 +17,11 @@ void create() {
     SetMaxHealthPoints(500000);
     SetHealthPoints(500000);
     SetAction(10,
-      ({ "The Easter Bunny drools.\n",
-        "The Easter Bunny farts at you.\n",
-        "The Easter bunny looks around, confused.\n",
-        "The Easter Bunny mumbles about rotten eggs.\n" })
-    );
+            ({ "The Easter Bunny drools.\n",
+             "The Easter Bunny farts at you.\n",
+             "The Easter bunny looks around, confused.\n",
+             "The Easter Bunny mumbles about rotten eggs.\n" })
+            );
     SetSkill("melee", 400);
 }
 

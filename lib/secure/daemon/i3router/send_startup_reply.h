@@ -6,7 +6,7 @@ static void send_startup_reply(string mudname){
     //  when the router wishes the mud to connect to a different router,
     //  or when the set of routers change for some reason.
 
-    if(!connected_muds[mudname]) {
+    if(undefinedp(connected_muds[mudname])) {
         //trr("PROBLEM","red");
         return;
     }
@@ -19,15 +19,15 @@ static void send_startup_reply(string mudname){
 
 
     write_data(connected_muds[mudname], ({
-        "startup-reply",
-        5,
-        router_name,
-        0,
-        mudname,
-        0,
-        router_list,
-        mudinfo[mudname]["password"]
-      }) );
+                "startup-reply",
+                5,
+                router_name,
+                0,
+                mudname,
+                0,
+                router_list,
+                mudinfo[mudname]["password"]
+                }) );
 
     //trr("connected_muds[mudname]: "+identify(connected_muds[mudname]),"blue");
     //trr("mudname: "+identify(mudname),"blue");

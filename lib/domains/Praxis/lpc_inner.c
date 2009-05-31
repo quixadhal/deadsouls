@@ -8,10 +8,10 @@ void create() {
     SetProperty("indoors", 1);
     SetShort( "The LPC and MudOS Room");
     SetLong(
-      "Immortals come here to discuss coding problems.  "
-      "The Hall of Immortals is north of here.");
+            "Immortals come here to discuss coding problems.  "
+            "The Hall of Immortals is north of here.");
     SetExits( 
-      (["north" : "/domains/Praxis/adv_inner"]) );
+            (["north" : "/domains/Praxis/adv_inner"]) );
 
     ob = new("/lib/bboard");
     ob->SetKeyName("board");

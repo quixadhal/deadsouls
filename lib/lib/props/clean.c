@@ -7,7 +7,9 @@
  */
 
 #include <clean_up.h>
-#include <rooms.h>
+#include ROOMS_H
+
+inherit LIB_SAVE;
 
 private static int NoClean = 0; 
 
@@ -31,16 +33,18 @@ static int SetNoClean(int x){
  */
 static int Destruct(){
     object env, furn; 
+    int pers;
 
     if( !this_object() ){
         return 1;
     }
 
     env = environment();
+    pers = this_object()->GetPersistent();
 
     foreach(object ob in all_inventory()){
         if( ob ){
-            if(env) ob->eventMove(env);
+            if(env && !pers) ob->eventMove(env);
             else ob->eventMove(ROOM_FURNACE);
         }
     }
@@ -56,7 +60,8 @@ static int Destruct(){
 }
 
 int eventDestruct(){
-    return Destruct();
+    save::eventDestruct();
+    return unguarded( (: Destruct() :) );
 }
 
 /* ******************* clean.c driver applies ********************* */
@@ -80,10 +85,7 @@ int clean_up(int ref_exists){
     } 
     inv = deep_inventory(this_object());
     if(inv && sizeof(inv)){
-        if( sizeof(filter(inv, (: interactive($1) :))) ){
-            return TRY_AGAIN_LATER;
-        }
-        if( sizeof(filter(inv, (: $1->GetNoClean() :))) ){
+        if( sizeof(filter(inv, (: interactive($1) || $1->GetNoClean() :))) ){
             return TRY_AGAIN_LATER;
         }
     }
@@ -93,9 +95,14 @@ int clean_up(int ref_exists){
             return NEVER_AGAIN;
         }
 
-        if(inv) catch(inv->eventMove(ROOM_FURNACE));
+        foreach(mixed ob in inv){
+            if(ob) ob->eventDestruct();
+            if(ob) destruct(ob);
+            if(ob) catch(ob->eventMove(ROOM_FURNACE));
+        }
+
         if( this_object() ){
-            Destruct();
+            eventDestruct();
         }
         if( this_object() ){
             destruct(this_object());

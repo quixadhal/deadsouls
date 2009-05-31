@@ -9,8 +9,8 @@ static void create() {
     SetRules("OBJ","OBJ from OBJ","OBJ in OBJ","OBJ on OBJ");
     SetErrorMessage("Uninstall something?");
     SetHelp("Syntax: uninstall THING\n"
-      "        uninstall THING from THING\n"
-      "");  
+            "        uninstall THING from THING\n"
+            "");  
 }
 
 mixed can_uninstall() {

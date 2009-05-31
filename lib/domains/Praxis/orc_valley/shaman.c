@@ -9,13 +9,13 @@ void create() {
     SetProperty("no castle", 1);
     SetShort( "The chamber of the orc shaman");
     SetLong(
-      "This secret room is the chamber of the orc shaman.  "
-      "It is most certain that you should not be here.");
+            "This secret room is the chamber of the orc shaman.  "
+            "It is most certain that you should not be here.");
     SetItems(
-      (["chamber" : "It is a roundish room and dimly lit."]) );
+            (["chamber" : "It is a roundish room and dimly lit."]) );
     SetExits( 
-      (["south" : "/domains/Praxis/orc_valley/open",
-        "north" : "/domains/Praxis/orc_valley/treasure"]) );
+            (["south" : "/domains/Praxis/orc_valley/open",
+             "north" : "/domains/Praxis/orc_valley/treasure"]) );
     AddExit("north", "/domains/Praxis/orc_valley/treasure", (: "go_north" :) );
 }
 

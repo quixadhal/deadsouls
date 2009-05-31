@@ -11,15 +11,15 @@ int cmd(string str) {
 
     if(!archp(previous_object())) return 0;
     message("broadcast",
-      sprintf("%%^RED%%^Broadcast message from %s: %%^YELLOW%%^%s%%^RESET%%^",
-        (string)this_player()->GetName(), str), users());
+            sprintf("%%^RED%%^Broadcast message from %s: %%^YELLOW%%^%s%%^RESET%%^",
+                (string)this_player()->GetName(), str), users());
     return 1;
 }
 
 void help() {
     message("help",
-      "Syntax: <broadcast [message]>\n\n"
-      "Sends out a message that is in English and immune to all forms of "
-      "blocking.  Do not use this for shout matches!", this_player()
-    );
+            "Syntax: <broadcast [message]>\n\n"
+            "Sends out a message that is in English and immune to all forms of "
+            "blocking.  Do not use this for shout matches!", this_player()
+           );
 }

@@ -13,6 +13,7 @@ static void create() {
     SetMelee(1);
     SetRace("android");
     SetGender("male");
+    SetMaxClones(3);
 }
 void init(){
     ::init();

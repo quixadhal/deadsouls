@@ -15,7 +15,7 @@ mixed cmd(string args) {
     previous_object()->SetBlocked("all");
     if( previous_object()->GetBlocked("all") ) {
         previous_object()->eventPrint("All channels are being blocked.",
-          MSG_SYSTEM);
+                MSG_SYSTEM);
     }
     else {
         previous_object()->eventPrint("Codeblock is now off.", MSG_SYSTEM);
@@ -25,7 +25,7 @@ mixed cmd(string args) {
 
 string GetHelp() {
     return ("Syntax: <codeblock>\n\n"
-      "Allows you to toggle on and off the blocking of all mud "
-      "channels.\n\n"
-      "See also: classblock");
+            "Allows you to toggle on and off the blocking of all mud "
+            "channels.\n\n"
+            "See also: classblock");
 }

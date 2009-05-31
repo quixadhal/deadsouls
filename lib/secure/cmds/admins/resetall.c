@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_DAEMON;
 
@@ -34,8 +34,8 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: <resetall>\n\n"+
-      "Unloads and reloads all rooms currently in memory.\n"+
-      "This tends to destroy all non-interactive objects in "+
-      "the rooms, and dumps all players at the start room "+
-      "or The Void, so use this command with caution.\n");
+            "Unloads and reloads all rooms currently in memory.\n"+
+            "This tends to destroy all non-interactive objects in "+
+            "the rooms, and dumps all players at the start room "+
+            "or The Void, so use this command with caution.\n");
 }

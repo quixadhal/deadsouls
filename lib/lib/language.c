@@ -32,7 +32,7 @@ varargs void SetLanguage(string lang, int level, int native){
     key = convert_name(lang);
     if( !Languages[key] ) Languages[key] = ([]);
     Languages[key] = ([ "name" : lang, "points" : 0, "level" : level,
-      "native" : native ]);
+            "native" : native ]);
 }
 
 mapping RemoveLanguage(string lang){
@@ -65,7 +65,7 @@ varargs void SetLanguageComprehension(function check, int time, function end){
 mixed SetDefaultLanguage(string str){
     if(!str || str == "") return DefaultLanguage = GetNativeLanguage();
     if(member_array(lower_case(str),keys(Languages)) != -1 ||
-      member_array(capitalize(lower_case(str)),keys(Languages)) != -1)
+            member_array(capitalize(lower_case(str)),keys(Languages)) != -1)
         return DefaultLanguage = capitalize(lower_case(str));
     else return DefaultLanguage = GetNativeLanguage();
 }

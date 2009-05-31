@@ -1,0 +1,25 @@
+#
+# WARNING
+# Do not use this script. It will screw up your mud.
+# You were warned.
+#
+get box from suit
+dest my boxes
+clone /secure/obj/weirder
+reload box
+stressload 1
+arch
+exa screen
+eval return users()->eventForce("pk on")
+eval return users()->eventForce("pk on")
+#eval return users()->SetProperty("wizmapping",1)
+eval return objects( (: answers_to("wraith",$1) :) )->eventDestruct()
+eval return objects( (: inherits(LIB_ROOM, $1) :) )->SetPlayerKill(1)
+eval return objects( (: inherits(LIB_ROOM, $1) :) )->SetNightLight(30)
+eval return objects( (: inherits(LIB_ROOM, $1) :) )->SetDayLight(30)
+eval return objects( (: inherits(LIB_ROOM, $1) :) )->SetAmbientLight(30)
+eval return objects( (: inherits(LIB_ROOM, $1) :) )->SetProperty("no attack",0)
+#eval return objects( (: living($1) :) )->SetProperty("wizmapping",1)
+eval return users()->eventForce("kill all")
+exa screen
+eval return objects( (: living($1) && !interactive($1) :) )->eventForce("kill all")

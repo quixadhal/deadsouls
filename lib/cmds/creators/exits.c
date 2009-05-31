@@ -24,16 +24,16 @@ mixed cmd()
     asEnters = oEnv->GetEnters();
 
     message( "Nmy_action", sprintf("\t *** %s ***\n\n", identify( oEnv ) ),
-      this_player() );
+            this_player() );
 
     if ( !( sizeof( asExits ) ) )
         message( "my_action", "This room has no exits.", this_player() );
     else {
         message( "Nmy_action", "This room has the following exits :\n\n",
-          this_player() );
+                this_player() );
         foreach( sExit in asExits ) {
             message( "my_action", sprintf( "\t%10s -> %s", sExit,
-                oEnv->GetExit( sExit ) ), this_player() );
+                        oEnv->GetExit( sExit ) ), this_player() );
         }
     }
 
@@ -41,10 +41,10 @@ mixed cmd()
         message( "my_action", "\nThis room has no enters.", this_player() );
     else {
         message( "Nmy_action", "\nThis room has the following enters :\n\n",
-          this_player() );
+                this_player() );
         foreach( sExit in asEnters ) {
             message( "my_action", sprintf( "\t%10s -> %s", sExit,
-                oEnv->GetEnter( sExit ) ), this_player() );
+                        oEnv->GetEnter( sExit ) ), this_player() );
         }
     }
 
@@ -54,5 +54,5 @@ mixed cmd()
 void help() 
 {
     message("help", "Usage : exits\n\nDisplays exit and enter "
-      "information for the current room.", this_player() );
+            "information for the current room.", this_player() );
 }

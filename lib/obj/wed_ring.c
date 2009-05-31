@@ -59,6 +59,6 @@ string GetSpouse() { return Spouse; }
 
 string RealLong() {
     return ("This beautiful golden band was given to you by " +
-      GetSpouse() + " to capture your eternal love.");
+            GetSpouse() + " to capture your eternal love.");
 }
 

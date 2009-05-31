@@ -11,7 +11,7 @@
 inherit LIB_DAEMON;
 
 mixed cmd(string args) {
-    object ob;
+    object ob, dest;
     string file, res, nom;
 
     if( args == "" || !args ) return "Clone what?";
@@ -32,27 +32,28 @@ mixed cmd(string args) {
         }
         return 1;
     }
-    if( !((int)ob->eventMove(this_player())) &&
-      !((int)ob->eventMove(environment(this_player()))) ) {
+    dest = ( living(ob) ? environment(this_player()) : this_player() );
+    if( !((int)ob->eventMove(dest)) &&
+            !((int)ob->eventMove(environment(this_player()))) ) {
         message("system", "Failed to properly move the object.",
-          this_player());
+                this_player());
         return 1;
     }
     if( !(nom = (string)ob->GetShort()) ) nom = "something peculiar";
     if( !(res = (string)this_player()->GetMessage("clone", ob)) )
         res = (string)this_player()->GetName() + " clones " + nom + ".";
     message("info", "You clone " + nom + " ( " + file + " ).",
-      this_player());
+            this_player());
     message("other_action", res, environment(this_player()), 
-      ({ this_player() }));
+            ({ this_player() }));
     return 1;
 }
 
 string GetHelp() {
     return ("Syntax: <clone [filename]>\n\n"
-      "Clones the object from the code stored in the file named.  "
-      "If for some reason the object cannot be moved to your "
-      "inventory (it is alive, you cannot carry it, etc.), then "
-      "it will be moved into your environment.\n\n"
-      "See also: dest, message");
+            "Clones the object from the code stored in the file named.  "
+            "If for some reason the object cannot be moved to your "
+            "inventory (it is alive, you cannot carry it, etc.), then "
+            "it will be moved into your environment.\n\n"
+            "See also: dest, message");
 }

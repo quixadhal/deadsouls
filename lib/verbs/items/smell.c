@@ -1,5 +1,5 @@
 /*    /verbs/items/smell.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 960121
  *    Version: @(#) smell.c 1.2@(#)
  *    Last modified: 96/10/15
@@ -17,12 +17,12 @@ static void create() {
     SetRules("", "OBJ", "STR on OBJ", "STR of OBJ");
     SetErrorMessage("Smell something?");
     SetHelp("Syntax: <smell>\n"
-      "        <smell ITEM>\n"
-      "        <smell THING on ITEM>\n\n"
-      "Without any arguments, this command allows you to smell "
-      "your general surroundings.  You may, however, concentrate "
-      "your smelling on any target.\n\n"
-      "See also: listen, look, read, search, touch");
+            "        <smell ITEM>\n"
+            "        <smell THING on ITEM>\n\n"
+            "Without any arguments, this command allows you to smell "
+            "your general surroundings.  You may, however, concentrate "
+            "your smelling on any target.\n\n"
+            "See also: listen, look, read, search, touch");
 }
 
 mixed can_smell() {
@@ -56,7 +56,7 @@ mixed do_smell() {
         val = "You don't smell a thing.";
     }
     environment(this_player())->eventPrint(this_player()->GetName() +
-      " smells around.", this_player());
+            " smells around.", this_player());
     this_player()->eventPrint(val);
     return 1;
 }

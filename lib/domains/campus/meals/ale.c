@@ -19,7 +19,7 @@ static void create() {
     SetMealType(MEAL_DRINK | MEAL_ALCOHOL);
     SetStrength(20);
     SetMealMessages("You drink a wonderful bottle of Praxis Ale.",
-      "$N drinks a wonderful bottle of Praxis Ale.");
+            "$N drinks a wonderful bottle of Praxis Ale.");
     SetEmptyName("bottle");
     SetEmptyShort("an empty bottle of Praxis Ale");
     SetEmptyLong("It is an empty brown bottle that once held some ale.");

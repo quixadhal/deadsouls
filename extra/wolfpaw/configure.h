@@ -44,6 +44,7 @@
 #define UINT32 unsigned long
 #define CONFIGURE_VERSION       5
 
+#define MAXSHORT ((1 << (sizeof(short)*8)) - 1)
 #define USHRT_MAX  (MAXSHORT)
 #define USE_STRUCT_DIRENT
 #define RTLD_LAZY     1

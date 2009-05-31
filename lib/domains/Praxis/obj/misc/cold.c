@@ -11,7 +11,7 @@ void create() {
     SetId( ({ "cold" }) );
     SetShort("the cold");
     SetLong("A viral infection which is mostly harmless, but which "
-      "generally afflicts most beings during their lifetime.");
+            "generally afflicts most beings during their lifetime.");
     SetCommunicable(10);
     SetCure(1);
     SetLifeSpan(300);
@@ -24,6 +24,6 @@ void suffer(object ob) {
     ob->add_hp(-((int)ob->query_hp()/10));
     message("my_action", "You cough horridly!", ob);
     message("other_action", (string)ob->query_cap_name()+" coughs horribly!",
-      environment(ob), ob);
+            environment(ob), ob);
     if(!coughs) this_object()->remove();
 }

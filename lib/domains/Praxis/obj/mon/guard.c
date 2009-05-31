@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_NPC;
 
@@ -9,7 +9,7 @@ void heart_beat() {
     ::heart_beat();
     if(__Target && environment(__Target) != environment(this_object())) {
         message("say", "%^BOLD%^%^RED%^The guard tells you: %^RESET%^"+
-          "An' where do ya think you're goin' buster??", __Target);
+                "An' where do ya think you're goin' buster??", __Target);
         __Target->eventMoveLiving(environment(this_object()));
     }
 }

@@ -6,13 +6,17 @@
  */
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
+
 
 void create() {
     room::create();
     SetShort("the void");
     SetLong("The void.  Go down to get out.");
     SetExits( ([ "down" : "/domains/campus/room/start" ]) );
+}
+void init(){
+    ::init();
 }

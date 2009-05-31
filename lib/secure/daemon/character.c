@@ -1,5 +1,5 @@
 /*    /secure/daemon/character.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    the multi-character management daemon
  *    created by Descartes of Borg 951216
  */
@@ -8,19 +8,21 @@
 #include <save.h>
 #include <privs.h>
 #include <link.h>
-#include <config.h>
 #include "include/character.h"
 
 inherit LIB_DAEMON;
 
 private mapping Links;
+static string SaveFile;
 
 static void create() {
     daemon::create();
+    SaveFile = save_file(SAVE_CHARACTER);
     SetNoClean(1);
     Links = ([]);
-    if( unguarded( (: file_size(SAVE_CHARACTER __SAVE_EXTENSION__) :)) > 0 )
-        unguarded((: restore_object, SAVE_CHARACTER :));
+    if(unguarded((: file_exists(SaveFile) :))){
+        RestoreObject(SaveFile);
+    }
 }
 
 mixed eventConnect(string who) {
@@ -60,12 +62,12 @@ mixed eventConnect(string who) {
         else tmp = consolidate(x/60, "a minute");
         if( !(member_group(who, PRIV_SECURE) || member_group(who,PRIV_ASSIST)))
             return "\nYour character " + capitalize(c->LastOnWith) +
-            " recently logged in at " + ctime(c->LastOnDate) + ".\n" +
-            "You must wait another " + tmp + ".\n";
+                " recently logged in at " + ctime(c->LastOnDate) + ".\n" +
+                "You must wait another " + tmp + ".\n";
     }
     c->LastOnDate = time();
     c->LastOnWith = who;
-    save_object(SAVE_CHARACTER);
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -94,7 +96,7 @@ mixed eventLink(string primary, string secondary, string email) {
             }
             Links[primary] = ch;
             map_delete(Links, secondary);
-            if( !save_object(SAVE_CHARACTER) ) return "Error in saving.";
+            if( !SaveObject(SaveFile) ) return "Error in saving.";
             return 1;
         }
     }
@@ -109,7 +111,7 @@ mixed eventLink(string primary, string secondary, string email) {
     ch->LastOnDate = 0;
     ch->LastOnWith = primary;
     Links[primary] = ch;
-    if( !save_object(SAVE_CHARACTER) ) return "Error in saving.";
+    if( !SaveObject(SaveFile) ) return "Error in saving.";
     return 1;
 }
 
@@ -131,7 +133,7 @@ mixed eventSaveTime() {
     }
     c->LastOnDate = time();
     c->LastOnWith = who;
-    unguarded((: save_object, SAVE_CHARACTER :));
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -146,21 +148,21 @@ mixed eventUnlink(string primary, string who) {
     if( who == primary ) {
         if( sizeof(ch->Secondaries) < 2) {
             map_delete(Links, primary);
-            save_object(SAVE_CHARACTER);
+            SaveObject(SaveFile);
             return 1;
         }
         primary = ch->Secondaries[0];
         ch->Secondaries = ch->Secondaries[1..];
         map_delete(Links, who);
         Links[primary] = ch;
-        save_object(SAVE_CHARACTER);
+        SaveObject(SaveFile);
         return 1;
     }
     if( member_array(who, ch->Secondaries) == -1 )
         return "Invalid secondary character for " + primary + ".";
     ch->Secondaries -= ({ who });
     Links[primary] = ch;
-    save_object(SAVE_CHARACTER);
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -188,5 +190,5 @@ mapping GetLink(string who) {
         if( !ch ) return 0;
     }
     return ([ "primary" : who, "last char" : ch->LastOnWith,
-      "secondaries" : ch->Secondaries, "last on" : ch->LastOnDate ]);
+            "secondaries" : ch->Secondaries, "last on" : ch->LastOnDate ]);
 }

@@ -65,7 +65,7 @@ int SetRecordingFile(string str){
         return 1;
     }
     if(last(str,2) == ".c" || last(str,2) == ".h" ||
-      last(str,4) == ".cfg"){
+            last(str,4) == ".cfg"){
         write("That file has an invalid extension for recording over.");
         return 1;
     }
@@ -89,7 +89,7 @@ void receive_message(string s1, string s2){
 }
 
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,
-  string msg, string lang) {
+        string msg, string lang) {
     this_object()->receive_message("me",who->GetName()+" "+verb+"s: "+msg) ;
     return;
 }

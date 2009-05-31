@@ -21,7 +21,7 @@ mixed cmd(string args) {
 
 string GetHelp(string args) {
     return ("Syntax: pause <PLAYER>\n\n"
-      "Causes the player to be unable to run any commands. Useful for "
-      "immediately halting problem behavior.\n\n"
-      "");
+            "Causes the player to be unable to run any commands. Useful for "
+            "immediately halting problem behavior.\n\n"
+            "");
 }

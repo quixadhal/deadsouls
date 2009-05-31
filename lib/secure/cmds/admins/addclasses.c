@@ -18,7 +18,7 @@ mixed cmd() {
 
 string GetHelp() {
     return ("Syntax: addclasses\n"
-      "Imports all the class files in CFG_CLASSES into  "
-      "CLASSES_D. It may fail if all classes have not been "
-      "removed prior to its use.");
+            "Imports all the class files in CFG_CLASSES into  "
+            "CLASSES_D. It may fail if all classes have not been "
+            "removed prior to its use.");
 }

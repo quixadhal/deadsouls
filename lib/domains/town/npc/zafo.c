@@ -74,16 +74,16 @@ static void create() {
     SetClass("fighter");
     SetGender("male");
     SetInventory( ([
-        "/domains/town/armor/jacket" : "wear jacket",
-        "/domains/town/armor/pants" : "wear pants",
-        "/domains/town/armor/boot_l" : "wear left boot",
-        "/domains/town/armor/boot_r" : "wear right boot",
-      ]) );
+                "/domains/town/armor/jacket" : "wear jacket",
+                "/domains/town/armor/pants" : "wear pants",
+                "/domains/town/armor/boot_l" : "wear left boot",
+                "/domains/town/armor/boot_r" : "wear right boot",
+                ]) );
     SetTalkResponses( ([  
-        "s up" : "Nothin'.",
-        "re you rebelling against" : "Waddaya got?",
-        "cop" : (: CopResponse :),
-      ]) );
+                "s up" : "Nothin'.",
+                "re you rebelling against" : "Waddaya got?",
+                "cop" : (: CopResponse :),
+                ]) );
 }
 void init(){
     sentient::init();

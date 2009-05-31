@@ -56,17 +56,17 @@ int AddBank(string bank, string type, int amount){
     if( !Bank[bank] ){
         if( amount < 1 ) return -1;
         Bank[bank] = ([ "open" : time(), type : amount, "last time" : time(),
-          "last trans" : "opened account", 
-          "audit" : identify(previous_object(-1)) ]);
-    return amount;
-}
-if( Bank[bank][type] + amount < 0 ) return -1;
-Bank[bank][type] += amount;
-Bank[bank]["last time"] = time();
-if( amount > 0 ) Bank[bank]["last trans"] = "deposit";
-else Bank[bank]["last trans"] = "withdrawal";
-Bank[bank]["audit"] = identify(previous_object(-1));
-return Bank[bank][type];
+                "last trans" : "opened account", 
+                "audit" : identify(previous_object(-1)) ]);
+        return amount;
+    }
+    if( Bank[bank][type] + amount < 0 ) return -1;
+    Bank[bank][type] += amount;
+    Bank[bank]["last time"] = time();
+    if( amount > 0 ) Bank[bank]["last trans"] = "deposit";
+    else Bank[bank]["last trans"] = "withdrawal";
+    Bank[bank]["audit"] = identify(previous_object(-1));
+    return Bank[bank][type];
 }
 
 int GetBank(string bank, string type){
@@ -93,9 +93,9 @@ varargs int GetNetWorth(string benjamins){
             float tmp;
 
             switch(curr){
-            case "last trans": case "last time": case "audit": case "open":
-                break;
-            default:
+                case "last trans": case "last time": case "audit": case "open":
+                    break;
+                default:
                 if( (tmp = currency_rate(curr)) < 1 ) break;
                 net_worth += amt * tmp;
                 break;

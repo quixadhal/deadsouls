@@ -1,5 +1,5 @@
 /*    /daemon/command.c
- *    from the Dead Soulsr1 Object Library
+ *    from the Dead Souls Object Library
  *    a new commands daemon, much faster than the old
  *    created by Descartes of Borg 940119
  */
@@ -19,8 +19,8 @@ void create() {
     Commands = ([]);
     Paths = ({});
     eventRehash( ({ DIR_PLAYER_CMDS, DIR_CREATOR_CMDS, 
-        DIR_SECURE_PLAYER_CMDS, DIR_SECURE_CREATOR_CMDS, 
-        DIR_ADMIN_CMDS, DIR_SECURE_ADMIN_CMDS }) );
+                DIR_SECURE_PLAYER_CMDS, DIR_SECURE_CREATOR_CMDS, 
+                DIR_ADMIN_CMDS, DIR_SECURE_ADMIN_CMDS }) );
 }
 
 void eventRehash(mixed paths) {
@@ -72,5 +72,3 @@ varargs string *GetPaths(string cmd) {
     if( cmd ) return Commands[cmd];
     else return Paths;
 }
-
-

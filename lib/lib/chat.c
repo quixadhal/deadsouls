@@ -37,8 +37,8 @@ static string chat_command(string str){
     if( cmd == "list" && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
     else if( Channels[cmd] && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
     else if( (sscanf(cmd, "%semote", tmp) || sscanf(cmd, "%s:", tmp)
-        || sscanf(cmd, "%s|%*s", tmp))
-      && Channels[tmp] ){
+                || sscanf(cmd, "%s|%*s", tmp))
+            && Channels[tmp] ){
         if( (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
         else return str;
     }
@@ -68,7 +68,7 @@ string *AddChannel(mixed val){
     if(arrayp(val)){
         foreach(string channel in val){
             if(this_player()->GetExtraChannels() &&
-              member_array(channel,this_player()->GetExtraChannels()) == -1){
+                    member_array(channel,this_player()->GetExtraChannels()) == -1){
                 this_player()->AddExtraChannels( ({ channel }) );
             }
         }
@@ -143,13 +143,13 @@ int GetMuted(string channel){
     channel = CHAT_D->GetRemoteChannel(channel);
     //channel = CHAT_D->GetLocalChannel(channel);
     if(remote_mute 
-      && member_array(channel, CHAT_D->GetRemoteChannels()) != -1
-      && member_array(channel, CHAT_D->GetLocalChannels()) == -1){
+            && member_array(channel, CHAT_D->GetRemoteChannels()) != -1
+            && member_array(channel, CHAT_D->GetLocalChannels()) == -1){
         return 1;
     }
     if(local_mute
-      && ( member_array(channel, CHAT_D->GetRemoteChannels()) == -1
-        || member_array(channel, CHAT_D->GetLocalChannels()) != -1)){
+            && ( member_array(channel, CHAT_D->GetRemoteChannels()) == -1
+                || member_array(channel, CHAT_D->GetLocalChannels()) != -1)){
         return 1;
     }
     return 0;
@@ -159,14 +159,14 @@ int SetMuted(string type, mixed whether){
     if(undefinedp(whether) || !intp(whether)) whether = 1;
     if(!type) type = "all";
     switch(type){
-    case "local" :
-        local_mute = whether;
+        case "local" :
+            local_mute = whether;
         break;
-    case "remote" :
-        remote_mute = whether;
+        case "remote" :
+            remote_mute = whether;
         break;
-    case "all" :
-        local_mute = whether;
+        case "all" :
+            local_mute = whether;
         remote_mute = whether;
         break;
     }
@@ -184,13 +184,13 @@ int GetGagged(string channel){
     channel = CHAT_D->GetRemoteChannel(channel);
     //channel = CHAT_D->GetLocalChannel(channel);
     if(remote_gag
-      && member_array(channel, CHAT_D->GetRemoteChannels()) != -1
-      && member_array(channel, CHAT_D->GetLocalChannels()) == -1){
+            && member_array(channel, CHAT_D->GetRemoteChannels()) != -1
+            && member_array(channel, CHAT_D->GetLocalChannels()) == -1){
         return 1;
     }
     if(local_gag
-      && ( member_array(channel, CHAT_D->GetRemoteChannels()) == -1
-        || member_array(channel, CHAT_D->GetLocalChannels()) != -1)){
+            && ( member_array(channel, CHAT_D->GetRemoteChannels()) == -1
+                || member_array(channel, CHAT_D->GetLocalChannels()) != -1)){
         return 1;
     }
     return 0;
@@ -200,14 +200,14 @@ int SetGagged(string type, mixed whether){
     if(undefinedp(whether) || !intp(whether)) whether = 1;
     if(!type) type = "all";
     switch(type){
-    case "local" :
-        local_gag = whether;
+        case "local" :
+            local_gag = whether;
         break;
-    case "remote" :
-        remote_gag = whether;
+        case "remote" :
+            remote_gag = whether;
         break;
-    case "all" :
-        local_gag = whether;
+        case "all" :
+            local_gag = whether;
         remote_gag = whether;
         break;
     }

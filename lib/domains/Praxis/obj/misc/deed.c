@@ -22,12 +22,12 @@ void create() {
     SetId( ({ "estate deed", "deed" }) );
     SetShort("an estate deed");
     SetLong("A deed to your very own high mortal estate, with a work "
-      "order to have workers begin to create your estate "
-      "to your desires.  In order to build your estate, go "
-      "to the place where you want it built, and type: "
-      "\"build estate\".  You will be asked some questions "
-      "about the room which will serve as the entrance to your estate."
-    );
+            "order to have workers begin to create your estate "
+            "to your desires.  In order to build your estate, go "
+            "to the place where you want it built, and type: "
+            "\"build estate\".  You will be asked some questions "
+            "about the room which will serve as the entrance to your estate."
+           );
     SetMass(10);
     SetValue(99);
     true();
@@ -47,8 +47,8 @@ static int cmd_build(string str) {
         return 1;
     }
     if(sizeof(filter_array(all_inventory(environment(this_player())),
-          "estates", this_object())) >=
-      (int)environment(this_player())->GetProperty("allow estate")) {
+                    "estates", this_object())) >=
+            (int)environment(this_player())->GetProperty("allow estate")) {
         message("system", "This area cannot support an estate.",this_player());
         return 1;
     }
@@ -59,7 +59,7 @@ static int cmd_build(string str) {
     }
     __Exit = "$"+file_name(environment(this_player()))+";$exit";
     message("system", "Give a one to two line description of your estate:",
-      this_player());
+            this_player());
     input_to("input_long");
     return 1;
 }
@@ -71,9 +71,9 @@ static void input_long(string str) {
     }
     __EstateLong = str;
     message("system", "Please give a short description for the room "
-      "people will enter from here.  This is the description like "
-      "\"the entrance to "+(string)this_player()->query_CapName()+"'s"
-      " estate\" that is seen when in brief mode.", this_player());
+            "people will enter from here.  This is the description like "
+            "\"the entrance to "+(string)this_player()->query_CapName()+"'s"
+            " estate\" that is seen when in brief mode.", this_player());
     message("prompt", "Enter in a short description: ", this_player());
     input_to("input_short");
 }
@@ -110,15 +110,15 @@ static void input_light(string str) {
     }
     __Light = x;
     message("system", "Enter in a long description for the room.  "
-      "A long description is what people see when they enter a "
-      "room in verbose mode.  A line showing obvious exits is automatically "
-      "appended.  In addition, if you add any smells or sounds, the "
-      "default ones are automatically appended.  So do not describe sounds or "
-      "smells here.", this_player());
+            "A long description is what people see when they enter a "
+            "room in verbose mode.  A line showing obvious exits is automatically "
+            "appended.  In addition, if you add any smells or sounds, the "
+            "default ones are automatically appended.  So do not describe sounds or "
+            "smells here.", this_player());
     message("system", "Enter in the long description like mail.", this_player());
     rm(DIR_TMP+"/"+geteuid(this_player())+".estate");
     this_player()->edit(DIR_TMP+"/"+geteuid(this_player())+".estate",
-      "done_edit", this_object());
+            "done_edit", this_object());
 }
 
 void abort() {
@@ -142,10 +142,10 @@ void done_edit(mixed *unused) {
     write_file(__NewRoom, "SetLong: $"+__Long+"\n");
     write_file(__NewRoom, "AddExit: "+__Exit+"\n");
     ESTATES_D->add_estate((string)this_player()->query_CapName(), __NewRoom,
-      file_name(environment(this_player())), __EstateLong);
+            file_name(environment(this_player())), __EstateLong);
     //seteuid(getuid());
     message("system", "Room begun.  You will see your addition "
-      "appear later when the work is complete.", this_player());
+            "appear later when the work is complete.", this_player());
     this_object()->remove();
 }
 

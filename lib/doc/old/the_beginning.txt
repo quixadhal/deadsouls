@@ -1,0 +1,55 @@
+From - Wed Sep 14 16:42:12 2005
+X-Account-Key: account3
+X-UIDL: BAABFB9854115F7218C41D66992B9B8F
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+Received: from ylpvm47.prodigy.net by yipvmd with SMTP; Wed, 14 Sep 2005 16:30:41 -0400
+X-Originating-IP: [67.19.238.52]
+Received: from hicky.mudmagic.com (mudmagic.com [67.19.238.52])
+	by ylpvm47.prodigy.net (8.12.10 083104/8.12.10) with ESMTP id j8EKU49c022577
+	for <<me!>@snet.net>; Wed, 14 Sep 2005 16:30:04 -0400
+Received: from hicky.mudmagic.com (localhost.localdomain [127.0.0.1])
+	by hicky.mudmagic.com (8.12.11/8.12.11) with ESMTP id j8EKXJJM032313
+	for <<me!>@snet.net>; Wed, 14 Sep 2005 15:33:19 -0500
+Received: (from apache@localhost)
+	by hicky.mudmagic.com (8.12.11/8.12.11/Submit) id j8EKXJ3l032311;
+	Wed, 14 Sep 2005 15:33:19 -0500
+Date: Wed, 14 Sep 2005 15:33:19 -0500
+To: <me!>@snet.net
+Subject: [WATCHING] Dead Souls is BACK!
+Message-ID: <346e96fe420e490d32858b1238cd48df>
+From: Cratylus <noreply@mudmagic.com>
+Reply-To: reviews@mudmagic.com
+X-Phorum-TGB-Version: TGB 1.0
+X-Phorum-TGB-Forum: Review Requests
+X-Phorum-TGB-Thread: 319
+X-Phorum-TGB-Parent: 
+X-Virus-Scanned: ClamAV 0.86.2/1081/Tue Sep 13 02:06:09 2005 on hicky.mudmagic.com
+X-Virus-Status: Clean
+
+Hey folks.
+
+I fixed up Dead Souls, got it to work with MudOS v22.2b14,
+and even got all the sample rooms to load properly!
+
+I'm probably going to tinker some more with it. If you'd
+like to contribute, let me know.
+
+Now, I am not the original author of DS, but it was released
+as public domain back in 1998 and has lain lifeless and
+abandoned ever since.
+
+But I think it's got great potential, and since it's been
+doing nothing but collecting dust, I figure it might as
+well be me that picks up the reins.
+
+Give it a go and let me know what you think.
+
+It's at http://sourceforge.net/projects/dead-souls/
+
+Click on the "files" link to get to the download section.
+
+Good luck!
+
+- Cratylus @ Frontiers 
+

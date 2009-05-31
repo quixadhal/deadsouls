@@ -12,12 +12,11 @@ static void create(){
     SetLong("These are trousers made of strong, tough leather. ");
     SetMass(150);
     SetBaseCost("silver",110);
-    SetDamagePoints(10);
-    SetProtection(BLUNT,1);
-    SetProtection(BLADE,5);
-    SetProtection(KNIFE,5);
+    SetProtection(BLADE,10);
+    SetProtection(KNIFE,10);
     SetArmorType(A_PANTS);
 }
+
 void init(){
     ::init();
 }

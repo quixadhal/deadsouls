@@ -3,9 +3,9 @@
 inherit LIB_ROOM;
 
 void create(){
-::create();
+    ::create();
 }
 
 void init(){
-::init();
+    ::init();
 }

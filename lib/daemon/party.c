@@ -13,19 +13,22 @@
 inherit LIB_DAEMON;
 
 mapping Parties;
+static string SaveFile;
 
 static void create() {
     daemon::create();
+    SaveFile = save_file(SAVE_PARTIES);
     Parties = ([]);
-    if( unguarded((: file_size(SAVE_PARTIES __SAVE_EXTENSION__) :)) > 0 )
-        unguarded((: restore_object(SAVE_PARTIES) :));
+    if( unguarded((: file_exists(SaveFile) :)) ){
+        RestoreObject(SaveFile);
+    }
     SetNoClean(1);
-    SetSaveFile(SAVE_PARTIES);
     foreach(mixed key, mixed val in Parties){
         mixed array members = this_object()->GetPartyMembers(key);
         members -= ({ 0 });
         if(!sizeof(members)) map_delete(Parties, key);
     }
+    SaveObject(SaveFile);
 }
 
 mixed array GetParties(){
@@ -45,7 +48,7 @@ mixed CanChangeLeader(object who, object targ) {
         return "You must be the party leader in order to change leaders.";
     if( member_array(targ, p->Members) == -1 )
         return (string)targ->GetName() + " is not in the party.";
-    eventSave();
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -121,9 +124,9 @@ mixed eventChangeLeader(object who, object targ) {
     pname = (string)who->GetParty();
     p = Parties[pname];
     p->Leader = targ;
-    CHAT_D->eventSend("System", pname, (string)targ->GetName() + " is now "
-      "the leader.");
-    eventSave();
+    CHAT_D->eventSendChannel("System", pname, (string)targ->GetName() + " is now "
+            "the leader.");
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -138,7 +141,7 @@ mixed eventCreateParty(object who, string name) {
     this_party->Invited = ({});
     Parties[name] = this_party;
     who->eventPrint("Party " + name + " successfully created.", MSG_SYSTEM);
-    eventSave();
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -150,12 +153,12 @@ mixed eventInviteMember(object who, object targ) {
     this_party = Parties[name];
     this_party->Invited += ({ targ });
     CHAT_D->eventSendChannel("System", name, (string)targ->GetName() +
-      " has been invited to join the party.");    
+            " has been invited to join the party.");    
     call_out((: RemoveInvitiation :), 60, name, targ);
     targ->eventPrint("You have been invited to join the party \"" + name +
-      "\".\nType \"party join " + name + "\" in 60 "
-      "seconds to join.", MSG_SYSTEM);
-    eventSave();
+            "\".\nType \"party join " + name + "\" in 60 "
+            "seconds to join.", MSG_SYSTEM);
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -170,14 +173,14 @@ mixed eventJoinParty(object who, string name) {
     this_party->Invited -= ({ who });
     this_party->Members += ({ who });
     CHAT_D->eventSendChannel("System", name, (string)who->GetName() +
-      " has joined the party.");    
-    eventSave();
+            " has joined the party.");    
+    SaveObject(SaveFile);
     return 1;
 }
 
 mixed eventLeaveParty(object who) {
     mixed ret = eventRemoveMember(who, who);
-    eventSave();
+    SaveObject(SaveFile);
     return ret;
 }
 
@@ -195,7 +198,7 @@ mixed eventRemoveMember(object who, object targ) {
             else {
                 p->Leader = ob;
                 ob->eventPrint("You are now the leader of the party " + name +
-                  ".", MSG_SYSTEM);
+                        ".", MSG_SYSTEM);
             }
         }
     }
@@ -203,11 +206,11 @@ mixed eventRemoveMember(object who, object targ) {
     if( Parties[name] ) {
         p->Members -= ({ targ });
         CHAT_D->eventSendChannel("System", name, (string)targ->GetName() +
-          " is no longer in the party.");
+                " is no longer in the party.");
     }
     targ->eventPrint("You are no longer a member of the party " + name +
-      ".", MSG_SYSTEM);
-    eventSave();
+            ".", MSG_SYSTEM);
+    SaveObject(SaveFile);
     return 1;
 }
 
@@ -217,11 +220,11 @@ mixed eventRemoveParty(object who) {
 
     name = (string)who->GetParty();
     CHAT_D->eventSendChannel("System", name, "The party " + name + " has been "
-      "disbanded.");
+            "disbanded.");
     foreach(ob in ((class party)Parties[name])->Members)
         ob->SetParty(0);
     map_delete(Parties, name);
-    eventSave();
+    SaveObject(SaveFile);
     return 1;
 }
 

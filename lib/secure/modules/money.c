@@ -3,7 +3,7 @@
 #include <daemons.h>
 #include <modules.h>
 #include <commands.h>
-#include <rooms.h>
+#include ROOMS_H
 
 
 string globalstr, globalstr2, globalstr3, globaltmp;

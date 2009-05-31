@@ -12,13 +12,13 @@ static void create(){
     SetLong("A stupid-looking black shirt with a ridiculous band logo on it.");
     SetMass(5);
     SetBaseCost("silver",1);
-    SetDamagePoints(1);
     SetProtection(BLUNT,1);
     SetProtection(BLADE,1);
     SetProtection(KNIFE,1);
     SetArmorType(A_SHIRT);
     //SetRestrictLimbs(({"torso"}));
 }
+
 void init(){
     ::init();
 }

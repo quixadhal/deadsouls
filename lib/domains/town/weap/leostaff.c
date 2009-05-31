@@ -10,8 +10,8 @@ static void create(){
     SetAdjectives( ({ "wood","wooden","strong","heavy","thick","sturdy","solid" }) );
     SetShort("a large wooden staff");
     SetLong("This staff is thick, strong, "+
-      "and heavy. It feels like a sturdy "+
-      "and solid weapon.");
+            "and heavy. It feels like a sturdy "+
+            "and solid weapon.");
     SetVendorType(VT_WEAPON);
     SetDamagePoints(50);
     SetClass(500);

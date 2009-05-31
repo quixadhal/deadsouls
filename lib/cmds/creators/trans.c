@@ -23,16 +23,16 @@ mixed cmd(string args) {
     }
     ob->SetProperty("ReturnSite",base_name(environment(ob)));
     message("system", "You have been summoned by " + 
-      (string)this_player()->GetName() + ".", ob);
+            (string)this_player()->GetName() + ".", ob);
     if( !((int)ob->eventMoveLiving(environment(this_player()))) )
         return "Failed to move " + (string)ob->GetCapName() + ".";
     else message("system", "You trans " + (string)ob->GetCapName() + 
-          " to you.", this_player());
+            " to you.", this_player());
     return 1;
 }
 
 void help() {
     message("help", "Syntax: <trans [living]>\n\n"
-      "Brings a living thing to your location.\n\n"
-      "See also: return, goto, move, expel", this_player());
+            "Brings a living thing to your location.\n\n"
+            "See also: return, goto, move, expel", this_player());
 }

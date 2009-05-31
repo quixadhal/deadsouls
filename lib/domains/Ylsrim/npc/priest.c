@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/npc/priest.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of a religious class leader
  *    Created by Descartes of Borg 961222
  */
@@ -14,11 +14,11 @@ static void create() {
     SetId("ixtala", "priest");
     SetShort("Ix'Tala, high priestess of the Priests");
     SetLong("Ix'Tala initiates priests into the Priests class as well as "
-      "converts the wayward to the truth of the Dalin religion.  "
-      "To learn more about becoming a priest "
-      "ask her to \"describe priests\".  If you choose to become "
-      "a priest, ask her to \"join priests\".  Of course, you can "
-      "convert by asking her to \"convert me\".");
+            "converts the wayward to the truth of the Dalin religion.  "
+            "To learn more about becoming a priest "
+            "ask her to \"describe priests\".  If you choose to become "
+            "a priest, ask her to \"join priests\".  Of course, you can "
+            "convert by asking her to \"convert me\".");
     SetLevel(45);
     SetRace("klingon");
     SetClass("cleric");

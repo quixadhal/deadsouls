@@ -2,16 +2,13 @@
 
 inherit LIB_DAEMON;
 
-int
-cmd(string arg)
-{
+int cmd(string arg){
     if(!archp(previous_object())) return 0;
-    dump_file_descriptors();
+    write(dump_file_descriptors());
     return 1;
 }
 
-int help()
-{
+int help(){
     write( @EndText
 Syntax: fdinfo
 Effect: Lists the status of the machines's file descriptors

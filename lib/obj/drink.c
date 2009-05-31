@@ -15,7 +15,7 @@ static void create() {
     SetBaseCost("silver",10);
     SetMealType(MEAL_DRINK);
     SetMealMessages("You quaff your drink. Mmm!",
-      "$N quaffs $P drink.");
+            "$N quaffs $P drink.");
     SetNoCondition(1);
 }
 void init(){

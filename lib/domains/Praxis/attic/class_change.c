@@ -8,21 +8,21 @@ void create() {
     SetAmbientLight(30);
     SetShort("Magical Mind Altering Altar");
     SetLong(
-      "This room is clean and has almost brand new furniture in it.  A strange\n"+
-      "tilted altar is in the middle of the room.  Tables with wheels, which are\n"+
-      "covered with magical devices, have been pushed up against the walls.\n");
+            "This room is clean and has almost brand new furniture in it.  A strange\n"+
+            "tilted altar is in the middle of the room.  Tables with wheels, which are\n"+
+            "covered with magical devices, have been pushed up against the walls.\n");
     addi("furniture",
-      "The furniture is all made of oak.\n");
+            "The furniture is all made of oak.\n");
     addi("altar",
-      "The altar is made out of wood and is tilted at a strange angle.\n");
+            "The altar is made out of wood and is tilted at a strange angle.\n");
     addi("tables",
-      "The tables are covered with various wands, rings, orbs, magical herbs, and\n"+
-      "some things you cannot even identify.\n");
+            "The tables are covered with various wands, rings, orbs, magical herbs, and\n"+
+            "some things you cannot even identify.\n");
     addi("table",
-      "Each table is made out of sturdy oak and can be wheeled around the room.\n");
+            "Each table is made out of sturdy oak and can be wheeled around the room.\n");
     addi("devices","The devices are very peculiar.\n");
     addi("device",
-      "One device catches your eye.  It is squirting water down a drain.\n");
+            "One device catches your eye.  It is squirting water down a drain.\n");
     addi("water","The water looks cool and refreshing.\n");
     addi("drain","The drain is on the floor.\n");
     addi("floor","The floor is well swept granite.\n");
@@ -44,11 +44,11 @@ int helping(string str)
 {
     if(str != "changing") return 0;
     write(
-      "The cost for changing from one class to another is half your experience and\n"+
-      "five-thousand gold pieces.\n\n"+
-      "To change your class type 'change class to <type>' where type is the class\n"+
-      "you wish to change to.  The wizard will then operate on you to make the\n"+
-      "adjustments.  It won't hurt, really, not much anyway.\n");
+            "The cost for changing from one class to another is half your experience and\n"+
+            "five-thousand gold pieces.\n\n"+
+            "To change your class type 'change class to <type>' where type is the class\n"+
+            "you wish to change to.  The wizard will then operate on you to make the\n"+
+            "adjustments.  It won't hurt, really, not much anyway.\n");
     return 1;
 }
 
@@ -64,9 +64,9 @@ int changing(string str)
     if(!str)
     {
         write("How can the wizard operate if you do not give "+
-          "instructions?\n");
+                "instructions?\n");
         say("The mad wizard bonks "+this_player()->query_cap_name()+
-          " over the head.\n");
+                " over the head.\n");
         return 1;
     }
     //wtf does this do?
@@ -78,14 +78,14 @@ int changing(string str)
     }
     switch(str)
     {
-    case "fighter":
-    case "cleric":
-    case "rogue":
-    case "mage":
-    case "monk":
-        i=1;
+        case "fighter":
+            case "cleric":
+            case "rogue":
+            case "mage":
+            case "monk":
+            i=1;
         break;
-    default: i=0;
+        default: i=0;
     }
     if(!i)
     {

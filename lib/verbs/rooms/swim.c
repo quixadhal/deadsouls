@@ -12,11 +12,11 @@ static void create() {
     SetRules("", "STR", "into STR");
     SetErrorMessage("Swim in which direction?");
     SetHelp("Syntax: <swim DIRECTION>\n"
-      "        <swim into PLACE>\n\n"
-      "Moves you towards the direction you specify, or into the place "
-      "you specify.  The command \"swim into\" is synonymous with the "
-      "\"enter\" command.\n\n"  
-      "See also: fly, climb, enter, go, jump");
+            "        <swim into PLACE>\n\n"
+            "Moves you towards the direction you specify, or into the place "
+            "you specify.  The command \"swim into\" is synonymous with the "
+            "\"enter\" command.\n\n"  
+            "See also: fly, climb, enter, go, jump");
 }
 
 int StaminaCost(){
@@ -59,7 +59,7 @@ mixed can_swim_str(string str) {
         return this_player()->CanSwim();
     }
     if(this_player()->GetPosition() != POSITION_SWIMMING &&
-      envpos != POSITION_SWIMMING){
+            envpos != POSITION_SWIMMING){
         return "You are not swimming.";
     }
     return 0;
@@ -78,7 +78,7 @@ mixed can_swim_into_str(string str) {
         return this_player()->CanSwim();
     }
     if(this_player()->GetPosition() != POSITION_SWIMMING &&
-      envpos != POSITION_SWIMMING){
+            envpos != POSITION_SWIMMING){
         return "You are not swimming.";
     }
     return 0;

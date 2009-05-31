@@ -8,10 +8,10 @@ static void create() {
     SetRules("OBJ with OBJ");
     SetErrorMessage("Boobytrap what with what?");
     SetHelp("Syntax: <boobytrap OBJ with OBJ>\n\n"
-      "The first object is something you wish to boobytrap, like a "
-      "door or a chest.  The second is the thing you wish to use to "
-      "boobytrap it with.\n\n"
-      "See also: close, open, pick, disarm");
+            "The first object is something you wish to boobytrap, like a "
+            "door or a chest.  The second is the thing you wish to use to "
+            "boobytrap it with.\n\n"
+            "See also: close, open, pick, disarm");
 }
 
 mixed can_boobytrap_obj_with_obj(string verb) {

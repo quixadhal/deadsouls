@@ -9,19 +9,19 @@ void create(){
     SetAdjectives( ({"magic","magical","kalinash's", "sig", "smoking"}) );
     SetShort("a magic pipe");
     SetLong("This is a handsome pipe for smoking, made of ivory. There "
-      "is some sort of inscription written on it.");
-    SetMass(20);
+            "is some sort of inscription written on it.");
+    SetMass(5);
     SetBaseCost("silver", 300);
     SetVendorType(VT_TREASURE);
     SetRadiantLight(1);
     SetMaxFuel(300);
     SetItems( ([
-        "inscription" : "An inscription on the pipe you can read.",
-      ]) );
+                "inscription" : "An inscription on the pipe you can read.",
+                ]) );
     SetRead( ([
-        "default" : "Try: read inscription on pipe",
-        "inscription" : "Kalinash's Pipe of Insight",
-      ]) );
+                "default" : "Try: read inscription on pipe",
+                "inscription" : "Kalinash's Pipe of Insight",
+                ]) );
     SetLanguage("common");
     SetFuelAmount(50);
     SetRefuelable(1);
@@ -44,25 +44,25 @@ mixed eventSmoke(object who, object what){
     }
     write("You smoke your "+remove_article(GetShort())+".");
     say(who->GetName()+" smokes from "+possessive(who)+" "
-      +remove_article(GetShort())+".");
+            +remove_article(GetShort())+".");
     if((((time() - GetLastPuff()) > 10) && random(100) < 25) ||
-      creatorp(this_player())){
+            creatorp(this_player())){
         object bonus = new(LIB_BONUS);
         object *kbonuses = filter(all_inventory(this_player()),
-          (: stringp($1->GetBonusName()) && 
-            $1->GetBonusName() == "kpipe_bonus" :) );
+                (: stringp($1->GetBonusName()) && 
+                 $1->GetBonusName() == "kpipe_bonus" :) );
         if(sizeof(kbonuses) > 9) return bonus->eventDestruct();
         bonus->SetBonusName("kpipe_bonus");
         bonus->SetStats( ([ 
-            "intelligence" : 1,
-            "wisdom" : 1,
-            "strength" : -1,
-            "durability" : -1,
-          ]) );
+                    "intelligence" : 1,
+                    "wisdom" : 1,
+                    "strength" : -1,
+                    "durability" : -1,
+                    ]) );
         bonus->SetBonusDuration(300);
         if(bonus->eventMove(who)){
             write("You feel you have a slightly better understanding"+ 
-              " of the world.");
+                    " of the world.");
         }
     }    
     lastpuff = time();

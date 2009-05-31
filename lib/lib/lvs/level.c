@@ -45,15 +45,15 @@ varargs int ChangeLevel(int i){
     foreach(mixed key, mixed val in skills){
         if(skills[key]["class"] > 3) skills[key]["class"] = 4;
         subject->SetSkill(key, 
-          skills[key]["level"] + moduli[skills[key]["class"]],
-          skills[key]["class"]);
+                skills[key]["level"] + moduli[skills[key]["class"]],
+                skills[key]["class"]);
     }
 
     foreach(mixed key, mixed val in stats){
         if(stats[key]["class"] > 3) stats[key]["class"] = 4;
         subject->SetStat(key,
-          stats[key]["level"] + moduli[stats[key]["class"]],
-          stats[key]["class"]);
+                stats[key]["level"] + moduli[stats[key]["class"]],
+                stats[key]["class"]);
     }
 
     subject->SetLevel(desired_level);

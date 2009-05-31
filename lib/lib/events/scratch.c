@@ -63,11 +63,11 @@ varargs mixed eventScratch(object who, mixed component){
         who->eventPrint(val);
         if( component ){
             env->eventPrint(who->GetName() + " scratches on the " + component +
-              " on " + GetDefiniteShort() + ".", who);
+                    " on " + GetDefiniteShort() + ".", who);
         }
         else {
             env->eventPrint(who->GetName() + " scratches on " +
-              GetDefiniteShort() + ".", who);
+                    GetDefiniteShort() + ".", who);
         }
         return 1;
     }

@@ -24,14 +24,14 @@ mixed cmd(string str) {
     pos = ob->GetPosition();
 
     switch(pos){
-    case POSITION_STANDING : ret += "standing.";break;
-    case POSITION_SITTING : ret += "sitting.";break;
-    case POSITION_LYING : ret += "prone.";break;
-    case POSITION_FLYING : ret += "flying.";break;
-    case POSITION_KNEELING : ret += "kneeling.";break;
-    case POSITION_FLOATING : ret += "floating.";break;
-    case POSITION_SWIMMING : ret += "swimming.";break;
-    default : ret += "here.";
+        case POSITION_STANDING : ret += "standing.";break;
+        case POSITION_SITTING : ret += "sitting.";break;
+        case POSITION_LYING : ret += "prone.";break;
+        case POSITION_FLYING : ret += "flying.";break;
+        case POSITION_KNEELING : ret += "kneeling.";break;
+        case POSITION_FLOATING : ret += "floating.";break;
+        case POSITION_SWIMMING : ret += "swimming.";break;
+        default : ret += "here.";
     }
 
     write(ret);
@@ -40,7 +40,7 @@ mixed cmd(string str) {
 
 void help() {
     message("help", "Syntax: position [living thing]\n\n"
-      "Reports the posture of the person named, or if no argument is "
-      "provided, your own physical posture."
-      "\n", this_player());
+            "Reports the posture of the person named, or if no argument is "
+            "provided, your own physical posture."
+            "\n", this_player());
 }

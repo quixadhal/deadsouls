@@ -24,7 +24,7 @@ int cmd(string str) {
 
     if(strsrch(str,homedir(this_player()))){
         write("You can only use this command to travel to rooms "+
-          "under your control.");
+                "under your control.");
         return 1;
     }
 
@@ -41,8 +41,8 @@ int cmd(string str) {
 
 void help() {
     message("help", "Syntax: areagoto <room>\n\n"
-      "Permits a builder to travel to rooms under her control. "
-      "For a list of such rooms: arealist room\n"
-      "See also: arealist, areaclone",
-      this_player());
+            "Permits a builder to travel to rooms under her control. "
+            "For a list of such rooms: arealist room\n"
+            "See also: arealist, areaclone",
+            this_player());
 }

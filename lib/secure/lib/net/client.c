@@ -1,5 +1,5 @@
 /*    /secure/lib/client.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    a TCP client object
  *    Created by Descartes of Borg 950428
  *    Version: @(#) client.c 1.3@(#)
@@ -8,7 +8,7 @@
 
 
 #include <lib.h>
-#include <network.h>
+#include NETWORK_H
 
 inherit LIB_DAEMON;
 
@@ -54,7 +54,7 @@ int eventCreateSocket(string host, int port) {
         return x;
     }
     x = socket_connect(Socket->Descriptor, host + " " + port, 
-      "eventReadCallback", "eventWriteCallback");
+            "eventReadCallback", "eventWriteCallback");
     if( x != EESUCCESS ) {
         eventClose(Socket);
         eventSocketError("Error in socket_connect().", x);
@@ -83,21 +83,21 @@ static void eventWriteCallback(int fd) {
     x = EESUCCESS;
     while( Socket->Buffer && x == EESUCCESS ) {
         switch( x = socket_write(Socket->Descriptor, Socket->Buffer[0]) ) {
-        case EESUCCESS:
-            break;
-        case EECALLBACK:
-            Socket->Blocking = 1;
-            break;
-        case EEWOULDBLOCK:
-            call_out( (: eventWriteCallback($(fd)) :), 0);
-            return;
-        case EEALREADY:
-            Socket->Blocking = 1;
-            return;
-        default:
-            eventClose(Socket);
-            eventSocketError("Error in socket_write().", x);
-            return;
+            case EESUCCESS:
+                break;
+            case EECALLBACK:
+                Socket->Blocking = 1;
+                break;
+            case EEWOULDBLOCK:
+                call_out( (: eventWriteCallback($(fd)) :), 0);
+                return;
+            case EEALREADY:
+                Socket->Blocking = 1;
+                return;
+            default:
+                eventClose(Socket);
+                eventSocketError("Error in socket_write().", x);
+                return;
         }
         if( sizeof(Socket->Buffer) == 1 ) {
             Socket->Buffer = 0;
@@ -108,7 +108,7 @@ static void eventWriteCallback(int fd) {
     }
 }
 
-void eventWrite(mixed val) {
+static void eventWrite(mixed val) {
     if( !Socket ) return;
     if( Socket->Buffer ) Socket->Buffer += ({ val });
     else Socket->Buffer = ({ val });
@@ -146,7 +146,7 @@ int eventDestruct() {
     return daemon::eventDestruct();
 }
 
-static void eventSocketError(string str, int x) { 
-    if( LogFile ) 
-        log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
-}
+    static void eventSocketError(string str, int x) { 
+        if( LogFile ) 
+            log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
+    }

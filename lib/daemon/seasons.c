@@ -8,19 +8,20 @@
 
 #include <lib.h>
 #include <cfg.h>
-#include <config.h>
+#include <function.h>
 #include "include/seasons.h"
 
 inherit LIB_DAEMON;
 
-private static int CurrentDay, CurrentYear, Dawn, Morning, Twilight, Night;
+private static int CurrentDay, CurrentYear; 
+private static int Dawn, Morning, Noon, Twilight, Night;
 private static int ticktock;
 private static string CurrentSeason, TimeOfDay;
 private static mapping Moons;
 private static class month CurrentMonth;
 private static string *Days;
-private static function *DawnCalls, *MorningCalls, *TwilightCalls;
-private static function *NightCalls, *MidnightCalls;
+private static function *DawnCalls, *MorningCalls, *NoonCalls;
+private static function *TwilightCalls, *NightCalls, *MidnightCalls;
 private static class month *Months;
 
 int eventTickTock(int tick){
@@ -33,7 +34,8 @@ int eventTickTock(int tick){
 int GetTickTock(){ return ticktock; }
 
 int *GetMudTime(){
-    return ({ GetHour(GetCurrentTime()), GetMinutes(GetCurrentTime()) });
+    //return ({ GetHour(GetCurrentTime()), GetMinutes(GetCurrentTime()) });
+    return ({ GetHour(time()), GetMinutes(time()) });
 }
 
 
@@ -42,26 +44,27 @@ static void create() {
     int i, maxi;
 
     daemon::create();
-    MorningCalls = ({});
     DawnCalls = ({});
+    MorningCalls = ({});
+    NoonCalls = ({});
     TwilightCalls = ({});
     NightCalls = ({});
     MidnightCalls = ({});
     ticktock = 0;
     maxi = sizeof(lines = filter(explode(read_file(CFG_MONTHS), "\n"),
-        (: $1 && $1 != "" && $1[0] != '#' :)));
+                (: $1 && $1 != "" && $1[0] != '#' :)));
     Months = allocate(maxi);
     for(i=0; i<maxi; i++) {
         Months[i] = new(class month);
         sscanf(lines[i], "%s:%s:%d:%d",((class month)Months[i])->Name,
-          ((class month)Months[i])->Season,
-          ((class month)Months[i])->Days,
-          ((class month)Months[i])->DaylightHours);
+                ((class month)Months[i])->Season,
+                ((class month)Months[i])->Days,
+                ((class month)Months[i])->DaylightHours);
     }
     Days = filter(explode(read_file(CFG_DAYS), "\n"),
-      (: $1 && $1 != "" && $1[0] != '#' :));
+            (: $1 && $1 != "" && $1[0] != '#' :));
     maxi = sizeof(lines = filter(explode(read_file(CFG_MOONS), "\n"),
-        (: $1 && $1 != "" && $1[0] != '#' :)));
+                (: $1 && $1 != "" && $1[0] != '#' :)));
     Moons = allocate_mapping(maxi);
     for(i=0; i<maxi; i++) {
         string nom, id, desc, lnom;
@@ -81,7 +84,7 @@ static void create() {
 static void eventConfigure() {
     int i, x, days, tot, maxi;
 
-    days = (time() - DAY_ONE) / (DAY_LENGTH * HOUR_LENGTH);
+    days = GetTime(time()) / (DAY_LENGTH * HOUR_LENGTH);
     for(tot=0, i=0, maxi = sizeof(Months); i<maxi; i++)
         tot += ((class month)Months[i])->Days;
     CurrentYear = days / tot + 1;
@@ -98,6 +101,7 @@ static void eventConfigure() {
     x = CurrentMonth->DaylightHours * HOUR_LENGTH;
     Morning = ((DAY_LENGTH * HOUR_LENGTH) - x) / 2;
     Twilight = Morning + x;
+    Noon = (DAY_LENGTH * HOUR_LENGTH) / 2;
     if( Morning < HOUR_LENGTH ) {
         Dawn = Morning/2;
         Night = Twilight + Morning/2;
@@ -114,6 +118,10 @@ static void eventConfigure() {
     else if( x < Morning ) {
         TimeOfDay = "dawn";
         call_out( (: eventMorning :), Morning - x);
+    }
+    else if( x < Noon ) {
+        TimeOfDay = "day";
+        call_out( (: eventNoon :), Noon - x);
     }
     else if( x < Twilight ) {
         TimeOfDay = "day";
@@ -136,11 +144,12 @@ static void eventDawn() {
     call_out( (: eventMorning :), Morning - GetCurrentTime() );
     TimeOfDay = "dawn";
     obs = filter(users(), (: environment($1) &&
-        environment($1)->GetClimateExposed() &&
-        inherits(LIB_ROOM,environment($1)) &&
-        !((int)environment($1)->GetProperty("no time")) :));
-    message("environment", "%^YELLOW%^The sun appears just over the horizon.",
-      obs );
+                environment($1)->GetClimateExposed() &&
+                inherits(LIB_ROOM,environment($1)) &&
+                !((int)environment($1)->GetProperty("no time")) :));
+    message("environment",
+            "%^YELLOW%^The sun appears just over the horizon.%^RESET%^",
+            obs );
     i = sizeof(DawnCalls);
     while(i--) catch(evaluate(DawnCalls[i]));
 }
@@ -149,16 +158,25 @@ static void eventMorning() {
     object *obs;
     int i;
 
-    call_out( (: eventTwilight :), Twilight - GetCurrentTime());
+    call_out( (: eventNoon :), Noon - GetCurrentTime());
     TimeOfDay = "day";
     obs = filter(users(), (: environment($1) &&
-        (string)environment($1)->GetClimateExposed() &&
-        inherits(LIB_ROOM,environment($1)) &&
-        !((int)environment($1)->GetProperty("no time")) :));
+                (string)environment($1)->GetClimateExposed() &&
+                inherits(LIB_ROOM,environment($1)) &&
+                !((int)environment($1)->GetProperty("no time")) :));
     message("environment", "%^BOLD%^YELLOW%^The sun now shines completely "
-      "on a new day.", obs);
+            "on a new day.%^RESET%^", obs);
     i = sizeof(MorningCalls);
     while(i--) catch(evaluate(MorningCalls[i]));
+}
+
+static void eventNoon() {
+    int i;
+    call_out( (: eventTwilight :), Twilight - GetCurrentTime());
+    TimeOfDay = "day";
+    /* debug("Noon Time!"); */
+    i = sizeof(NoonCalls);
+    while(i--) catch(evaluate(NoonCalls[i]));
 }
 
 static void eventTwilight() {
@@ -168,28 +186,35 @@ static void eventTwilight() {
     call_out( (: eventNight :), Night - GetCurrentTime() );
     TimeOfDay = "twilight";
     obs = filter(users(), (: environment($1) &&
-        (string)environment($1)->GetClimateExposed() &&
-        inherits(LIB_ROOM,environment($1)) &&
-        !((int)environment($1)->GetProperty("no time")) :));
+                (string)environment($1)->GetClimateExposed() &&
+                inherits(LIB_ROOM,environment($1)) &&
+                !((int)environment($1)->GetProperty("no time")) :));
     message("environment", "%^CYAN%^The sun begins to fall away into "
-      "twilight.", obs);
+            "twilight.%^RESET%^", obs);
     i = sizeof(TwilightCalls);
     while(i--) catch(evaluate(TwilightCalls[i]));
 }
 
 static void eventNight() {
     object *obs;
-    int i;
+    int i,x;
 
-    call_out( (: eventMidnight :), DAY_LENGTH - GetCurrentTime() );
+    call_out( (: eventMidnight :),
+            (DAY_LENGTH * HOUR_LENGTH) - GetCurrentTime() );
     TimeOfDay = "night";
     obs = filter(users(), (: environment($1) &&
-        (string)environment($1)->GetClimateExposed() &&
-        inherits(LIB_ROOM,environment($1)) &&
-        !((int)environment($1)->GetProperty("no time")) :));
-    message("environment", "%^BOLD%^BLUE%^Night darkens all that is real.", obs);
+                (string)environment($1)->GetClimateExposed() &&
+                inherits(LIB_ROOM,environment($1)) &&
+                !((int)environment($1)->GetProperty("no time")) :));
+    message("environment",
+            "%^BOLD%^BLUE%^Night darkens all that is real.%^RESET%^", obs);
     i = sizeof(NightCalls);
-    while(i--) catch(evaluate(NightCalls[i]));
+    while(i--){
+        mixed f = NightCalls[i];
+        if((x = functionp(f)) && !(x & FP_OWNER_DESTED)){
+            catch(evaluate(f));
+        }
+    }
 }
 
 static void eventMidnight() {
@@ -204,11 +229,12 @@ static void eventMidnight() {
         eventConfigure();
         if( y != CurrentYear )
             message("shout", "Happy New Year!!!\nIt is now the year " +
-              GetYearString(CurrentYear) + "!!!!!", users());
+                    GetYearString(CurrentYear) + "!!!!!", users());
         return;
     }
     call_out( (: eventDawn :), Dawn);
     TimeOfDay = "night";
+    /* debug("midnight!"); */
     i = sizeof(MidnightCalls);
     while(i--) catch(evaluate(MidnightCalls[i]));
 }
@@ -221,14 +247,16 @@ string GetCurrentMonth() { return CurrentMonth->Name; }
 
 string GetCurrentSeason() { return CurrentSeason; }
 
-int GetCurrentTime() { return (time()- DAY_ONE) % (DAY_LENGTH * HOUR_LENGTH) + ticktock; }
+// get seconds from the start of the day.
+int GetCurrentTime() { return GetTime(time()) % (DAY_LENGTH * HOUR_LENGTH) + ticktock; }
 
 int GetCurrentYear() { return CurrentYear; }
 
-int GetDay(int x) {
+varargs int GetDay(int x) {
     int tot, days, i, maxi;
 
-    days = absolute_value((x - DAY_ONE) / (DAY_LENGTH * HOUR_LENGTH));
+    if(!x) x = time();
+    days = absolute_value(GetTime(x) / (DAY_LENGTH * HOUR_LENGTH));
     for(tot=0, i=0, maxi = sizeof(Months); i<maxi; i++)
         tot += ((class month)Months[i])->Days;
     days = (days % tot) + ( (x < DAY_ONE) ? 0 : 1 );
@@ -248,10 +276,11 @@ int GetDay(int x) {
     return 0;
 }
 
-string GetDayName(int x) {
+varargs string GetDayName(int x) {
     int days;
 
-    days = absolute_value((x - DAY_ONE) / (DAY_LENGTH * HOUR_LENGTH));
+    if(!x) x = time();
+    days = absolute_value(GetTime(x) / (DAY_LENGTH * HOUR_LENGTH));
     return Days[days % sizeof(Days)];
 }
 
@@ -268,18 +297,22 @@ int GetDaylightHours(string mon) {
     return 0;
 }
 
-int GetHour(int x) {
+varargs int GetHour(int x) {
     int y;
 
+    if(!x)
+        x = time();
     y = absolute_value(GetTime(x));
     y = y % (DAY_LENGTH * HOUR_LENGTH);
     if( x < DAY_ONE ) y = (DAY_LENGTH * HOUR_LENGTH) - y;
     return (y / HOUR_LENGTH);
 }
 
-int GetMinutes(int x) {
+varargs int GetMinutes(int x) {
     int y;
 
+    if(!x)
+        x = time();
     y = absolute_value(GetTime(x));
     y = y % (DAY_LENGTH * HOUR_LENGTH);
     if( x < DAY_ONE ) y = (DAY_LENGTH * HOUR_LENGTH) - y;
@@ -293,11 +326,12 @@ string GetMonth(int x) {
     return Months[monthIndex]->Name;
 }
 
-private int GetMonthIndex(int x) {
+private varargs int GetMonthIndex(int x) {
     int tot, days, i, maxi;
 
+    if(!x) x = time();
     if( x < DAY_ONE ) days = (DAY_ONE - x) / (DAY_LENGTH * HOUR_LENGTH);
-    else days = (x - DAY_ONE) / (DAY_LENGTH * HOUR_LENGTH);
+    else days = GetTime(x) / (DAY_LENGTH * HOUR_LENGTH);
     for(tot=0, i=0, maxi = sizeof(Months); i<maxi; i++)
         tot += ((class month)Months[i])->Days;
     days = (days % tot) + ((x >= DAY_ONE) ? 1 : 0);
@@ -334,34 +368,36 @@ string GetSeason(int x) {
     return Months[monthIndex]->Season;
 }
 
-int GetTime(int x) { return (x - DAY_ONE); }
+varargs int GetTime(int x) { if(!x) x = time(); return (x - DAY_ONE); }
 
 string GetTimeOfDay() { return TimeOfDay; }
 
 function AddTimeEvent(string tod, function f) {
     switch(tod) {
-    case "dawn": DawnCalls += ({ f }); break;
-    case "morning": MorningCalls += ({ f }); break;
-    case "twilight": TwilightCalls += ({ f }); break;
-    case "night": NightCalls += ({ f }); break;
-    case "midnight": MidnightCalls += ({ f }); break;
-    default: return 0;
+        case "dawn": DawnCalls += ({ f }); break;
+        case "morning": MorningCalls += ({ f }); break;
+        case "noon": NoonCalls += ({ f }); break;
+        case "twilight": TwilightCalls += ({ f }); break;
+        case "night": NightCalls += ({ f }); break;
+        case "midnight": MidnightCalls += ({ f }); break;
+        default: return 0;
     }
     return f;
 }
 
 mapping GetTimeEvents() {
     return ([ "dawn" : DawnCalls + ({}), "morning" : MorningCalls + ({}),
-      "twilight" : TwilightCalls + ({}), "night" : NightCalls + ({}),
-      "midnight" : MidnightCalls + ({}) ]);
+            "noon" : NoonCalls + ({}), "twilight" : TwilightCalls + ({}),
+            "night" : NightCalls + ({}), "midnight" : MidnightCalls + ({}) ]);
 }
 
-int GetYear(int x) {
+varargs int GetYear(int x) {
     int i, tot;
 
+    if(!x) x = time();
     i = sizeof(Months);
     while(i--) tot += ((class month)Months[i])->Days;
-    i = ((x - DAY_ONE) / (DAY_LENGTH * HOUR_LENGTH)) / tot;
+    i = (GetTime(x) / (DAY_LENGTH * HOUR_LENGTH)) / tot;
     if( x < DAY_ONE ) return i;
     else return i + 1;
 }
@@ -371,16 +407,24 @@ string GetYearString(int x) {
     else return x + " NM";
 }
 
+
+/*
+ * Moon functions
+ */
+string array GetMoons() {
+    return map(keys(Moons), (: ((class moon)Moons[$1])->Name :));
+}
+
 string GetPhaseName(mixed val) {
     if( stringp(val) ) {
         val = GetPhase(val);
     }
     switch(val) {
-    case 0: return "new";
-    case 1: return "waxing";
-    case 2: return "waning";
-    case 3: return "full";
-    default: return "error";
+        case 0: return "new";
+        case 1: return "waxing";
+        case 2: return "waning";
+        case 3: return "full";
+        default: return "error";
     }
 }
 
@@ -389,16 +433,16 @@ int GetPhase(string m) {
 
     m = convert_name(m);
     x = ((class moon)Moons[m])->Phase;
-    y = (time() - DAY_ONE) % x;
+    y = GetTime(time()) % x;
     z = x / 4;
     return y / z;
 }
 
 int GetRadiantLight() {
     switch( TimeOfDay ) {
-    case "night": return (GetMoonLight() * 2);
-    case "day": return 60;
-    default: return 30;
+        case "night": return (GetMoonLight() * 2);
+        case "day": return 60;
+        default: return 30;
     }
 }
 
@@ -426,122 +470,122 @@ string GetLong(string arg) {
     if( !(env = environment(this_player())) )
         return "You are in serious trouble.";
     switch(arg) {
-    case "sun":
-        switch(GetTimeOfDay()) {
-        case "dawn":
-            return "The sun is hanging low in the eastern sky.";
-        case "day":
-            return "The sun is shining brightly in the daytime sky.";
-        case "twilight":
-            return "The sun is sinking into the western sky.";
-        case "night":
-            return "There is no sun to be seen.";
-        }
-    case "moon": case "moons":
-        if( GetTimeOfDay() != "night" ) return "During the day?";
-        else {
-            string *moons;
-            int x = 0;
-
-            i = sizeof(moons = keys(Moons));
-            while(i--) {
-                int y;
-
-                if( y = GetPhase(moons[i]) ) continue;
-                else if( tmp )
-                    tmp += capitalize(((class moon)Moons[moons[i]])->Id) +
-                    " is " + GetPhaseName(y) + ". ";
-                else tmp = "\n" +
-                    capitalize(((class moon)Moons[moons[i]])->Id) + " is " +
-                    GetPhaseName(y) + ".  ";
-                x = 1;
+        case "sun":
+            switch(GetTimeOfDay()) {
+                case "dawn":
+                    return "The sun is hanging low in the eastern sky.";
+                case "day":
+                    return "The sun is shining brightly in the daytime sky.";
+                case "twilight":
+                    return "The sun is sinking into the western sky.";
+                case "night":
+                    return "There is no sun to be seen.";
             }
-            if( !x ) return 0;
-            else return tmp;
-        }
-    case "sky":
-        if( GetTimeOfDay() == "night" ) {
-            tmp =  GetLong("moon");
-            if( !tmp ) {
-                return "The sky is filled only with the glitter of stars.";
+        case "moon": case "moons":
+            if( GetTimeOfDay() != "night" ) return "During the day?";
+            else {
+                string *moons;
+                int x = 0;
+
+                i = sizeof(moons = keys(Moons));
+                while(i--) {
+                    int y;
+
+                    if( (y = GetPhase(moons[i])) == 0 ) continue;
+                    else if( tmp )
+                        tmp += (((class moon)Moons[moons[i]])->Name) +
+                            " is " + GetPhaseName(y) + ".\n";
+                    else tmp = "\n" +
+                        "You gaze up at the sky, and see the moons...\n"+
+                            (((class moon)Moons[moons[i]])->Name) +
+                            " is " +
+                            GetPhaseName(y) + ".\n";
+                    x = 1;
+                }
+                if( !x ) return 0;
+                else return tmp;
+            }
+        case "sky":
+            if( GetTimeOfDay() == "night" ) {
+                tmp =  GetLong("moon");
+                if( !tmp ) {
+                    return "The sky is filled only with the glitter of stars.";
+                }
+                else {
+                    return tmp;
+                }
             }
             else {
-                return tmp;
-            }
-        }
-        else {
-            string sky;
+                string sky;
 
-            tmp = GetLong("sun");
-            if( this_player() ) {
-                env = environment(this_player());
-            }
-            if( sky = env->GetSky() ) {
-                env = find_object(sky);
-                if( env ) {
-                    object array obs = filter(all_inventory(env),
-                      function(object ob) {
-                          if( ob->GetInvis(this_player()) ) {
-                              return 0;
-                          }
-                          if( living(ob) ) {
-                              return 1;
-                          }
-                          return 0;
-                        });
+                tmp = GetLong("sun");
+                if( this_player() ) {
+                    env = environment(this_player());
+                }
+                if( sky = env->GetSky() ) {
+                    env = find_object(sky);
+                    if( env ) {
+                        object array obs = filter(all_inventory(env),
+                                (: living($1) &&
+                                 !$1->GetInvis(this_player()) :));
+                        /* function(object ob) { */
+                        /* if( ob->GetInvis(this_player()) ) { */
+                        /*     return 0; */
+                        /* } */
+                        /* if( living(ob) ) { */
+                        /*     return 1; */
+                        /* } */
+                        /*     return 0; */
+                        /* }); */
 
-                      if( sizeof(obs) ) {
-                          int maxi = sizeof(obs);
+                        if( sizeof(obs) ) {
+                            int maxi = sizeof(obs);
 
-                          sky = obs[i]->GetName();
-                          if( maxi == 1 ) {
-                              sky += " is flying in the sky.";
-                          }
-                          else {
-                              for(i=1; i<maxi; i++) {
-                                  if( i == maxi-1 ) {
-                                      if( maxi == 2 ) {
-                                          sky += " and ";
-                                      }
-                                      else {
-                                          sky += ", and ";
-                                      }
-                                  }
-                                  else {
-                                      sky += ", ";
-                                  }
-                                  sky += obs[i]->GetName();
-                              }
-                              sky += " are flying in the sky.";
-                          }
-                          tmp = sky + "\n" + tmp;
-                      }
-                  }
+                            sky = obs[i]->GetName();
+                            if( maxi == 1 ) {
+                                sky += " is flying in the sky.";
+                            }
+                            else {
+                                for(i=1; i<maxi; i++) {
+                                    if( i == maxi-1 ) {
+                                        if( maxi == 2 ) {
+                                            sky += " and ";
+                                        }
+                                        else {
+                                            sky += ", and ";
+                                        }
+                                    }
+                                    else {
+                                        sky += ", ";
+                                    }
+                                    sky += obs[i]->GetName();
+                                }
+                                sky += " are flying in the sky.";
+                            }
+                            tmp = sky + "\n" + tmp;
+                        }
+                    }
                 }
                 return tmp;
             }
         default:
-            if( Moons[arg] ) return ((class moon)Moons[arg])->Description;
-            arr = map(mn = keys(Moons), (: ((class moon)Moons[$1])->Id :));
-            if( (i = member_array(arg, arr)) != -1 )
-                return ((class moon)Moons[mn[i]])->Description;
-            else return 0;
-        }
+        if( Moons[arg] ) return ((class moon)Moons[arg])->Description;
+        arr = map(mn = keys(Moons), (: ((class moon)Moons[$1])->Id :));
+        if( (i = member_array(arg, arr)) != -1 )
+            return ((class moon)Moons[mn[i]])->Description;
+        else return 0;
     }
+}
 
-    string array GetMoons() {
-        return map(keys(Moons), (: ((class moon)Moons[$1])->Name :));
-    }
-
-    int eventShow(object who, string args) {
-        string str;
-        if( !who || !sizeof(args) ) return 0;
-        if( !str = GetLong(args) ) return 0;
-        if( !(string)environment(who)->GetClimateExposed() ) {
-            who->eventPrint("You can't see that from here!");
-            return 1;
-        }
-        who->eventPrint(str);
-        environment(who)->eventPrint((string)who->GetName() + " gazes toward the sky.", who);
+int eventShow(object who, string args) {
+    string str;
+    if( !who || !sizeof(args) ) return 0;
+    if( !str = GetLong(args) ) return 0;
+    if( !(string)environment(who)->GetClimateExposed() ) {
+        who->eventPrint("You can't see that from here!");
         return 1;
     }
+    who->eventPrint(str);
+    environment(who)->eventPrint((string)who->GetName() + " gazes toward the sky.", who);
+    return 1;
+}

@@ -23,5 +23,5 @@ void init() {
     ::init();
     SetSmell(([  "default" : "A rather odd, musty smell."]));
     SetListen(([  "default" : "The clerk grumbles something about an "+
-        "unconscionably small tax revenue base."]));
+                "unconscionably small tax revenue base."]));
 }

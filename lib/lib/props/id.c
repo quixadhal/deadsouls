@@ -1,5 +1,5 @@
 /*    /lib/props/id.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Attributes which identify objects
  *    Created by Descartes of Borg 961222
  *    Version: @(#) id.c 1.2@(#)
@@ -7,6 +7,7 @@
  */
 
 #include <lib.h>
+#include <daemons.h>
 
 private static string array Adjectives   = ({});
 private string              CapName      = 0;
@@ -86,6 +87,9 @@ string array GetCanonicalId(){
 varargs string array SetId(mixed val...){
     string tmp, fn, gs;
     string *exclude = ({});
+    if(!(MASTER_D->GetPerfOK())){
+        Matching = 0;
+    }
     if( stringp(val) ){
         val = ({ val });
     }
@@ -197,7 +201,8 @@ varargs void ReceiveCanonicalId(mixed foo, int leaving){
         foreach(mixed element in foo){
             if(member_array(element, this_object()->GetId()) != -1){
                 if(member_array(element, CanonicalId) == -1){
-                    ExcludedIds += ({ element });
+                    if(sizeof(ExcludedIds) < 1024)
+                        ExcludedIds += ({ element });
                     parse_init();
                     parse_refresh();
                 }

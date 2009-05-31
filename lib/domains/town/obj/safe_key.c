@@ -9,10 +9,11 @@ static void create() {
     SetAdjectives( ({ "complex", "complicated", "complicated looking" }) );
     SetShort("a complex key");
     SetLong("It is a complicated-looking key.");
-    SetMass(10);
+    SetMass(1);
     SetBaseCost("silver",1);
     SetDisableChance(100);
 }
+
 void init(){
     ::init();
 }

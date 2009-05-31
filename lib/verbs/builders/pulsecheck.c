@@ -2,7 +2,7 @@
 #include <daemons.h>
 #include <damage_types.h>
 #include <modules.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <commands.h>
 
 inherit LIB_VERB;
@@ -13,8 +13,8 @@ static void create() {
     SetRules("LVS");
     SetErrorMessage("pulsecheck what?");
     SetHelp("Syntax: <pulsecheck CREATURE>\n\n"
-      "Check a creature's heartbeat.\n"
-      "\nSee also: zap");
+            "Check a creature's heartbeat.\n"
+            "\nSee also: zap");
 }
 
 mixed can_pulsecheck_liv(string str) { 

@@ -1,5 +1,5 @@
 /*    /lib/chair.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    A thing you can sit in
  *    Created by Descartes of Borg 961221
  *    Version: @(#) chair.c 1.1@(#)
@@ -18,10 +18,10 @@ void create(){
     SetMass(500);
 }
 
-int CanGet(object who){
-    if(::CanGet(who))
-        return ::CanGet(who);
-    else return 0;
-}
+    int CanGet(object who){
+        if(sit::CanGet(who))
+            return surface::CanGet(who);
+        else return 0;
+    }
 
 /* Nothing else needs to happen here */

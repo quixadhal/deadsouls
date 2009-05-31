@@ -6,7 +6,8 @@
  */
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
+#include <daemons.h>
 
 inherit LIB_ROOM;
 
@@ -14,7 +15,7 @@ void create() {
     room::create();
     SetShort("the incept pod");
     SetLong("The incept pod. Some objects come here to be created "+
-      "and identified. Go down to get out.");
+            "and identified. Go down to get out.");
     SetExits( ([ "down" : ROOM_START ]) );
 }
 int CanReceive(object ob){
@@ -22,6 +23,6 @@ int CanReceive(object ob){
         ob->eventDestruct();
         return 1;
     }
-    ob->eventMove(ROOM_VOID);
+    ob->eventMove(ROOMS_D->GetVoid(ob));
     return 1;
 }

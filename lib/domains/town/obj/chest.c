@@ -11,15 +11,19 @@ void create() {
     SetMass(2000);
     SetBaseCost("silver",50);
     SetMaxCarry(500);
-    SetPreventPut("You cannot put this in there!");
     SetInventory(([
-        "/secure/obj/memo" : 1,
-        "/secure/obj/medtric" : 1,
-        "/secure/obj/control" : 1,
-        "/secure/obj/roommaker" : 1,
-        "/domains/town/armor/badge" : 1,
-      ]));
+                "/secure/obj/memo" : 1,
+                "/secure/obj/medtric" : 1,
+                "/secure/obj/control" : 1,
+                //"/secure/obj/roommaker" : 1,
+                "/domains/town/armor/badge" : 1,
+                ]));
     SetCanClose(1);
     SetClosed(1);
 }
+
+void init(){
+    ::init();
+}
+
 mixed CanGet(object ob) { return "The chest does not budge.";}

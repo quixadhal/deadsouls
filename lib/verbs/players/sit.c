@@ -1,5 +1,5 @@
 /*    /verbs/players/sit.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 960711
  *    Version: @(#) sit.c 1.7@(#)
  *    Last Modified: 96/12/21
@@ -17,10 +17,10 @@ static void create() {
     SetRules("", "up","down", "down in OBJ", "down on OBJ", "in OBJ", "on OBJ");
     SetErrorMessage("Sit down?");
     SetHelp("Syntax: <sit down>\n"
-      "        <sit down in OBJ>\n\n"
-      "Allows you to sit down on the ground or in a chair-like object.  "
-      "It can be really exciting.\n\n"
-      "See also: lie, stand");
+            "        <sit down in OBJ>\n\n"
+            "Allows you to sit down on the ground or in a chair-like object.  "
+            "It can be really exciting.\n\n"
+            "See also: lie, stand");
 }
 
 mixed can_sit_down() {

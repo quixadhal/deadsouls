@@ -2,7 +2,6 @@
 #include <vendor_types.h>
 inherit "/lib/flashlight";
 
-
 void create(){
     ::create();
     SetKeyName("maglite");
@@ -10,7 +9,7 @@ void create(){
     SetAdjectives( ({"powerful","heavy","large","Maglite"}) );
     SetShort( "a large flashlight" );
     SetLong("This is a powerful, heavy, Maglite brand flashlight.");
-    SetMass(20);
+    SetMass(30);
     SetBaseCost("silver",40);
     SetLightLevel(20);
     SetMinCells(4);
@@ -18,12 +17,12 @@ void create(){
     SetCellType("D");
     Lit=0;
     SetVendorType(VT_TREASURE);
-
     SetInventory(([
-        "/domains/town/obj/dcell_good":4
-      ]));
+                "/domains/town/obj/dcell_good":4
+                ]));
 
 }
+
 void init(){
     ::init();
 }

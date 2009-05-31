@@ -1,5 +1,5 @@
 /*    /daemon/services/locate.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    performs player lookups
  *    Created by Descartes of Borg 950624
  *    Version: @(#) locate.c 1.2@(#)
@@ -9,7 +9,7 @@
 #define SERVICE_LOCATE
 
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <message_class.h>
 
 static mapping locate_user_table = ([]);
@@ -28,12 +28,12 @@ void eventReceiveLocateRequest(mixed array packet) {
     string status;
     int idl = 0;
     object ob;
-
+    PING_D->SetOK();
     if( file_name(previous_object()) != INTERMUD_D ) return;
-    tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has issued a locate request for %^BOLD%^YELLOW%^"+capitalize(packet[6])+".%^RESET%^\"");
+    //tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"+capitalize(packet[3])+" at "+packet[2]+" has issued a locate request for %^BOLD%^YELLOW%^"+capitalize(packet[6])+".%^RESET%^\"");
     tn("Locate request received: "+identify(packet),"white");
     CHAT_D->eventSendChannel("SYSTEM","intermud","[" + capitalize(packet[3])+"@"+packet[2]+
-      " seeks "+packet[6]+ "]",0);
+            " seeks "+packet[6]+ "]",0);
     if( !(ob = find_player(packet[6])) || ob->GetInvis()) return;
     if( interactive(ob) ) {
         string array tmp = ({ });
@@ -46,15 +46,15 @@ void eventReceiveLocateRequest(mixed array packet) {
     }
     else status = "link-dead";
     INTERMUD_D->eventWrite( ({ "locate-reply", 5, mud_name(), 0, packet[2], 
-        packet[3], mud_name(),
-        (string)ob->GetName(), idl, status }) );
+                packet[3], mud_name(),
+                (string)ob->GetName(), idl, status }) );
 }
 
 void eventReceiveLocateReply(mixed array packet) {
     object ob;
     string m;
     int idl;
-
+    PING_D->SetOK();
     if( file_name(previous_object()) != INTERMUD_D ) return;
     if( !packet[5] || !(ob = find_player(convert_name(eventLookupLocateUser(packet[5])))) ){
         return;

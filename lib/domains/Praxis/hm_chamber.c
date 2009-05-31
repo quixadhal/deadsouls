@@ -17,19 +17,19 @@ void create(){
     object ob;
     ::create();
     SetProperties( ([ "light" : 3, "no steal" : 1, "no magic" : 1,
-        "no teleport" : 1, "no attack" : 1, "no castle" : 1, "no bump" : 1 ]) ); 
+                "no teleport" : 1, "no attack" : 1, "no castle" : 1, "no bump" : 1 ]) ); 
     SetShort( "the High Mortal Chamber" );
     SetLong( "You have entered the forum for the High Mortals of the "
-      "Nightmare reality. You see a large round table standing in the middle "
-      "of the room, surrounded by oaken chairs. %^BLUE%^Blue%^RESET%^ carpet "
-      "is on the floor, and the walls have been painted a cream colour. "
-    );
+            "Nightmare reality. You see a large round table standing in the middle "
+            "of the room, surrounded by oaken chairs. %^BLUE%^Blue%^RESET%^ carpet "
+            "is on the floor, and the walls have been painted a cream colour. "
+           );
     SetItems( ([ 
-        "table" : "A large, round oaken table.",
-        "chairs" : "The chairs match the wood of the table.",
-        "carpet" : "The carpet is a deep blue.",
-        "walls" : "The walls are cream coloured."
-      ]) );
+                "table" : "A large, round oaken table.",
+                "chairs" : "The chairs match the wood of the table.",
+                "carpet" : "The carpet is a deep blue.",
+                "walls" : "The walls are cream coloured."
+                ]) );
     SetExits( ([ "east" : "/domains/Praxis/ombud_hall.c" ]) );
 
     ob = new("/lib/bboard");
@@ -41,8 +41,8 @@ void create(){
     ob->set_location("/domains/Praxis/hm_chamber");
     ob->SetShort( "the High Mortal board of wisdom");
     ob->SetLong( "This is the High Mortals board of wisdom. It "+
-      "is used for the High Mortals to discuss issues "+
-      "concerning the welfare of the mud. ");
+            "is used for the High Mortals to discuss issues "+
+            "concerning the welfare of the mud. ");
 }
 
 int sit(string str) {

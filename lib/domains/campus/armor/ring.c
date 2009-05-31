@@ -10,7 +10,7 @@ static void create(){
     SetAdjectives( ({"beautiful"}) );
     SetShort("a beautiful gold ring");
     SetLong("This is a simple but beautiful ring made of "+
-      "gold, suitable for wearing on one's finger.");
+            "gold, suitable for wearing on one's finger.");
     SetMass(1);
     SetDollarCost(1000);
     SetDamagePoints(100);

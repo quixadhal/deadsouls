@@ -1,5 +1,5 @@
 #include <lib.h>
-#include "../../customdefs.h"
+#include "../customdefs.h"
 
 inherit LIB_ROOM;
 
@@ -10,14 +10,14 @@ static void create() {
     SetShort("Second Sample Room");
     SetLong("This is another sample room.");
     SetItems( ([
-	"template" : "That's what this is.",
-      ]) );
+                "template" : "That's what this is.",
+                ]) );
     SetInventory(([
-	MY_OBJ "/case" :1,
-      ]));
+                MY_OBJ "/case" :1,
+                ]));
     SetExits(([
-	"west" : MY_AREA "/room/sample_room",
-      ]));
+                "west" : MY_AREA "/room/sample_room",
+                ]));
 
 }
 

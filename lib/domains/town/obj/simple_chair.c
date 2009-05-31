@@ -13,6 +13,7 @@ static void create() {
     SetDollarCost(15);
     SetMaxSitters(1);
 }
+
 void init(){
     ::init();
 }

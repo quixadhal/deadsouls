@@ -17,10 +17,10 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: unmuff\n"
-      "        unmuff <name>\n\n"
-      "This command allows you to stop ignoring channel messages from the name specified.\n"
-      "See also: earmuff, whomuffed\n\n",
-      this_player() );
+            "Syntax: unmuff\n"
+            "        unmuff <name>\n\n"
+            "This command allows you to stop ignoring channel messages from the name specified.\n"
+            "See also: earmuff, whomuffed\n\n",
+            this_player() );
 }
 

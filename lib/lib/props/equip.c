@@ -1,5 +1,5 @@
 /*    /lib/props/equip.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles the property of being something that is equipped to a limb
  *    The word worn is used instead of equipped for historical reasons
  *    Created by Descartes of Borg 970101
@@ -23,7 +23,7 @@ int GetArmorType(){
 int SetArmorType(int x){
     if( !intp(x) ){
         error("Bad argument to SetArmorType().\n\tExpected value from "
-          "/include/armor_types.h, Got: " + typeof(x) + "\n");
+                "/include/armor_types.h, Got: " + typeof(x) + "\n");
     }
     return (ArmorType = x);
 }
@@ -37,7 +37,8 @@ string array GetWorn(){
 }
 
 static string array SetWorn(string array limbs){
-    return (Worn = limbs);
+    Worn = limbs;
+    return Worn;
 }
 
 mixed CanEquip(object who, string array limbs){
@@ -56,7 +57,6 @@ mixed CanUnequip(object who){
 
 mixed eventEquip(object who, string array limbs){
     mixed tmp = who->eventWear(this_object(), limbs);
-
     if( tmp != 1 ){
         return tmp;
     }

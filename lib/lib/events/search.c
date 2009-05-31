@@ -1,5 +1,5 @@
 /*    /lib/search.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    allows people to search things
  *    created by Descartes of Borg 951008
  *    Version: @(#) search.c 1.7@(#)
@@ -21,8 +21,8 @@ mapping GetTraps(){
     foreach(mixed key, mixed val in shads){
         if(!inherits(LIB_BOOBYTRAP_SHADOW, key)) map_delete(shads, key);
         else shads[key] = ([ "level" : key->GetTrapLevel(), "description" : key->GetTrapDescription() ]);
-}
-return shads;
+    }
+    return shads;
 }
 
 mapping FoundTraps(){
@@ -93,7 +93,8 @@ mapping RemoveSearch(string item){
         Search = 0;
     }
     else {
-        map_delete(Searches, item);
+        //map_delete(Searches, item);
+        Searches["item"] = "You find nothing.";
     }
     return Searches;
 }
@@ -135,18 +136,18 @@ varargs mixed SetSearch(mixed array args...){
     }
     else {
         error("Wrong number of arguments to SetSearch():\n\t"
-          "Expected 1 or 2, got " + sizeof(args) + "\n");
+                "Expected 1 or 2, got " + sizeof(args) + "\n");
     }
 }
 
 varargs mixed eventSearch(object who, string str){
     str = GetSearch(str, who);
     if( !str ){
-        who->eventPrint("There is nothing to search.");
+        who->eventPrint("You find nothing.");
         return 1;
     }
     environment(who)->eventPrint(who->GetName() + " searches "
-      "for something.", who);
+            "for something.", who);
     who->eventPrint(str);
     return 1;
 }

@@ -16,14 +16,14 @@ void create(){
     SetAdjectives(({"small","electronic"}));
     SetShort("a remote control");
     SetLong("This is a small electronic "+
-      "device with various labeled buttons on it. "+
-      "It seems you can \"control something\" with "+
-      "it, and also \"release\" it. To command your "+
-      "remote servant, you evidently have to preface the command "+
-      "with the ] character (example: ] look at menu).");
+            "device with various labeled buttons on it. "+
+            "It seems you can \"control something\" with "+
+            "it, and also \"release\" it. To command your "+
+            "remote servant, you evidently have to preface the command "+
+            "with the ] character (example: ] look at menu).");
     SetProperties(([
-        "no steal" : 1,
-      ]));
+                "no steal" : 1,
+                ]));
     SetMass(20);
     SetVendorType(VT_TREASURE);
     control_code = alpha_crypt(16);
@@ -51,11 +51,11 @@ int control(string str){
     }
     if(!builderp(this_player())){
         write("Your puny mortal mind can't wrap itself around the use "
-          "of this powerful instrument.");
+                "of this powerful instrument.");
         log_file("adm/control",capitalize(this_player()->GetKeyName())+
-          " attempted to use the remote control on "+str+": "+timestamp()+"\n");
+                " attempted to use the remote control on "+str+": "+timestamp()+"\n");
         tell_creators("SECURITY: "+capitalize(this_player()->GetKeyName())+
-          " attempted to use the remote control on "+str+".");
+                " attempted to use the remote control on "+str+".");
         return 1;
     }
     if(!living(ob)){

@@ -1,5 +1,5 @@
 /*    /lib/position.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles the positioning of living things
  *    Created by Descartes of Borg 961221
  *    Version: @(#) position.c 1.1@(#)
@@ -40,7 +40,7 @@ mixed eventFall(){
     if(!env || !(rumbo = env->GetExit("down"))) return 0;
     if(env->GetMedium() != MEDIUM_AIR){
         send_messages("fall", "$agent_name $agent_verb to the ground.",
-          this_object(), 0, environment());
+                this_object(), 0, environment());
         Position = POSITION_LYING;
         return 1;
     }
@@ -51,7 +51,7 @@ mixed eventFall(){
         write("You plummet downward!");
         if(this_object()->eventMove(rumbo)){
             env->eventPrint(this_object()->GetName()+" continues "+
-              possessive(this_player())+" fall downward.", MSG_ENV);
+                    possessive(this_object())+" fall downward.", MSG_ENV);
             call_out( "eventFall", 1);
         }
         return 1;
@@ -69,7 +69,7 @@ varargs mixed eventLay(object target){
     }
     if( !target ){
         send_messages("lie", "$agent_name $agent_verb down.", this_object(),
-          0, environment());
+                0, environment());
         Position = POSITION_LYING;
         return 1;
     }
@@ -84,7 +84,7 @@ varargs mixed eventLay(object target){
         return 1;
     }
     send_messages("lie", "$agent_name $agent_verb down on " +
-      target->GetShort() + ".", this_object(), 0, environment());
+            target->GetShort() + ".", this_object(), 0, environment());
     Position = POSITION_LYING;
     Chair = target;
     return 1;
@@ -100,7 +100,7 @@ varargs mixed eventKneel(object target){
     }
     if( !target ){
         send_messages("kneel", "$agent_name $agent_verb down.", this_object(),
-          0, environment());
+                0, environment());
         Position = POSITION_KNEELING;
         return 1;
     }
@@ -116,7 +116,7 @@ varargs mixed eventKneel(object target){
         return 1;
     }
     send_messages("lie", "$agent_name $agent_verb down on " +
-      target->GetShort() + ".", this_object(), 0, environment());
+            target->GetShort() + ".", this_object(), 0, environment());
     Position = POSITION_LYING;
     Chair = target;
 #endif
@@ -133,10 +133,10 @@ varargs mixed eventSit(object target){
     if( !target ){
         if( Position == POSITION_STANDING){
             send_messages("sit", "$agent_name $agent_verb down.", 
-              this_object(),0, environment());
+                    this_object(),0, environment());
         }
         else send_messages("sit", "$agent_name $agent_verb up.",
-              this_object(),0, environment());
+                this_object(),0, environment());
 
         Position = POSITION_SITTING;
         return 1;
@@ -152,7 +152,7 @@ varargs mixed eventSit(object target){
         return 1;
     }
     send_messages("sit", "$agent_name $agent_verb down on " +
-      target->GetShort() + ".", this_object(), 0, environment());
+            target->GetShort() + ".", this_object(), 0, environment());
     Position = POSITION_SITTING;
     Chair = target;
     return 1;
@@ -175,7 +175,7 @@ mixed eventFly(){
     }
     if(this_object()->CanFly() && Position != POSITION_FLYING){
         tell_object(this_object(),"You begin flying.");
-        say(this_player()->GetName()+" begins flying and hovers in the air.");
+        say(this_object()->GetName()+" begins flying and hovers in the air.");
         Position = POSITION_FLYING;
     }
     return 1;
@@ -198,7 +198,7 @@ mixed eventSwim(){
     }
     if(this_object()->CanSwim() && Position != POSITION_SWIMMING){
         tell_object(this_object(),"You begin swimming.");
-        say(this_player()->GetName()+" begins swimming.");
+        say(this_object()->GetName()+" begins swimming.");
         Position = POSITION_SWIMMING;
     }
     return 1;
@@ -221,7 +221,7 @@ mixed eventFloat(){
     }
     if(this_object()->CanFloat() && Position != POSITION_FLOATING){
         tell_object(this_object(),"You begin floating.");
-        say(this_player()->GetName()+" begins floating.");
+        say(this_object()->GetName()+" begins floating.");
         Position = POSITION_FLOATING;
     }
     return 1;
@@ -232,20 +232,20 @@ mixed eventLand(){
     if(!env) return 0;
     if(! Position == POSITION_FLYING ) return 0;
     if( env->GetMedium() == MEDIUM_AIR || env->GetMedium() == MEDIUM_WATER ||
-      env->GetMedium() == MEDIUM_SPACE ) return 0;  
+            env->GetMedium() == MEDIUM_SPACE ) return 0;  
     write("You stop flying.");
-    say(this_player()->GetName()+" stops flying.");
-    if(stringp(hobbled(this_player()))) Position = POSITION_STANDING;
+    say(this_object()->GetName()+" stops flying.");
+    if(stringp(hobbled(this_object()))) Position = POSITION_STANDING;
     else Position = POSITION_LYING;
     return 1;
 }
 
 mixed eventStand(){
-    if(!stringp(hobbled(this_player()))){
+    if(!stringp(hobbled(this_object()))){
         eventPrint("Your injuries prevent you from standing.");
         return 1;
     }
-    if(RACES_D->GetLimblessRace(this_player()->GetRace()) ){
+    if(RACES_D->GetLimblessRace(this_object()->GetRace()) ){
         eventPrint("You aren't endowed with limbs with which to stand.");
         return 1;
     }
@@ -273,7 +273,7 @@ mixed eventStand(){
     }
     Position = POSITION_STANDING;
     send_messages("stand", "$agent_name $agent_verb up.", this_object(), 0,
-      environment());
+            environment());
     return 1;
 }
 

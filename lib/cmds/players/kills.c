@@ -21,15 +21,15 @@ mixed cmd(string args) {
         return 1;
     }
     ret = "You are " +(string)this_player()->GetShort() + ", level " +
-    (int)this_player()->GetLevel();
+        (int)this_player()->GetLevel();
     if( (tmp = (string)this_player()->GetClass()) ) 
         ret += " " + capitalize(tmp);
     else ret += " Drifter";
     ret += " (" + (string)this_player()->GetRace() + ")\n";
     ret+= "Your list of victories comprises the following:\n\n";
     stats = map(keys(kills),
-      (: sprintf("%:-20s: %:-1i", $1, 
-          kills[$1]) :));
+            (: sprintf("%:-20s: %:-1i", $1, 
+                       kills[$1]) :));
     i = sizeof(stats);
     while(i--) if( (y = strlen(stats[i])) > x ) x = y;
     x = ((int *)this_player()->GetScreen())[0]/(x+2);
@@ -40,6 +40,6 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <kills>\n\n"
-      "A list of your victories."
-      "\n\n",this_player());
+            "A list of your victories."
+            "\n\n",this_player());
 }

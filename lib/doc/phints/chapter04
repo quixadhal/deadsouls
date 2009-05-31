@@ -1,0 +1,207 @@
+chapter 4 "The Town Well"
+
+Ok, so you're now all set with a bunch of money in the bank, 
+light-but-decent equipment, and a thirst for more advancement.
+Let's try a quest that requires a little fancy footwork and
+little (if any) fighting.
+
+I'm going to assume that the portal gun portals are where the
+default distribution puts them. The blue portal in the hazlab,
+the orange portal...well, you'll see.
+
+By now you should have Kleiner's badge. If not, go back to where I
+describe how to get it. If you sold it, go buy it back. Also, get
+yourself a flashlight. I recommend maglite, but whatever you can 
+find is better than nothing. Now go back to Jennybot. Near her is
+a stairwell that leads to the campus basement. Turn on your
+flashlight then go 1n, 1w, 1s, 1d, 1w of Jennybot. You're now in
+the western end of the campus basement. Note the smudged wall?
+%^GREEN%^push wall%^RESET%^
+Whee! Go west until you can't go any further, then go 1s. Lying
+there is a key you'll need. Put it in your ruck, then go north
+til you can't go north any further. Note that the next couple of
+things you need to do must be done quickly. You're about to enter
+a dangerous sewer service area, and you may get blasted with harmful
+steam if you hang around too long.
+
+Go down into the sewer area. See that pile of crap? Search it. Bonus!
+Now go east twice, up, open grate, up. You're now back up on the
+cobblestone road, but with a shiny new ring to wear or sell, and
+a key you'll need. Head to the hazlab (4s, 1w, 1s). Now, just in case
+some joker put the orange portal somewhere dangerous, you should have
+an omni handy (you can buy one from Oana). Enter the blue portal. Unless
+someone's been playing around, you should now be in an underground
+tunnel, with a large metal door to the west. There's not much to
+explore here...if you follow the tunnel north and east, you'll find
+a locked gate with a cave troll on the other side. What you really
+want to do is get past the door to the west. You got the key to this door
+from the campus underground, so go ahead and unlock it. Now comes the
+hard part...open the door.
+
+Chances are that you can't. It's huge and it's heavy...it requires having
+a strength stat of at least 50 to open. You have 2 possible ways of dealing
+with this...one is expensive, the other a bit tricky. The expensive way
+is to buy strength potions from Oana and drink them until your strength
+is above 49, then rush back to this door before the potions wear off, 
+and open the door. Like I said, expensive.
+
+The other way is to control something that is strong enough to open the
+door. Go back to kleiner, then type:
+%^GREEN%^dial stargate lab%^RESET%^
+This takes you to a secret area used by creators to test their npc's,
+armor, and equipment. Go north, then east. If you're lucky, nobody has
+taken the landstrider mech for a joyride and it's standing there, waiting
+for you. Type: %^GREEN%^enter mech%^RESET%^
+You are now inside your very own mech-type robot you control. Cool!
+Have it go back to the stargate:
+%^GREEN%^drive west%^RESET%^
+%^GREEN%^drive south%^RESET%^
+%^GREEN%^direct mech to dial campus lab%^RESET%^
+%^GREEN%^direct mech to enter gate%^RESET%^
+%^GREEN%^drive south%^RESET%^
+%^GREEN%^drive south%^RESET%^
+
+Uh oh! The mech can't enter the hazlab because it's not carrying Kleiner's
+badge! What you need to do is drop the badge. It will then be in the mech's
+inventory, so that the security door can see it.
+
+%^GREEN%^drop badge%^RESET%^
+%^GREEN%^drive south%^RESET%^
+
+Now we have the mech enter the portal and open the door for you.
+
+%^GREEN%^direct mech to enter portal%^RESET%^
+%^GREEN%^direct mech to open door%^RESET%^
+
+Excellent! Now, the next part involves making this area kind of
+hostile for general use, so let's get the mech out of harm's way
+
+%^GREEN%^get badge%^RESET%^
+%^GREEN%^wear badge%^RESET%^
+%^GREEN%^direct mech to enter portal%^RESET%^
+%^GREEN%^out%^RESET%^
+
+Now go back in the portal (just you, without the mech), and
+go west twice. This is the source of the problem. The town well is dry
+because someone shut off the water source! 
+
+To restore water to the well, turn the metal wheel here, and
+water will start rushing out of the pipe at high pressure. There's a 
+grate-type door overhead through which the water is supposed to flow up to 
+the bottom of the well. If the orange portal hadn't been there, you'd have had
+to do the alternate solution, which involves accessing the
+water source from that other direction.
+
+Now, as you can imagine, this area is going to fill up with water
+very rapidly, so leave east right away. The entire series of tunnels
+will flood, so get back to the orange portal and enter it quickly.
+
+%^RED%^PROTIP:%^RESET%^ The water will also go through the locked cavetroll
+gate. And cavetrolls don't breathe water.
+
+Now, go to the town well (1n, 1e, 5n of the hazlab), and: %^GREEN%^enter well%^RESET%^
+Hopefully you did get the maglite. By now the weaker flashlights may have
+pooped out. See the lever on the wall? That operates a set of two doors that
+serve as a waterlock for the well. Pull it, and a door will open, letting
+water flood into the well, and solving the quest!
+
+It may be that someone has already been fooling with the water lock, though.
+If the door was already open when you got there, push the lever, wait a 
+few minutes for water to flood the lock, then pull the lever. It could
+take a while depending on the water pressure for the lock to fill up, so
+if it's dry, close it again and wait a while before opening again.
+
+
+%^CYAN%^Alternate Resolution%^RESET%^
+
+It may be that the orange portal was not in the water tunnel. It could 
+be that the hazardous materials labs was not accessible to you. If that
+is the case, you'll need to solve this quest by accessing the water
+source from the direction of the well. This is tricky because you need
+to be very strong to open the grate, *and* you need an extra set of
+hands to operate the water lock lever. Let's deal with one problem at a time.
+First, the strength issue. On the other side of the water lock is a
+grate that you must have at least 50 strength to open. If your strength
+is already above 49, great. If not, you need to decide whether you want
+to boost it with strength potions from Oana (expensive) or use the
+landstrider mech (tricky). If the plan is to use strength potions, go buy
+them now and stick them in your ruck. If the plan is to use the mech,
+go get it. Go to Kleiner, and:
+
+%^GREEN%^dial stargate lab%^RESET%^
+%^GREEN%^enter gate%^RESET%^
+%^GREEN%^go north%^RESET%^
+%^GREEN%^go east%^RESET%^
+%^GREEN%^enter mech%^RESET%^
+%^GREEN%^drive west%^RESET%^
+%^GREEN%^drive south%^RESET%^
+%^GREEN%^direct mech to dial campus lab%^RESET%^
+%^GREEN%^direct mech to enter gate%^RESET%^
+%^GREEN%^drive south%^RESET%^
+%^GREEN%^drive east%^RESET%^
+%^GREEN%^drive north%^RESET%^
+%^GREEN%^drive north%^RESET%^
+%^GREEN%^drive north%^RESET%^
+%^GREEN%^drive north%^RESET%^
+%^GREEN%^drive north%^RESET%^
+%^GREEN%^direct mech to enter well%^RESET%^
+%^GREEN%^direct mech to pull lever%^RESET%^
+%^GREEN%^drive west%^RESET%^
+%^GREEN%^out%^RESET%^
+%^GREEN%^go east%^RESET%^
+
+The mech is now in the water lock. But neither you nor the mech
+can proceed further west...you need someone to pull the lever
+for you. You're going to need a servant...a slave...a ZOMBIE! Go
+up and west, and buy a dark scroll from Oana. The scroll can be
+used to raise a corpse, but you must be able to read English. If
+you've chosen a race that doesn't speak English, you'll need to 
+learn it now. Go to Bugg (1n, 2e, 1n of the well) and ask him to
+teach you English. Once you've learned it, you'll be ready to 
+create a zombie. From Bugg, go to the campus square (1s, 2w, 5s)
+and murder Tim. It's important that you slay something that speaks
+a language you know, so since you're either human or just now 
+learned English, a human victim is suitable. Plus Tim is a wuss.
+Once he's slain: %^GREEN%^read scroll at tim%^RESET%^
+
+There he is! Your very own zombie! We'll need to move quickly
+now. Zombies don't last forever...the clock is ticking. Do the
+following to get him to follow you:
+
+%^GREEN%^speak in english%^RESET%^
+%^GREEN%^say follow cratylus%^RESET%^
+
+Except, of course, instead of "cratylus", put in your own name.
+Note something important here. Zombies are obedient, but not
+smart. If someone else starts saying things that the zombie understands
+as a command, it will start obeying them. So remember that while
+you created this zombie, someone else can steal him if you're not
+careful.
+
+Now, return to the well (4n) then enter the well and go west.
+You'll need to tell the zombie to leave the water lock and operate it:
+
+
+%^GREEN%^say go east%^RESET%^
+%^GREEN%^yell push lever%^RESET%^
+%^GREEN%^enter mech%^RESET%^
+%^GREEN%^drive west%^RESET%^
+%^GREEN%^direct mech to open grate%^RESET%^
+
+Woohoo! If you don't have the mech, of course, you just
+walk your own self west, drink your strength potions, and
+open the grate yourself. If you *do* have the mech, let's get it out
+of harm's way...
+
+%^GREEN%^drive east%^RESET%^
+%^GREEN%^out%^RESET%^
+%^GREEN%^go west%^RESET%^
+
+All righty, now let's go resolve this well problem. Go down
+and you'll see the metal wheel and the water pipe. To get the water
+flowing again, turn the wheel. Then very quickly get yourself back to 
+the water lock...the area will fill with water soon! When water 
+gets to the lock: %^GREEN%^yell pull lever%^RESET%^
+Your zombie will then open the east door, allowing you and the water to
+get to the well, and solving the Town Well Quest. Congratulations!
+

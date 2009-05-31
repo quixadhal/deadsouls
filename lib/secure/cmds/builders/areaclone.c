@@ -16,23 +16,23 @@ int cmd(string str) {
     str = which;
 
     switch(str){
-    case "weap" : str = "weap";break;
-    case "weapons" : str = "weap";break;
-    case "weapon" : str = "weap";break;
-    case "ob" : str = "obj";break;
-    case "obs" : str = "obj";break;
-    case "objs" : str = "obj";break;
-    case "objects" : str = "obj";break;
-    case "meals" : str = "meal";break;
-    case "npcs" : str = "npc";break;
-    case "mob" : str = "npc";break;
-    case "mobs" : str = "npc";break;
-    case "mon" : str = "npc";break;
-    case "monster" : str = "npc";break;
-    case "monsters" : str = "npc";break;
-    case "rooms" : str = "room";break;
-    case "arm" : str = "armor";break;
-    case "armors" : str = "armor";break;
+        case "weap" : str = "weap";break;
+        case "weapons" : str = "weap";break;
+        case "weapon" : str = "weap";break;
+        case "ob" : str = "obj";break;
+        case "obs" : str = "obj";break;
+        case "objs" : str = "obj";break;
+        case "objects" : str = "obj";break;
+        case "meals" : str = "meal";break;
+        case "npcs" : str = "npc";break;
+        case "mob" : str = "npc";break;
+        case "mobs" : str = "npc";break;
+        case "mon" : str = "npc";break;
+        case "monster" : str = "npc";break;
+        case "monsters" : str = "npc";break;
+        case "rooms" : str = "room";break;
+        case "arm" : str = "armor";break;
+        case "armors" : str = "armor";break;
     }
 
     env = environment(this_player());
@@ -72,7 +72,7 @@ int cmd(string str) {
     }
 
     if( !((int)ob->eventMove(this_player())) &&
-      !((int)ob->eventMove(environment(this_player()))) ) {
+            !((int)ob->eventMove(environment(this_player()))) ) {
         write("Failed to properly move the object.");
         return 1;
     }
@@ -91,9 +91,9 @@ int cmd(string str) {
 
 void help() {
     message("help", "Syntax: areaclone [ npc | weapon | armor | obj ] <name>\n\n"
-      "Allows a builder to bring into existence a copy of one of "
-      "her creations. To see the available items, use the arealist "
-      "command.\n\n"
-      "See also: arealist, areagoto", 
-      this_player());
+            "Allows a builder to bring into existence a copy of one of "
+            "her creations. To see the available items, use the arealist "
+            "command.\n\n"
+            "See also: arealist, areagoto", 
+            this_player());
 }

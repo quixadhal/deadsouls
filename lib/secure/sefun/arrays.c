@@ -17,3 +17,14 @@ mixed *singular_array(mixed *arr) {
     return distinct_array(arr);
 }
 
+mixed *remove_member(mixed *arr, int i){
+    int size;
+    mixed ret;
+    if(!arr || (size = (sizeof(arr) - 1)) < i) return 0;
+    if(!i) ret = arr[1..];
+    else if(size == i) ret = arr[0..(size - 1)];
+    else {
+        ret = arr[0..(i - 1)] + arr[(i + 1)..];
+    }
+    return ret;
+}

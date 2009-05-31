@@ -5,7 +5,7 @@
  */
 
 #include <lib.h>
-#include <room.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
 

@@ -5,7 +5,8 @@ inherit LIB_SENTIENT;
 static void create() {
     sentient::create();
     SetKeyName("horse");
-    SetId(({"horse","large horse"}));
+    SetId(({"horse","large horse","hands","quadruped","ungulate"}));
+    SetAdjectives(({"large","hooved","mr","mister"}));
     SetShort("a large horse");
     SetLong("A large, hooved quadruped, taller and more muscular than you. Perhaps if you befriend him, he'll allow you to mount him.");
     SetNoClean(1);

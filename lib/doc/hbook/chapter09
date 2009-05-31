@@ -1,0 +1,82 @@
+chapter 9 "Skills, teachers, and trainers"
+
+%^CYAN%^General stuff%^RESET%^
+
+Stats are the physical attributes that let you do things.
+Skills are those things you do. "blunt attack", for example,
+is the skill that determines how good you are at using
+blunt weapons in combat...while "blunt defense" is how
+good you are at *avoiding* damage from such weapons. 
+"melee attack" and "melee defense" determine your proficiency
+at unarmed combat, etc. It is very rare for players who
+are not fighters to be able to physically fight without weapons,
+by the way.
+
+If the "skills" command does not list a particular skill
+that means you don't have it at all, and whatever it is, you
+are very, very bad at it. Mages, for example, usually lack
+"blade attack" and "blade defense" entirely...meaning they
+are utterly awful at fighting with swords and avoiding
+swords in combat.
+
+Some skills seem useless but are actually quite important.
+For example, mages can cast a spell called "whip" which 
+summons up an energy weapon whose power can be devastating
+if the mage is high-level. However, if the mage's conjuring
+skill is low, the whip does not last long...meaning she will
+have to keep casting this expensive spell frequently.
+
+Skill levels, like stat levels, increase when a player's
+player level is promoted, depending on the skill class. For
+a fighter, "blunt attack" is a major priority, and so their
+skill class for this is 1. For another class, it may differ.
+If the skill class is a high priority, then the skill
+improves more often when your player level increases.
+
+There is no "deviation" command to manipulate skill class.
+Emphasis on skill classes is what player classes (like 
+"fighter", "cleric", etc) are for.
+
+
+%^CYAN%^Trainers%^RESET%^
+
+Trainers are folks that can help you improve your skills.
+When your player level goes up, you are awarded "training
+points". You use these training points by asking trainers to
+train you on some specific skill. For example, a mage can
+go to Radagast (east, south, up, from the town clocktower)
+and: %^GREEN%^ask radagast to train magic attack%^RESET%^
+
+If you're a fighter, Radagast will not be able to help you,
+since you do not already posess that skill. Trainers can
+only train you in skills you already have some knowledge of.
+
+Instead, a fighter might go to Roshd Burlyneck (down,
+south, west, north, of the Ylsrim tower top) and:
+%^GREEN%^ask roshd to train knife defense%^RESET%^
+
+At this point, a human player might run into a problem. Roshd
+is an orc, you see, and speaks Tangetto. He can't train
+you if you don't understand that language. This is where
+a different kind of instruction comes in...
+
+
+%^CYAN%^Teachers%^RESET%^
+
+Teachers are a special kind of trainer than can also teach
+you things you did not already know. Typically this would be
+a language teacher (like Bugg: east, east, east, north, of
+the village clocktower), or a spell teacher (Herkimer: south,
+west, south, of the village clocktower). 
+
+%^RED%^PROTIP%^RESET%^: You don't have to be a mage in order to have
+Herkimer teach you a spell. As long as you have some magical
+ability, and have the money, he will teach you some simple
+spells whether you are a mage or not. Mages get to learn them
+free, however, and Herkimer saves some spells for mages only.
+
+Trainers and teachers are where having a high intelligence stat
+can really pay off. It takes fewer lessons to improve your language
+or your skills if you have high intelligence. 
+
+ 

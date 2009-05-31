@@ -9,13 +9,13 @@ static void create(){
     SetAdjectives(({"thick","shaggy"}));
     SetShort("a thick, shaggy bearskin");
     SetLong("This is a thick bearskin which can be worn "+
-      "as armor. Unfortunately the hide "+
-      "has not been tanned, so it's rather "+
-      "foul-smelling.");
+            "as armor. Unfortunately the hide "+
+            "has not been tanned, so it's rather "+
+            "foul-smelling.");
     SetItems( ([
-        "hide" : "It is untanned and subject "+
-        "to natural decomposition."
-      ]) );
+                "hide" : "It is untanned and subject "+
+                "to natural decomposition."
+                ]) );
     SetSmell( ([ "default" : "It reeks of death." ]) );
     SetMass(75);
     SetDamagePoints(100);

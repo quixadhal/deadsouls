@@ -6,7 +6,7 @@ inherit LIB_PRESS; // Makes the item pressable
 int openDoor(object who) {
     object car;
     send_messages("press", "$agent_name $agent_verb the button.",
-      who, 0, environment(who));
+            who, 0, environment(who));
     car=load_object("/domains/town/room/elevator");
     car->CallMe(2);
 

@@ -30,8 +30,12 @@ varargs string gateway(mixed args){
             else {
                 if(!Tries) Tries = ([]);
                 if(!Tries[ip]) Tries[ip] = 0;
-                if(no_user) pass_hash = alpha_crypt(32);
-                else pass_hash = PLAYERS_D->GetPlayerData(who,"Password");
+                if(no_user){
+                    pass_hash = alpha_crypt(32);
+                }
+                else {
+                    pass_hash = PLAYERS_D->GetPlayerData(who,"Password");
+                }
                 if(pass_hash != crypt(password, pass_hash)){
                     Tries[ip]++;
                     ret = "Fail! Tries left: "+(max_tries - Tries[ip])+"<br>";

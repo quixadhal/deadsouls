@@ -5,41 +5,45 @@
 // problems it caused.
 
 #include <lib.h>
+#include <save.h>
+#include <daemons.h>
 #include <vendor_types.h>
 inherit LIB_ITEM;
 
-string savefile = "/secure/save/weirder.o";
+static int numstress = 1;
+string savefile = save_file(SAVE_WEIRDER);
 string *lib_dirs = ({ "/lib/comp","/lib/daemons","/lib/events/",
-  "/lib/lvs", "/lib/lvs", "/lib/props", "/lib/std", 
-  "/lib/user", "/lib/virtual", "/lib","/secure/lib","/secure/lib/net" });
+        "/lib/lvs", "/lib/lvs", "/lib/props", "/lib/std", 
+        "/lib/user", "/lib/virtual", "/lib","/secure/lib","/secure/lib/net" });
 string *daemon_dirs = ({ "/daemon", "/secure/daemon" });
 string *cmd_dirs = ({ "/cmds/admins", "/cmds/builders", "/cmds/common",
-  "/cmds/creators", "/cmds/hm", "/cmds/players", "/secure/cmds/admins",
-  "/secure/cmds/builders", "/secure/cmds/common", "/secure/cmds/creators",
-  "/secure/cmds/hm", "/secure/cmds/players" });
+        "/cmds/creators", "/cmds/hm", "/cmds/players", "/secure/cmds/admins",
+        "/secure/cmds/builders", "/secure/cmds/common", "/secure/cmds/creators",
+        "/secure/cmds/hm", "/secure/cmds/players" });
 string *verb_dirs = ({ "/secure/verbs/creators", "/verbs/admins",
-  "/verbs/builders", "/verbs/common", "/verbs/creators", "/verbs/items",
-  "/verbs/players", "/verbs/rooms", "/verbs/spells", "/verbs/undead" });
+        "/verbs/builders", "/verbs/common", "/verbs/creators", "/verbs/items",
+        "/verbs/players", "/verbs/rooms", "/verbs/spells", "/verbs/undead" });
 string *npc_dirs = ({ "/domains/default/npc", "/domains/town/npc",
-  "/domains/campus/npc" });
+        "/domains/campus/npc", "/domains/cave/npc" });
 string *room_dirs = ({ "/domains/campus/room", "/domains/default/room",
-  "/domains/town/room", "/domains/Ylsrim/room", "/domains/Praxis",
-  "/secure/room", "/domains/town/virtual/sub", "/domains/town/virtual/sky", 
-  "/domains/town/virtual/surface", "/domains/town/virtual/bottom",
-  "/domains/town/virtual/forest", "/domains/town/space"  });
+        "/domains/town/room", "/domains/Ylsrim/room", "/domains/Praxis",
+        "/domains/cave/room",
+        "/secure/room", "/domains/town/virtual/sub", "/domains/town/virtual/sky", 
+        "/domains/town/virtual/surface", "/domains/town/virtual/bottom",
+        "/domains/town/virtual/forest", "/domains/town/space"  });
 string *obj_dirs = ({ "/domains/campus/obj", "/domains/default/obj",
-  "/domains/town/obj", "/domains/Ylsrim/obj", "/obj", "/std", 
-  "/secure/obj", "/shadows", "/secure/modules"  });
+        "/domains/town/obj", "/domains/Ylsrim/obj", "/obj", "/std", 
+        "/secure/obj", "/shadows", "/secure/modules", "/domains/cave/obj"  });
 string *weap_dirs = ({ "/domains/campus/weap", "/domains/default/weap",
-  "/domains/town/weap", "/domains/Ylsrim/weap"  });
+        "/domains/town/weap", "/domains/Ylsrim/weap", "/domains/cave/weap"  });
 string *armor_dirs = ({ "/domains/campus/armor", "/domains/default/armor",
-  "/domains/town/armor", "/domains/Ylsrim/armor"  });
+        "/domains/town/armor", "/domains/Ylsrim/armor", "/domains/cave/armor"  });
 string *meals_dirs = ({ "/domains/campus/meals", "/domains/default/meals",
-  "/domains/town/meals", "/domains/Ylsrim/meals"  });
+        "/domains/town/meals", "/domains/Ylsrim/meals", "/domains/cave/meals"  });
 string *doors_dirs = ({ "/domains/campus/doors", "/domains/default/doors",
-  "/domains/town/doors", "/domains/Ylsrim/doors"  });
+        "/domains/town/doors", "/domains/Ylsrim/doors", "/domains/cave/doors"  });
 string *powers_dirs = ({ "/powers/spells", "/powers/psionics",
-  "/powers/feats", "/powers/trades" });
+        "/powers/feats", "/powers/trades" });
 string *rooms = ({});
 string *obs = ({});
 string *npcs = ({});
@@ -54,6 +58,7 @@ string *verbs = ({});
 string *powers = ({});
 int nomore, yeik = 0;
 string *exceptions = ({});
+static private string gstr;
 
 void validate(){
     if(!this_player() || !archp(this_player())){
@@ -71,12 +76,10 @@ int yeik(string str){
         nomore = 0;
         yeik = 1;
         if(err){
-            tc("foo!");
         }
         if(!environment() || !archp(this_player())){
             error("no!");
         }
-        tc("cloning");
         for(int i = 400;i>0;i--){
             call_out("yeik",1,"on");
             new(LIB_BLANK);
@@ -86,7 +89,6 @@ int yeik(string str){
         if(!nomore) cout = call_out("yeik",2);
         yeik = 0;
         if(sizeof(blanks)){
-            //cout = call_out("yeik",2);
             foreach(object blank in blanks){
                 destruct(blank);
             }
@@ -99,22 +101,18 @@ int yeik(string str){
 
 void create(){
     ::create();
-    exceptions = ({ "charles.c","charly.c" });
+    exceptions = ({ "monty.c","charles.c","charly.c","tree.c","lars.c",
+            "wraith.c", "archwraith.c","drone2.c","beggar.c","drone.c"});
     SetKeyName("weirding module");
     SetId( ({"module", "box", "weirder"}) );
     SetAdjectives( ({"small","featureless","black"}) );
     SetShort("a small black box");
     SetLong("A small, featureless black box. Whatever it is, "
-      "you are somehow deeply certain it is not your business, "
-      "and you must leave it alone.");
+            "you are somehow deeply certain it is not your business, "
+            "and you must leave it alone.");
     SetMass(20);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);
-    //YES = 1000;
-    //NO = -1000;
-    if(file_exists(savefile)){
-        //unguarded( (: restore_object(savefile) :) );
-    }
 }
 void init(){
     ::init();
@@ -135,15 +133,21 @@ void init(){
     add_action("loadall","loadall");
     add_action("yeik","yeik");
     add_action("yeik2","yeik2");
+    add_action("vargon","vargon");
+    add_action("commcheck","commcheck");
+    add_action("perfcheck","perfcheck");
 }
-int loadthing(string str){
-    tc("lpc: "+str);
+
+static int loadthing(string str){
     if(last(str,2) == ".c"){
+        gstr = str;
+        if(unguarded( (: find_object(truncate(gstr,2)) :)) ) return 1;
+        reset_eval_cost();
         catch( update(str) );
     }
-    else tc("non lpc: "+str,"red");
     return 1;
 }
+
 int loadrooms(){
     validate();
     if(!rooms) rooms = ({});
@@ -157,6 +161,7 @@ int loadrooms(){
     }
     return 1;
 }
+
 int loadobs(){
     validate();
     if(!obs) obs = ({});
@@ -171,23 +176,33 @@ int loadobs(){
     }
     return 1;
 }
-int loadnpcs(){
+
+int loadnpcs(mixed args){
+    int i;
     validate();
+    if(!args) i = 1;
+    if(intp(args)) i = args;
+    if(stringp(args)) i = atoi(args);
     if(!npcs) npcs = ({});
     foreach(string npcsdir in npc_dirs){
         foreach(string npcfile in get_dir(npcsdir+"/")){
             string loadee;
+            int x = i;
             if(member_array(npcfile, exceptions) != -1){
                 tc("skipping "+npcfile,"green");
                 continue;
             }
             loadee = npcsdir+"/"+npcfile;
             npcs += ({ loadee });
-            call_out("loadthing", 0, loadee);
+            while(x){
+                call_out("loadthing", 0, loadee);
+                x--;
+            }
         }
     }
     return 1;
 }
+
 int loadweaps(){
     validate();
     if(!weapons) weapons = ({});
@@ -202,6 +217,7 @@ int loadweaps(){
     }
     return 1;
 }
+
 int loadarmors(){
     validate();
     if(!armors) armors = ({});
@@ -216,6 +232,7 @@ int loadarmors(){
     }
     return 1;
 }
+
 int loadmeals(){
     validate();
     if(!meals) meals = ({});
@@ -230,6 +247,7 @@ int loadmeals(){
     }
     return 1;
 }
+
 int loaddoors(){
     validate();
     if(!doors) doors = ({});
@@ -244,6 +262,7 @@ int loaddoors(){
     }
     return 1;
 }
+
 int loadverbs(){
     validate();
     if(!verbs) verbs = ({});
@@ -258,6 +277,7 @@ int loadverbs(){
     }
     return 1;
 }
+
 int loadcmds(){
     validate();
     if(!cmds) cmds = ({});
@@ -272,6 +292,7 @@ int loadcmds(){
     }
     return 1;
 }
+
 int loaddaemons(){
     validate();
     if(!daemons) daemons = ({});
@@ -284,6 +305,7 @@ int loaddaemons(){
     }
     return 1;
 }
+
 int loadlibs(){
     validate();
     if(!libs) libs = ({});
@@ -296,6 +318,7 @@ int loadlibs(){
     }
     return 1;
 }
+
 int loadpowers(){
     validate();
     if(!powers) powers = ({});
@@ -308,6 +331,7 @@ int loadpowers(){
     }
     return 1;
 }
+
 int loadthings(){
     validate();
     call_out("loaddoors",0);
@@ -319,6 +343,7 @@ int loadthings(){
     call_out("loadrooms",6);
     return 1;
 }
+
 int loadsys(){
     call_out("loadlibs",0);
     call_out("loaddaemons",1);
@@ -327,52 +352,61 @@ int loadsys(){
     call_out("loadpowers",4);
     return 1;
 }
+
 int loadall(){
     call_out("loadsys",0);
     call_out("loadthings",10);
     return 1;
 }
-int stressload(){
+
+int stressload(string arg){
+    int i;
+    if(arg) i = atoi(arg);
+    numstress = (i || 1);
+    tc("numnstress: "+numstress);
     if(!sizeof(rooms)) call_out("loadrooms", 0);
     if(!sizeof(npcs)) call_out("loadnpcs", 0);
     if(sizeof(rooms) && sizeof(npcs)) this_object()->startstress();
     else call_out("startstress", 9);
     return 1;
 }
+
 int startstress(){
     object *newbatch = ({});
     object *targetrooms = filter(rooms, 
-      (: last($1,2) == ".c" && last($1,9) != "furnace.c" :) );
+            (: last($1,2) == ".c" && last($1,9) != "furnace.c" &&
+             $1->GetMedium() < 2 && !$1->GetProperty("no attack") :) );
     int victims;
-    tc("Starting stresstest");
-    tc("npcs: "+identify(npcs),"green");
-    tc("rooms: "+identify(rooms),"blue");
+    tc("Starting stresstest, multiplier: "+numstress);
     foreach(string npcfile in npcs){
         object npc;
-        int err;
-        tc("processing: "+npcfile);
+        int err, x = numstress;
         if(last(npcfile,2) != ".c") continue;
-        err = catch(npc = new(npcfile));
-        if(err) continue;
-        else tc("Successfully cloned "+identify(npc));
-        newbatch += ({ npc });
-        while(!err){
-            object where = targetrooms[abs(random(sizeof(targetrooms))-1)];
-            tc("Moving "+identify(npc)+" to "+identify(where));
-            catch(err = npc->eventMove(where));
+        while(x){
+            err = 0;
+            npc = new(npcfile);
+            newbatch += ({ npc });
+            while(!err){
+                object where;
+                if(numstress < 11) reset_eval_cost();
+                where = targetrooms[abs(random(sizeof(targetrooms))-1)];
+                catch(err = npc->eventMove(where));
+            }
+            x--;
         }
     }
     newbatch = filter(newbatch, (: objectp($1) :) );
-    victims = to_int(to_float(sizeof(newbatch)) * 0.1)+1;
+    victims = to_int(to_float(sizeof(newbatch)) * 0.005)+1;
     tc("newbatch size: "+sizeof(newbatch));
     while(victims){
         object germ, who;
-        int err;
-        err = catch(germ = new("/domains/town/obj/rage"));
-        who = newbatch[abs(random(sizeof(newbatch))-1)];
-        tc("Infecting "+identify(who)+" with "+identify(germ),"blue");
-        if(germ) germ->eventInfect(who);
-        victims--;
+        int err, batch = sizeof(newbatch);
+        if(batch){
+            err = catch(germ = new("/domains/town/obj/rage"));
+            who = newbatch[abs(random(batch))];
+            if(who && germ) germ->eventInfect(who);
+            victims--;
+        }
     }
     npcs->SetWanderSpeed(1);
     npcs->SetPermitLoad(1);
@@ -380,7 +414,6 @@ int startstress(){
 }
 
 int eventDestruct(){
-    //unguarded( (: save_object(savefile) :) );
     return ::eventDestruct();
 } 
 
@@ -395,29 +428,79 @@ int yeik2(string str){
         write("Starting the bullshit. ob: "+identify(ob));
         sscanf(file_name(ob), "%s#%d", file, clone);
         if(!dirty) destruct(ob);
-        //if(clone > 5000){
-        //    tc("too many clones");
-        //    on = 0;
-        //}
         if(on){
-            //tc("on");
             call_out("yeik2", 2);
         }
         if(!on){
-            //tc("weird");
             return;
         }
         while(i) {
             i--;
             ob =new(what);
             sscanf(file_name(ob), "%s#%d", file, clone);
-            //tell_object(environment(this_object()), clone + " ");
             if(!dirty) destruct(ob);
         }
-        //tc("hmm");
     }
     else {
         write("Stopping the bullshit.");
     }
+    return 1;
+}
+
+int vargon(string str){
+    int waves, win;
+    win = sscanf(str,"%d",waves);
+    if(!win || !waves) waves = 5;
+    for(win=waves;win > 0;win--){
+        INTERMUD_D->RawSend(({ "channel-m", 5, mud_name(),
+                    this_player()->GetKeyName(), 0, 0, "coffee",
+                    this_player()->GetKeyName(), win+" Yes have some." }));
+    }
+    return waves;
+}
+
+int commcheck(){
+    int i, count = 20;
+    validate();
+    write("Testing comms...");
+    write2("\n");
+    i = time_expression {
+        while(count){
+            count--;
+            reset_eval_cost();
+            write2(".");
+            flush_messages();
+        }
+    };
+    write2("\n\n");
+    write("Microseconds: "+i);
+    return 1;
+}
+
+int perfcheck(string foo){
+    int sauber = 1, i, count = 1000000;
+    validate();
+    write("Testing performance...");
+    write("Recorded perfscore: "+MASTER_D->GetPerformanceScore());
+    if(sizeof(foo)){
+        int tmp = atoi(foo);
+        sauber = 0;
+        if(tmp) count = tmp;
+    }
+    if(sauber){
+        i = time_expression {
+            while(count){
+                count--;
+            }
+        };
+    }
+    else {
+        i = time_expression {
+            while(count){
+                count--;
+            }
+        };
+    }
+    write("Microseconds: "+i);
     return 1;
 }

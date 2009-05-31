@@ -33,21 +33,21 @@ static void create() {
     ::create();
     SetShort("a blackjack table");
     SetLong("A small mechanical blackjack table lies here, "
-      "with a miniature robotic dealer "
-      "built into it. It seems like you can win...err "
-      "try to win a lot of money here.  There are some small "
-      "printed letters on the table.");
+            "with a miniature robotic dealer "
+            "built into it. It seems like you can win...err "
+            "try to win a lot of money here.  There are some small "
+            "printed letters on the table.");
     SetPreventGet("You cannot get that!");
     SetMass(0);
     SetId( ({"table", "blackjack table"}) );
     SetKeyName("table");
     SetItems( ([
-        ({"writing","letters"}): "Some writing on the table. Try \"read "+
-        "writing on table\"",
-      ]) );
+                ({"writing","letters"}): "Some writing on the table. Try \"read "+
+                "writing on table\"",
+                ]) );
     SetRead( ([
-        ({"writing","letters"}) : (: read :),
-      ]) );
+                ({"writing","letters"}) : (: read :),
+                ]) );
     SetDefaultRead("default", (: read :) );
     oldplayername="this_is_a_silly_string";
 }
@@ -73,24 +73,24 @@ int eventHit() {
     }
     x = random(13);
     switch (x + 1) {
-    case 1 : card = "Ace";
-        break;
-    case 11 : card = "Jack";
-        break;
-    case 12 : card = "Queen";
-        break;
-    case 13 : card = "King";
-        break;
-    default : card = (string)x + 1;
+        case 1 : card = "Ace";
+                 break;
+        case 11 : card = "Jack";
+                  break;
+        case 12 : card = "Queen";
+                  break;
+        case 13 : card = "King";
+                  break;
+        default : card = (string)x + 1;
     }
     switch (random(4)) {
-    case 1 : suit = "Hearts";
-        break;
-    case 2 : suit = "Spades";
-        break;
-    case 3 : suit = "Diamonds";
-        break;
-    case 0 : suit = "Clubs";
+        case 1 : suit = "Hearts";
+                 break;
+        case 2 : suit = "Spades";
+                 break;
+        case 3 : suit = "Diamonds";
+                 break;
+        case 0 : suit = "Clubs";
     }
     write("%^BLUE%^You get a " + card + " of " + suit);
     if (x == 0) {
@@ -189,17 +189,17 @@ int eventDeal(string args) {
     }
     if (gameon == 1 && present(oldplayername,here) && plidle > 120 ) {
         write("%^RED%^"+oldplayername+" was playing, but "+nominative(oldplayer)+" has gone idle "+
-          "and the dealer deals "+objective(oldplayer)+" out.",oldplayer);
+                "and the dealer deals "+objective(oldplayer)+" out.",oldplayer);
         say(oldplayername+" has been dealt out of the blackjack table for idleness.",oldplayer);
         tell_object(oldplayer,"You've been dealt out of the blackjack table for idleness.");
         cleanup();
     }
     if (gameon == 1 && !present(oldplayername,here) ) {
         write("%^RED%^"+oldplayername+" was playing, but "+nominative(oldplayer)+" has left, and the dealer deals "+
-          objective(oldplayer)+" out.");
+                objective(oldplayer)+" out.");
         say(oldplayername+" has been dealt out of the blackjack table because "+nominative(oldplayer)+" left.",oldplayer);
         tell_object(oldplayer,"You suddenly remember you left a blackjack game in the middle of it, "+
-          "and you've probably been dealt out.");
+                "and you've probably been dealt out.");
         cleanup();
     }
 

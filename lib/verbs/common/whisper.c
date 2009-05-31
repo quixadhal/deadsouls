@@ -15,16 +15,16 @@ static void create() {
     verb::create();
     SetVerb("whisper");
     SetRules("to LIV", "in WRD", "in WRD to LIV", "to LIV STR",
-      "to LIV in WRD STR", "in WRD to LIV STR");
+            "to LIV in WRD STR", "in WRD to LIV STR");
     SetErrorMessage("Whisper to whom what?");
     SetHelp("Syntax: <whisper to LIVING MESSAGE>\n"
-      "        <whisper to LIVING in LANGUAGE MESSAGE>\n"
-      "        <whisper in LANGUAGE to LIVING MESSAGE>\n\n"
-      "Privately sends a message to the targetted person in the "
-      "language you specify with a small chance of being overheard.  "
-      "If you fail to specify a language, your native language is "
-      "used.\n\n"
-      "See also: say, shout, speak, tell, yell");
+            "        <whisper to LIVING in LANGUAGE MESSAGE>\n"
+            "        <whisper in LANGUAGE to LIVING MESSAGE>\n\n"
+            "Privately sends a message to the targetted person in the "
+            "language you specify with a small chance of being overheard.  "
+            "If you fail to specify a language, your native language is "
+            "used.\n\n"
+            "See also: say, shout, speak, tell, yell");
 }
 
 
@@ -65,7 +65,7 @@ mixed do_whisper_in_wrd_to_liv(string str, object ob) { return 1; }
 
 mixed do_whisper_to_liv_str(object targ, string str) {
     string lang = (string)this_player()->GetDefaultLanguage() ||
-    (string)this_player()->GetNativeLanguage();
+        (string)this_player()->GetNativeLanguage();
     return do_whisper_to_liv_in_wrd_str(targ, lang, str);
 }
 
@@ -74,8 +74,10 @@ mixed do_whisper_in_wrd_to_liv_str(string lang, object targ, string str) {
 }
 
 mixed do_whisper_to_liv_in_wrd_str(object targ, string lang, string str) {
-    if( str[<1] != '?' && str[<2] != '!' && str[<1] != '.' )
-        str = capitalize(str) + ".";
-    else str = capitalize(str);
+    if( sizeof(str) > 1){
+        if( str[<1] != '?' && str[<1] != '!' && str[<1] != '.' )
+            str = capitalize(str) + ".";
+        else str = capitalize(str);
+    }
     return (mixed)this_player()->eventSpeak(targ, TALK_SEMI_PRIVATE, str,lang);
 }

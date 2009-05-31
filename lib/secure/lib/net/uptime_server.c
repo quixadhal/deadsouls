@@ -3,9 +3,9 @@
  * how long the mud's been up, then disconnects the telnet
  * session. If your mud game port is 6666, this will be
  * on 6668.
-*/
+ */
 
-#include <network.h>
+#include NETWORK_H
 int port = query_host_port()+2;
 
 void StartServer();

@@ -1,5 +1,5 @@
 /*    /verbs/items/unwield.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Allows players to stop wielding a weapon
  *    Created by Descartes of Borg 960207
  *    Version: @(#) unwield.c 1.2@(#)
@@ -16,10 +16,10 @@ static void create() {
     SetRules("OBS");
     SetErrorMessage("Unwield what?");
     SetHelp("Syntax: <unwield ARMOR>\n"
-      "        <unwield all [of WEAPON]>\n\n"
-      "This verb allows you to unwield a weapon which you are "
-      "currently wielding.\n\n"
-      "See also: get, remove, wear, wield");
+            "        <unwield all [of WEAPON]>\n\n"
+            "This verb allows you to unwield a weapon which you are "
+            "currently wielding.\n\n"
+            "See also: get, remove, wear, wield");
 }
 
 mixed can_unwield_obj(string verb) {

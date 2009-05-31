@@ -38,8 +38,8 @@ static void create() {
     SetRace("kender");
     SetGender("female");
     SetAction(25, ({
-        (: StealAttempt :),
-      }) );
+                (: StealAttempt :),
+                }) );
 }
 void init(){
     ::init();

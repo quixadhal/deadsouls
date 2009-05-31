@@ -10,6 +10,7 @@
 #define NEWS_GENERAL            DIR_NEWS "/general"
 #define NEWS_HM                 DIR_NEWS "/hm"
 #define NEWS_LOCKED             DIR_NEWS "/locked"
+#define NEWS_MOVED              DIR_NEWS "/moved"
 #define NEWS_NEWBIE             DIR_NEWS "/newbie"
 #define NEWS_REGISTER           DIR_NEWS "/register"
 #define NEWS_WELCOME            DIR_NEWS "/welcome"

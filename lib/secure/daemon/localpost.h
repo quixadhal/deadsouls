@@ -3,7 +3,7 @@
 
 void load_groups();
 varargs string *send_post(mapping borg, mixed who);
-static private mixed map_groups(string str, mapping grps, string who, int x);
+static private mixed map_groups(string str, mapping grps, string who);
 string *query_mud_group(string str);
 mapping query_mud_groups();
 

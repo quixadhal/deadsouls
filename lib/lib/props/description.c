@@ -1,5 +1,5 @@
 /*    /lib/props/description.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles the describing of objects
  *    Created by Descartes of Borg 961222
  *    Version: @(#) description.c 1.1@(#)
@@ -60,6 +60,8 @@ mixed direct_copy_obj_str(){ return 1; }
 
 mixed direct_add_obj_to_obj(){ return 1; }
 mixed indirect_add_obj_to_obj(){ return 1; }
+
+mixed indirect_read_obj_at_obj(){ return 1; }
 
 mixed direct_delete_obj_from_obj(){
     return 1;

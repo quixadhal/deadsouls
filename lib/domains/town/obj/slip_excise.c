@@ -10,21 +10,22 @@ void create(){
     SetAdjectives( ({"excise","excision","medical","paper"}) );
     SetShort("an excision slip");
     SetLong("This is a small, fragile piece of paper, possibly even a leaf. "
-      "It has some script scribbled on it.");
+            "It has some script scribbled on it.");
     SetMass(1);
-    SetBaseCost("silver",1000);
+    SetBaseCost("silver",700);
     SetVendorType(VT_HERB);
     SetItems( ([
-        ({"script","writing","scribbling"}) : "There is writing on the slip."
-      ]) );
+                ({"script","writing","scribbling"}) : "There is writing on the slip."
+                ]) );
     SetRead( ([
-        ({"script","writing","scribbling"}) : "The slip reads: \"cmfwyp\""
-      ]) );
+                ({"script","writing","scribbling"}) : "The slip reads: \"cmfwyp\""
+                ]) );
     SetDefaultRead("default", "The slip reads: \"etaoin\"");
     SetProperty("problem","excise");
 }
 
 void init(){
+    ::init();
     if( living(environment()) && environment()->GetKeyName() != "clepius"){
         patient = environment()->GetKeyName();
     }

@@ -15,6 +15,7 @@ static void create() {
     SetMelee(1);
     SetRace("cow");
     SetGender("female");
+    SetAction(1, ({ "!emote rit." }) );
 }
 void init(){
     ::init();

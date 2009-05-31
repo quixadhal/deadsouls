@@ -14,20 +14,20 @@ void create() {
     SetProperties( (["no castle":1,"light":2,"indoors":1,"no castle":1]));
     SetShort( "cavern of the kataans");
     SetLong(
-      "You are in a dark underground cavern just north of Praxis. "
-      "Deep, intricate murals and symbols are carved into the walls of the "
-      "cave.  Down deeper in the cavern is a passage protected "
-      "by a shimmering %^BLUE%^blue%^RESET%^ light.  "
-      "<preview> will tell you about becoming a Kataan. ");
+            "You are in a dark underground cavern just north of Praxis. "
+            "Deep, intricate murals and symbols are carved into the walls of the "
+            "cave.  Down deeper in the cavern is a passage protected "
+            "by a shimmering %^BLUE%^blue%^RESET%^ light.  "
+            "<preview> will tell you about becoming a Kataan. ");
     SetItems(
-      (["mural" : "It is very old and depicts gruesome cult practices.",
-        "murals" : "They are quite ancient and are made up of "
-        "pictures depicting bizarre rituals.",
-        "light" : "You are certain that it is a field which allows "
-        "only kataans to pass.",
-        "cavern" : "The cavern almost pulses with hidden evil."]) );
+            (["mural" : "It is very old and depicts gruesome cult practices.",
+             "murals" : "They are quite ancient and are made up of "
+             "pictures depicting bizarre rituals.",
+             "light" : "You are certain that it is a field which allows "
+             "only kataans to pass.",
+             "cavern" : "The cavern almost pulses with hidden evil."]) );
     SetExits( 
-      (["up" : "/domains/Praxis/forest3"]) );
+            (["up" : "/domains/Praxis/forest3"]) );
     AddExit("down","/domains/Praxis/kataan_hall",(:go_down:));
 }
 
@@ -37,14 +37,14 @@ int preview() {
         return 1;
     }
     say(this_player()->query_cap_name()+" seeks to learn about "
-      "kataans.", this_player());
+            "kataans.", this_player());
     write("Welcome, explorer! ");
     write("Kataans are an ancient coven of evil, magical warriors skilled "
-      "in the use of projectiles and stealth.  They are careful to do "
-      "no acts which might be considered good.  Instead, the use the "
-      "powers given to them by their demon masters to terrorize good "
-      "beings wherever they may be.\n"
-      "To become a kataan, type <become kataan>\n");
+            "in the use of projectiles and stealth.  They are careful to do "
+            "no acts which might be considered good.  Instead, the use the "
+            "powers given to them by their demon masters to terrorize good "
+            "beings wherever they may be.\n"
+            "To become a kataan, type <become kataan>\n");
     return 1;
 }
 

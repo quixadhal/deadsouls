@@ -15,7 +15,7 @@ static void create() {
     SetSynonyms("fire", "gat", "gank");
     SetErrorMessage("Shoot what?");
     SetHelp("Syntax: <shoot OBJECT>\n\n"
-      "Shoots a target.\n\n");
+            "Shoots a target.\n\n");
 }
 
 varargs mixed eventShoot(mixed device, mixed target, mixed misc...){

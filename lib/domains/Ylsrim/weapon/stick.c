@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/weapon/stick.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example simple weapon
  *    Created by Descartes of Borg 970101
  */
@@ -17,7 +17,7 @@ static void create() {
     SetAdjectives("wooden");
     SetShort("a wooden stick");
     SetLong("A wooden stick which looks like it might once have been used "
-      "as a walking stick, or perhaps as a poor person's club.");
+            "as a walking stick, or perhaps as a poor person's club.");
     SetMass(30);
     SetValue(10);
     SetVendorType(VT_WEAPON);

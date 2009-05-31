@@ -1,5 +1,5 @@
 /*    /lib/events/press.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    handles people pressing things
  *    created by Descartes of Borg 960114
  *    Version: @(#) press.c 1.3@(#)
@@ -61,7 +61,7 @@ varargs mixed CanPress(object who, string component){
         }
         else {
             return "#There is no " + component + " on " +
-            GetDefiniteShort() + ".";
+                GetDefiniteShort() + ".";
         }
     }
     else return 1;
@@ -86,11 +86,11 @@ varargs mixed eventPress(object who, string component){
         who->eventPrint(val);
         if( component ){
             env->eventPrint(who->GetName() + " presses the " + component +
-              " on " + GetDefiniteShort() + ".", who);
+                    " on " + GetDefiniteShort() + ".", who);
         }
         else {
             env->eventPrint(who->GetName() + " presses " +
-              GetDefiniteShort() + ".", who);
+                    GetDefiniteShort() + ".", who);
         }
         return 1;
     }

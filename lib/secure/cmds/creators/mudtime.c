@@ -5,7 +5,7 @@ inherit LIB_DAEMON;
 
 mixed cmd() {
     int *mudtime;
-    int integer, hours, minutes;
+    int hours, minutes;
     string meridiem = " am";
     string nulle = "";
     int daynum = query_date();
@@ -14,17 +14,19 @@ mixed cmd() {
     hours = mudtime[0];
     minutes = mudtime[1];
 
-    if(hours >= 12  && hours != 24) {
-        if(hours != 12) hours -= 12;
-        meridiem = " pm";
-    }
+    // if you want an odd (as in not even) number of hours in
+    // a day, this may need fiddling with.
 
-    if(!hours || hours == 0) hours = 12;
+    if(hours >= (DAY_LENGTH / 2))
+        meridiem = " pm";
+    if(hours > (DAY_LENGTH / 2)  && hours != DAY_LENGTH)
+        hours -= (DAY_LENGTH / 2);
+    if(!hours) hours = (DAY_LENGTH / 2);
 
     if(minutes < 10) nulle = "0";
 
     write("It is "+query_day_name()+", "+daynum+ordinal(daynum)+" day of "+
-      query_month()+", in "+query_season()+".");
+            query_month()+", in "+query_season()+".");
 
     write("In the MUD, the time is "+hours+":"+nulle+minutes+meridiem+"."); 
 
@@ -34,7 +36,7 @@ mixed cmd() {
 
 void help() {
     message("help", "Syntax: <mudtime>\n\n"
-      "Displays the time inside of the MUD. This is entirely "
-      "separate from what time it is anywhere in the real world."
-      "\n", this_player());
+            "Displays the time inside of the MUD. This is entirely "
+            "separate from what time it is anywhere in the real world."
+            "\n", this_player());
 }

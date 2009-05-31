@@ -1,12 +1,11 @@
 /*    /secure/daemon/events.c
- *    from the Foundation II LPC Library
+ *    from the Dead Souls Library
  *    an event monitoring daemon, for call outs across time
  *    created by Descartes of Borg 950501
  */
 
 #include <lib.h>
 #include <save.h>
-#include <config.h>
 #include <daemons.h>
 #include <privs.h>
 #include "events.h"
@@ -16,59 +15,85 @@ inherit LIB_DAEMON;
 private int RebootInterval;
 private mapping Events;
 private static int InReboot = 0;
+private static int callout = -1;
+static string SaveFile;
 
 static void create() {
     daemon::create();
+    SaveFile = save_file(SAVE_EVENTS);
+    if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
+        cp(old_savename(SaveFile), SaveFile);
+    }
     SetNoClean(1);
-    if( file_exists(SAVE_EVENTS __SAVE_EXTENSION__) )
-        unguarded((: restore_object, SAVE_EVENTS :));
+    if( file_exists(SaveFile) )
+        RestoreObject(SaveFile);
     if( !RebootInterval ) RebootInterval = 170;
     if( !Events ) Events = ([]);
     eventSave();
     call_out((: eventPollEvents :), 60);
 }
 
+mixed eventCancelShutdown() {
+    int ret = -3;
+#ifdef __CALLOUT_HANDLES__
+    if( !((int)master()->valid_apply( ({ PRIV_ASSIST }) )) ) return -2;
+    if(callout > -1) ret = remove_call_out(callout);
+    else ret = -1;
+    if(!ret || ret == -1) callout = -1;
+#endif
+    return ret;
+}
+
 varargs static int eventSave(int ung) {
-    if( ung ) {
-        unguarded( (: save_object, SAVE_EVENTS :) );
-        return 1;
-    }
-    else return save_object(SAVE_EVENTS);
+    return SaveObject(SaveFile);
 }
 
-void eventReboot(int x) {
-    if( previous_object() && !((int)master()->valid_apply(({ PRIV_ASSIST }))) )
-        return;
-    if( x < 1 ) x = 1;
-    x *= 60;
-    message("broadcast", mud_name() + " will reboot in " +
-      consolidate(x/60, "a minute") + ".", users());
-    if( x < 61 ) call_out( (: eventAnnounceReboot, 10 :), x - 10);
-    else {
-        int y;
-
-        y = x/60;
-        y = ((2*y)/3) * 60;
-        call_out( (: eventAnnounceReboot($(y)) :), x - y);
+void DoSaves(){
+    object *persists = objects( (: $1->GetPersistent() :) );
+    foreach(object persist in persists){
+        persist->eventDestruct();
     }
 }
+
+int GetRebooting(){
+    return InReboot;
+}
+
+    void eventReboot(int x) {
+        if( previous_object() && !((int)master()->valid_apply(({ PRIV_ASSIST }))) )
+            return;
+        InReboot = 1;
+        if( x < 1 ) x = 1;
+        x *= 60;
+        message("broadcast", mud_name() + " will reboot in " +
+                consolidate(x/60, "a minute") + ".", users());
+        if( x < 61 ) callout = call_out( (: eventAnnounceReboot, 10 :), x - 10);
+        else {
+            int y;
+
+            y = x/60;
+            y = ((2*y)/3) * 60;
+            callout = call_out( (: eventAnnounceReboot($(y)) :), x - y);
+        }
+    }
 
 static void eventAnnounceReboot(int x) {
     if( x == 10 ) {
         message("broadcast", "Last warning: Reboot in 10 seconds.", users());
-        call_out( (: Shutdown :), 10 );
+        call_out( (: DoSaves :), 7 );
+        callout = call_out( (: Shutdown :), 10 );
     }
     else if( x < 61 ) {
         message("broadcast", mud_name() + " will reboot in a minute.",
-          users());
-        call_out( (: eventAnnounceReboot, 10 :), 50);
+                users());
+        callout = call_out( (: eventAnnounceReboot, 10 :), 50);
     }
     else {
         int y;
 
         message("broadcast", "Reboot in " + (x/60) + " minutes.", users());
         y = ((2 * (x/60))/3) * 60;
-        call_out( (: eventAnnounceReboot($(y)) :), x - y);
+        callout = call_out( (: eventAnnounceReboot($(y)) :), x - y);
     }
 }
 
@@ -79,7 +104,7 @@ void eventShutdown() {
 
 static void Shutdown() {
     message("broadcast", "Shutting down " + mud_name() + " immediately!",
-      users());
+            users());
     map(users(), (: catch($1->cmdQuit()) :));
     shutdown();
 }
@@ -97,12 +122,12 @@ static void eventPollEvents() {
             function f;
 
             if( !(ob = find_object(Events[events[i]]["creator"]) )
-              && !(ob = load_object(Events[events[i]]["creator"])) ) {
+                    && !(ob = load_object(Events[events[i]]["creator"])) ) {
                 map_delete(Events, events[i]);
                 continue;
             }
             f = (: call_other, Events[events[i]]["object"],
-              Events[events[i]]["function"] :);
+                    Events[events[i]]["function"] :);
             f = bind(f, ob);
             catch(evaluate(f, Events[events[i]]["args"]...));
             if( Events[events[i]]["regular"] > 0 )
@@ -133,16 +158,16 @@ void AddEvent(string c, string s, string f, mixed *a, int w, int r) {
     if( file_name(previous_object()) != SEFUN && file_name(previous_object()) != UPDATE_D) {
         if(EVENTS_LOGGING){
             unguarded( (: write_file("/log/secure/events",timestamp()+" "+
-                  identify(previous_object(-1))+" ILLEGALLY tried to add an event.\n") :) );
+                            identify(previous_object(-1))+" ILLEGALLY tried to add an event.\n") :) );
         }
         return;
     }
     NewEvent = ([ "object" : s, "function" : f, "args" : a,
-      "creator" : c,  "regular" : (r ? w : 0), "interval" : w ]);
+            "creator" : c,  "regular" : (r ? w : 0), "interval" : w ]);
     if(EVENTS_LOGGING)
         unguarded( (: write_file("/log/secure/events",timestamp()+
-              identify(previous_object(-1))+" added this event: "+
-              identify($(NewEvent))+"\n") :) );		
+                        identify(previous_object(-1))+" added this event: "+
+                        identify($(NewEvent))+"\n") :) );		
     Events[time() + w] = NewEvent;
     eventSave(1);
 }

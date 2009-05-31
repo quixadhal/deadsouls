@@ -16,7 +16,7 @@ void create() {
     SetId( ({ "stones", "pile of stones", "pile" }) );
     SetShort("a pile of stones");
     SetLong("A pile of nice round stones, perfect for throwing at "
-      "outlaws and criminals.");
+            "outlaws and criminals.");
     SetPreventGet("You can only get one stone at a time.");
 }
 
@@ -30,10 +30,10 @@ int get_stone(string str) {
 
     if(!str || str != "stone") return 0;
     message("say", "You pick up a stone from the pile.  You feel a "
-      "strong desire to try <throw>ing it at "
-      +target->query_cap_name()+"...", this_player());
+            "strong desire to try <throw>ing it at "
+            +target->query_cap_name()+"...", this_player());
     message("say", this_player()->query_cap_name()+" picks up a stone "
-      "from the pile.", environment(this_player()), this_player());
+            "from the pile.", environment(this_player()), this_player());
     stone = new("/"+__DIR__+"stone");
     stone->set_target(target);
     stone->move(this_player());

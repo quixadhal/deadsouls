@@ -20,10 +20,10 @@ int cmd(string str) {
         return 0;
     }
     write("%^RED%^Enter all applicable information, including names, "
-      "offenses and email addresses.");
+            "offenses and email addresses.");
     rm(DIR_TMP+"/"+this_player()->GetKeyName()+".tmp");
     this_player()->eventEdit( DIR_TMP "/" + (string)this_player()->GetKeyName(),
-      (: end_edit($(str)) :));
+            (: end_edit($(str)) :));
     return 1;
 }
 
@@ -34,11 +34,17 @@ void end_edit(string site) {
 
     tmpfile = read_file(DIR_TMP+"/"+this_player()->GetKeyName());
     rm(DIR_TMP+"/"+this_player()->GetKeyName());
-    tmpfile = replace_string(tmpfile, "\n", " ");
+    if(tmpfile){
+        tmpfile = replace_string(tmpfile, "\n", " ");
+    }
+    else {
+        write("Nothing written. Registration operation cancelled.");
+        return;
+    }
     num = sizeof(lines = explode(wrap(tmpfile, 60), "\n"));
     str = " - "+site+" placed on Registration\n";
     str += "   by "+(string)previous_object()->GetName()+": "+
-    ctime(time())+"\n";
+        ctime(time())+"\n";
     for(x=0; x<num; x++) 
         str +=  "      * "+lines[x]+"\n";
 
@@ -64,5 +70,5 @@ void help() {
     write("    register 134.181.*                ok\n");
     write("    register 134.181.1.12             ok\n");
     write("    register orlith.bates.edu         BAD\n");
-    write("See also: unbanish, whobanished, wholetin, whoregistered, whowatched\n");
+    write("See also: unbanish, whobanished, whoregistered, whowatched\n");
 }

@@ -14,7 +14,7 @@ static void create() {
     SetDollarCost(1);
     SetMealType(MEAL_FOOD);
     SetMealMessages("You eat your rotten apple. Gross!",
-      "$N eats $P rotten apple. Gross!");
+            "$N eats $P rotten apple. Gross!");
 }
 void init(){
     ::init();

@@ -1,0 +1,44 @@
+A creator (sometimes also called a wizard or wiz) is
+a user on the mud that has access to special commands
+that allow for the manipulation of game data.
+
+A creator can, with some restrictions, edit files,
+modify stats, create new rooms, objects, and NPC's. 
+They, like admins, are mud staff and share the
+responsibility of improving and enhancing it.
+
+If you are a new creator, take the time to get familiar
+with how the mud works. You have your very own workroom.
+To go to it, type: home
+
+There you can open your chest and get a standard set 
+of creator tools (sometimes also called wiztoys) and
+get a sense for how things work.
+
+Remember that although you have fantastic, superhuman
+powers, you must use them responsibly. You have, for
+example, the zap command, which lets you kill almost
+anything instantly. Having the command, however, is
+not permission to run through the mud zapping every
+mob you see. Talk to your admin about what is ok
+and not ok. 
+
+If you are new to this kind of mud, read the Player's
+Handbook. If you dont have one on you, type:
+
+clone /domains/default/obj/handbook
+read chapter 1 in handbook
+read chapter 2 in handbook
+
+And so on. Once you've read the handbook, read over
+the Creator FAQ at http://dead-souls.net/ds-creator-faq.html
+and when you feel ready to start using your Creator
+powers, start reading the Creator's Manual.
+
+Contributing to a mud can be hard work, and if you've
+never done it before, it'll be a steep learning curve.
+However, remember that this mud has tons of documentation,
+and this kind of mud is one of the easiest for newcomers.
+Just relax, take your time, and don't get stressed. 
+
+

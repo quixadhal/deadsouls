@@ -1,5 +1,5 @@
-YOU MUST READ THIS URL: http://dead-souls.net/ds-inst-faq.html 
-
+If you're on Ubuntu, you may need to apt-get bison and libc6.
+See: http://dead-souls.net/ds-inst-faq.html#9 for details.
 
 Then perform the following steps:
 

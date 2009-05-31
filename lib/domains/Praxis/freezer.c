@@ -1,6 +1,5 @@
 #include <lib.h>
-#include <config.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
 
@@ -12,7 +11,7 @@ void create() {
     SetShort( "The freezer");
     SetLong( "The local freezer.");
     SetExits( 
-      (["square" : "/domains/Praxis/square"]) );
+            (["square" : "/domains/Praxis/square"]) );
     SetNoClean(1);
     call_out("clean_room", MAX_NET_DEAD_TIME);
 }

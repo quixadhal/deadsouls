@@ -1,0 +1,24 @@
+damerau_levenshtein_distance - compute Damerau-Levenshtein distance of two strings
+
+SYNOPSIS
+    int damerau_levenshtein_distance(string a, string b)
+
+DESCRIPTION
+    Computes the Damarau-Levenshtein distance between strings a and b,
+    which is the number of insertions, deletions, replacements or
+    transpositions necessary to transform one to the other provided
+    that no substring is modified more than once.  For more information,
+    see http://en.wikipedia.org/wiki/Damerau-Levenshtein_distance.
+
+EXAMPLE
+    > eval -b damerau_levenshtein_distance("kitten", "mittens")
+    [Integer] 2
+    > eval -b damerau_levenshtein_distance("terrible", "tortuous")
+    [Integer] 6
+    > eval -b damerau_levenshtein_distance("terrible", "tribble")
+    [Integer] 2
+    > eval -b damerau_levenshtein_distance("know", "nkow")
+    [Integer] 1
+
+SEE ALSO
+    levenshtein_distance(sefun), regexp(efun)

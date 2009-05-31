@@ -85,7 +85,7 @@ int eventQueryEntry(string header){
 
 int eventManageQueries(){
     if(doctype == "lfun" && sizeof(headers_left) && 
-      headers_left[0] == "LOCATION" && member_array("LOCATION",headers_left) != -1){
+            headers_left[0] == "LOCATION" && member_array("LOCATION",headers_left) != -1){
         call_out( (: eventSetSection, eventFindInstances(), "LOCATION" :), 1);
         if(sizeof(headers_left)) headers_left -= ({ headers_left[0] });
         return 1;
@@ -118,8 +118,8 @@ mixed cmd(string args) {
 
     if(sscanf(args,"%s %s",doctype, funcname) != 2){
         write("This commands takes two arguments. For example:\n"
-          "doctool lfun GetFunky\n"
-          "would begin a doctool session for the library (aka local) function \"GetFunky\".");
+                "doctool lfun GetFunky\n"
+                "would begin a doctool session for the library (aka local) function \"GetFunky\".");
         return 1;
     }
 
@@ -130,7 +130,7 @@ mixed cmd(string args) {
 
     if(member_array(doctype, valid_docs) == -1){
         write("That is an unknown document type. Try "
-          "one of the following: "+implode(valid_docs, ", ")+".");
+                "one of the following: "+implode(valid_docs, ", ")+".");
         return 1;
     }
 
@@ -169,13 +169,13 @@ mixed cmd(string args) {
 
 void help() {
     message("help", "Syntax: <doctool [doctype] FUNCTION_NAME>\n\n"
-      "Assists in creating sefun and lfun documentation.\n"
-      "Because it automatically scans many files and performs \n"
-      "operations on them, this command may seriously lag the \n"
-      "mud it is run on. It should therefore be used only when \n"
-      "substantial occasional lag is acceptable."
-      "\n\n"
-      "It is not unusual for this command to error out on \"Too long "
-      "evaluation\" the first few times you run it.\n\n"
-      "See also: man, help", this_player());
+            "Assists in creating sefun and lfun documentation.\n"
+            "Because it automatically scans many files and performs \n"
+            "operations on them, this command may seriously lag the \n"
+            "mud it is run on. It should therefore be used only when \n"
+            "substantial occasional lag is acceptable."
+            "\n\n"
+            "It is not unusual for this command to error out on \"Too long "
+            "evaluation\" the first few times you run it.\n\n"
+            "See also: man, help", this_player());
 }

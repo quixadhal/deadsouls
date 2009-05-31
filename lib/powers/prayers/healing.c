@@ -24,8 +24,8 @@ static void create() {
     SetDifficulty(1);
     SetVerb("pray");
     SetHelp("Syntax: <pray for healing for LIV>\n\n"
-      "This minor healing spell provides some minimal "
-      "aid to the wounded.");
+            "This minor healing spell provides some minimal "
+            "aid to the wounded.");
 }
 
 int eventCast(object who, int level, mixed limbs, object array targets) {
@@ -40,8 +40,8 @@ int eventCast(object who, int level, mixed limbs, object array targets) {
         int hp = who->GetSkillLevel("healing");
         int stam = who->GetSkillLevel("faith");
         send_messages("", "$agent_possessive_noun spell partially heals "
-          "$target_name.",who,
-          target, environment(target));
+                "$target_name.",who,
+                target, environment(target));
         health = target->GetMaxHealthPoints()-target->GetHealthPoints();
         stamina = target->GetMaxStaminaPoints()-target->GetStaminaPoints();
         if(health) target->AddHP(((hp > health) ? health : hp));
@@ -56,7 +56,7 @@ int eventCast(object who, int level, mixed limbs, object array targets) {
         who->AddMagicPoints(-tot);
         if(feedback){
             write("Your spell overreached your mana reserves! You suffer "+
-              "from a feedback overload!");
+                    "from a feedback overload!");
             who->eventReceiveDamage(who, KARMA, tot, 1);
         }
     }

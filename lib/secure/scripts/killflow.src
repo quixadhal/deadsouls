@@ -1,0 +1,2 @@
+eval return objects( (: inherits(LIB_FLOW, $1) :) )->eventDestruct()
+eval return objects( (: base_name($1) == LIB_FLOW :) )->eventDestruct()

@@ -8,7 +8,7 @@ string LongRet(mixed whom){
     string ret = "A green ring, glowing with unearthly power.";
     if(!whom || !objectp(whom) || !living(whom)) whom = this_player();
     if(creatorp(whom) ||
-      member_group(whom,"TEST")){
+            member_group(whom,"TEST")){
         ret += "\nTo enable damage protection, type: protection on";
         ret += "\nTo enable damage reporting, type: reporting on";
         ret += "\nTo make a creature report its damage: enablereport <name>";
@@ -26,11 +26,11 @@ static void create(){
     SetLong( (: LongRet :) );
     SetMass(1);
     SetBaseCost("silver",5000);
-    SetRestrictLimbs("right hand");
     SetArmorType(A_RING);
 }
 
 void init(){
+    armor::init();
     add_action("SetProtection", "protection");
     add_action("SetReporting", "reporting");
     add_action("SetNPCReporting", "enablereport");
@@ -84,7 +84,7 @@ int CheckRing(){
     if(environment() != this_player()) return 0;
     if(!(this_object()->GetWorn())) return 0;
     if(!creatorp(environment()) && 
-      !member_group(environment(),"TEST")) return -1;
+            !member_group(environment(),"TEST")) return -1;
     return 1;
 }
 

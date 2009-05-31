@@ -17,17 +17,17 @@ static void create() {
     SetRules("OBJ to OBJ");
     SetErrorMessage("What two things would you like to equate?");
     SetHelp("Syntax: equate OBJ to OBJ\n\n"
-      "A bargaining ability which allows people to compare the "
-      "relative worth of two items.  The more experienced you are "
-      "at bartering, the better chance you have of correctly judging "
-      "the more valuable item.\n\n"
-      "See help: item commands");
+            "A bargaining ability which allows people to compare the "
+            "relative worth of two items.  The more experienced you are "
+            "at bartering, the better chance you have of correctly judging "
+            "the more valuable item.\n\n"
+            "See help: item commands");
 }
 
 mixed can_judge_obj_to_obj() {
     if( this_player()->GetLevel() < 6 ) {
         this_player()->eventPrint("You are not experienced enough to judge "
-          "the value of items accurately.");
+                "the value of items accurately.");
         return 0;
     }
     return this_player()->CanCastMagic(1, "judge");
@@ -60,11 +60,11 @@ mixed do_judge_obj_to_obj(object obj1, object obj2) {
     level = caster->GetSkillLevel("bargaining");
     caster->eventPrint("You stare intently at "+name1+" and "+name2+".");
     environment(caster)->eventPrint( (string)caster->GetName() +
-      " concentrates on " + name1 + " and " + name2 + ".", caster);
+            " concentrates on " + name1 + " and " + name2 + ".", caster);
     if( (int)this_player()->GetInCombat() )
         this_player()->SetAttack(0,
-          (: eventJudge, this_player(), obj1, obj2, level :),
-          ROUND_OTHER);
+                (: eventJudge, this_player(), obj1, obj2, level :),
+                ROUND_OTHER);
     else eventJudge(this_player(), obj1, obj2, level);
     return 1;
 }
@@ -80,13 +80,13 @@ int eventJudge(object caster, object obj1, object obj2, int level) {
     if( !(obj1 && obj2) ) return 0;
     if( (environment(obj1) != caster) || (environment(obj2) != caster) ) {
         caster->eventPrint("You must have both items in your possesion "
-          "to compare them.");
+                "to compare them.");
         return 0;
     }
     if( cost > (int)caster->GetStaminaPoints() ) {
         caster->eventPrint("You are too weary to judge right now.");
         environment(caster)->eventPrint(
-          (string)caster->GetName() + " looks tired.", caster);
+                (string)caster->GetName() + " looks tired.", caster);
         return 0;
 
     }
@@ -102,21 +102,21 @@ int eventJudge(object caster, object obj1, object obj2, int level) {
             }
             else better = obj1->GetShort();
             caster->eventPrint("%^BOLD%^%^WHITE%^"
-              "You determine that " + better + "%^BOLD%^%^WHITE%^"
-              " is the more valuable object.%^RESET%^");
+                    "You determine that " + better + "%^BOLD%^%^WHITE%^"
+                    " is the more valuable object.%^RESET%^");
             return 0;
         }
         else caster->eventPrint("%^BOLD%^%^WHITE%^"
-              "You determine that these two items are equally valuable."
-              ".%^RESET%^");
+                "You determine that these two items are equally valuable."
+                ".%^RESET%^");
         caster->AddSkillPoints("bargaining",random(25));
         return 1;
     }
     /* Return the right answer */
     if(obj1lvl == obj2lvl) {
         caster->eventPrint("%^BOLD%^%^WHITE%^"
-          "You determine that these two items are equally valuable."
-          ".%^RESET%^");
+                "You determine that these two items are equally valuable."
+                ".%^RESET%^");
         return 1;
     }
     if(obj1lvl > obj2lvl) {
@@ -124,8 +124,8 @@ int eventJudge(object caster, object obj1, object obj2, int level) {
     }
     else better = obj2->GetShort();
     caster->eventPrint("%^BOLD%^%^WHITE%^"
-      "You determine that " + better + "%^BOLD%^%^WHITE%^"
-      " is the more valuable object.%^RESET%^");
+            "You determine that " + better + "%^BOLD%^%^WHITE%^"
+            " is the more valuable object.%^RESET%^");
     caster->AddSkillPoints("bargaining",random(50));
     return 1;
 

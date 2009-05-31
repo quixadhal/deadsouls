@@ -1,5 +1,5 @@
 /*    /lib/events/bait_with.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles putting bait on fishing devices
  *    Created by Blitz@Dead Souls 960116
  *    Version: @(#) bait_with.c 1.2@(#)
@@ -29,11 +29,11 @@ mixed eventBait(object who, object pole){
     }
     if( !pole->eventBait(who, this_object()) ){
         who->eventPrint(capitalize(pole->GetDefiniteShort()) +
-          "remains unbaited.");
+                "remains unbaited.");
         return 1;
     }
     send_messages("bait", "$agent_name $agent_verb $target_name with " +
-      GetShort() + ".", who, pole, environment(who));
+            GetShort() + ".", who, pole, environment(who));
     Destruct();
     return 1;
 }

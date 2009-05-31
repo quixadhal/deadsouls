@@ -1,5 +1,5 @@
 /*    /lib/events/bait.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles the bait event
  *    Created by Descartes of Borg 970103
  *    Version: @(#) bait.c 1.1@(#)

@@ -69,3 +69,7 @@ int eventReceiveObject(object ob){
 int eventReleaseObject(object ob){
     return !(!previous_object());
 }
+
+mixed eventPostRelease(object ob){
+    return 1;
+}

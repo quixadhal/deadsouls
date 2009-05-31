@@ -1,5 +1,5 @@
 /*    /verbs/items/give.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    give LIV OBJ
  *    give OBJ to LIV
  *    give LIV WRD WRD
@@ -20,14 +20,14 @@ static void create() {
     SetRules("LIV WRD WRD", "WRD WRD to LIV", "OBS LIV", "LIV OBS", "OBS to LIV" );
     SetErrorMessage("Give what to whom?");
     SetHelp("Syntax: <give LIVING ITEM>\n"
-      "        <give LIVING ITEMS>\n"
-      "        <give ITEM to LIVING>\n"
-      "        <give ITEMS to LIVING>\n"
-      "        <give LIVING AMOUNT CURRENCY>\n"
-      "        <give AMOUNT CURRENCY to LIVING>\n\n"
-      "This command allows you to give something you have to "
-      "someone else.\n\n"
-      "See also: drop, get, put");
+            "        <give LIVING ITEMS>\n"
+            "        <give ITEM to LIVING>\n"
+            "        <give ITEMS to LIVING>\n"
+            "        <give LIVING AMOUNT CURRENCY>\n"
+            "        <give AMOUNT CURRENCY to LIVING>\n\n"
+            "This command allows you to give something you have to "
+            "someone else.\n\n"
+            "See also: drop, get, put");
 }
 
 mixed can_give_liv_obj(mixed args...) {
@@ -41,9 +41,9 @@ mixed can_give_obj_liv(mixed args...) {
 mixed can_give_obj_to_liv(mixed args...) { 
     return this_player()->CanManipulate(); }
 
-mixed can_give_liv_wrd_wrd(object targ, string num, string curr) {
-    return can_give_wrd_wrd_to_liv(num, curr, targ);
-}
+    mixed can_give_liv_wrd_wrd(object targ, string num, string curr) {
+        return can_give_wrd_wrd_to_liv(num, curr, targ);
+    }
 
 mixed can_give_wrd_wrd_to_liv(string num, string curr, object targ) {
     int amt;
@@ -89,7 +89,7 @@ mixed do_give_obj_to_liv(mixed args...) {
 
     if(!intp(target->CanManipulate())){
         this_player()->eventPrint(target->GetName()+" is incapable "+
-          "of holding that.");
+                "of holding that.");
         return 1;
     }
     if( !((int)what->eventMove(target)) ) {
@@ -97,14 +97,14 @@ mixed do_give_obj_to_liv(mixed args...) {
         return 1;
     }
     this_player()->eventPrint("You give " + (string)target->GetName() + " " +
-      (string)what->GetShort() + ".");
+            (string)what->GetShort() + ".");
     target->eventPrint((string)this_player()->GetName() + " gives you " +
-      (string)what->GetShort() + ".");
+            (string)what->GetShort() + ".");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " gives " +
-      (string)target->GetName() +
-      " " + (string)what->GetShort() +".",
-      ({ this_player(), target }));
+            " gives " +
+            (string)target->GetName() +
+            " " + (string)what->GetShort() +".",
+            ({ this_player(), target }));
     return 1;
 }
 
@@ -126,13 +126,13 @@ mixed do_give_wrd_wrd_to_liv(string num, string curr, object target) {
         return 1;
     }
     this_player()->eventPrint("You give " + (string)target->GetName() + " " +
-      amt + " " + curr + ".");
+            amt + " " + curr + ".");
     target->eventPrint((string)this_player()->GetName() + " gives you " +
-      amt + " " + curr + ".");
+            amt + " " + curr + ".");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " gives " + amt + " " + curr +
-      " to " + (string)target->GetName() +
-      ".", ({ target, this_player() }));
+            " gives " + amt + " " + curr +
+            " to " + (string)target->GetName() +
+            ".", ({ target, this_player() }));
     return 1;
 }
 
@@ -145,13 +145,13 @@ mixed do_give_obs_liv(mixed *items, object target) {
 }
 
 mixed do_give_obs_to_liv(mixed *items, object target) {
-    object *obs;
-
+    object *obs, *eligible;
 
     if( sizeof(items) < 1 ) {
         this_player()->eventPrint("You don't have any to give.");
         return 1;
     }
+
     obs = filter(items, (: objectp :));
     if( !sizeof(obs) ) {
         mixed *ua;
@@ -160,6 +160,13 @@ mixed do_give_obs_to_liv(mixed *items, object target) {
         foreach(string *list in ua) this_player()->eventPrint(list[0]);
         return 1;
     }
-    foreach(object ob in obs) do_give_obj_to_liv(ob, target);
+    eligible=filter(obs, (: (!($1->GetWorn()) && environment($1) == this_player()) :));
+    if(!sizeof(eligible)){
+        write("Remove or unwield items before trying to sell them.");
+        eligible = ({});
+        return 1;
+    }
+
+    foreach(object ob in eligible) do_give_obj_to_liv(ob, target);
     return 1;
 }

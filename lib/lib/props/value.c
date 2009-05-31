@@ -1,5 +1,5 @@
 /*    /lib/props/value.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Basic value attributes
  *    Created by Descartes of Borg 970101
  *    Version: @(#) value.c 1.1@(#)
@@ -44,7 +44,7 @@ int SetValue(mixed y){
     else x = y;
     if( !intp(x) ){
         error("Bad argument 1 to SetValue().\n\tExpected: int, Got: " +
-          typeof(x) + "\n");
+                typeof(x) + "\n");
     }
     else {
         return (Value = x);
@@ -58,7 +58,7 @@ int GetVendorType(){
 int SetVendorType(int x){
     if( !intp(x) ){
         error("Bad argument 1 to SetVendorType().\n\tExpected: int, Got: " +
-          typeof(x) + "\n");
+                typeof(x) + "\n");
     }
     if( !(x & VT_ALL) ){
         error("Invalid vendor type.\n");

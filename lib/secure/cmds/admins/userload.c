@@ -6,16 +6,19 @@ inherit LIB_DAEMON;
 
 int cmd(string arg){
     int ret;
+    object whom;
     if(!archp(previous_object())) return 0;
     if(!arg || arg == "me") arg = this_player()->GetKeyName();
-    if(!find_player(arg)){
+    if(!(whom = find_player(arg))){
         write("The user was not found.");
         return 1;
     }
+    whom->CancelCharmode();
     ret = RELOAD_D->ReloadPlayer(arg, 1);
     if(!ret) write("An error occurred.");
     else write("Done.");
-
+    whom = find_player(arg);
+    if(whom) whom->CancelCharmode();
     return 1;
 }
 

@@ -1,0 +1,34 @@
+#!/bin/bash
+cd i3router
+rm *
+wget http://$1/router/blacklist.cfg
+wget http://$1/router/broadcast_chanlist.h
+wget http://$1/router/broadcast_mudlist.h
+wget http://$1/router/clean_fd.h
+wget http://$1/router/core_stuff.h
+wget http://$1/router/debug.h
+wget http://$1/router/funcs.h
+wget http://$1/router/hosted_channels.h
+wget http://$1/router/irn.h
+wget http://$1/router/process_channel.h
+wget http://$1/router/process_startup_req.h
+wget http://$1/router/read_callback.h
+wget http://$1/router/readme.txt
+wget http://$1/router/remove_mud.h
+wget http://$1/router/rsocket.c
+wget http://$1/router/send_chanlist_reply.h
+wget http://$1/router/send_error.h
+wget http://$1/router/send_full_mudlist.h
+wget http://$1/router/send_mudlist_updates.h
+wget http://$1/router/send_startup_reply.h
+wget http://$1/router/server.c
+wget http://$1/router/server_log.h
+cd ..
+mkdir imc2server
+cd imc2server
+rm *
+wget http://$1/server/server.c
+wget http://$1/server/server_log.h
+wget http://$1/server/ssocket.c
+
+

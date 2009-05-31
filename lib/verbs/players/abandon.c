@@ -10,11 +10,11 @@ static void create() {
     SetRules("LIV");
     SetErrorMessage("Whom would you like to abandon?");
     SetHelp("Syntax: abandon LIV\n"
-      "\n"
-      "If a living object is specified, this command allows "
-      "you to leave the creature's companionship.\n" 
-      "\n"
-      "See also: mount, dismount, befriend");
+            "\n"
+            "If a living object is specified, this command allows "
+            "you to leave the creature's companionship.\n" 
+            "\n"
+            "See also: mount, dismount, befriend");
 }
 
 mixed can_abandon_liv() { return 1; }

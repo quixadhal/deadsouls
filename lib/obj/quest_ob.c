@@ -11,7 +11,7 @@ void create(){
     SetAdjectives( ({"generic","sample","template","quest"}) );
     SetShort("a generic quest object");
     SetLong("This is a relic of an older time, and here for "+
-      "compatibility purposes.");
+            "compatibility purposes.");
     SetMass(20);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);

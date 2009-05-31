@@ -1,5 +1,5 @@
 /*    /verbs/rooms/enter.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 951104
  *    Version: @(#) enter.c 1.2@(#)
  *    Last modified: 96/10/15
@@ -16,11 +16,11 @@ static void create() {
     SetRules("into OBJ", "OBJ");
     SetErrorMessage("Enter what?");
     SetHelp("Syntax: <enter PLACE>\n"
-      "        <enter into PLACE>\n\n"
-      "Moves you into the place you specify.  Whereas the \"go\" "
-      "command is designed for motion towards something, the "
-      "\"enter\" command is designed for motion into something.\n\n"
-      "See also: go");
+            "        <enter into PLACE>\n\n"
+            "Moves you into the place you specify.  Whereas the \"go\" "
+            "command is designed for motion towards something, the "
+            "\"enter\" command is designed for motion into something.\n\n"
+            "See also: go");
 }
 
 mixed can_enter_obj() {

@@ -3,9 +3,9 @@
 inherit LIB_PILE;
 
 void create(){
-::create();
+    ::create();
 }
 
 void init(){
-::init();
+    ::init();
 }

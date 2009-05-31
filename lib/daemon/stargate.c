@@ -17,29 +17,44 @@
 inherit LIB_DAEMON;
 
 private mapping Stargates = ([]);
+static string SaveFile;
 
 static void create(){
     daemon::create();
+    SaveFile = save_file(SAVE_STARGATE);
     SetNoClean(1);
     eventLoad();
     set_heart_beat(60);
     if (!Stargates) Stargates = ([]);
+    SaveObject(SaveFile, 1);
 }
 
 void eventSave(){
-    unguarded( (: save_object, SAVE_STARGATE, 1 :) );
+    SaveObject(SaveFile, 1);
     return;
 }
 
 void eventLoad(){
-    if (file_size(SAVE_STARGATE __SAVE_EXTENSION__) > 0){
-        unguarded( (: restore_object, SAVE_STARGATE :) );
+    if(file_exists(SaveFile)){
+        RestoreObject(SaveFile);
     }
     return;
 }
 
 int SetStargate(string address, string destination){
     mapping tmp = ([]);
+    object prevob = previous_object();
+    string prev;
+
+    if(!prevob) return 0;
+    prev = base_name(prevob);
+
+    //Only gates installed in /domains/ or /secure/ are allowed
+    //to register.
+    if(strsrch(prev, "/domains/") && strsrch(prev, "/secure/")){
+        return 0;
+    }
+
     Stargates[address] = tmp;
     if (address == "" || destination == "") return 1;
     if(sizeof(Stargates[address])) return 1;
@@ -152,7 +167,7 @@ void heart_beat(){
             Stargates[key]["last_change"] = 0;
         }
         if((val["last_change"] && (time() - val["last_change"]) > 60) ||
-          (!val["last_change"] && val["status"] != "idle")){
+                (!val["last_change"] && val["status"] != "idle")){
             Stargates[key]["endpoint"] = "";
             Stargates[key]["status"] = "idle";
             Stargates[key]["last_change"] = 0;

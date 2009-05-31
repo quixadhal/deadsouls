@@ -7,18 +7,22 @@ string pin_desc();
 string lev_desc();
 int detonated;
 int count, armed;
-string *limbs;
+string *limbs,domain;
 void analyze(string butt);
 int HitLivings(object munch);
+int radius = 0;
+object *whom;
+
 void create(){
     item::create();
     SetKeyName("concussion hand grenade");
+    sscanf(base_name(this_object()),"/domains/%s/%*s",domain);
     SetId( ({"grenade","hand grenade","flash-bang grenade","concussion grenade"}) );
     SetAdjectives( ({"military","pineapple"}) );
     SetShort("a hand grenade");
     SetLong("This is an olive-green military issue hand grenade. It is about the "+
-      "size of an apple, and its round exterior is made of smooth metal. The "+
-      "grenade's fuse consists of a short metal lever and a round pull-pin. ");
+            "size of an apple, and its round exterior is made of smooth metal. The "+
+            "grenade's fuse consists of a short metal lever and a round pull-pin. ");
     SetMass(20);
     SetDollarCost(10);
     SetVendorType(VT_WEAPON);
@@ -34,30 +38,45 @@ void init(){
         if(detonated==1) this_object()->eventDestruct();
     }
 }
+
 mixed CanPull(object who, string target) {
-    if(!present(this_object()->GetKeyName(),who ) && target == "pin"){
-        return "You do not have the grenade.";
+    if(!environment() || environment() != who ){
+        return "#You do not have the grenade.";
     }
-    if(this_object()->GetId() == target){
-        return "You cannot pull that.";
+    if(answers_to(target,this_object())){
+        return "#You cannot pull that.";
+    }
+    if(armed){
+        return "#It is already armed.";
+    }
+    if(!GetItem(target)){
+        return "#That's not on the grenade.";
     }
     return 1;
 }
+
 mixed eventPull(object who, string target) {
+    string *tmpid;
+    if(!environment() || (this_player() && environment() != this_player())){
+        write("You are not holding it.");
+        return 1;
+    }
     if(target =="pin" || target == "pull-pin"){
+        tmpid = GetAdjectives();
         write("You pull the grenade's pin.\n");
         say(this_player()->GetName()+" pulls the pin from a hand grenade.\n");
-        new("/domains/campus/obj/pin")->eventMove(this_player());
-        new("/domains/campus/obj/lever")->eventMove(this_player());
+        new("/domains/"+domain+"/obj/pin")->eventMove(this_player());
+        new("/domains/"+domain+"/obj/lever")->eventMove(this_player());
         SetShort("a live hand grenade");
         SetLong("This is an olive-green military issue hand grenade. It is about the "+
-          "size of an apple, and its round exterior is made of smooth metal. The pin and "+
-          "spoon are missing from the fuse mechanism, indicating the grenade is live "+
-          "and will detonate very soon.");
+                "size of an apple, and its round exterior is made of smooth metal. The pin and "+
+                "spoon are missing from the fuse mechanism, indicating the grenade is live "+
+                "and will detonate very soon.");
         AddItem(({"lever","metal lever"}),"The grenade is armed. The fuse lever is no longer on the grenade.");
         AddItem(({"pull pin","pull-pin","pin"}),"The grenade is armed. There is no pin in the fuse.");
         armed = 1;
         set_heart_beat(1);
+        SetAdjectives(tmpid + ({"armed","live","hissing"}));
         return 1;
     }
     write("Nothing happens.");
@@ -86,7 +105,7 @@ int detonate(){
         stuffs=ob->GetLimbs();
         tell_object(ob, "\nKABOOM! You are torn to pieces by your hand grenade!\n");
         tell_room(environment(ob), "\nKABOOM! "+ob->GetName()+" is torn to pieces by "+
-          possessive(ob)+" hand grenade!\n",ob);
+                possessive(ob)+" hand grenade!\n",ob);
         detonated=2;
         foreach(string limb in stuffs){
             if(limb != "head" && limb != "torso" && limb != "neck") ob->RemoveLimb(limb,this_object());
@@ -95,8 +114,8 @@ int detonate(){
     }
     if(detonated !=2) tell_room(environment(this_object()), "\nKABOOM! The grenade detonates!\n");
     if(!sizeof(get_livings(ob))) ob = environment(ob);
-    if(ob && sizeof(get_livings(ob))){
-        foreach(object victim in get_livings(ob)){
+    if(ob && sizeof(whom = scramble_array(get_livings(ob)[0..12]))){
+        foreach(object victim in whom){
             this_object()->HitLivings(victim);
         }
     }
@@ -114,6 +133,23 @@ void analyze(string str){
 }
 
 int HitLivings(object ob){
-    ob->eventReceiveDamage("concussion",BLUNT, random(1000)+300, 0);
+    object env = environment();
+    int dam;
+    radius++;
+    if(radius < 6) dam = random(1000)+500;
+    else dam = (random(1000)+500) - (radius * 100);
+    if(env && !living(env)){
+        if(env->GetClimate() == "indoors") dam *= 2;
+    }
+    if(dam > 0){
+        ob->eventReceiveDamage("concussion",OVERPRESSURE, dam, 0);
+    }
     return 1;
+}
+
+int SetArmed(int x){
+    if(x) armed = 1;
+    else armed = 0;
+    if(armed) set_heart_beat(1);
+    return armed;
 }

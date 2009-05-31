@@ -6,6 +6,8 @@
  *    Last modified: 97/01/03
  */
 
+#include <daemons.h>
+
 inherit LIB_LEVEL;
 
 private int            Level       = 1;
@@ -72,8 +74,21 @@ int SetLevel(int x){
             SetSkill(skill, 2*x);
         }
     }
-
     return (Level = x);
+}
+
+int GetMaxSkillLevel(string skill){
+    int ret, cls = 4;
+#ifdef MAX_SKILL_LEVEL
+#if MAX_SKILL_LEVEL
+    ret = MAX_SKILL_LEVEL;
+    return ret;
+#endif
+#endif
+    cls -= (Skills[skill]["class"] || 4);
+    if(cls < 0) cls = 0;
+    ret = ((GetLevel()+cls) *2);
+    return ret;
 }
 
 int GetMaxSkillPoints(string skill, int level){
@@ -123,7 +138,7 @@ string array GetPrimarySkills(){
 varargs int AddSkill(string skill, int cls, int level){
     if( !stringp(skill) ){
         error("Bad argument 1 to AddSkill().\n\tExpected: string, Got: " +
-          typeof(skill) + "\n");
+                typeof(skill) + "\n");
     }
     if( !nullp(Skills[skill]) ){
         return 0;
@@ -152,7 +167,7 @@ void RemoveSkill(string skill){
     map_delete(Skills, skill);
 }
 
-/* varargs void SetSkill(string skill, int level, int classes)
+/* varargs void SetSkill(string skill, int level, int cls)
  * string skill - the name of the skill being set (required)
  * int level - the level to which that skill is being set (required)
  * int classes - the class to which the skill is being set (optional)
@@ -167,15 +182,16 @@ void RemoveSkill(string skill){
  * useful mostly for monster types, probably should have override
  * protections in the user object (should use AddSkill() for users)
  */
-varargs void SetSkill(string skill, int level, mixed cls){
+varargs void SetSkill(string skill, int level, int cls){
     int tmp;
+    SKILLS_D->SetSkill(skill);
     if(cls && !intp(cls)){
         tmp = 1;
         cls = tmp;
     }
     if( !stringp(skill) ){
         error("Bad argument 1 to SetSkill().\n\tExpected: string, Got: " +
-          typeof(skill) + "\n");
+                typeof(skill) + "\n");
     }
     if( !cls ){
         if( Skills[skill] ){
@@ -277,33 +293,23 @@ int AddSkillPoints(string name, int x){
         }
         else {
             int tmp;
-
-            tmp = --Skills[name]["level"];
-            Skills[name]["points"] += GetMaxSkillPoints(name, tmp);
-            if( Skills[name]["class"] == 1 ){
+            if(Skills[name]["level"] > 1){
+                tmp = --Skills[name]["level"];
+                Skills[name]["points"] += GetMaxSkillPoints(name, tmp);
             }
+            else break;
         }
     }
     y = GetMaxSkillPoints(name, Skills[name]["level"]);
     while( Skills[name]["points"] > y ){
-        int max;
-
-        if( Skills[name]["class"] == 1 ){
-            max = 2;
-        }
-        else {
-            max = 1;
-        }
-        if( Skills[name]["level"] >= ((GetLevel()+max) *2) ){
+        if( Skills[name]["level"] >= GetMaxSkillLevel(name) ){
             Skills[name]["points"] = y;
         }
         else {
             eventPrint("%^YELLOW%^You are a bit more adept with your " +
-              name + ".");
+                    name + ".");
             Skills[name]["level"]++;
             Skills[name]["points"] -= y;
-            if( Skills[name]["class"] == 1 ){
-            }
         }
         y = GetMaxSkillPoints(name, Skills[name]["level"]);
     }

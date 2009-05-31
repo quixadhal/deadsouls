@@ -42,9 +42,9 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: variables <object or file>\n\n"
-      "Lists the names and type of variables in the named object or file.\n"
-      "Examples: \n"
-      "variables fighter\n"
-      "variables workroom.c\n"
-    );
+            "Lists the names and type of variables in the named object or file.\n"
+            "Examples: \n"
+            "variables fighter\n"
+            "variables workroom.c\n"
+         );
 }

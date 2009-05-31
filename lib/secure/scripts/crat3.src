@@ -1,0 +1,126 @@
+start
+open door
+n
+n
+s
+s
+n
+goto /domains/Praxis/square
+eval return ROOMS_D->SetRoom(environment(this_player()), this_player(), "1000,-1000,0")
+goto /domains/Ylsrim/room/bazaar
+eval return ROOMS_D->SetRoom(environment(this_player()), this_player(), "1000,1000,0")
+n
+enter hall
+u
+start
+n
+w
+open door
+s
+d
+w
+push wall
+w
+w
+s
+n
+n
+n
+n
+n
+d
+e
+e
+u
+open grate
+eval return ROOMS_D->UnSetRoom(environment(this_player()))
+start
+n
+w
+w
+w
+n
+n
+n
+clone /domains/default/npc/drone
+clone /domains/default/npc/drone
+n
+n
+e
+n
+s
+s
+s
+s
+e
+e
+e
+e
+noclip east
+clone /domains/default/npc/drone
+clone /domains/default/npc/drone
+clone /domains/default/npc/drone
+shop
+s
+w
+w
+w
+w
+w
+n
+n
+clone /domains/default/npc/drone
+clone /domains/default/npc/drone
+clone /domains/default/npc/drone
+s
+s
+w
+w
+noclip north
+noclip west
+wiz
+e
+e
+e
+s
+start
+n
+w
+w
+w
+s
+w
+n
+s
+noclip south
+n
+e
+noclip south
+s
+n
+w
+e
+e
+w
+noclip north
+n
+n
+n
+n
+n
+n
+w
+w
+s
+noclip south
+noclip south
+clone /domains/default/npc/drone
+clone /domains/default/npc/drone
+arch
+n
+s
+d
+e
+w
+s
+home

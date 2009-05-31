@@ -135,7 +135,7 @@ void create() {
     string file = base_name(this_object());
 
     if( !strsrch(file, REALMS_DIRS) || !strsrch(file, DOMAINS_DIRS) 
-      || !strsrch(file, ESTATES_DIRS) ) {
+            || !strsrch(file, ESTATES_DIRS) ) {
         SetSaveFile(file);
     }
     daemon::create();

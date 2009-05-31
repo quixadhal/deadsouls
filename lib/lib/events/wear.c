@@ -1,5 +1,5 @@
 /*    /lib/events/wear.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    An object that can be worn
  *    Created by Descartes of Borg 970101
  *    Version: @(#) wear.c 1.1@(#)

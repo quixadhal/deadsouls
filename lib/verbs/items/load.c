@@ -10,8 +10,8 @@ static void create() {
     SetRules("", "OBJ","OBJ with OBJ","OBJ into OBJ","OBJ in OBJ");
     SetErrorMessage("Load something?");
     SetHelp("Syntax: load THING\n"
-      "        load THING on THING\n"
-      "Synonyms: charge, recharge\n");  
+            "        load THING on THING\n"
+            "Synonyms: charge, recharge\n");  
 }
 
 mixed can_load() {

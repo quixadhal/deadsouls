@@ -10,17 +10,14 @@ static void create(){
     SetId( ({"kerchief", "handkerchief"}) );
     SetShort("a red bandanna");
     SetLong("This is a red kerchief fashioned into improvised headgear, possibly to prevent getting dirt on one's hair and vice versa.");
-    SetMass(10);
-    SetBaseCost("silver",50);
-    SetDamagePoints(1);
+    SetMass(1);
+    SetBaseCost("silver",1);
     SetArmorType(A_HELMET);
     SetProtection(BLUNT, 1);
     SetProtection(BLADE, 1);
     SetProtection(KNIFE, 1);
-    SetItems( ([
-        ({"pheasant","feather"})  : "Looks like a pheasant feather.",
-      ]) );
 }
+
 void init(){
     ::init();
 }

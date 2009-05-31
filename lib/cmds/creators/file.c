@@ -28,6 +28,6 @@ int cmd(string str) {
 
 string GetHelp() {
     return "Syntax: file [thing]\n\n"+
-    "Provides information about the thing's name and file of origin.\n"+
-    "With no argument, it defaults to your location.\n";
+        "Provides information about the thing's name and file of origin.\n"+
+        "With no argument, it defaults to your location.\n";
 }

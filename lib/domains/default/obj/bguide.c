@@ -5,7 +5,7 @@ inherit LIB_BOOK;
 void create(){
     ::create();
     SetKeyName("builder's guidebook");
-    SetId( ({"guidebook", "book", "guide", "builders guide", "builders guidebook"}) );
+    SetId( ({"text","guidebook", "book", "guide", "builders guide", "builders guidebook"}) );
     SetAdjectives( ({"builder's", "builder", "builders", "reference"}) );
     SetShort("a Builder's Guidebook");
     SetLong("This is a reference text for Dead Souls builders.");

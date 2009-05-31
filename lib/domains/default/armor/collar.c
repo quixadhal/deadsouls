@@ -11,11 +11,11 @@ static void create(){
     SetAdjectives( ({"repellent","odd","plastic","white"}) );
     SetShort("a plastic collar");
     SetLong("This is a simple collar made of a soft white plastic. It "+
-      "seems to be coated with a fine, clear resin. There is something "+
-      "written on the collar.");
+            "seems to be coated with a fine, clear resin. There is something "+
+            "written on the collar.");
     SetProperties(([
-        "no steal" : 1,
-      ]));
+                "no steal" : 1,
+                ]));
     SetRead("Disease and parasite repellent collar, test character use only.");
     SetMass(10);
     SetBaseCost("silver", 10);

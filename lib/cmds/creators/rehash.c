@@ -1,7 +1,7 @@
 /*   /cmds/creator/rehash.c
  *   This allows creators to refresh command lookup tables
  *   Blitz@NM-IVD
-*/
+ */
 
 #include <lib.h>
 #include <daemons.h>
@@ -19,9 +19,9 @@ mixed cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: rehash <path>\n\n"
-      "This command allows creators to refresh the specified path's "
-      "command parsing lookup tables.",
-      this_player() );
+            "Syntax: rehash <path>\n\n"
+            "This command allows creators to refresh the specified path's "
+            "command parsing lookup tables.",
+            this_player() );
 }
 

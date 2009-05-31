@@ -43,6 +43,7 @@ varargs string gateway(mixed args){
     }
     ret += "<br><br><a href=\"/index.html\">Home</a><br><br>";
     ret += "<a href=\"http://dead-souls.net\">Dead Souls Home</a>";
+    ret += "<br><br>Your ip is: "+session["ip"];
 
     return ret;
 }

@@ -27,10 +27,10 @@ int cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: <watch [site|name] [ip or site to be watched]>\n\n"
-      "Sets it up so that whenever a player of a certain name, or "
-      "a player from a certain site logs in it will get logged.  "
-      "Examples: watch name forlock    watch site 134.181.*\n\n"
-      "See also: unwatch, whowatched", this_player()
-    );
+            "Syntax: <watch [site|name] [ip or site to be watched]>\n\n"
+            "Sets it up so that whenever a player of a certain name, or "
+            "a player from a certain site logs in it will get logged.  "
+            "Examples: watch name forlock    watch site 134.181.*\n\n"
+            "See also: unwatch, whowatched", this_player()
+           );
 }

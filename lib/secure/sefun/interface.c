@@ -4,17 +4,17 @@
  *    created by Descartes of Borg 940215
  */
 
-mapping Uncolor = ([ "RESET": "\b", "BOLD": "", "FLASH":"", "BLACK":"", "RED":"",
-  "BLUE":"", "CYAN":"", "MAGENTA":"", "ORANGE":"", "YELLOW":"",
-  "GREEN":"", "WHITE":"", "BLACK":"", "B_RED":"", "B_ORANGE":"",
-  "B_YELLOW":"", "B_BLACK":"", "B_CYAN":"","B_WHITE":"", "B_GREEN":"",
-  "B_MAGENTA":"", "STATUS":"", "WINDOW":"", "INITTERM": "",
-  "ENDTERM":""]);
-
 #include <daemons.h>
 
 string strip_colours(string str){
-    string ret = terminal_colour(str, Uncolor);
+    string ret;
+    mapping Uncolor = ([ "RESET": "\b", "BOLD": "", "FLASH":"", "BLACK":"", "RED":"",
+            "BLUE":"", "CYAN":"", "MAGENTA":"", "ORANGE":"", "YELLOW":"",
+            "GREEN":"", "WHITE":"", "BLACK":"", "B_RED":"", "B_ORANGE":"",
+            "B_YELLOW":"", "B_BLACK":"", "B_CYAN":"","B_WHITE":"", "B_GREEN":"",
+            "B_MAGENTA":"", "STATUS":"", "WINDOW":"", "INITTERM": "", "B_BLUE":"",
+            "ENDTERM":""]);
+    ret = terminal_colour(str, Uncolor);
     return replace_string(ret, "\b", "");
 }
 

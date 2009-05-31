@@ -2,10 +2,10 @@
  * This is a sample server object. It doesn't do anything
  * as-is. It simply serves as a template for you to understand
  * how to build a server object of your own.
-*/
+ */
 
-#include <network.h>
-int port = 6667;
+#include NETWORK_H
+int port = 789;
 
 void StartServer();
 void StopServer();

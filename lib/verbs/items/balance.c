@@ -17,8 +17,8 @@ static void create() {
     SetRules("OBJ to OBJ");
     SetErrorMessage("What two things would you like to balance?");
     SetHelp("Syntax: balance OBJ to OBJ\n\n"
-      "A simple tool for determining which is the heavier of two objects."
-      "See help: item commands");
+            "A simple tool for determining which is the heavier of two objects."
+            "See help: item commands");
 }
 
 mixed can_balance_obj_to_obj() {
@@ -47,11 +47,11 @@ mixed do_balance_obj_to_obj(object obj1, object obj2) {
 
     caster->eventPrint("You stare intently at "+name1+" and "+name2+".");
     environment(caster)->eventPrint( (string)caster->GetName() +
-      " concentrates on " + name1 + " and " + name2 + ".", caster);
+            " concentrates on " + name1 + " and " + name2 + ".", caster);
     if( (int)this_player()->GetInCombat() )
         this_player()->SetAttack(0,
-          (: eventBalance, this_player(), obj1, obj2 :),
-          ROUND_OTHER);
+                (: eventBalance, this_player(), obj1, obj2 :),
+                ROUND_OTHER);
     else eventBalance(this_player(), obj1, obj2);
     return 1;
 }
@@ -67,13 +67,13 @@ int eventBalance(object caster, object obj1, object obj2) {
     if( !(obj1 && obj2) ) return 0;
     if( (environment(obj1) != caster) || (environment(obj2) != caster) ) {
         caster->eventPrint("You must have both items in your possesion "
-          "to compare them.");
+                "to compare them.");
         return 0;
     }
     if( cost > (int)caster->GetStaminaPoints() ) {
         caster->eventPrint("You are too weary to balance right now.");
         environment(caster)->eventPrint(
-          (string)caster->GetName() + " looks tired.", caster);
+                (string)caster->GetName() + " looks tired.", caster);
         return 0;
 
     }
@@ -84,8 +84,8 @@ int eventBalance(object caster, object obj1, object obj2) {
     /* Return the right answer */
     if(obj1lvl == obj2lvl) {
         caster->eventPrint("%^BOLD%^%^WHITE%^"
-          "You determine that these two items are equally heavy."
-          ".%^RESET%^");
+                "You determine that these two items are equally heavy."
+                ".%^RESET%^");
         return 1;
     }
     if(obj1lvl > obj2lvl) {
@@ -93,8 +93,8 @@ int eventBalance(object caster, object obj1, object obj2) {
     }
     else better = obj2->GetShort();
     caster->eventPrint("%^BOLD%^%^WHITE%^"
-      "You determine that " + better + "%^BOLD%^%^WHITE%^"
-      " is the heavier object.%^RESET%^");
+            "You determine that " + better + "%^BOLD%^%^WHITE%^"
+            " is the heavier object.%^RESET%^");
     return 1;
 
 } 

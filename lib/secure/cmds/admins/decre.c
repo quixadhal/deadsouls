@@ -6,7 +6,7 @@
 
 #include <lib.h>
 #include <privs.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
 
 inherit LIB_DAEMON;
@@ -29,22 +29,23 @@ mixed cmd(string args) {
     nom = convert_name(args);
     if( !user_exists(nom) ) return capitalize(nom) + " is not a member of " +
         possessive_noun(mud_name()) + " reality.";
-    if( !strsrch(file = save_file(nom), DIR_PLAYERS) )
+    if( !strsrch(file = player_save_file(nom), DIR_PLAYERS) )
         return "You cannot make "+capitalize(args)+" a player.";
 
-    if(ob == this_player()){
-        return "Nonsense.";
-    }
-
     if(!ob = find_player(nom)){
+        if(nom == this_player()->GetKeyName()){
+            return "I've no idea how you've managed this, but \"no\".";
+        }
         PLAYERS_D->RemovePendingEncre(lower_case(nom));
         PLAYERS_D->AddPendingDecre(lower_case(nom));
         write(capitalize(nom)+" will be demoted on their next login.");
         return 1;
     }
-
     else {
         mixed attrape;
+        if(ob == this_player() || securep(ob)){
+            return "Nonsense.";
+        }
         home_dir = homedir(ob);
         write("You decre "+capitalize(nom)+".");
         PlayerName = nom;
@@ -65,7 +66,7 @@ mixed cmd(string args) {
         //
         if( file_size(DIR_PLAYERS+"/"+nom[0..0]) != -2) 
             mkdir(DIR_PLAYERS+"/"+nom[0..0]);
-        if(rename(file+__SAVE_EXTENSION__, DIR_PLAYERS+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
+        if(rename(file, save_file(DIR_PLAYERS+"/"+nom[0..0]+"/"+nom))) 
             return "You failed due to lack of write access to "+DIR_PLAYERS+".";
         //Remove their homedir, save it to a backup dir.
         if(home_dir && directory_exists(home_dir))
@@ -79,7 +80,7 @@ mixed cmd(string args) {
         PlayerName = 0;
         if( attrape || !player_ob ) {
             message("system", "\nFailed to create a player object.", 
-              this_player());
+                    this_player());
             message("system", "Please log out and log back in.", ob);
             return 1;
         }
@@ -119,19 +120,19 @@ mixed cmd(string args) {
     unguarded( (: player_ob->save_player((string)player_ob->GetKeyName()) :) );
     message("system", "You are now a player.", player_ob);
     message("system", (string)player_ob->GetName() + " is now a player!",
-      this_player());
+            this_player());
     return 1;
 }
 
 string GetKeyName() { return PlayerName; }
 void help() {
     message("help",
-      "Syntax: decre <person>\n\n"
-      "Demotes the specified creator to player status. "
-      "If the target is not "
-      "logged in, they will be made a player when "
-      "they next log in."
-      "\n\n"
-      "See also: encre, rid", this_player()
-    );
+            "Syntax: decre <person>\n\n"
+            "Demotes the specified creator to player status. "
+            "If the target is not "
+            "logged in, they will be made a player when "
+            "they next log in."
+            "\n\n"
+            "See also: encre, rid", this_player()
+           );
 }

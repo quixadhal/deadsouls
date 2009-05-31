@@ -30,7 +30,7 @@ int cmd(string str) {
 }
 void help() {
     write("Syntax: <whoallowed ([name])>\n\n"
-      "Lists the names of players who may be allowed into the game\n"
-      "from sites which must register characters in order to play.\n"
-    );
+            "Lists the names of players who may be allowed into the game\n"
+            "from sites which must register characters in order to play.\n"
+         );
 }

@@ -18,8 +18,8 @@ string LocalCurrency = "gold";
 static void create(){
     sentient::create();
     SetRequestResponses(([ "citizenship" : (: EvaluateCitizenshipRequest :),
-        "help" : (: this_object()->eventForce("say You can request "
-            "citizenship from me.") :) ]));
+                "help" : (: this_object()->eventForce("say You can request "
+                        "citizenship from me.") :) ]));
 }
 
 mixed CanRequestCitizenship(object who){
@@ -28,7 +28,7 @@ mixed CanRequestCitizenship(object who){
 
         if( who->GetCurrency(LocalCurrency) < cost ){
             this_object()->eventForce("say I'm sorry, but we have a new citizen tax of " + Tax + " " +
-              LocalCurrency + ".");
+                    LocalCurrency + ".");
             return 0;
         }
     }
@@ -42,7 +42,7 @@ mixed eventRequestCitizenship(object who){
     object array homies = filter(users(), (: $1->GetTown() == GetTown() :));
 
     homies->eventPrint(who->GetName() + " is now a citizen of " + GetTown() +
-      ".");
+            ".");
     who->SetTown(GetTown());
     who->eventPrint("You are now a citizen of " + GetTown() + ".");
     if( Tax > 0 ){

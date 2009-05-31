@@ -42,7 +42,7 @@ void Convert(string s, int change) {
     files = (string *)wild_card(args);
     if( !i = sizeof(files) ) {
         message("info", "No file(s) found: "+implode(files, " "),
-          this_player() );
+                this_player() );
         return;
     }
     foreach(file in files) {
@@ -85,13 +85,13 @@ mixed cmd(string str) {
 
 void GetHelp(string str) {
     message("info",
-      "Syntax: statconvert <filename | wild card> <percentage>\n\n"
-      "This command searches through the specified file(s) and lowers "
-      "all occurrences of SetSkill and SetStat by a <percentage> "
-      "amount.\n\n"
-      "Example: statconvert *.c 10\n"
-      "  - Searches all .c files in your currenct path, and reduces\n"
-      "    all skill and stat settings by 10%\n\n"
-      "Note: It is possible to raise settings by passing a negative number.",
-      this_player() );
+            "Syntax: statconvert <filename | wild card> <percentage>\n\n"
+            "This command searches through the specified file(s) and lowers "
+            "all occurrences of SetSkill and SetStat by a <percentage> "
+            "amount.\n\n"
+            "Example: statconvert *.c 10\n"
+            "  - Searches all .c files in your currenct path, and reduces\n"
+            "    all skill and stat settings by 10%\n\n"
+            "Note: It is possible to raise settings by passing a negative number.",
+            this_player() );
 }

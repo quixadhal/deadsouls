@@ -8,10 +8,10 @@ static void create() {
     SetRules("OBJ");
     SetErrorMessage("Consult what? Or consult whom?");
     SetHelp("Syntax: <consult OBJECT>\n"
-      "        <consult PERSON>\n\n"
-      "Allows you to consult an object or a person.\n"
-      "\"consult my magic 8 ball\", or simply \"consult ball\".\n\n"
-      "");
+            "        <consult PERSON>\n\n"
+            "Allows you to consult an object or a person.\n"
+            "\"consult my magic 8 ball\", or simply \"consult ball\".\n\n"
+            "");
 }
 
 mixed can_consult_obj() {

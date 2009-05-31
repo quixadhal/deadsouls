@@ -21,7 +21,16 @@ int GetRadiantLight(int ambient){
 }
 
 string GetShort(){
-    return item::GetShort() + burn::GetShort();
+    string ret, str, article;
+    string litstr = "%^BOLD%^YELLOW%^(lit)%^RESET%^ ";
+    if(!GetLit() || query_verb() == "light" || query_verb() == "strike"){
+        return item::GetShort();
+    }
+    if(!(str = item::GetShort()) || str == "") return str;
+    article = (replace_string(str, remove_article(str), "") || "");
+    str = remove_article(str);
+    ret = (sizeof(article) ? article : "") + litstr + str;
+    return ret;
 }
 
 varargs string GetLong(string unused){

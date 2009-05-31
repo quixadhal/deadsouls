@@ -1,8 +1,8 @@
 #include <lib.h>
+#include <daemons.h>
 #include <privs.h>
 #include <save.h>
-#include <rooms.h>
-#include <config.h>
+#include ROOMS_H
 
 inherit LIB_DAEMON;
 
@@ -12,18 +12,23 @@ int RemoveWatcher(string watcher, mixed target);
 string *snooped = ({});
 object *snoopers = ({});
 string *monitored  = ({}); 
+string *ignored = ({});
+static string *ignored_ips = ({"192.168.0.1","10.0.1.1"});
 mapping Watchers = ([]);
 int count = 0;
 int just_loaded = 1;
-object *prevusers;
+object *prevusers, gfoo;
+static string SaveFile;
 
 void eventLoadRogues();
 
 static void create() {
     daemon::create();
-    debug("SNOOP_D restarted.","red");
-    if( file_size( SAVE_SNOOP __SAVE_EXTENSION__ ) > 0 )
-        unguarded( (: restore_object, SAVE_SNOOP, 1 :) );
+    if(!ignored) ignored = ({});
+    SaveFile = save_file(SAVE_SNOOP);
+    if(file_exists(SaveFile)){
+        RestoreObject(SaveFile, 1);
+    }
     SetNoClean(1);
     SnoopClean();
     set_heart_beat(1);
@@ -37,15 +42,15 @@ static void create() {
 void RegisterSnooper(){
     object registrant = previous_object();
     if(base_name(registrant) == "/secure/obj/snooper" &&
-      member_array(registrant,snoopers) == -1) snoopers += ({ registrant });
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+            member_array(registrant,snoopers) == -1) snoopers += ({ registrant });
+    SaveObject(SaveFile, 1);
 }
 
 void UnregisterSnooper(){
     object registrant = previous_object();
     if(base_name(registrant) == "/secure/obj/snooper" &&
-      member_array(registrant,snoopers) != -1) snoopers -= ({ registrant });
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+            member_array(registrant,snoopers) != -1) snoopers -= ({ registrant });
+    SaveObject(SaveFile, 1);
 }
 
 void eventLoadRogues(){
@@ -74,10 +79,18 @@ int CheckBot(string str){
         }
     }
     if(!already_watched && foo && (GLOBAL_MONITOR > 0 || member_array(str, monitored) != -1 || member_array(str, snooped) != -1 )){
-        if(archp(find_player(str)) && GLOBAL_MONITOR == 2) return 0;
+        string ip;
+        gfoo = foo;
+        ip = unguarded( (: query_ip_number(gfoo) :) );
+        gfoo = 0;
+        if(member_array(str, (ignored || ({}))) != -1) return 0;
+        if((member_array(ip, (ignored_ips||({}))) != -1 ||
+           (archp(foo) && GLOBAL_MONITOR == 2)) &&
+           member_array(str, monitored) == -1 &&
+           member_array(str, snooped) == -1 ) return 0;
         cloan=new("/secure/obj/snooper");
         cloan->eventStartSnoop(str);
-        err = catch(unguarded( (: save_object, SAVE_SNOOP, 1 :) ));
+        err = catch(SaveObject(SaveFile, 1));
     }
     return 1;
 }
@@ -111,7 +124,7 @@ int SnoopClean(){
                 string dude = snoopbox->GetSnooped();
                 if(dude) subject = find_player(dude);
                 if(!dude || !subject || !query_snooping(snoopbox) || 
-                  (member_array(dude,snooped) == -1 && member_array(dude,monitored) == -1 && GLOBAL_MONITOR < 1 )){
+                        (member_array(dude,snooped) == -1 && member_array(dude,monitored) == -1 && GLOBAL_MONITOR < 1 )){
                     snoopbox->eventDestruct();
                     snoopers -= ({snoopbox});
                 }
@@ -126,7 +139,6 @@ int eventDestruct(){
         error("Illegal attempt to destruct snoop: "+get_stack()+" "+identify(previous_object(-1)));
     return ::eventDestruct();
 }
-
 
 void heart_beat(){
     count++;
@@ -175,7 +187,7 @@ int AddWatcher(string watcher, string target){
     }
     if(member_array(target,snooped) == -1) snooped += ({target});
     CheckBot(target);
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    SaveObject(SaveFile, 1);
     return 1;
 }
 
@@ -200,7 +212,7 @@ int RemoveWatcher(string watcher, mixed target){
         else if(member_array(watcher, Watchers[subtarg]) != -1) 
             Watchers[subtarg] -= ({ watcher });
         if((!Watchers[subtarg] || !sizeof(Watchers[subtarg])) &&
-          member_array(subtarg, monitored) == -1) {
+                member_array(subtarg, monitored) == -1) {
             foreach(object snoopbox in snoopers){
                 if(snoopbox->GetSnooped() == subtarg) snoopbox->eventDestruct(); 
             }
@@ -211,13 +223,13 @@ int RemoveWatcher(string watcher, mixed target){
         }
     }
     CheckBot("adsfgrertgrsgnfxmy");
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    SaveObject(SaveFile, 1);
     return 1;
 }
 
 int AddMonitor(string requestor, string target){
     if(member_array(target, monitored) == -1) monitored += ({ target });
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    SaveObject(SaveFile, 1);
     CheckBot(target);
     return 1;
 }
@@ -225,14 +237,14 @@ int AddMonitor(string requestor, string target){
 int RemoveMonitor(object requestor, string target){
     if(!archp(requestor)) return 0;
     monitored -= ({ target });
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    SaveObject(SaveFile, 1);
     if(Watchers[target] && sizeof(Watchers[target])) return 1;
     foreach(object snoopbox in snoopers){
         if(snoopbox->GetSnooped() == target) snoopbox->eventDestruct(); 
     }
     if(Watchers[target] && !sizeof(Watchers[target])) map_delete(Watchers, target);
     CheckBot("asreg54eqwhtrbsf");
-    unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+    SaveObject(SaveFile, 1);
     return 1;
 }
 
@@ -242,7 +254,7 @@ int ReportLinkDeath(string str){
             if(snoopbox->GetSnooped() == str) snoopbox->eventDestruct(); 
         }
         map_delete(Watchers, str);
-        unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+        SaveObject(SaveFile, 1);
         return 1;
     }
     return 0;
@@ -255,7 +267,7 @@ int ReportReconnect(string str){
         }
         map_delete(Watchers, str);
         CheckBot(str);
-        unguarded( (: save_object, SAVE_SNOOP, 1 :) );
+        SaveObject(SaveFile, 1);
         return 1;
     }
     return 0;
@@ -276,4 +288,24 @@ string Report(){
     ret+="snooped: "+identify(snooped)+"\n";
     ret+="monitored: "+identify(monitored)+"\n";
     return ret;
+}
+
+int NotifyBot(string bot){
+    mixed *arcs;
+    if(base_name(previous_object()) != PLAYERS_D) return 0;
+    arcs = filter(get_dir("/secure/log/adm/archive/"),
+      (: !strsrch($1, $(bot)+".") :) );
+    foreach(string file in arcs){
+        if(!file) continue;
+        rename("/secure/log/adm/archive/"+file,
+          "/secure/log/adm/archive/_bot."+file);
+    }
+    arcs = filter(get_dir("/secure/log/adm/"),
+      (: !strsrch($1, $(bot)+".") :) );
+    foreach(string file in arcs){
+        if(!file) continue;
+        rename("/secure/log/adm/"+file,
+          "/secure/log/adm/_bot."+file);
+    }
+    return 1;
 }

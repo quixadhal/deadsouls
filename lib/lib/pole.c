@@ -18,11 +18,11 @@ static void create(){
     AddSave( ({ "PoleStrength", "CatchChance" }) +  bait_save );
 }
 
-mixed direct_cast_obj(){
-    if( environment() != this_player() )
-        return "#You must have it to cast it.";
-    return 1;
-}
+    mixed direct_cast_obj(){
+        if( environment() != this_player() )
+            return "#You must have it to cast it.";
+        return 1;
+    }
 
 mixed direct_fish_with_obj(){
     mixed err;
@@ -38,11 +38,11 @@ int eventBreak(){
     return 1;
 }
 
-mixed CanCast(object who){
-    if( GetBroken() )
-        return "You cannot cast a broken " + strip_article(GetShort()) + "!";
-    else return 1;
-}
+    mixed CanCast(object who){
+        if( GetBroken() )
+            return "You cannot cast a broken " + strip_article(GetShort()) + "!";
+        else return 1;
+    }
 
 mixed eventCatch(object who, string fish){
     int mass;
@@ -51,12 +51,12 @@ mixed eventCatch(object who, string fish){
     mass = (int)fish->GetMass();
     if( mass > PoleStrength && eventBreak() ){
         message("my_action", "Just as you notice " + (string)fish->GetShort() +
-          " on " + GetShort() + ", it breaks "
-          "and you lose your catch!", who);
+                " on " + GetShort() + ", it breaks "
+                "and you lose your catch!", who);
         message("my_action", possessive_noun(who) + " " +
-          strip_article(GetShort()) + " breaks as " +
-          nominative(who) + " tries to land " + (string)fish->GetShort()+
-          "!", environment(who), ({ who }));
+                strip_article(GetShort()) + " breaks as " +
+                nominative(who) + " tries to land " + (string)fish->GetShort()+
+                "!", environment(who), ({ who }));
         return 0;
     }
     PoleStrength -= (mass/10) + 1;
@@ -64,11 +64,11 @@ mixed eventCatch(object who, string fish){
     if( !((int)fish->eventCatch(who, this_object()))) return 0;
     if( !((int)who->CanCarry(mass)) ){
         message("my_action", "For a fleeting moment, you notice " +
-          (string)fish->GetShort() + " on your " +
-          strip_article(GetShort()) + ", but then it is lost.",
-          who);
+                (string)fish->GetShort() + " on your " +
+                strip_article(GetShort()) + ", but then it is lost.",
+                who);
         message("other_action", (string)who->GetName() + " loses a catch.",
-          environment(who), ({ who }));
+                environment(who), ({ who }));
         return 0;
     }
     return 1;

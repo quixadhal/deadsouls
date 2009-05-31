@@ -2,10 +2,10 @@
 inherit LIB_BOARD;
 
 void create(){
-::create();
+    ::create();
 }
 
 void init(){
-::init();
+    ::init();
 }
 

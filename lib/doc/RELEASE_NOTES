@@ -1,7 +1,524 @@
+---- 2.10 ---
+- Released 2009-06-01
+- Minor fixes to 2.9a19
+- Added pwiping to PLAYERS_D.
+- Minor faq updates.
+
+---- 2.9a19 ---
+- Released 2009-05-25
+- The idle command can now be used without an argument as
+  a connection keepalive.
+- i3router: IRN chanlist now tries to prune duplicated entries in the
+  data packet before transmission.
+- i3router: channel-add packets with invalid channel types are
+  now rejected.
+- The mudconfig command now handles mud name and port changes.
+- IMC2 channels now have their remote names mapped to their local
+  names automatically, avoiding the need to hardcode the maps in CHAT_D.
+- Added commands: chan, rotatelogs
+- Updated the ced editor with some important fixes. It can now be
+  enabled with mudconfig (mudconfig ced on). Note that this is a highly
+  experimental editor, so it automatically backs up any file you edit
+  with it. See the help info for: ced, bk, restore, charmode
+- The windows install no longer needs the absolute path to be
+  c:\ds if the new default runmud.bat and mudos.win32 are used.
+- Instances on Windows are now supported.
+- Telopts MSSP support added, plaintext MSSP improved.
+  See: http://dead-souls.net/ds-admin-faq.html#145
+- i3router: the "listening" portion of irn channel updates is
+  no longer sent.
+- i3router: blacklisting of networks is now possible.
+- i3router: muds that attempt to reconnect more than once per second
+  are subject to automatic temporary graylisting.
+- Fixed an exploit reported by Ideysus that allowed local creators to
+  spoof intermud packets.
+- Removed command: mfinger
+- Updated the performance score calculation to make it more consistent.
+- i3router: packet floods are now handled somewhat more efficiently.
+- Added sefun: format_page2()
+- Alleviated some misfortunes in instance tells.
+- The mudconfig command now works properly with imc2 password setting
+  and the secrets daemon.
+- General cleanup of superfluous debugging statements.
+- Substring searching added to ced.
+
+---- 2.9a18 ---
+- Released 2009-05-05
+- Fixed a problem with the new reply aging system.
+- Fixed a bug in liveupgrading that overwrote SECRETS_H.
+
+---- 2.9a17 ---
+- Released 2009-05-01
+- Driver is now a slightly modified FluffOS 2.16.
+- Converted structs to mappings in CLASSES_D.
+- Fixed CLASSES_D bug that inverted the position of "importance" and
+  "average starting level" of classes.
+- Instances now share local channels.
+- Users on different instances can now tell to each other.
+- Users on different instances can now get "finger" info on each other.
+- Users on different instances can now see each other in "who".
+- Added commands: instconfig, deviate, destfile
+- New players can't create a character if the same name is used
+  on another instance. 
+- Added sefuns: remote_users(), local_users()
+- The actions map elements in LIB_ROOM now actually fire based on
+  their individual "chance" rather than the overall ActionChance
+  (thx Raudhrskal!).
+- IMC2 tells now work like i3 tells, no need to use the "imc2" command.
+- AUTO_WIZ set above 1 now forces new users to become creators, rather
+  than providing the choice to do so.
+- IP addresses of users are no longer displayed to creators on
+  AUTO_WIZ muds.
+- Users on different instances can now shout to each other.
+- Fixed problems in the router code when a mud's fd is 0.
+- IMC2 client host/port info now does a better job of being correct.
+- IRN nodes now periodically send each other mud and chan lists.
+- Some password thingies like i3 and IMC2 are now handled by a
+  secrets daemon, to improve security.
+- The non-quitting non-net-dead destruction of users is now announced
+  and logged (for example, if you "dest" a creator).
+- Suicide notes now save somewhere more reasonable.
+- Paths in read.cfg and write.cfg can now have wildcard files.
+- Added STATS_D and SKILLS_D. They are meant to keep track of which
+  stats and skills have been used in the mud, and when possible, 
+  maintain information the "importance" of a stat to a race and a
+  skill to a class, derived by RACES_D and CLASSES_D respectively. 
+  This allows a centralized repository of stat/skill information
+  that the DEVIATION_D can rely on for deviation calculation.
+- Added a stat deviation system. A player can now have an improved
+  stat class, but at a cost of some percentage of earned XP. See:
+  help deviation
+- The hist command now reverts to the old "query the chat cache"
+  behavior if the mud doesn't log the type of channel being queried.
+  Note that by default, remote channels are not logged.
+- Fixed an odd display problem in the hist command.
+- SNOOP_D can now ignore ip's (good for running bot tests from a known
+  ip), and admins can now be monitored if set to be so explicitly,
+  overriding GLOBAL_MONITOR == 2.
+- Fixed userlist generation in PLAYERS_D in an instance.
+- Since IMC2 servers do not handle usernames with spaces well, IMC2_D
+  now strips spaces from names before sending channel messages.
+- Stargates can now register with the stargate daemon only if they are
+  in /domains/ or /secure/, to avoid dozens of accidental newbie 
+  stargates to creator realms.
+- The prompt command without an argument now returns the raw prompt
+  string, rather than setting a null prompt.
+- Added improvements to the colors command by Raudhrskal.
+- Cleaned up the lines command.
+- Reply target is now reset on login, and ages out after 15 minutes
+  of not replying and not receiving a message from that target.
+- Inventory output now has worn things at the bottom, and wielded
+  things just above worn things.
+- SetEncounter() on aggro npc's now keys on GetInvis() rather than
+  query_invis() for somewhat more predictable results when trying
+  to sneak around.
+- Players on instances no longer get booted off during warmboots.
+
+---- 2.9a16 ---
+- Released 2009-03-12
+- The "locate" command is now "i3locate".
+- Prettified the tabbed file completion stuff.
+- Armor now makes more of an effort to resolve ambiguous
+  targets, such as "wear ring" when both hands can take a ring.
+- Added BaseLimbs to armor in order to resolve ambiguous situations
+  involving sets of limbs, such as a shield which needs a paired
+  arm and hand, plus torso. 
+- LIB_WORN_STORAGE now uses inherited LIB_BASE_ARMOR and 
+  LIB_BASE_STORAGE as inherited code to avoid discrepancies in 
+  behavior in duplicated code. Note this means that the majority
+  of the code for armor is now in LIB_BASE_ARMOR and the majority of the
+  code for "things that hold other things" is now in LIB_BASE_STORAGE.
+- Added GetMaxSkillLevel() to LIB_ABILITIES to consolidate the
+  calculation that was previously duplicated by multiple commands.
+- Fixed a bug that allowed skill levels in negative numbers.
+- Cleaned up some behavior with ANOXIA damage and respiration types.
+- Commands that queued when in combat (such as 'inventory') used
+  to hang indefinitely if you chased your quarry into a "no attack" 
+  room. This is no longer the case.
+- Persistent rooms no longer spawn excess copies of unique 
+  or MaxClone objects.
+- The fighter's hall in Ylsrim is now a proper, working class hall
+  with class joining and training available.
+- Fixed a bug in the flood object that generated performance
+  problems over time.
+- Fixed a bug in the flood object that failed to set the respiration
+  type correctly when a room became completely flooded.
+- Fixed a problem with warmboots that caused some doors to
+  have issues being locked/unlocked/manipulated.
+- Objects that drop into "void" due to a problem with their 
+  environment now are sent to individualized "virtual voids" if
+  the ROOMS_D can resolve that. This avoids some rare circumstances
+  where a huge number of npc's and players fall into a single 
+  "void" room and mayhem ensues. 
+- Fixed a conflict in QCS with customdefs.h that made it difficult
+  to modify your workroom.
+- The goto command now handles global coordinates, eg: goto 2,2
+- The command "imc2 list" now only returns muds currently connected,
+  to avoid a timeout receiving data from a long list of defunct muds.
+- Fixed a problem in scoped heartbeats that prevented players
+  from autosaving.
+- COMPAT BUSTER: debug() now just takes two args, making it 
+  more like tc(). Example:
+  debug on
+  eval debug("My skills: "+identify(this_player()->GetSkills()),"red")
+- It is now possible to carry living things. Creators can get creatures
+  of any size, but players can only pick up creatures smaller than them
+  by at least 2 size slots. Note that picking up an NPC you have not
+  befriended will make it attack you.
+- Fixed a bug in updating virtual rooms.
+- You can now run multiple instances of the same code without clobbering
+  savefiles. If you set ENABLE_INSTANCES in config.h, then reboot, 
+  objects will add the mud's port to their save name, for example
+  "rooms.6666.o" rather than "rooms.o". Obviously this means that the
+  different instances need to be on different ports. For an example
+  of how to do it: help instances
+- Clepius can now extract bullets, if you give him an excision slip.
+- Fixed a carried weight conflict in vehicles and mounts.
+- tell_room() now works on string names of virtual rooms.
+- Fixed a parsing peculiarity when trying to read one book when
+  others are available.
+- Added a hint book to Kim's bookstore.
+- If you were in a virtual room during a warmboot, you are returned
+  to it after the warmboot completes.
+- Creators can now keep track of things sneaking in and out of their
+  inventory with call me->SetParanoia("inventory_monitoring", 1). They
+  can also keep track of where they might be silently moved to with
+  call me->SetParanoia("move_monitoring", 1). Note that these are not
+  foolproof, and the proper way to deal with mischief is not paranoia
+  but extreme violence and harsh language.
+- The "which" command now identifies aliases, add_actions, etc.
+- Finally nailed a mysterious data overwrite problem in PLAYERS_D.
+
+---- 2.9a15 ---
+- Liveupgrade only.
+- Intermediate release to handle special liveupgrade issues.
+
+---- 2.9a14 ---
+- Released 2009-02-04
+- Driver is now a slightly modified FluffOS 2.15.
+- Added an experimental screen-mode inheritable editor, see 
+  LIB_CEDIT and: help ced . It's still a bit quirky and buggy, and
+  incomplete (handles wrapping poorly, doesn't do search/replace,
+  etc). For now it's a proof-of-concept/prototype with saving disabled
+  (thx to Tricky and Raudhrskal for advice on terminal control). Will
+  not work without charmode. Will not work without FluffOS 2.15-ds*.
+- Added sefuns: system_month(), system_day(), write2()
+- Added sefuns from Chaos@Lost Souls: levenshtein_distance(),
+  damerau_levenshtein_distance()
+- Added commands: commandecho, profile, timezone, efuns, sefuns, lfuns
+- Driver: added ANSI_SUBSTITUTE define to comm.c in order to
+  control which character is substituted with in NO_ANSI.
+- It's now possible to re-engage in combat with an opponent you've
+  previously ignored.
+- Rooms now attempt to set their own respiration type based on
+  their medium, if their respiration type is not already set.
+- The longcat command now tries a bit harder to display ludicrously
+  large files.
+- The commands dsversion and noclip work again.
+- Various conflicts in coordinate setting fixed.
+- Mitigated a compat buster in QCS involving customdefs.
+- Miscellaneous performance tweaks to make DS friendlier to use
+  on weak hardware. Tested on a Pentium 133MHz and 
+  an UltraSparcII 300MHz.
+- Changed the name "automap" to "minimap". Automapping will mean
+  something else in later releases.
+- Implemented a "minimum performance" threshold for certain
+  resource-intensive features. The performance score of a system is 
+  determined by CPU time taken at boot. The MIN_PERF define in config.h
+  establishes the minimum score required for "heavy" features like
+  wizmapping and file/function indexing. This system allows people with
+  weak machines to use DS without tons of errors, and it allows people
+  with fast machines to enjoy the fancy stuff by default.
+- Fixed a problem in FUNCTION_D that prevented the lib from having
+  function data when running on Windows.
+- Warmboot no longer hoses up people in charmode.
+- MASTER_D now forces a quick shutdown if it detects one of the following:
+    * Exhausted file descriptors.
+    * Eval cost error cascade loop.
+- Driver: added efun remove_charmode()
+- The hist command now includes timestamps and accepts a number
+  argument for how many lines to display.
+- Fixed local_time() to accept a string timezone.
+- Commands like "date" and "people" now have output customized to the 
+  player's timezone.
+- Driver: fixed command() efun so that success is nonzero 
+  when running on Windows.
+- Charmode now works on Windows (see command() above).
+- The hist command now also handles: say, whisper, yell, shout.
+- Fixed a bug in LIB_BODY that caused decapitation during combat
+  to occur twice, resulting in two severed heads.
+- The "nightmare shell" now does tabbed command completion,
+  tabbed filename completion, tabbed object completion, and 
+  up/down-arrow command recall when in charmode.
+- The findfun command now also identifies efuns and sefuns, and
+  tries to suggest other possible matches based on differing
+  case and format. It also now takes a substring flag to search
+  efuns, sefuns, and lfuns for possible matches.
+- Guarding works properly again. You can no longer take Kim's
+  cash register.
+
+---- 2.9a13 ---
+- Released 2009-01-04
+- Finally got around to indenting everything consistently.
+- Improved handling of missing/broken rooms in ROOMS_D.
+- The noclip command now enables "noclip mode" rather than
+  being a command for moving in a specific direction. While in
+  noclip mode you can move through closed doors and walls if
+  the rooms daemon is aware of an adjacent room in that direction,
+  even with no explicit exit there.
+- Fixed some vaguenesses in death notices.
+- Virtual rooms now immediately unload when the last object in their
+  inventory leaves. This allows, for example, launching a torpedo that 
+  travels 200 rooms without now having to have 200 totally useless 
+  rooms hanging around in memory.
+- Added commands: reprompt, charmode, keepalive
+- The reprompt mode redraws your prompt when you receive
+  messages, similar to how Diku muds do so. Note
+  that reprompt mode looks awful on most mud clients...it's
+  intended for folks with "single pane" clients, like people
+  using a default Linux telnet client.
+- The charmode command puts you into character mode, so that
+  your input is received on a per-keystroke basis, rather than
+  a per-line basis. This allows for stuff like using up and down
+  arrows for command recall. This is for single-pane clients
+  only! Most mud clients will fail to handle this...and they
+  may fail very horribly. This mode is experimental and 
+  somewhat broken at the moment. Unsupported on Windows muds.
+- Fixed bug in LIB_BODY that caused overlapping armor to increase
+  damage received.
+- The default player prompt now includes status info.
+- Driver: Fixed a bug in comm.c that failed to reset to linemode 
+  if the object with the get_char() target function was destructed.
+- Some damage limits have been raised. You may find your npc's
+  and weapons doing substantially more damage. See MAX_POWER and
+  MAX_SKILL in LIB_COMBAT.
+- i3router: Connection freakouts by blacklisted muds are now handled 
+  more gracefully.
+- Added sefuns: present_file(), present_bonus(), query_unique_name()
+- Driver: added efuns: query_charmode(), remove_get_char(), 
+  send_nullbyte() (thanks, Raudhrskal!)
+- AUTO_WIZ no longer prevents class selection.
+- Unified command history code into LIB_HISTORY and rewrote a bit in
+  order to use mappings rather than arrays, to avoid ambiguities.
+- The customdefs.h file for creators and builders is now in their
+  area/ directory. This is to make it easier to migrate such an
+  area to domains/ once it is complete.
+- Consolidated the calculation of max health points into LIB_RACE,
+  fixing some issues with strangely overhealthy npc's during combat
+  (eg kitchen rats).
+- Added Raudhrskal's implementation of Daelaskai's evaldefs idea
+  (thx guys).
+- If a thing doesn't have SetDamagePoints() called on it, it will
+  not deteriorate when it receives damage.
+- Items in perfect condition no longer indicate their condition.
+- Implemented basic persistence for rooms. If a room is SetNoClean(1),
+  has SetPersist(1); in create() and RestoreObject(); on the
+  following line, then when it reloads, it will restore into
+  its inventory whatever was left there...even across reboots. 
+  For an example, see /domains/town/room/secret.c
+- Containers can also have persistence set, but *BEWARE*. Any
+  item you set to be persistent in this way should be unique
+  in the mud. Having multiple clones of an object with persistent
+  inventory may result in hilarity, but very likely also 
+  confusion and sadness in an open mud. For an example of an item with
+  persistent inventory, see /domains/town/obj/charity.c
+  *IMPORTANT NOTE*: carryable items that are made persistent will
+  appear to behave oddly when you "reload" and "update" them, and
+  modify them with QCS. This is because QCS does not actually
+  destroy them right away, and in fact for a brief time you have
+  two of the same item in the mud, stepping on each other's persistent
+  inventory. Expect to see weirdness when using QCS with persistent items.
+- Land-based rooms can now have respiration types other than R_AIR.
+  For an example, see: /domains/default/room/vacuum.c
+  You can also test by issuing the commands:
+  goto /domains/default/room/menagerie
+  eval return HERE->SetRespirationType(R_VACUUM)
+  and seeing most everything drop dead within seconds.
+
+---- 2.9a12 ---
+- Released 2008-11-26
+- DECAY_D is now more resistant to runtime-error failures.
+- Minor improvements to stress testing.
+- At the advice of Silenus, switched the world grid from string based
+  multidimensional mappings to bitshifted integer based multidimensional
+  mappings, which not only cut down mapping depth by 35%, but also
+  increased lookup speed by more than an order of magnitude. Many
+  thanks to Silenus for holding my hand through figuring out how to
+  bash the bits.
+- Portals no longer fall or sink.
+- Warmboots deal more firmly now with situations where very many
+  rooms are loaded.
+- The imc2 channel "ichat" is no longer enabled by default due to
+  a change in their content policy making them no longer PG-13. To enable 
+  it for yourself, you would type: call me->AddChannel("ichat")
+- New creators now automatically "wizmap" rather than "automap".
+- Added Town Well quest.
+- Added LIB_FLOW as an example of a "flooding" type object.
+
+---- 2.9a11 ---
+- Released 2008-11-20
+- Driver is now a slightly modified FluffOS 2.14.
+- Fixed a parser crasher in the driver that occurs under 
+  unusually heavy loads.
+- Parsing ambiguity in grenades fixed up a bit.
+- Bots now handle too-bright and too-dark rooms more sensibly.
+- Bots now handle paged displays more sensibly.
+- Room inventories will now accept a function for the number
+  of items. For an example of a random number of rats between
+  1 and 5, see /domains/town/room/mansion_room7.c
+- You can now limit the number of of clones of an npc or an item
+  that the mud will load as inventory. If a sword's base file
+  has SetMaxClones(15), then a room will not try to load the
+  sword in its inventory if the mud already has 15 of these swords
+  cloned somewhere. Note that SetMaxClones() in a base file
+  will cause the object not to be saved in a player's inventory
+  when they quit. For an example, see /domains/default/armor/wristcomp.c
+- Fixed a problem in CreWeb editing with wrapping and line numbering
+  that displayed incorrect line numbers.
+- Fixed a driver crasher involving the destruction of objects
+  while they are in a verb parsing loop.
+- Fixed a problem with passing functionals to SetAction() in rooms
+  (thx, Raudhrskal!).
+- Added a prototype overland map system. It's mostly in the testing
+  phase, as it tends to lag the mud somewhat. Creators can enable
+  automatic mapping with: wizmap on
+- Minor fixes of rooms with grid conflicts.
+- Added command: wizmap
+- Fixed a problem with the npc guard system that prevented more
+  than one guard from being able to guard in the same room.
+- Fixed what is essentially borken behavior in Set/GetItems
+  that have a functional. However, I suspect that this behavior has
+  actually been assimilated all over the place as being a standard,
+  so the effect here is a possible *slight* compat buster, with
+  SetItems that have functionals displaying output twice.
+- Added a portal generator, and cake to go along with it.
+- Added new domain: /domains/cave as an undergound orc stronghold.
+  It's mostly done, though I'll be adding more to it eventually.
+  Note that this is an example of "an area where normal creators and
+  overpowered players are not welcome". This is a feature I'm
+  testing to see how feasible it is to prevent casual-abuse type
+  creators from being too much of a nuisance on an open mud.
+
+---- 2.9a10 ---
+- Released 2008-10-19
+- Fixed peculiar problem in the get verb that sometimes made
+  it seem as though an open container was closed, for creators.
+- It is now exceedingly difficult to fight or
+  defend when not standing, or when your vision is poor.
+- Added command: gridconfig
+- Minor grid conflicts cleaned up.
+- Fixed a permissions issue that prevents doors from showing up
+  for players without read access to an area.
+- Value for meals now defaults to base cost.
+- Reaping tidied up: REAPER_D now fires up at boot time, and
+  reap_other() will scour for environmentless clones whether
+  the driver is FluffOS or not.
+- Players are now addressable by their race.
+- Added a "max attacks per heartbeat" throttle to combat.c to
+  avoid having creators in godmode with ludicrous stats causing
+  the mud to seize up fighting each other.
+- Fixed a too long eval in warmbooting.
+- LIB_COMMAND now handles multi-word bare exits ("foo bar" rather than
+  "go foo bar").
+- Added Kalinash's driver mod to override new() with clone_object() if the
+  clone_object() sefun exists.
+- valid_edit() in LIB_BOARD now works more sensibly and denies edit
+  and deletion access to people who should not have it.
+- "give all to X" now works like selling and putting: worn and wielded
+  items are not automatically surrendered.
+- Fixed some parsing issues with booby traps.
+- clone_object() is now overridden with a throttle to prevent
+  accidental cloning cascades from creator objects.
+- Added MEMUSE_SOFT_LIMIT and MEMUSE_HARD_LIMIT. These are disabled
+  by default. They are intended to provide some control over memory
+  usage, for folks on commercial hosting or resource-starved computers.
+  For details, see: help config
+- Added driver fix for check_memory() crasher.
+- Added max player limits in LIB_CONNECT based on compile-time-
+  detected file descriptor max.
+- Fixed a crasher in the driver that occurs under very rare
+  high-network-load stress.
+
+---- 2.9a9 ---
+- Released 2008-09-24
+- Driver is now a slightly modified pre-release FluffOS 2.14v27.
+- Revolvers no longer change caliber spontaneously.
+- Basic IMC2 server added.
+- IRN "not my mud" endless loop when more than 2 nodes is fixed.
+- Added "chanlist-req" to the router. You can now get a chanlist
+  without having to reboot.
+- Packet floods from a given mud are now detected and temporarily
+  ignored.
+- The IMC2 ichat channel has been added as a default channel for
+  creators in /secure/cmds/admins/encre.c
+- The finger daemon no longer reports an incorrect birth year
+  when queried repeatedly.
+- Added commands: mudinfo, enemies, showgrid, whereis
+- Quest-dependent advancement can be disabled in config.h by
+  setting REQUIRE_QUESTING to 0.
+- Automatic advancement (i.e. not having to go to Dirk) can
+  be enabled by setting AUTO_ADVANCE to 1.
+- Added "questrequired" and "autoadvance" to mudconfig command.
+- The table of quest and experience points required for
+  advancement is now maintained in PLAYERS_D, not Dirk.
+- By default DS will now handle automatic advancement well beyond
+  level 100. Note that there has been no balancing attempted
+  beyond level 20. You will need to seriously adjust your mud's balance if
+  you allow advancement past level 20.
+- Bug fixed in quitting while invis.
+- Added a cgi gateway to the built-in webserver that allows you
+  to connect to the mud with a java client. To enable it:
+  -----------------------
+  mudconfig http port 8001
+  mudconfig http disable
+  mudconfig cgi enable
+  mudconfig dirlist enable
+  mudconfig creweb enable
+  mudconfig http enable
+  -----------------------
+  Then use your browser to connect to your mud's connection page 
+  (for example, http://your.muds.address.com:8001/cgi/connection.html )
+  NOTE: the mud www port does not have to be 8001. Change it to
+  whatever is appropriate for you.
+- The dest verb now behaves like before. Desting of non-cloned
+  objects by using their file names is again unsupported. This
+  fixes problems with desting a singular among plurals.
+- Some parsing issues in grenades fixed. They also do more
+  damage, but are limited to hurting the first dozen or so people.
+- Added a flash policy server. To enable, uncomment the flash_policy line
+  in /secure/cfg/preload.cfg, redirect your mud server's port 843 to
+  your mud port + 3 (for example 6669, if your mud is on 6666), 
+  and reboot your mud. 
+- Added MUDINFO_D to manage longterm intermud data (normal people 
+  will not have any use for this).
+- The answering machine now works again (when did this break??).
+- Added ROOMS_D to keep track of the relative locations of rooms. This
+  is necessary for some activities that will involve distances, such as vehicle
+  combat in virtual areas.
+- Added sefuns: coordinates(), calculate_coordinates(),
+  room_environment(), query_windows()
+- Some rooms have been moved around to accommodate conflicts with
+  their coordinates.
+- Only Firefox is supported with creweb. I can no longer afford to
+  try to keep up with every browser's idea of how to conduct itself.
+  If creweb isn't working and you aren't using Firefox, please use Firefox.
+- The "noclip" command now accepts non-exit directions that have
+  an entry in ROOMS_D as having a room adjacent.
+- Books now do not individually hold their data, but rather cache and
+  query with BOOK_D, to cut down on memory abuse and disk I/O costs.
+- Fixed a bug in last_string_element() sefun that screwed up qcs doors.
+- Added a zombie scroll to Oana's shop.
+- General miscellaneous typo corrctions and minor bugfixes.
+- Added Vega's SEASONS_D fixes.
+
+---- 2.8.5 ---
+- Liveupgrade only.
+- Intermediate release to handle special liveupgrade issues.
+
 ---- 2.8.4 ---
 - Released 2008-07-24
 - Merged 2.9a8 into the 2.8.x line. Due to the importance of some
-  security fixes, and that major changes have not been introduced
+  security fixes, and since major changes have not yet been introduced
   in 2.9, the improvements of 2.9a8 (unreleased) and below are being
   folded into 2.8.
 - Fixed odd door id problem reported by Tricky when warmbooting.

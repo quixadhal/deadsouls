@@ -37,7 +37,7 @@ mixed cmd(string args) {
     }
     if( maxi == 1 ) {
         message("system", "You have only one title: " + titles[0], 
-          this_player());
+                this_player());
         return 1;
     }
     else if( maxi == 2 ) {
@@ -55,7 +55,7 @@ mixed cmd(string args) {
             update("/secure/daemon/finger");
         };
         message("system", "You have the following titles:\n\t" +
-          titles[0] + "\n\t" + titles[1], this_player());
+                titles[0] + "\n\t" + titles[1], this_player());
         message("prompt", "Do you wish to reverse them? [n] ", this_player());
         input_to(f, titles);
         return 1;
@@ -71,7 +71,7 @@ static void eventOrderTitles(string *titles, int maxi) {
     for(i=0; i<maxi; i++)
         message("system", "\t" + (i+1) + " " + titles[i], this_player());
     message("prompt", "Move which (q to quit)? [" + (maxi) + "] ", 
-      this_player());
+            this_player());
     input_to((: GetTitle :), titles, maxi);
 }
 
@@ -92,7 +92,7 @@ static void GetTitle(string which, string *titles, int maxi) {
     }
     x--;
     message("prompt", "Move \"" + titles[x] + "\" to position? [1] ",
-      this_player());
+            this_player());
     input_to( (: GetDest :), titles, x, maxi );
 }
 
@@ -128,22 +128,22 @@ static void GetDest(string which, string *titles, int i, int maxi) {
 void help() {
     if( creatorp(this_player()) ) {
         message("help", "Syntax: <title [title]>\n\n"
-          "Allows you to change your title.  You must include the "
-          "token $N in your title, which will be replaced with your "
-          "name as appropriate.  For example:\n"
-          "\ttitle We are $N of Borg\n"
-          "would make my short appear as:\n"
-          "\tWe are Descartes of Borg.\n\n", this_player());
+                "Allows you to change your title.  You must include the "
+                "token $N in your title, which will be replaced with your "
+                "name as appropriate.  For example:\n"
+                "\ttitle We are $N of Borg\n"
+                "would make my short appear as:\n"
+                "\tWe are Descartes of Borg.\n\n", this_player());
     }
     else {
         message("help", "Syntax: <title>\n\n"
-          "Allows you to reorder your titles.  Your first two titles "
-          "appear in your short description.  This command is "
-          "interactive, meaning it prompts you for what to do.  "
-          "hit 'q' at any point to save your changes and exit out of "
-          "this command.\nYou can also type (title 1) or (title 2) "
-          "to change how many titles appear in your description.",
-          this_player() );
+                "Allows you to reorder your titles.  Your first two titles "
+                "appear in your short description.  This command is "
+                "interactive, meaning it prompts you for what to do.  "
+                "hit 'q' at any point to save your changes and exit out of "
+                "this command.\nYou can also type (title 1) or (title 2) "
+                "to change how many titles appear in your description.",
+                this_player() );
     }
 }
 

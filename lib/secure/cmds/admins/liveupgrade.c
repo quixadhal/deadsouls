@@ -1,23 +1,12 @@
 #include <lib.h>
 #include <dirs.h>
 #include <cfg.h>
+#include <commands.h>
 #include <save.h>
 #include <daemons.h>
-#include <network.h>
+#include NETWORK_H
 
-#define WGET_D "/secure/daemon/luget"
-#ifndef WEB_SOURCE
-#define WEB_SOURCE "149.152.218.102"
-#endif
-#ifndef WEB_SOURCE_NAME
-#define WEB_SOURCE_NAME "dead-souls.net"
-#endif
 #define WEB_SOURCE_PORT 80
-#ifndef SAVE_LIVEUPGRADE
-#define SAVE_LIVEUPGRADE   DIR_SECURE_SAVE "/liveupgrade"
-#endif
-
-inherit LIB_DAEMON;
 
 string array allnames = ({});
 string array tmpnames;
@@ -29,13 +18,37 @@ static string upgrades_files = "/secure/upgrades/files";
 static int i = 0;
 static int oob = 0;
 static object player = 0;
-int transver = 0;
+int patched, transver = 0;
 static mapping NewFiles = ([]);
+static string SaveFile;
 
 void create(){
-    daemon::create();
-    SetSaveFile(SAVE_LIVEUPGRADE);
-    eventRestore(1);
+#ifdef ENABLE_INSTANCES
+    SaveFile = save_file(SAVE_LIVEUPGRADE);
+    if( unguarded( (: file_exists(SaveFile) :) ) ){
+        unguarded( (: restore_object(SaveFile) :) );
+    }
+#endif
+
+    if(false()){
+        object uu = find_object("/secure/daemon/update");
+        if(uu) uu->eventDestruct();
+        if(uu) destruct(uu);
+        patched = 1;
+        unguarded( (: cp("/secure/daemon/update.patch",
+                        "/secure/daemon/update.c") :) );
+        unguarded( (: reload("/secure/daemon/update.c") :) );
+    }
+}
+
+int eventDestruct(){
+#ifdef ENABLE_INSTANCES
+    if(directory_exists(path_prefix(SaveFile))){
+        unguarded( (: save_object(SaveFile) :) );
+    }
+#endif
+    destruct();
+    return 1;
 }
 
 int eventBackup(string file){
@@ -61,9 +74,9 @@ int eventBackup(string file){
         mkdir(reverts_prefix+"/"+revert_name);
     }
     filename = reverts_prefix+"/"+revert_name+
-    "/"+short_name+"."+time_str;
+        "/"+short_name+"."+time_str;
     write_file(reverts_prefix+"/"+revert_name+"/"+
-      "/bk.db",short_name+"."+time_str+" : "+file+"\n");
+            "/bk.db",short_name+"."+time_str+" : "+file+"\n");
     cp(file,filename);
     return 1;
 }
@@ -101,8 +114,9 @@ int eventRevert(string revert_path){
 }
 
 void eventReloads(){
+    cp("/secure/daemon/update.patch","/secure/daemon/update.c");
     reload(UPDATE_D);
-    reload(WGET_D);
+    reload(LUGET_D);
 }
 
 int eventCopy(string element){
@@ -169,8 +183,8 @@ mixed cmd(string str) {
     } 
 
     foreach(mixed element in socks){
-        if(element[1] == "DATA_XFER" && element[4] == WEB_SOURCE+"."+WEB_SOURCE_PORT &&
-          str != "cancel"){
+        if(element[1] == "DATA_XFER" && element[4] == WEB_SOURCE_IP+"."+WEB_SOURCE_PORT &&
+                str != "cancel"){
             player->eventPrint("A download is still in progress. Please wait until it is complete.");
             return 1;
         }
@@ -204,8 +218,31 @@ mixed cmd(string str) {
     i = 0;
     foo = sscanf(str,"%s %s",file, mud);
     if(!foo || foo < 2) file = str;
-    if(str == "apply"){
+    if(str == "apply" || str == "deferred"){
         string *files = ({});
+        string nlu, secs = upgrades_files+"/0^0secure0^0include0^0secrets.h";
+        object nlob;
+        if(file_exists(secs) && file_exists(SECRETS_H)){
+            rm(secs);
+        }
+        nlu = upgrades_files+"/0^0secure0^0cmds0^0admins0^0liveupgrade.c";
+        if(file_exists(nlu)){
+            catch( nlob = load_object(nlu) );
+            if(nlob && nlob->GetDeferment() && str != "deferred"){
+                nlob->eventDestruct();
+                return 1;
+            }
+            if(nlob) nlob->eventDestruct();
+            if(!rename(nlu, CMD_LIVEUPGRADE)){
+                write("The liveupgrade command has been updated.");
+                write("Please wait five seconds, then again type:\n");
+                write("liveupgrade apply");
+                if(!(this_object()->eventDestruct())){
+                    RELOAD_D->eventReload(this_object(), 0);
+                }
+                return 1;
+            }
+        }
         player->eventPrint("I hope you backed up...\n");
         foreach(string element in get_dir(upgrades_files+"/")){
             if(element == "0^0secure0^0sefun0^0mud_info.c"){
@@ -215,11 +252,11 @@ mixed cmd(string str) {
                     string current_ver = mudlib_version();
                     vers = thingy->mudlib_version();
                     if(((grepp(vers,"a") && !grepp(current_ver, "a")) ||
-                        (!grepp(vers,"a") && grepp(current_ver, "a"))) &&
-                      !transver){
+                                (!grepp(vers,"a") && grepp(current_ver, "a"))) &&
+                            !transver){
                         write("This upgrade would cross stable/alpha "
-                          "boundaries, but that has not been enabled "
-                          "with \"liveupgrade alpha\" yet.");
+                                "boundaries, but that has not been enabled "
+                                "with \"liveupgrade alpha\" yet.");
                         return 1;
                     }
                 }
@@ -229,12 +266,13 @@ mixed cmd(string str) {
         foreach(string element in files){
             string contents = "";
             NewFiles[element] = replace_string(replace_string(element,"0^0","/"),
-              upgrades_files+"/","");
+                    upgrades_files+"/","");
             contents = read_file(element);
             if(!contents) contents = "";
             if(last(contents,1) != "\n") contents += "\n";
             write_file(element, contents, 1);
             //eventBackup(NewFiles[element]);
+            reset_eval_cost();
             call_out( (: eventBackup :), 0, NewFiles[element]);
             if(directory_exists(NewFiles[element])) true();
             else {
@@ -246,6 +284,7 @@ mixed cmd(string str) {
         }
         if(member_array(INET_D,preload_file) == -1 && inet) inet->eventDestruct();
         call_out( (: eventReloads :), 10);
+        patched = 0;
         RELOAD_D->eventReload(this_object(), 15);
         rm("/secure/upgrades/txt/list.txt");
         player->eventPrint("\nAlmost done...");
@@ -264,7 +303,7 @@ mixed cmd(string str) {
         player->eventPrint("Cancelled.");
         player = 0;
         RELOAD_D->eventReload(this_object(), 2);
-        reload(WGET_D);
+        reload(LUGET_D);
         return 1;
     }
     if(oob){
@@ -273,9 +312,9 @@ mixed cmd(string str) {
             player->eventPrint("Starting INET_D.");
             if(member_array(INET_D,preload_file) == -1)
                 player->eventPrint("When you complete the upgrade by using the \"apply\" keyword, the "
-                  "inet daemon will be shut down, since you do not have it enabled by "
-                  "default. Please remember to either apply the upgrades when the downloading "
-                  "is complete, or manually shut down INET_D with the command: mudconfig inet stop\n");
+                        "inet daemon will be shut down, since you do not have it enabled by "
+                        "default. Please remember to either apply the upgrades when the downloading "
+                        "is complete, or manually shut down INET_D with the command: mudconfig inet stop\n");
         }
         if(!inet){
             player->eventPrint("There is a problem with INET_D. The upgrade will not proceed.");
@@ -325,7 +364,7 @@ mixed cmd(string str) {
         else if(this_player()) player = this_player();
         else player = this_object();
 
-        if(WGET_D->GetUpgrading()){
+        if(LUGET_D->GetUpgrading()){
             player->eventPrint("An upgrade in already occurring. Please wait for it to complete.");
             return 1;
         }
@@ -338,8 +377,8 @@ mixed cmd(string str) {
                 OOB_D->GetFile(mud,upgrades_txt+"/upgrades.txt");
             }
             else {
-                WGET_D->GetFile(WEB_SOURCE, upgrade_prefix+"/upgrades.txt",WEB_SOURCE_NAME,
-                  "/secure/upgrades/txt/list.txt",WEB_SOURCE_PORT);
+                LUGET_D->GetFile(WEB_SOURCE_IP, upgrade_prefix+"/upgrades.txt",WEB_SOURCE_NAME,
+                        "/secure/upgrades/txt/list.txt",WEB_SOURCE_PORT);
             }
             call_out( (: cmd :), 5, orig_str);
             return 1;
@@ -355,17 +394,17 @@ mixed cmd(string str) {
             OOB_D->eventMajorUpgrade(mud, allnames);
         }
         else {
-            WGET_D->eventMajorUpgrade(WEB_SOURCE, allnames,WEB_SOURCE_NAME);
+            LUGET_D->eventMajorUpgrade(WEB_SOURCE_IP, allnames,WEB_SOURCE_NAME);
         }
         rm(upgrades_txt+"/list.txt");
         player->eventPrint("Full upgrade begun.");
         player->eventPrint("Please wait until you receive a completion message,  "+
-          "then issue the command: liveupgrade apply\n\n");
+                "then issue the command: liveupgrade apply\n\n");
         player->eventPrint("%^FLASH%^RED%^WARNING! %^BLACK%^WARNING! %^YELLOW%^WARNING! %^RESET%^WARNING!");
         player->eventPrint("You must *always* do a full backup before applying the liveupgrade. "+
-          "If the liveupgrade screwed up, and you get garbage files because of connection "+
-          "problems, it may be necessary for you to restore from backup to be able to "+
-          "start the mud again. You've been warned.");
+                "If the liveupgrade screwed up, and you get garbage files because of connection "+
+                "problems, it may be necessary for you to restore from backup to be able to "+
+                "start the mud again. You've been warned.");
         return 1;
     }
     if(oob){
@@ -373,8 +412,8 @@ mixed cmd(string str) {
         player->eventPrint("Requesting the file \""+file+"\" from "+INTERMUD_D->GetMudName(mud)+".");
     }
     else {
-        player->eventPrint("Requesting the file \""+file+"\" from "+WEB_SOURCE);
-        WGET_D->GetFile(WEB_SOURCE, upgrade_prefix+file);
+        player->eventPrint("Requesting the file \""+file+"\" from "+WEB_SOURCE_IP);
+        LUGET_D->GetFile(WEB_SOURCE_IP, upgrade_prefix+file);
     }
     return 1;
 }
@@ -383,28 +422,36 @@ void eventReceiveReport(string str){
     if(player) player->eventPrint(str);
 }
 
+int GetDeferment(){
+    string secs = upgrades_files+"/0^0secure0^0include0^0secrets.h";
+    if(file_exists(secs) && file_exists(SECRETS_H)){
+        rm(secs);
+    }
+    return 0;
+}
+
 string GetHelp() {
     return ("Syntax: liveupgrade all\n"
-      "        liveupgrade apply\n"
-      "        liveupgrade cancel\n"
-      "        liveupgrade revert\n"
-      "        liveupgrade alpha\n"
-      //"To use oob updates (not recommended), use the -o flag. The default "
-      //"is currently an http connection to dead-souls.net, which is vastly "
-      //"faster and more secure than oob.\n"
-      "To upgrade all files to the next appropriate level for your lib version:\n"
-      "liveupgrade all\n"
-      "Wait until you receive the completion message before finalizing the upgrade. "
-      "You can finalize the upgrade by typing:\n"
-      "liveupgrade apply\n"
-      "This will delete your old copies of files and copy the newly downloaded "
-      "ones in their place.\n"
-      "NEVER EVER do a liveupgrade without a full backup first.\n"
-      "To cancel the liveupgrade process:\n"
-      "liveupgrade cancel\n"
-      "To restore your mud to the condition it was in prior to the last liveupgrade.\n"
-      "liveupgrade revert\n"
-      "To enable liveupgrading between alpha and stable versions:\n"
-      "liveupgrade alpha\n\n"
-      "Proxies are not supported. OOB is no longer supported.\n");
+            "        liveupgrade apply\n"
+            "        liveupgrade cancel\n"
+            "        liveupgrade revert\n"
+            "        liveupgrade alpha\n"
+            //"To use oob updates (not recommended), use the -o flag. The default "
+            //"is currently an http connection to dead-souls.net, which is vastly "
+            //"faster and more secure than oob.\n"
+            "To upgrade all files to the next appropriate level for your lib version:\n"
+            "liveupgrade all\n"
+            "Wait until you receive the completion message before finalizing the upgrade. "
+            "You can finalize the upgrade by typing:\n"
+            "liveupgrade apply\n"
+            "This will delete your old copies of files and copy the newly downloaded "
+            "ones in their place.\n"
+            "NEVER EVER do a liveupgrade without a full backup first.\n"
+            "To cancel the liveupgrade process:\n"
+            "liveupgrade cancel\n"
+            "To restore your mud to the condition it was in prior to the last liveupgrade.\n"
+            "liveupgrade revert\n"
+            "To enable liveupgrading between alpha and stable versions:\n"
+            "liveupgrade alpha\n\n"
+            "Web proxies are *NOT* supported. OOB is no longer supported.\n");
 }

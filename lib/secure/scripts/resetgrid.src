@@ -1,0 +1,31 @@
+eval return objects( (: base_name($1) == "/secure/obj/floodmapper" :) )->eventDestruct()
+eval return ROOMS_D->zero()
+eval return MAP_D->zero()
+goto /domains/default/room/start
+open door
+go north
+goto /domains/town/virtual/bottom/33,100000
+gridconfig set here 2,99989,-9
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+goto /domains/campus/room/start
+goto /domains/Ylsrim/room/tower
+gridconfig set here 1000,1001,1
+goto /domains/Praxis/square
+gridconfig set here 1000,-1000,0
+goto /domains/town/room/mansion_int
+gridconfig set here -5,3,0
+goto /domains/town/room/mansion_uhall1
+gridconfig set here -5,3,1
+arch
+gridconfig set here -2,2,0
+#goto /domains/town/room/vill_road1
+#gridconfig set here -3,6,0

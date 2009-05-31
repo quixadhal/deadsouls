@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include "ex.h"
 
 inherit LIB_ROOM;
@@ -12,8 +12,8 @@ void create() {
     SetLong("A featureless area. The example rooms are north.");
 
     SetExits( ([
-        "north" : EXPATH + "entrance"
-      ]) );
+                "north" : EXPATH + "entrance"
+                ]) );
 }
 void init(){
     ::init();

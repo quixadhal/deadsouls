@@ -16,13 +16,15 @@ void create(){
     ::create();
 
     SetKeyName("pinger");
-    SetId( ({"thing"}) );
-    SetAdjectives( ({"keepalive"}) );
-    SetShort("a keepalive pinger");
+    SetId( ({"pinger"}) );
+    SetAdjectives( ({"pinger"}) );
+    SetShort("a pinger");
     SetLong("This thing can be set to periodically output a string, "
-      "with the purpose of keeping fickle telnet connections up. "
-      "\nTo set the interval: interval <heartbeats> \n"
-      "To set the string: keepalive <string>");
+            "with the purpose of keeping fickle telnet connections up. "
+            "\nTo set the interval: interval <heartbeats> \n"
+            "To set the string: vassily <string>\n"
+            "\nNote that this object is deprecated in favor of the "
+            "keepalive command.");
     SetNoCondition(1);
     SetMass(20);
     SetBaseCost("silver",10);
@@ -53,7 +55,7 @@ int SetKeepalive(string str){
 void init(){
     ::init();
     add_action("SetInterval","interval");
-    add_action("SetKeepalive","keepalive");
+    add_action("SetKeepalive","vassily");
 }
 
 void heart_beat(){
@@ -61,7 +63,7 @@ void heart_beat(){
     if(interval > 0 && count > interval){
         count = 0;
         if(living(environment(this_object())) &&
-          true()){
+                true()){
             if(query_idle(environment(this_object())) > 240){
                 if(environment(this_object()))
                     environment(this_object())->eventPrint(keepalive);

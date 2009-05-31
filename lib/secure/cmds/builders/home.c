@@ -9,6 +9,7 @@
 #include <daemons.h>
 
 inherit LIB_DAEMON;
+string arg;
 
 mixed GoHome(string str) {
     object ob, prev;
@@ -21,7 +22,8 @@ mixed GoHome(string str) {
     str = user_path(who);
     if(!directory_exists(str)) return "That person has no home dir.";
     str = user_path(who)+"workroom.c";
-    if(!file_exists(str))
+    arg = str;
+    if(!unguarded((: file_exists(arg) :)))
         return capitalize(who)+" has no active workroom.";
     ob = load_object(str);
     if(!ob){
@@ -37,7 +39,7 @@ mixed GoHome(string str) {
         }
     if(who != this_player()->GetKeyName())
         if( (int)this_player()->eventMoveLiving(ob,"$N leaves to visit "+capitalize(who)+".",
-            "$N comes in for a visit.") ) {
+                    "$N comes in for a visit.") ) {
             return 1;
         }
     return "You stay where you are.";
@@ -49,9 +51,9 @@ mixed cmd(string str){
 
 void help() {
     message("help", "Syntax: <home>\n        <home [creator]>\n\n"
-      "Without arguments, this command will take you to your workroom.  "
-      "With arguments, it takes you to the workroom of the person "
-      "you specify. Non-creator builders can only go to their own "
-      "workroom.\n\n"
-      "See also: goto, trans", this_player());
+            "Without arguments, this command will take you to your workroom.  "
+            "With arguments, it takes you to the workroom of the person "
+            "you specify. Non-creator builders can only go to their own "
+            "workroom.\n\n"
+            "See also: goto, trans", this_player());
 }

@@ -11,20 +11,21 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     string *arr;
     string ret = "";
+    string dss = replace_string(dump_socket_status(),"-- 0","--\n 0");
     foreach(mixed key, mixed val in network_stats()){
         val = val+"";
         ret += sprintf("%:-30s %s",key, val)+"\n";
     }
     write(ret);
 
-    arr = filter(explode(dump_socket_status(), "\n"), (: $1[0..1] != "-1" :));
+    arr = filter(explode(dss, "\n"), (: $1[0..1] != "-1" :));
     this_player()->eventPage(arr, "system");
     return 1;
 }
 
 void help() {
     message("help", "Syntax: <netstat>\n\n"
-      "Gives you information about sockets being used by the LPC "
-      "server through the MudOS socket efuns.\n\n"
-      "See also: callouts, dumpallobj, mstatus", this_player());
+            "Gives you information about sockets being used by the LPC "
+            "server through the MudOS socket efuns.\n\n"
+            "See also: callouts, dumpallobj, mstatus", this_player());
 }

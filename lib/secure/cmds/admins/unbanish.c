@@ -19,6 +19,6 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: <unbanish [name]>\n\n"
-      "Removes a name from the list of banished names.\n"
-    );
+            "Removes a name from the list of banished names.\n"
+         );
 }

@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/adv_board.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    created by Rush@Dead Souls
  */
 

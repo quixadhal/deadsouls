@@ -9,14 +9,14 @@ inherit LIB_ROOM;
 create() {
     ::create();
     SetProperties( ([ "light": 0, "no teleport" : 1, "no magic" : 1
-      ]) );
+                ]) );
     SetShort("Pit of Spiders");
     SetLong("You are standing deep underground in "
-      "a circular pit.  The walls surrounding you are completely "
-      "smooth with no sign of hand holds or other ways "
-      "to get out.");
+            "a circular pit.  The walls surrounding you are completely "
+            "smooth with no sign of hand holds or other ways "
+            "to get out.");
     SetItems( ([ ({ "walls", "wall" }) : "A smooth, circular wall, "
-        "about 50 cubits deep and unnaturaly smooth." ]) );
+                "about 50 cubits deep and unnaturaly smooth." ]) );
 }
 
 void reset() {

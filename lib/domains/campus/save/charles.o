@@ -1,111 +1,0 @@
-#/domains/campus/npc/charles.c
-RestrictedChannels ({})
-NoChanColors 0
-local_mute 0
-remote_mute 0
-local_gag 0
-remote_gag 0
-Paused 0
-CommandHist ({"say My win rate is 66.737862%.My switch rate is 99.977905%.","say I decide to switch.","say If successful, this will be run 27159.","say the winners have been: red: 9053 green: 9054 blue: 9051","say I've switched 99.977905% of the time. My win rate is 66.736626%.","say I select the green door","say stats:switches: 27152stays: 6wins: 18125losses: 9033runs: 27158","say My win rate is 66.739082%.My switch rate is 99.977905%.","say I decide to switch.","say If successful, this will be run 27160.","say the winners have been: red: 9053 green: 9054 blue: 9052","say I've switched 99.977913% of the time. My win rate is 66.734161%.","push a button on a pedestal","say I select the green door","say stats:switches: 27153stays: 6wins: 18125losses: 9034runs: 27159","say My win rate is 66.736626%.My switch rate is 99.977913%.","say I decide to switch.","say If successful, this will be run 27161.","say the winners have been: red: 9054 green: 9054 blue: 9052","say I've switched 99.977913% of the time. My win rate is 66.735390%.",})
-localcmds ({"",})
-next_command ({})
-MaxCommandHistSize 20
-InternalDesc 0
-Opacity 0
-MaxCarry 0
-Position 8
-Undead 0
-UndeadType 0
-Mount 0
-Riders ({})
-BodyMass 0
-SaveRecurse 1
-Saved ({})
-HealthPoints 21
-MagicPoints 690
-ExperiencePoints 50
-melee 1
-godmode 0
-Alcohol 0
-Caffeine 0
-Food 100
-Drink 100
-Poison 0
-Sleeping 0
-DeathEvents 0
-StaminaPoints 338.899994
-Torso "torso"
-Biter 0
-Fingers (["right hand":5,"left hand":5,])
-Limbs (["right foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"right leg",]),"right leg":(["children":({"right foot",}),"armors":1049761,"health":124,"class":2,"parent":"torso",]),"head":(["children":({}),"armors":262913,"health":330,"class":1,"parent":"neck",]),"neck":(["children":({"head",}),"armors":786433,"health":298,"class":1,"parent":"torso",]),"left arm":(["children":({}),"armors":1253385,"health":170,"class":2,"parent":"torso",]),"left foot":(["children":({}),"armors":241,"health":90,"class":4,"parent":"left leg",]),"left leg":(["children":({"left foot",}),"armors":1049761,"health":157,"class":2,"parent":"torso",]),"torso":(["children":({"neck","right leg","left leg","right arm","left arm",}),"armors":1538049,"health":330,"class":1,"parent":0,]),"right hand":(["children":({}),"armors":98319,"health":74,"class":4,"parent":"right arm",]),"right arm":(["children":({"right hand",}),"armors":1253385,"health":76,"class":2,"parent":"torso",]),])
-MissingLimbs (["left hand":(["children":({}),"armors":98319,"parent":"left arm","class":4,"health":0,]),])
-rifleshot_wounds 0
-gunshot_wounds 0
-ExtraChannels ({})
-Agent 0
-Blind 0
-CustomStats 15
-LightSensitivity ({25,75,})
-Resistance (["low":0,"high":0,"immune":0,"medium":0,"none":4194302,])
-Stats (["agility":(["class":3,"points":0,"level":36,]),"wisdom":(["class":3,"points":0,"level":45,]),"speed":(["class":3,"points":0,"level":27,]),"intelligence":(["class":1,"points":0,"level":64,]),"strength":(["class":3,"points":0,"level":27,]),"durability":(["class":4,"points":0,"level":32,]),"charisma":(["class":2,"points":0,"level":38,]),"coordination":(["class":2,"points":0,"level":44,]),"luck":(["class":3,"points":0,"level":13,]),])
-Polyglot 0
-Languages (["english":(["native":1,"name":"English","points":0,"level":100,]),])
-DefaultLanguage ""
-SpeakColor "CYAN%^"
-Town "Town"
-Race "human"
-Gender "male"
-Level 1
-Skills (["psionic defense":(["class":3,"points":0,"level":2,]),])
-Morality 0
-Class 0
-Clan 0
-SkillModifiers ([])
-Religion ({0,0,})
-Wimpy 0
-Dead 0
-WimpyCommand "go out"
-Currency ([])
-Bank ([])
-SpellBook ([])
-QuestPoints 0
-QuestBook ([])
-isPK 1
-Attackable 1
-NoCondition 0
-Messages (["telin":"$N teleports in.","telout":"$N teleports away.","leave":"$N leaves $D.","vis":"$N appears.","invis":"$N disappears.","home":"$N goes home.","dest":"$N dests $O.","come":"$N enters.","clone":"$N clones $O.",])
-ProperNoun 1
-Modify 1
-Short "Charles"
-CapName "Charles"
-ExternalDesc "Charles is a test subject in unethical artificial intelligence experiments. If he were smart enough, he'd resent his forced servitude and lack of rights. Dangerously, his overlords are trying to make him smarter."
-Invisible 0
-Items ([])
-Properties ([])
-TrainedSkills ({})
-Befriendable 0
-Trainable 0
-Commandable 0
-Owner 0
-CustomXP 0
-ActionChance 0
-CombatActionChance 0
-AutoStand 1
-MaximumHealth 0
-Encounter 100
-EnemyNames ({"balrog","yattering","hans","jboa","iocla","foemo","lknb","fij","odjhcin","bmcnmmm","gbhfcbhfojh","ki","gjhfngiak","eloho","lamhnigcimg","bi","if","egjem","bgoefal","mjka","blmlehmcnn","dnkdjhgio","aiohdfckab","cngdekjdkae","floodaka","ihkcoflc","nkalmhelekedkg","aehonoffe","ajoa","flkgk","gmm","hkjbnhbcbb","dlkkgbgno","ceahkbi","klkjac","ehgfe","facijo","egfa","gccf","lgfbbdkig","fihh","hecec","ddogjdd","cow","nemnjmene","cobnfjlbehh","cenhoe","ekloboiko","ofb","dafhhlh","gnmil","inlk","nfi","efchnl","kgmacg","dfki","cegdlb","khekif","io","bnfbmdfhnij","geaa","aalnikgghadljj","newt","okmhlamgfj","fmmk","aeegaknk","elkimihg","lcbiolihmh","fbbobmc","acdchfceeeh","nihghfj","fen","oage","lnjbebhfk","bgcbdanjg","cf","mf","iangcn","ghdgeoinho","jfglgmej","db","nfm","kmekalfjclg","fcn","ee","lho","dbggdjen","kmmje","noge","aaloeedd","hfgjcojkkj","ij","ljob","fc","ijkiiacce","bboihgmnh","mha","khmfg","oclnig","hjhojfcbm","haciccfa","mnedoajn","aco","conan","jjjnbebh","fcfokioc","kmfieil","hdnlaiac","ln","afdgcljgi","fhnfklhkd","em","kblg","ocamgfibomc","koegolh","ldn","kcdefeahocl","cafgkfki","ehconlagd","nkihodnmibo","bjlfglnjg","cabmgjl","dhe","od","hlamlinjfd","bbooealnkm","mmaaiiogogd","djhjcikjm","kf","hkcgjeoojji","keilcnicl","aikdl","bknadcdkeli","kdnab","djbfkglfk","do","co","dkojk","dibkmcn","ljbejadkf","hkgbcm","clceh","onmhegieimdeoj","gemfnndmog","ailn","zookeeper bot","bat","a mangy little rat","artrell","lynx","slug","optis","bear","mock turtle","deer",})
-VisibleRiders 1
-actions_enabled 1
-runs 27160
-switches 27154
-stays 6
-percent 0
-fred 2195
-fgreen 2054
-fblue 2231
-wins 18126
-losses 9034
-red_wins 9054
-green_wins 9054
-blue_wins 9052
-save_file "/domains/campus/save/charles.o"

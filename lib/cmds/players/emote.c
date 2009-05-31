@@ -16,24 +16,24 @@ mixed cmd(string args) {
     if( !args || args == "" ) {
         message("my_action", "You are feeling emotional.", this_player());
         message("other_action", (string)this_player()->GetName() +
-          " looks emotional.", environment(this_player()),
-          ({ this_player() }));
+                " looks emotional.", environment(this_player()),
+                ({ this_player() }));
         return 1;
     }
     if( args[0] != '\'' ) args = " " + args;
     message("my_action", "You emote: " + (string)this_player()->GetName() + 
-      args, this_player());
+            args, this_player());
     message("other_action", (string)this_player()->GetName() + args,
-      environment(this_player()), ({ this_player() }) );
+            environment(this_player()), ({ this_player() }) );
     return 1;
 }
 
 void help() {
     message("help", "Syntax: <emote [message]>\n\n"
-      "Places any message you specify directly after your name.  For "
-      "example, \"emote smiles.\" would have others see "
-      "\"Descartes smiles.\".  Non-avatars lose a stamina point for "
-      "each emote to discourage abuse.\n"
-      "", this_player());
+            "Places any message you specify directly after your name.  For "
+            "example, \"emote smiles.\" would have others see "
+            "\"Descartes smiles.\".  Non-avatars lose a stamina point for "
+            "each emote to discourage abuse.\n"
+            "", this_player());
 }
 

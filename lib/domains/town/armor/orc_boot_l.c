@@ -18,6 +18,7 @@ static void create(){
     SetArmorType(A_BOOT);
     SetRestrictLimbs(({"left foot"}));
 }
+
 void init(){
     ::init();
 }

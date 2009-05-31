@@ -11,7 +11,7 @@ static void create()
     SetRules("","STR to LIV","LIV to STR");
     SetErrorMessage("Syntax: teach <%^BOLD%^%^CYAN%^ability%^RESET%^> to (%^BOLD%^%^ORANGE%^player%^RESET%^)");
     SetHelp("Syntax: teach <%^BOLD%^%^CYAN%^ability%^RESET%^> to (%^BOLD%^%^ORANGE%^player%^RESET%^)\n"
-      "This command allows you to teach another player an ability, spell, or skill.\n\n");
+            "This command allows you to teach another player an ability, spell, or skill.\n\n");
 }
 
 mixed can_teach_str_to_liv(string str, object ob)
@@ -21,7 +21,7 @@ mixed can_teach_str_to_liv(string str, object ob)
         return "You cannot move!";
     }
     if( pos == POSITION_SITTING || pos == POSITION_LYING &&
-      !RACES_D->GetLimblessCombatRace(this_player()->GetRace()) ){
+            !RACES_D->GetLimblessCombatRace(this_player()->GetRace()) ){
         return "You cannot teach in that position!";
     }
     return 1;

@@ -26,32 +26,32 @@ void SetType(string what) {
     SetLevel(to_int(count/12));
     SetGender(({"female","male"})[random(2)]);
     switch(what) {
-    case "rodent":
-        SetLong("A cute little chipmunk.");
+        case "rodent":
+            SetLong("A cute little chipmunk.");
         SetShort("a chipmunk");
         SetKeyName("chipmunk");
         SetId(({"chipmunk"}));
         break;
-    case "bear":
-        SetLong("A big black bear.");
+        case "bear":
+            SetLong("A big black bear.");
         SetShort("a bear");
         SetId(({"bear"}));
         SetKeyName("bear");
         break;
-    case "golem":
-        SetLong("A threatening looking golem.");
+        case "golem":
+            SetLong("A threatening looking golem.");
         SetShort("a golem");
         SetId(({"golem"}));
         SetKeyName("golem");
         break;
-    case "unicorn":
-        SetLong("A noble unicorn.");
+        case "unicorn":
+            SetLong("A noble unicorn.");
         SetShort("a unicorn");
         SetId(({"unicorn"}));
         SetKeyName("unicorn");
         break;
-    case "dragon":
-        SetLong("A huge dragon with a threatening visage.");
+        case "dragon":
+            SetLong("A huge dragon with a threatening visage.");
         SetShort("a dragon");
         SetId(({"dragon"}));
         SetKeyName("dragon");
@@ -63,10 +63,10 @@ void heart_beat() {
     ::heart_beat();
     count--;
     if(count <= 10) send_messages("flicker","$agent_name $agent_verb.",
-          this_object(),0,environment());
+            this_object(),0,environment());
     if(count <= 0) {
         send_messages("flicker","$agent_name slowly $agent_verb out"
-          " of existence...",this_object(),0,environment());
+                " of existence...",this_object(),0,environment());
         eventDestruct();
     }
 }

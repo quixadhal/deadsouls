@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/chuch_button.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example dummy item that allows pressing
  *    Created by Descartes of Borg 961222
  */
@@ -13,7 +13,7 @@ int openDoor(object who) {
     object door = find_object("/domains/Ylsrim/etc/church_door");
 
     send_messages("press", "$agent_name $agent_verb the button.",
-      who, 0, environment(who));
+            who, 0, environment(who));
     if( !door->GetClosed() ) {
         return 1;
     }

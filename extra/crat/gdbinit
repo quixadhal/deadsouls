@@ -1,0 +1,3 @@
+handle SIGPIPE nostop noprint pass
+set print pretty on
+run ./mudos.cfg

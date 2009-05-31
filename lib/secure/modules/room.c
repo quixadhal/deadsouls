@@ -130,7 +130,7 @@ mixed make(string str) {
     if(enter == 0) eventCreateExit(arg1, current_room+".c", new_file);
     else eventCreateEnter(arg1, current_room+".c", new_file);
     if(file_exists(new_file) &&
-      grepp(read_file(new_file),"SetShort(\"a blank room\");") ) {
+            grepp(read_file(new_file),"SetShort(\"a blank room\");") ) {
         eventCopyRoom(current_room+".c", new_file);
         reload(new_file);
     }
@@ -204,14 +204,14 @@ int eventRemoveExit(string dir, string filename){
     PointlessMap = load_object(filename)->GetFullExitData();
 
     if( member_array(dir,load_object(filename)->GetExits()) != -1 
-      && !functionp(PointlessMap[dir]["pre"]) 
-      && !functionp(PointlessMap[dir]["post"]) ) {
+            && !functionp(PointlessMap[dir]["pre"]) 
+            && !functionp(PointlessMap[dir]["post"]) ) {
         this_object()->eventReadMapping(filename,({"SetExits"}), 1);
         map_delete(ExitsMap,dir);
         map_str = "SetExits( ([ \n";
         foreach( key, val in ExitsMap){
             if(!functionp(PointlessMap[key]["pre"]) 
-              && !functionp(PointlessMap[key]["post"])) map_str += "\""+key+"\" : \""+val+"\",\n";
+                    && !functionp(PointlessMap[key]["post"])) map_str += "\""+key+"\" : \""+val+"\",\n";
         }
         map_str += "]) );";
 
@@ -282,7 +282,7 @@ varargs mixed eventProcessExits(string filename, string dir, string location){
 
     foreach( key, val in ExitsMap){
         if(!functionp(PointlessMap[key]["pre"]) &&
-          !functionp(PointlessMap[key]["post"])) map_str += "\""+key+"\" : \""+val+"\",\n";
+                !functionp(PointlessMap[key]["post"])) map_str += "\""+key+"\" : \""+val+"\",\n";
     }
     if(dir && location && member_array(dir,load_object(filename)->GetExits()) == -1){
         map_str += "\""+dir+"\" : \""+location+"\",\n";
@@ -305,7 +305,7 @@ string eventCopyRoom(string source, string dest){
     mapping DestExits;
 
     if(file_exists(source) && (!check_privs(this_player(),source) &&
-        strsrch(source,"/obj/"))){
+                strsrch(source,"/obj/"))){
         write("You do not appear to have write access to this file. Modification aborted.");
         return "";
     }
@@ -470,42 +470,42 @@ int eventRemoveEnter(string dir, string filename){
         new_file = remove_matching_line(new_file,"SetObviousEnters");
         new_file = remove_matching_line(new_file,"//extras");
         new_file = remove_matching_line(new_file,"AddEnter(", 1);
-        globalstr2 = new_file;
-        unguarded( (: write_file(globaltmp,globalstr2,1) :) );
-        this_object()->eventGeneralStuff(tmpfile);
-        globalstr = tmpfile;
-        globalstr2 = filename;
-        unguarded( (: cp(globalstr, globalstr2) :) );
-        rm(tmpfile);
-        reload(filename);
-        write("With a puff of smoke, an enter vanishes!");
-        return 1;
-    }
+                globalstr2 = new_file;
+                unguarded( (: write_file(globaltmp,globalstr2,1) :) );
+                this_object()->eventGeneralStuff(tmpfile);
+                globalstr = tmpfile;
+                globalstr2 = filename;
+                unguarded( (: cp(globalstr, globalstr2) :) );
+                rm(tmpfile);
+                reload(filename);
+                write("With a puff of smoke, an enter vanishes!");
+                return 1;
+                }
 
 
-    if(member_array(dir,load_object(filename)->GetEnters()) != -1){
-        globalstr = filename;
-        new_file = read_file(filename);
-        file_arr = explode(read_file(filename),"\n");
-        foreach(string linea in file_arr){
-            if(strsrch(linea,"AddEnter") != -1 && strsrch(linea,dir) != -1) {
+                if(member_array(dir,load_object(filename)->GetEnters()) != -1){
+                globalstr = filename;
+                new_file = read_file(filename);
+                file_arr = explode(read_file(filename),"\n");
+                foreach(string linea in file_arr){
+                if(strsrch(linea,"AddEnter") != -1 && strsrch(linea,dir) != -1) {
                 search_str = linea;
-            }
-        }
-        globalstr = tmpfile;
-        globalstr2 = filename;
-        globaltmp = remove_matching_line(new_file, search_str);
-        unguarded( (: write_file(globalstr,globaltmp,1) :) );
-        unguarded( (: cp(globalstr, globalstr2) :) );
-        eventProcessEnters(filename);
-        reload(filename);
-        rm(tmpfile);
-        write("With a puff of smoke, an enter vanishes!");
-        return 1;
-    }
+                }
+                }
+                globalstr = tmpfile;
+                globalstr2 = filename;
+                globaltmp = remove_matching_line(new_file, search_str);
+                unguarded( (: write_file(globalstr,globaltmp,1) :) );
+                unguarded( (: cp(globalstr, globalstr2) :) );
+                eventProcessEnters(filename);
+                reload(filename);
+                rm(tmpfile);
+                write("With a puff of smoke, an enter vanishes!");
+                return 1;
+                }
 
-    write("This room's SetEnters does not contain that direction.");
-    return 1;
+                write("This room's SetEnters does not contain that direction.");
+                return 1;
 }
 
 varargs mixed eventProcessEnters(string filename, string dir, string location, object room) {
@@ -518,8 +518,8 @@ varargs mixed eventProcessEnters(string filename, string dir, string location, o
     id_array = ({});
     dummies = load_object(filename)->GetDummyItems();
     if(sizeof(dummies)) foreach(object dumdum in dummies){
-            id_array += dumdum->GetId();
-        }
+        id_array += dumdum->GetId();
+    }
 
     if(file_exists(filename) && !check_privs(this_player(),filename)){
         write("You do not appear to have write access to this file. Modification aborted.");

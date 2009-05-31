@@ -8,11 +8,11 @@ static void create() {
     SetRules("","OBJ", "WRD OBJ", "STR on OBJ");
     SetErrorMessage("Rock what? Or rock what on what?");
     SetHelp("Syntax: <rock OBJECT>\n"
-      "        <rock THING on OBJECT>\n\n"
-      "Allows you to rock an object, or perhaps a thing on the "
-      "object.  For example, you might want to "
-      "\"rock the halo\", or simply \"rock in rocking chair\".\n\n"
-      "");
+            "        <rock THING on OBJECT>\n\n"
+            "Allows you to rock an object, or perhaps a thing on the "
+            "object.  For example, you might want to "
+            "\"rock the halo\", or simply \"rock in rocking chair\".\n\n"
+            "");
 }
 
 mixed can_rock(){

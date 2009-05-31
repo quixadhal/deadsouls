@@ -38,17 +38,17 @@ void help()
 {
     string type_help = implode(types,", ");
     write("Syntax: types <name> <value>\n\n"
-      "Returns the defined bit checks or defined token "
-      "for the specified value.\n"
-      "Examples:\n"
-      "types parser_error 4\n"
-      "types armor_types 512|128\n"
-      "types damage_types 128\n\n"
-      "Valid type names: "+type_help+".\n\n"
-      "Note that entering an invalid value will result in a "
-      "rather unattractive error message. This is normal and "
-      "harmless.\n"
-      "See also: defines");
+            "Returns the defined bit checks or defined token "
+            "for the specified value.\n"
+            "Examples:\n"
+            "types parser_error 4\n"
+            "types armor_types 512|128\n"
+            "types damage_types 128\n\n"
+            "Valid type names: "+type_help+".\n\n"
+            "Note that entering an invalid value will result in a "
+            "rather unattractive error message. This is normal and "
+            "harmless.\n"
+            "See also: defines");
 }
 
 static void create() {
@@ -63,12 +63,12 @@ static void create() {
     } 
     header = implode(includes,"\n");
     program = "\nmixed typecheck(){"+
-    "\nint err;"+
-    "\nmixed ret;"+
-    "\nerr = catch( ret = $S );"+
-    "\nif(err) ret = \"DEFINED_D: error\";"+
-    "\nelse if(undefinedp(ret)) ret = \"DEFINED_D: undefined\";"+
-    "\nreturn ret;"+
-    "\n}";
+        "\nint err;"+
+        "\nmixed ret;"+
+        "\nerr = catch( ret = $S );"+
+        "\nif(err) ret = \"DEFINED_D: error\";"+
+        "\nelse if(undefinedp(ret)) ret = \"DEFINED_D: undefined\";"+
+        "\nreturn ret;"+
+        "\n}";
     write_file("/open/prog.c",header+program,1);
 }

@@ -1,13 +1,13 @@
 #ifndef __GLOBAL_H
 #define __GLOBAL_H
 
-#include <config.h>
-#include <lib.h>
+#define CONFIG_H "/secure/include/config.h"
+#define NETWORK_H "/secure/include/network.h"
+#define ROOMS_H "/secure/include/rooms.h"
+#define SECRETS_H "/secure/include/secrets.h"
 
-#if 0
-#define spew(x) FAKE_NEW(x)
-#define REAL_NEW "new"
-#endif
+#include CONFIG_H
+#include <lib.h>
 
 #if COMPAT_MODE
 #include <compat.h>

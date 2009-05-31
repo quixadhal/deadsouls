@@ -27,37 +27,37 @@ void load_groups() {
     int i, maxi, x, j;
 
     maxi = sizeof(lines = filter(explode(read_file(CFG_ALIASES), "\n"),
-        (: $1 && $1 != "" && $1[0] != '#' :)));
+                (: $1 && $1 != "" && $1[0] != '#' :)));
     for(i=0, tmp = ([]); i<maxi; i++) {
         if(sscanf(lines[i], "%s: %s", a, b) != 2) continue;
         if(b[0..0] == "|") {
             x = sizeof(parts = explode(b[1..strlen(b)-1], ";"));
             if(a == "include") {
                 switch(sizeof(parts)) {
-                case 2:
-                    tmp += (mapping)call_other(parts[0],parts[1]);
-                    break;
-                case 3:
-                    tmp+=(mapping)call_other(parts[0],parts[1],
-                      parts[2]);
-                    break;
-                default:
-                    tmp += (mapping)call_other(parts[0], parts[1],
-                      parts[2], parts[3]);
-                    break;
+                    case 2:
+                        tmp += (mapping)call_other(parts[0],parts[1]);
+                        break;
+                    case 3:
+                        tmp+=(mapping)call_other(parts[0],parts[1],
+                                parts[2]);
+                        break;
+                    default:
+                        tmp += (mapping)call_other(parts[0], parts[1],
+                                parts[2], parts[3]);
+                        break;
                 }
             }
             else switch(sizeof(parts)) {
-            case 2: 
-                tmp[a] = (string *)call_other(parts[0],parts[1]);
-                break;
-            case 3:
-                tmp[a] = (string *)call_other(parts[0],parts[1],
-                  parts[2]);
-                break;
-            default:
-                tmp[a] = (string *)call_other(parts[0],parts[1],
-                  parts[2], parts[3]);
+                case 2: 
+                    tmp[a] = (string *)call_other(parts[0],parts[1]);
+                    break;
+                case 3:
+                    tmp[a] = (string *)call_other(parts[0],parts[1],
+                            parts[2]);
+                    break;
+                default:
+                    tmp[a] = (string *)call_other(parts[0],parts[1],
+                            parts[2], parts[3]);
             }
         }
         else {
@@ -98,7 +98,7 @@ varargs string *send_post(mapping borg, mixed who) {
         tmpwho = ({});
         x = (int)OPTIONS_D->query_option(borg["from"], "metoo");
         while(i--) {
-            if(pointerp(who[i] = map_groups(who[i], grps, borg["from"], x))) 
+            if(pointerp(who[i] = map_groups(who[i], grps, borg["from"]))) 
                 tmpwho += who[i];
             else tmpwho += ({ who[i] });
         }
@@ -106,7 +106,7 @@ varargs string *send_post(mapping borg, mixed who) {
         while(i--) {
             if(sscanf(who[i], "%s@%s", a, b) == 2) {
                 if(!remote_mail[b]) remote_mail[b] = ({ a });
-                remote_mail[b] += ({ a });
+                else remote_mail[b] += ({ a });
             }
             else if(!user_exists(who[i])) rejects += ({ who[i] });
             else FOLDERS_D->add_post(who[i], "new", borg);
@@ -134,7 +134,7 @@ varargs string *send_post(mapping borg, mixed who) {
         return rejects;
     }
     else if(pointerp(tmp = (string *)OPTIONS_D->query_group(who)) &&
-      (i = sizeof(tmp))) {
+            (i = sizeof(tmp))) {
         while(i--) {
             if(sscanf(tmp[i], "%s@%s", a, b) == 2) {
                 if(!remote_mail[b]) remote_mail[b] = ({});
@@ -160,7 +160,7 @@ varargs string *send_post(mapping borg, mixed who) {
     }
 }
 
-static private mixed map_groups(string str, mapping grps, string who, int x) {
+static private mixed map_groups(string str, mapping grps, string who) {
     if(__MudGroups[str]) return (string *)__MudGroups[str] - ({ who });
     else if(grps[str] && sizeof(grps[str]))
         return (string *)grps[str] - ({ who });

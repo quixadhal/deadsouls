@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/meal/stew.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 960302
  */
 
@@ -15,10 +15,10 @@ static void create() {
     SetAdjectives( ({ "elven" }) );
     SetShort("some hot elven stew");
     SetLong("This stew is made from the left-overs of other dishes served at "
-      "Toral Restaurant.");
+            "Toral Restaurant.");
     SetMass(10);
     SetMealType(MEAL_FOOD);
     SetStrength(3);
     SetMealMessages("The stew clears your sinuses!",
-      "$N perks up after eating some elven stew.");
+            "$N perks up after eating some elven stew.");
 }

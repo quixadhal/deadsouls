@@ -10,14 +10,14 @@ void create() {
     SetSmell("default", "You smell the aroma of incense.");
     SetShort( "Mora's hut");
     SetLong( 
-      "A mystical aura hangs about this otherwise modest hut "
-      "decorated with strange artifacts from distant worlds.  "
-      "This must be the hut of the famous medium Mora.");
+            "A mystical aura hangs about this otherwise modest hut "
+            "decorated with strange artifacts from distant worlds.  "
+            "This must be the hut of the famous medium Mora.");
     SetExits( 
-      (["west" : "/domains/Praxis/west_road2"]) );
+            (["west" : "/domains/Praxis/west_road2"]) );
     SetItems(
-      (["artifacts" : "You have no idea what they are or what they mean.",
-        "hut" : "It is very odd."]) );
+            (["artifacts" : "You have no idea what they are or what they mean.",
+             "hut" : "It is very odd."]) );
 }
 
 void reset() {

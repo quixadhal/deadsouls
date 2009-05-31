@@ -7,7 +7,7 @@ mapping UploadsMap = ([]);
 
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
-      strsrch(base_name(previous_object()), SOCKET_HTTP)){
+            strsrch(base_name(previous_object()), SOCKET_HTTP)){
         string offender = identify(previous_object(-1));
         debug("edit.c SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" edit.c breach: "+offender+" "+get_stack());
@@ -24,7 +24,7 @@ string eventGenerateEditor(string file, string name, string shib){
         ret = read_file(DIR_WWW_GATEWAYS+"/edit_script.js")+"<br>\n";
         ret += "Editing "+file+"";
         ret += "<FORM ACTION=\"/cgi/save.html\" METHOD=POST ENCTYPE=\"multipart/form-data\"><br>";
-        ret += "<TEXTAREA NAME=\"EditFile\" ID=\"EditFile\" COLS=90 ROWS=30>";
+        ret += "<TEXTAREA NAME=\"EditFile\" ID=\"EditFile\" style=\"width:600px;height:400px;\" wrap=\"off\">";
         ret += tmp;
         ret += "</TEXTAREA><SCRIPT TYPE=\"text/javascript\">eventCreateTextArea('EditFile');</script>";
         ret += "<INPUT TYPE=SUBMIT VALUE=\"submit\"><br><br>";

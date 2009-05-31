@@ -1,5 +1,5 @@
 /*    /verbs/rooms/stop.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    stop STR
  *    created by Descartes of Borg 951016
  */
@@ -25,6 +25,6 @@ mixed do_stop_str(string str) {
 
 string GetHelp(string str) {
     return ("Syntax: stop [ fishing | fighting ]\n\n"
-      "Puts an end to the specified activity.\n\n"
-      "See also: cast, fish, attack");
+            "Puts an end to the specified activity.\n\n"
+            "See also: cast, fish, attack");
 }

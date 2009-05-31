@@ -1,5 +1,5 @@
 restore /secure/include/network.h
-source /secure/scripts/indent.src
+#source /secure/scripts/indent.src
 dest weirder
 clone /secure/obj/weirder
 reload weirder

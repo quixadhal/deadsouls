@@ -1,5 +1,5 @@
 /*  /cmds/secure/admin/notify
- *  from the Dead Souls V Mud Library
+ *  from the Dead Souls Mud Library
  *  created by Blitz@Dead Souls 950115
  */
 
@@ -48,11 +48,11 @@ varargs private void eventNotify(object who, string text) {
 
 string GetHelp(string str) {
     return ("Syntax: notify\n"
-      "        notify <message>\n\n"
-      "This command allows users with proper access to "
-      "add a message to a database of notifications.  "
-      "All new notifications are displayed to any creator "
-      "upon login.  Typing \"notify\" alone will put you "
-      "into the text editor.  Otherwise, the passed "
-      "message will be used.\n\n");
+            "        notify <message>\n\n"
+            "This command allows users with proper access to "
+            "add a message to a database of notifications.  "
+            "All new notifications are displayed to any creator "
+            "upon login.  Typing \"notify\" alone will put you "
+            "into the text editor.  Otherwise, the passed "
+            "message will be used.\n\n");
 }

@@ -1,9 +1,7 @@
 #include <lib.h>
-#include <config.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
-
 
 void create() {
     room::create();

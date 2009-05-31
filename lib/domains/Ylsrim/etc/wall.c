@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/wall.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of climbing up
  *    Created by Descartes of Borg 961222
  */
@@ -17,6 +17,6 @@ static void create() {
     SetAdjectives("adobe", "bank");
     SetShort("an adobe wall");
     SetLong("It has enough holes that you can get a good foot hold and "
-      "climb up it!");
+            "climb up it!");
     SetClimb("/domains/Ylsrim/room/bank_roof", CLIMB_UP);
 }

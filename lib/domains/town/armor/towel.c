@@ -12,12 +12,12 @@ static void create(){
     SetLong("This is an ordinary bath towel.");
     SetMass(25);
     SetBaseCost("silver",10);
-    SetDamagePoints(10);
     SetProtection(BLUNT,1);
     SetProtection(BLADE,1);
     SetProtection(KNIFE,1);
     SetArmorType(A_PANTS);
 }
+
 void init(){
     ::init();
 }

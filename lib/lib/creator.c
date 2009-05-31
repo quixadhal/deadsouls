@@ -19,7 +19,7 @@ inherit LIB_PLAYER;
 inherit LIB_ISQL;
 #endif /* __PACKAGE_DATABASE_DB__ */
 
-private int wizvision, CreatorAge, CreatorBirth;
+private int showgrid, wizvision, CreatorAge, CreatorBirth;
 private static int LastCreatorAge;
 private string LivingShort;
 
@@ -79,14 +79,14 @@ static void net_dead(){
     CreatorAge += time() - LastCreatorAge;
     LastCreatorAge = time();}
 
-void eventReconnect(){
-    string tmp;
+    void eventReconnect(){
+        string tmp;
 
-    player::eventReconnect();
-    LastCreatorAge = time();
-    if( file_exists(tmp = user_path(GetKeyName()) + "dead.edit") )
-        message("system", "\nYour edit file was saved as: "+tmp, this_object());
-}
+        player::eventReconnect();
+        LastCreatorAge = time();
+        if( file_exists(tmp = user_path(GetKeyName()) + "dead.edit") )
+            message("system", "\nYour edit file was saved as: "+tmp, this_object());
+    }
 
 varargs int eventShow(object who, string str, string on_id){
     player::eventShow(who, str);
@@ -103,6 +103,16 @@ void eventDescribeEnvironment(int verbose){
         return;
     }
     message("system", file_name(env), this_object());
+    if(this_object()->GetVisibleGrid() && environment(this_object())){
+        string grid = ROOMS_D->GetCoordinates(environment(this_object()));
+        if(sizeof(grid) > 2){
+            grid = "Global coordinates: "+grid;
+        }
+        else {
+            grid = "Global coordinates unavailable.";
+        }
+        message("system", grid, this_object());
+    }
     player::eventDescribeEnvironment(verbose);
 }
 
@@ -131,9 +141,17 @@ int Setup(){
     if( archp() ) AddSearchPath( ({ DIR_ADMIN_CMDS, DIR_SECURE_ADMIN_CMDS }) );
     if( bugs = (int)BUGS_D->GetAssignedBugs(GetKeyName()) )
         message("system", "\n        >>>  You have " +
-          consolidate(bugs, "an incomplete bug") +
-          " assigned to you!!!!  <<<\n", this_object());
+                consolidate(bugs, "an incomplete bug") +
+                " assigned to you!!!!  <<<\n", this_object());
     NOTIFY_D->eventPrintNotices(this_object(), laston);
+
+    /* Check for new customdefs location */
+    if(!file_exists(tmp = REALMS_DIRS+"/"+GetKeyName()+"/area/customdefs.h")){
+        string tmp2 = REALMS_DIRS+"/"+GetKeyName()+"/customdefs.h";
+        if(file_exists(tmp2) && directory_exists(REALMS_DIRS+"/"+GetKeyName()))
+            cp(tmp2, tmp);
+    }
+
     return 1;
 }
 
@@ -203,6 +221,19 @@ int GetWizVision(){
     return wizvision;
 }
 
+int SetVisibleGrid(int i){
+    if(!this_player()) return 0;
+    if(archp(this_object()) && !archp(this_player())) return 0;
+    if(!archp(this_object()) && this_player() != this_object()) return 0;
+    if(i) showgrid = 1;
+    else showgrid = 0;
+    return showgrid;
+}
+
+int GetVisibleGrid(){
+    return showgrid;
+}
+
 string GetLivingShort(){
     return LivingShort;
 }
@@ -212,7 +243,25 @@ int eventDie(mixed agent){
     if(this_object()->GetGodMode()) return 0;
     if(!grepp(tmpshort,"the ghost") && !grepp(tmpshort,"the reborn")){
         LivingShort = replace_string(tmpshort,this_object()->GetName(),
-          "$N");
+                "$N");
     }
     return ::eventDie(agent);
+}
+
+int eventReleaseObject(object foo2){
+    int ret = ::eventReleaseObject(foo2);
+    if(ret && GetParanoia("inventory_monitoring"))
+        eventPrint("%^YELLOW%^NOTICE:%^RESET%^ "+identify(foo2)+
+                " leaves your inventory.");
+    flush_messages(this_object());
+    return ret;
+}
+
+int eventMove(mixed dest){
+    if(GetParanoia("move_monitoring")){
+        eventPrint("%^RED%^B_BLACK%^You are about to move to: "+
+                identify(dest)+"!%^RESET%^\nstack:\n"+get_stack(1));
+        flush_messages(this_object());
+    }
+    return ::eventMove(dest);
 }

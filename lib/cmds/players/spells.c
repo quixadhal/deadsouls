@@ -39,7 +39,7 @@ mixed cmd(string args) {
 
 string GetHelp() {
     return ("Syntax: <spells>\n\n"
-      "Lists all of your spells in your spell book with your "
-      "proficiency in each spell.\n\n"
-      "See also: skills, stats, status");
+            "Lists all of your spells in your spell book with your "
+            "proficiency in each spell.\n\n"
+            "See also: skills, stats, status");
 }

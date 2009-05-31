@@ -16,13 +16,13 @@ void log_file(string fl, string msg) {
         fl = last_string_element(fl,"/");
     }
     if(fl[0..0] != "/"){
-        if(userp(previous_object(0)) || previous_object(0) == master())
+        if(living(previous_object(0)) || previous_object(0) == master())
             fl = DIR_LOGS + "/" + fl;
         else if((int)master()->valid_apply(({ PRIV_CMDS, PRIV_MUDLIB }))) 
             fl = DIR_LOGS+"/"+fl;
         else if(previous_object() && query_privs(previous_object()) &&
-          member_array(PRIV_SECURE,explode(query_privs(previous_object()),":"))
-          != -1) fl = DIR_LOGS+"/"+fl;
+                member_array(PRIV_SECURE,explode(query_privs(previous_object()),":"))
+                != -1) fl = DIR_LOGS+"/"+fl;
         else fl = DIR_LOGS+"/open/"+fl;
     }
 

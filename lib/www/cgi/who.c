@@ -4,7 +4,6 @@
 
 #include <lib.h>
 #include <privs.h>
-#include <config.h>
 
 inherit LIB_DAEMON;
 

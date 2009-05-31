@@ -19,18 +19,18 @@ static void create() {
     SetDamageType(BLADE);
     SetWeaponType("blade");
     SetItems( ([
-        ({"rune","runes"}) : "The runes' meaning is undecipherable to you.",
-        ({"picture","engraving"}) : "An almost comical image of a startled orc sliced in half.",
-      ]) );
+                ({"rune","runes"}) : "The runes' meaning is undecipherable to you.",
+                ({"picture","engraving"}) : "An almost comical image of a startled orc sliced in half.",
+                ]) );
     SetRead( ([
-        ({"rune","runes"}) : "You do not understand them."
-      ]) );
+                ({"rune","runes"}) : "You do not understand them."
+                ]) );
     AddItem("thing" , "A thing.");
 }
 int eventStrike(object target) {
     if( (string)target->GetRace() != "orc" ) return item::eventStrike(target);
     message("environment", "The orc slayer sword glows blue and emits a ghastly shrieking sound!",
-      environment(target));
+            environment(target));
     return item::eventStrike(target) + random(50)+10;
 }
 void init(){

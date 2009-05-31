@@ -1,6 +1,6 @@
 RACE kobold
-SENSITIVITY 20:80
-LANGUAGE Koboldish
+SENSITIVITY 20:800
+LANGUAGE Yeik
 RESISTANCE SHOCK:high
 RESISTANCE BLADE:medium
 RESISTANCE BLUNT:medium
@@ -14,7 +14,6 @@ STATS intelligence:10:4
 STATS luck:21:3
 STATS agility:21:3
 STATS wisdom:10:4
-STATS charisma:1:5
 STATS speed:21:3
 STATS strength:43:1
 STATS coordination:31:2

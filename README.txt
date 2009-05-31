@@ -1,5 +1,5 @@
-		    The Dead Souls Mud Library 2.6
-		         Released November 2007
+		      The Dead Souls 2 Mud Library
+		         Released December 2005
 
 GENERAL FAQ: http://dead-souls.net/ds-faq.html
 
@@ -19,8 +19,7 @@ through the install FAQ. There's a version archived here in
 the ./www subdirectory.
 
 	Some years ago, Descartes @ Nightmare chose to retire his
-Nightmare mudlib from distribution. Despite various disputes over
-the years, this embargo has stood quite firm. Yet some folks felt
+Nightmare mudlib from distribution. Yet some folks felt
 that it was a fine lib, and many were sorry to see it go.
 
 	This mudlib is based on that old warhorse. It is entirely
@@ -34,5 +33,5 @@ that is easy to set up, intuitive to modify, and simple to maintain.
 
 	Have fun!
 
-					- Cratylus @ Dead Souls
-                                          
+-Cratylus @ Dead Souls
+This document last updated: 28 Jan 2008

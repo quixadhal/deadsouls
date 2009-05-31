@@ -1,0 +1,7 @@
+#/secure/daemon/portal.c
+blue 
+orange 
+bportal 
+oportal 
+oroom "/domains/town/room/wtunnel3"
+broom "/domains/campus/room/hazlab"

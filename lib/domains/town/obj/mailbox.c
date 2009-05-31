@@ -15,6 +15,7 @@ void create() {
     SetMaxCarry(100);
     SetPreventGet("You cannot get that!");
 }
+
 void init(){
     ::init();
 }

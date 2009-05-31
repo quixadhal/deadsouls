@@ -10,14 +10,14 @@ void create() {
     SetProperty("no castle", 1);
     SetShort( "A dark underground chamber");
     SetLong(
-      "You are in a very dark chamber, illuminated only by your "
-      "light source.  The stench in here is foul, and trapped.");
+            "You are in a very dark chamber, illuminated only by your "
+            "light source.  The stench in here is foul, and trapped.");
     SetItems(
-      (["light" : "What light?",
-        "tunnel" : "It is very dark.",
-        "chamber" : "You cannot see it very well."]) );
+            (["light" : "What light?",
+             "tunnel" : "It is very dark.",
+             "chamber" : "You cannot see it very well."]) );
     SetExits( 
-      (["west" : "/domains/Praxis/mountains/tunnel1"]) );
+            (["west" : "/domains/Praxis/mountains/tunnel1"]) );
 }
 
 void reset() {
@@ -31,14 +31,14 @@ void reset() {
         mon->SetLevel(3);
         mon->SetShort( "Goblin soldier");
         mon->SetLong( "An ugly monster who has likely never "
-          "seen the light of day.");
+                "seen the light of day.");
         mon->SetRace( "goblin");
         mon->SetAggressive( 10);
         mon->SetMorality(-140);
         mon->SetHealthPoints(240);
         mon->set_languages( ({ "goeblesque" }) );
         mon->set_speech(10, "goeblesque", ({ "Piss off!", "Die, asshole!" }),
-          1);
+                1);
         mon->SetGender("female");
         mon->SetRace("human");
         mon->move(this_object());

@@ -13,16 +13,16 @@ mixed cmd(string str) {
     else what = 1;
     this_player()->SetNoChanColors(what);
     message("system",
-      "Colored channels mode turned "+str+".",
-      this_player() );
+            "Colored channels mode turned "+str+".",
+            this_player() );
     return 1;
 }
 
 void help() {
     message("help",
-      "Syntax: chancolors on\n"
-      "        chancolors off\n\n"
-      "This command allows you to toggle whether you see colors in channel messages. \nNote: This doesn't apply to the normal colors of the channel name.\n\n",
-      this_player() );
+            "Syntax: chancolors on\n"
+            "        chancolors off\n\n"
+            "This command allows you to toggle whether you see colors in channel messages. \nNote: This doesn't apply to the normal colors of the channel name.\n\n",
+            this_player() );
 }
 

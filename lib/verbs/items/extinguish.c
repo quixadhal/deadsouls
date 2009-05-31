@@ -10,8 +10,8 @@ static void create() {
     SetRules("OBS");
     SetErrorMessage("Extinguish what?");
     SetHelp("Syntax: <extinguish OBJECT>\n\n"
-      "Extinguish a burning thing like a torch or a lamp.\n\n"
-      "See also: light");
+            "Extinguish a burning thing like a torch or a lamp.\n\n"
+            "See also: light");
 }
 
 mixed can_extinguish_obj() {
@@ -43,8 +43,8 @@ mixed do_extinguish_obs(mixed *targs) {
     tmp = item_list(obs);
     this_player()->eventPrint("You extinguish " + tmp + ".");
     environment(this_player())->eventPrint((string)this_player()->GetName() +
-      " extinguishes " + tmp + ".",
-      this_player());
+            " extinguishes " + tmp + ".",
+            this_player());
     return 1;
 }
 

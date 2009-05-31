@@ -14,11 +14,11 @@
 
 inherit LIB_DAEMON;
 
-private int LoginTime, Level, BirthTime, CreatorBirth, WhereBlock;
+private int LoginTime, Level, Btime, BirthTime, CreatorBirth, WhereBlock;
 private string CurrentUser, Short, CapName, RealName, Email;
 private string Town, Race, Gender, HostSite;
 private string Class, Clan, Long;
-private string Rank, WebPage;
+private string Rank, WebPage, tmpfile;
 private string array Titles, Religion;
 private class marriage array Marriages;
 
@@ -32,6 +32,8 @@ varargs string GetFinger(string who, int html) {
     object ob;
     string ret;
     mixed creator;
+
+    tmpfile = 0;
 
     if( !who ) {
         object array people;
@@ -64,17 +66,37 @@ varargs string GetFinger(string who, int html) {
     }
     if( who != CurrentUser ) {
         creator = 0;
-        if( !user_exists(who) )
+        if( !user_exists(who) ){
+            string *cdir = get_dir(DIR_CRES "/"+who[0..0]+"/");
+            string *pdir = get_dir(DIR_PLAYERS "/"+who[0..0]+"/");
+            if(sizeof(cdir)){
+                foreach(string sub in cdir){
+                    if(!strsrch(sub, who+".")){
+                        tmpfile = DIR_CRES "/"+who[0..0]+"/"+sub;
+                    }
+                }
+            }
+            if(!tmpfile && sizeof(pdir)){
+                foreach(string sub in pdir){
+                    if(!strsrch(sub, who+".")){
+                        tmpfile = DIR_PLAYERS "/"+who[0..0]+"/"+sub;
+                    }
+                }
+            }
+        }        
+        if( !user_exists(who) && !tmpfile )
             return capitalize(who) + " has never visited " + mud_name() + ".";
-        else if( !unguarded( (: restore_object, DIR_PLAYERS "/" + who[0..0] +
-              "/" + who :)) &&
-          !(creator = unguarded( (: restore_object, DIR_CRES "/" +
-                who[0..0] + "/" + who :) ) )) return 0;
+        if(tmpfile){
+            unguarded( (: restore_object(tmpfile) :) );
+        }
+        else if( !RestoreObject(DIR_PLAYERS "/" + who[0..0] + "/" + who) &&
+                !(creator = RestoreObject(DIR_CRES "/" +
+                            who[0..0] + "/" + who) )) return 0;
         CurrentUser = who;
     }
-    else if( !strsrch(save_file(who), DIR_CRES) ) creator = 1;
+    else if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;
     ret = "%^STRONG%^" + replace_string(GetTitle(), "$N", CapName) +
-    "%^/STRONG%^BR%^\n";
+        "%^/STRONG%^BR%^\n";
     if( Long ) {
         ret += replace_string(Long, "$N", CapName) + "%^BR%^\n";
     }
@@ -92,7 +114,7 @@ varargs string GetFinger(string who, int html) {
     }
     if( creator ) {
         ret += CapName + " is a " + Gender + " Creator of %^I%^" + mud_name() +
-        "%^/I%^.%^BR%^\n";
+            "%^/I%^.%^BR%^\n";
         ret += "Immortality Date: " + ctime(CreatorBirth) + "%^BR%^\n";
     }
     else {
@@ -103,46 +125,52 @@ varargs string GetFinger(string who, int html) {
         if( Clan ) ret += " of the " + pluralize(Clan);
         if( creatorp(this_player()) && Level ) ret += " ("+Level+")";
         ret += " is a " + Rank+" of " + Town + ".%^BR%^\n";
-        BirthTime = BirthTime - (18 * YEAR);
-        if( (yr = query_year(BirthTime)) < 0 ) yrstr = -yr + " BN";
-        else yrstr = "" + yr;
+        Btime = BirthTime - (18 * YEAR);
+        if( (yr = query_year(Btime)) < 0 ){
+            yrstr = -yr + " BN";
+        }
+        else {
+            yrstr = "" + yr;
+        }
         ret += sprintf("Birthday: the %d%s day of %s, %s",
-          query_date(BirthTime), ordinal(query_date(BirthTime)),
-          query_month(BirthTime), yrstr) + "%^BR%^\n";
+                query_date(Btime), ordinal(query_date(Btime)),
+                query_month(Btime), yrstr) + "%^BR%^\n";
     }
     if(!this_player() || !archp(this_player())) Email = "Unlisted";
     if( !Email ) Email = "#CHANGE";
     ret += "%^TABLE%^TR%^TD%^" +
-    sprintf("In real life: %:-30s %%^/TD%%^TD%%^Email: %s", RealName ,
-      (Email[0]!='#' || (this_player(1) && archp(this_player(1))))
-      ? (Email[0] == '#' ? Email[1..] : Email) : "Unlisted") +
-    "%^/TD%^/TR%^\n";
+        sprintf("In real life: %:-30s %%^/TD%%^TD%%^Email: %s", RealName ,
+                (Email[0]!='#' || (this_player(1) && archp(this_player(1))))
+                ? (Email[0] == '#' ? Email[1..] : Email) : "Unlisted") +
+        "%^/TD%^/TR%^\n";
     ret += "%^TR%^TD%^" +
-    sprintf("Religion: %:-34s %%^/TD%%^TD%%^Spouse: %s",
-      (!creator && Religion[1]) ? Religion[1] : "Agnostic",
-      !sizeof(Marriages) ? "Single" :
-      (((class marriage)Marriages[0])->DivorceDate ?
-        "Divorced" : ((class marriage)Marriages[0])->Spouse)) +
-    "%^/TD%^/TR%^/TABLE%^\n";
+        sprintf("Religion: %:-34s %%^/TD%%^TD%%^Spouse: %s",
+                (!creator && Religion[1]) ? Religion[1] : "Agnostic",
+                !sizeof(Marriages) ? "Single" :
+                (((class marriage)Marriages[0])->DivorceDate ?
+                 "Divorced" : ((class marriage)Marriages[0])->Spouse)) +
+        "%^/TD%^/TR%^/TABLE%^\n";
     if( (ob = find_player(who)) && (!ob->GetInvis()) ) {
         if( !interactive(ob) ) ret += "Currently net-dead";
         else ret += "On since " + ctime(LoginTime);
     }
     else ret += "Last on " + ctime(LoginTime);
-    if( this_player(1) && creatorp(this_player(1)) )
+    if( this_player(1) && creatorp(this_player(1)) && (!AUTO_WIZ ||
+                master()->valid_apply(({ "SECURE", "ASSIST" }))) ){
         ret += " from " + HostSite + "%^BR%^\n";
+    }
     else ret += "%^BR%^\n";
     mail_stat = (mapping)FOLDERS_D->mail_status(who);
     if( mail_stat["unread"] )
         ret += CapName + " has " + consolidate(mail_stat["unread"],
-          "an unread letter") + ".%^BR%^\n";
+                "an unread letter") + ".%^BR%^\n";
     if( unguarded( (: file_size, user_path(who) + ".project" :) ) > 0 )
         ret += "Project: %^PRE%^" +
-        unguarded( (: read_file, user_path(who) + ".project" :) ) +
-        "%^/PRE%^\n";
+            unguarded( (: read_file, user_path(who) + ".project" :) ) +
+            "%^/PRE%^\n";
     if( unguarded( (: file_size, user_path(who) + ".plan" :) ) > 0 )
         ret += "Plan:%^PRE%^\n" +
-        unguarded( (: read_file, user_path(who) + ".plan" :) ) + "%^/PRE%^\n";
+            unguarded( (: read_file, user_path(who) + ".plan" :) ) + "%^/PRE%^\n";
     return ret;
 }
 
@@ -156,13 +184,12 @@ mixed array GetRemoteFinger(string who) {
     if( who != CurrentUser ) {
         creator = 0;
         if( !user_exists(who) ) return 0;
-        else if( !unguarded( (: restore_object, DIR_PLAYERS "/" + who[0..0] +
-              "/" + who :)) &&
-          !(creator = unguarded( (: restore_object, DIR_CRES "/" +
-                who[0..0] + "/" + who :) ) )) return 0;
+        else if( !RestoreObject(DIR_PLAYERS "/" + who[0..0] + "/" + who) &&
+                !(creator = RestoreObject(DIR_CRES "/" +
+                            who[0..0] + "/" + who)) ) return 0;
         CurrentUser = who;
     }
-    else if( !strsrch(save_file(who), DIR_CRES) ) creator = 1;
+    else if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;
     ob = find_player(who);
     if( unguarded( (: file_size, user_path(who) + ".plan" :) ) > 0 ) {
         plan = unguarded( (: read_file, user_path(who) + ".plan", 1, 5 :) );
@@ -175,8 +202,8 @@ mixed array GetRemoteFinger(string who) {
     if(!this_player() || !archp(this_player()))  Email = "Unlisted";
     if( !Email ) Email = "#CHANGE";
     tmp = ({ CapName, GetTitle(), RealName, (Email[0] != '#' ? Email : 0),
-      ctime(LoginTime), ((ob && interactive(ob) && !(ob->GetInvis())) ? query_idle(ob) : -1),
-      0, (creator ? "Creator" : "" + Level), plan });
+            ctime(LoginTime), ((ob && interactive(ob) && !(ob->GetInvis())) ? query_idle(ob) : -1),
+            0, (creator ? "Creator" : "" + Level), plan });
     return tmp;
 }
 

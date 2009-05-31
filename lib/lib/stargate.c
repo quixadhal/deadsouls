@@ -61,14 +61,14 @@ void create(){
     item::create();
 
     SetKeyName("stargate");
-    SetId(({"stargate", "gate", "portal", "ring"}));
+    SetId(({"stargate", "gate", "gateway", "ring"}));
     SetAdjectives(({"stargate"}));
     SetShort( (: displayShort :) );
 
     SetLong( (: displayLong :) );
 
     AddItem( "inner ring", "The second ring - the inner ring - is placed "
-      "inside the larger ring and seems to be able to move.");
+            "inside the larger ring and seems to be able to move.");
     SetMass(1000);
     SetBaseCost("silver",50);
     SetPreventGet("The gate is pure naquadah and cannot be moved.");
@@ -109,9 +109,9 @@ void eventConnect(string destination){
     ret = STARGATE_D->eventConnect(origin, destination);
     if (ret){
         string d = STARGATE_D->GetDestination(destination);
-        write("The ancient rings lock into place and a portal forms in an explosion of energy.");
-        say("The ancient rings lock into place and a portal forms in an explosion of energy.");
-        tell_room(d, "The ancient rings lock into place and a portal forms in an explosion of energy");
+        write("The ancient rings lock into place and a gateway forms in an explosion of energy.");
+        say("The ancient rings lock into place and a gateway forms in an explosion of energy.");
+        tell_room(d, "The ancient rings lock into place and a gateway forms in an explosion of energy");
         call_out("eventDisconnect", 10+random(5));
         connect_time = time();
         return;
@@ -127,8 +127,8 @@ int eventDisconnect(){
     string endpoint = STARGATE_D->GetEndpoint(origin);
     string e = STARGATE_D->GetDestination(origin);
     string d = STARGATE_D->GetDestination(endpoint);
-    if(d) tell_room(d, "The chevrons on the stargate disengage and the portal disappears.");
-    if(e) tell_room(e, "The chevrons on the stargate disengage and the portal disappears.");
+    if(d) tell_room(d, "The chevrons on the stargate disengage and the gateway disappears.");
+    if(e) tell_room(e, "The chevrons on the stargate disengage and the gateway disappears.");
     connect_time = 0;
     return STARGATE_D->eventDisconnect(origin);
 }
@@ -161,7 +161,7 @@ int cmdEnter(string what){
     string endpoint, destination;
     object who;
 
-    if (what != "gate" && what != "stargate")
+    if(!answers_to(what, this_object()))
     {
         return 0;
     }
@@ -176,8 +176,8 @@ int cmdEnter(string what){
     destination = STARGATE_D->GetDestination(endpoint);
     who->eventPrint("You step through the event horizon of the stargate.");
     who->eventMoveLiving(destination, 
-      "$N enters into the event horizon and disappears.", 
-      "$N emerges from the event horizon.");
+            "$N enters into the event horizon and disappears.", 
+            "$N emerges from the event horizon.");
     return 1;
 }
 
@@ -191,8 +191,8 @@ int eventEnter(object who){
     {
         who->eventPrint("You step through the event horizon of the stargate.");
         who->eventMoveLiving(endpoint, 
-          "$N enters into the event horizon and disappears.", 
-          "$N emerges from the event horizon.");
+                "$N enters into the event horizon and disappears.", 
+                "$N emerges from the event horizon.");
     }
     return 1;
 }
@@ -201,10 +201,10 @@ string displayLong(){
     string buf, stat;
 
     buf = "This is the Stargate of legend.  The Stargate was created "
-    "from naquadah ore, similar to black quartz.  It is a perfectly "
-    "circular device approximately ten meters in diameter and "
-    "comprised of two sets of rings and nine chevrons placed "
-    "equidistant along its outer circumference.";
+        "from naquadah ore, similar to black quartz.  It is a perfectly "
+        "circular device approximately ten meters in diameter and "
+        "comprised of two sets of rings and nine chevrons placed "
+        "equidistant along its outer circumference.";
 
     stat = status();
 
@@ -224,13 +224,13 @@ string displayShort(){
     stat = status();
     switch (stat)
     {
-    case "inbound":
-        return "an inbound stargate";
-    case "outbound":
-        return "an outbound stargate";
-    case "idle":
-        return "an idle stargate";
-    default:
+        case "inbound":
+            return "an inbound stargate";
+        case "outbound":
+            return "an outbound stargate";
+        case "idle":
+            return "an idle stargate";
+        default:
         return "a broken stargate";
     }
 }

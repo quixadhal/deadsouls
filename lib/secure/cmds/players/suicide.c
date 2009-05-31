@@ -1,5 +1,5 @@
 /*  /secure/cmds/player/suicide.c
- *  from the Dead Soulsr2 Object Library
+ *  from the Dead Souls Object Library
  *  Allows players to obliterate their character
  *  created by Blitz@Dead Souls
  */
@@ -9,7 +9,7 @@
 #include <flags.h>
 #include <privs.h>
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <message_class.h>
 
 inherit LIB_DAEMON;
@@ -19,7 +19,7 @@ static private void GetYesOrNo(string input);
 static private void EndSuicide(string who);
 
 string home_dir = "";
-string gwho = "";
+string newfile, tmp, gwho = "";
 
 int eventHoseDude(object dude){
     if(dude) dude->eventDestruct();
@@ -35,12 +35,12 @@ mixed cmd(string str) {
     ob = previous_object();
     if( this_player(1) != ob || !userp(ob) ) {
         log_file("security", "** Illegal suicide attempt **\n "
-          "Call stack:\n"+ sprintf("%O\n", previous_object(-1)));
+                "Call stack:\n"+ sprintf("%O\n", previous_object(-1)));
         return "Suicide failed.";
     }
     if( this_player()->GetForced() ) {
         log_file("security", "*** Illegal \"Forced\" Suicide **\n"
-          "Call stack:\n"+ sprintf("%O\n", previous_object(-1)));
+                "Call stack:\n"+ sprintf("%O\n", previous_object(-1)));
         return 0;
     }
     who = (string)this_player()->GetKeyName();
@@ -48,9 +48,9 @@ mixed cmd(string str) {
     if( member_group(who, PRIV_SECURE) || member_group(who, PRIV_ASSIST) )
         return "You must first have your security privileges removed.";
     this_player()->eventPrint("Committing suicide means having your character "
-      "completely erased from "+mud_name()+"'s database.  If you "
-      "are certain this is what you want, enter in your correct "
-      "password.  Otherwise enter in a wrong password.");
+            "completely erased from "+mud_name()+"'s database.  If you "
+            "are certain this is what you want, enter in your correct "
+            "password.  Otherwise enter in a wrong password.");
     this_player()->eventPrint("Password: ", MSG_EDIT);
     input_to((: GetPassword :), I_NOECHO | I_NOESC);
     return 1;
@@ -68,13 +68,13 @@ static private void GetPassword(string input) {
         return;
     }
     this_player()->eventPrint("\nLeave a suicide note? (a)bort, (y)es, (N)o :\n",
-      MSG_EDIT);
+            MSG_EDIT);
     input_to((: GetYesOrNo :)); 
     return;
 }
 
 static private void GetYesOrNo(string input) {
-    string tmp = (string)this_player()->GetKeyName();
+    tmp = (string)this_player()->GetKeyName();
     if( !sizeof(input) || (input = lower_case(input))[0] != 'y' ) {
         if( input && input[0] == 'a' ) {
             this_player()->eventPrint("Suicide has been aborted.");
@@ -84,16 +84,18 @@ static private void GetYesOrNo(string input) {
         return;
     }
     this_player()->eventPrint("\nYou may now enter a letter "
-      "explaining why you suicided.  If you do not wish to write a "
-      "letter, simply exit the editor without writing anything. "
-      "(enter \".\" on a blank line to exit editor.)\n");
+            "explaining why you suicided.  If you do not wish to write a "
+            "letter, simply exit the editor without writing anything. "
+            "(enter \".\" on a blank line to exit editor.)\n");
     this_player()->eventEdit(DIR_TMP + "/" + tmp, (: EndSuicide, tmp :));
 }
 
 static private void EndSuicide(string who) {
-    string tmp, file, newfile;
+    string file;
     object *ob;
-    string whocheck = last_string_element(base_name(this_player()),"/");
+    string whocheck = cleaned_end(base_name(this_player()));
+    tmp = "";
+    newfile = "";
     if(who != whocheck){
         write("There seems to be a conflict in determining your identity.");
         write("Suicide aborted.");
@@ -104,18 +106,21 @@ static private void EndSuicide(string who) {
     if(!directory_exists(DIR_TMP + "/suicide/")) mkdir (DIR_TMP + "/suicide/");
 
     file = DIR_TMP + "/" + who;
-    newfile = DIR_TMP + "/suicide/" + who;
+    newfile = "/log/suicides/" + who;
     if( file_size(file) > 0 ) {
         tmp = possessive_noun(who)+" suicide note.\n"
-        "Dated: "+ctime(time())+"\n";
+            "Dated: "+ctime(time())+"\n";
         tmp += read_file(file);
-        write_file(newfile, tmp, 1);
+        if(!directory_exists("/log/suicides")){
+            unguarded( (: mkdir("/log/suicides") :) );
+        }
+        unguarded( (: write_file(newfile, tmp, 1) :) );
     }
     if( file_exists(file) ) rm(file);
     log_file("suicide", who+" suicided at "+ctime(time())
-      +". (from "+query_ip_name(this_player())+")\n");
-    tmp = save_file(who) + __SAVE_EXTENSION__;
-    unguarded((: rename, tmp, DIR_SUICIDE + "/" + who + __SAVE_EXTENSION__ :));
+            +". (from "+query_ip_name(this_player())+")\n");
+    tmp = player_save_file(who);
+    unguarded((: rename, tmp, save_file(DIR_SUICIDE + "/" + who) :));
     if(home_dir && directory_exists(home_dir)){
         object *purge_array = filter(objects(), (: !strsrch(base_name($1), home_dir) :) );
         foreach(object tainted in purge_array){
@@ -132,14 +137,14 @@ static private void EndSuicide(string who) {
         gwho = "";
     }
     this_player()->eventPrint("You have suicided.  Please try " 
-      "again another time.");
+            "again another time.");
     environment(this_player())->eventPrint(
-      (string)this_player()->GetName()+" has ended "+
-      possessive(this_player())+" own life before your very eyes.",
-      this_player() );
+            (string)this_player()->GetName()+" has ended "+
+            possessive(this_player())+" own life before your very eyes.",
+            this_player() );
     if( sizeof( ob = filter(users(), (: archp :)) ) )
         ob->eventPrint("["+(string)this_player()->GetName()+" has "
-          "comitted suicide]");
+                "committed suicide]");
     PLAYERS_D->RemoveUser(who);
     this_player()->eventMove(ROOM_FURNACE);
     this_player()->eventDestruct();
@@ -148,11 +153,11 @@ static private void EndSuicide(string who) {
 
 string GetHelp(string str) {
     return "Syntax: suicide\n\n"
-    "Ends your character's existence on "+mud_name()+" FOREVER.  "
-    "It is non-reversible.  Once you issue this command, you will be asked"
-    "for a password to confirm your identity.  Once password is confirmed, "
-    "you will no longer exist in the MUD's database.  You may also opt "
-    "to write a final suicide note.\n\n"
-    "NOTE: If you suicide from a restricted site, you will have to "
-    "reregister!";
+        "Ends your character's existence on "+mud_name()+" FOREVER.  "
+        "It is non-reversible.  Once you issue this command, you will be asked"
+        "for a password to confirm your identity.  Once password is confirmed, "
+        "you will no longer exist in the MUD's database.  You may also opt "
+        "to write a final suicide note.\n\n"
+        "NOTE: If you suicide from a restricted site, you will have to "
+        "reregister!";
 }

@@ -20,17 +20,17 @@ static void create() {
 }
 
 static string *DamageDegree = ({
-  "is in critical condition!",
-  "is battered beyond recognition.",
-  "is severely wounded",
-  "is terribly damaged.",
-  "is in bad shape.",
-  "is hurting.",
-  "has a few bruises.",
-  "is in decent shape.",
-  "is in very good shape.",
-  "is in excellent shape.",
-});
+        "is in critical condition!",
+        "is battered beyond recognition.",
+        "is severely wounded",
+        "is terribly damaged.",
+        "is in bad shape.",
+        "is hurting.",
+        "has a few bruises.",
+        "is in decent shape.",
+        "is in very good shape.",
+        "is in excellent shape.",
+        });
 
 int livings_are_remote() { return 1; }
 
@@ -38,16 +38,16 @@ mixed can_body() {
     return 1;
 }
 
-mixed can_body_liv() {
-    if( !creatorp(this_player()) )
-        return "Body does not require any arguments.";
-    return 1;
-}
+    mixed can_body_liv() {
+        if( !creatorp(this_player()) )
+            return "Body does not require any arguments.";
+        return 1;
+    }
 
 mixed do_body() {
     message("other_action", (string)this_player()->GetName()+" checks "+
-      reflexive(this_player())+" for injuries.",
-      environment(this_player()), this_player() );
+            reflexive(this_player())+" for injuries.",
+            environment(this_player()), this_player() );
     eventCheckBody(this_player());
     return 1;
 }
@@ -70,14 +70,14 @@ varargs void eventCheckBody(object ob, object receiver) {
     i = sizeof(limbs = (string *)ob->GetLimbs());
     while(i--) {
         damage = to_int( percent( (int)ob->GetHealthPoints(limbs[i]),
-            (int)ob->GetMaxHealthPoints(limbs[i]) ));
+                    (int)ob->GetMaxHealthPoints(limbs[i]) ));
         if( !mp[damage] ) mp[damage] = ({ limbs[i] });
         else mp[damage] += ({ limbs[i] });
     }
     i = sizeof(key = sort_array(keys(mp), 1));
     name = (ob == receiver ? "Your" : capitalize(possessive(ob)));
     ret = possessive_noun((string)ob->GetCapName()) + " bodily damage "
-    "report:\n\n";
+        "report:\n\n";
     foreach(damage in key) {
         string str;
         string color;
@@ -85,10 +85,10 @@ varargs void eventCheckBody(object ob, object receiver) {
         i = sizeof(limbs = mp[damage]);
         while(i--) {
             switch(damage) {
-            case 0..3: color = "%^BOLD%^%^RED%^"; break;
-            case 4..10: color = "%^RED%^";        break;
-            case 11..20: color = "%^YELLOW%^";    break;
-            default: color = "";
+                case 0..3: color = "%^BOLD%^%^RED%^"; break;
+                case 4..10: color = "%^RED%^";        break;
+                case 11..20: color = "%^YELLOW%^";    break;
+                default: color = "";
             }
             if( damage > 97 )
                 str = name +" "+ limbs[i] + " is in perfect condition.";
@@ -101,33 +101,33 @@ varargs void eventCheckBody(object ob, object receiver) {
             }
             if( creatorp(receiver) )
                 ret += sprintf("%s%-45s %s(%d / 100%%)%s\n", color, str, 
-                  "", damage,"%^RESET%^");
+                        "", damage,"%^RESET%^");
             else ret += (color + str + "%^RESET%^\n");
         }
     }
     if( i = sizeof(limbs = (string *)ob->GetMissingLimbs()) ) {
         ret += "\n"+(ob == receiver ?
-          "You are missing " : (string)ob->GetName()+" is missing ");
+                "You are missing " : (string)ob->GetName()+" is missing ");
         switch(i) {
-        case 0: break;
-        case 1: ret += "a "+limbs[0]+"."; break;
-        case 2: ret += "a "+limbs[0]+" and a "+limbs[1]+"."; break;
-        default:  ret += "a "+implode(limbs[0..(i-2)], ", ")+" and "
-            "a "+limbs[i-1]+".";
+            case 0: break;
+            case 1: ret += "a "+limbs[0]+"."; break;
+            case 2: ret += "a "+limbs[0]+" and a "+limbs[1]+"."; break;
+            default:  ret += "a "+implode(limbs[0..(i-2)], ", ")+" and "
+                      "a "+limbs[i-1]+".";
         }
     }
     receiver->eventPage(explode(ret, "\n"), "info");
     return;
 }
 
-string GetHelp(string str) {
-    if( creatorp(this_player()) )
-        return "Syntax: body LIVING\n\n"
-        "This command will display the current limb damage "
-        "statistics of the living object named.";
-    else
-        return "Syntax: body\n\n"
-        "This command will display your current limb damage "
-        "statistics.  The limbs will be displayed in order "
-        "of the most damaged to the least.";
-}
+    string GetHelp(string str) {
+        if( creatorp(this_player()) )
+            return "Syntax: body LIVING\n\n"
+                "This command will display the current limb damage "
+                "statistics of the living object named.";
+        else
+            return "Syntax: body\n\n"
+                "This command will display your current limb damage "
+                "statistics.  The limbs will be displayed in order "
+                "of the most damaged to the least.";
+    }

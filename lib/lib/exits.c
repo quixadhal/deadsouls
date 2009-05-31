@@ -8,7 +8,8 @@
  */
 
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
+#include <daemons.h>
 #include <position.h>
 #include "include/exits.h"
 
@@ -25,32 +26,37 @@ static void create(){
 }
 
 mixed CanGo(object who, string str){
+    int noclip;
     if( (int)who->GetParalyzed() ) return "You are unable to move.";
-    if( !Exits[str] && str != "up" && str != "down" &&
-      !(sizeof(this_object()->GetFlyRoom())) &&
-      !(sizeof(this_object()->GetSinkRoom())) ) return GoMessage;
+    noclip = who->GetProperty("noclip");
+    if( !noclip && !Exits[str] && str != "up" && str != "down" &&
+            !(sizeof(this_object()->GetFlyRoom())) &&
+            !(sizeof(this_object()->GetSinkRoom())) ){
+        return GoMessage;
+    }
     else return 1;
 }
 
 mixed eventGo(object who, string str){
-    if(query_verb() == "go" && interactive(this_player())){	
+    int noclip = who->GetProperty("noclip");
+    if(query_verb() == "go" && interactive(who) && !noclip){	
         if( who->GetPosition() != POSITION_STANDING ){  
             write("You are not standing.");
             switch(who->GetPosition()){
-            case POSITION_LYING : write("Try: crawl "+str);break; 
-            case POSITION_SITTING : write("Try: crawl "+str);break; 
-            case POSITION_KNEELING : write("Try: crawl "+str);break; 
-            case POSITION_FLOATING : write("You are floating.");break; 
-            case POSITION_SWIMMING : write("Try: swim "+str);break; 
-            case POSITION_FLYING : write("Try: fly "+str);break; 
+                case POSITION_LYING : write("Try: crawl "+str);break; 
+                case POSITION_SITTING : write("Try: crawl "+str);break; 
+                case POSITION_KNEELING : write("Try: crawl "+str);break; 
+                case POSITION_FLOATING : write("You are floating.");break; 
+                case POSITION_SWIMMING : write("Try: swim "+str);break; 
+                case POSITION_FLYING : write("Try: fly "+str);break; 
             }
             return 0;
         }
     }
     else if(query_verb() == "crawl"){
         if( who->GetPosition() != POSITION_LYING &&
-          who->GetPosition() != POSITION_KNEELING &&
-          who->GetPosition() != POSITION_SITTING ){
+                who->GetPosition() != POSITION_KNEELING &&
+                who->GetPosition() != POSITION_SITTING ){
             write("You are not in the correct position for crawling.");
             return 0;
         }
@@ -68,17 +74,17 @@ mixed eventGo(object who, string str){
         }
     }
 
-    if( sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ){
+    if(!noclip && sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ){
         message("my_action", "You bump into " + 
-          (string)Doors[str]->GetShort(str) + ".", who);
+                (string)Doors[str]->GetShort(str) + ".", who);
         return 1;
     }
-    if( Exits[str] && Exits[str]["pre"] && 
-      !((int)evaluate(Exits[str]["pre"], str)) )
+    if(!noclip && Exits[str] && Exits[str]["pre"] && 
+            !((int)evaluate(Exits[str]["pre"], str)) )
         return 1;
     if(!Exits[str]){
         if( str == "up" && sizeof(this_object()->GetFlyRoom())){
-            if(who->GetPosition() == POSITION_FLYING){
+            if(noclip || who->GetPosition() == POSITION_FLYING){
                 string omsg = who->GetName()+" flies up.";
                 string imsg = who->GetName()+" flies in.";
                 who->eventMoveLiving(this_object()->GetFlyRoom(),omsg,imsg,str);
@@ -92,12 +98,29 @@ mixed eventGo(object who, string str){
             who->eventMoveLiving(this_object()->GetSinkRoom(),omsg,imsg,str);
             return 1;
         }
-        write("You can't go that way.");
-        return 0;
+        if(!noclip){ 
+            write("You can't go that way.");
+            return 0;
+        }
     }
-    who->eventMoveLiving(Exits[str]["room"],0,0,str);
-    if( Exits[str]["post"] ) evaluate(Exits[str]["post"], str);
-    return 1;
+    if(Exits[str] && Exits[str]["room"]){
+        who->eventMoveLiving(Exits[str]["room"],0,0,str);
+        if( Exits[str]["post"] ) evaluate(Exits[str]["post"], str);
+        return 1;
+    }
+    if(noclip){
+        int moved;
+        string ndest = ROOMS_D->GetDirectionRoom(this_object(),str,1);
+        if(!ndest){
+            write("You cannot noclip in that direction.");
+        }
+        moved = who->eventMoveLiving(ndest,0,0,str);
+        if(base_name(environment(who)) != ndest){
+            write("You fail to noclip in that direction.");
+        }
+        return 1;
+    }
+    return 0;
 }
 
 mixed GetDoor(string dir){
@@ -109,6 +132,10 @@ string array GetDoors(){
     return keys(Doors);
 }
 
+mapping GetDoorsMap(){
+    return copy(Doors);
+}
+
 string SetDoor(string dir, string file){
     object ob = GetDummyItem(dir);
 
@@ -116,7 +143,8 @@ string SetDoor(string dir, string file){
         ob->SetDoor(file);
     }
 
-    if(!file_exists(file) && !file_exists(file+".c")){
+    if(!unguarded( (: file_exists($(file)) :) ) && 
+            !unguarded( (: file_exists($(file)+".c") :) )){
         return "Door not found.";
     }
     file->eventRegisterSide(dir);
@@ -256,6 +284,7 @@ void RemoveEnter(string dir){
 void SetEnters(mapping mp){
     foreach(mixed dir, mixed room_or_arr in mp){
         object ob = GetDummyItem(dir);
+        if(!ob) continue;
 
         if( arrayp(room_or_arr) ){
             ob->SetEnter(room_or_arr...);

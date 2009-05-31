@@ -11,18 +11,18 @@ static void create() {
     SetAdjectives( ({ "orcish", "simple","stone" }) );
     SetShort("a simple stone altar, dripping blood");
     SetLong("This is a ceremonial orcish  altar, where "+
-      "holy offerings and sacrifices are made. It is "+
-      "sheeted in dried blood and rotting tissue.");
+            "holy offerings and sacrifices are made. It is "+
+            "sheeted in dried blood and rotting tissue.");
     SetItems( ([
-        ({"blood","dried blood","tissue","rotting tissue"}) : ""+
-        "This appears to be the accumulated detritus of "+
-        "numerous sacrifices.",
-      ]) );
+                ({"blood","dried blood","tissue","rotting tissue"}) : ""+
+                "This appears to be the accumulated detritus of "+
+                "numerous sacrifices.",
+                ]) );
     SetPreventGet("The altar is dug into the floor and does not move.");
     SetInventory(([
-        "/domains/town/weap/boobytrap_dagger" : 1,
-        "/domains/town/armor/boobytrap_ring" : 1,
-      ]));
+                "/domains/town/weap/boobytrap_dagger" : 1,
+                "/domains/town/armor/boobytrap_ring" : 1,
+                ]));
     SetMass(3000);
     SetBaseCost("silver",15);
     SetMaxSitters(2);

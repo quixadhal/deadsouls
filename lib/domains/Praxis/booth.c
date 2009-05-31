@@ -17,14 +17,14 @@ void create() {
     SetProperty("light", 2);
     SetProperty("indoors", 1);
     SetLong(
-      "This is the referendum room of Nightmare.  Players come here to vote "+
-      "on issues that the wizards desire input on.  The current voting "+
-      "question is posted on the wall <read question> will display it."
-    );
+            "This is the referendum room of Nightmare.  Players come here to vote "+
+            "on issues that the wizards desire input on.  The current voting "+
+            "question is posted on the wall <read question> will display it."
+           );
 
     SetExits( (["down" : "/domains/Praxis/adv_main"]) );
     vote=([]);
-    restore_object(BOOTH_VOTES);
+    RestoreObject(BOOTH_VOTES);
 }
 
 void init() {
@@ -55,14 +55,14 @@ int vote(string str) {
         vote[me]="a";
         a++;
         write("Vote counted.  Thank you.");
-        save_object(BOOTH_VOTES);
+        SaveObject(BOOTH_VOTES);
         return 1;
     }
     if(str=="b") {
         vote[me]="b";
         b++;
         write("Vote counted.  Thank you.");
-        save_object(BOOTH_VOTES);
+        SaveObject(BOOTH_VOTES);
         return 1;
     }
 

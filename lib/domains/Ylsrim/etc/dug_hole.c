@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/dug_hole.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    A door that is really a hole instead of a door
  *    Created by Descartes of Borg 961231
  */

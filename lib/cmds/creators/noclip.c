@@ -2,38 +2,40 @@
 
 inherit LIB_DAEMON;
 
-varargs int cmd(string str){
-    object env = environment(this_player());
-    int err;
-    mixed dest;
-    if(!env){
-        write("There are no exits here.");
+varargs int cmd(string args){
+    int status = this_player()->GetProperty("noclip");
+    string sstatus = "are";
+#if !(GRID)
+    write("This feature is disabled.");
+    return 1;
+#endif
+    if(!status) sstatus = "are not";
+    if(!args){
+        write("You "+sstatus+" noclipping.");
         return 1;
     }
-    if(!str){
-        write("Please specify an exit.");
-        return 1;
-    } 
-    dest = env->GetExit(str);
-    if(!dest) dest = env->GetEnter(str);
-    if(!dest || !stringp(dest)){
-        write("It appears that you can't noclip in that direction.");
+    if(args == "on"){
+        if(status) write("You are already noclipping.");
+        else write("You enable noclip mode.");
+        this_player()->SetProperty("noclip", 1);
         return 1;
     }
-    err = catch( dest = load_object(dest) );
-    if(err){
-        write("There seems to be a problem with that direction.");
-        write("You remain where you are.");
+
+    if(args == "off"){
+        if(!status) write("You are already not noclipping.");
+        else write("You disable noclip mode.");
+        this_player()->SetProperty("noclip", 0);
         return 1;
     }
-    this_player()->eventMoveLiving(dest);
-    if(!environment(this_player()) || environment(this_player()) != dest){
-        write("It appears that you are unable to noclip there.");
-    }
+
+    write("Try: help noclip");
     return 1;
 }
 
-void help()
-{
-    write("Syntax: noclip <direction>\n\nAllows you to walk through doors and other obstacles, under most circumstances.\n\nSee also: go, swim, fly, crawl");
+void help(){
+    write("Syntax: noclip [ on | off ]\n"+
+            "Allows you to travel to adjacent rooms known to the "+
+            "mud, even if a door is in the way or there is no "+
+            "explicit exit in that direction.\nSee also: "+
+            "showgrid, wizmap, minimap, prox");
 }

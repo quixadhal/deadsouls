@@ -11,14 +11,14 @@ void create() {
     SetSmell("default", "The stench in here is foul and trapped.");
     SetShort( "A dark chamber under the mountains");
     SetLong(
-      "You are in a very dark chamber, illuminated only by your "
-      "light source.");
+            "You are in a very dark chamber, illuminated only by your "
+            "light source.");
     SetItems(
-      (["light" : "What light?",
-        "tunnel" : "It is very dark.",
-        "chamber" : "You cannot see it very well."]) );
+            (["light" : "What light?",
+             "tunnel" : "It is very dark.",
+             "chamber" : "You cannot see it very well."]) );
     SetExits( 
-      (["east" : "/domains/Praxis/mountains/tunnel1"]) );
+            (["east" : "/domains/Praxis/mountains/tunnel1"]) );
 }
 
 void reset() {
@@ -31,14 +31,14 @@ void reset() {
         mon->SetId( ({ "soldier", "goblin", "goblin soldier" }) );
         mon->SetShort( "Goblin soldier");
         mon->SetLong( "An ugly monster who has likely never seen "
-          "the light of day.");
+                "the light of day.");
         mon->SetLevel(3);
         mon->SetRace( "goblin");
         mon->SetAggressive( 10);
         mon->SetMorality(-140);
         mon->set_languages( ({ "goeblesque" }) );
         mon->set_speech(10, "goeblesque", ({ "Piss off.", "Go away or die!" }),
-          1);
+                1);
         mon->SetHealthPoints(240);
         mon->SetGender("female");
         mon->SetRace("human");
@@ -48,7 +48,7 @@ void reset() {
         arm->SetId( ({ "left boot", "boot", "goblin boot" }) );
         arm->SetShort( "Left goblin boot");
         arm->SetLong( "A boot for left foot made from the "
-          "rotting leather goblins can only find.");
+                "rotting leather goblins can only find.");
         arm->set_type("boot");
         arm->set_limbs( ({ "left foot" }) );
         arm->set_ac(3);

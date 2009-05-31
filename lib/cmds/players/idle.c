@@ -7,7 +7,7 @@ mixed cmd(string args) {
     int x;
     object who;
 
-    if( !sizeof(args) ) return "Syntax: idle <user name>";
+    if( !sizeof(args) ) return 1;
     args = convert_name(args);
     who = find_player(args);
     if( !who || who->GetInvis() )
@@ -19,13 +19,18 @@ mixed cmd(string args) {
         this_player()->eventPrint(who->GetName()+" has been idle for "+time_elapsed(x)+".");
     }
     else this_player()->eventPrint((string)who->GetName() + " is "
-          "not idle.");
+            "not idle.");
     return 1;
 }
 
 string GetHelp(string str) {
-    return "Syntax: idle <user name>\n\n"
-    "Displays named user's idle time.  A user's \"idle time\" is "
-    "the amount of time since the named user last sent input "
-    "to the MUD.";
+    return "Syntax: idle\n"
+           "        idle <user name>\n\n"
+        "Displays named user's idle time.  A user's \"idle time\" is "
+        "the amount of time since the named user last sent input "
+        "to the MUD.\nIf no argument is provided, the command simply "
+        "does nothing. This allows you to send a command to the mud "
+        "to keep your connection alive without generating activity.\n"
+        "See also: keepalive, env\n";
+ 
 }

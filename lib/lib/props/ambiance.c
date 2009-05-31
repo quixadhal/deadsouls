@@ -12,6 +12,6 @@ int GetAmbientLight(){
     return AmbientLight;
 }
 
-static int SetAmbientLight(int x){
+int SetAmbientLight(int x){
     return (AmbientLight = x);
 }

@@ -43,16 +43,16 @@ varargs mixed eventLoad(object who, object where){
     if(type == "acp"|| type == "nato") type = "auto";
     if(type == "revolver"){
         mixed tmparr = filter(all_inventory(where),
-          (: base_name($1) == LIB_CYLINDER || inherits(LIB_CYLINDER, $1) :) );
+                (: base_name($1) == LIB_CYLINDER || inherits(LIB_CYLINDER, $1) :) );
         if(sizeof(tmparr)) cylinder = tmparr[0];
     }
     if(GetFirearmType() == "revolver" && ((base_name(where) != LIB_FIREARM &&
-          !inherits(LIB_FIREARM,where)) || type != "revolver")){
+                    !inherits(LIB_FIREARM,where)) || type != "revolver")){
         write("This ammunition is for a revolver.");
         return 1;
     }
     if(GetFirearmType() == "auto" && (base_name(where) == LIB_FIREARM ||
-        inherits(LIB_FIREARM,where))){
+                inherits(LIB_FIREARM,where))){
         write("That type of weapon is fed with an ammunition magazine.");
         return;
     }
@@ -73,8 +73,8 @@ varargs mixed eventLoad(object who, object where){
         if(cylinder) where->eventLoad(this_object());
         write("You load your "+where->GetShort()+".");
         say(this_player()->GetName()+" loads "+GetShort()+
-          " into "+possessive(this_player())+" "+    
-          remove_article(where->GetShort())+".");
+                " into "+possessive(this_player())+" "+    
+                remove_article(where->GetShort())+".");
     }
     return 1; 
 }
@@ -101,7 +101,7 @@ varargs mixed eventUnload(object where){
     env = environment(env);
     if(!env || env != this_player()){
         write("You aren't close enough to the "+
-          remove_article(where->GetShort())+".");
+                remove_article(where->GetShort())+".");
         return 1;
     }
     err = catch(success = where->eventUnload(1) );

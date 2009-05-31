@@ -1,5 +1,7 @@
 #include <lib.h>
-#include <rooms.h>
+#include <daemons.h>
+#include <medium.h>
+#include ROOMS_H
 #include <position.h>
 
 #define SOBER_COMBAT
@@ -25,7 +27,8 @@ void create(){
 }
 
 void init(){
-    string exterior = ROOM_VOID;
+    string rvoid = ROOMS_D->GetVoid(this_object());
+    string exterior = rvoid;
     bot::init();
     if(environment()){
         exterior = file_name(environment());
@@ -43,14 +46,18 @@ int inventory_accessible(){
 
 mixed eventMount(object who){
     int rider_weight;
+    string weight = "weight";
     if(!who) return 0;
-    rider_weight = (who->GetCarriedMass()) + (who->GetMass() || 2000);
+    if(environment() && environment()->GetMedium() == MEDIUM_SPACE){
+        weight = "mass";
+    }
+    rider_weight = who->GetMass();
     if(!environment(this_object())) return 0;
     if(environment(who) && environment(who) == this_object()){
         return write("You are already mounted.");
     }
     if(rider_weight + this_object()->GetCarriedMass() > this_object()->GetMaxCarry()){
-        return write("This vehicle cannot handle that much weight.");
+        return write("This vehicle cannot handle that much "+weight+".");
     }
     else {
         string int_desc = GetVehicleInterior();
@@ -111,11 +118,11 @@ int eventDrive(string direction){
     }
 
     if(!s1 || s1 == "") switch(this_object()->GetPosition()){
-    case POSITION_STANDING : travel_cmd = "go";break;
-    case POSITION_SITTING : travel_cmd = "crawl";break;
-    case POSITION_LYING : travel_cmd = "crawl";break;
-    case POSITION_FLYING : travel_cmd = "fly";break;
-    default : travel_cmd = "go";
+        case POSITION_STANDING : travel_cmd = "go";break;
+        case POSITION_SITTING : travel_cmd = "crawl";break;
+        case POSITION_LYING : travel_cmd = "crawl";break;
+        case POSITION_FLYING : travel_cmd = "fly";break;
+        default : travel_cmd = "go";
     }
     else direction = s2;
     this_object()->eventForce(travel_cmd+" "+direction);
@@ -232,7 +239,7 @@ mapping SetItems(mixed items){
     }
     else {
         error("Bad argument 1 to SetItems(), expected object array or "
-          "mapping.\n");
+                "mapping.\n");
     }
     return copy(ItemsMap);
 }
@@ -306,8 +313,23 @@ mixed GetVehicleInterior(){
 
 varargs int CanFly(mixed who, mixed where){
     if(where && !(environment(this_object())->GetExit(where)) &&
-      !(environment(this_object())->GetEnter(where))) return 0;
+            !(environment(this_object())->GetEnter(where))) return 0;
 
     if(this_object()->GetPosition() == POSITION_FLYING) return 1;
     return 0;
+}
+
+int eventMove(mixed dest){
+    int ret;
+    object env = environment();
+    string location;
+
+    if(!env) location = ROOM_START;
+    else if(clonep(env)) location = file_name(env);
+    else location = base_name(env);
+
+    if(location) this_object()->SetProperty("LastLocation", location);
+    ret = ::eventMove(dest);
+    AddStaminaPoints(GetMaxStaminaPoints());
+    return ret;
 }

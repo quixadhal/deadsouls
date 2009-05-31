@@ -7,10 +7,10 @@ int ftp, hftp, http, rcp, i3, oob;
 
 string LongDesc(){
     string ret = "This room is like the network room to its north, "
-    "but it receives messages from the various network servers "
-    "that this mud can run. If this mud does not serve as a "
-    "network server, this room should be quiet. Otherwise "
-    "this may be the noisiest damn room on your mud.\n";
+        "but it receives messages from the various network servers "
+        "that this mud can run. If this mud does not serve as a "
+        "network server, this room should be quiet. Otherwise "
+        "this may be the noisiest damn room on your mud.\n";
     ret += "FTP server monitoring: "+(ftp?"%^GREEN%^online%^RESET%^":"%^RED%^OFFLINE%^RESET%^")+"\n";
     ret += "HFTP server monitoring: "+(hftp?"%^GREEN%^online%^RESET%^":"%^RED%^OFFLINE%^RESET%^")+"\n";
     ret += "HTTP server monitoring: "+(http?"%^GREEN%^online%^RESET%^":"%^RED%^OFFLINE%^RESET%^")+"\n";
@@ -18,12 +18,12 @@ string LongDesc(){
     ret += "I3 server monitoring: "+(i3?"%^GREEN%^online%^RESET%^":"%^RED%^OFFLINE%^RESET%^")+"\n";
     ret += "OOB server monitoring: "+(i3?"%^GREEN%^online%^RESET%^":"%^RED%^OFFLINE%^RESET%^")+"\n";
     ret += "\nTo enable server monitoring, you may, for example, type:\n"
-    "i3 on\n"
-    "ftp on\n"
-    "hftp on\n"
-    "http on\n"
-    "rcp on\n"
-    "oob on\n";
+        "i3 on\n"
+        "ftp on\n"
+        "hftp on\n"
+        "http on\n"
+        "rcp on\n"
+        "oob on\n";
     return ret;
 }
 
@@ -37,14 +37,14 @@ static void create() {
     SetShort("Server monitoring room");
     SetLong( (: LongDesc :) );
     SetExits(([
-        "north" : "/secure/room/network",
-      ]));
+                "north" : "/secure/room/network",
+                ]));
 }
 
 int CanReceive(object ob) {
     if( !archp(ob)  ){
         message("info","The server room is available only to "+
-          "admins, sorry.",ob);
+                "admins, sorry.",ob);
         return 0;
     }
     return 1;

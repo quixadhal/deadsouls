@@ -6,7 +6,6 @@ inherit LIB_DAEMON;
 void help();
 object ob;
 string ele;
-mixed tmp;
 
 int cmd(string str) {
     int i;
@@ -23,8 +22,12 @@ int cmd(string str) {
         return 1;
     }
 
+    tmp = DEFINES_D->GetDefine(str);
+    if(tmp) str = tmp;
+
     what = str;
     ob = to_object(what);
+
     if(!ob){
         string path = this_player()->query_cwd()+"/";
         if(last(what,2) != ".c") what += ".c";
@@ -48,9 +51,9 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: vars <object or file>\n"
-      "Dumps the variables of an object as well as their values.\n"
-      "Examples:\n"
-      "vars kim\n"
-      "vars /daemon/classes\n\n"
-      "See also: var, variables");
+            "Dumps the variables of an object as well as their values.\n"
+            "Examples:\n"
+            "vars kim\n"
+            "vars /daemon/classes\n\n"
+            "See also: var, variables");
 }

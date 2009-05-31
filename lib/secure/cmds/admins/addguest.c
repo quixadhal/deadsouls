@@ -27,7 +27,7 @@ int cmd(string str) {
         if(!guests[i] || guests[i] == "") continue;
         if(res = catch(call_other(BANISH_D, "add_guest", guests[i]))) 
             message("admin", sprintf("Error in adding guest %s: %s",
-                guests[i], res), this_player());
+                        guests[i], res), this_player());
     }
     message("admin", "Guests added.", this_player());
     return 1;
@@ -35,11 +35,11 @@ int cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: <addguest [player list]>\n\n"
-      "Adds a single player or group of players to the database of guests "
-      "allowed onto the mud when it is locked.  This is generally used to "
-      "allow people in who are not in any of the groups defined in "
-      "LOCKED_ACCESS_ALLOWED or to allow on player testers.\n\n"
-      "See also: removeguests, whoguests", this_player()
-    );
+            "Syntax: <addguest [player list]>\n\n"
+            "Adds a single player or group of players to the database of guests "
+            "allowed onto the mud when it is locked.  This is generally used to "
+            "allow people in who are not in any of the groups defined in "
+            "LOCKED_ACCESS_ALLOWED or to allow on player testers.\n\n"
+            "See also: removeguests, whoguests", this_player()
+           );
 }

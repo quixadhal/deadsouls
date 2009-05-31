@@ -19,13 +19,13 @@ string cmd(string unused) {
 #endif
 #endif
         write("%^RED%^The output for this command may be misleading. It is kept "+
-          "as a historical curiosity, but is not necessarily reliable.%^RESET%^");
+                "as a historical curiosity, but is not necessarily reliable.%^RESET%^");
         if(sizeof(ret) < 7000) write(ret);
         else {
             this_player()->eventPage(({ret}));
         }
         return "%^RED%^The output for this command may be misleading. It is kept "+
-        "as a historical curiosity, but is not necessarily reliable.%^RESET%^";
+            "as a historical curiosity, but is not necessarily reliable.%^RESET%^";
     }
     else {
         return "This command relies on an efun that is not currently available.";
@@ -34,8 +34,8 @@ string cmd(string unused) {
 
 void help() {
     message("help", "Syntax: <memcheck>\n\n"
-      "Gives you information about leaked memory. "
-      "\n\n" 
-      "See also: mstatus, netstat", 
-      this_player());
+            "Gives you information about leaked memory. "
+            "\n\n" 
+            "See also: mstatus, netstat", 
+            this_player());
 }

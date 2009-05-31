@@ -18,7 +18,7 @@ int cmd(string str) {
     }
     catch(guests = (string *)BANISH_D->query_guests());
     message("info", "The following people are currently allowed in when "
-      "the mud is locked: ", this_player());
+            "the mud is locked: ", this_player());
     if(!sizeof(guests)) message("info", "No guests allowed.", this_player());
     else this_player()->more(explode(format_page(guests, 5), "\n"));
     return 1;
@@ -26,8 +26,8 @@ int cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: <whoguests>\n\n"
-      "Lists all the guests allowed into the game when it is locked.\n\n"
-      "See also: addguest, removeguest", this_player()
-    );
+            "Syntax: <whoguests>\n\n"
+            "Lists all the guests allowed into the game when it is locked.\n\n"
+            "See also: addguest, removeguest", this_player()
+           );
 }

@@ -11,10 +11,9 @@ static void create() {
     SetId( ({ "glove" }) );
     SetAdjectives( ({ "black","leather" }) );
     SetShort("a black leather glove");
-    SetLong("A black glove with five fingers.");
-    SetDamagePoints(75);
+    SetLong("A black glove with five fingers for a humanoid right hand.");
     SetVendorType(VT_ARMOR);
-    SetMass(10);
+    SetMass(5);
     SetBaseCost("silver",7);
     SetArmorType(A_GLOVE);
     SetProtection(BLUNT, 1);
@@ -23,5 +22,9 @@ static void create() {
     SetProtection(HEAT, 3);
     SetProtection(COLD, 7);
     SetFingers(5);
-    SetRestrictLimbs(({"right hand","left hand"}));
+    SetRestrictLimbs(({"right hand"}));
+}
+
+void init(){
+    ::init();
 }

@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <vendor_types.h>
 #include <damage_types.h>
 inherit LIB_GERM;
@@ -16,7 +16,7 @@ int InfectMess(object ob){
     victim=ob;
     victimname=victim->GetName();
     tell_room(environment(victim), victimname+" looks pale and uncomfortable.",({victim}) );
-    tell_object(victim, "Your feel an unpleasant tickle in your throat.");
+    tell_object(victim, "You feel an unpleasant tickle in your throat.");
     return 1;
 }
 
@@ -29,7 +29,7 @@ void create(){
     SetCure(20);
     SetVendorType(VT_TREASURE);
     SetCommunicable(15);
-    SetLifeSpan(900000);
+    SetLifeSpan(1200);
     SetType("viral");
     SetInfect((: InfectMess :));
 }
@@ -47,7 +47,7 @@ void bonuses(){
     }
     else if(victim) {
         foreach( string stat in ({"intelligence", "strength",
-            "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
+                    "charisma", "durability", "agility", "coordination", "speed", "wisdom"})){
             victim->RemoveStatBonus(stat);
         }
     }
@@ -140,9 +140,9 @@ int damage4(){
 int damage5(){
     if(victim){
         tell_room(environment(victim),victimname+" makes a horrible, gurgling, coughing noise and hacks up "+
-          "a huge glob of phlegm.", ({victim}) );
+                "a huge glob of phlegm.", ({victim}) );
         tell_object(victim,"You cough up a huge glob of phlegm, accidentally inhale it, and choke while coughing it "+
-          "back up.");
+                "back up.");
         if(DangerLevel() != 100) victim->AddHP(-(random(20)+10));
         if(FatigueLevel() > 10) victim->AddStaminaPoints(random(-15)-15);
     }

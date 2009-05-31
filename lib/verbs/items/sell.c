@@ -1,5 +1,5 @@
 /*    /verbs/items/sell.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Allows a player to sell stuff to a vendor
  *    Created by Descartes of Borg 9602??
  *    Version: @(#) sell.c 1.2@(#)
@@ -16,11 +16,11 @@ static void create() {
     SetRules("OBS to LIV", "LIV OBS");
     SetErrorMessage("Sell what to whom?");
     SetHelp("Syntax: <sell ITEM to LIVING>\n\n"
-      "When in the presence of vendors, you may buy and sell goods "
-      "which match the type of goods the vendor in question trades in.  "
-      "The \"sell\" command naturally allows you to sell an item "
-      "to an interested vendor.\n\n"
-      "See also: ask, sell, vendors");
+            "When in the presence of vendors, you may buy and sell goods "
+            "which match the type of goods the vendor in question trades in.  "
+            "The \"sell\" command naturally allows you to sell an item "
+            "to an interested vendor.\n\n"
+            "See also: ask, sell, vendors");
 }
 
 mixed can_sell_obj_to_liv() {
@@ -35,6 +35,10 @@ mixed can_sell_liv_obs() {
 }
 
 mixed do_sell_obj_to_liv(object ob, object vendor) {
+    if(ob->GetWorn()){
+        write("Remove or unwield items before trying to sell them.");
+        return 1;
+    }
     return vendor->eventBuy(this_player(), ({ ob }));
 }
 

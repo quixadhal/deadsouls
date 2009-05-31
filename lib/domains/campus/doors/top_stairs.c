@@ -11,12 +11,12 @@ inherit LIB_DOOR;
 static void create() {
     door::create();
     SetSide("north", (["id" : ({"door","stairwell door"}),
-        "short" : "the stairwell door",
-        "long" : "This is a metal door leading out of the stairwell.",
-        "lockable" : 0 ]) );
+                "short" : "the stairwell door",
+                "long" : "This is a metal door leading out of the stairwell.",
+                "lockable" : 0 ]) );
     SetSide("south", (["id" : ({"door","stairwell door"}),
-        "short" : "the stairwell door",
-        "long" : "This is a metal door leading south into a stairwell.",
-        "lockable" : 0 ]) );
+                "short" : "the stairwell door",
+                "long" : "This is a metal door leading south into a stairwell.",
+                "lockable" : 0 ]) );
     SetClosed(1);
 }

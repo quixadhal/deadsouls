@@ -10,7 +10,7 @@ void create(){
     SetAdjectives( ({"small","clay","vessel"}) );
     SetShort("a small clay pitcher");
     SetLong("A small, clay vessel for containing fluids. You may "+
-    "want to \"pour from pitcher into cup\".");
+            "want to \"pour from pitcher into cup\".");
     SetMass(20);
     SetBaseCost("silver",10);
     SetVendorType(VT_TREASURE);

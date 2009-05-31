@@ -1,8 +1,3 @@
-//      /adm/simul_efun/absolute_value.c
-//      from the Dead Souls mudlib
-//      an absolute value simul_efun
-//      created by Descartes 28 april 1993
-
 varargs int query_invis(object lookee, object looker) {
     if(!lookee && !looker) lookee = this_object();
     if(!looker) looker = previous_object();
@@ -16,7 +11,7 @@ varargs int query_invis(object lookee, object looker) {
         int lookeelevel, lookerlevel;
         lookeelevel = lookee->GetLevel();
         lookerlevel = looker->GetLevel();
-        if(lookeelevel && lookerlevel && lookeelevel > lookerlevel){
+        if(lookeelevel && lookerlevel && lookeelevel >= lookerlevel){
             return 1;
         }
     }

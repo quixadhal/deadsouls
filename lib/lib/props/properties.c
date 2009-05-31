@@ -1,5 +1,5 @@
 /*    /lib/props/properties.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    The properties property
  *    Created by Descartes of Borg 961222
  *    Version: @(#) properties.c 1.1@(#)
@@ -18,13 +18,14 @@ mixed AddProperty(string prop, mixed val){
     return Properties[prop];
 }
 
-mixed GetProperty(string prop){
-    if(Properties && Properties[prop])
-        return Properties[prop];
-    else return 0;
-}
+    mixed GetProperty(string prop){
+        if(Properties && Properties[prop])
+            return Properties[prop];
+        else return 0;
+    }
 
 mapping GetProperties(){
+    if(!Properties) Properties = ([]);
     return Properties;
 }
 
@@ -39,6 +40,7 @@ int RemoveProperty(string prop){
 }
 
 mixed SetProperty(string prop, mixed val){
+    if(!Properties) Properties = ([]);
     return (Properties[prop] = val);
 }
 

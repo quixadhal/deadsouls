@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_STORAGE;
 
@@ -10,7 +10,7 @@ void create() {
     SetAdjectives(({"metal","small","blue","recycling","trash","garbage","dust"}));
     SetShort("a recycling bin");
     SetLong("This is a blue trash can, marked with "+
-      "the letters \"/dev/null\".");
+            "the letters \"/dev/null\".");
     SetMass(200);
     SetBaseCost("silver",50);
     SetMaxCarry(999999);

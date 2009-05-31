@@ -10,19 +10,19 @@ void create() {
     SetProperty("no castle", 1);
     SetShort( "Deep under the Daroq Mountains");
     SetLong(
-      "The tunnel is pitch black, save for your source of light.  "
-      "A pair of chambers spread off east and west.");
+            "The tunnel is pitch black, save for your source of light.  "
+            "A pair of chambers spread off east and west.");
     SetItems(
-      (["light" : "What light?",
-        "tunnel" : "It is very dark.",
-        "chamber" : "You cannot see it very well.",
-        "chambers" : "There is one east, and one west, but you "
-        "cannot make out anything in them."]) );
+            (["light" : "What light?",
+             "tunnel" : "It is very dark.",
+             "chamber" : "You cannot see it very well.",
+             "chambers" : "There is one east, and one west, but you "
+             "cannot make out anything in them."]) );
     SetExits( 
-      (["east" : "/domains/Praxis/mountains/chamber3",
-        "west" : "/domains/Praxis/mountains/chamber4",
-        "down" : "/domains/Praxis/mountains/tunnel3",
-        "up" : "/domains/Praxis/mountains/tunnel1"]) );
+            (["east" : "/domains/Praxis/mountains/chamber3",
+             "west" : "/domains/Praxis/mountains/chamber4",
+             "down" : "/domains/Praxis/mountains/tunnel3",
+             "up" : "/domains/Praxis/mountains/tunnel1"]) );
 }
 
 void reset() {
@@ -35,13 +35,13 @@ void reset() {
         mon->SetId( ({ "guard", "goblin", "goblin guard" }) );
         mon->SetShort( "Goblin guard");
         mon->SetLong( "An ugly monster who has likely never seen "
-          "the light of day.");
+                "the light of day.");
         mon->SetLevel(4);
         mon->SetRace( "goblin");
         mon->SetAggressive( 10);
         mon->set_languages( ({ "goeblesque" }) );
         mon->set_speech(10, "goeblesque", ({ "I can get you in just one shot.",
-            "You do not stand a chance!", "Get out quick or die!" }), 1);
+                    "You do not stand a chance!", "Get out quick or die!" }), 1);
         mon->SetMorality(-120);
         mon->SetHealthPoints(200);
         mon->SetGender("male");

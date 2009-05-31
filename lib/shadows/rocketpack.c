@@ -11,7 +11,7 @@ int rtype;
 
 int eventShadow(object whom){
     if(base_name(previous_object()) == "/domains/default/armor/rocketpack" ||
-      base_name(previous_object()) == "/domains/town/armor/rocketpack"){
+            base_name(previous_object()) == "/domains/town/armor/rocketpack"){
         person = whom;
         packob = previous_object();
         ::eventShadow(whom);

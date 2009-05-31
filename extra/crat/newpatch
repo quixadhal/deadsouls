@@ -1,0 +1,120 @@
+export NEWLIB=$2
+export OLDLIB=$1
+
+#vi /root/updaterr$OLD\_r$NEW.c
+
+cd /
+date
+
+mkdir /tmp/foo
+rm -rf /tmp/foo/*
+
+cd /tmp/foo
+
+unzip -qd $OLDLIB $HOME/mud/$OLDLIB.zip
+unzip -qd $NEWLIB $HOME/mud/$NEWLIB.zip
+
+mv $OLDLIB/*/* $OLDLIB/
+
+mv $NEWLIB/*/* $NEWLIB/
+
+
+#\rm -f $OLDLIB/lib/secure/include/config.h
+#\rm -f $NEWLIB/lib/secure/include/config.h
+
+\rm -f $OLDLIB/lib/secure/cfg/groups.cfg
+\rm -f $OLDLIB/lib/secure/cfg/mudos.cfg
+\rm -f $OLDLIB/lib/secure/cfg/mudos.win32
+
+\rm -f $NEWLIB/lib/secure/cfg/groups.cfg
+\rm -f $NEWLIB/lib/secure/cfg/mudos.cfg
+\rm -f $NEWLIB/lib/secure/cfg/mudos.win32
+
+\rm -r $NEWLIB/lib/core  $OLDLIB/lib/core
+\rm -r $NEWLIB/lib/secure/sefun/native_version.c  $OLDLIB/lib/secure/sefun/native_version.c
+#\rm -r $NEWLIB/lib/secure/sefun/mud_info.c  $OLDLIB/lib/secure/sefun/mud_info.c
+
+\cp -f $NEWLIB/lib/secure/lib/connect.real $NEWLIB/lib/secure/lib/connect.c
+#\rm -r $NEWLIB/lib/secure/lib/connect.c $OLDLIB/lib/secure/lib/connect.c
+
+\cp -f $NEWLIB/lib/secure/daemon/update.patch $NEWLIB/lib/secure/daemon/update.c
+\cp -f $OLDLIB/lib/secure/daemon/update.patch $OLDLIB/lib/secure/daemon/update.c
+
+echo "foo" > $NEWLIB/lib/secure/upgrades/files/0^0tmp0^0foo.txt
+mkdir $OLDLIB/lib/www/cgi
+mkdir $OLDLIB/lib/lib/daemons
+mkdir $OLDLIB/lib/verbs/builders
+mkdir $OLDLIB/lib/cmds/builders
+mkdir $OLDLIB/lib/secure/cmds/builders
+mkdir $OLDLIB/lib/secure/daemon/imc2server
+mkdir $OLDLIB/lib/lib/daemon
+mkdir $OLDLIB/lib/lib/daemon/include
+mkdir $OLDLIB/lib/domains/cave
+mkdir $OLDLIB/lib/domains/cave/adm
+mkdir $OLDLIB/lib/domains/cave/armor
+mkdir $OLDLIB/lib/domains/cave/doors
+mkdir $OLDLIB/lib/domains/cave/etc
+mkdir $OLDLIB/lib/domains/cave/meals
+mkdir $OLDLIB/lib/domains/cave/npc
+mkdir $OLDLIB/lib/domains/cave/obj
+mkdir $OLDLIB/lib/domains/cave/room
+mkdir $OLDLIB/lib/domains/cave/save
+mkdir $OLDLIB/lib/domains/cave/txt
+mkdir $OLDLIB/lib/domains/cave/virtual
+mkdir $OLDLIB/lib/domains/cave/weap
+mkdir $OLDLIB/lib/doc/phints
+
+if [ $3 ]
+then
+echo "indenting"
+cd $NEWLIB/lib
+/contrib/indentall
+cd ../../$OLDLIB/lib
+/contrib/indentall
+cd ../../
+else
+echo "not indenting"
+fi
+
+cd /tmp/foo
+diff -rq $OLDLIB/lib $NEWLIB/lib > diff.txt
+
+perl -pi -e s/"\:\ "/"\/"/g diff.txt
+
+cd $NEWLIB/
+
+find ./lib -type f  -exec /contrib/enters {} \;
+rm lib/secure/include/config.h
+rm lib/secure/cfg/mudos.cfg
+rm lib/secure/cfg/groups.cfg
+tar cfp ../patch.tar lib
+cd ..
+mv $NEWLIB fukt
+unzip -qd $NEWLIB /export/home/$HOME/mud/$NEWLIB.zip
+mv $NEWLIB/*/* $NEWLIB/
+cd $OLDLIB
+tar xfp ../patch.tar
+cd ..
+diff -rq $OLDLIB/ $NEWLIB/ > diff2.txt
+echo "Anything after this is an imperfection except for the connect.c"
+cat diff2.txt
+\mv -f lib lib.foo
+tar xfp patch.tar
+find ./lib -type f|sort -dr > lib.txt
+\mv -f patch patch.foo
+mkdir patch
+#\cp -f ~/updaterr$OLD\_r$NEW.c lib/secure/daemon/update.c
+\cp -f ~/update.blank lib/secure/daemon/
+\cp -f ~/instructions\_$OLD\_$NEW.txt patch/instructions.txt
+chown -R 513:513 lib
+chmod -R 775 lib
+mv lib patch/
+date
+cat diff2.txt
+cd patch/lib
+find ./ -type f|grep -v "\.html"|grep -v "\.gif" |grep -v "\.o" |grep -v "/news/" > upgrades.txt
+find ./ -type f|grep  "\.orig" >> upgrades.txt
+perl -pi -e s/"\.\/lib"/"\/lib"/g upgrades.txt
+perl -pi -e s/"\.\/"/"\/"/g upgrades.txt
+mv upgrades.txt ../
+

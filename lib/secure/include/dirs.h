@@ -52,6 +52,7 @@
 #define DIR_LVS                 DIR_LIB "/lvs"
 #define DIR_PROPS               DIR_LIB "/props"
 #define DIR_STD                 DIR_LIB "/std"
+#define DIR_OLD_STD             "/std"
 #define DIR_USER                DIR_LIB "/user"
 #define DIR_VIRT                DIR_LIB "/virtual"
 
@@ -60,6 +61,7 @@
 
 #define DIR_LOGS                "/log"
 #define DIR_SECURE_LOGS         DIR_SECURE "/log"
+#define DIR_SECURE_INTERMUD_LOGS DIR_SECURE_LOGS "/intermud"
 #define DIR_CHANNEL_LOGS        DIR_LOGS "/chan"
 #define DIR_DEBUG               DIR_LOGS "/debug"
 #define DIR_ERROR_LOGS          DIR_LOGS "/errors"
@@ -76,6 +78,8 @@
 #define DIR_HELP                DIR_DOCS "/help"
 #define DIR_AVATAR_HELP         DIR_HELP "/avatars"
 #define DIR_CLASS_HELP          DIR_HELP "/classes"
+#define DIR_CONCEPTS_HELP       DIR_DOCS "/lpc/concepts"
+#define DIR_CONSTRUCTS_HELP     DIR_DOCS "/lpc/constructs"
 #define DIR_CREATOR_HELP        DIR_HELP "/creators"
 #define DIR_HM_HELP             DIR_HELP "/hm"
 #define DIR_LAW_HELP            DIR_HELP "/law"

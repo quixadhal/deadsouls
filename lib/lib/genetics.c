@@ -9,6 +9,7 @@
 #include <vision.h>
 #include <function.h>
 #include <damage_types.h>
+#include <daemons.h>
 #include "include/genetics.h"
 
 class blindness {
@@ -17,7 +18,7 @@ class blindness {
 }
 
 private class blindness Blind            = 0;
-private int             CustomStats      = 15;
+private mapping         Custom           = ([]);
 private int array       LightSensitivity = ({ 25, 75 });
 private mapping         Resistance       = ([]);
 private mapping         Stats            = ([]);
@@ -30,6 +31,11 @@ varargs void eventPrint(string message, mixed args...);
 // end abstract methods
 
 static void create(){
+    Custom = ([
+        "stats" : 15,
+        "deviations" : 4,
+        "deviating" : 0,
+    ]);
     Resistance = ([ "low" : 0, "medium" : 0, "high" : 0, "immune" : 0 ]);
     Resistance["none"] = ALL_DAMAGE;
 }
@@ -67,15 +73,27 @@ varargs mixed eventBlind(object who, int amt, mixed end){
 
 mixed eventCustomizeStat(string stat, int amount){
     if( amount < 1 ) return "That is not a valid amount.";
-    if( amount > CustomStats )
-        return "You do not have enough points to spend on customization.";
+    if( amount > Custom["stats"] )
+        return "You do not have enough points to spend on this customization.";
     if( !Stats[stat] ) return "You have no such stat.";
     if( Stats[stat]["level"] + amount > 100 )
         return "You cannot make a stat exceed 100.";
     Stats[stat]["level"] += amount;
     Stats[stat]["points"] = 0;
-    CustomStats -= amount;
+    Custom["stats"] -= amount;
     return Stats[stat]["level"];
+}
+
+mixed eventDeviateStat(string stat, int amount){
+    if( amount < 1 ) return "That is not a valid amount.";
+    if( amount > Custom["deviations"] )
+        return "You do not have enough points to spend on that deviation.";
+    if( !Stats[stat] ) return "You have no such stat.";
+    if( Stats[stat]["class"] - amount < 1 )
+        return "You cannot deviate a stat class below 1.";
+    Stats[stat]["class"] -= amount;
+    Custom["deviations"] -= amount;
+    return Stats[stat]["class"];
 }
 
 mixed eventRestoreSight(object who, int amt){
@@ -95,6 +113,7 @@ varargs void SetStat(string stat, int level, int classes){
     if(level < 1) level = 1;
     if(!classes) classes = 1;
     Stats[stat] = ([ "points" : 0, "level" : level, "class" : classes ]);
+    STATS_D->SetStat(stat);
 }
 
 varargs void AddStat(string stat, int base, int cls){
@@ -105,6 +124,7 @@ varargs void AddStat(string stat, int base, int cls){
     base += ((5 - cls) * random(10)) + (3 * (level + 1))/(cls * 4);
     if( userp(this_object()) && base > 90 ) base = 90;
     else if( base > 100 ) base = 100;
+    STATS_D->SetStat(stat);
     SetStat(stat, base, cls);
 }
 
@@ -137,8 +157,8 @@ int GetStatLevel(string stat){
 
     x = (GetBaseStatLevel(stat) + GetStatBonus(stat));
     switch(stat){
-    case "coordination": case "wisdom":
-        x -= GetAlcohol();
+        case "coordination": case "wisdom":
+            x -= GetAlcohol();
     }
     return x;
 }
@@ -158,7 +178,7 @@ int AddStatPoints(string stat, int x){
         }
     }
     while(Stats[stat]["points"] > (y = GetMaxStatPoints(stat,
-          Stats[stat]["level"]))){
+                    Stats[stat]["level"]))){
         if(Stats[stat]["level"] >= GetLevel()*4) Stats[stat]["points"] = y;
         else {
             Stats[stat]["level"]++;
@@ -242,7 +262,10 @@ mapping GetResistanceMap(){
     return copy(Resistance);
 }
 
-int GetCustomStats(){ return CustomStats; }
+int GetCustomStats(){ return Custom["stats"]; }
+int GetCustomDeviations(){ return Custom["deviations"]; }
+int GetDeviating(){ return Custom["deviating"]; }
+int SetDeviating(int x){ return (Custom["deviating"] = (x ? 1 : 0)); }
 
 varargs mixed GetEffectiveVision(mixed location, int raw_score){
     int array l;
@@ -256,20 +279,21 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score){
     }
 
     if(sizeof(get_livings(this_object())) && 
-      rider = get_random_living(this_object())){
+            rider = get_random_living(this_object())){
         if(rider->GetProperty("mount") == this_object() &&
-          environment(this_object())){
+                environment(this_object())){
             return rider->GetEffectiveVision(environment(this_object()));
         }
     }
 
     if(location){
         if(objectp(location)) env = location;
-        if(stringp(location)){
-            if(!file_exists(location)) location += ".c";
-            if(!file_exists(location)) return 0;
-            env = load_object(location);
-            if(!env) return 0;
+        else if(stringp(location)){
+            int err;
+            //if(!file_exists(location)) location += ".c";
+            //if(!file_exists(location)) return 0;
+            err = catch( env = load_object(location) );
+            if(err || !env) return 0;
         }
     }
     if( Blind && !raw_score){

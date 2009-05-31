@@ -10,11 +10,11 @@ void create() {
     SetSmell("default", "It smells very musty in here.");
     SetShort( "Treasury of the Valley Orcs");
     SetLong(
-      "This small vault where the orc of the valley keep their "
-      "treasure is poorly lit and littered with dust, making you well "
-      "aware that the orcs willingly allow anyone in here.");
+            "This small vault where the orc of the valley keep their "
+            "treasure is poorly lit and littered with dust, making you well "
+            "aware that the orcs willingly allow anyone in here.");
     SetItems(
-      (["vault" : "It is very, very dimly lit."]) );
+            (["vault" : "It is very, very dimly lit."]) );
     SetExits( (["south" : "/domains/Praxis/orc_valley/shaman"]) );
     SetNoClean(1);
     SetProperty("no teleport", 1);

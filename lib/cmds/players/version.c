@@ -5,7 +5,6 @@
  */
 
 #include <lib.h>
-#include <config.h>
 #include <daemons.h>
 #include <localtime.h>
 
@@ -16,7 +15,8 @@ int cmd(string str) {
     int offset, x, scr, nr;
 
     if(sizeof(query_os_type())) extra = " for "+query_os_type();
-    tz = query_tz();
+    tz = this_player()->GetProperty("timezone");
+    if(!tz || !valid_timezone(tz)) tz = query_tz();
     offset = (int)TIME_D->GetOffset(tz);
     offset += EXTRA_TIME_OFFSET;
     if(query_os_type() != "windows" ) x = offset * 3600;
@@ -25,10 +25,10 @@ int cmd(string str) {
     nr = (time() - uptime()) + ((int)EVENTS_D->GetRebootInterval() * 3600);
     tmp = center(mud_name(), scr) + "\n";
     tmp += sprintf("%:-"+(scr/2)+"s%"+(scr/2)+"s\n", "Driver: " + version(),
-      "Library: " + mudlib() + " " + mudlib_version()+extra);
+            "Library: " + mudlib() + " " + mudlib_version()+extra);
     tmp += sprintf("%:-" + (scr/2) + "s%" + (scr/2) + "s\n",
-      "Up since: " + ctime((time() - uptime()) +x),
-      "Next reboot: " + ctime(nr + x));
+            "Up since: " + ctime((time() - uptime()) +x),
+            "Next reboot: " + ctime(nr + x));
     tmp += center("Current time: " + ctime(time() + x) + " " + tz, scr);
     message("system", tmp, this_player());
     return 1;
@@ -36,8 +36,8 @@ int cmd(string str) {
 
 void help() {
     message("help", "Syntax: <version>\n\n"
-      "Gives you version information about the LPMud as well as how "
-      "long the mud has been up in your local time if you have it "
-      "specified.", this_player()
-    );
+            "Gives you version information about the LPMud as well as how "
+            "long the mud has been up in your local time if you have it "
+            "specified.", this_player()
+           );
 }

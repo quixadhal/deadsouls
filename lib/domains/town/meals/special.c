@@ -15,7 +15,7 @@ static void create() {
     SetMealType(MEAL_DRINK | MEAL_ALCOHOL);
     SetStrength(30);
     SetMealMessages("You finish off the boubon and gasp! WHEW!! Mean stuff!",
-      "$N finishes off a bottle of bourbon and gasps.");
+            "$N finishes off a bottle of bourbon and gasps.");
 }
 void init(){
     ::init();

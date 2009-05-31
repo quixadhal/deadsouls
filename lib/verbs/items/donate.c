@@ -8,7 +8,7 @@ static void create() {
     SetRules("STR STR", "STR STR to STR");
     SetErrorMessage("Donate <AMOUNT> <CURRENCY>");
     SetHelp("Syntax: donate <AMOUNT> <CURRENCY>\n\n"
-      "The donate command is used to donate money.");
+            "The donate command is used to donate money.");
 }
 
 mixed can_donate_str_str(string amount, string currency){

@@ -14,7 +14,9 @@
 inherit LIB_CHAT;
 inherit LIB_COMMAND;
 inherit LIB_EDITOR;
+inherit LIB_CHARIO;
 inherit LIB_NMSH;
+inherit LIB_CEDIT;
 
 private string Terminal;
 private mapping Blocked;
@@ -36,11 +38,10 @@ static void create(){
 }
 
 static string process_input(string str){
-    SetCommandFail(0);
+    command::SetCommandFail(0);
     command::process_input(str);
     if( Client ){
         int cl;
-
         sscanf(str, "%d %s", cl, str);
     }
     if( (str = editor::process_input(str)) == "" ) return "";
@@ -62,22 +63,32 @@ static void terminal_type(string str){
 
 static void window_size(int width, int height){ SetScreen(width, height); }
 
-int eventReceive(string message){
+varargs int eventReceive(string message, int noprompt, int noerase){
     int max_length = __LARGEST_PRINTABLE_STRING__ - 192;
+    string prompt = this_object()->GetPrompt(1);
+    string *stack = call_stack(2);
+    if(stack[1] == "write2" && message != "\n"){
+        noerase = 1;
+    }
+    if(in_edit(this_object())) prompt = this_object()->GetPrompt();
     if(sizeof(message) > max_length){
         while(sizeof(message)){
             string tmp = message[0..max_length];
-            receive(tmp);
+            receive(tmp+(noprompt ? "" : prompt));
             message = replace_string(message, tmp, "");
         }
     }
-    else receive(message);
+    else {
+        if(!noerase && this_object()->GetProperty("reprompt")){
+            this_object()->erase_prompt();
+        }
+        receive(message);
+        this_object()->CheckCharmode();
+    }
 }
-
 
 void receive_message(mixed msg_class, string msg){
     int cl = 0;
-
     if(intp(msg_class)){
         cl = msg_class;
         eventPrint(msg, cl);
@@ -89,49 +100,55 @@ void receive_message(mixed msg_class, string msg){
         cl |= MSG_NOWRAP;
     }
     else if( msg_class == "prompt" && msg_class == "editor" ) cl |= MSG_NOWRAP;
+
     switch(msg_class){
-    case "smell": case "sound": case "touch": 
-        cl |= MSG_ENV;
+        case "smell": case "sound": case "touch": 
+            cl |= MSG_ENV;
         break;
 
-    case "snoop":
-        cl |= MSG_SYSTEM | MSG_NOCOLOUR;
-    case "broadcast":
-        cl |= MSG_SYSTEM;
+        case "receive":
+            cl |= MSG_RECEIVE;
         break;
 
-    case "editor":
-        cl |= MSG_EDIT;
+        case "snoop":
+            cl |= MSG_SYSTEM | MSG_NOCOLOUR;
+
+        case "broadcast":
+            cl |= MSG_SYSTEM;
         break;
 
-    case "tell": case "shout":
-        cl |= MSG_CONV;
+        case "editor":
+            cl |= MSG_EDIT;
         break;
 
-    case "come": case "leave": case "telout": case "telin":
-        cl |= MSG_ENV;
+        case "tell": case "shout":
+            cl |= MSG_CONV;
         break;
 
-    case "living_item": case "inanimate_item":
-        cl |= MSG_ROOMDESC;
+        case "come": case "leave": case "telout": case "telin":
+            cl |= MSG_ENV;
         break;
 
-    case "system": case "more":
-        cl |= MSG_SYSTEM;
+        case "living_item": case "inanimate_item":
+            cl |= MSG_ROOMDESC;
         break;
 
-    case "prompt":
-        cl = MSG_PROMPT;
+        case "system": case "more":
+            cl |= MSG_SYSTEM;
         break;
 
-    case "error":
-        cl |= MSG_ERROR;
+        case "prompt":
+            cl = MSG_PROMPT;
         break;
 
-    case "help":
-        cl |= MSG_HELP;
+        case "error":
+            cl |= MSG_ERROR;
+        break;
 
-    default:
+        case "help":
+            cl |= MSG_HELP;
+
+        default:
         cl |= MSG_ENV;
 
     }
@@ -158,7 +175,6 @@ varargs int eventPauseMessages(int x, int exceptions){
     if(x) PauseMessages = 1;
     else {
         if(PauseMessages){
-            //call_out( (: eventFlushQueuedMessages :), 1);
             eventFlushQueuedMessages();
         }
         PauseMessages = 0;
@@ -166,9 +182,56 @@ varargs int eventPauseMessages(int x, int exceptions){
     return PauseMessages;
 }
 
+static varargs int PassengerPrint(string msg, mixed arg2, 
+        mixed arg3, object *riders){
+    object *targs = ({});
+    if(riders && sizeof(riders)){
+        int i1, rider_source;
+        if(!arg2) arg2 = 0;
+        if(!arg3) arg3 = 0;
+        if(sizeof(riders)){
+            if(arg2 && intp(arg2)){
+                object *tmp_riders = riders;
+                if(arg2 & MSG_CONV || arg2 & MSG_ENV){
+                    foreach(object ob in previous_object(-1)){
+                        if(member_array(ob,riders) != -1){
+                            tmp_riders -= ({ ob });
+                            rider_source = 1;
+                        }
+                    }
+                }
+                if((arg2 & MSG_CONV))  true();
+                else {
+                    if(objectp(arg2)) targs = tmp_riders - ({ arg2 });
+                    else if(arrayp(arg2)) targs =  tmp_riders - arg2;
+                    else targs = tmp_riders;
+                    targs->eventPrint(msg, arg3);
+                }
+            }
+            i1 = sizeof(previous_object(-1)) -1;
+            if(i1 < 0) i1 = 0;
+            if(sizeof(previous_object(-1)) &&
+                    (member_array(previous_object(),riders) != -1 ||
+                     member_array(previous_object(-1)[i1],riders) != -1) &&
+                    (!intp(arg2) || (!(arg2 & MSG_CONV) && !(arg2 & MSG_ENV))) && 
+                    member_array(this_object(),previous_object(-1)) == -1){ 
+                if(objectp(arg2)) targs = riders - ({ arg2 });
+                else if(arrayp(arg2)) targs = riders - arg2;
+                else targs = riders;
+                environment()->eventPrint(msg, arg2, arg3);
+            }
+        }
+    }  
+    return 1;
+}
+
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     int msg_class;
-
+    string prompt = "";
+    object *passengers = filter(all_inventory(this_object()), (: living :) );
+    if(this_object()->GetProperty("reprompt")){
+        prompt = this_object()->GetPrompt(1);
+    } 
     if( !msg ) return 0;
     if( !arg2 && !arg3 ) msg_class = MSG_ENV;
     else if( !arg2 ){
@@ -177,6 +240,8 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     }
     else if( !intp(arg2) ) msg_class = MSG_ENV;
     else msg_class = arg2;
+    if(sizeof(passengers) && (msg_class & MSG_ENV || msg_class & MSG_CONV)){
+    } 
     if( !(msg_class & MSG_NOBLOCK) && GetBlocked("all") ) return 0;
 
     if((msg_class & MSG_ANNOYING) && annoyblock) return 0;
@@ -187,7 +252,6 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
      * if((msg_class & MSG_CHAN) && environment() &&
      *  environment()->GetProperty("meeting room")) return 0;
      */
-
     if( GetLogHarass() )
         log_file("harass/" + GetKeyName(), strip_colours(msg) + "\n");
     if( !TermInfo )
@@ -200,14 +264,18 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
         if( msg_class & MSG_NOWRAP )
             msg = terminal_colour(msg + "%^RESET%^", TermInfo);
         else
-            msg = terminal_colour(msg + "%^RESET%^\n", TermInfo,
-              GetScreen()[0], indent);
+            msg = terminal_colour(msg + "%^RESET%^\n"+prompt, TermInfo,
+                    GetScreen()[0], indent);
     }
     else if( !(msg_class & MSG_NOWRAP) ) msg = wrap(msg, GetScreen()[0]-1);
     if(PauseMessages && !(msg_class & MessageExceptions)){
         MessageQueue += msg;
     }
     else {
+        if(msg_class & MSG_RECEIVE){
+            receive(msg);
+            return 1;
+        }
         if( Client ) eventReceive("<" + msg_class + " " + msg + " " + msg_class +">\n");
         else eventReceive(msg);
     }
@@ -216,14 +284,14 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
 
 varargs int SetBlocked(string type, int flag){
     if( !type ) return 0;
-    if( !flag ) flag = !Blocked[type];
+    if( undefinedp(flag) ) flag = !Blocked[type];
     if( Blocked[type] == 2 && !archp(this_player()) ){
         this_player()->eventPrint("Unable to unblock " + type + ".");
         return -1;
     }
     Blocked[type] = flag;
     message("system", "You are "+(Blocked[type] ? "now blocking" :
-        "no longer blocking")+" "+type+".", this_object());
+                "no longer blocking")+" "+type+".", this_object());
     return Blocked[type];
 }
 
@@ -244,12 +312,12 @@ int SetLogHarass(int x){
     if( LogHarass == x ) return LogHarass;
     if( x ){
         txt = "**************** Start of Log *****************\n"+
-        "Time: " + ctime( time() ) + "\n";
+            "Time: " + ctime( time() ) + "\n";
         if( environment( this_object() ) ) txt += "Place: " +
             file_name( environment( this_object() ) ) + "\n";
     } else {
         txt = "**************** End of Log *****************\n"+
-        "Time: " + ctime( time() ) + "\n";
+            "Time: " + ctime( time() ) + "\n";
     }
     log_file("harass/" + GetKeyName(), txt);
     return (LogHarass = x);
@@ -272,17 +340,18 @@ int *GetScreen(){ return Screen; }
 
 string SetTerminal(string terminal){ 
     switch( terminal ){
-    case "iris-ansi-net": case "vt100": case "vt220": case "vt102":
-    case "vt300": case "dec-vt100":
-        terminal = "ansi";
+        case "iris-ansi-net": case "vt100": case "vt220": case "vt102":
+            case "vt300": case "dec-vt100":
+            terminal = "ansi";
         break;
-    case "unknown": case "ansi": case "freedom": case "ansi-status":
-    case "xterm": 
+        case "unknown": case "ansi": case "freedom": case "ansi-status":
+            case "xterm": 
+            break;
+        case "console": case "ibm-3278-2":
+            terminal = "unknown";
         break;
-    case "console": case "ibm-3278-2":
-        terminal = "unknown";
-        break;
-    default:
+        case "html" : terminal = "html"; break;
+        default:
         log_file("terminals", "Unknown terminal type: " + terminal + "\n");
         terminal = Terminal;
         break;
@@ -307,5 +376,68 @@ int SetAnnoyblock(int i){
 
 int GetAnnoyblock(){
     return annoyblock;
+}
+
+static int rArrow(string str){
+    int ret, cedmode = this_object()->GetCedmode();
+    switch(cedmode){
+        case 0 : ret = nmsh::rArrow(str); break;
+        case 1 : ret = cedit::rArrow(str); break;
+    }
+    return ret;
+}
+
+static int rCtrl(string str){
+    int ret, cedmode = this_object()->GetCedmode();
+    switch(cedmode){
+        case 0 : ret = nmsh::rCtrl(str); break;
+        case 1 : ret = cedit::rCtrl(str); break;
+    }
+    return ret;
+}
+
+static int rBackspace(){
+    int ret, cedmode = this_object()->GetCedmode();
+    switch(cedmode){
+        case 0 : ret = nmsh::rBackspace(); break;
+        case 1 : ret = cedit::rBackspace(); break;
+    }
+    return ret;
+}
+
+static int rEnter(){
+    int ret, cedmode = this_object()->GetCedmode();
+    switch(cedmode){
+        case 0 : ret = nmsh::rEnter(); break;
+        case 1 : ret = cedit::rEnter(); break;
+    }
+    return ret;
+}
+
+static int rAscii(string str){
+    int ret, cedmode = this_object()->GetCedmode();
+    switch(cedmode){
+        case 0 : ret = nmsh::rAscii(str); break;
+        case 1 : ret = cedit::rAscii(str); break;
+    }
+    return ret;
+}
+
+static int rDel(){
+    int ret, cedmode = this_object()->GetCedmode();
+    switch(cedmode){
+        case 0 : ret = nmsh::rDel(); break;
+        case 1 : ret = cedit::rDel(); break;
+    }
+    return ret;
+}
+
+static int rAnsi(string str){
+    int ret, cedmode = this_object()->GetCedmode();
+    switch(cedmode){
+        case 0 : ret = nmsh::rAnsi(str); break;
+        case 1 : ret = cedit::rAnsi(str); break;
+    }
+    return ret;
 }
 

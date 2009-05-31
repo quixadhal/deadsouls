@@ -4,9 +4,9 @@
 inherit OBJ_QUEST;
 
 void create(){
-::create();
+    ::create();
 }
 
 void init(){
-::init();
+    ::init();
 }

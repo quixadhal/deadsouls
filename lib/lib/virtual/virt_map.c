@@ -18,13 +18,13 @@ private string Virt_Room= "";
 
 varargs string array BaseMap(){ //override with actual map
     return 
-    ({
-      //   0
-      //   012
-      ({"000",//0
-        "010",//1
-        "000",//2
-      })});
+        ({
+         //   0
+         //   012
+         ({"000",//0
+          "010",//1
+          "000",//2
+          })});
 }
 
 /******************* virt_map.c attributes ********************/
@@ -34,11 +34,11 @@ int *GetLocations(string str){return Location[str]; }
 varargs mixed GetAreaMap(int x, int y, int z){ 
     if(nullp(x) || nullp(y) || nullp(z)) return copy(AreaMap);
     if(	   x<0 
-      || y<0 
-      || z<0
-      || z>sizeof(AreaMap)
-      || y>sizeof(AreaMap[0])
-      || x>sizeof(AreaMap[0][0]))
+            || y<0 
+            || z<0
+            || z>sizeof(AreaMap)
+            || y>sizeof(AreaMap[0])
+            || x>sizeof(AreaMap[0][0]))
         return "0";
     return copy(AreaMap[z][y][x..x]);
 
@@ -92,21 +92,21 @@ int * RecurseLocations(){
 varargs void InitializeLocations(string tmp){
     if(!nullp(tmp)){
         if(!Location[tmp][0] && !Location[tmp][1] 
-          && !Location[tmp][2])
+                && !Location[tmp][2])
             Location[tmp]=RecurseLocations(); 
         SetAreaMap(Location[tmp][1], Location[tmp][0], 
-          Location[tmp][2], tmp);
+                Location[tmp][2], tmp);
         (Virt_Room+(Location[tmp][0] ) + "," 
-          + (Location[tmp][1]) + ","
-          + (Location[tmp][2]))->ResetLocation();
+         + (Location[tmp][1]) + ","
+         + (Location[tmp][2]))->ResetLocation();
     }
     else foreach(tmp in keys(Location)){
-            Location[tmp]=RecurseLocations();
-            SetAreaMap(Location[tmp][1], Location[tmp][0],
-              Location[tmp][2], tmp);
-            (Virt_Room+(Location[tmp][0] ) + "," + (Location[tmp][1])
-              + "," +(Location[tmp][2]))->ResetLocation(); 
-        }
+        Location[tmp]=RecurseLocations();
+        SetAreaMap(Location[tmp][1], Location[tmp][0],
+                Location[tmp][2], tmp);
+        (Virt_Room+(Location[tmp][0] ) + "," + (Location[tmp][1])
+         + "," +(Location[tmp][2]))->ResetLocation(); 
+    }
 
 }
 
@@ -120,17 +120,17 @@ void SwitchLocations(){
         old_location=copy(Location[tmp]);
         Location[tmp]=({0,0,0}); 
         SetAreaMap(old_location[1], old_location[0], 
-          old_location[2], areas[(old_location[2]-1)]
-          [old_location[1]][old_location[0]..old_location[0]]);
+                old_location[2], areas[(old_location[2]-1)]
+                [old_location[1]][old_location[0]..old_location[0]]);
         Location[tmp]=RecurseLocations();
         (Virt_Room + (old_location[0]) + ","
-          + (old_location[1]) + "," 
-          + (old_location[2]))->ResetLocation();
+         + (old_location[1]) + "," 
+         + (old_location[2]))->ResetLocation();
         SetAreaMap(Location[tmp][1], Location[tmp][0],
-          old_location[2], tmp);
+                old_location[2], tmp);
         (Virt_Room + (Location[tmp][0] ) + ","
-          + (Location[tmp][1]) + "," 
-          + (old_location[2]))->ResetLocation();
+         + (Location[tmp][1]) + "," 
+         + (old_location[2]))->ResetLocation();
 
     }
 }
@@ -158,11 +158,11 @@ int RemoveLocation(string str){
     mixed areas=BaseMap();
     if(nullp(location)) return 0;
     SetAreaMap(location[1],location[0],location[2],
-      areas[(location[2]-1)][location[1]]
-      [location[0]..location[0]]);
+            areas[(location[2]-1)][location[1]]
+            [location[0]..location[0]]);
     (Virt_Room + (location[0] ) + ","
-      + (location[1]) + "," 
-      + (location[2]))->ResetLocation();
+     + (location[1]) + "," 
+     + (location[2]))->ResetLocation();
     map_delete(Location,str);
     return 1;
 }

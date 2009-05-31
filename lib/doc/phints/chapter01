@@ -1,0 +1,156 @@
+chapter 1 "Getting started: The Newbie Mansion"
+
+You understand the basics. You've read the player's
+handbook (you read that, right?), you now understand stats
+and skills, you've customized your stats, and you're
+ready to play. This chapter will now give you a walkthrough
+of the first quest a newbie should perform. It is a *complete*
+walkthrough! It is a SPOILER. If you don't want the quest 
+spoiled, stop reading now!
+
+I'm going to assume your mud does not allow picking your
+class at char creation, or that the class you picked is
+"explorer". This is to simplify the walkthrough. This also
+assumes you've just created this char and it is level 1.
+
+We'll start in the reception room, with Jennybot (5 south,
+3 east, 1 south, of the village clocktower). If you haven't
+done so already, this might be a good time to:
+%^GREEN%^activate bot%^RESET%^
+
+What she says is kind of boring if you're not new to muds.
+But hang around until she gives you the baseball cap. It's
+worth some money.
+
+%^RED%^PROTIP%^RESET%^: If she has already given you a cap before,
+you won't get a new one.
+
+Once you get the cap, go 1n, 3w, 5n, 1e, 1n. This is the village
+shop. Remove and drop your worthless t-shirt and jeans,
+and sell the cap to otik:
+
+%^GREEN%^sell cap to otik%^RESET%^
+
+Sell any other crap you've picked up along the way. The newbie
+mansion will have all the equipment you'll need to solve it.
+But keep this hint book handy!
+
+Now it's time to open a bank account. Believe me, you do not
+want to be carrying around all your money if you die. So let's
+go open an account and put our hard-earned cash somewhere safe:
+1s, 1w, 3n, 1e.
+
+%^GREEN%^request account from zoe%^RESET%^
+%^GREEN%^deposit all%^RESET%^
+
+Good! I feel safer already! Now let's head to the mansion.
+From the bank it is: 1w, 3s, 2w, 2s. If you're still at newbie
+levels, the mansion guard won't notice you slip by.
+
+You're now in front of the mansion, but how to get in? The door
+is locked! Pay close attention to the description...did you
+notice that the mansion is described as having an open
+second story window?
+
+Go to the gardener's shack (1w, 1n) and get the ladder. Return
+to the front of the mansion (1s, 1e) and:
+
+%^GREEN%^drop ladder%^RESET%^
+%^GREEN%^climb ladder%^RESET%^
+
+You're in! You're now standing in the second floor hallway of
+the newbie mansion. Time to get equipped. Go east into the
+guest room, open the overnight bag, and get and wear the 
+following: leather jacket, leather pants, helmet, shirt, and gloves.
+This is relatively decent newbie armor that still lets you
+gather loot because it's not too heavy. 
+
+%^RED%^PROTIP:%^RESET%^ You can do stuff to more than one
+item at a time, and when you do, worn items are ignored. Try:
+%^GREEN%^open overnight bag%^RESET%^
+%^GREEN%^get all from overnight bag%^RESET%^
+%^GREEN%^wear all%^RESET%^
+%^GREEN%^drop all%^RESET%^
+Did you notice that you only dropped the things you were not wearing?
+
+Now, go to the master bedroom (1w, 3s), open the wardrobe and
+get the boots from the wardrobe and wear them. These are long
+boots and are better than the boots in the guest room. These
+boots also protect your legs.
+
+Leave the rest of the stuff in the wardrobe alone for now...you
+can loot the mansion after you complete the quest. Next, let's
+get you a weapon. Go downstairs, just outside the kitchen (1n, 1d,
+1n). The kitchen will be east. Do this, very quickly:
+
+%^GREEN%^go east%^RESET%^
+%^GREEN%^get carving knife from rack%^RESET%^
+%^GREEN%^go west%^RESET%^
+
+Ignore the kitchen rats...kill them later if you want, for now
+let's save up your strength for the mansion boss...and he's
+next! Before we go on, though, let me ask you...did you get
+both knives from the rack? No! just the carving knife! You see,
+only fighters are skilled at using two weapons at once. As
+an explorer, if you try to wield two weapons at once, you
+will do very very badly in combat. The carving knife is an
+excellent weapon. Just wield that, and drop the butcher knife.
+
+Now go north and east...and meet your first quest boss. Yes,
+the soggy thief! He's snuck into the mansion while the master
+was away, and made himself at home! He won't like your 
+presence and will attack you, but he's really quite wimpy.
+Just stand your ground and you'll defeat him with no effort.
+
+Finished? Aren't you sad now? No? Good. There's plenty of
+slaying to do in this game, if you're getting sentimental over
+killing a burglar while wearing his armor (that you stole) then
+this just might not be the game for you. Now, take his stuff
+and look around. See anything that piques your curiosity?
+
+%^GREEN%^get all from corpse%^RESET%^
+%^GREEN%^look%^RESET%^
+
+Maybe the rug is valuable...
+
+%^GREEN%^exa rug%^RESET%^
+%^GREEN%^get rug%^RESET%^
+
+Weird! What if we...
+
+%^GREEN%^move rug%^RESET%^
+
+Well what do you know! Open that trap door, go down into
+the secret chamber, and you'll have solved your first Dead Souls
+quest. Congratulations! You'll be awarded quest and experience
+points, and if your mud is set to auto-advance, you'll
+probably gain a level or two. If not, you can visit Dirk and
+ask him to advance (Dirk is 1e, 1s of the village clocktower).
+
+There's a bunch of loot in the chest in the secret chamber, as well
+as a bag with money (don't just sell the bag, "get all from bag"
+first!). You can now focus on robbing the mansion blind and
+selling everything you steal. With the money, you can start buying
+expensive equipment you need for the more challenging quests.
+
+%^RED%^Loot tip 1:%^RESET%^ Go back to the master bedroom and move the bed.
+Surprise! Enter the passageway and unlock the safe with the complex key
+you took from the thief. Inside the safe you'll find stuff you
+will want to keep, not sell. Trust me on that. Don't sell that stuff.
+
+%^RED%^Loot tip 2:%^RESET%^ Search the room across the hall from the guest
+room you looted.
+
+%^RED%^Loot tip 3:%^RESET%^ Whether you sell or keep it, remember where the
+bear costume is. It could come in handy later.
+
+%^RED%^Loot tip 4:%^RESET%^ Sell stuff to Kim if you can, rather than Otik. Otik pays
+with silver, which is heavy. Kim pays with dollars, which are light. Sadly,
+Kim will not buy or sell weapons, but for everything else, her light
+currency is very convenient. You can always exchange currencies at 
+the bank. Kim's bookstore is 1n, 2e, 1n of Jennybot.
+
+%^RED%^Loot tip 5:%^RESET%^ If you advanced automatically, you might find that the mansion
+guard no longer lets you past him any more...and you can't get rid of him.
+Strategies for dealing with the gate guard are discussed later.
+

@@ -1,6 +1,6 @@
 #include <position.h>
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_SENTIENT;
 object *enemies = ({});
@@ -14,7 +14,7 @@ int eventDrain(mixed args...){
     enemies = this_object()->GetEnemies();
     if(quarry && draining) enemies += ({ quarry });
     if(!sizeof(enemies)) return 1;
-    enemies = filter(enemies, (: environment($1) :));
+    enemies = filter(enemies, (: $1 && environment($1) :));
     enemies = filter(enemies, (: environment($1) == environment() :));
     if(!sizeof(enemies)) return 1;
     if(sizeof(enemies) > 5) enemies = scramble_array(enemies)[0..4];
@@ -25,60 +25,62 @@ int eventDrain(mixed args...){
         mixed *stats = enemy->GetStats();
         if(quarry && enemy == quarry && random(100) > draining) avoid = 100;
         switch(which = random(8)+avoid){
-        case 0 : 
-            what = skills[random(sizeof(skills)-1)];
-            level = enemy->GetSkillLevel(what);
-            level = level/2;
-            enemy->SetSkill(what,level);
-            break;
-        case 1 : 
-            what = stats[random(sizeof(stats)-1)];
-            level = enemy->GetStatLevel(what);
-            level = level/2;
-            enemy->SetStat(what,level);
-            break;
-        case 2 : 
-            what = "level";
-            level = enemy->GetLevel();
-            level = level/2;
-            enemy->ChangeLevel(level);
-            break;
-        case 3 :
-            what = "health";
-            level = enemy->GetHealthPoints();
-            level = level/2;
-            enemy->AddHP(-level);
-            break;
-        case 4 :
-            what = "stamina";
-            level = enemy->GetStaminaPoints();
-            level = level/2;
-            enemy->AddStaminaPoints(-level);
-            break;
-        case 5 :
-            what = "stamina";
-            level = enemy->GetMagicPoints();
-            level = level/2;
-            enemy->AddMagicPoints(-level);
-            break;
-        case 6 :
-            what = "experience";
-            level = enemy->GetExperiencePoints();
-            level = level/2;
-            enemy->AddExperiencePoints(-level);
-            break;
-        case 7 :
-            what = "quest";
-            level = enemy->GetQuestPoints();
-            level = level/2;
-            enemy->AddQuestPoints(-level);
-            break;
-        default: break;
+            case 0 : 
+                if(!skills) break;
+                what = skills[random(sizeof(skills)-1)];
+                if(enemy) level = enemy->GetSkillLevel(what);
+                level = level/2;
+                if(level) enemy->SetSkill(what,level);
+                break;
+            case 1 : 
+                if(!stats) break;
+                what = stats[random(sizeof(stats)-1)];
+                if(enemy) level = enemy->GetStatLevel(what);
+                level = level/2;
+                if(level) enemy->SetStat(what,level);
+                break;
+            case 2 : 
+                what = "level";
+                if(enemy) level = enemy->GetLevel();
+                level = level/2;
+                if(level) enemy->ChangeLevel(level);
+                break;
+            case 3 :
+                what = "health";
+                if(enemy) level = enemy->GetHealthPoints();
+                level = level/2;
+                if(level) enemy->AddHP(-level);
+                break;
+            case 4 :
+                what = "stamina";
+                if(enemy) level = enemy->GetStaminaPoints();
+                level = level/2;
+                if(level) enemy->AddStaminaPoints(-level);
+                break;
+            case 5 :
+                what = "stamina";
+                if(enemy) level = enemy->GetMagicPoints();
+                level = level/2;
+                if(level) enemy->AddMagicPoints(-level);
+                break;
+            case 6 :
+                what = "experience";
+                if(enemy) level = enemy->GetExperiencePoints();
+                level = level/2;
+                if(level) enemy->AddExperiencePoints(-level);
+                break;
+            case 7 :
+                what = "quest";
+                if(enemy) level = enemy->GetQuestPoints();
+                level = level/2;
+                if(level) enemy->AddQuestPoints(-level);
+                break;
+            default: break;
         }
-        if(which < 100){
+        if(enemy && which < 100){
             tell_object(enemy,"The wraith drains your vital essence!");
             tell_room(environment(this_object()), "The wraith drains "+
-              enemy->GetName()+" of precious bodily essence!", ({ enemy }));
+                    enemy->GetName()+" of precious bodily essence!", ({ enemy }));
         }
     }
     return 0;
@@ -131,7 +133,7 @@ void heart_beat(){
             }
         }
         if(!here){
-            dest = filter(enemies, (: environment($1) :));
+            dest = filter(enemies, (: $1 && environment($1) :));
             if(quarry) dest = (environment(quarry) ? ({ quarry }) : dest );
             if(sizeof(dest)){
                 eventMove(environment(dest[random(sizeof(dest)-1)]));

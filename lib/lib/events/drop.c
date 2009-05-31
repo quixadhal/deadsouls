@@ -1,5 +1,5 @@
 /*    /lib/drop.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Makes an object something which can be dropped
  *    Created by Descartes of Borg 960113
  *    Version: @(#) drop.c 1.2@(#)
@@ -8,7 +8,7 @@
 
 #include <lib.h>
 #include <function.h>
-#include <rooms.h>
+#include ROOMS_H
 
 private mixed PreventDrop = 0;
 private mixed DestructOnDrop = 0;
@@ -50,7 +50,7 @@ mixed CanDrop(object who){
     if( objectp(PreventDrop) ){
         if( PreventDrop == who ){
             return capitalize(GetDefiniteShort()) +
-            " simply will not leave your grasp.";
+                " simply will not leave your grasp.";
         }
         else {
             return 1;
@@ -76,14 +76,14 @@ mixed eventDrop(object who){
 
     if( !tmp ){
         who->eventPrint("Something prevents you from dropping "
-          + GetDefiniteShort() + ".");
+                + GetDefiniteShort() + ".");
         return 1;
     }
     if( tmp != 1 ){
         return tmp;
     }
     send_messages("drop", "$agent_name $agent_verb $target_name.",
-      who, this_object(), environment(who));
+            who, this_object(), environment(who));
     if(DestructOnDrop) tell_room(environment(who),capitalize(this_object()->GetShort())+" vanishes in a flash of light!");
     return 1;
 }

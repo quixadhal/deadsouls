@@ -11,8 +11,8 @@ static void create(){
     SetAdjectives( ({ "wood","wooden" }) );
     SetShort("a wooden staff");
     SetLong("This staff is old, weathered, "+
-      "and lumpy. However, it feels quite sturdy "+
-      "and solid.");
+            "and lumpy. However, it feels quite sturdy "+
+            "and solid.");
     SetVendorType(VT_WEAPON);
     SetDamagePoints(50);
     SetClass(20);

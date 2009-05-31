@@ -49,6 +49,8 @@ inherit LIB_SOCKET;
 
 string ip = "";
 string out = "";
+string host;
+int port;
 mapping Cookie = ([]);
 string gateway, login_data, current_page, boundary, cookie, cmd, read_args, filename, user_agent;
 int ok_to_send, boundary_count;
@@ -56,7 +58,7 @@ int logging = 1;
 
 void validate(){
     if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
-      strsrch(base_name(previous_object()), DIR_WWW_GATEWAYS)){
+            strsrch(base_name(previous_object()), DIR_WWW_GATEWAYS)){
         string offender = identify(previous_object(-1));
         debug("HTTPD SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("/secure/security", "\n"+timestamp()+" HTTPD breach: "+offender+" "+get_stack());
@@ -107,6 +109,14 @@ string GetBoundary(){
 mapping GetCookie(){
     validate();
     return copy(Cookie);
+}
+
+string GetHost(){
+    return host;
+}
+
+int GetPort(){
+    return port;
 }
 
 private static void eventError(string name) {
@@ -273,6 +283,14 @@ int eventRead(buffer data) {
         junk2 = reverse_string(element);
         int2 = sscanf(junk2,"%s---%*s",junk1);
         if(!strsrch(element,"Cookie:") && !cookie) cookie = element;
+        if(!strsrch(element,"Host:") && !host){
+            if(sscanf(element,"Host: %s:%s",junk1, junk2) != 2){
+                sscanf(element,"Host: %s",junk1);
+                port = 80;
+            }
+            else port = atoi(junk2);
+            host = junk1;
+        }
         if(boundary && grepp(element,boundary)){
             boundary_count++;
         }
@@ -280,7 +298,7 @@ int eventRead(buffer data) {
             junk2 = reverse_string(junk1);
             junk1 = replace_string(boundary,"-","");
             if(boundary && sizeof(junk2) > 5
-              && first(junk1,sizeof(junk2)) == junk2){
+                    && first(junk1,sizeof(junk2)) == junk2){
                 boundary_count++;
             }
         }
@@ -312,7 +330,7 @@ int eventRead(buffer data) {
     if(cookie){
         string name, shib, junk1, junk2;
         if(sscanf(cookie,"%screweb=%s.%s;%s",junk1,name,shib,junk2) == 4 ||
-          sscanf(cookie,"%screweb=%s.%s",junk1,name,shib) == 3){
+                sscanf(cookie,"%screweb=%s.%s",junk1,name,shib) == 3){
             Cookie["name"] = name;
             Cookie["shib"] = shib;
         }
@@ -322,15 +340,15 @@ int eventRead(buffer data) {
     eventLogConnection();
     switch(lower_case(cmd)) {
         string junk;
-    case "get":
-        eventGetFile(read_args);
+        case "get":
+            eventGetFile(read_args);
         return 1;
 
-    case "post":
-        if(!ENABLE_CGI){
-            eventError(FILE_BAD_CMD);
-            return 1;
-        }
+        case "post":
+            if(!ENABLE_CGI){
+                eventError(FILE_BAD_CMD);
+                return 1;
+            }
         if(!gateway) sscanf(read_args,"%s HTTP%s",gateway,junk);
 
         if(boundary_count && boundary_count > 1){
@@ -355,7 +373,7 @@ int eventRead(buffer data) {
                 }
             }
             else if( catch(str = ((DIR_WWW_GATEWAYS +"/upload")->gateway(out, current_page, filename,
-                    Cookie["name"], Cookie["shib"]))) ) {
+                                Cookie["name"], Cookie["shib"]))) ) {
                 eventError(FILE_BAD_GATE);
                 return 1;
             }
@@ -372,7 +390,7 @@ int eventRead(buffer data) {
         }
         return 1;
 
-    default:
+        default:
         eventError(FILE_BAD_CMD);
         return 1;
     }

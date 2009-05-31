@@ -1,4 +1,4 @@
-#include <config.h>
+#include <lib.h>
 #include <daemons.h>
 
 string GetRace();

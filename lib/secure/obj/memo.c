@@ -22,15 +22,15 @@ void create(){
     SetId( ({"pad","memo","memo pad","notepad"}) );
     SetShort("a yellow memo pad");
     SetLong("A yellow pad of papers to write your memos on. "+
-      "There seems to be instructions written on it.");
+            "There seems to be instructions written on it.");
     SetMass(20);
     SetVendorType(VT_TREASURE);
     SetItems(([ ({"instruction", "instructions", "words"}) : "Words that "+
-        "explain how to use the notepad. Try: read instructions on notepad.",
-      ]) );
+                "explain how to use the notepad. Try: read instructions on notepad.",
+                ]) );
     SetRead( ([ ({"instruction", "instructions", "words"}) : (: ReadFun :),
-        "default" : (: read_memo :),
-      ]) );
+                "default" : (: read_memo :),
+                ]) );
 }
 
 void init(){
@@ -72,11 +72,11 @@ int read_memo(mixed str...){
 }
 int help_msg(){
     write("The back of the pad reads:\n\n"+
-      "cReMem Memo Pad, For your note-taking needs! Memo pad commands:\n"+
-      "----------\n"+
-      "memo <string> : Writes <string> into the pad.\n"+
-      "read memo      : Reads the contents of your memo pad.\n"+
-      "----------\n");
+            "cReMem Memo Pad, For your note-taking needs! Memo pad commands:\n"+
+            "----------\n"+
+            "memo <string> : Writes <string> into the pad.\n"+
+            "read memo      : Reads the contents of your memo pad.\n"+
+            "----------\n");
     say(capownerstr+" reads the back of a memo pad.\n");
     return 1;
 }

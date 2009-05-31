@@ -9,14 +9,14 @@ void create() {
     SetProperty("no castle", 1);
     SetShort( "Outside the financial district");
     SetLong(
-      "Leading out east into the rural lands outside of Praxis, this unnamed "
-      "dirt road sits almost entirely untravelled.  The business district "
-      "of Praxis is west.");
+            "Leading out east into the rural lands outside of Praxis, this unnamed "
+            "dirt road sits almost entirely untravelled.  The business district "
+            "of Praxis is west.");
     SetItems( 
-      (["road" : "It is temporarily blocked going east."]) );
+            (["road" : "It is temporarily blocked going east."]) );
     SetExits( ([ 
-        "west" : "/domains/Praxis/s_centre3",
-      ]) );
+                "west" : "/domains/Praxis/s_centre3",
+                ]) );
 }
 void init(){
     ::init();

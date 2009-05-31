@@ -1,5 +1,5 @@
 /*    /lib/comp/holder.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    A composite object that holds inanimate items
  *    Created by Descartes of Borg 960113
  *    Version: @(#) holder.c 1.6@(#)

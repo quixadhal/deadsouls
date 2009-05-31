@@ -3,10 +3,14 @@
 //      gives information simul_efuns about the mud
 //      created by Descartes of Borg
 
-#include <config.h>
 #include <daemons.h>
 
-string mud_name() { return MUD_NAME; }
+string mud_name(){ 
+    string ret;
+    if(uptime() < 60) return MUD_NAME; 
+    if(!(ret = MASTER_D->GetMudName())) return MUD_NAME;
+    return ret;
+}
 
 varargs string imc2_mud_name(string name){ 
     string mudname;
@@ -37,7 +41,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "2.8.4"; }
+string mudlib_version() { return "2.10"; }
 
 int query_host_port() { return __PORT__; }
 
@@ -57,8 +61,18 @@ string query_os_type(){
     else return "unix";
 }
 
-string query_intermud_ip(){
-    if(INTERMUD_D->GetMudList()[mud_name()])
-        return INTERMUD_D->GetMudList()[mud_name()][1];
-    else return "";
+int query_windows(){
+    string arch = lower_case(architecture());
+#ifdef __WIN32__
+    return 1;
+#else
+    if(grepp(arch,"windows") || grepp(arch,"cygwin")) return 1;
+#endif
+    return 0;
 }
+
+    string query_intermud_ip(){
+        if(INTERMUD_D->GetMudList()[mud_name()])
+            return INTERMUD_D->GetMudList()[mud_name()][1];
+        else return "";
+    }

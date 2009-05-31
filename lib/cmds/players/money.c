@@ -22,9 +22,9 @@ mixed cmd(string str) {
         return 1;
     }
     say(this_player()->GetName()+" fishes through "+
-      possessive(this_player())+" pockets examining some money.");
+            possessive(this_player())+" pockets examining some money.");
     message("my_action", "In your pockets you find "+
-      ((sizeof(currs) > 1) ? "these currencies: " : "only: "), this_player());
+            ((sizeof(currs) > 1) ? "these currencies: " : "only: "), this_player());
     for(borg = "", i=0, tmp = sizeof(currs); i<tmp; i++) {
         borg += ((this_player()->GetCurrency(currs[i]))+" "+currs[i]);
         if(i == tmp-1) borg +=(".\n");
@@ -38,7 +38,7 @@ mixed cmd(string str) {
 
 void help() {
     write("Syntax: <money>\n\n"
-      "Allows you to search your pockets for all your money\n"
-      "of all currency types.\n"
-    );
+            "Allows you to search your pockets for all your money\n"
+            "of all currency types.\n"
+         );
 }

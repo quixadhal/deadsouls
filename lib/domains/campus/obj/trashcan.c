@@ -15,8 +15,8 @@ static void create() {
     SetDollarCost(15);
     SetMaxCarry(900);
     SetInventory( ([ 
-        "/domains/campus/obj/key1" : 1,
-      ]) );
+                "/domains/campus/obj/key1" : 1,
+                ]) );
     SetPreventGet("It is firmly attached to the ground.");
 }
 void init(){

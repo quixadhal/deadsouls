@@ -28,97 +28,97 @@ mixed cmd(string args) {
     }
     gargs = args;
     candidates = filter(get_livings(environment(this_player())),
-      (: answers_to(gargs, $1) :) );
+            (: answers_to(gargs, $1) :) );
     if(!ob && sizeof(candidates)) ob = candidates[0];
     else if( !ob && !(ob = present(args, environment(this_player()))) )
         if( !(ob = find_player(convert_name(args))) &&
-          !(ob = find_living(lower_case(args))) )
+                !(ob = find_living(lower_case(args))) &&
+                !(ob = find_object(args)) )
             return capitalize(args) + " is nowhere to be found.";
     if(!living(ob)) return capitalize(args) + " is not alive.";
-    cols = ((int *)this_player()->GetScreen())[0];
-    tmp1 = (string)ob->GetCapName() + " aka " + (string)ob->GetShort() +
-    ", level " + (int)ob->GetLevel() + " " + (string)ob->GetGender();
-    if( !(tmp2 = (string)ob->GetRace()) ) tmp2 = "blob";
+    cols = (this_player()->GetScreen())[0];
+    tmp1 = ob->GetCapName() + " aka " + ob->GetShort() +
+        ", level " + ob->GetLevel() + " " + ob->GetGender();
+    if( !(tmp2 = ob->GetRace()) ) tmp2 = "blob";
     tmp1 += " " + tmp2;
-    if( !(tmp2 = (string)ob->GetClass())  || !stringp(tmp2)) tmp2 = "drifter";
+    if( !(tmp2 = ob->GetClass())  || !stringp(tmp2)) tmp2 = "drifter";
     tmp1 += " " + capitalize(tmp2);
-    if( tmp2 = (string)ob->GetSpouse() )
+    if( tmp2 = ob->GetSpouse() )
         tmp1 += " (spouse: " + tmp2 + ")";
     lines = ({ center(tmp1, cols) });
-    if( (int)ob->GetUndead() ) tmp1 = "%^BOLD%^RED%^UNDEAD%^RESET%^";
+    if( ob->GetUndead() ) tmp1 = "%^BOLD%^RED%^UNDEAD%^RESET%^";
     else tmp1 = "%^BOLD%^GREEN%^Alive%^RESET%^";
-    if( (int)ob->GetSleeping() ) tmp1 += " / Sleeping";
+    if( ob->GetSleeping() ) tmp1 += " / Sleeping";
     else tmp1 += " / Awake";
-    if( (int)ob->GetParalyzed() ) tmp1 += " / Paralyzed";
+    if( ob->GetParalyzed() ) tmp1 += " / Paralyzed";
     lines += ({ center(tmp1, cols), "" });
     lines += ({ center("Health: " +(int)ob->GetHealthPoints() + "/"+
-        (int)ob->GetMaxHealthPoints() + "   Magic: " +
-        (int)ob->GetMagicPoints() + "/" +
-        (int)ob->GetMaxMagicPoints() + "   Stamina: " +
-        (int)ob->GetStaminaPoints() + "/" +
-        to_int((float)ob->GetMaxStaminaPoints()) + "   Carry: " +
-        (int)ob->GetCarriedMass() + "/" +
-        (int)ob->GetMaxCarry(), cols) });
-    lines += ({ center("Food: " + (int)ob->GetFood() + "    " +
-        "Drink: " + (int)ob->GetDrink() + "    " +
-        "Alcohol: " + (int)ob->GetAlcohol() + "    " +
-        "Caffeine: " + (int)ob->GetCaffeine() + "    " +
-        "Poison: " + (int)ob->GetPoison() + "    ", cols) });
+                ob->GetMaxHealthPoints() + "   Magic: " +
+                ob->GetMagicPoints() + "/" +
+                ob->GetMaxMagicPoints() + "   Stamina: " +
+                ob->GetStaminaPoints() + "/" +
+                to_int(ob->GetMaxStaminaPoints()) + "   Carry: " +
+                ob->GetCarriedMass() + "/" +
+                ob->GetMaxCarry(), cols) });
+    lines += ({ center("Food: " + ob->GetFood() + "    " +
+                "Drink: " + ob->GetDrink() + "    " +
+                "Alcohol: " + ob->GetAlcohol() + "    " +
+                "Caffeine: " + ob->GetCaffeine() + "    " +
+                "Poison: " + ob->GetPoison() + "    ", cols) });
     lines += ({ "\n" }) ;
-    lines += ({ center("Training Points: " + (int)ob->GetTrainingPoints() +
-        "    " +
-        "Quest Points: "+ (int)ob->GetQuestPoints() +
-        "    " +
-        //Fix below courtesy of Jonez
-        "Experience Points: "+ (int)ob->GetExperiencePoints(),cols) 
-    });
+    lines += ({ center("Training Points: " + ob->GetTrainingPoints() +
+                "    " +
+                "Quest Points: "+ ob->GetQuestPoints() +
+                "    " +
+                //Fix below courtesy of Jonez
+                "Experience Points: "+ ob->GetExperiencePoints(),cols) 
+            });
     lines += ({ "", "Limbs:" });
-    limbs = (string *)ob->GetWieldingLimbs();
-    if(ob && !ob->GetGhost()) arr = map((string *)ob->GetLimbs(),
-          (: sprintf("%:-14s%s (%d) %d/%d", $1,
-              ((member_array($1, $(limbs)) == -1) ? " " : "*"),
-              (int)($(ob))->GetLimbClass($1),
-              (int)($(ob))->GetHealthPoints($1),
-              (int)($(ob))->GetMaxHealthPoints($1)) :));
+    limbs = ob->GetWieldingLimbs();
+    if(ob && !ob->GetGhost()) arr = map(sort_array(ob->GetLimbs(), 1),
+            (: sprintf("%:-14s%s (%d) %d/%d", $1,
+                       ((member_array($1, $(limbs)) == -1) ? " " : "*"),
+                       ($(ob))->GetLimbClass($1),
+                       ($(ob))->GetHealthPoints($1),
+                       ($(ob))->GetMaxHealthPoints($1)) :));
     i = sizeof(arr);
     while(i--) if( (y = strlen(arr[i])) > x ) x = y;
     x = cols/(x+2);
-    lines += explode(format_page(arr, x), "\n") + ({ "", "Skills:" });
-    arr = map((string *)ob->GetSkills(),
-      function(string skill, object who) {
-          mapping mp = (mapping)who->GetSkill(skill);
-          int x, max;
-          x = to_int(percent(mp["points"],
-              (int)who->GetMaxSkillPoints(skill, mp["level"])));
-          max = ( mp["class"] == 1 ? 2 : 1 ) +  who->GetLevel();
-          max *= 2;
-          if( max < mp["level"] ) max = mp["level"];
-          return sprintf("%:-18s (%d) %:2d%% - %d/%d",
-            skill, mp["class"], x, mp["level"], max);
-      }, ob);
+    lines += explode(format_page2(arr, x), "\n") + ({ "", "Skills:" });
+    arr = map(sort_array(ob->GetSkills(), 1),
+            function(string skill, object who) {
+            mapping mp = who->GetSkill(skill);
+            int x, max;
+            x = to_int(percent(mp["points"],
+                    who->GetMaxSkillPoints(skill, mp["level"])));
+            max = who->GetMaxSkillLevel(skill);
+            if( max < mp["level"] ) max = mp["level"];
+            return sprintf("%:-18s (%d) %:2d%% - %d/%d",
+                skill, mp["class"], x, mp["level"], max);
+            }, ob);
     i = sizeof(arr);
     while(i--) if( (y = strlen(arr[i])) > x ) x = y;
     x = cols/(x+2);
-    lines += explode(format_page(arr, x), "\n") + ({ "", "Stats:" });
-    arr = map((string *)ob->GetStats(),
-      (: sprintf("%:-12s (%d) %d/%d", $1,
-          (int)($(ob))->GetStatClass($1),
-          (int)($(ob))->GetStatLevel($1),
-          (int)($(ob))->GetBaseStatLevel($1)) :));
+    lines += explode(format_page2(arr, x), "\n") + ({ "", "Stats:" });
+    arr = map(sort_array(ob->GetStats(), 1),
+            (: sprintf("%:-12s (%d) %d/%d", $1,
+                       ($(ob))->GetStatClass($1),
+                       ($(ob))->GetStatLevel($1),
+                       ($(ob))->GetBaseStatLevel($1)) :));
     i = sizeof(arr);
     x = 0;
     while(i--) if( (y = strlen(arr[i])) > x ) x = y;
     x =cols/(x+2);
-    lines += explode(format_page(arr, x), "\n");
+    lines += explode(format_page2(arr, x), "\n");
     if(sizeof(ECONOMY_D->__QueryCurrencies())){
         if(valid_currency("gold")) gold = "gold";
         else gold = ECONOMY_D->__QueryCurrencies()[0];
         lines += ({ "", (string)ob->GetName()+" has amassed a net worth of " +
-          ( (int)ob->GetNetWorth(gold) ) + " "+gold+"."});
+                ( (int)ob->GetNetWorth(gold) ) + " "+gold+"."});
         arr = filter( map((string *)ob->GetCurrencies(),
-            (: ($(ob))->GetCurrency($1) &&
-              sprintf("%d %s", ($(ob))->GetCurrency($1), $1) :)),
-          (: $1 :));
+                    (: ($(ob))->GetCurrency($1) &&
+                     sprintf("%d %s", ($(ob))->GetCurrency($1), $1) :)),
+                (: $1 :));
         lines += ({ "Money on hand: "+implode(arr, ", ") });
     }
     this_player()->eventPage(lines, "system");
@@ -127,5 +127,6 @@ mixed cmd(string args) {
 
 string GetHelp(string blah) {
     return ("Syntax: stat <living>\n\n"
-      "Displays statistical information of a living object.");
+            "Displays statistical information of a living object.\n"
+            "See also: score, status, env.");
 }

@@ -16,9 +16,9 @@ void create() {
     SetId( ({ "pedestal" }) );
     SetShort("a pedestal");
     SetLong(
-      "This small (gnome-height) pedestal is made from a dark, mysterious stone. "+
-      "There is a small indentation on the flat top, as if a round object were "+
-      "meant to be placed there. ");
+            "This small (gnome-height) pedestal is made from a dark, mysterious stone. "+
+            "There is a small indentation on the flat top, as if a round object were "+
+            "meant to be placed there. ");
     SetRead("Made by the Wilsonshire and Sons corintian pillar specialists.");
     SetMass(10000);
     SetValue(0);
@@ -35,25 +35,25 @@ int place(string str)
         if (!ths->id("crystal ball")) return 0;
         write("The pedestal already has a crystal ball on it. ");
         return 1;}
-    if (!(ths=present(this,this_player()))) {
-        notify_fail("You are not carrying "+this+". ");
-        return 0;}
-    if (!ths->id("crystal ball")) {
-        notify_fail("That's pointless. ");
-        return 0;}
-    ths->remove();
-    write("You place the crystal ball on the pedestal, and watch it fuse into place. ");
-    say("Places a crystal ball on the pedestal. The ball is fused to the pedestal");
-    SetShort("a pedestal with crystal ball.");
-    SetLong(
-      "This small (gnome-height) pedestral is made from a dark, mysterious "+
-      "stone.  A crystal ball snugly fits into an indentation on the top. As "+
-      "you peer at it, you notice barely-perceptible lines of force streaming "+
-      "from the stone to the crystal ball. It seems your lessons in discerning "+
-      "magic forces have paid off. ");
-    add_action("view", "view");
-    has_ball=1;
-    return 1;
+        if (!(ths=present(this,this_player()))) {
+            notify_fail("You are not carrying "+this+". ");
+            return 0;}
+            if (!ths->id("crystal ball")) {
+                notify_fail("That's pointless. ");
+                return 0;}
+                ths->remove();
+                write("You place the crystal ball on the pedestal, and watch it fuse into place. ");
+                say("Places a crystal ball on the pedestal. The ball is fused to the pedestal");
+                SetShort("a pedestal with crystal ball.");
+                SetLong(
+                        "This small (gnome-height) pedestral is made from a dark, mysterious "+
+                        "stone.  A crystal ball snugly fits into an indentation on the top. As "+
+                        "you peer at it, you notice barely-perceptible lines of force streaming "+
+                        "from the stone to the crystal ball. It seems your lessons in discerning "+
+                        "magic forces have paid off. ");
+                add_action("view", "view");
+                has_ball=1;
+                return 1;
 }
 
 int view(string str)
@@ -69,9 +69,9 @@ int view(string str)
     }
     if(!(ob = find_living(str))
 #if 0
-      || creatorp(ob)
+            || creatorp(ob)
 #endif
-    ) {
+      ) {
         write("No such person in our reality. ");
         return 1;
     }
@@ -87,6 +87,6 @@ int view(string str)
     for(i=0; i<sizeof(inv); i++) {
         if(inv[i]->query_invis()) continue;
         desc += "\n"+(string)inv[i]->GetShort()+" "; }
-    write(desc);
-    return 1;
+        write(desc);
+        return 1;
 }

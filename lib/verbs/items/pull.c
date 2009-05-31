@@ -9,11 +9,11 @@ static void create() {
     SetSynonyms("yank", "haul", "drag");
     SetErrorMessage("Pull what? Or pull what on what?");
     SetHelp("Syntax: <pull OBJECT>\n"
-      "        <pull THING on OBJECT>\n\n"
-      "Allows you to pull an object, or perhaps a thing on the "
-      "object.  For example, you might want to "
-      "\"pull the lever on the wall\", or simply \"pull lever\".\n\n"
-      "Synonyms: haul, drag, yank");
+            "        <pull THING on OBJECT>\n\n"
+            "Allows you to pull an object, or perhaps a thing on the "
+            "object.  For example, you might want to "
+            "\"pull the lever on the wall\", or simply \"pull lever\".\n\n"
+            "Synonyms: haul, drag, yank");
 }
 
 mixed can_pull_obj() {

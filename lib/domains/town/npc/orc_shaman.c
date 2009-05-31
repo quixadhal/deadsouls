@@ -18,8 +18,8 @@ static void create() {
     SetAdjectives(({"dirty"}));
     SetShort("the orc shaman");
     SetLong("This orc is different from the others you've seen. "+
-      "he has an unearthly ferocity about him and "+
-      "is bigger, tougher, and meaner than the others.");
+            "he has an unearthly ferocity about him and "+
+            "is bigger, tougher, and meaner than the others.");
     SetLevel(1);
     SetRace("orc");
     SetClass("fighter");
@@ -27,11 +27,11 @@ static void create() {
     SetMaxHealthPoints(200);
     SetEncounter(  (: CheckOrc :) );
     SetInventory(([
-        "/domains/town/weap/gstaff":"wield staff",
-        "/domains/town/weap/orcslayer":1,
-        "/domains/town/armor/orc_helmet": "wear helmet",
-        "/domains/town/armor/bearskin": "wear bearskin",
-      ]) );
+                "/domains/town/weap/gstaff":"wield staff",
+                "/domains/town/weap/orcslayer":1,
+                "/domains/town/armor/orc_helmet": "wear helmet",
+                "/domains/town/armor/bearskin": "wear bearskin",
+                ]) );
 
 }
 void init(){

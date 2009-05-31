@@ -1,0 +1,6 @@
+#!/bin/bash 
+
+if !(grep $1 /tmp/foo/diff.txt); then 
+\rm -f $1
+fi
+

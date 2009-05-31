@@ -15,14 +15,14 @@
 #define TIME_TO_RESET            3600
 #define RESET_ALL                0
 #define GMT_OFFSET               -32000
-#define LOCAL_TIME               1
+#define LOCAL_TIME               0
 #define EXTRA_TIME_OFFSET        0
 #define MAX_LOG_SIZE             150000
 #define MAX_NET_DEAD_TIME        1800
-#define MIN_HISTORY_SIZE         10
-#define MAX_HISTORY_SIZE         30
+#define MIN_HISTORY_SIZE         50
+#define MAX_HISTORY_SIZE         100
 #define LOGON_TIMEOUT            360
-#define IDLE_TIMEOUT             3600
+#define IDLE_TIMEOUT             180000
 #define LINK_WAIT_PERIOD         1800
 #define MAX_PASSWORD_TRIES       3
 #define MIN_USER_NAME_LENGTH     2
@@ -32,8 +32,8 @@
 #define SUPPORTED_CLIENTS       ({ "amcp", "amcp/1.1" })
 #define HOUR_LENGTH              1200
 #define DAY_LENGTH               20
-#define MAX_NEWBIE_LEVEL         2
-#define AUTOSAVE_TIME            450
+#define MAX_NEWBIE_LEVEL         0
+#define AUTOSAVE_TIME            290
 #define MORTAL_POSITIONS         ({ "player", "high mortal", "ambassador" })
 #define DEFAULT_GRAVITY          1.0
 #define DEFAULT_ITEM_MESSAGE     "You do not see that here."
@@ -51,7 +51,7 @@
 #define SAME_IP_MAX              4
 #define COMPAT_MODE              1
 #define RETAIN_ON_QUIT           1
-#define FAST_COMBAT              0
+#define FAST_COMBAT              1
 #define MAX_COMMANDS_PER_SECOND  10
 #define DEFAULT_PARSING          1
 #define CALL_OUT_LOGGING         0
@@ -64,7 +64,8 @@
 #define CARRIAGE_RETURN          "\r"
 #define OLD_STYLE_PLURALS        1
 #define NM_STYLE_EXITS           0
-#define WEB_SOURCE               "149.152.218.102"
+#define WEB_SOURCE_IP            "204.209.44.12"
+#define WEB_SOURCE_NAME          "lpmuds.net"
 #define DESTRUCT_LOGGING         0
 #define ROUTER_NAME              "Alpha"
 #define IRN_PASSWORD             "Alpha"
@@ -75,12 +76,23 @@
 #define SEFUN_PLURALIZE          0
 #define LOG_REMOTE_CHANS         0
 #define LOG_LOCAL_CHANS          1
-#define IMC2_CLIENT_PW           "clientpass"
-#define IMC2_SERVER_PW           "serverpass"
 #define ENABLE_CGI               0
 #define WWW_DIR_LIST             0
 #define ENABLE_CREWEB            0
 #define F_TERMINAL_COLOR         1
 #define MAX_CALL_OUTS            750
+#define REQUIRE_QUESTING         1
+#define AUTO_ADVANCE             1
+#define MAX_INVENTORY_SIZE       2048
+#define MAX_ATTACKS_PER_HB       40
+#define MEMUSE_SOFT_LIMIT        0
+#define MEMUSE_HARD_LIMIT        0
+#define MAX_USERS                0
+#define MIN_PERF                 400
+#define MINIMAP                  1
+#define WIZMAP                   1
+#define GRID                     1
+#define ENABLE_INSTANCES         0
+#define CED_DISABLED             1
 
 #endif /* s_config_h */

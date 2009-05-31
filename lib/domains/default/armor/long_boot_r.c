@@ -10,7 +10,7 @@ static void create(){
     SetAdjectives(({"long","riding","black","leather","right"}));
     SetShort("a long riding boot");
     SetLong("A long riding boot, made of black leather. It is "+
-      "designed for wear on the right foot and leg.");
+            "designed for wear on the right foot and leg.");
     SetMass(60);
     SetBaseCost("silver",75);
     SetDamagePoints(5);

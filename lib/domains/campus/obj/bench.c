@@ -16,7 +16,7 @@ static void create() {
     SetAdjectives("wooden");
     SetShort("a wooden bench");
     SetLong("This is a typical wooden bench, the sort you might "+
-      "see in a park. It appears designed for sitting on.");
+            "see in a park. It appears designed for sitting on.");
     SetMass(1500);
     SetDollarCost(15);
     SetMaxSitters(3);

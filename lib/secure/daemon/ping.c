@@ -1,11 +1,6 @@
 #include <lib.h>
-#include <config.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <daemons.h>
-
-#ifndef PING_INTERVAL
-#define PING_INTERVAL 30
-#endif
 
 inherit LIB_DAEMON;
 
@@ -23,12 +18,12 @@ int CheckOK(){
     if(DISABLE_INTERMUD) return 1;
     if(!OK){
         Retries++;
-        update("/daemon/intermud");
+        update(INTERMUD_D);
     }
     else {
         if(Retries > 0 && INTERMUD_D->GetConnectedStatus()){
             tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"
-              "Intermud connection is %^BOLD%^GREEN%^ONLINE%^BOLD%^CYAN%^.%^RESET%^\"");
+                    "Intermud connection is %^BOLD%^GREEN%^ONLINE%^BOLD%^CYAN%^.%^RESET%^\"");
             load_object(ROOM_ARCH)->SetImud(1);
         }
 
@@ -36,7 +31,7 @@ int CheckOK(){
     }
     if(Retries == 2 && !(INTERMUD_D->GetConnectedStatus())){
         tell_room(ROOM_ARCH,"The Arch Room loudspeaker announces: \"%^BOLD%^CYAN%^"
-          "Intermud connection is %^BOLD%^RED%^OFFLINE%^BOLD%^CYAN%^.%^RESET%^\"");
+                "Intermud connection is %^BOLD%^RED%^OFFLINE%^BOLD%^CYAN%^.%^RESET%^\"");
         rm("/tmp/muds.txt");
         load_object(ROOM_ARCH)->SetImud(0);
     }

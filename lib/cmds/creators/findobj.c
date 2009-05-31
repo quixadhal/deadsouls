@@ -25,7 +25,7 @@ mixed cmd(string args) {
         string name;
         string str = "%^BOLD%^BLUE%^Object: "+identify(ob)+", ";
         if(args != "door" && name = ob->GetName()) str += "%^BOLD%^GREEN%^name: "+name+", ";
-        str += "%^BOLD%^WHITE%^";
+        str += "%^B_BLACK%^BOLD%^WHITE%^";
         if(environment(ob)) str += "environment: "+identify(environment(ob))+".\n";
         else str += "environment: None.\n";
         str += "%^RESET%^\n";
@@ -41,6 +41,6 @@ mixed cmd(string args) {
 
 string GetHelp() {
     return ("Syntax: findobj STRING\n\n"
-      "Displays matching objects that are loaded into memory.\n\n"
-      "examples: \n\nfindobj staff\nfindobj /lib/dummy");
+            "Displays matching objects that are loaded into memory.\n\n"
+            "examples: \n\nfindobj staff\nfindobj /lib/dummy");
 }

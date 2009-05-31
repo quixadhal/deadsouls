@@ -9,11 +9,11 @@ static void create() {
     SetSynonyms("rap");
     SetErrorMessage("Knock on what? Or knock what on what?");
     SetHelp("Syntax: <knock on OBJECT>\n"
-      "        <knock THING on OBJECT>\n\n"
-      "Allows you to knock on an object, or perhaps a thing on the "
-      "object.  For example, you might want to "
-      "\"knock on the window on the wall\", or simply \"knock on door\".\n\n"
-      "Synonyms: rap");
+            "        <knock THING on OBJECT>\n\n"
+            "Allows you to knock on an object, or perhaps a thing on the "
+            "object.  For example, you might want to "
+            "\"knock on the window on the wall\", or simply \"knock on door\".\n\n"
+            "Synonyms: rap");
 }
 
 mixed can_knock_obj() {

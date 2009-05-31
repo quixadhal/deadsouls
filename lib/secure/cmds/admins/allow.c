@@ -41,5 +41,5 @@ void help() {
     write("Members of law may allow people from sites on register to create\n");
     write("new characters with this command.  [who] is the character name,\n");
     write("[email] is the player's real life email address.\n");
-    write("See also: noallow, wholetin, whobanished, whoregistered, whowatched\n");
+    write("See also: whobanished, whoregistered, whowatched\n");
 }

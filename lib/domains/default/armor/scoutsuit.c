@@ -18,19 +18,19 @@ static void create(){
     SetAdjectives(({"scout","suit of","powered","formidable", "formidable looking"}));
     SetShort("a suit of powered scout armor");
     SetLong("A formidable looking suit of powered armor used by "+
-      "forces of the Extant Authority. This one appears to be one of "+
-      "the scout variety.");
+            "forces of the Extant Authority. This one appears to be one of "+
+            "the scout variety.");
     SetMass(700);
     SetMatching(0);
     SetBaseCost("silver",5000);
     SetArmorType(A_CUSTOM);
     SetRestrictLimbs( ({ 
-        "torso", "head", "neck",
-        "right arm", "left arm",
-        "right leg", "left leg",
-        "right hand", "left hand",
-        "right foot", "left foot",
-      }) );
+                "torso", "head", "neck",
+                "right arm", "left arm",
+                "right leg", "left leg",
+                "right hand", "left hand",
+                "right foot", "left foot",
+                }) );
     AddSave( ({ "charge", "disguised" }) );
     SetMaxCarry(500);
     SetWear((: GetSuitHelp :));
@@ -49,21 +49,21 @@ mixed GetSuitHelp(string str){
         if(environment() == this_player() && charge){
             ret = "The suit's Heads Up Display crackles to life and reads:\n ";
             ret += "%^GREEN%^This suit allows you, honorable Scout, to travel in hazardous terrain "+
-            "with a minimum of inconvenience. In the interest of fulfilling the exigencies "+
-            "of your duties to the Extant Authority, this suit provides the following "+
-            "improvements to your abilities:\n\n"+
-            "* Good vision in all light conditions.\n"+
-            "* A constant supply of breathable air.\n"+
-            "* Substantial enhancement of strength, coordination, agility, and durability.\n"+
-            "* Substantial enhancement of unarmed combat capability.\n"+
-            "* Heads Up Display of key environmental information.\n"+
-            "* Grid coordinate information where available.\n"+
-            "* Protection from all forms of external damage.\n"+
-            "* Immunity from disease.\n\n"+
-            "Note that once the power level of the suit reaches zero, all enhancements "+
-            "become unavailable. Please note that as a Scout, your Arbiter relies on your "+
-            "most excellent judgment in disengaging from disharmonies and reporting such "+
-            "situations for referral to the Negotiations Corps.%^RESET%^";
+                "with a minimum of inconvenience. In the interest of fulfilling the exigencies "+
+                "of your duties to the Extant Authority, this suit provides the following "+
+                "improvements to your abilities:\n\n"+
+                "* Good vision in all light conditions.\n"+
+                "* A constant supply of breathable air.\n"+
+                "* Substantial enhancement of strength, coordination, agility, and durability.\n"+
+                "* Substantial enhancement of unarmed combat capability.\n"+
+                "* Heads Up Display of key environmental information.\n"+
+                "* Grid coordinate information where available.\n"+
+                "* Protection from all forms of external damage.\n"+
+                "* Immunity from disease.\n\n"+
+                "Note that once the power level of the suit reaches zero, all enhancements "+
+                "become unavailable. Please note that as a Scout, your Arbiter relies on your "+
+                "most excellent judgment in disengaging from disharmonies and reporting such "+
+                "situations for referral to the Negotiations Corps.%^RESET%^";
             write(ret);
             return 1;
         }
@@ -121,7 +121,7 @@ int eventDecrementCharge(int i){
     if(perc < 10){
         if(living(env) && creatorp(env)){
             env->eventPrint("Your creator powers magically recharge the "+
-              remove_article(GetShort())+".");
+                    remove_article(GetShort())+".");
             charge = maxcharge;
             return charge;
         }
@@ -132,7 +132,7 @@ int eventDecrementCharge(int i){
     if(perc < 20){
         if(living(env) && creatorp(env)){
             env->eventPrint("Your creator powers magically recharge the "+
-              remove_article(GetShort())+".");
+                    remove_article(GetShort())+".");
             charge = maxcharge;
             return charge;
         }

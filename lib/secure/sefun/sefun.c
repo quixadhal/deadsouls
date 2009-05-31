@@ -4,12 +4,8 @@
  *    created by Descartes of Borg 940213
  */
 
-#ifndef DESTRUCT_LOGGING
-#define DESTRUCT_LOGGING 0
-#endif
-#ifndef MAX_CALL_OUTS
-#define MAX_CALL_OUTS 500
-#endif
+#define MAX_DUMMIES 8192
+#define MAX_OBJECT 1024
 
 #include <lib.h>
 #include <dirs.h>
@@ -18,12 +14,12 @@
 #include <commands.h>
 #include <objects.h>
 #include <privs.h>
-#include "sefun.h"
+#include <runtime_config.h>
+#include "./sefun.h"
 
 #include "/secure/sefun/absolute_value.c"
-#include "/secure/sefun/base_name.c"
+#include "/secure/sefun/names.c"
 #include "/secure/sefun/communications.c"
-#include "/secure/sefun/convert_name.c"
 #include "/secure/sefun/copy.c"
 #include "/secure/sefun/domains.c"
 #include "/secure/sefun/economy.c"
@@ -55,8 +51,7 @@
 #include "/secure/sefun/time.c"
 #include "/secure/sefun/to_object.c"
 #include "/secure/sefun/translate.c"
-#include "/secure/sefun/user_exists.c"
-#include "/secure/sefun/user_path.c"
+#include "/secure/sefun/users.c"
 #include "/secure/sefun/visible.c"
 #include "/secure/sefun/tail.c"
 #include "/secure/sefun/sockets.c"
@@ -82,7 +77,6 @@
 #include "/secure/sefun/numbers.c"
 #include "/secure/sefun/inventory.c"
 #include "/secure/sefun/findobs.c"
-#include "/secure/sefun/query_names.c"
 #include "/secure/sefun/ascii.c"
 #include "/secure/sefun/wild_card.c"
 #include "/secure/sefun/compare_array.c"
@@ -91,8 +85,10 @@
 #ifdef LIVEUPGRADE_SERVER
 #include "/secure/sefun/native_version.c"
 #endif
-#include "/secure/sefun/automap.c"
+#include "/secure/sefun/minimap.c"
+#include "/secure/sefun/fuzzymatch.c"
 
+object globalob;
 string globalstr;
 mixed globalmixed, gargs, gfun, gdelay;
 int last_regexp = time();
@@ -100,7 +96,7 @@ int regexp_count = 1;
 int max_regexp = 200;
 private static string *blacklist = ({});
 private static string *jokes = ({"bind","call_out","call_other",
-  "unguarded","evaluate"});
+        "unguarded","evaluate"});
 
 #ifdef __FLUFFOS__
 mixed copy(mixed val){
@@ -113,12 +109,68 @@ string base_name(mixed val){
 }
 #endif /* __FLUFFOS__ */
 
+varargs object clone_object(string name, mixed args...){
+    int obsnum;
+    string prev;
+
+    prev = (base_name(previous_object()) || "");
+
+    if(strsrch(prev,"/realms/") && strsrch(prev,"/open/")){
+        return efun::clone_object(name, args...);
+    }
+
+    if(MEMUSE_SOFT_LIMIT && memory_info() > MEMUSE_SOFT_LIMIT){
+        return 0;
+    }
+
+    if(last(name,2) == ".c") name = truncate(name,2);
+    obsnum = sizeof( objects( (: base_name($1) == $(name) :) ) );
+    //The following means "allow new dummies up to a total
+    //of MAX_DUMMIES, but otherwise restrict the number of
+    //clones created of a particular file by a non-privileged
+    //object to MAX_OBJECT
+    if((name != LIB_DUMMY && obsnum > MAX_OBJECT) || obsnum > MAX_DUMMIES){
+        error("Too many cloned objects from an unprivileged source.");
+    }
+    return efun::clone_object(name, args...);
+}
+
 //For some reason, FluffOS read_file() will read
 //a zero-length file as a 65535 length T_INVALID variable.
 //This tends to screw things up for Dead Souls.
 varargs string read_file(string file, int start_line, int number_of_lines){
-    if(file_size(file) == 0) return "";
+    int sz = file_size(file);
+    if(sz < 1 || sz >= get_config(__MAX_STRING_LENGTH__)) return "";
     return efun::read_file(file, start_line, number_of_lines);
+}
+
+//In FluffOS 2.13 and early versions of 2.14, check_memory()
+//is a crasher.
+string check_memory(int flag){
+    string ret;
+#if 1
+#ifdef __DEBUGMALLOC__
+#ifdef __DEBUGMALLOC_EXTENSIONS__
+#ifdef __PACKAGE_DEVELOP__
+    ret = efun::check_memory(flag);
+#endif
+#endif
+#endif
+#endif
+    if(!ret) ret = "";
+    return ret;
+}
+
+mapping rusage(){
+#ifdef __HAS_RUSAGE__
+    return efun::rusage();
+#else
+    return ([ "nivcsw" : 0, "isrss" : 0, "nsignals" : 0, "utime" : 0,
+            "oublock" : 0, "maxrss" : 0, "stime" : 0, 
+            "nvcsw" : 0, "majflt" : 0, "nswap" : 0, "msgrcv" : 0, 
+            "inblock" : 0, "minflt" : 0, "ixrss" : 0,
+            "msgsnd" : 0, "idrss" : 0 ]);
+#endif
 }
 
 string dump_file_descriptors(){
@@ -131,7 +183,6 @@ string dump_file_descriptors(){
 void reset_eval_cost(){
     if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
         efun::reset_eval_cost();
-    else debug_message("failed reset_eval_cost: "+get_stack());
 }
 
 void set_eval_limit(int i){
@@ -177,12 +228,14 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     gfun = fun;
     gdelay = delay;
 
+    get_garbage();
     if(prev) prevbase = base_name(prev);
     else error("call_out with no previous_object()");
 
     if(sizeof(raw) > MAX_CALL_OUTS && (strsrch(prevbase,"/secure/") && 
-        strsrch(prevbase,"/lib/") && strsrch(prevbase,"/std/") &&
-        strsrch(prevbase,"/daemon/") && strsrch(prevbase,"/domains/"))){
+                strsrch(prevbase,"/lib/") && strsrch(prevbase,"/std/") &&
+                strsrch(prevbase,"/obj/") &&
+                strsrch(prevbase,"/daemon/") && strsrch(prevbase,"/domains/"))){
         int err;
         globalmixed = prev;
         err = catch(unguarded( (: destruct( globalmixed ) :) ));
@@ -209,13 +262,15 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     if(strsrch(prevbase,"/secure/") && strsrch(prevbase,"/daemon/")){
 #if CALL_OUT_LOGGING
         unguarded( (: write_file("/log/secure/callouts",timestamp()+" "+
-              identify(previous_object(-1))+" "+identify((gargs || gfun))+"\n") :) );
+                        identify(previous_object(-1))+" "+identify((gargs || gfun))+"\n") :) );
 #endif
 
         while(i--){
             if(sizeof(raw[i]) && objectp(raw[i][0])){
-                string *lol = explode(base_name(raw[i][0]),"/");
-                string wut = "/"+lol[0]+"/"+lol[1]+"/";
+                string *lol;
+                string wut;
+                lol = explode(base_name(raw[i][0]),"/");
+                wut = "/"+lol[0]+"/"+lol[1]+"/";
                 if(!(callers[wut])) callers[wut] = 1;
                 else callers[wut]++;
             }
@@ -241,10 +296,22 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     return ret;
 }
 
+string query_ip_number(object ob){
+    if(!ob) ob = previous_object();
+    if(!AUTO_WIZ || ob == previous_object()) return efun::query_ip_number(ob);
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+        return efun::query_ip_number(ob);
+    return "0.0.0.0";
+}
+
 //addr_server calls don't work well on Solaris and spam stderr
 string query_ip_name(object ob){
+    if(!ob) ob = previous_object();
     if(!strsrch(architecture(), "Solaris")) return query_ip_number(ob);
-    else return efun::query_ip_name(ob);
+    if(!AUTO_WIZ || ob == previous_object()) return efun::query_ip_name(ob);
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+        return efun::query_ip_name(ob);
+    return "w.x.y.z";
 }
 
 string *query_local_functions(mixed arg){
@@ -265,11 +332,14 @@ string *query_local_functions(mixed arg){
 object find_object( string str ){
     object ret;
     int err;
+    string thing;
     if(!str || !stringp(str)) return 0;
     err = catch(ret = efun::find_object(str));
     if(err || !ret) return 0;
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
+    thing = base_name(ret);
+    if(!strsrch(thing, "/domains/")) return ret;
     if(base_name(previous_object()) == SERVICES_D) return ret;
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
     if(base_name(ret) == "/secure/obj/snooper") return 0;
     if(archp(ret) && ret->GetInvis()) return 0;
     else return ret;
@@ -277,8 +347,9 @@ object find_object( string str ){
 
 object find_player( string str ){
     object ret = efun::find_player(str);
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
+    if(ret && !ret->GetInvis()) return ret;
     if(base_name(previous_object()) == SERVICES_D) return ret;
+    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
     if(ret && archp(ret) && ret->GetInvis()) return 0;
     else return ret;
 }
@@ -317,7 +388,7 @@ varargs mixed objects(mixed arg1, mixed arg2){
     else tmp_obs = efun::objects();
 
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
-      base_name(previous_object())  != SERVICES_D){
+            base_name(previous_object())  != SERVICES_D){
 #ifdef __FLUFFOS__
         tmp_obs = filter(tmp_obs, (: !($1->GetInvis() && archp($1)) :) );
 #else
@@ -359,7 +430,7 @@ varargs mixed objects(mixed arg1, mixed arg2){
 mixed array users(){
     object *ret = filter(efun::users(), (: ($1) && environment($1) :) );
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
-      base_name(previous_object())  != SERVICES_D)
+            base_name(previous_object())  != SERVICES_D)
         ret = filter(ret, (: !($1->GetInvis() && archp($1)) :) );
     return ret;
 }
@@ -371,7 +442,7 @@ mixed array users(){
             if(objectp(foo) && environment(foo)) ret += ({ foo });
         }
     if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
-      base_name(previous_object())  != SERVICES_D)
+            base_name(previous_object())  != SERVICES_D)
         foreach(mixed foo in ret){
             if(foo->GetInvis() && archp(foo)) ret -= ({ foo });
         }
@@ -383,12 +454,15 @@ int destruct(object ob) {
     string *privs;
     string tmp;
     int ok;
-
+    if(!ob) return 0;
     privs = ({ file_privs(file_name(ob)) });
 
-    if((int)master()->valid_apply(({ "ASSIST" }) + privs)) ok = 1;
+    if(!previous_object() || previous_object() == master() ||
+            previous_object() == this_object()) ok = 1;
 
-    if(previous_object(0) && tmp = query_privs(previous_object(0))){
+    else if((int)master()->valid_apply(({ "ASSIST" }) + privs)) ok = 1;
+
+    else if(previous_object(0) && tmp = query_privs(previous_object(0))){
         if(previous_object(0) == ob) ok = 1;
         if(member_array(PRIV_SECURE, explode(tmp, ":")) != -1) ok = 1;
     }
@@ -406,21 +480,29 @@ int destruct(object ob) {
     else return 0;
 }
 
+static void shutdown_logic(int code){
+    efun::shutdown(code);
+}
+
 varargs void shutdown(int code) {
+    object *persistents;
     if(!((int)master()->valid_apply(({"ASSIST"}))) &&
-      !((int)master()->valid_apply(({"SECURE"})))) return;
+            !((int)master()->valid_apply(({"SECURE"})))) return;
+    if(code == -9) efun::shutdown(code);
+    else call_out( (: shutdown_logic :), 0, code);
     if(this_player())
         log_file("shutdowns", (string)this_player()->GetCapName()+
-          " shutdown "+mud_name()+" at "+ctime(time())+"\n");
+                " shutdown "+mud_name()+" at "+ctime(time())+"\n");
     else log_file("shutdowns", "Game shutdown by "+
-          file_name(previous_object(0))+" at "+ctime(time())+"\n");
-    efun::shutdown(code);
+            file_name(previous_object(0))+" at "+ctime(time())+"\n");
+    persistents = objects( (: $1->GetPersistent() :) );
+    persistents->SaveObject();
 }
 
 int valid_snoop(object snooper, object target){
     if(member_group(target, PRIV_SECURE)) {
         message("system", (string)snooper->GetCapName()+" is trying to snoop "
-          "you.", target);
+                "you.", target);
         if(!member_group(snooper, PRIV_SECURE)) return 0;
     }
     if(archp(snooper)) return 1;
@@ -440,17 +522,17 @@ varargs object snoop(object who, object target) {
     }
     else if(member_group(target, PRIV_SECURE)) {
         message("system", (string)who->GetCapName()+" is now snooping "
-          "you.", target);
+                "you.", target);
         return efun::snoop(who, target);
     }
     else return efun::snoop(who, target);
 }
 
-object query_snoop(object ob) {
-    if(base_name(previous_object()) != SNOOP_D)
-        return 0;
-    return efun::query_snoop(ob);
-}
+    object query_snoop(object ob) {
+        if(base_name(previous_object()) != SNOOP_D)
+            return 0;
+        return efun::query_snoop(ob);
+    }
 
 object query_snooping(object ob) {
     if(!((int)master()->valid_apply(({})))) return 0;
@@ -462,8 +544,8 @@ int exec(object target, object src) {
     int ret;
     tmp = base_name(previous_object());
     if(tmp != LIB_CONNECT && tmp != CMD_ENCRE && tmp != CMD_DECRE 
-      && tmp != SU && tmp != RELOAD_D) return 0;
-    ret = efun::exec(target, src);
+            && tmp != SU && tmp != RELOAD_D) return 0;
+    if(objectp(target) && objectp(src)) ret = efun::exec(target, src);
     return ret;
 }
 
@@ -487,8 +569,11 @@ string capitalize(mixed str) {
 
     if(objectp(str)) str = str->GetKeyName();
 
-    /* error condition, let it look like an efun */
-    if( !str || str == "" ) return efun::capitalize(str);
+    /* error condition, let it look like an efun 
+     * mmmm let's not
+     * if( !str || str == "" ) return efun::capitalize(str);
+     */
+    if(!str) str = "";
     /* most strings are not colour strings */
     if( strlen(str) < 2 || str[0..1] != "%^" ) return efun::capitalize(str);
     /* god help us */
@@ -516,4 +601,99 @@ int efun_exists(string str){
 int sefun_exists(string str){
     if(member_array(str,functions(this_object())) != -1) return 1;
     return 0;
+}
+
+int query_charmode(object ob){
+    int ret = -1;
+    globalob = ob;
+#ifdef __DSLIB__
+    ret = unguarded( (: efun::query_charmode(globalob) :) );
+#endif
+    return ret;
+}
+
+varargs void input_to(mixed fun, int flag, mixed args...){
+    object prev = previous_object();
+    object player = this_player();
+
+    gargs = args;
+    gfun = fun;
+    gdelay = flag;
+
+    if(!prev){
+        error("input_to with no previous_object()");
+    }
+    if(stringp(fun)){
+        if(member_array(fun,jokes) != -1){
+            error("Please, no jokes!");
+        }
+        globalmixed = prev;
+        fun = bind( (: call_other, globalmixed, gfun  :) ,prev);
+    }
+    gfun = fun;
+
+    if(player && player->GetCharmode()){
+#ifdef __DSLIB__
+        remove_get_char(player);
+        remove_charmode(player);
+#endif
+    }
+    if(sizeof(gargs)){
+        efun::input_to(gfun, gdelay, gargs...);
+    }
+    else {
+        efun::input_to(gfun, gdelay);
+    }
+}
+
+/* Do not use this sefun directly. */
+varargs mixed file_present_logic(string str, object ob, int i){
+    int cloned;
+    mixed *rets = ({});
+    if(objectp(str) || strsrch(str,"/")){
+        return efun::present(str, ob);
+    }
+    if(grepp(str,"#")) cloned = 1;
+    foreach(mixed item in all_inventory(ob)){
+        if(cloned && file_name(item) == str) rets += ({ item });
+        else if(!cloned && base_name(item) == str) rets += ({ item });
+    }
+    if(i && sizeof(rets)) return rets;
+    else if(sizeof(rets)) return rets[0];
+    return 0; 
+}
+
+varargs mixed present_file(mixed str, mixed ob, int i){
+    object ret, env, *rets = ({});
+    if(!str) return 0;
+    if(objectp(str)) str = base_name(str);
+    if(ob){ 
+        ret = file_present_logic(str, ob, i);
+        if(ret) return ret;
+    }
+    else {
+        ob = previous_object();
+        if(ob){
+            ret = file_present_logic(str, ob, i);
+            if(ret) return ret;
+            env = environment(ob);
+            if(env) ret = file_present_logic(str, env, i);
+            if(ret) return ret;
+        }
+    }
+    return 0;
+}
+
+varargs mixed present_bonus(mixed str, mixed ob, int i){
+    mixed thingies = ( filter( all_inventory(ob),
+                (: $1->GetBonusName() :) ) || ({}) );
+    thingies = filter(thingies,(: $1->GetBonusName() == $(str) :));
+    if(!i && sizeof(thingies)) return thingies[0];
+    else if(sizeof(thingies)) return thingies;
+    return 0;
+}
+
+int shadow_unhooked(){
+    object ob = previous_object();
+    return !(inherits(LIB_SHADOW_HOOK, ob));
 }

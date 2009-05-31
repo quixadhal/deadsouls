@@ -12,40 +12,40 @@ static void create() {
     SetAmbientLight(40);
     SetShort("Underground Lab");
     SetLong("You are in a messy, wildly disorganized underground "+
-      "laboratory. There are notes strewn everywhere, and a large chalkboard "+
-      "is covered with bizarre schematics and formulae. On the east wall is "+
-      "some mysterious, glowing portal, about the size of a door. Next to the "+
-      "portal is a control panel, and a crudely drawn sign. There is a door on "+
-      "the west wall.");
+            "laboratory. There are notes strewn everywhere, and a large chalkboard "+
+            "is covered with bizarre schematics and formulae. On the east wall is "+
+            "some mysterious, glowing portal, about the size of a door. Next to the "+
+            "portal is a control panel, and a crudely drawn sign. There is a door on "+
+            "the west wall.");
     SetItems(([
-        ({"lab","room","laboratory"}) : "This appears to be some sort of "+
-        "secret physics lab.",
-        "mess" : "It's definitely messy in here.",
-        ({"note","notes"}) : "These are notes covered in highly technical "+
-        "equations and drawings.",
-        ({"board","chalkboard"}) : "It is filled with lots of jargon and symbols you "+
-        "don't recognize.",
-        ({"schematics","formulae"}) : "Complicated stuff, it looks like.",
-        ({"schematic","formula"}) : "Complicated stuff, it looks like.",
-        "east wall" : "Other than the mysterious glowing portal and the "+
-        "control panel, the east wall seems pretty ordinary.",
-        "west wall" : "The west wall has a door leading west.",
-        "wall" : "It's a wall.",
-        ({"portal","glowing portal","mysterious glowing portal"}) : "This is just "+
-        "what you'd expect a dimensional portal to look like, if you knew what "+
-        "it was. It pulsates with some weird energy, and you feel mildly "+
-        "nauseous looking into it. You feel strangely compelled to enter it.",
-        ({"panel","control panel"}) : (: panel_look :),
-        "sign" : "A crude, hand-drawn sign in red ink next to the portal." ]));
+                ({"lab","room","laboratory"}) : "This appears to be some sort of "+
+                "secret physics lab.",
+                "mess" : "It's definitely messy in here.",
+                ({"note","notes"}) : "These are notes covered in highly technical "+
+                "equations and drawings.",
+                ({"board","chalkboard"}) : "It is filled with lots of jargon and symbols you "+
+                "don't recognize.",
+                ({"schematics","formulae"}) : "Complicated stuff, it looks like.",
+                ({"schematic","formula"}) : "Complicated stuff, it looks like.",
+                "east wall" : "Other than the mysterious glowing portal and the "+
+                "control panel, the east wall seems pretty ordinary.",
+                "west wall" : "The west wall has a door leading west.",
+                "wall" : "It's a wall.",
+                ({"portal","glowing portal","mysterious glowing portal"}) : "This is just "+
+                "what you'd expect a dimensional portal to look like, if you knew what "+
+                "it was. It pulsates with some weird energy, and you feel mildly "+
+                "nauseous looking into it. You feel strangely compelled to enter it.",
+                ({"panel","control panel"}) : (: panel_look :),
+                "sign" : "A crude, hand-drawn sign in red ink next to the portal." ]));
     SetInventory(([
-      ]));
+                ]));
     SetRead("sign","The sign reads: Enter at your own risk! This portal leads to some "+
-      "places of questionable safety and unstable reality...you are warned!");
+            "places of questionable safety and unstable reality...you are warned!");
 
     AddRead( ({"schematics","formulae"}), ({"You don't understand them." }) );
     AddRead( ({"notes"}) , ({"They are incomprehensible to you."}) );
     AddRead( ({"board","chalkboard"}) , ({"It is full of cryptic equations. Buried in the middle of one "+
-        "is 'Step 3: a miracle happens'."}) );
+                "is 'Step 3: a miracle happens'."}) );
     SetExits((["west":"/domains/campus/room/tunnel3"]));
     SetEnters((["portal":"/domains/campus/room/access1"]));
     SetDoor("west","/domains/campus/doors/u_door");
@@ -59,7 +59,7 @@ void init(){
 }
 string panel_look(){
     return "The control panel contains a single dial and a tiny screen. "+
-    "The dial is set to: "+dial+" and the screen reads: "+tele_where+".";
+        "The dial is set to: "+dial+" and the screen reads: "+tele_where+".";
 }
 int set_dial(string str){
     int i;

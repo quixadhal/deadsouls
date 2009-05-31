@@ -20,7 +20,7 @@ int cmd(string str) {
     }
     BANISH_D->unregister_site(str);
     log_file("watch/register", (string)previous_object()->GetKeyName()+
-      " UNREGISTERED "+str+": "+ctime(time())+"\n");
+            " UNREGISTERED "+str+": "+ctime(time())+"\n");
     write("Site : "+str+" is now not on the registration list.\n");
     return 1;
 }
@@ -28,9 +28,9 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: <unregister [site]>\n\n"
-      "Takes a site off the list of sites which must register their\n"
-      "character before being allowed in.\n\nSee also:\n"
-      "register, whoregistered, banish, unbanish, whobanished, letin,\n"
-      "wholetin, unletin\n"
-    );
+            "Takes a site off the list of sites which must register their\n"
+            "character before being allowed in.\n\nSee also:\n"
+            "register, whoregistered, banish, unbanish, whobanished, letin,\n"
+            "wholetin, unletin\n"
+         );
 }

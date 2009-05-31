@@ -1,5 +1,5 @@
 /*    /verbs/players/stand.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    created by Descartes of Borg 960711
  *    Version: @(#) stand.c 1.5@(#)
  *    Last Modified: 96/12/21
@@ -18,9 +18,9 @@ static void create() {
     SetErrorMessage("Stand up?");
     SetSynonyms("get up");
     SetHelp("Syntax: <stand up>\n"
-      "When sitting down or lying down, you can get up in this "
-      "most intuitive manner.\n\n"
-      "See also: lie, sit");
+            "When sitting down or lying down, you can get up in this "
+            "most intuitive manner.\n\n"
+            "See also: lie, sit");
 }
 
 mixed can_stand_up() {

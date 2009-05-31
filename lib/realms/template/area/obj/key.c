@@ -15,5 +15,5 @@ static void create() {
     SetDisableChance(100);
 }
 void init(){
-::init();
+    ::init();
 }

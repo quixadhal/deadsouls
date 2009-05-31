@@ -10,14 +10,14 @@ static void create(){
     SetAdjectives(({"chainmail","sturdy","sturdy-looking","chain mail"}));
     SetShort("a sturdy-looking chainmail shirt");
     SetLong("This is a shirt made of small, thin metal rings fashioned together as armor. ");
-    SetMass(600);
-    SetBaseCost("silver",1000);
-    SetDamagePoints(1000);
-    SetProtection(BLUNT,4);
-    SetProtection(BLADE,25);
-    SetProtection(KNIFE,25);
+    SetMass(200);
+    SetBaseCost("silver",800);
+    SetProtection(BLUNT,5);
+    SetProtection(BLADE,20);
+    SetProtection(KNIFE,20);
     SetArmorType(A_ARMOR);
 }
+
 void init(){
     ::init();
 }

@@ -7,10 +7,10 @@ string SearchCrap(){
     string result;
     if(!ringfound){
         result="Rummaging through the disgusting pile, you "+
-        "discover a beautiful gold ring mixed in with the "+
-        "crap.";
+            "discover a beautiful gold ring mixed in with the "+
+            "crap.";
         say(this_player()->GetName()+" searches the pile of debris "+
-          "and seems to have found something of value.");
+                "and seems to have found something of value.");
         if(!new("/domains/campus/armor/ring")->eventMove(this_player()))
             new("/domains/campus/armor/ring")->eventMove(environment(this_object()));
         ringfound=1;
@@ -18,9 +18,9 @@ string SearchCrap(){
     }
 
     result="You rummage through the disgusting pile "+
-    "and find nothing.";
+        "and find nothing.";
     say(this_player()->GetName()+" searches the pile of debris "+
-      "with no results.");
+            "with no results.");
     return result; 
 }
 void create(){
@@ -30,8 +30,8 @@ void create(){
     SetAdjectives( ({"disgusting","pile of","smelly"}) );
     SetShort("a pile of debris");
     SetLong("This is a smelly, disgusting pile of crud "+
-      "that has accumulated from the running stream of "+
-      "sewage here. ");
+            "that has accumulated from the running stream of "+
+            "sewage here. ");
     SetMass(20);
     SetDollarCost(0);
     SetVendorType(VT_TREASURE);

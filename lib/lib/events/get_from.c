@@ -1,5 +1,5 @@
 /*    /lib/events/get_from.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles get from/put in
  *    Created by Descartes of Borg 961221
  *    Version: @(#) get_from.c 1.1@(#)
@@ -34,7 +34,7 @@ mixed CanGetFrom(object who, object item){
     }
 
     if( (environment() != environment(this_player())) &&
-      (environment() != this_player()) ){
+            (environment() != this_player()) ){
         return "#" + capitalize(GetShort()) + " is not in reach.";
     }
     return 1;
@@ -44,7 +44,7 @@ mixed CanPutInto(object who, object item){
     object env;
 
     if((inherits(LIB_SIT,item) && sizeof(item->GetSitters())) ||
-      (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
+            (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
         write("There appears to be someone in your way.");
         return 0;
     }
@@ -67,7 +67,7 @@ mixed CanPutOnto(object who, object item){
     object env;
 
     if((inherits(LIB_SIT,item) && sizeof(item->GetSitters())) ||
-      (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
+            (inherits(LIB_LIE,item) && sizeof(item->GetLiers()))){
         write("There appears to be someone preventing your access.");
         return 0;
     }
@@ -92,9 +92,10 @@ mixed eventGetFrom(object who, object array what){
     mapping mp = ([]);
     string msg;
     int i, maxi;
+    mixed tmp;
 
     if((inherits(LIB_SIT,this_object()) && sizeof(this_object()->GetSitters())) || 
-      (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
+            (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
         write("There appears to be someone on there.");
         return 0;
     }
@@ -103,9 +104,10 @@ mixed eventGetFrom(object who, object array what){
         if( environment(ob) != this_object() ){
             continue;
         }
-        if( ob->CanGet(who) != 1 ){
-            write("It would appear you can't get "+
-              (ob->GetShort() || "that") +" right now.");
+        if( (tmp = ob->CanGet(who)) != 1 ){
+            if(stringp(tmp)) write(tmp);
+            else write("It would appear you can't get "+
+                    (ob->GetShort() || "that") +" right now.");
             continue;
         }
         if( !who->CanCarry(ob->GetMass()) ){
@@ -114,7 +116,7 @@ mixed eventGetFrom(object who, object array what){
         }
         if( !ob->eventMove(who) ){
             who->eventPrint("You have a problem getting " +
-              ob->GetShort() + ".");
+                    ob->GetShort() + ".");
             continue;
         }
         AddCarriedMass( -(ob->GetMass()) );
@@ -144,7 +146,7 @@ mixed eventGetFrom(object who, object array what){
         }
     }
     send_messages("get", "$agent_name $agent_verb " + msg +
-      " from $target_name.", who, this_object(), environment(who));
+            " from $target_name.", who, this_object(), environment(who));
     return 1;
 }
 
@@ -154,7 +156,7 @@ mixed eventPutInto(object who, object what){
 
 mixed eventPutOnto(object who, object what){
     if((inherits(LIB_SIT,this_object()) && sizeof(this_object()->GetSitters())) ||
-      (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
+            (inherits(LIB_LIE,this_object()) && sizeof(this_object()->GetLiers()))){
         write("There appears to be someone in the way of that.");
         return 0;
     }
@@ -174,6 +176,8 @@ mixed indirect_get_obj_from_obj(object item, object container){
     if(!item){
         return 0;
     }
+
+    if(!clonep(container)) return "#wat";
 
     if(environment(item) != this_object()) return 0;
 

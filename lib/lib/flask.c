@@ -5,7 +5,7 @@ inherit LIB_ITEM;
 inherit LIB_DRINK;
 
 private int FlaskUses, FlaskStrength, MaxFlask, EverFill;
-private int MealType;
+private int MealType, Tapped;
 private string FlaskContents;
 
 int direct_fill_obj_with_obj(){ return 1;}
@@ -57,6 +57,13 @@ int CanFillOther(){
     if(EverFill) return 99999;
     else return FlaskUses;
 }
+
+//Tapped is for being able to fill from something
+//without havingt to hold the source 
+
+int SetTapped(int x){ return (Tapped = x); }
+
+mixed GetTapped(){ return Tapped; }
 
 int SetStrength(int x){ return (FlaskStrength = x); }
 
@@ -115,14 +122,14 @@ varargs mixed eventEmpty(object who){
 mixed eventFill(object who, object from){
     int howmuch_me = CanFillMe();
     int howmuch_them = from->CanFillOther();
-    if(!from->isDummy() &&
-      environment(from) != this_player()){
+    if(!from->isDummy() && !from->GetTapped() &&
+            environment(from) != this_player()){
         write("You aren't holding the "+from->GetKeyName()+".");
         return 1;
     }
 
     if(from->isDummy() &&
-      environment(this_object()) != this_player()){
+            environment(this_object()) != this_player()){
         write("You aren't holding the "+this_object()->GetKeyName()+".");
         return 1;
     }
@@ -140,7 +147,9 @@ mixed eventFill(object who, object from){
         write("The "+this_object()->GetKeyName()+" is already full.");
         return 1;
     }
-    if(from->GetFlaskContents() != GetFlaskContents() && GetFlaskContents() != "empty"){
+    if((from->GetFlaskContents() != GetFlaskContents() 
+                || from->GetMealType() != GetMealType())
+            && GetFlaskContents() != "empty"){
         write("Those are incompatible fluids, and you cannot mix them.");
         return 1;
     }
@@ -153,7 +162,8 @@ mixed eventFill(object who, object from){
     if(!EverFill) from->SetFlaskUses(from->GetFlaskUses() - howmuch_me);
     write("You pour from "+from->GetShort()+" into "+this_object()->GetShort()+".");
     say(who->GetName()+" pours from "+from->GetShort()+
-      " into "+this_object()->GetShort()+".");
+            " into "+this_object()->GetShort()+".");
+    SetMealType(from->GetMealType());
     FlaskContents = from->GetFlaskContents();
     FlaskStrength = from->GetStrength();
     if(member_array(FlaskContents, GetId()) == -1) 

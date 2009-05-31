@@ -26,8 +26,8 @@ static void create() {
     SetAdjectives(({"dirty"}));
     SetShort("a mean-looking troll");
     SetLong("This is the dreaded creature of legend: a slimy, "
-      "green, putrid-looking fiend with long, razor-"
-      "sharp claws and fangs.");
+            "green, putrid-looking fiend with long, razor-"
+            "sharp claws and fangs.");
     SetLevel(3);
     SetRace("troll");
     SetClass("fighter");

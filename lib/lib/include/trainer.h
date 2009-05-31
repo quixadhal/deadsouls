@@ -9,6 +9,9 @@ mixed RemoveTrainingSkills(string *args...);
 string *GetTrainingSkills();
 mapping GetStudents();
 
+mapping AddCommandResponses(mapping mp);
+mapping AddRequestResponses(mapping mp);
+
 int eventHelp(object who, string unused);
 int eventTrain(object who, string verb, string skill);
 

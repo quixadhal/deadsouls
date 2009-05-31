@@ -13,7 +13,7 @@ void create()
     SetAmbientLight(30);
     SetShort( "a room with a blocked exit" );
     SetLong(@EndText
-    There's not much here.  Of course, we don't talk about
+There's not much here.  Of course, we don't talk about
 the spider in the long, cause it COULD be dead.
 EndText
     );
@@ -34,9 +34,9 @@ void init()
 }
 
 /*  In the pre_north() function, I am going to add a special treat!
-      If a creator is invisible, you can bypass the spider completely!
-      Woo! Woo!
-*/
+    If a creator is invisible, you can bypass the spider completely!
+    Woo! Woo!
+ */
 
 int pre_north(string dir) 
 {

@@ -1,12 +1,10 @@
 /*    /lib/props/mass.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles object massiveness and weight
  *    Created by Descartes of Borg 970101
  *    Version: @(#) mass.c 1.1@(#)
  *    Last modified: 97/01/01
  */
-
-#include <config.h>
 
 int Mass = 0;
 

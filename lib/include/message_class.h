@@ -28,6 +28,7 @@
 #define MSG_HFTP     (1 << 19)
 #define MSG_OOB      (1 << 20)
 #define MSG_ANNOYING (1 << 21)
+#define MSG_RECEIVE  (1 << 22)                      /* skip the line feed */
 
 
 /* client command types */

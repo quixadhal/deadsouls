@@ -21,6 +21,6 @@ int cmd(string str){
 
 string GetHelp(string str) {
     return "Syntax: morse <string>\n"
-    "Renders the provided string as morse code.\n"
-    "";
+        "Renders the provided string as morse code.\n"
+        "";
 }

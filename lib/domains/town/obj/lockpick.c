@@ -9,7 +9,8 @@ void create(){
     SetId(({ "tool","pick" }));
     SetShort("a lockpick");
     SetLong("A tool for picking locks.");
-    SetMass(10);
+    SetMass(1);
+    SetBaseCost("silver", 10);
     SetPickingQuality(10);
 }
 

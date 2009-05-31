@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <daemons.h>
 #include <modules.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <commands.h>
 
 
@@ -10,11 +10,11 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("dest");
-    SetRules("OBS","STR");
+    SetRules("OBS");
     SetErrorMessage("dest what?");
     SetHelp("Syntax: <dest OBJ>\n\n"
-      "Destroy an object.\n"
-      "\nSee also: zap");
+            "Destroy an object.\n"
+            "\nSee also: zap");
 }
 
 mixed can_dest_obj(string str){ 

@@ -1,5 +1,5 @@
 /*    /lib/events/smell.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles items with smells
  *    Created by Descartes of Borg 951008
  *    Version: @(#) smell.c 1.7@(#)
@@ -97,7 +97,7 @@ varargs mixed SetSmell(mixed array args...){
     }
     else {
         error("Wrong number of arguments to SetSmell():\n\t"
-          "Expected 1 or 2, got " + sizeof(args) + "\n");
+                "Expected 1 or 2, got " + sizeof(args) + "\n");
     }
 }
 
@@ -108,7 +108,7 @@ varargs mixed eventSmell(object who, string str){
         return 1;
     }
     environment(who)->eventPrint(who->GetName() + " smells " + GetShort() +
-      ".", who);
+            ".", who);
     who->eventPrint(str);
     return 1;
 }

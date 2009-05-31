@@ -27,8 +27,8 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: <whobanished ([name])>\n\n"
-      "Without an argument, this command lists all names currently\n"
-      "listed as being banished.  Otherwise it will confirm whether\n"
-      "the name is banished or not.\n"
-    );
+            "Without an argument, this command lists all names currently\n"
+            "listed as being banished.  Otherwise it will confirm whether\n"
+            "the name is banished or not.\n"
+         );
 }

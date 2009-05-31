@@ -1,0 +1,19 @@
+eval return ROOMS_D->zero()
+eval return MAP_D->zero()
+goto /domains/campus/room/start
+clone /domains/default/npc/drone
+goto /domains/Ylsrim/room/tower
+gridconfig set here 1000,1001,1
+clone /domains/default/npc/drone
+goto /domains/Praxis/square
+gridconfig set here 1000,-1000,0
+clone /domains/default/npc/drone
+goto /domains/town/room/mansion_int
+gridconfig set here -5,3,0
+clone /domains/default/npc/drone
+goto /domains/town/room/mansion_uhall1
+gridconfig set here -5,3,1
+clone /domains/default/npc/drone
+goto /domains/town/room/cave_entrance
+gridconfig set here -7,32,0
+clone /domains/default/npc/drone

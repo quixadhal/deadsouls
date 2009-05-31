@@ -14,7 +14,7 @@ static void create() {
     SetMealType(MEAL_DRINK | MEAL_ALCOHOL);
     SetStrength(5);
     SetMealMessages("You drink a bottle of ale.",
-      "$N drinks a bottle of ale.");
+            "$N drinks a bottle of ale.");
     SetBaseCost("silver",10);
 }
 void init(){

@@ -1,10 +1,12 @@
 #include <position.h>
-#include <rooms.h>
+#include <daemons.h>
+#include ROOMS_H
 #include <medium.h>
 #include <message_class.h>
 
 mixed eventSink(){
     int err;
+    string rvoid = ROOMS_D->GetVoid(this_object());
     object env = environment();
     mixed tmprumbo, rumbo = 0;
     string name = this_object()->GetName();
@@ -12,7 +14,7 @@ mixed eventSink(){
     if(!living(this_object())) name = this_object()->GetShort();
 
     if(!env || ( !(rumbo = env->GetExit("down")) && 
-        !(sizeof(rumbo = env->GetSinkRoom())))) return 0;
+                !(sizeof(rumbo = env->GetSinkRoom())))) return 0;
     if(env == rumbo) return 0;
     if(this_object()->GetPosition() == POSITION_SWIMMING){
         return 2;
@@ -22,7 +24,9 @@ mixed eventSink(){
     tmprumbo = rumbo;
     if(stringp(rumbo)) err = catch(rumbo = load_object(rumbo));
     if(err || !rumbo){
-        err = catch(rumbo = load_object(ROOM_VOID));
+        log_file("runtime","\n"+timestamp()+" "+identify(this_object())+
+                " could not load "+identify(rumbo)+" to sink into.\n");
+        err = catch(rumbo = load_object(rvoid));
     }
     if(err || !rumbo){
         return 0;
@@ -31,9 +35,9 @@ mixed eventSink(){
     tell_object(this_object(),"You sink downward!");
     if(this_object()->eventMove(rumbo)){
         tell_room(env,capitalize(name)+" continues "+
-          "to sink.", ({ this_object() }));
+                "to sink.", ({ this_object() }));
         tell_room(rumbo,capitalize(name)+" floats in from above.",
-          ({ this_object() }));
+                ({ this_object() }));
 
         if(rumbo || sizeof(rumbo->GetSinkRoom())){ 
             call_out( "eventSink", 2);

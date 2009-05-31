@@ -7,7 +7,6 @@
  */
 
 #include <lib.h>
-#include <config.h>
 #include <daemons.h>
 #include <armor_types.h>
 #include <damage_types.h>
@@ -23,6 +22,7 @@ inherit LIB_TALK;
 
 private string Town, Race, Gender;
 private static int Bulk, Respiration;
+private static int MaximumHealth = 0;
 
 int GetRespiration(){
     int resp = RACES_D->GetRaceRespirationType(this_object()->GetRace());
@@ -31,29 +31,63 @@ int GetRespiration(){
 }
 
 int SetRespiration(int i){
+    if(i & R_VACUUM){
+        SetResistance(ANOXIA, "immune");
+    }
     return Respiration = i;
 }
 
-varargs int CanBreathe(object what, object where){
-    object env = environment(this_object());
-    int medium, restype; 
+varargs int CanBreathe(object what, object where, int dbg){
+    object env = room_environment(this_object());
+    int medium, restype, roomres; 
 
-    if(this_object()->GetGodMode()) return 1;
-    if(env && living(env)) env = environment(env);
-    if(!env) return 0;
+    if(this_object()->GetGodMode()){
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): godmode");
+        return 1;
+    }
+    if(!env){
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): noenv");
+        return 0;
+    }
     medium = env->GetMedium();
     restype = this_object()->GetRespiration();
+    roomres = env->GetRespirationType();
 
-    if(restype & R_VACUUM) return 1;
+    if(restype & roomres){
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): a"+ 1);
+        return 1;
+    }
+    if(roomres && (restype & roomres)){
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): b"+ 1);
+        return 1;
+    }
+    if(restype & R_VACUUM){
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): c"+ 1);
+        return 1;
+    }
+    if(roomres && !(restype & roomres)){
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): d"+ 0);
+        return 0;
+    }
 
     if((medium == MEDIUM_AIR || medium == MEDIUM_LAND || 
-        medium == MEDIUM_SURFACE) && (restype & R_AIR) ) return 1;
+                medium == MEDIUM_SURFACE) && (restype & R_AIR) ){
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): e"+ 1);
+        return 1;
+    }
 
     if((medium == MEDIUM_WATER || medium == MEDIUM_SURFACE)
-      && (restype & R_WATER) ) return 1;
+            && (restype & R_WATER) ){
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): f"+ 1);
+        return 1;
+    }
 
-    if( medium == MEDIUM_METHANE && (restype & R_METHANE) ) return 1;
+    if( medium == MEDIUM_METHANE && (restype & R_METHANE) ){
+        if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): g"+ 1);
+        return 1;
+    }
 
+    if(dbg) debug("CanBreathe("+identify(what)+", "+identify(where)+"): h"+ 0);
     return 0;
 }
 
@@ -76,21 +110,21 @@ mixed CanDrink(object ob){
     strength = (int)ob->GetStrength();
     type = (int)ob->GetMealType();
     if( (type & MEAL_ALCOHOL) && ((strength + GetAlcohol()) >
-        GetStatLevel("durability")) )
+                GetStatLevel("durability")) )
         return "That drink is too strong for you right now.";
     if( (type & MEAL_CAFFEINE) && ((strength + GetCaffeine()) >
-        GetStatLevel("durability")) )
+                GetStatLevel("durability")) )
         return "That is too much caffeine for you right now.";
     if( (type & MEAL_DRINK) && ((strength + GetDrink()) > 100) )
         return "You can't drink any more fluids right now.";
     return 1;
 }
 
-mixed CanEat(object ob){
-    if( ((int)ob->GetStrength() + GetFood()) > 100 )
-        return "This is more food than you can handle right now.";
-    else return 1;
-}
+    mixed CanEat(object ob){
+        if( ((int)ob->GetStrength() + GetFood()) > 100 )
+            return "This is more food than you can handle right now.";
+        else return 1;
+    }
 
 varargs int eventDie(mixed agent){
     int x;
@@ -126,11 +160,11 @@ varargs string SetRace(string race, mixed extra){
     RACES_D->SetCharacterRace(race, args);
 
     switch(race){
-    case "tree" : this_object()->SetBodyComposition("wood");break;
-    case "balrog" : this_object()->SetBodyComposition("stone");break;
-    case "elemental" : this_object()->SetBodyComposition("stone");break;
-    case "golem" : this_object()->SetBodyComposition("clay");break;
-    case "plant" : this_object()->SetBodyComposition("vegetation");break;
+        case "tree" : this_object()->SetBodyComposition("wood");break;
+        case "balrog" : this_object()->SetBodyComposition("stone");break;
+        case "elemental" : this_object()->SetBodyComposition("stone");break;
+        case "golem" : this_object()->SetBodyComposition("clay");break;
+        case "plant" : this_object()->SetBodyComposition("vegetation");break;
     }
 
     if(sizeof(args[4])){
@@ -185,31 +219,40 @@ varargs void SetStat(string stat, int level, int classes){
 
     genetics::SetStat(stat, level, classes);
     switch(stat){
-    case "durability":
-        eventCompleteHeal(healthPoints = GetMaxHealthPoints());
+        case "durability":
+            eventCompleteHeal(healthPoints = GetMaxHealthPoints());
         eventHealDamage(healthPoints);
         break;
-    case "intelligence":
-        AddMagicPoints(GetMaxMagicPoints());
+        case "intelligence":
+            AddMagicPoints(GetMaxMagicPoints());
         break;
-    case "agility":
-        AddStaminaPoints(GetMaxStaminaPoints());
+        case "agility":
+            AddStaminaPoints(GetMaxStaminaPoints());
         break;
     }
 }
 
 varargs int GetMaxHealthPoints(string limb){
     int ret = 1;
-    if(!limb) ret = ( 50 + (GetStatLevel("durability") * 10) );
+    if(!limb && MaximumHealth) ret = MaximumHealth;
+    else if(!limb && !MaximumHealth){
+        ret = ( 50 + (GetStatLevel("durability") * 10) );
+    }
     else {
         int x;
-
         x = GetLimbClass(limb);
         if(!x) x = 5;
-        ret = ( (1 + GetStatLevel("durability")/x) * 10 );
+        if(MaximumHealth) ret = ( (1 + MaximumHealth) / x );
+        else ret = ( (1 + GetStatLevel("durability")/x) * 10 );
     }
-    if(ret < 1) return 1;
-    else return ret;
+    if(ret < 1) ret = 1;
+    return ret;
+}
+
+int SetMaxHealthPoints(int x){
+    if(x) MaximumHealth = x;
+    else SetStat("durability", to_int((x-50)/10), GetStatClass("durability"));
+    return GetMaxHealthPoints();
 }
 
 int GetMaxMagicPoints(){
@@ -217,7 +260,8 @@ int GetMaxMagicPoints(){
 }
 
 float GetMaxStaminaPoints(){
-    return (50.0 + (GetStatLevel("agility") * 10.0) );
+    return (50.0 + (GetStatLevel("agility") * 3.0) +
+            (GetStatLevel("durability") * 7.0) );
 }
 
 void NewBody(string race){

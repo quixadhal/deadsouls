@@ -1,5 +1,5 @@
 /*    /secure/sefun/this_agent.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    if 0 is the arg, returns the current agent, other wise
  *    sets a new agent and returns the old
  *    created by Descartes of Borg 951021

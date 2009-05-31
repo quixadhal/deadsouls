@@ -7,12 +7,12 @@ void create() {
     SetProperty("indoors", 1);
     SetShort( "An orc soldier's chamber");
     SetLong(
-      "You are in a dark living chamber inside the orc fortress. "
-      "A passage east leads to the courtyard.");
+            "You are in a dark living chamber inside the orc fortress. "
+            "A passage east leads to the courtyard.");
     SetItems(
-      (["chamber" : "It is small with little in the way of furnishings.",
-        "furnishings" : "They are nothing of interest.",
-        "passage" : "It leads out to the courtyard."]) );
+            (["chamber" : "It is small with little in the way of furnishings.",
+             "furnishings" : "They are nothing of interest.",
+             "passage" : "It leads out to the courtyard."]) );
     SetExits( (["east" : "/domains/Praxis/orc_valley/passage2"]) );
 }
 
@@ -26,7 +26,7 @@ void reset() {
         ob->SetId( ({ "orc", "orc soldier", "soldier" }) );
         ob->SetShort( "Orc soldier");
         ob->SetLong( "He is ugly and very unhappy about "
-          "your presence.");
+                "your presence.");
         ob->SetClass("fighter");
         ob->SetSkill("two handed", 50);
         ob->SetRace( "orc");

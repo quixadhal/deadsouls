@@ -22,10 +22,10 @@ string long_func() {
     string str, name;
 
     str = "A large wooden platform with two upright timbers and "
-    "a crossbeam with a rope and noose.";
+        "a crossbeam with a rope and noose.";
     if(hangman) {
         if(name = capitalize(present("the corpse of "+hangman->query_name(),
-              environment(this_object()))->GetKeyName()))
+                        environment(this_object()))->GetKeyName()))
             str += "\n"+name+" is hanging from the noose.";
         else str += "\n"+hangman->query_cap_name()+" is standing "
             "upon the platform, noose around "+hangman->query_possessive()+" neck.";

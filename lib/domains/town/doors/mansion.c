@@ -6,15 +6,15 @@ static void create() {
     door::create();
 
     SetSide("north", (["id" : ({ "door", "handsome wooden door", "wooden door" }),
-        "short" : "a door leading north",
-        "long" : "This is a plain wooden door.",
-        "lockable" : 1 ]) );
+                "short" : "a door leading north",
+                "long" : "This is a plain wooden door.",
+                "lockable" : 1 ]) );
     SetKeys("north", ({ "mansion key" }));
 
     SetSide("south", (["id" : ({ "door leading into the mansion", "handsome wooden door", "wooden door", "door" }),
-        "short" : "a door leading south",
-        "long" : "This is a handsome wooden door.",
-        "lockable" : 1 ]) );
+                "short" : "a door leading south",
+                "long" : "This is a handsome wooden door.",
+                "lockable" : 1 ]) );
     SetKeys("south", ({ "mansion key" }));
 
     SetClosed(1);

@@ -1,0 +1,45 @@
+Whatever the law says, so it applies here.
+
+Note that the changes to the original Dead Souls release 
+of 1998 are copyrighted by me, Bill Sanchez, and 
+are NOT GPL. Understanding what that means and
+due compliance with applicable laws is left as an
+exercise to the reader.
+
+MudOS/FluffOS is being packaged with the lib pursuant to 
+standard LPmud practice. Please note that MudOS and FluffOS
+are copyrighted, and should we be asked to stop 
+distributing them by their respective copyright holders,
+we will be obligated to do so.
+
+For explicit details on Dead Souls and MudOS 
+bundled distribution, please see:
+
+http://dead-souls.net/articles/copyright.html
+
+A few details, for the license fetishists:
+
+* It's ok to run a mud with this. Modify it as you
+wish, and do what people normally associate with
+"running a mud." You can change anything about the
+lib after you download it. It's your mud game. I don't
+care what you do with it. But you're encouraged
+to share your work with me. 
+
+* If you need to do something like forking development
+and distributing your own DS-based lib, you should
+use the Public Domain version, not this version. For
+info, see: http://dead-souls.net/ds-II-faq.html
+
+* I expect this to be enough information so you
+know what you can and can't do lawfully with
+this software. I can't stand licensing discussion,
+and will not enter into a debate with you about 
+what copyright means. I will not answer any
+further questions on the subject. This document
+is the final word on the matter. If in doubt,
+refer to your local laws and regulations concerning
+intellectual property. 
+
+- Bill Sanchez aka Cratylus @ Dead Souls, aka Cratylus @ Frontiers
+November 2007

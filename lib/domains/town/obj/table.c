@@ -10,16 +10,16 @@ void create() {
     SetShort("a wooden table");
     SetLong("It is a simple, medium-sized table made of wood.");
     SetInventory(([
-        "/domains/default/obj/handbook" : 1,
-      ]));
+                "/domains/default/obj/handbook" : 1,
+                ]));
     SetMass(274);
     SetBaseCost("silver",1);
     SetBaseCost("silver",1);
     SetMaxCarry(5000);
     inventory_visible();
     inventory_accessible();
-
 }
+
 void init(){
     ::init();
 }

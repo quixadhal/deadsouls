@@ -9,7 +9,7 @@ static void create() {
     SetAdjectives( ({ "bitterleaf" }) );
     SetShort("a cigar");
     SetLong("A cylinder of tightly wrapped bitterleaf designed for "
-      "combustion and inhalation its smoke.");
+            "combustion and inhalation its smoke.");
     SetRadiantLight(2);
     SetFuelRequired(1);
     SetMaxFuel(300);

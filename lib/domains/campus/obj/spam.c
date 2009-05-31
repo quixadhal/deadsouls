@@ -37,7 +37,7 @@ int SpamSpamSpamSpam(string spam){
     if(!sscanf(spam,"%s with %s",spam1,spam2)){
         write("You'd like to spam who with what?");
         say(this_player()->GetName()+" fumbles with "+possessive(this_player())+
-          " can of spam.\n");
+                " can of spam.\n");
         return 1;
     }
     ob=present(spam1,environment(this_player()));
@@ -58,7 +58,7 @@ int SpamSpamSpamSpam(string spam){
     }
     spamspam=unguarded((: read_file(DIR_TXT+"/"+spam2+".txt") :));
     say(this_player()->GetName()+" spams "+ob->GetName()+" with a "+
-      "giant "+spam2+".\n");
+            "giant "+spam2+".\n");
     tell_object(ob, this_player()->GetName()+" spams you with:\n"+spamspam+"\n");
     write("You spam "+ob->GetName()+" with a giant "+spam2+"!\n");
     return 1;

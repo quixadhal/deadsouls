@@ -19,14 +19,14 @@ static void create() {
     SetShort("a bedroom wall");
     SetLong("It is a typical, if ornate, bedroom wall, with a painting on it.");
     SetItems( ([
-        ({"painting","beautiful painting"}) :  (: ShowDali :),
-      ]) );
+                ({"painting","beautiful painting"}) :  (: ShowDali :),
+                ]) );
     SetManipulate( ([
-        ({"painting","beautiful painting"}) : (: MoveThePainting :)
-      ]) );
+                ({"painting","beautiful painting"}) : (: MoveThePainting :)
+                ]) );
     SetPress( ([
-        ({"painting","beautiful painting"}) : (: PushThePainting :)
-      ]) );
+                ({"painting","beautiful painting"}) : (: PushThePainting :)
+                ]) );
     hidden = 1;
 }
 
@@ -41,7 +41,7 @@ int GetPainting(string str){
 
 int MoveThePainting(){
     send_messages("move", "$agent_name $agent_verb the painting on the wall.",
-      this_player(), 0, environment(this_player()));
+            this_player(), 0, environment(this_player()));
     if(hidden == 1) {
         OpenSesame();
     }
@@ -50,7 +50,7 @@ int MoveThePainting(){
 
 int PushThePainting(){
     send_messages("push", "$agent_name $agent_verb the painting on the wall.",
-      this_player(), 0, environment(this_player()));
+            this_player(), 0, environment(this_player()));
     if(hidden == 1) {
         OpenSesame();
     }

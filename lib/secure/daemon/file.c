@@ -1,12 +1,12 @@
 #include <lib.h>
-#include <config.h>
+#include <save.h>
 #include <daemons.h>
 #include <runtime_config.h>
 
 inherit LIB_DAEMON;
 string *all_dirs = ({});
 string *all_files = ({});
-static string SaveFiles = "/secure/save/files.o";
+static string SaveFiles = save_file(SAVE_FILES);
 int ftilt, dtilt;
 string globaltemp;
 
@@ -19,8 +19,13 @@ static private void validate() {
     }
     if(query_os_type() == "windows"){
         error("The file daemon has been disabled for your mud "+
-          "because it is running on windows. Intensive file operations "+
-          "in windows are not yet supported on Dead Souls.");
+                "because it is running on windows. Intensive file operations "+
+                "in windows are not yet supported on Dead Souls.");
+    }
+    if(!(MASTER_D->GetPerfOK())){
+        error("Your system performance is too weak to support the "+
+                "file daemon's resource-intensive operations, so file "+
+                "indexing has been disabled.");
     }
 }
 
@@ -31,7 +36,7 @@ void heart_beat(){
         }
     }
     Report();
-    unguarded( (: save_object(SaveFiles) :) );
+    SaveObject(SaveFiles);
     set_heart_beat(0);
 }
 
@@ -41,7 +46,6 @@ mixed ReadDir(string str){
 #ifndef __FLUFFOS__
     return 0;
 #endif
-
     validate();
     //log_file("adm/file","FILE_D ReadDir accessed and run by: "+identify(previous_object(-1))+"\n");
 
@@ -53,11 +57,11 @@ mixed ReadDir(string str){
         foreach(string element in get_dir(str)){
             if(file_exists(str+element)) all_files += ({ str+element });
             if(directory_exists(str+element) && 
-              strsrch(str+element,"/realms") &&
-              strsrch(str+element,"/estates") &&
-              strsrch(str+element,"/secure/save") &&
-              strsrch(str+element,"/secure/log") &&
-              strsrch(str+element,"/secure/upgrades")) {
+                    strsrch(str+element,"/realms") &&
+                    strsrch(str+element,"/estates") &&
+                    strsrch(str+element,"/secure/save") &&
+                    strsrch(str+element,"/secure/log") &&
+                    strsrch(str+element,"/secure/upgrades")) {
                 all_dirs += ({ str+element });
                 current_level_dirs += ({ str+element });
             }
@@ -74,7 +78,7 @@ mixed ReadDir(string str){
 }
 
 static mixed Report(){
-    log_file("adm/file","FILE_D Report accessed and run by: "+identify(previous_object(-1))+"\n");
+    //log_file("adm/file","FILE_D Report accessed and run by: "+identify(previous_object(-1))+"\n");
     foreach(mixed arr in call_out_info()){
         if(arr[0] == this_object()){
             write("File scan is not complete.");
@@ -157,16 +161,19 @@ static void create() {
     return 0;
 #endif
     daemon::create();
-    if(!file_exists(SaveFiles)){
-        unguarded( (: save_object(SaveFiles) :) );
+    if(!file_exists(SaveFiles) && file_exists(old_savename(SaveFiles))){
+        cp(old_savename(SaveFiles), SaveFiles);
     }
-    else restore_object(SaveFiles);
-    //call_out((: ReadDir,"/" :), 1);
-    catch( ReadDir("/") );
-    if(!fun_d) fun_d = load_object(FUNCTION_D);
+    if(file_exists(SaveFiles)){
+        RestoreObject(SaveFiles);
+    }
+    if(query_os_type() != "windows" && MASTER_D->GetPerfOK()){
+        catch( ReadDir("/") );
+        if(!fun_d) fun_d = load_object(FUNCTION_D);
+    }
 }
 
 int eventDestruct(){
-    unguarded( (: save_object(SaveFiles) :) );
+    SaveObject(SaveFiles);
     return ::eventDestruct();
 }

@@ -1,5 +1,5 @@
 /*    /lib/get.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    handles the picking up of objects
  *    created by Descartes of Borg 960114
  *    Version: @(#) get.c 1.3@(#)
@@ -59,9 +59,19 @@ mixed eventGet(object who){
         who->eventPrint("You fail to get it.");
         return 1;
     }
-    who->eventPrint("You get " + this_object()->GetShort() + ".");
-    environment(who)->eventPrint((string)who->GetName() + " gets " +
-      this_object()->GetShort() + ".", who);
+    if(living(this_object())){
+        if(this_object()->GetProperty("mount")){
+            this_object()->RemoveProperty("mount");
+        }
+        if(this_object()->GetProperty("furniture_object")){
+            this_object()->RemoveProperty("furniture_object");
+            this_object()->RemoveProperty("furniture");
+        }
+        who->SetMount(1);
+        who->eventMount(this_object(), 1, 1);
+    }
+    send_messages("get", "$agent_name $agent_verb $target_name.",
+            who, this_object(), environment(who));
     return 1;
 }
 
@@ -69,19 +79,19 @@ static void create(){
     PreventGet = 0;
 }
 
-mixed direct_get_obj(object target){
-    if(environment() == this_player())
-        return "#You're already holding it.";
-    if( environment() != environment(this_player()) ){
-        string str = this_object()->GetShort();
+    mixed direct_get_obj(object target){
+        if(environment() == this_player())
+            return "#You're already holding it.";
+        if( environment() != environment(this_player()) ){
+            string str = this_object()->GetShort();
 
-        if( !str ) str = "It";
-        else str = capitalize(str);
-        return "#You may need to get closer to it. Perhaps \"get "+this_object()->GetKeyName()+
-        " from\" something?";
+            if( !str ) str = "It";
+            else str = capitalize(str);
+            return "#You may need to get closer to it. Perhaps "+
+                "\"get "+this_object()->GetKeyName()+" from\" something?";
+        }
+        return CanGet(this_player());
     }
-    return CanGet(this_player());
-}
 
 mixed direct_get_obj_out_of_obj(object target, object src){
     object env;

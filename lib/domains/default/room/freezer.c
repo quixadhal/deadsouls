@@ -1,9 +1,7 @@
 #include <lib.h>
-#include <config.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
-
 
 void create() {
     room::create();
@@ -19,14 +17,12 @@ void create() {
 
 static void clean_room(){
     object ob;
-
+    call_out((: clean_room :), MAX_NET_DEAD_TIME);
     foreach(ob in filter(all_inventory(), (: living($1) :))){
         string name = last_string_element(base_name(ob),"/");
         if(!user_exists(name)) continue;
         ob->eventDestruct();
     }
-
-    call_out((: clean_room :), MAX_NET_DEAD_TIME);
 }
 
 void init(){

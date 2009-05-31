@@ -38,9 +38,9 @@ static void create() {
     SetRace("kender");
     SetGender("female");
     SetAction(25, ({
-        (: StealAttempt :), "!giggle", (: StealAttempt :), "!laugh",
-        (: StealAttempt :), "!smile", (: StealAttempt :), "!smirk",
-      }) );
+                (: StealAttempt :), "!giggle", (: StealAttempt :), "!laugh",
+                (: StealAttempt :), "!smile", (: StealAttempt :), "!smirk",
+                }) );
 }
 void init(){
     ::init();

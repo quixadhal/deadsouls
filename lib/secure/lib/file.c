@@ -1,5 +1,5 @@
 /*    /lib/file.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Handles clean file I/O without need for the driver
  *    Created by Descartes of Borg 961219
  *    Version: @(#) file.c 1.2@(#)

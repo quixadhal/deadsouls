@@ -12,13 +12,13 @@ inherit LIB_DOOR;
 static void create() {
     door::create();
     SetSide("red room", ([ "id" : ({"red door"}),
-        "short" : "a red door",
-        "long" : "This is a red door.",
-        "lockable" : 1 ]) );
+                "short" : "a red door",
+                "long" : "This is a red door.",
+                "lockable" : 1 ]) );
     SetSide("west", ([ "id" : ({"door","red door"}),
-        "short" : "a red door",
-        "long" : "This is a red door.",
-        "lockable" : 1 ]) );
+                "short" : "a red door",
+                "long" : "This is a red door.",
+                "lockable" : 1 ]) );
     SetClosed(1);
     SetLocked(1);
 }

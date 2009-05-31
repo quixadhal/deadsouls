@@ -14,11 +14,11 @@ static void eventChat(string args);
 
 mixed cmd(string args) {
     message("system", "Entering conversation mode.  Continue entering things "
-      "you wish 'said' until done.", this_player());
+            "you wish 'said' until done.", this_player());
     message("system", "When done, enter a '.' alone on a line like in edit.",
-      this_player());
+            this_player());
     message("system", "______________________________________________________"
-      , this_player());
+            , this_player());
     input_to( (: eventChat :));
     return 1;
 }
@@ -34,11 +34,11 @@ static void eventChat(string args) {
 
 void help() {
     message("help", "Syntax: <converse>\n\n"
-      "Puts you into conversation mode, which means that anything you "
-      "type will act as if you are placing the \"say\" command before "
-      "it.  Once in conversation mode, you exit the same way you do "
-      "from the mail or bulletin board editor, that is, by typing "
-      "a '.' alone on a line.  You may also issue commands while "
-      "in conversation mode by putting a ! before whatever you type.\n\n"
-      "See also: say, tell", this_player());
+            "Puts you into conversation mode, which means that anything you "
+            "type will act as if you are placing the \"say\" command before "
+            "it.  Once in conversation mode, you exit the same way you do "
+            "from the mail or bulletin board editor, that is, by typing "
+            "a '.' alone on a line.  You may also issue commands while "
+            "in conversation mode by putting a ! before whatever you type.\n\n"
+            "See also: say, tell", this_player());
 }

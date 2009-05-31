@@ -9,8 +9,8 @@ static void create() {
     SetRules("", "OBJ","OBJ on OBJ","OBJ into OBJ","OBJ in OBJ");
     SetErrorMessage("Install something?");
     SetHelp("Syntax: install THING\n"
-      "        install THING on THING\n"
-      "");  
+            "        install THING on THING\n"
+            "");  
 }
 
 mixed can_install() {

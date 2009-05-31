@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/roof_wall.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of climbing down
  *    Created by Descartes of Borg 961222
  */
@@ -17,6 +17,6 @@ static void create() {
     SetAdjectives("adobe", "bank");
     SetShort("an adobe wall");
     SetLong("It has enough holes that you can get a good foot hold and "
-      "climb down it!");
+            "climb down it!");
     SetClimb("/domains/Ylsrim/room/kaliid6", CLIMB_DOWN);
 }

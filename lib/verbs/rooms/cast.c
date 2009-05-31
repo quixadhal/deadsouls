@@ -1,5 +1,5 @@
 /*    /verbs/rooms/cast.c
- *    from the Dead Souls Object Library
+ *    from the Dead Souls Mud Library
  *    cast OBJ in STR
  *    cast OBJ
  *    created by Descartes of Borg 951016
@@ -16,6 +16,7 @@ static void create() {
     verb::create();
     SetVerb("cast");
     SetRules("OBJ");
+    SetErrorMessage("Cast what?");
 }
 
 mixed can_cast_obj(object ob) {
@@ -42,7 +43,7 @@ mixed do_cast_obj(object ob) {
 
 string GetHelp(string str) {
     return "Syntax: <cast OBJ>\n\n"
-    "Starts you fishing so long as OBJ is something you can fish with  "
-    "and you are in a place that allows fishing.\n\n"
-    "See also: fish, stop";
+        "Starts you fishing so long as OBJ is something you can fish with  "
+        "and you are in a place that allows fishing.\n\n"
+        "See also: fish, stop";
 }

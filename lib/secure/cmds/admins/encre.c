@@ -6,7 +6,7 @@
 #include <lib.h>
 #include <privs.h>
 #include <daemons.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_DAEMON;
 
@@ -14,7 +14,9 @@ string PlayerName;
 
 mixed cmd(string args) {
     object ob, cre_ob, jeans, shirt, robe, hat, book, staff;
-    string file, nom, home_dir;
+    string filec, filep, nom, home_dir;
+    filep = player_save_file(args);
+    filec = replace_string(filep, "players", "creators");
 
     if( !((int)master()->valid_apply(({ PRIV_ASSIST, PRIV_SECURE, LIB_CONNECT }))) )
         error("Illegal encre attempt: "+get_stack()+" "+identify(previous_object(-1)));
@@ -24,7 +26,7 @@ mixed cmd(string args) {
     nom = convert_name(args);
     if( !user_exists(nom) ) return capitalize(nom) + " is not a member of " +
         possessive_noun(mud_name()) + " reality.";
-    if( !strsrch(file = save_file(nom), DIR_CRES) )
+    if( !strsrch(filep, DIR_CRES) )
         return "You cannot make "+capitalize(args)+" a creator.";
 
     if(!ob=find_player(nom)){
@@ -38,7 +40,7 @@ mixed cmd(string args) {
         return 1;
     }
     if( file_size(DIR_CRES+"/"+nom[0..0]) != -2) mkdir(DIR_CRES+"/"+nom[0..0]);
-    if(rename(file+__SAVE_EXTENSION__, DIR_CRES+"/"+nom[0..0]+"/"+nom+__SAVE_EXTENSION__))
+    if(rename(filep, filec))
         return "You failed due to lack of write access to "+DIR_CRES+".";
     PLAYERS_D->eventCre(lower_case(nom));
     if( ob = find_player(nom) ) {
@@ -58,12 +60,17 @@ mixed cmd(string args) {
         ob->eventDestruct();
         message("system", "You are now a creator.", cre_ob);
         message("shout", (string)cre_ob->GetName() + " is now a creator!",
-          users(), ({ this_player(), cre_ob }));
-        if( file_size(file+__SAVE_EXTENSION__) > -1 ) rm(file+__SAVE_EXTENSION__);
+                users(), ({ this_player(), cre_ob }));
+        if(file_exists(filep)) rm(filep);
         make_workroom(cre_ob, 1);
-        rename(home_dir, homedir(cre_ob,1)+"/estate");
+        if(directory_exists(home_dir)){
+            rename(home_dir, homedir(cre_ob,1)+"/estate");
+        }
         cre_ob->eventForce("home");
         cre_ob->eventForce("cd");
+        cre_ob->SetPrompt("cwd");
+        cre_ob->SetProperty("wizmapping",1);
+        cre_ob->SetProperty("minimapping",0);
         jeans = present("jeans",cre_ob);
         shirt = present("t-shirt",cre_ob);
         if(jeans) jeans->eventMove(ROOM_FURNACE);
@@ -81,7 +88,7 @@ mixed cmd(string args) {
         book = new("/domains/default/obj/manual");
         if(book && !present("manual",cre_ob))  book->eventMove(cre_ob);
         else if(book) book->eventMove(ROOM_FURNACE);
-        cre_ob->AddChannel(({"cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat","inews" }));
+        cre_ob->AddChannel(({"cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat" }));
         cre_ob->SetPolyglot(1);
         cre_ob->save_player((string)cre_ob->GetKeyName());
     }
@@ -92,11 +99,11 @@ string GetKeyName() { return PlayerName; }
 
 void help() {
     message("help",
-      "Syntax: encre <person>\n\n"
-      "Makes the target a creator. If the target is not "
-      "logged in, they will be made a creator when "
-      "they next log in."
-      "\n\n"
-      "See also: decre, rid", this_player()
-    );
+            "Syntax: encre <person>\n\n"
+            "Makes the target a creator. If the target is not "
+            "logged in, they will be made a creator when "
+            "they next log in."
+            "\n\n"
+            "See also: decre, rid", this_player()
+           );
 }

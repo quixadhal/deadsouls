@@ -25,16 +25,16 @@ static void create() {
     SetAutoDamage(3);
     SetDamage(MAGIC|BLUNT, ({15, 15}) );
     SetMessages(({ ({ "are", "$target_name $target_verb "
-          "unharmed by $agent_possessive "
-          "missile." }),
-        ({ "stings", "$agent_possessive_noun missile "
-          "$agent_verb $target_name." }),
-        ({ "slams", "$agent_possessive_noun missile "
-          "$agent_verb $target_name." }) }));
+                    "unharmed by $agent_possessive "
+                    "missile." }),
+                ({ "stings", "$agent_possessive_noun missile "
+                 "$agent_verb $target_name." }),
+                ({ "slams", "$agent_possessive_noun missile "
+                 "$agent_verb $target_name." }) }));
     SetHelp("Syntax: <cast missile>\n"
-      "        <cast missile on LIVING>\n\n"
-      "This spell conjures a magic missile out of "
-      "thin air and sends it hurling towards the specified enemy.  "
-      "If cast without specifying a target while in combat, the "
-      "missile is targetted at your current enemy.");
+            "        <cast missile on LIVING>\n\n"
+            "This spell conjures a magic missile out of "
+            "thin air and sends it hurling towards the specified enemy.  "
+            "If cast without specifying a target while in combat, the "
+            "missile is targetted at your current enemy.");
 }

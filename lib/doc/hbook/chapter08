@@ -1,0 +1,76 @@
+chapter 8 "Stats details"
+
+Stats are very important! Depending on the style of
+play you prefer, different stats can be of more value
+to you. Fighters may prefer strength, mages 
+may favor intelligence.
+
+%^RED%^IMPORTANT TIP%^RESET%^: Players start off with 15 stat points
+they can add to their stats...so that if you find your
+strength is abysmally low, you can raise it to where
+your character is playable at lower levels. Don't
+forget to type: %^GREEN%^help customize%^RESET%^
+
+%^CYAN%^About "stat classes"%^RESET%^: Depending on the race you choose at
+character creation, your stat class will be something
+in the range of 1 to 5. This is a measure of the stat's
+typical priority for that race. For example, orcs are very
+strong, and so not only do they usually start with a
+high strength stat, their strength class is 1, meaning 
+that every time an orc has a level promotion, their strength
+stat is also raised by 1. Humans, however, have a strength
+stat class of 3, meaning a human player's strength stat
+is increased by 1 only every third level promotion.
+
+%^CYAN%^Deviation%^RESET%^:Starting in Dead Souls 2.9a18, a player can choose to
+"deviate" from her race's default stat classes. For example,
+you *can* have an orc mage with a high-priority intelligence
+stat. To do so, you use the deviate command to set your
+stat deviation...meaning you're going to devote a certain
+percent of the XP you earn to making yourself better at
+some stats you choose. Naturally, the more you want to
+change a stat class, the more expensive this will be in
+terms of your XP deviance cost. For more information,
+see: %^GREEN%^help deviate%^RESET%^
+
+
+%^CYAN%^Some notes on individual stats%^RESET%^: 
+
+High %^MAGENTA%^strength%^RESET%^ means you hit hard when you're in combat, 
+but it also means you might be strong enough to perform some 
+tasks others cannot, like open very heavy metal doors.
+
+
+High %^MAGENTA%^intelligence%^RESET%^ means you're able to learn things
+better, quicker, like skill training and languages. It
+means your training points do you more good.
+
+
+High %^MAGENTA%^charisma%^RESET%^ means it's easier to befriend animals, 
+which is important if you want to, for example, mount
+a horse:
+
+%^GREEN%^befriend horse%^RESET%^
+%^GREEN%^mount horse%^RESET%^
+
+
+%^MAGENTA%^Agility%^RESET%^ and %^MAGENTA%^coordination%^RESET%^ are important for avoiding being
+hit, and for certain special abilities like stealth,
+lock picking, shooting, etc.
+
+
+%^MAGENTA%^Wisdom%^RESET%^ is important for some types of spells.
+
+
+%^MAGENTA%^Durability%^RESET%^ helps determine how much stamina you have...
+this is vital to lasting through long combat or moving
+quickly through terrain on foot.
+
+
+Finally, %^MAGENTA%^luck%^RESET%^ is an all-around general good thing to have
+lots of...some random situations may call for it, and just
+like in real life, it's hard to know when it'll come in handy,
+but boy can it mean the difference between win and fail!
+
+
+

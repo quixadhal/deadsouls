@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/roof.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of something people can jump from
  *    Created by Descartes of Borg 961222
  */
@@ -17,8 +17,8 @@ static void create() {
     SetAdjectives("adobe", "bank");
     SetShort("a roof");
     SetLong("The bank roof looks over the road below. "
-      "Maybe you could jump into it."
-      "The adobe wall looks like you could climb down it.  ");
+            "Maybe you could jump into it."
+            "The adobe wall looks like you could climb down it.  ");
     //"A hole in the center of the roof opens into the bank.");
     AddJump("roof","/domains/Ylsrim/room/bank", JUMP_FROM);
 }

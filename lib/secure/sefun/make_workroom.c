@@ -41,6 +41,7 @@ varargs int make_workroom(mixed dude, int cre) {
         mkdir(cdir+"/area");
         mkdir(cdir+"/adm");
         mkdir(cdir+"/area/room");
+        mkdir(cdir+"/area/save");
         mkdir(cdir+"/area/weap");
         mkdir(cdir+"/area/obj");
         mkdir(cdir+"/area/npc");
@@ -53,6 +54,7 @@ varargs int make_workroom(mixed dude, int cre) {
             mkdir(cdir+"/cmds");
             mkdir(cdir+"/public_html");
             cp(tdir+"plan", cdir+"/.plan");
+            cp(tdir+"evaldefs.h", cdir+"/evaldefs.h");
             cp(tdir+"profile", cdir+"/.profile");
             cp(tdir+"cmds/custom.c", cdir+"/cmds/custom.c");
             cp(tdir+"workroom.c", cdir+"/workroom.c");
@@ -70,9 +72,9 @@ varargs int make_workroom(mixed dude, int cre) {
 
         cp(tdir+"adm/remote.c",cdir+"/adm/remote.c");
         write_file(cdir+"/bak/bk.db",bakdata);
-        cp(tdir+"customdefs.part1", cdir+"/customdefs.h");
-        write_file(cdir+"/customdefs.h","\n"+dir_line+"\n");
-        write_file(cdir+"/customdefs.h",read_file(tdir+"customdefs.part2"));
+        cp(tdir+"area/customdefs.part1", cdir+"/area/customdefs.h");
+        write_file(cdir+"/area/customdefs.h","\n"+dir_line+"\n");
+        write_file(cdir+"/area/customdefs.h",read_file(tdir+"area/customdefs.part2"));
         cp(tdir+"area/room/sample_room.c", cdir+"/area/room/sample_room.c");
         cp(tdir+"area/room/sample_two.c", cdir+"/area/room/sample_two.c");
         cp(tdir+"area/weap/sword.c", cdir+"/area/weap/sword.c");

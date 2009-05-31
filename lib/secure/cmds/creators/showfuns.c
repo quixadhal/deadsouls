@@ -4,13 +4,13 @@
 inherit LIB_DAEMON;
 string *arr = ({});
 string *types = ({ "void ", "status ",
-  "string ", "string \*", "string array ",
-  "int ", "int *", "int array ",
-  "object ", "object *", "object array ",
-  "mapping ", "mapping *", "mapping array ",
-  "mixed ", "mixed *", "mixed array ",
-  "float ", "float *", "float array ",
-  "function ", "function *", "function array " });
+        "string ", "string \*", "string array ",
+        "int ", "int *", "int array ",
+        "object ", "object *", "object array ",
+        "mapping ", "mapping *", "mapping array ",
+        "mixed ", "mixed *", "mixed array ",
+        "float ", "float *", "float array ",
+        "function ", "function *", "function array " });
 
 void create(){
     daemon::create();
@@ -20,7 +20,7 @@ mixed cmd(string str) {
     string *lines, *raw_lines;
     object ob;
     string tmp, content;
-
+    mixed *fs;
     arr = ({});
 
     if( !str ) return "You must specify a file.";
@@ -35,6 +35,7 @@ mixed cmd(string str) {
         tmp = "";
         lines = explode(content, "\n");
         ob = load_object(str);
+        fs = functions(ob);
         if(!ob) return "File cannot be loaded.";
         else arr = query_local_functions(ob);
         raw_lines = filter(lines, (: reverse_memberp($1, types) :) );
@@ -51,13 +52,13 @@ mixed cmd(string str) {
                 }
             }
         }
-        FUNCTION_D->ReceiveFunctionData(str, tmp, stat(str)[0]);
+        FUNCTION_D->ReceiveFunctionData(str, tmp, stat(str)[0], fs);
     }
     return tmp;
 }
 
 int help() {
     message("help", "Syntax: <showfuns [file]>\n\n"
-      "Displays the functions defined in the file.",
-      this_player());
+            "Displays the functions defined in the file.",
+            this_player());
 }

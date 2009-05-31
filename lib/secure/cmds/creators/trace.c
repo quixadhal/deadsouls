@@ -17,8 +17,8 @@ mixed cmd(string args) {
 
 int help() {
     message("help", "Syntax: <trace [level]>\n\n"
-      "Displays function call tracing to you. See \"man trace\""
-      " for details on tracing levels.",
-      this_player());
+            "Displays function call tracing to you. See \"man trace\""
+            " for details on tracing levels.",
+            this_player());
 }
 

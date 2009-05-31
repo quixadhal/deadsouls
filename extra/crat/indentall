@@ -1,0 +1,14 @@
+#!/bin/bash
+rm /tmp/thingy.txt
+for i in `find .|grep "\.c"|grep -v "\.cfg"|grep -v "\.css"`
+do
+if cat $i | grep "@EndText" 
+then
+echo "Skipping $i"
+echo $i >> /tmp/thingy.txt
+else
+echo "Indenting "$i
+vim -c "set softtabstop=4 shiftwidth=4 expandtab" -esc "normal gg=G" -c "wq" $i
+fi
+done
+

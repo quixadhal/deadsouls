@@ -18,9 +18,9 @@ int cmd(string str) {
 
 void help() {
     write("Syntax: <elog ([error log])>\n\n"
-      "This will tail your personal error log if issued without any\n"
-      "arguements.  If an argument is given, it searches for a file\n"
-      "by that name in the mud's error log directory.\n\nSee also:\n"
-      "log, replog\n"
-    );
+            "This will tail your personal error log if issued without any\n"
+            "arguements.  If an argument is given, it searches for a file\n"
+            "by that name in the mud's error log directory.\n\nSee also:\n"
+            "log, replog\n"
+         );
 }

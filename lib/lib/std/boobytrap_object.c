@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 inherit LIB_ITEM;
 
 int traptype = 0;
@@ -52,13 +52,16 @@ void init(){
     item::init();
 }
 
-varargs int CanBoobytrap(object who, mixed what){
-    return 1;
-}
+    varargs mixed CanBoobytrap(object who, mixed what){
+        if(!environment() || environment() != who) 
+            return "#You don't have that.";
+        //return 0;
+        return 1;
+    }
 
 varargs int eventBoobytrap(object who, mixed target, mixed trap){
     object shadowtrap;
-    if(stringp(target)) target = get_object(target);
+    if(stringp(target)) target = to_object(target);
     if(!target){
         write("It seems that cannot be boobytrapped.");
         return 1;

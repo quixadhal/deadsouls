@@ -9,14 +9,14 @@ static void create() {
     SetShort("LPC University Reception");
     SetLong("You are in the small, spare reception area of the Virtual Campus admissions office. A door leads north to the main administration building corridor.");
     SetExits( ([
-        "north" : "/domains/campus/room/corridor",
-      ]) );
+                "north" : "/domains/campus/room/corridor",
+                ]) );
     SetNoModify(1);
     SetDoor("north","/domains/campus/doors/plain_door");
     SetInventory(([
-        "/domains/campus/obj/bbucket" :1,
-        "/domains/campus/npc/jennybot" : ({60, 1}),
-      ]));
+                "/domains/campus/obj/bbucket" :1,
+                "/domains/campus/npc/jennybot" : ({60, 1}),
+                ]));
     SetProperty("no attack", 1);
 }
 

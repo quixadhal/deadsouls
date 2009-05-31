@@ -12,14 +12,14 @@ void create()
     SetAmbientLight(30);
     SetShort( "two verbs for one action" );
     SetLong(@EndText
-    This room demonstrates how you can use two verbs to do 
+This room demonstrates how you can use two verbs to do 
 one thing. 
 There's a chain here.  You can pull it or yank it.
 
 Note:  See how we change the description of the chain?
-       It's important to remove 'quest hints' once a 
-       quest has been done.  And then put them back in
-       when the quest is ready to do.
+It's important to remove 'quest hints' once a 
+quest has been done.  And then put them back in
+when the quest is ready to do.
 EndText
     );
 
@@ -36,9 +36,9 @@ EndText
 }
 
 /*  Here you'll see that we have two add_actions.  We have 'pull' and
-      'yank'.  If the player uses either verb when pulling the chain
-      the aa_chain() function is called.
-*/
+    'yank'.  If the player uses either verb when pulling the chain
+    the aa_chain() function is called.
+ */
 
 void init()
 {
@@ -48,14 +48,14 @@ void init()
 }
 
 /* This is the first reset() function that we've seen so I'd like
-     to take a moment to explain it.  The reset() function allows
-     an object to do self-maintenance.  After every reset interval
-     (whose exact length is determined on a mud by mud basis, but
-     averages around every 2 hours), reset() is called in every
-     object that currently exists.  Here, we use the reset()
-     function to return the variable 'once' back to 0 to allow the
-     chain to be pulled again after reset occurs.
-*/
+   to take a moment to explain it.  The reset() function allows
+   an object to do self-maintenance.  After every reset interval
+   (whose exact length is determined on a mud by mud basis, but
+   averages around every 2 hours), reset() is called in every
+   object that currently exists.  Here, we use the reset()
+   function to return the variable 'once' back to 0 to allow the
+   chain to be pulled again after reset occurs.
+ */
 
 void reset()
 {

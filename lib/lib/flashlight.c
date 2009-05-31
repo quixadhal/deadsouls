@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <vendor_types.h>
 inherit LIB_STORAGE;
-inherit "/lib/events/turn";
+inherit LIB_TURN;
 
 void SetLightLevel(int i);
 int eventRadiate(int i);
@@ -27,6 +27,19 @@ void create(){
     celltype = "D";
     SetVendorType(VT_TREASURE);
     baseshort=GetShort();
+}
+
+string GetShort(){
+    string ret, str, article;
+    string litstr = "%^BOLD%^YELLOW%^(lit)%^RESET%^ ";
+    if(!Lit || query_verb() == "activate" || query_verb() == "turn"){
+        return ::GetShort();
+    }
+    if(!(str = ::GetShort()) || str == "") return str;
+    article = (replace_string(str, remove_article(str), "") || "");
+    str = remove_article(str);
+    ret = (sizeof(article) ? article : "") + litstr + str;
+    return ret;
 }
 
 void init(){
@@ -70,11 +83,11 @@ int eventDie(){
     foreach(object ob in all_inventory(this_object())){
         ob->eventUse(0);
     }
-    SetShort(baseshort);
+    //SetShort(baseshort);
     tell_object(environment(this_object()),"The "+me+" flickers and dies.");
     if(living(environment())){
         tell_room(environment(environment()),environment()->GetName()+"'s "+me+
-          " flickers and dies.",({ environment() }) );
+                " flickers and dies.",({ environment() }) );
     }
     set_heart_beat(0);
     return 1;
@@ -87,7 +100,7 @@ int flicker(){
         return 1;
     }
     tell_room(environment(environment()),environment()->GetName()+"'s "+me+
-      " flickers and shines less brightly than before.",({ environment() }) );
+            " flickers and shines less brightly than before.",({ environment() }) );
     tell_object(environment(),"The "+me+" flickers and shines less brightly.");
     return 1;
 }
@@ -166,7 +179,7 @@ int eventTurnOn(object ob){
         else eventUse(1);
         eventRadiate(lightlevel);
         set_heart_beat(1);
-        SetShort(baseshort+" (%^BOLD%^YELLOW%^lit%^RESET%^)");
+        //SetShort(baseshort+" (%^BOLD%^YELLOW%^lit%^RESET%^)");
         return 1;
     }
     if(Lit >= 1){
@@ -184,7 +197,7 @@ varargs mixed eventTurnOff(string str){
         eventRadiate(0);
         eventUse(0);
         set_heart_beat(0);
-        SetShort(baseshort);
+        //SetShort(baseshort);
         return 1;
     }
     if(Lit < 1){

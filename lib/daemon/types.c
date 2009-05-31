@@ -30,13 +30,13 @@
 inherit LIB_DAEMON;
 
 string *types = ({ "vendor_types", "terrain_types", "size_types",
-  "respiration_types", "position", "mouth_types", "message_class",
-  "meal_types", "graphics", "damage_types", "build_types",
-  "boobytraps", "body_types", "armor_types" });
+        "respiration_types", "position", "mouth_types", "message_class",
+        "meal_types", "graphics", "damage_types", "build_types",
+        "boobytraps", "body_types", "armor_types" });
 
 string *configs = ({ "assessment", "climb", "jump",
-  "magic", "medium", "motion", "rounds",
-  "soul", "talk_type", "vision", "parser_error" });
+        "magic", "medium", "motion", "rounds",
+        "soul", "talk_type", "vision", "parser_error" });
 
 mapping Types = ([]);
 

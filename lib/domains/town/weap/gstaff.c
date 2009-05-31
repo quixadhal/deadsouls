@@ -10,7 +10,7 @@ static void create(){
     SetAdjectives( ({ "golden" }) );
     SetShort("a golden staff");
     SetLong("This is a thick staff, with one end covered in "+
-      "a golden metal.");
+            "a golden metal.");
     SetVendorType(VT_WEAPON);
     SetClass(10);
     SetBaseCost("silver",800);

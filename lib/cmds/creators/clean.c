@@ -1,5 +1,5 @@
 /*    /cmds/creator/clean.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    Cleans out the inventory of an object, defaulting to this room
  *    created by Valodin@Dead Souls 930101
  *    Version: @(#) clean.c 1.2@(#)
@@ -46,9 +46,9 @@ mixed cmd(string args) {
 
 string GetHelp() {
     return ("Syntax: <clean>\n"
-      "        <clean OBJECT>\n\n"
-      "This command destroys all objects in the inventory of a "
-      "specified object.  It skips any item that has a user somewhere "
-      "in its deep inventory.");
+            "        <clean OBJECT>\n\n"
+            "This command destroys all objects in the inventory of a "
+            "specified object.  It skips any item that has a user somewhere "
+            "in its deep inventory.");
 
 }

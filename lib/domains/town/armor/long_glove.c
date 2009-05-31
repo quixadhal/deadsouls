@@ -12,7 +12,6 @@ static void create() {
     SetAdjectives( ({ "black","leather" }) );
     SetShort("a long black leather glove");
     SetLong("A long black glove with five fingers.");
-    SetDamagePoints(75);
     SetVendorType(VT_ARMOR);
     SetMass(10);
     SetBaseCost("silver",25);
@@ -23,4 +22,8 @@ static void create() {
     SetProtection(HEAT, 3);
     SetProtection(COLD, 7);
     SetFingers(5);
+}
+
+void init(){
+    ::init();
 }

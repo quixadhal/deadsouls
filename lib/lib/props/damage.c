@@ -1,5 +1,5 @@
 /*    /lib/props/damage.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Things that do damage to other things
  *    Created by Descartes of Borg 970101
  *    Version: @(#) damage.c 1.1@(#)
@@ -17,14 +17,21 @@ mixed GetProperty(string key);
 // end abstract methods
 
 int GetClass(){
-    int blessing = GetProperty("blessed");
-
-    //if(estatep(this_object())) return 1;
+    int ret, blessing = GetProperty("blessed");
+    string type = this_object()->GetWeaponType();
 
     if( !intp(blessing) ){
         blessing = 0;
     }
-    return (Class + blessing);
+
+    ret = (Class + blessing);
+    if(!ret) ret = 1;
+
+    if(type && type == "projectile" && this_object()->GetWielded()){
+        ret = (ret/(Class || ret));
+    }
+
+    return ret;
 }
 
 int SetClass(int x){

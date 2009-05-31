@@ -21,6 +21,6 @@ int cmd(string str){
 
 string GetHelp(string str) {
     return "Syntax: unmorse <string>\n"
-    "Decodes a morse string into its alphanumeric representation.\n"
-    "";
+        "Decodes a morse string into its alphanumeric representation.\n"
+        "";
 }

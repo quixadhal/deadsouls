@@ -21,27 +21,27 @@ int cmd(string str) {
         if(opt == "remove") {
             if(member_array(channel, ob->GetChannels()) == -1) {
                 this_player()->eventPrint(ob->GetName()
-                  + " is not currently subscribed to the " + channel + " line.");
+                        + " is not currently subscribed to the " + channel + " line.");
                 return 1;
             }
             ob->RestrictChannel(channel);
             this_player()->eventPrint("%^RED%^You restrict " + ob->GetName()
-              + " from the " + channel + " line.%^RESET%^");
+                    + " from the " + channel + " line.%^RESET%^");
             ob->eventPrint("%^RED%^You have lost your " + channel
-              + " line rights.%^RESET%^");
+                    + " line rights.%^RESET%^");
             return 1;
         }
         else if(opt == "add") {
             if(member_array(channel, ob->GetRestrictedChannels()) == -1) {
                 message("system", ob->GetName() + " is not currently restricted from the "
-                  + channel + " line.", this_player());
+                        + channel + " line.", this_player());
                 return 1;
             }
             ob->UnrestrictChannel(channel);
             this_player()->eventPrint("%^RED%^You unrestrict " + ob->GetName()
-              + " from the " + channel + " line.%^RESET%^");
+                    + " from the " + channel + " line.%^RESET%^");
             ob->eventPrint("%^RED%^You have regained your " + channel
-              + " line rights.%^RESET%^");
+                    + " line rights.%^RESET%^");
             return 1;
         }
     }
@@ -68,10 +68,10 @@ int cmd(string str) {
 
 void help() {
     message("help",
-      "Syntax: channel add|remove <player> <channel>\n"
-      "        channel <player>\n"
-      "\n"
-      "Used to restrict a player from using a line, or to allow them back "
-      "onto that line. You can also request a listing of a players currently "
-      "restricted lines with this command.", this_player());
+            "Syntax: channel add|remove <player> <channel>\n"
+            "        channel <player>\n"
+            "\n"
+            "Used to restrict a player from using a line, or to allow them back "
+            "onto that line. You can also request a listing of a players currently "
+            "restricted lines with this command.", this_player());
 }

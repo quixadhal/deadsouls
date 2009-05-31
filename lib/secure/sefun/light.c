@@ -30,12 +30,12 @@ varargs int total_light(object ob) {
     while(i--) x += (int)inv[i]->GetRadiantLight();
     if( env->GetClimate() == "indoors" ) return x;
     switch((string)SEASONS_D->query_time_of_day()) {
-    case "day": return x;
-    case "night":
-        x += (int)SEASONS_D->GetMoonLight();
+        case "day": return x;
+        case "night":
+            x += (int)SEASONS_D->GetMoonLight();
         return x;
-    case "dawn": case "twilight": return (x-1);
-    default: return x;
+        case "dawn": case "twilight": return (x-1);
+        default: return x;
     }
 }
 

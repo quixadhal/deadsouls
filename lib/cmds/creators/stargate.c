@@ -38,9 +38,9 @@ mixed cmd(string str){
 
 void help() {
     message("help", "Syntax: stargate <gate>\n\n"
-      "With an argument, this command will determine whether the argument "
-      "supplied is a valid stargate. If so, stargate data on that gate "
-      "is displayed. Without an argument, this command lists known valid "
-      "stargates.",
-      this_player());
+            "With an argument, this command will determine whether the argument "
+            "supplied is a valid stargate. If so, stargate data on that gate "
+            "is displayed. Without an argument, this command lists known valid "
+            "stargates.",
+            this_player());
 }                                                    

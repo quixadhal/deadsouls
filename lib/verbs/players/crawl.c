@@ -12,10 +12,10 @@ static void create() {
     SetRules("STR", "into STR");
     SetErrorMessage("Crawl in which direction?");
     SetHelp("Syntax: <crawl DIRECTION>\n"
-      "        <crawl into PLACE>\n\n"
-      "Moves you towards the direction you specify, or into the place "
-      "you specify.  The command \"crawl into\" is synonymous with the "
-      "\"enter\" command.");
+            "        <crawl into PLACE>\n\n"
+            "Moves you towards the direction you specify, or into the place "
+            "you specify.  The command \"crawl into\" is synonymous with the "
+            "\"enter\" command.");
 }
 
 
@@ -24,7 +24,7 @@ mixed can_crawl_str(string str) {
     if( (int)this_player()->GetStaminaPoints() <3 )
         return "You are too tired to crawl anywhere right now.";
     if(this_player()->GetPosition() != POSITION_LYING &&
-      this_player()->GetPosition() != POSITION_SITTING){
+            this_player()->GetPosition() != POSITION_SITTING){
         return "You can't crawl in your current position.";
     }
     return 1;
@@ -35,7 +35,7 @@ mixed can_crawl_into_str(string str) {
     if( (int)this_player()->GetStaminaPoints() <3 )
         return "You are too tired right now.";
     if(this_player()->GetPosition() != POSITION_LYING &&
-      this_player()->GetPosition() != POSITION_SITTING){
+            this_player()->GetPosition() != POSITION_SITTING){
         return "You can't crawl in your current position.";
     }
     return 1;

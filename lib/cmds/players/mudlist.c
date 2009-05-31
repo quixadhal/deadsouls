@@ -24,7 +24,7 @@ mixed cmd(string str) {
         return 1;
     }
 
-    if( str && str != "" && strlen(str) > 3 ) {
+    if( str && str != "" ) {
         mapping tmp;
         string opt, tmpstr;
 
@@ -37,17 +37,17 @@ mixed cmd(string str) {
             int x, y, z;
 
             switch(opt) {
-            case "a":
-                all = 1;
+                case "a":
+                    all = 1;
                 break;
-            case "m":
-                x = 5;
+                case "m":
+                    x = 5;
                 break;
-            case "d":
-                x = 7;
+                case "d":
+                    x = 7;
                 break;
-            case "n":
-                x = 0;
+                case "n":
+                    x = 0;
                 break;
             }
             tmpstr = (x ? info[x] : mud);
@@ -61,7 +61,7 @@ mixed cmd(string str) {
             }
 
             else if( y > z &&
-              lower_case(tmpstr[0..z-1]) == lower_case(str) && info[0] == -1 )
+                    lower_case(tmpstr[0..z-1]) == lower_case(str) && info[0] == -1 )
                 borg[mud] = info;
         }
     }
@@ -81,9 +81,9 @@ mixed cmd(string str) {
         mud = keys(borg)[0];
         msg = "\nDetailed information on %^GREEN%^" + mud + "%^RESET%^:\n";
         msg += sprintf("MUD Type: %:-6s Server: %:-20s Library: %s\n",
-          borg[mud][8], borg[mud][7], borg[mud][5]);
+                borg[mud][8], borg[mud][7], borg[mud][5]);
         msg += "Status: " + borg[mud][9] + "\nAdmin email: " +
-        borg[mud][10] + "\n";
+            borg[mud][10] + "\n";
         msg += "Services: ";
         foreach(svc, val in borg[mud][11]) {
             if( val == 1 ) {
@@ -110,10 +110,10 @@ mixed cmd(string str) {
     list = ({});
     foreach(mud, info in borg)
         list += ({ sprintf("%:-15s %:-6s %:-15s %:-18s %s %d",
-            replace_string(mud,"%^","%%^^"), info[8], info[7], info[5], info[1], info[2]) });
+                    replace_string(mud,"%^","%%^^"), info[8], info[7], info[5], info[1], info[2]) });
     list = sort_array(list, 1);
     list = ({ replace_string(mud_name(),"%^","%%^^") + " recognizes " + consolidate(sizeof(borg), "a mud")+
-      " matching your query: ", "" }) + list;
+            " matching your query: ", "" }) + list;
     if(this_player()) this_player()->eventPage(list);
     if(this_player()) return 1;
     else return implode(list,"\n");
@@ -127,19 +127,19 @@ int alphabet(string a, string b) {
 
 void help() {
     message("help", "Syntax: <mudlist>\n"
-      "        <mudlist -dmn [arg]>\n\n"
-      "        <mudlist imc2>\n\n"
-      "Without any arguments, it gives a full listing of all muds "
-      "with which this mud is capable of communication through "
-      "tell, mail, finger, rwho, and other intermud services.  "
-      "With arguments, <mudlist> requires one and only one option "
-      "which must be one of the following:\n"
-      "\t-d [driver]: List only muds using the named driver\n"
-      "\t-m [mudlib]: List only muds using the named mudlib\n"
-      "\t-n [mudname]: List only the muds with the name given\n\n"
-      "Note that the argument need not be complete, for example:\n"
-      "\t mudlist -n idea\n"
-      "will list IdeaExchange as well as any other mud whose name "
-      "begins with the string \"idea\".\n\n"
-      "See also: finger, mail, rwho, tell", this_player());
+            "        <mudlist -dmn [arg]>\n\n"
+            "        <mudlist imc2>\n\n"
+            "Without any arguments, it gives a full listing of all muds "
+            "with which this mud is capable of communication through "
+            "tell, mail, finger, rwho, and other intermud services.  "
+            "With arguments, <mudlist> requires one and only one option "
+            "which must be one of the following:\n"
+            "\t-d [driver]: List only muds using the named driver\n"
+            "\t-m [mudlib]: List only muds using the named mudlib\n"
+            "\t-n [mudname]: List only the muds with the name given\n\n"
+            "Note that the argument need not be complete, for example:\n"
+            "\t mudlist -n idea\n"
+            "will list IdeaExchange as well as any other mud whose name "
+            "begins with the string \"idea\".\n\n"
+            "See also: finger, mail, rwho, tell", this_player());
 }

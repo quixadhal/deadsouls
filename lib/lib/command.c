@@ -21,13 +21,13 @@ private static string CommandFail;
 private static string *SearchPath;
 private static int last_cmd_time = 0;
 private static int cmd_count = 1;
-private string *CommandHist = ({});
 private string *localcmds = ({});
 private string *next_command = ({});
 private static string *QueuedCommands = ({});
-private int MaxCommandHistSize = 20;
 static string current_command = "";
 static string original_command = "";
+static int Charmode = 0;
+static string Charbuffer = "";
 
 int direct_force_liv_str(){ return 1; }
 int direct_force_liv_to_str(){ return 1; }
@@ -36,8 +36,9 @@ int direct_force_liv_to_str(){ return 1; }
 /*  ***************  /lib/command.c driver applies  ***************  */
 
 static void create(){
+    SetCommandFail(0);
     SearchPath = ({ DIR_PLAYER_CMDS, DIR_SECURE_PLAYER_CMDS, DIR_CLAN_CMDS,
-      DIR_COMMON_CMDS, DIR_SECURE_COMMON_CMDS });
+            DIR_COMMON_CMDS, DIR_SECURE_COMMON_CMDS });
 }
 
 static string process_input(string cmd){ 
@@ -48,9 +49,10 @@ static string process_input(string cmd){
 /*  ***************  /lib/command.c command lfuns  ***************  */
 
 static int cmdAll(string args){
-    object old_agent;
+    object old_agent, env;
     mixed err;
     string verb, file;
+    string *talks = ({ "say", "whisper", "yell", "shout", "speak" });
 
     if(Paused){
         return 0;
@@ -68,12 +70,17 @@ static int cmdAll(string args){
         }
     }    
 
-    if(sizeof(CommandHist) >= MaxCommandHistSize) CommandHist -= ({ CommandHist[0] }); 
-    if(!args) CommandHist += ({ query_verb() });
-    else CommandHist += ({ query_verb()+" "+args });
+    if(!verb) verb = query_verb();
+
+    if(!this_object()->GetCharmode()){
+        if(!args) this_object()->Push(verb);
+        else this_object()->Push(verb+" "+args);
+    }
+    else {
+        this_object()->Push(this_object()->GetTempbuffer());
+    }
 
     old_agent = this_agent(this_object());
-    verb = query_verb();
 
     if(this_player()->GetSleeping() > 0){
         if(verb != "wake"){
@@ -81,21 +88,29 @@ static int cmdAll(string args){
             return 1;
         }
     }
-
-    if(BARE_EXITS){
+    env = environment();
+    if(BARE_EXITS && env){
         localcmds = ({});
         filter(this_player()->GetCommands(), (: localcmds += ({ $1[0] }) :));
         if(member_array(verb,CMD_D->GetCommands()) == -1 &&
-          member_array(verb,keys(VERBS_D->GetVerbs())) == -1 &&
-          member_array(verb,localcmds) == -1 && environment(this_player())->GetExits()){
-            if(member_array(verb,environment(this_player())->GetExits()) != -1) verb = "go "+verb;
-            if(member_array(verb,environment(this_player())->GetEnters()) != -1) verb = "enter "+verb;
+                member_array(verb,keys(VERBS_D->GetVerbs())) == -1 &&
+                member_array(verb,localcmds) == -1 ){
+            string dir;
+            if(args) dir = verb + " " + args;
+            else dir = verb;
+            if(member_array(dir, (env->GetExits() || ({}))) != -1) 
+                verb = "go "+verb;
+            if(member_array(dir, (env->GetEnters() || ({}))) != -1) 
+                verb = "enter "+verb;
         }
     }
 
-    if(COMMAND_MATCHING && sizeof(match_command(verb))) verb = match_command(verb);
+    if(COMMAND_MATCHING && sizeof(match_command(verb))){
+        verb = match_command(verb);
+    }
 
-    if(OLD_STYLE_PLURALS && args){
+    if(OLD_STYLE_PLURALS && args && (member_array(verb, talks) == -1 ||
+                (member_array(verb, talks) != -1 && !strsrch(trim(args),"to ")))){
         int numba, i;
         string tmp_ret;
         string *line = explode(args," ");
@@ -104,7 +119,7 @@ static int cmdAll(string args){
             if(!line[i]) error("String handling error in old style plural parser.");
             element = line[i];
             if(sscanf(element,"%d.%s",numba,tmp_ret) == 2){
-                if(present(numba+ordinal(numba)+" "+tmp_ret,environment(this_player()))){
+                if(present(numba+ordinal(numba)+" "+tmp_ret,env)){
                     args = replace_string(args,element,numba+ordinal(numba)+" "+tmp_ret);
                     continue;
                 }
@@ -115,7 +130,7 @@ static int cmdAll(string args){
                 e1 = numba+ordinal(numba);
                 e2 = line[i-1];
                 o1 = present(e2+" "+numba,this_player());
-                if(!o1) o1 = present(e2+" "+numba,environment(this_player()));
+                if(!o1) o1 = present(e2+" "+numba,env);
                 if(o1){
                     tmp_ret = e1+" "+e2;
                     args = replace_string(args,e2+" "+numba,tmp_ret);
@@ -133,8 +148,9 @@ static int cmdAll(string args){
             string cmd;
             int dbg;
 
-            if( args ) cmd = verb + " " + args;
-            else cmd = verb;
+            if( verb && args ) cmd = verb + " " + args;
+            else if(verb) cmd = verb;
+            else if(args) cmd = args;
             if( (int)this_object()->GetProperty("parse debug") ) dbg = 1;
             else if( (int)this_object()->GetProperty("debug") ) dbg = 1;
             else dbg = 0;
@@ -145,9 +161,9 @@ static int cmdAll(string args){
             if( err ){
                 if( err == -1 ){
                     if( !(err = (string)VERBS_D->GetErrorMessage(verb)) &&
-                      !(err = (string)SOUL_D->GetErrorMessage(verb)) ){
+                            !(err = (string)SOUL_D->GetErrorMessage(verb)) ){
                         err = "Such a command exists, but no default "
-                        "syntax is known.";
+                            "syntax is known.";
                     }
                 }
                 if( intp(err) )  /* MudOS bug */ err = "What?";
@@ -228,9 +244,19 @@ int Setup(){
 int eventForce(string cmd){
     string err;
     int res;
+#if 0
+    if(this_player() && interactive(this_object()) 
+            && this_player() != this_object()){
+        string forcer = this_player()->GetKeyName();
+        string forcee = this_object()->GetKeyName();
+        log_file("adm/force", 
+                timestamp()+" "+forcer+" forced "+forcee+" to "+cmd+"\n");
+    }
+#endif
     if(!cmd) return 0;
 
     cmd = process_input(cmd);
+    if(!cmd) return 0;
     Forced = 1;
     err = catch(res = command(cmd));
     Forced = 0;
@@ -307,7 +333,7 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
 
     if(!original_command || !sizeof(original_command)) original_command = lastcmd;
 
-    tmpret = lastcmd;
+    tmpret = (lastcmd || "");
     foreach(string foo in prep_arr){
         if(grepp(tmpret," "+foo+" ")){
             tmpret = replace_string(tmpret," "+foo+" "," PREPO ");
@@ -321,22 +347,26 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
     odirect = direct;
     oindirect = indirect;
 
-    if(i > 1 ){
+    //read is a special case. takes a str as first arh sometimes.
+    if(act == "read" && !grepp(tmpret, " in a ")){
+        tmpret = replace_string(lastcmd, " in ", " in a ");
+    }
+    else if(i > 1 ){
         object ob1, ob2;
         string tmpstr, s1, s2, article1, article2;
         if(StillTrying){
             tmpstr = remove_article(direct);
             if(args && sizeof(args) && answers_to(tmpstr, args[0]) &&
-              present(args[0]))
+                    present(args[0]))
                 ob1 = args[0];
-            else ob1 = get_object(tmpstr, this_object());
+            else ob1 = to_object(tmpstr, this_object());
         }
         if(StillTrying && indirect){
             tmpstr = remove_article(indirect);
             if(args && sizeof(args) && answers_to(tmpstr, args[0]) &&
-              present(args[0]))
+                    present(args[0]))
                 ob2 = args[0];
-            else ob2 = get_object(tmpstr, this_object());
+            else ob2 = to_object(tmpstr, this_object());
         }
         if(ob1) direct = ob1->GetUniqueId();
         else direct = remove_article(direct);
@@ -344,7 +374,7 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
         else indirect = remove_article(indirect);
         if(!ob1 && direct && grepp(direct," ")){
             if(sscanf(direct,"%s %s",s1, s2) == 2 && 
-              !ordinalp(s1,1)){
+                    !ordinalp(s1,1)){
                 direct2 = "a "+direct;
             }
         }
@@ -356,7 +386,7 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
         }
         if(!ob2 && indirect && grepp(indirect," ")){
             if(sscanf(indirect,"%s %s",s1, s2) == 2 && 
-              !ordinalp(s1,1)){
+                    !ordinalp(s1,1)){
                 if(!LimbCertain(indirect)) indirect2 = "a "+indirect;
             }
         }
@@ -414,30 +444,10 @@ int GetForced(){ return Forced; }
 
 int GetClient(){ return 0; }
 
-static string *GetCommandHist(){
-    return CommandHist;
-}
-
-string GetLastCommand(){
-    if(!GetForced() && (this_player() == this_object() || previous_object() == master())){
-        return CommandHist[sizeof(CommandHist)-1];
-    }
-    else return "";
-}
-
 string GetCurrentCommand(){
     if(!this_player()) return "";
     if(this_player() != this_object()) return "";
     return current_command;
-}
-
-int GetMaxCommandHistSize(){
-    return MaxCommandHistSize;
-}
-
-int SetMaxCommandHistSize(int i){
-    if(!i || i < 2) i = 2;
-    return MaxCommandHistSize = i;
 }
 
 int SetPlayerPaused(int i){
@@ -455,8 +465,8 @@ int GetPlayerPaused(){
 
 string SetCommandFail(string str){ 
     if( !str || str == "" ){
-        if(!creatorp(this_player())) CommandFail = "Try \"help commands\" for a list of some commands.";
-        if(creatorp(this_player())) CommandFail = "Try \"help creator commands\" for a list of some creator commands.";
+        if(!creatorp(this_object())) CommandFail = "Try \"help commands\" for a list of some commands.";
+        if(creatorp(this_object())) CommandFail = "Try \"help creator commands\" for a list of some creator commands.";
         return CommandFail;
     }
     else return (CommandFail = str);

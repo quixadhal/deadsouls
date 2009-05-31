@@ -1,5 +1,5 @@
 /*    /lib/props/deterioriation.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Handles the deterioration of objects
  *    Created by Descartes of Borg 970101
  *    Version: @(#) deterioration.c 1.1@(#)
@@ -8,7 +8,7 @@
 #include <daemons.h>
 
 private int Broken          = 0;
-private int DamagePoints    = 0;
+private int DamagePoints;
 private int Deterioration   = 0;
 private int MaxDamagePoints = 20000;
 
@@ -46,13 +46,15 @@ string GetItemCondition(){
 }
 
 string array GetSave(){
-    return ({ "Broken", "DamagePoints", "Deterioration" });
+    if(undefinedp(DamagePoints)) return ({ "Broken", "Deterioration" });
+    else return ({ "Broken", "DamagePoints", "Deterioration" });
 }
 
 int eventReceiveDamage(mixed agent, int type, int amt, int i, mixed array l){
     int x = -1;
     mixed worn = this_object()->GetWorn();
     mapping temp_prot = this_object()->GetProtectionMap();
+    if(undefinedp(DamagePoints)) return 0;
     if(query_verb() == "pick") return 0;
     if(objectp(agent)){
         if(estatep(agent) && !estatep(this_object())) return 0;

@@ -12,6 +12,7 @@
 #define ROOM_POD         DIR_STANDARD_DOMAIN "/room/pod"
 #define ROOM_ROUTER      "/secure/room/router"
 #define ROOM_START 	 DIR_STANDARD_DOMAIN "/room/start"
+#define ROOM_VIRT_VOID 	 DIR_STANDARD_DOMAIN "/virtual/void"
 #define ROOM_VOID 	 DIR_STANDARD_DOMAIN "/room/void"
 #define ROOM_WIZ 	 DIR_STANDARD_DOMAIN "/room/wiz_hall"
 

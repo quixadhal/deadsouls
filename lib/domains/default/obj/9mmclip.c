@@ -9,14 +9,14 @@ void create(){
     SetAdjectives(({"9mm","ammunition","ammo","9 millimeter","pistol"}));
     SetShort("a 9 millimeter pistol ammunition clip");
     SetLong("This is a slender, spring-loaded metal container designed "+
-      "to feed a 9 millimeter pistol with bullets.");
+            "to feed a 9 millimeter pistol with bullets.");
     SetMillimeter(9);
     SetMaxAmmo(15);
     SetAmmoType("acp");
     SetVendorType(VT_TREASURE);
     SetInventory(([
-        "/domains/default/obj/9mmround" : 15
-      ]));
+                "/domains/default/obj/9mmround" : 15
+                ]));
 }
 
 void init(){

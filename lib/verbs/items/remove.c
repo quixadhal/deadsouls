@@ -1,5 +1,5 @@
 /*    /verbs/items/remove.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Allows players to remove armor
  *    Created by Descartes of Borg 960207
  *    Version: @(#) remove.c 1.2@(#)
@@ -16,13 +16,13 @@ static void create() {
     SetRules("OBS", "OBS from OBJ", "OBS out of OBJ");
     SetErrorMessage("Remove what?");
     SetHelp("Syntax: <remove ARMOR>\n"
-      "        <remove all [of ARMOR]>\n"
-      "        <remove ITEM from CONTAINER>\n\n"
-      "This verb allows you to remove a piece of armor which you are "
-      "currently wearing.\n\n"
-      "The second syntax is simply a synonym for the \"get\" "
-      "command.\n\n"
-      "See also: get, wear, wield, unwield");
+            "        <remove all [of ARMOR]>\n"
+            "        <remove ITEM from CONTAINER>\n\n"
+            "This verb allows you to remove a piece of armor which you are "
+            "currently wearing.\n\n"
+            "The second syntax is simply a synonym for the \"get\" "
+            "command.\n\n"
+            "See also: get, wear, wield, unwield");
     SetSynonyms("take off", "unwear");
 }
 
@@ -31,7 +31,7 @@ mixed can_remove_obj() {
         return "You cannot do anything.";
     }
     if(intp(check_light())) return this_player()->CanManipulate();
-    else return check_light();
+    else return 1;
 
 }
 

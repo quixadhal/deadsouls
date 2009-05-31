@@ -79,7 +79,7 @@ mixed eventGetMoney(object who, int amount, string curr){
         return 1;
     }
     send_messages("get", "$agent_name $agent_verb " + amount + " " +
-      curr + " from " + GetShort() + ".", who, 0, environment(who));
+            curr + " from " + GetShort() + ".", who, 0, environment(who));
     PileAmount -= amount;
     if( PileAmount < 1 ){
         call_out((: Destruct :), 0);

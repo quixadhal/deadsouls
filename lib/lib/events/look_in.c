@@ -1,5 +1,5 @@
 /*    /lib/events/look_in.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    Something that can be seen in
  *    Created by Descartes of Borg 961222
  *    Version :@(#) look_in.c 1.2@(#)
@@ -51,7 +51,7 @@ varargs mixed CanShowInterior(object who, object target){
     if(!who) who = this_player();
 
     if( environment() != this_player()  && environment(this_player()) !=
-      environment()){
+            environment()){
         return "#You don't have that!";
     }
 
@@ -94,7 +94,7 @@ varargs mixed eventShowInterior(object who, object target){
         return 0;
     }
     if(!inherits("/lib/comp/surface",this_object())) environment(who)->eventPrint(who->GetName() + " looks inside " +
-          GetShort() + ".", who);
+            GetShort() + ".", who);
     who->eventPrint(str);
 
 }

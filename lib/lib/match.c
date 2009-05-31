@@ -21,13 +21,13 @@ mixed eventStrike(object who){
     if( !GetFuelAmount() || StrikeChance < random(100) || !eventBurn(who) ){
         who->eventPrint("You strike " + GetShort() + ", but nothing happens.");
         environment(who)->eventPrint((string)who->GetName() + " strikes " +
-          GetShort() + ", but nothing happens.",
-          who);
+                GetShort() + ", but nothing happens.",
+                who);
         return 1;
     }
     who->eventPrint("You strike " + GetShort() + " and it ignites!");
     environment(who)->eventPrint((string)who->GetName() + " strikes " +
-      GetShort() + " and it ignites!", who);
+            GetShort() + " and it ignites!", who);
     return 1;
 }
 

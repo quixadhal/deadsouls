@@ -11,8 +11,8 @@ static void create() {
     SetAdjectives(({"sturdy","green","olive","olive-green","od green","od-green"}));
     SetShort("a sturdy, olive-green rucksack");
     SetLong("This is a large, sturdy rucksack made of some sort of "
-      "strong, canvas-like material. It appears suitable "+
-      "for just about any adventure you'd find yourself in.");
+            "strong, canvas-like material. It appears suitable "+
+            "for just about any adventure you'd find yourself in.");
     SetMass(100);
     SetDollarCost(200);
     SetCanClose(1);
@@ -21,9 +21,9 @@ static void create() {
     SetDamagePoints(100);
     SetArmorType(A_VEST);
     SetInventory(([
-        "/domains/town/obj/torch" : 1,
-        "/domains/town/obj/match" : 3,
-      ]));
+                "/domains/town/obj/torch" : 1,
+                "/domains/town/obj/match" : 3,
+                ]));
 }
 void init(){
     ::init();

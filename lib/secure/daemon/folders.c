@@ -30,7 +30,7 @@ static private void load_folder(string who, string folder) {
     if(who == __Owner && folder == __Folder) return;
     OPTIONS_D->assure_box_exists(who);
     file = sprintf("%s/%s/%s/%s", DIR_POSTAL, who[0..0], who, folder);
-    if(!unguarded((: file_exists, file+__SAVE_EXTENSION__ :))) {
+    if(!unguarded((: file_exists, save_file(file) :))) {
         __BoxInfo = ({});
         __Folder = folder;
         __Owner = who;
@@ -38,7 +38,7 @@ static private void load_folder(string who, string folder) {
     else {
         __Folder = folder;
         __Owner = who;
-        if(!unguarded((: restore_object, file :))) __BoxInfo = ({});
+        if(!RestoreObject(file)) __BoxInfo = ({});
     }
 }
 
@@ -47,7 +47,7 @@ static private void save_folder() {
 
     if(!__Owner || !__Folder) return;
     file= sprintf("%s/%s/%s/%s", DIR_POSTAL, __Owner[0..0], __Owner, __Folder);
-    unguarded((: save_object, file :));
+    SaveObject(file);
 }
 
 mapping *query_box_info(string who, string folder) {
@@ -62,9 +62,9 @@ void add_post(string who, string folder, mapping borg) {
 
     tmp = base_name(previous_object(0));
     if(previous_object(0) != this_object() && tmp != OBJ_POST &&
-      tmp != LOCALPOST_D) return;
+            tmp != LOCALPOST_D) return;
     if(folder=="new" && (fwd=(string)OPTIONS_D->query_option(who, "forward")) &&
-      strsrch(borg["subject"], "[FORWARD]") == -1) {
+            strsrch(borg["subject"], "[FORWARD]") == -1) {
         borg["subject"] += " [FORWARD]";
         if(sscanf(fwd, "%s@%s", a, b) == 2) {
             borg["message"] = (string)LETTERS_D->query_letter(borg["id"]);
@@ -87,7 +87,7 @@ void add_post(string who, string folder, mapping borg) {
         msg = (string)OPTIONS_D->query_option(who, "message");
         if( !stringp(msg) ) msg = "%^RED%^%^BOLD%^New mail from $N!%^RESET%^\n";
         msg = replace_string(replace_string(msg, "$S", borg["subject"]),
-          "$N", capitalize(borg["from"]));
+                "$N", capitalize(borg["from"]));
         message("system", msg, pl);
     }
     if(pl && ob = present(POSTAL_ID, pl)) {
@@ -108,7 +108,7 @@ void delete_posts(string who, string folder, int *del) {
         }
     }
     __BoxInfo = sort_array(filter(__BoxInfo, "filter_folder", 
-        this_object()), "sort_folder", this_object());
+                this_object()), "sort_folder", this_object());
     save_folder();
 }
 

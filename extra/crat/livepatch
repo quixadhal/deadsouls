@@ -1,0 +1,165 @@
+# syntax: livepatch ds2.9a17 limpet [1]
+export INDENT=$3
+export NEWLIB=$2
+export OLDLIB=$1
+
+#vi /root/updaterr$OLD\_r$NEW.c
+
+cd /
+date
+
+mkdir /tmp/foo 1>/dev/null 2>/dev/null
+rm -rf /tmp/foo/*
+
+cd /tmp/foo
+
+unzip -qd $OLDLIB $HOME/mud/$OLDLIB.zip
+#unzip -qd $NEWLIB /misc/data/mud/deadsouls/$NEWLIB.zip
+cd /mud/
+chmod -R 755 $NEWLIB/lib
+tar cfp - $NEWLIB|(cd /tmp/foo;tar xfp -)
+cd /tmp/foo
+
+mv $OLDLIB/*/* $OLDLIB/
+
+#mv $NEWLIB/*/* $NEWLIB/
+
+
+#\rm -f $OLDLIB/lib/secure/include/config.h
+#\rm -f $NEWLIB/lib/secure/include/config.h
+
+\rm -f $OLDLIB/lib/secure/cfg/groups*cfg
+\rm -f $OLDLIB/lib/secure/cfg/mudos*cfg
+\rm -f $OLDLIB/lib/secure/cfg/mudos*win32
+
+\rm -f $NEWLIB/lib/secure/cfg/groups*cfg
+\rm -f $NEWLIB/lib/secure/cfg/mudos*cfg
+\rm -f $NEWLIB/lib/secure/cfg/mudos*win32
+
+\rm -rf $OLDLIB/lib/secure/save
+\rm -rf $OLDLIB/lib/save
+\rm -rf $OLDLIB/lib/secure/log
+\rm -rf $OLDLIB/lib/secure/upgrades
+\rm -rf $OLDLIB/lib/tmp
+\rm -rf $OLDLIB/lib/daemon/tmp
+\rm -rf $OLDLIB/lib/open
+\rm -rf $OLDLIB/lib/log
+\rm -rf $NEWLIB/lib/log
+\rm -rf $NEWLIB/lib/tmp
+\rm -rf $NEWLIB/lib/daemon/tmp
+\rm -rf $NEWLIB/lib/open
+\rm -rf $NEWLIB/lib/secure/save
+\rm -rf $NEWLIB/lib/secure/log
+\rm -rf $NEWLIB/lib/secure/upgrades
+\rm -rf $NEWLIB/lib/save
+
+\rm -r $NEWLIB/lib/core  $OLDLIB/lib/core 1>/dev/null 2>/dev/null
+\rm -r $NEWLIB/lib/secure/sefun/native_version.c  $OLDLIB/lib/secure/sefun/native_version.c
+
+\cp -f $NEWLIB/lib/secure/daemon/update.patch $NEWLIB/lib/secure/daemon/update.c
+\cp -f $OLDLIB/lib/secure/daemon/update.patch $OLDLIB/lib/secure/daemon/update.c
+
+mkdir $OLDLIB/lib/www/cgi 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/lib/daemons 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/verbs/builders 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/cmds/builders 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/secure/cmds/builders 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/secure/daemon/imc2server 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/lib/daemon 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/lib/daemon/include 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/adm 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/armor 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/doors 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/etc 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/meals 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/npc 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/obj 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/room 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/save 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/txt 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/virtual 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/cave/weap 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/doc/phints 1>/dev/null 2>/dev/null
+
+if [ $3 ]
+then
+echo "indenting"
+cd $NEWLIB/lib
+/contrib/indentall
+cd ../../$OLDLIB/lib
+/contrib/indentall
+cd ../../
+else
+echo "not indenting"
+fi
+
+mv $NEWLIB/lib/secure/lib/connect.c  $NEWLIB/lib/secure/lib/connect.real
+cp $NEWLIB/lib/secure/lib/connect.first.c  $NEWLIB/lib/secure/lib/connect.c
+
+diff -rq $OLDLIB/lib $NEWLIB/lib > diff.txt
+
+perl -pi -e s/"\:\ "/"\/"/g diff.txt
+
+cd $NEWLIB/
+
+find ./lib -type f -exec /contrib/enters {} \;
+rm lib/secure/include/config.h
+rm lib/secure/cfg/mudos.cfg
+rm lib/secure/cfg/groups.cfg
+\rm -rf lib/tmp
+\rm -rf lib/log
+\rm -rf lib/secure/log
+\rm -rf lib/open
+\rm -rf lib/secure/save
+\rm -rf lib/secure/log
+\rm -rf lib/secure/tmp
+\rm -rf lib/secure/upgrades
+\rm -rf lib/save
+tar cfp ../patch.tar lib
+cd ..
+mv $NEWLIB fukt
+unzip -qd $NEWLIB /export/home/$HOME/mud/$NEWLIB.zip
+mv $NEWLIB/*/* $NEWLIB/
+cd $OLDLIB
+tar xfp ../patch.tar
+cd ..
+\rm -rf $NEWLIB/lib/tmp
+\rm -rf $NEWLIB/lib/log
+\rm -rf $NEWLIB/lib/secure/log
+\rm -rf $NEWLIB/lib/open
+\rm -rf $NEWLIB/lib/secure/save
+\rm -rf $NEWLIB/lib/secure/log
+\rm -rf $NEWLIB/lib/secure/tmp
+\rm -rf $NEWLIB/lib/secure/upgrades
+\rm -rf $NEWLIB/lib/save
+
+diff -rq $OLDLIB/ $NEWLIB/ > diff2.txt
+echo "Anything after this is an imperfection except for the connect.c"
+cat diff2.txt
+\mv -f lib lib.foo 1>/dev/null 2>/dev/null
+tar xfp patch.tar
+find ./lib -type f|sort -dr > lib.txt
+\mv -f patch patch.foo 1>/dev/null 2>/dev/null
+mkdir patch
+#\cp -f ~/updaterr$OLD\_r$NEW.c lib/secure/daemon/update.c
+\cp -f ~/update.blank lib/secure/daemon/ 1>/dev/null 2>/dev/null
+\cp -f ~/instructions\_$OLD\_$NEW.txt patch/instructions.txt 1>/dev/null 2>/dev/null
+chown -R 513:513 lib 1>/dev/null 2>/dev/null
+chmod -R 775 lib 1>/dev/null 2>/dev/null
+mv lib patch/
+cat diff2.txt
+echo "End imperfections."
+date
+echo ""
+cd patch/lib
+find ./ -type f|grep -v "upgrades\.txt" |grep -v "\.html"|grep -v "\.gif" |grep -v "\.o" |grep -v "/news/" > upgrades.txt
+find ./ -type f|grep  "\.orig" >> upgrades.txt
+perl -pi -e s/"\.\/lib"/"\/lib"/g upgrades.txt
+perl -pi -e s/"\.\/"/"\/"/g upgrades.txt
+cp upgrades.txt /tmp/foo/
+\cp -f upgrades.txt /mud/$NEWLIB/lib/
+echo "-------"
+cat upgrades.txt
+chmod 755 upgrades.txt
+echo "-------"

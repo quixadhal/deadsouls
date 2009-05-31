@@ -1,5 +1,5 @@
 /*    /lib/obj/dummy.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    A dummy item object that handles item descriptions and such
  *    Created by Descartes of Borg 961014
  *    Version: @(#) dummy.c 1.18@(#)
@@ -13,5 +13,5 @@ inherit LIB_SHADOW_HOOK;
 
 /* ******************* dummy.c driver applies ******************** */
 varargs static void create(string array id, mixed long, string array adj){
-    base_dummy::create(id,long,adj);
+    base_dummy::create(id, long, adj);
 }

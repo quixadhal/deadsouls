@@ -12,7 +12,7 @@
 
 #include <lib.h>
 #include <save.h>
-#include <network.h>
+#include NETWORK_H
 
 inherit LIB_DAEMON;
 
@@ -34,6 +34,7 @@ static void create() {
 #ifdef SERVICE_UCACHE
     call_out((: eventCompactUcache :), 3600);
 #endif
+    eventSave();
 }
 
 int eventDestruct() {
@@ -45,39 +46,39 @@ mapping GetServices() {
     string *ports = ({ "ftp", "http", "oob", "nntp", "rcp", "smtp" });
     mapping ret = ([
 #ifdef SERVICE_AUTH
-      "auth" : 1,
+            "auth" : 1,
 #endif
 #ifdef SERVICE_CHANNEL
-      "channel" : 1,
+            "channel" : 1,
 #endif
 #ifdef SERVICE_EMOTETO
-      "emoteto" : 1,
+            "emoteto" : 1,
 #endif
 #ifdef SERVICE_FILE
-      "file" : 1,
+            "file" : 1,
 #endif
 #ifdef SERVICE_FINGER
-      "finger" : 1,
+            "finger" : 1,
 #endif
 #ifdef SERVICE_LOCATE
-      "locate" : 1,
+            "locate" : 1,
 #endif
 #ifdef SERVICE_MAIL
-      "mail" : 1,
+            "mail" : 1,
 #endif
 #ifdef SERVICE_NEWS
-      "news" : 1,
+            "news" : 1,
 #endif
 #ifdef SERVICE_TELL
-      "tell" : 1,
+            "tell" : 1,
 #endif
 #ifdef SERVICE_UCACHE
-      "ucache" : 1,
+            "ucache" : 1,
 #endif
 #ifdef SERVICE_WHO
-      "who" : 1,
+            "who" : 1,
 #endif
-    ]);
+            ]);
 
     foreach(string port in ports){
         if(member_array(port, keys(INET_D->GetServices())) != -1){

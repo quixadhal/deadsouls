@@ -21,14 +21,14 @@ void create() {
     SetId( ({ "order", "work order" }) );
     SetShort("a work order");
     SetLong("An order for workers to begin modifying your estate "
-      "to your desires.  In order to modify your estate, go to "
-      "any room in it, and type \"build <room name>\".  "
-      "For example, to build your study, type: "
-      "\"build the study\".  Room's as you type in the command "
-      "are what people see when they enter a room in brief mode.  "
-      "In this case, people would see \"The study\".  You will then be "
-      "asked some questions about your room."
-    );
+            "to your desires.  In order to modify your estate, go to "
+            "any room in it, and type \"build <room name>\".  "
+            "For example, to build your study, type: "
+            "\"build the study\".  Room's as you type in the command "
+            "are what people see when they enter a room in brief mode.  "
+            "In this case, people would see \"The study\".  You will then be "
+            "asked some questions about your room."
+           );
     SetMass(10);
     SetValue(99);
     true();
@@ -44,11 +44,11 @@ static int cmd_build(string str) {
     if(file_size(ESTATES_DIRS+"/"+geteuid(this_player())) != -2)
         return notify_fail("You need an estates directory!\n");
     /*
-        if(!high_mortalp(this_player())) 
-          return notify_fail("Only high mortals may build!\n");
-    */
+       if(!high_mortalp(this_player())) 
+       return notify_fail("Only high mortals may build!\n");
+     */
     if(strsrch(file_name(environment(this_player())), 
-        ESTATES_DIRS+"/"+geteuid(this_player())) != 0)
+                ESTATES_DIRS+"/"+geteuid(this_player())) != 0)
         return notify_fail("You can only build on your stuff!\n");
     __Short = str;
     message("prompt", "Is the room 0) outdoors, or 1) indoors? ", this_player());
@@ -81,15 +81,15 @@ static void input_light(string str) {
     }
     __Light = x;
     message("system", "Enter in a long description for the room.  "
-      "A long description is what people see when they enter a "
-      "room in verbose mode.  A line showing obvious exits is automatically "
-      "appended.  In addition, if you add any smells or sounds, the "
-      "default ones are automatically appended.  So do not describe sounds or "
-      "smells here.", this_player());
+            "A long description is what people see when they enter a "
+            "room in verbose mode.  A line showing obvious exits is automatically "
+            "appended.  In addition, if you add any smells or sounds, the "
+            "default ones are automatically appended.  So do not describe sounds or "
+            "smells here.", this_player());
     message("system", "Enter in the long description like mail.", this_player());
     rm(DIR_TMP+"/"+geteuid(this_player())+".estate");
     this_player()->edit(DIR_TMP+"/"+geteuid(this_player())+".estate",
-      "done_edit", this_object());
+            "done_edit", this_object());
 }
 
 void abort() {
@@ -106,7 +106,7 @@ void done_edit(mixed *unused) {
     }
     __Long = replace_string(str, "\n", " ");
     message("prompt", "\nIn which direction do you wish to build "+__Short+"? ",
-      this_player());
+            this_player());
     input_to("input_exit");
 }
 
@@ -115,15 +115,15 @@ static void input_exit(string str) {
     string file;
 
     if(member_array(str, (string *)environment(this_player())->query_exits())
-      != -1) {
+            != -1) {
         message("system", "A room already exists in that direction!",
-          this_player());
+                this_player());
         return;
     }
     valid_exits = ([ "north": "south", "south": "north", "east":"west",
-      "west":"east", "up":"down", "down":"up", "southeast":"northwest",
-      "northwest":"southeast", "southwest":"northeast",
-      "northeast":"southwest" ]);
+            "west":"east", "up":"down", "down":"up", "southeast":"northwest",
+            "northwest":"southeast", "southwest":"northeast",
+            "northeast":"southwest" ]);
     if(!valid_exits[str]) {
         message("system", "That is not a real direction!", this_player());
         return;
@@ -139,7 +139,7 @@ static void input_exit(string str) {
     write_file(__NewRoom, "AddExit: "+__Exit+"\n");
     //seteuid(getuid());
     message("system", "Room begun.  You will see your addition "
-      "appear later when the work is complete.", this_player());
+            "appear later when the work is complete.", this_player());
     this_object()->remove();
 }
 

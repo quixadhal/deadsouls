@@ -1,5 +1,5 @@
 /*    /domains/Ylsrim/etc/road.c
- *    From the Dead Souls V Object Library
+ *    From the Dead Souls Mud Library
  *    An example of something people can jump into
  *    Created by Descartes of Borg 961222
  */
@@ -14,9 +14,9 @@ inherit LIB_JUMP; // This makes it jumpable
 int eventJump(object who) {
     who->eventReceiveDamage(0, BLUNT, random(100) + 5, 1);
     who->eventMoveLiving("/domains/Ylsrim/room/kaliid6",
-      "$N tries to jump into the road "
-      "and seriously hurts " + reflexive(who) + ".",
-      "$N comes falling in.");
+            "$N tries to jump into the road "
+            "and seriously hurts " + reflexive(who) + ".",
+            "$N comes falling in.");
     return 1;
 }
 

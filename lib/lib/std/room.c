@@ -11,14 +11,14 @@
 #endif
 
 #include <lib.h>
-#include <rooms.h>
-#include <config.h>
+#include ROOMS_H
 #include <daemons.h>
 #include <function.h>
 #include <medium.h>
 #include <message_class.h>
 #include <talk_type.h>
 #include <terrain_types.h>
+#include <respiration_types.h>
 #include <privs.h>
 
 inherit LIB_SHADOW_HOOK;
@@ -31,7 +31,6 @@ inherit LIB_LOOK;
 inherit LIB_PROPERTIES;
 inherit LIB_AMBIANCE;
 inherit LIB_READ;
-inherit LIB_SAVE;
 inherit LIB_MONEY;
 
 private function        Bury          = 0;
@@ -67,16 +66,21 @@ private static mixed    global_item;
 private static mixed	Action;
 private int		tick_resolution	= 5;
 private int		TerrainType	= T_OUTDOORS;
+private int		RespirationType;
 private int		Medium  	= MEDIUM_LAND;
 private mapping         ActionsMap      = ([]);
 private string          SinkRoom        = "";
 private string          FlyRoom         = "";
-
+private int             FlowLimit       = 0;
+private int array       Coords          = ({});
+private string array    Neighbors       = ({});
+private mixed array     NeighborCoords  = ({});
 
 string GetClimate();
 int GetNightLight();
 int GetDayLight();
 int GetShade();
+varargs mixed DestructEmptyVirtual(object ob);
 
 mixed direct_delete_exit_str(){
     return 1;
@@ -91,10 +95,9 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3);
 /***********      /lib/room.c data manipulation functions      **********/
 
 void CheckActions(){
-
     if(sizeof(ActionsMap)){
         foreach(mixed key, mixed val in ActionsMap){
-            if( ActionChance > random(100) ){
+            if( val > random(100) ){
                 if(functionp(key)) evaluate(key);
                 else eventPrint(key);
             }
@@ -120,6 +123,7 @@ void CheckActions(){
 
 void heart_beat(){
     counter++;
+    DestructEmptyVirtual();
     inventory::heart_beat();
     if(counter > 9999) counter = 0;
     CheckActions();
@@ -143,7 +147,6 @@ mapping SetActionsMap(mapping ActMap){
 mapping GetActionsMap(){
     return copy(ActionsMap);
 }
-
 
 int SetFrequency(int tick){
     if(tick) tick_resolution = tick;
@@ -196,9 +199,6 @@ int GetAmbientLight(){
     else {
         a = ambiance::GetAmbientLight();
     }
-    if( GetClimate() != "indoors" ){
-        //a += SEASONS_D->GetRadiantLight() - GetShade();
-    }
 
     foreach(object ob in all_inventory()){
         a += ob->GetRadiantLight();
@@ -217,16 +217,14 @@ function SetBury(function what){
 
 static string GetExtraLong(){
     int i;
-    string *l,*tmp;
+    string *l = ({}),*tmp;
     string ret;
     object array stuff;
     ret = "  ";
     tmp = ({});
     stuff=all_inventory(this_object()); 
     for(i=0; i<sizeof(stuff);i++){
-        if(tmp = ({ stuff[i]->GetAffectLong() }) && !sizeof(l)) l = tmp;
-        if( !sizeof(l) ) return 0;
-        if(tmp = ({ stuff[i]->GetAffectLong() }) ) l += tmp;
+        if(sizeof(tmp = ({ stuff[i]->GetRoomAffectLong() })) ) l += tmp;
     }
     if( !sizeof(l) ) return 0;
     ret += implode(l, "	 ");
@@ -377,7 +375,7 @@ mapping SetItems(mixed items){
     }
     else {
         error("Bad argument 1 to SetItems(), expected object array or "
-          "mapping.\n");
+                "mapping.\n");
     }
     return copy(ItemsMap);
 }
@@ -411,11 +409,11 @@ mapping GetListenMap(){
 
 mapping QueryMap(string str){
     switch(str){
-    case "SetItems" : return GetItemsMap();break;
-    case "SetSmell" : return GetSmellMap();break;
-    case "SetListen" : return GetListenMap();break;
-    case "SetInventory" : return this_object()->GetInventory();break;
-    default : return ([]);
+        case "SetItems" : return GetItemsMap();break;
+        case "SetSmell" : return GetSmellMap();break;
+        case "SetListen" : return GetListenMap();break;
+        case "SetInventory" : return this_object()->GetInventory();break;
+        default : return ([]);
     }
 
 }
@@ -548,7 +546,7 @@ int SetPoisonGas(int x){
     return (PoisonGas = x);
 }
 
-void AddRead(mixed item, mixed val){
+varargs void AddRead(mixed item, mixed val, string lang){
     if( stringp(item) ){
         item = ({ item });
     }
@@ -556,6 +554,7 @@ void AddRead(mixed item, mixed val){
         foreach(object ob in GetDummyItems()){
             if( ob->id(tmp) ){
                 ob->SetRead(val);
+                if(lang) ob->SetLanguage(lang);
                 break;
             }
         }
@@ -582,8 +581,8 @@ varargs void SetRead(mixed items, mixed arg){
         AddRead(items, arg);
         return;
     }
-    foreach(mixed key, mixed val in items){
-        AddRead(key, val);
+    else foreach(mixed key, mixed val in items){
+        AddRead(key, val, ((arg && stringp(arg)) ? arg : 0));
     }
 }
 
@@ -842,53 +841,52 @@ mixed eventBuryItem(object who, object tool, object what){
 }
 
 varargs mixed eventHearTalk(object who, object target, int cls, string verb,
-  string msg, string lang){
+        string msg, string lang){
     object *obs;
     string exit, door;
 
     switch(cls){
-    case TALK_PRIVATE:
-        return 1;
+        case TALK_PRIVATE:
+            return 1;
 
-    case TALK_SEMI_PRIVATE:
-        target->eventHearTalk(who, target, cls, verb, msg, lang);
-        eventPrint("%^BOLD%^CYAN%^" + (string)who->GetName() +
-          " whispers something to " + (string)target->GetName() + ".",
-          MSG_CONV, ({ who, target }));
-        return 1;
+        case TALK_SEMI_PRIVATE:
+            target->eventHearTalk(who, target, cls, verb, msg, lang);
+            eventPrint("%^BOLD%^CYAN%^" + (string)who->GetName() +
+                    " whispers something to " + (string)target->GetName() + ".",
+                    MSG_CONV, ({ who, target }));
+            return 1;
 
-    case TALK_LOCAL:
-        obs = get_livings(this_object(),1);
-        if(sizeof(obs)) obs -= ({ who });
-        if(sizeof(obs))
+        case TALK_LOCAL:
+            obs = get_livings(this_object(),1);
+            if(sizeof(obs)) obs -= ({ who });
+            if(sizeof(obs))
+                obs->eventHearTalk(who, target, cls, verb, msg, lang);
+            obs = get_livings(this_object(),2);
+            if(sizeof(obs)) obs -= ({ who });
+            if(sizeof(obs))
+                obs->eventHearTalk(who, target, cls, verb, msg, lang);
+            return 1;
+
+        case TALK_AREA:
+            foreach(exit in GetExits()){
+                string tmp;
+
+                tmp = GetExit(exit);
+                if( !find_object(tmp) ) continue;
+                tmp->eventHearTalk(who, target, TALK_LOCAL, verb, msg, lang);
+            }
+            foreach(exit in GetEnters(1)){
+                string tmp;
+
+                tmp = GetEnter(exit);
+                if( !find_object(tmp) ) continue;
+                if( (door = GetDoor(exit)) && (int)door->GetClosed() ) continue;
+                tmp->eventHearTalk(who, target, TALK_LOCAL, verb, msg, lang);
+            }
+            obs = filter(all_inventory(),
+                    (: (int)$1->is_living() && $1 != $(who) :));
             obs->eventHearTalk(who, target, cls, verb, msg, lang);
-        obs = get_livings(this_object(),2);
-        if(sizeof(obs)) obs -= ({ who });
-        if(sizeof(obs))
-            obs->eventHearTalk(who, target, cls, verb, msg, lang);
-        return 1;
-
-    case TALK_AREA:
-        foreach(exit in GetExits()){
-            string tmp;
-
-            tmp = GetExit(exit);
-            if( !find_object(tmp) ) continue;
-            //if( (door = GetDoor(exit)) && (int)door->GetClosed() ) continue;
-            tmp->eventHearTalk(who, target, TALK_LOCAL, verb, msg, lang);
-        }
-        foreach(exit in GetEnters(1)){
-            string tmp;
-
-            tmp = GetEnter(exit);
-            if( !find_object(tmp) ) continue;
-            if( (door = GetDoor(exit)) && (int)door->GetClosed() ) continue;
-            tmp->eventHearTalk(who, target, TALK_LOCAL, verb, msg, lang);
-        }
-        obs = filter(all_inventory(),
-          (: (int)$1->is_living() && $1 != $(who) :));
-        obs->eventHearTalk(who, target, cls, verb, msg, lang);
-        return 1;
+            return 1;
 
     }
 }
@@ -898,7 +896,8 @@ int eventMove(){ return 0; }
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     object *targs;
     int msg_class;
-    targs = filter(all_inventory(), (: (int)$1->is_living() :));
+    targs = filter(all_inventory(), 
+            (: $1->is_living() || $1->GeteventPrints() :));
 
     if( !arg2 && !arg3 ){
         msg_class = MSG_ENV;
@@ -930,7 +929,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
         targs -= arg3;
         msg_class = arg2;
     }
-    targs->eventPrint(msg, msg_class);
+    if(sizeof(targs)) targs->eventPrint(msg, msg_class);
     return 1;
 }
 
@@ -947,6 +946,13 @@ static void create(){
     }
 }
 
+int eventDestruct(){
+    if(GetPersistent()){
+        SaveObject();
+    }
+    return ::eventDestruct();
+}
+
 int CanReceive(object ob){
     if(!GetProperty("no teleport") || !living(ob)) return container::CanReceive(ob);
     else {
@@ -961,9 +967,10 @@ int CanReceive(object ob){
 }
 
 varargs void reset(int count){
-    if(sizeof(all_inventory())){
-        foreach(object element in deep_inventory()){
-            if(element->GetNoClean()) return;
+    mixed *inv = deep_inventory(this_object());
+    if(inv && sizeof(inv)){
+        if( sizeof(filter(inv, (: interactive($1) || $1->GetNoClean() :))) ){
+            return;
         }
     }
     inventory::reset(count);
@@ -1080,7 +1087,7 @@ int GenerateObviousExits(){
     string *exits;
     string dir_string, enters;
     exits = filter(GetExits(), (: !($1 == "up" && !(this_object()->GetVirtualSky()) &&
-          load_object(GetExit($1))->GetVirtualSky()) :) );
+                    load_object(GetExit($1))->GetVirtualSky()) :) );
     enters = "";
     normals = ({ "north", "south", "east", "west", "up", "down" });
     normals += ({ "northeast", "southeast", "northwest", "southwest" });
@@ -1091,7 +1098,7 @@ int GenerateObviousExits(){
         foreach(string enter in this_object()->GetEnters(1)){
             enters += "enter "+enter;
             if(member_array(enter,this_object()->GetEnters(1)) != 
-              sizeof(this_object()->GetEnters(1)) -1){
+                    sizeof(this_object()->GetEnters(1)) -1){
                 enters +=", ";
             }
         }
@@ -1125,6 +1132,10 @@ int eventReceiveObject(object ob){
     return container::eventReceiveObject(ob);
 }
 
+int eventReleaseObject(object ob){
+    return container::eventReleaseObject(ob);
+}
+
 string SetFlyRoom(string str){
     FlyRoom = str;
     return FlyRoom;
@@ -1143,8 +1154,126 @@ string GetSinkRoom(){
     return SinkRoom;
 }
 
+int SetFlowLimit(int i){
+    FlowLimit = i;
+    return FlowLimit;
+}
+
+int GetFlowLimit(){
+    return FlowLimit;
+}
+
+int SetRespirationType(int i){
+    RespirationType = i;
+    return RespirationType;
+}
+
+int GetRespirationType(){
+    return RespirationType;
+}
+
+varargs mixed DestructEmptyVirtual(object ob){
+    mixed *inv;
+    if(ob && environment(ob) && environment(ob) == this_object()) return 0;
+    if(!this_object()->GetVirtual()){
+        return 0;
+    }
+    if(this_object()->GetNoClean()){
+        return 0;
+    }
+    if(this_object()->GetExemptVirtual()){
+        return 0;
+    }
+    inv  = filter(all_inventory(this_object()),
+            (: !inherits(LIB_BASE_DUMMY, $1) :) );
+    if(!sizeof(inv)){
+        all_inventory(this_object())->eventDestruct();
+        return eventDestruct();
+    }
+}
+
+mixed eventPostRelease(object ob){
+    mixed *inv;
+    mixed ret = ::eventPostRelease(ob);
+    DestructEmptyVirtual(ob);
+    return ret;
+}
+
+void CompileNeighbors(mixed coords){
+#if GRID
+    int x, x2;
+    int y, y2;
+    int a, b, c;
+    if(!Neighbors) Neighbors = ({});
+    if(sizeof(Neighbors) || !(MASTER_D->GetPerfOK())) return;
+    if(!sizeof(Coords)){
+        mixed crds = ROOMS_D->GetCoordinates(this_object());
+        if(sizeof(crds)){
+            sscanf(crds,"%d,%d,%d",a,b,c);
+            Coords = ({ a, b, c });
+        }
+        if(!sizeof(Coords)) return;
+    }
+    x2 = Coords[0]+2;
+    y2 = Coords[1]+2;
+    NeighborCoords = ({ });
+    for(x = Coords[0]-1; x < x2; x++){
+        for(y = Coords[1]-1; y < y2; y++){
+            NeighborCoords += ({ ({ x, y, 0 }) });
+        }
+    }
+    NeighborCoords -= ({ Coords });
+    foreach(mixed foo in NeighborCoords){
+        mixed bar = ROOMS_D->GetGrid(foo[0]+","+foo[1]+","+foo[2]);
+        if(bar && bar["room"]){
+            Neighbors += ({ bar["room"] });
+        }
+    }
+#endif
+}
+
+mixed GetNeighbors(){
+    return copy(Neighbors);
+}
+
+mixed GetNeighborCoords(){
+    return copy(NeighborCoords);
+}
+
+mixed GetCoords(){
+    return copy(Coords);
+}
+
 static void init(){
+    object prev = previous_object();
+    if(undefinedp(RespirationType)){
+        switch(GetMedium()){
+            case MEDIUM_WATER : RespirationType = R_WATER; break;
+            case MEDIUM_SPACE : RespirationType = R_VACUUM; break;
+            case MEDIUM_AIR : RespirationType = R_AIR; break;
+            case MEDIUM_LAND : RespirationType = R_AIR; break;
+            case MEDIUM_SURFACE : RespirationType = (R_AIR | R_WATER); break;
+            case MEDIUM_METHANE : RespirationType = R_METHANE; break;
+            default : RespirationType = R_AIR; break;
+        }
+    }
     if(this_object()->GetProperty("indoors")) SetClimate("indoors");
-    if(!sizeof(GetObviousExits()) && DefaultExits > 0 && ObviousVisible) GenerateObviousExits();
-    if((Action && sizeof(Action)) || sizeof(ActionsMap)) set_heart_beat(tick_resolution);
+    if(!sizeof(GetObviousExits()) && DefaultExits > 0 && ObviousVisible){
+        GenerateObviousExits();
+    }
+    if((Action && (sizeof(Action) || functionp(Action)))
+            || sizeof(ActionsMap)){
+        set_heart_beat(tick_resolution);
+    }
+#if GRID
+    if(this_object() && prev && (living(prev) || prev->GetMapper())){
+        if(MASTER_D->GetPerfOK()){
+            Coords = ROOMS_D->SetRoom(this_object(), prev);
+            CompileNeighbors(Coords);
+        }
+    }
+#endif
+    if(this_object()->GetVirtual() && !query_heart_beat()){
+        set_heart_beat(1);
+    }
 }

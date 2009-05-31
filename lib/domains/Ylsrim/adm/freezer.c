@@ -1,12 +1,11 @@
 /*    /domains/Ylsrim/adm/freezer.c
- *    from the Dead Souls V Object Library
+ *    from the Dead Souls Mud Library
  *    room that stores net-dead people
  *    created by Descartes of Borg 960302
  */
 
 #include <lib.h>
-#include <config.h>
-#include <rooms.h>
+#include ROOMS_H
 
 inherit LIB_ROOM;
 

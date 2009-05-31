@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+
+#echo $#
+if [ $# -eq 4 ]
+then
+#echo `awk {'print $1 " " $2 " " $3 " " $4'}`
+#echo "whee"
+echo $1 $2 $3 $4 >> copyfiles3
+else
+#echo "Oh NOES!"
+if echo $1 | grep "\cp"
+then
+#echo "ok trying to rewrite"
+export FIX=`(echo $3 | perl -pi -e s/"new\/"/"next\/"/)`
+echo $1 $2 $3 $FIX
+echo $1 $2 $3 $FIX >> copyfiles3
+else
+export BAR=`(echo $3 | perl -pi -e s/"\/lib"/"next\/lib"/)`
+#echo "NEVER MIND, it's a delete: " $1 $2 $BAR $4
+echo $1 $2 $BAR $4 >> copyfiles3
+fi
+fi
+
+echo "ok then"

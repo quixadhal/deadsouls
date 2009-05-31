@@ -1,5 +1,5 @@
 /*    /lib/verb.c
- *    From the Dead Souls Object Library
+ *    From the Dead Souls Mud Library
  *    An inheritable for creating verbs
  *    Created by Descartes of Borg 960116
  *    Version: @(#) verb.c 1.2@(#)

@@ -1,0 +1,80 @@
+chapter 3 "Teleportation Devices"
+
+Let's talk a little about how to use some of the teleportation
+technology in the default Dead Souls distribution. Some of
+this stuff can save your hide, and some of it can kill you,
+so it's worth being aware of it.
+
+%^CYAN%^Visitor's Pass%^RESET%^
+This is an extremely rare item, and only intended for official test
+characters. If you don't show up in the "who" list with a [%^YELLOW%^TEST%^RESET%^]
+tag, and you have a visitor's pass, something has gone wrong. You
+use the pass to get out of trouble with the command: %^GREEN%^click heels%^RESET%^
+
+%^CYAN%^omni%^RESET%^
+The omni is a device created by a consortium of time travelers dedicated
+to fixing errors in history. While they'd never make the full chrono-omni
+available for public consuption, a "gimped" version can be purchased
+from Oana at the magic shop. This omni does not do time travel, and when
+you press the button on it, it will only take you to one location: Lars's
+Pub. However, it is an incredibly valuable tool of recall when you find
+yourself in a tight spot. For example, suppose you are an orc or a dwarf,
+and you cannot swim, but you walked off the village shore and are now
+drowning and sinking to the sea floor. If you have an omni in your
+rucksack, you can:
+
+%^GREEN%^get omi from ruck%^RESET%^
+%^GREEN%^push button on omni%^RESET%^
+
+And materialize, gasping but alive, in the old tavern. It's a must-have
+for any adventurer. I suggest aliasing those commands, so you can
+hit the buttons quickly in panic-mode. See: %^GREEN%^help alias%^RESET%^
+
+%^RED%^PROTIP:%^RESET%^ The omni is programmed not to be in the possession of a
+living being for very long. If you keep it in your inventory too long, it
+will glow red and disappear. You can limit this by keeping it in your ruck.
+
+
+%^CYAN%^Kleiner's omni%^RESET%^
+Kleiner, brilliant scientist he is, has been tinkering with his omni
+and disabled the auto-vanish feature for himself on it. He also has been
+able to reprogram his omni to take him to different places. However,
+you really don't want this omni. Only Kleiner can control where it takes
+him. For anyone else, it takes them to a completely random location
+on the mud, and believe me when I tell you this is not really as
+fun as it sounds.
+
+
+%^CYAN%^Stargates%^RESET%^
+Ancient technology of a long-lost civilization, stargates permit travel
+to and from each other. You dial a specific stargate you want to go to,
+then enter the stargate. Note that if the destination stargate is already
+in use the dialing process may fail. Stargates stay open for only a brief
+time, though, so unless your mud is super busy, you can probably just
+retry the dialing and find success.
+
+Note that stargates can take you to places whose environment is unsuitable
+to you. If you dial a stargate that is on the sea floor or one that is in
+outer space, you'd best be wearing a breathing device or be carrying
+an omni with you. Of course, if on your mud someone has coded a stargate
+whose destination is next to a sun going nova, or in a nest of gundarks,
+the breathing device may provide insufficient protection
+
+
+%^CYAN%^Portal gun%^RESET%^
+If it has both blue and orange vials installed, this device allows you to
+create portals (one blue, one orange) that connect to each other. Entering
+the blue portal will take you to the location of the orange portal, and
+vice versa. Only one blue portal may exist in the game at any time...the
+creation of a new one destroys the old one. This is also true of the 
+orange portal. Portal locations persist through reboots. By default, the
+blue vial is found along with the portal gun, in the hazlab. The orange
+vial is rather trickier to obtain...it is kept in the private storage area
+of an incredibly powerful and aggressive cave troll.
+
+You can create a blue portal wherever you want if you have the blue vial
+installed, but without the orange vial you cannot change the location of
+the orange portal.
+
+%^RED%^Protip:%^RESET%^ Do not ever enter a portal if the other portal is
+in the same room. 

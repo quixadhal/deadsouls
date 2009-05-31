@@ -42,5 +42,5 @@ varargs int cmd(string str){
 void help()
 {
     write("Syntax: annoyblock [ on | off ]\n"+
-      "Blocks annoying messages like \"Joe looks around.\""); 
+            "Blocks annoying messages like \"Joe looks around.\""); 
 }

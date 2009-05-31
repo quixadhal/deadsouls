@@ -26,7 +26,7 @@ void create() {
 
 static private void save_board() {
     if(!__CurrentID) return;
-    if(!unguarded((: file_exists,DIR_BOARDS+"/"+__CurrentID+__SAVE_EXTENSION__ :))){
+    if(!unguarded((: file_exists,save_file(DIR_BOARDS+"/"+__CurrentID) :))){
         int i;
 
         if(!sizeof(__Posts)) return;
@@ -35,16 +35,16 @@ static private void save_board() {
             if((__CurrentID[i] < 'a' || __CurrentID[i] > 'z') && __CurrentID[i] != '_')
                 error("Illegal bulletin board id.");
     }
-    unguarded((: save_object, DIR_BOARDS+"/"+__CurrentID :));
+    SaveObject(save_file(DIR_BOARDS+"/"+__CurrentID));
 }
 
 static private void restore_board() {
     if(!__CurrentID) return;
-    if(!unguarded((: file_exists, DIR_BOARDS+"/"+__CurrentID+__SAVE_EXTENSION__ :))) {
+    if(!unguarded((: file_exists, save_file(DIR_BOARDS+"/"+__CurrentID) :))){
         __Owner = query_privs(previous_object(0));
         __Posts = ({});
     }
-    else unguarded((: restore_object, DIR_BOARDS+"/"+__CurrentID :));
+    else RestoreObject(save_file(DIR_BOARDS+"/"+__CurrentID));
 }
 
 static private int valid_access() {
@@ -67,7 +67,7 @@ void add_post(string id, string who, string subj, string msg) {
     if(!subj || subj == "") subj = "[No Subject]";
     if(!msg || msg == "") return;
     __Posts += ({ ([ "author" : who, "subject" : subj, "time" : time(),
-        "post" : msg, "read" : ({ convert_name(who) }) ]) });
+                "post" : msg, "read" : ({ convert_name(who) }) ]) });
     save_board();
 }
 
@@ -138,13 +138,13 @@ string list_new_posts(string id){
 
     for(i = 0; i < sizeof(__Posts); i++){
         if(member_array(convert_name(this_player()->GetKeyName()),
-            __Posts[i]["read"]) == -1) count++;
+                    __Posts[i]["read"]) == -1) count++;
     }
 
     id = replace_string(id, "_", " ");
     mag = "";
     mag += capitalize(id) + " has "+(count ? count : "no") + " new message"+
-    (count == 1 ? "" : "s")+ " posted.";
+        (count == 1 ? "" : "s")+ " posted.";
     return mag;
 }
 

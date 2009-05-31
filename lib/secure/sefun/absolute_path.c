@@ -22,23 +22,23 @@ string absolute_path(string curr, string newp) {
     len = strlen( newp );
     switch( newp[0..0] )
     {
-    case "~":
-        if( newp == "~" || newp == "~/" )
-            newp = user_path( (string)this_player()-> GetKeyName() )[0..<2];
-        else if( newp[1..1] == "/" )
-            newp = user_path( (string)this_player()-> GetKeyName() ) +
-            newp[2..len];
-        else if( sscanf( newp, "~%s/%s", name, rest ) == 2 )
-            newp = user_path( name ) + rest;
-        else
-            newp = user_path( newp[1..len] )[0..<2];
+        case "~":
+            if( newp == "~" || newp == "~/" )
+                newp = user_path( (string)this_player()-> GetKeyName() )[0..<2];
+            else if( newp[1..1] == "/" )
+                newp = user_path( (string)this_player()-> GetKeyName() ) +
+                    newp[2..len];
+            else if( sscanf( newp, "~%s/%s", name, rest ) == 2 )
+                newp = user_path( name ) + rest;
+            else
+                newp = user_path( newp[1..len] )[0..<2];
         break;
-    case "^":
-        newp = "/domains/" + newp[1..len];
+        case "^":
+            newp = "/domains/" + newp[1..len];
         break;
-    case "/":
-        break;
-    default:
+        case "/":
+            break;
+        default:
         if( curr != "/" ) newp = curr + "/" + newp;
         else newp = curr + newp;
     }

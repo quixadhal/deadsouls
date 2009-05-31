@@ -22,7 +22,7 @@ void create()
       ]));
 
     SetItems( ([ 
-        "more" : @EndBlah
+        "more" : @EndText
 -------------------------------------------------------------------
 Take a look at the CanReceive function.
 Do you see the line ::CanReceive(ob)?
@@ -40,7 +40,7 @@ that's in exroom2.c
 Then we check to see if ob is a player or creator. (type: man userp)
 If so, we give that object a message.
 -------------------------------------------------------------------
-EndBlah,
+EndText,
       ]));
 
     /*   See the way I did the SetItems again for 'more'.  This is one
@@ -53,7 +53,7 @@ EndBlah,
          lines like we have here, then you'll want to begin your comment
          like you see here and end it like below.  This is how I will
          be doing large comments in future examples.
-    */
+     */
 
 
 }

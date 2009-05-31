@@ -29,7 +29,7 @@ int cmd(string str) {
             return notify_fail("Read access grant failed!\n");
         if( file_size(file) == -2 ) {
             if( !((int)call_other(path + "adm/access", "grant_access", "read",
-                  file[0..<2], who)) )
+                            file[0..<2], who)) )
                 return notify_fail("Read access grant failed.\n");
         }
     }
@@ -38,21 +38,21 @@ int cmd(string str) {
             return notify_fail("Write access grant failed!\n");
         if( file_size(file) == -2 ) {
             if( !((int)call_other(path + "adm/access", "grant_access", "write",
-                  file[0..<2], who)) )
+                            file[0..<2], who)) )
                 return notify_fail("Write access grant failed.\n");
         }
     }
     message("system",capitalize(type)+" access granted to "+who+" on "+file+".",
-      this_player());
+            this_player());
     return 1;
 }
 
 void help() {
     message("help", "Syntax: <grant [access] to [whom] on [file|directory]>\n\n"
-      "Allows you to give creators access to files or directories "
-      "under your control.  The access parameter is \"read\", "
-      "\"write\", or \"all\".\n" 
-      "There is no \"ungrant\" or \"deny\" command. "
-      "",
-      this_player());
+            "Allows you to give creators access to files or directories "
+            "under your control.  The access parameter is \"read\", "
+            "\"write\", or \"all\".\n" 
+            "There is no \"ungrant\" or \"deny\" command. "
+            "",
+            this_player());
 }

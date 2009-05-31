@@ -10,17 +10,17 @@ static void create(){
     SetAdjectives(({"worn","abused","pair of","set of"}));
     SetShort("a pair of overalls");
     SetLong("This is a set of worn and abused overall trousers with large pockets "
-      "for carrying stuff.");
-    SetMass(200);
+            "for carrying stuff.");
+    SetMass(50);
     SetMaxCarry(300);
     SetBaseCost("silver",1);
-    SetDamagePoints(100);
     SetProtection(BLUNT,1);
     SetProtection(BLADE,1);
     SetProtection(KNIFE,1);
     SetArmorType(A_CUSTOM);
     SetRestrictLimbs( ({ "right leg","left leg","torso" }) );
 }
+
 void init(){
     ::init();
 }

@@ -16,6 +16,6 @@ mixed cmd(string str) {
 
 void help() {
     message("help", "Syntax: <arch>\n\n"
-      "This command will move you to the Arch room.\n\n",
-      this_player());
+            "This command will move you to the Arch room.\n\n",
+            this_player());
 }                                                    

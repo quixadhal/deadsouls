@@ -1,5 +1,5 @@
 #include <lib.h>
-#include <rooms.h>
+#include ROOMS_H
 #include <meal_types.h>
 
 inherit LIB_MEAL;
@@ -19,7 +19,7 @@ static void create() {
     SetMealType(MEAL_FOOD);
     SetMealAction((: MealCure :));
     SetMealMessages("You swallow the pill.",
-      "$N swallows a pill.");
+            "$N swallows a pill.");
 }
 void init(){
     ::init();

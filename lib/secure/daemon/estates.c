@@ -1,5 +1,5 @@
-/*    /daemon/estates.c
- *    from Nightmare IV
+/*    /secure/daemon/estates.c
+ *    from Dead Souls
  *    a daemon for handling Estate events
  *    created by Descartes of Borg 940702
  */
@@ -13,12 +13,14 @@
 inherit DAEMON;
 
 private mapping __Estates;
+static string SaveFile;
 
 void create() {
     daemon::create();
+    SaveFile = save_file(SAVE_ESTATES);
     __Estates = ([]);
     set_no_clean(1);
-    if(file_exists(SAVE_ESTATES+__SAVE_EXTENSION__)) restore_object(SAVE_ESTATES);
+    if(file_exists(SaveFile)) RestoreObject(SaveFile);
     preload_estates();
 }
 
@@ -57,5 +59,5 @@ void add_estate(string who, string sortie, string where, string long) {
     where->set_no_clean(1);
     ob->move(where);
     ob->reinitiate();
-    save_object(SAVE_ESTATES);
+    SaveObject(SaveFile);
 }

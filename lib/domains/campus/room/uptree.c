@@ -10,10 +10,10 @@ static void create() {
     SetClimate("outdoors");
     SetShort("up a tree");
     SetLong("You are standing on some sturdy branches of the large "+ 
-      "tree in University Square. ");
+            "tree in University Square. ");
     SetExits( ([ 
-        "down" : "/domains/campus/room/usquare"
-      ]) );
+                "down" : "/domains/campus/room/usquare"
+                ]) );
     SetProperty("no attack", 1);
     SetClimb( (: ClimbDown :) ,2);
 }

@@ -19,12 +19,12 @@ static void create() {
     SetMealType(MEAL_DRINK);
     SetStrength(40);
     SetMealMessages("You quaff the bottle of gatorade, and feel new "+
-      "and refreshed. Aaah!","$N gulps down $P gatorage and sighs in "+
-      "contentment.");
+            "and refreshed. Aaah!","$N gulps down $P gatorage and sighs in "+
+            "contentment.");
     SetEmptyName("bottle");
     SetEmptyShort("an empty bottle of gatorade");
     SetEmptyLong("This is an empty bottle that once held that tasty "+
-      "beverage and sports drink, Gatorade.");
+            "beverage and sports drink, Gatorade.");
 }
 void init(){
     ::init();

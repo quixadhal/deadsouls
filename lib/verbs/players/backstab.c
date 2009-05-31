@@ -17,8 +17,8 @@ static void create() {
     SetRules("LIV");
     SetErrorMessage("Who do you want to backstab?");
     SetHelp("Syntax: backstab LIVING\n\n"
-      "This sneaky attack allows more devious players to "
-      "backstab a specified target.");
+            "This sneaky attack allows more devious players to "
+            "backstab a specified target.");
 }
 
 mixed can_backstab_liv() {
@@ -75,12 +75,12 @@ int eventBackstab(object backstabber, object target) {
 
     if(suprise < random(100) || !present(target, environment(backstabber))) {
         backstabber->eventPrint("%^RED%^" + target->GetName()
-          + " evades your poorly executed backstab.%^RESET%^");
+                + " evades your poorly executed backstab.%^RESET%^");
         target->eventPrint("%^RED%^You easily dodge " + possessive_noun(backstabber)
-          + " attempted backstab.%^RESET%^");
+                + " attempted backstab.%^RESET%^");
         environment(backstabber)->eventPrint("%^RED%^" + target->GetName()
-          + " dodges " + possessive_noun(backstabber) + " attempted backstab.%^RESET%^",
-          ({backstabber, target}));
+                + " dodges " + possessive_noun(backstabber) + " attempted backstab.%^RESET%^",
+                ({backstabber, target}));
         return 1;
     }  
 
@@ -89,12 +89,12 @@ int eventBackstab(object backstabber, object target) {
 
     if(!numberOfWeapons) {
         backstabber->eventPrint("%^RED%^You beat your fists ineffectively on "
-          + possessive_noun(target) + " back.%^RESET%^");
+                + possessive_noun(target) + " back.%^RESET%^");
         target->eventPrint("%^RED%^Somebody beats ineffectively upon your back.%^RESET%^");
         environment(backstabber)->eventPrint("%^RED%^" + backstabber->GetName()
-          + " backstabs " + target->GetName() + " expertly... unfortunately "
-          + nominative(backstabber) + " forgot " + possessive(backstabber) + " knives.%^RESET%^",
-          ({backstabber, target}));
+                + " backstabs " + target->GetName() + " expertly... unfortunately "
+                + nominative(backstabber) + " forgot " + possessive(backstabber) + " knives.%^RESET%^",
+                ({backstabber, target}));
         return 1;
     }
 
@@ -103,7 +103,7 @@ int eventBackstab(object backstabber, object target) {
         numberOfStabs += eventStab(backstabber, target, weapons[i]);
     if(!numberOfStabs) {
         target->eventPrint("%^RED%^You dodge " + possessive_noun(backstabber)
-          + " attempted backstab.%^RESET%^");
+                + " attempted backstab.%^RESET%^");
         return 1;
     }
 
@@ -138,7 +138,7 @@ int eventStab(object backstabber, object target, object weapon) {
     if(x < 1.0) x = 0.0;
 
     damage = (int)target->eventReceiveDamage(backstabber,
-      weapon->GetDamageType(), to_int(x), 0, target->GetTorso());
+            weapon->GetDamageType(), to_int(x), 0, target->GetTorso());
     if(damage > 0) {
         weapon->eventReceiveDamage(BLUNT, damage, 0, target->GetTorso());
         percentDamage = damage * 100 / target->GetMaxHealthPoints();
@@ -157,11 +157,11 @@ int eventPrintDamage(object backstabber, object target, object weapon, int perce
 
     if(!percentDamage) {
         backstabber->eventPrint("%^RED%^You fumble awkwardly with your "
-          + strip_article(weapon->GetShort()) + ".%^RESET%^");
+                + strip_article(weapon->GetShort()) + ".%^RESET%^");
         environment(backstabber)->eventPrint("%^RED%^" + backstabber->GetName()
-          + " fumbles awkwardly with " + possessive(backstabber) + " "
-          + strip_article(weapon->GetShort()) + ".%^RESET%^",
-          ({backstabber, target}));
+                + " fumbles awkwardly with " + possessive(backstabber) + " "
+                + strip_article(weapon->GetShort()) + ".%^RESET%^",
+                ({backstabber, target}));
         return 1;
     }
 
@@ -182,14 +182,14 @@ int eventPrintDamage(object backstabber, object target, object weapon, int perce
     }
 
     backstabber->eventPrint("%^RED%^You " + myVerb + "your "
-      + strip_article(weapon->GetShort()) + " " + adverb + "into "
-      + possessive_noun(target) + " back.%^RESET%^");
+            + strip_article(weapon->GetShort()) + " " + adverb + "into "
+            + possessive_noun(target) + " back.%^RESET%^");
     target->eventPrint("%^RED%^Your back sears with pain as a " + weapon->GetWeaponType()
-      + " " + verb + adverb + "into you.%^RESET%^");
+            + " " + verb + adverb + "into you.%^RESET%^");
     environment(backstabber)->eventPrint("%^RED%^" + backstabber->GetName() + " "
-      + verb + possessive(backstabber) + " " + strip_article(weapon->GetShort())
-      + " " + adverb + "into " + possessive_noun(target) + " back.%^RESET%^",
-      ({backstabber, target}));
+            + verb + possessive(backstabber) + " " + strip_article(weapon->GetShort())
+            + " " + adverb + "into " + possessive_noun(target) + " back.%^RESET%^",
+            ({backstabber, target}));
 
     return 1;
 }

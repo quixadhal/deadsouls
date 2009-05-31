@@ -30,9 +30,9 @@ static int SetLit(int x){
 string GetShort(){
     /*  string str;
 
-    if(!(str = item::GetShort()) || str == "") return str;
-    return sprintf("%s%s", str, (GetLit() ? " (lit)" : ""));
-    */
+        if(!(str = item::GetShort()) || str == "") return str;
+        return sprintf("%s%s", str, (GetLit() ? " (lit)" : ""));
+     */
     if( GetLit() && query_verb() != "light" && query_verb() != "strike") return " (%^BOLD%^YELLOW%^lit%^RESET%^)";
     else return "";
 }
@@ -55,7 +55,7 @@ mixed eventDarken(){
         env->eventPrint("The " + GetKeyName() + " goes dark.");
         if( living(env) ){
             environment(env)->eventPrint(possessive_noun(env) + " " +
-              GetKeyName() + " goes dark.", env);
+                    GetKeyName() + " goes dark.", env);
         }
     }
     SetLit(0);

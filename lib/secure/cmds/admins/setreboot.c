@@ -20,8 +20,8 @@ int cmd(string str) {
 
 void help() {
     message("help", "Syntax: <setreboot [interval]>\n\n"
-      "Sets up the interval at which the mud will automatically reboot.  "
-      "The interval should be specified in hours.",
-      this_player()
-    );
+            "Sets up the interval at which the mud will automatically reboot.  "
+            "The interval should be specified in hours.",
+            this_player()
+           );
 }
