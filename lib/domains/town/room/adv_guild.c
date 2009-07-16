@@ -40,15 +40,15 @@ static void create() {
                 ]) );
 
     SetProperty("no attack", 1);
-    ob = new("/lib/bboard");
+    ob = new(LIB_BOARD);
     ob->SetKeyName("chalkboard");
     ob->SetId( ({ "board", "chalkboard", "dusty board", "dusty chalkboard" }) );    ob->set_board_id("adv_guild_board");
     ob->set_max_posts(30);
     ob->SetShort("a dusty chalkboard");
-    SetLong("This small building is where adventurers can record their adventures and leave messages and announcements for other brave souls. This is also the place one can seek advancement, so if you deserve to be a higher level adventurer, asking the guild master for it will make it so. A scroll lists quests one may perform, and a sign contains some instructions. The Creator's Hall is south of here. A special skills training area is west. A conference room is east, where folks can discuss things in privacy.");
     ob->eventMove(this_object());
     SetNoClean(1);
 }
+
 mixed ReadSign(){
     int i;
     string ret = read_file("/domains/town/txt/advancement.txt");
@@ -65,6 +65,7 @@ mixed ReadSign(){
 mixed ReadScroll(){
     return (mixed)this_player()->eventPage("/domains/town/txt/quests.txt");
 }
+
 void init(){
     ::init();
 }

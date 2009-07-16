@@ -1,3 +1,23 @@
+---- 2.11a7 (unreleased) ---
+- Driver is now a slightly modified pre-release Fluffos 2.17.
+- Fixed remote channel problem in CHAT_D.
+- /secure/include/mssp.h is now somewhat more individualized.
+- Added commands: screenlock, weigh
+- driver: Added partial support for telopts NEW-ENVIRON (rfc 1572).
+  A connection that supports this will cause the driver to call
+  an the receive_environ() apply in LIB_CONNECT, sending the env data
+  as a single string.
+- Added support for using anyterm (http://anyterm.org) as
+  a client while still identifying player IP's.
+- Fixed a problem listing individual items from vendors.
+- Replaced broken xterm definition map in TERMINAL_D with ansi def.
+- Updated IMC2 client, also added current Server01 IP.
+- Instances now update each other more regularly about player info.
+- More than one local instance now better supported.
+- Added a PLAYER_CLASS entry to class files in /secure/cfg/classes
+  so that there can be classes players don't get automatic access to.
+- Fixed parsing conflict in LIB_FLASHLIGHT and LIB_BATTERY.
+
 ---- 2.10 ---
 - Released 2009-06-01
 - Minor fixes to 2.9a19

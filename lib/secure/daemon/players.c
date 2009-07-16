@@ -675,10 +675,17 @@ int SelektUsers(int gather){
     foreach(string user in sort_array(keys(cands),1)){
         int purge = 0;
         if(!cands[user]) continue;
+
+        //Admins, elders, and testchars are exempt
+        if(member_group(user, "SECURE")) continue;
+        if(member_group(user, "ASSIST")) continue;
+        if(member_group(user, "ELDER")) continue;
+        if(member_group(user, "TEST")) continue;
+
         count++;
         if(!(count % 5)) interval++;
 
-        //bot
+        //bot always get purged, and snoop logs tagged
         if(cands[user]["RealName"] == "John Smith" && 
           cands[user]["Email"] == "me@here"){
             reset_eval_cost();

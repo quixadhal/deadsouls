@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <daemons.h>
 
 int collect_moduli(int mod, int *range){
     int ret, neg, big, little, i;
@@ -57,6 +58,10 @@ varargs int ChangeLevel(int i){
     }
 
     subject->SetLevel(desired_level);
+
+    if(interactive() && find_object(INSTANCES_D)){
+        INSTANCES_D->SendWhoUpdate(this_object()->GetKeyName());
+    }
 
     return 1;
 }

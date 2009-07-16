@@ -93,19 +93,21 @@ varargs mixed eventShowInterior(object who, object target){
     if( !str || str == "" ){
         return 0;
     }
-    if(!inherits("/lib/comp/surface",this_object())) environment(who)->eventPrint(who->GetName() + " looks inside " +
+    if(!inherits(LIB_SURFACE, this_object())){
+        environment(who)->eventPrint(who->GetName() + " looks inside " +
             GetShort() + ".", who);
+    }
     who->eventPrint(str);
 
 }
 
 mixed direct_look_in_obj(){
-    if(inherits("/lib/comp/surface",this_object())) return 0;
+    if(inherits(LIB_SURFACE, this_object())) return 0;
     return CanShowInterior(this_player());
 }
 
 mixed direct_look_inside_obj(){
-    if(inherits("/lib/comp/surface",this_object())) return 0;
+    if(inherits(LIB_SURFACE, this_object())) return 0;
     return CanShowInterior(this_player());
 }
 

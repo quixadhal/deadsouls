@@ -42,21 +42,20 @@ varargs string GetFinger(string who, int html) {
         int i;
         int array screen;
 
-        screen = (int array)this_player()->GetScreen();
+        screen = this_player()->GetScreen();
         if( screen && sizeof(screen) ) i = screen[0]; else i = 80;
         ret = center(mud_name(), i) + "\n\n";
-        people = filter(users(), (: !((int)$1->GetInvis()) :));
+        people = filter(users(), (: !($1->GetInvis()) :));
         foreach(person in people) {
             string str, clas, town;
-
-            str = (string)person->GetShort();
-            if( !str ) str = (string)person->GetName();
+            str = person->GetShort();
+            if( !str ) str = person->GetName();
             if( !str ) continue;
             if( creatorp(person) ) clas = "creator";
-            else clas = (string)person->GetClass();
+            else clas = person->GetClass();
             if( clas ) clas = capitalize(clas);
             else clas = "Drifter";
-            town = (string)person->GetTown();
+            town = person->GetTown();
             if( !town ) town = "Homeless";
             str = sprintf("%:-40s %:-11s %s", str, clas, town);
             lines += ({ str });
@@ -64,37 +63,13 @@ varargs string GetFinger(string who, int html) {
         ret += implode(lines, "\n");
         return ret;
     }
-    if( who != CurrentUser ) {
-        creator = 0;
-        if( !user_exists(who) ){
-            string *cdir = get_dir(DIR_CRES "/"+who[0..0]+"/");
-            string *pdir = get_dir(DIR_PLAYERS "/"+who[0..0]+"/");
-            if(sizeof(cdir)){
-                foreach(string sub in cdir){
-                    if(!strsrch(sub, who+".")){
-                        tmpfile = DIR_CRES "/"+who[0..0]+"/"+sub;
-                    }
-                }
-            }
-            if(!tmpfile && sizeof(pdir)){
-                foreach(string sub in pdir){
-                    if(!strsrch(sub, who+".")){
-                        tmpfile = DIR_PLAYERS "/"+who[0..0]+"/"+sub;
-                    }
-                }
-            }
-        }        
-        if( !user_exists(who) && !tmpfile )
-            return capitalize(who) + " has never visited " + mud_name() + ".";
-        if(tmpfile){
-            unguarded( (: restore_object(tmpfile) :) );
-        }
-        else if( !RestoreObject(DIR_PLAYERS "/" + who[0..0] + "/" + who) &&
-                !(creator = RestoreObject(DIR_CRES "/" +
-                            who[0..0] + "/" + who) )) return 0;
-        CurrentUser = who;
+    creator = 0;
+    if( !user_exists(who) || (!RestoreObject(DIR_PLAYERS "/" +
+      who[0..0] + "/" + who) && !(creator = RestoreObject(DIR_CRES "/" +
+      who[0..0] + "/" + who))) ){
+        return capitalize(who) + " is unknown to " + mud_name() + ".";
     }
-    else if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;
+    if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;
     ret = "%^STRONG%^" + replace_string(GetTitle(), "$N", CapName) +
         "%^/STRONG%^BR%^\n";
     if( Long ) {
@@ -160,7 +135,7 @@ varargs string GetFinger(string who, int html) {
         ret += " from " + HostSite + "%^BR%^\n";
     }
     else ret += "%^BR%^\n";
-    mail_stat = (mapping)FOLDERS_D->mail_status(who);
+    mail_stat = FOLDERS_D->mail_status(who);
     if( mail_stat["unread"] )
         ret += CapName + " has " + consolidate(mail_stat["unread"],
                 "an unread letter") + ".%^BR%^\n";
@@ -181,14 +156,11 @@ mixed array GetRemoteFinger(string who) {
     object ob;
 
     who = convert_name(who);
-    if( who != CurrentUser ) {
-        creator = 0;
-        if( !user_exists(who) ) return 0;
-        else if( !RestoreObject(DIR_PLAYERS "/" + who[0..0] + "/" + who) &&
-                !(creator = RestoreObject(DIR_CRES "/" +
-                            who[0..0] + "/" + who)) ) return 0;
-        CurrentUser = who;
-    }
+    creator = 0;
+    if( !user_exists(who) ) return 0;
+    else if( !RestoreObject(DIR_PLAYERS "/" + who[0..0] + "/" + who) &&
+            !(creator = RestoreObject(DIR_CRES "/" +
+                        who[0..0] + "/" + who)) ) return 0;
     else if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;
     ob = find_player(who);
     if( unguarded( (: file_size, user_path(who) + ".plan" :) ) > 0 ) {

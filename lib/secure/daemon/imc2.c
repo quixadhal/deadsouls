@@ -11,10 +11,6 @@
 #include <daemons.h>
 #include <message_class.h>
 
-#ifndef SAVE_IMC2
-#define SAVE_IMC2 "/secure/save/imc2"
-#endif
-
 //This is the LPMuds.net experimental IMC2 server. If you are
 //already connected to LPMuds.net intermud using Intermud-3, do
 //not use the LPMuds.net IMC2 server.
@@ -25,7 +21,7 @@
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
 //#define HOSTNAME "server01.mudbytes.net"
 #define HOSTPORT 5000
-#define HOSTIP "209.190.9.170"
+#define HOSTIP "64.186.131.155"
 
 // Connection data for Kayle's server
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
@@ -53,7 +49,7 @@
 #define IMC2_LOGGING
 
 #ifndef LOG_IMC2
-#define DATA_LOG "/secure/log/imc2"
+#define DATA_LOG "/secure/log/intermud/imc2"
 #else 
 #define DATA_LOG LOG_IMC2
 #endif
@@ -292,6 +288,9 @@ void read_callback(int socket, mixed info){
             send_ice_refresh();
         } else{ // Failed login sends plaintext error message.
             tn("IMC2 Failed to connect... "+info);
+            mode = MODE_CONNECT_ERROR;
+            set_heart_beat(22000); //Try again much later
+            return;
         }
         buf=""; // clear buffer
         break;
@@ -317,7 +316,10 @@ private void got_packet(string info){
     int sequence;
     mapping data;
     object who;
-    if(!sizeof(info)) return;
+    if(!sizeof(info)){
+        tn("No info?");
+        return;
+    }
 #ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"GOT PACKET: "+info+"\n");
 #endif
@@ -364,7 +366,7 @@ private void got_packet(string info){
             mudinfo[data["host"]]["online"]=0;
             break;
         case "keepalive-request": // Request for is-alive.
-            send_is_alive("*");
+            send_is_alive(origin);
             break;
         case "ice-msg-b": // Broadcast channel message.
             channel_in(sender, origin, data);
@@ -407,7 +409,7 @@ private void got_packet(string info){
             break;
         case "user-cache-request": // Request for user info
             sscanf(data["user"],"%s@%*s",str);
-            who = FIND_PLAYER(lower_case(str));
+            if(str) who = FIND_PLAYER(lower_case(str));
             if(who
 #ifdef INVIS
               && !INVIS(who)
@@ -477,6 +479,7 @@ private int close_callback(object socket){
     write_to_log(DATA_LOG,"DISCONNECTED\n");
 #endif
     socket_close(socket_num);
+    mode = MODE_WAITING_ACCEPT;
     create();
     return 1;
 }
@@ -499,7 +502,9 @@ void create(){
 #else
     SaveFile = save_file(SAVE_IMC2);
     SetSaveFile(SaveFile);
-    set_heart_beat(10);
+    if(mode != MODE_CONNECT_ERROR){
+        set_heart_beat(10);
+    }
     counter = time();
     tn("IMC2: created "+ctime(time()));
     if(unguarded( (: file_exists(SaveFile) :) )) 
@@ -585,7 +590,6 @@ void heart_beat(){
             tn("IMC2 heartbeat: Last message "+time_elapsed(lastmsg)+" ago.");
             tn("sending keepalive");
             send_keepalive_request();
-            send_is_alive("*");
         }
         if( lastmsg > 400 
           ||!sstat || sstat[1] != "DATA_XFER"){
@@ -824,8 +828,9 @@ void start_logon(){
         object who;
         int sz;
         string blmsg, ret, eret;
-        who=FIND_PLAYER(lower_case(target));
-        target=GET_CAP_NAME(who);
+        if(target) who = FIND_PLAYER(lower_case(target));
+        if(who) target = GET_CAP_NAME(who);
+        else return;
         data["text"]=imc2_to_pinkfish(data["text"]);
         who->SetProperty("reply",sender+"@"+origin);
         who->SetProperty("reply_time", time());
@@ -1057,7 +1062,7 @@ void start_logon(){
     private void who_reply_in(string origin, string target, mapping data){
         string output;
         object targuser;
-        targuser = FIND_PLAYER(lower_case(target));
+        if(target) targuser = FIND_PLAYER(lower_case(target));
         if(targuser){
             output = NETWORK_ID+" who reply from: %^CYAN%^"+origin+"%^RESET%^\n";
             output += imc2_to_pinkfish(data["text"])+"\n";
@@ -1066,7 +1071,7 @@ void start_logon(){
     }
 
     private void whois_in(string fromname, string frommud, string targ, mapping data){
-        if(FIND_PLAYER(lower_case(targ))
+        if(targ && FIND_PLAYER(lower_case(targ))
 #ifdef INVIS
           && !INVIS(FIND_PLAYER(lower_case(targ)))
 #endif
@@ -1084,7 +1089,7 @@ void start_logon(){
 
     private void whois_reply_in(string targ,string fromname,string frommud,mapping data){
         object who;
-        who=FIND_PLAYER(lower_case(targ));
+        if(targ) who = FIND_PLAYER(lower_case(targ));
         if(who){
             IMC2_MSG(sprintf("%s whois reply: %s@%s: %s\n",
                 NETWORK_ID,fromname,frommud,data["text"]),who);
@@ -1093,7 +1098,7 @@ void start_logon(){
 
     private void beep_in(string sender, string origin, string target, mapping data){
         object who;
-        who=FIND_PLAYER(lower_case(target));
+        if(target) who = FIND_PLAYER(lower_case(target));
         if(who && can_use(who)
 #ifdef INVIS
           && VISIBLE(who)
@@ -1121,7 +1126,7 @@ void start_logon(){
             target=ping_requests[sender];
             map_delete(ping_requests,sender);
         }
-        who=FIND_PLAYER(lower_case(target));
+        if(target) who = FIND_PLAYER(lower_case(target));
         if(who){
             IMC2_MSG(sprintf("%s route to %%^CYAN%%^%s%%^RESET%%^ is: %s\n",
                 NETWORK_ID,origin,data["path"]), who);
@@ -1140,7 +1145,7 @@ void start_logon(){
     void chanwho_reply_in(string origin, string target, mapping data){
         string output;
         object targuser;
-        targuser = FIND_PLAYER(lower_case(target));
+        if(target) targuser = FIND_PLAYER(lower_case(target));
         if(targuser){
             output = NETWORK_ID+" chanwho reply from "+origin+" for "+data["channel"]+"\n";
             output += imc2_to_pinkfish(data["list"]);
@@ -1502,33 +1507,13 @@ EndText,
         return sprintf(@EndText
             IMC2 system by Tim, set up for %s.
             To use this, type the command '%s' followed by one of the following:
-            chans - lists the channels that this MUD uses
-            allchans - lists all the channels on this network
-            chan (channel) (message) - talks on a channel
-            chanemote (channel) (message) - emotes on a channel
-            chansocial (channel) (message) - does a social on a channel
-            chanwho (channel) (mud) - checks who is listening to a channel
-            backlog (channel) - reads last %d messages on the channel
-            listen (channel) - listen to a channel
-            unlisten (channel) - stop listening to a channel
             info (name) - lists information about a MUD
             list - lists the MUDs on this network
-            beep (name)@(mud) - send a beep through the network
-            tell (name)@(mud) (message) - send a tell through the network
-            tellemote (name)@(mud) (message) - send an emote through the network
-            tells - shows your last %d tells
             finger (name)@(mud) - send a finger request for information about name@mud
-            reply (message) - reply to the last incoming tell you received
-            replyemote (message) - reply with an emote to the last incoming tell you received
             ping (mud) - pings a mud
             setup - shows information about this IMC2 network
             help - see this help message
-            Admin commands:
-            configchan (local_name) (remote_name) (level_number) - configures a channel locally
-            unconfigchan (local_name) - removes a locally configured channel
-            chancmd (channel) (command) - for remote channel administration
-            chanperms - lists the permission levels that are possible for configchan
-EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
+EndText, NETWORK_ID,COMMAND_NAME);
     }
 
     string html(string str){
@@ -1597,24 +1582,21 @@ EndText, NETWORK_ID,COMMAND_NAME,BACKLOG_SIZE,BACKLOG_SIZE);
 
     void forget_user(string str){ map_delete(tells,str); }
 
-    void eventChangeIMC2Passwords(){
-        string cpass = alpha_crypt(10);
-        string spass = alpha_crypt(10);
-
-        if( ((int)master()->valid_apply(({ "SECURE" }))) ){
-        SECRETS_D->SetSecret("IMC2_CLIENT_PW", cpass);
-        SECRETS_D->SetSecret("IMC2_SERVER_PW", spass);
-        clientpass = cpass;
-        serverpass = spass;
-}
-
+    static void eventChangeIMC2Passwords(){
+        clientpass = alpha_crypt(10);
+        serverpass = alpha_crypt(10);
+        SECRETS_D->SetSecret("IMC2_CLIENT_PW", clientpass);
+        SECRETS_D->SetSecret("IMC2_SERVER_PW", serverpass);
         return;
     }
 
     int UnSetAutoDisabled(int x){
         //This is just for taking away automatic disablement.
         //For enabling/disabling, see the mudconfig command.
-        if(x) autodisabled = 0;
+        if(x && autodisabled){
+            autodisabled = 0;
+            eventChangeIMC2Passwords();
+        }
         if(!sizeof(SaveFile)) return autodisabled;
         if(unguarded((:directory_exists(path_prefix(SaveFile)):))){
             SaveObject(SaveFile,1);
@@ -1648,4 +1630,3 @@ varargs string GetMudName(string name, int online){
    }
    return 0;
 }
-    

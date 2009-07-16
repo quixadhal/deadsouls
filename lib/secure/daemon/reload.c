@@ -131,7 +131,8 @@ int ReloadBaseSystem(){
     }
     reset_eval_cost();
     RELOAD_D->eventReload(load_object(SEFUN), 1, 1);
-    catch( update(MASTER_D) );
+    MASTER_D->eventDestruct();
+    load_object(MASTER_D);
     reset_eval_cost();
     catch( reload(load_object(LIB_CREATOR), 1, 1) );
     reset_eval_cost();
@@ -312,6 +313,7 @@ void heart_beat(){
         if(time() >= val){
             map_delete(Reloadees,key);
             key = find_object(key);
+            if(!key) continue;
             if(!interactive(key)){
                 reload(key);
             }

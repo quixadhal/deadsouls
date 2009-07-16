@@ -61,7 +61,12 @@ static void terminal_type(string str){
     else SetTerminal(lower_case(str));
 }
 
-static void window_size(int width, int height){ SetScreen(width, height); }
+static void window_size(int width, int height){ 
+    if(query_verb() == "screen" || 
+      !this_object()->GetProperty("screenlock")){
+        SetScreen(width, height); 
+    }
+}
 
 varargs int eventReceive(string message, int noprompt, int noerase){
     int max_length = __LARGEST_PRINTABLE_STRING__ - 192;
@@ -326,12 +331,17 @@ int SetLogHarass(int x){
 int GetLogHarass(){ return LogHarass; }
 
 int *SetScreen(int width, int height){ 
-    if( !width || !height ) return Screen;
+    if(!width) width = (__LARGEST_PRINTABLE_STRING__-1)/50;
+    if(!height) height = __LARGEST_PRINTABLE_STRING__/width;
+    
     width--;
     if( width * height > __LARGEST_PRINTABLE_STRING__ ){
         if( width > height ) width = __LARGEST_PRINTABLE_STRING__/height;
         else if( height > width ) height = __LARGEST_PRINTABLE_STRING__/width;
-        else width = height = (__LARGEST_PRINTABLE_STRING__-1)/2;
+        else {
+            width = (__LARGEST_PRINTABLE_STRING__-1)/50;
+            height = 50;
+        }
     }
     return (Screen = ({ width, height })); 
 }

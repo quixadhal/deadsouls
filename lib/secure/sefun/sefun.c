@@ -297,17 +297,21 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
 }
 
 string query_ip_number(object ob){
+    string ret;
     if(!ob) ob = previous_object();
-    if(!AUTO_WIZ || ob == previous_object()) return efun::query_ip_number(ob);
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
-        return efun::query_ip_number(ob);
+    ret = ob->GetTeloptIp();
+    if(!ret) ret = efun::query_ip_number(ob);
+    if(!AUTO_WIZ || ob == previous_object()) return ret;
+    if(master()->valid_apply(({ "SECURE", "ASSIST" })))
+        return ret;
     return "0.0.0.0";
 }
 
 //addr_server calls don't work well on Solaris and spam stderr
 string query_ip_name(object ob){
     if(!ob) ob = previous_object();
-    if(!strsrch(architecture(), "Solaris")) return query_ip_number(ob);
+    if(!strsrch(architecture(), "Solaris") ||
+      ob->GetTeloptIp()) return query_ip_number(ob);
     if(!AUTO_WIZ || ob == previous_object()) return efun::query_ip_name(ob);
     if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
         return efun::query_ip_name(ob);

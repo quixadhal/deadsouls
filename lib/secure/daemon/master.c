@@ -103,6 +103,7 @@ static void heart_beat(){
     heart_count++;
     if(!(heart_count % 60)){
         CostErr = ([]);
+        this_object()->GetPerformanceScore(1);
         if(in_reset){
             eventReset();
         }
@@ -615,7 +616,7 @@ string error_handler(mapping mp, int caught) {
     else if(undefinedp(CostErr[now])) CostErr[now] = 0;
 
     if(CONSOLE_TRACE){
-        dbg = "\n----\n";
+        dbg = "\n----\n"+mud_name()+"\n----\n";
         foreach(mixed key, mixed val in mp){
             dbg += identify(key) + " : "+identify(val)+"\n";
         }
@@ -646,7 +647,7 @@ string error_handler(mapping mp, int caught) {
             shutdown(-9);
         }
     }
-    ret = "---\n"+timestamp()+"\n"+ standard_trace(mp);
+    ret = "\n--- "+mud_name()+"\n"+timestamp()+"\n"+ standard_trace(mp);
     if( caught ) write_file(file = "/log/catch", ret);
     else write_file(file = "/log/runtime", ret);
     if( this_player(1) && find_object(SEFUN) ) {
@@ -1078,8 +1079,8 @@ int GetBootScore(){
     return BootScore;
 }
 
-int GetPerformanceScore(){
-    if(!PerformanceScore){
+varargs int GetPerformanceScore(int force){
+    if(force || !PerformanceScore){
         int ret, count = 1000;
         ret = time_expression {
             while(count){
@@ -1098,6 +1099,7 @@ int GetPerfOK(){
 }
 
 string GetMudName(){
+    //debug_message("MudName: "+MudName);
     return MudName;
 }
 
@@ -1105,6 +1107,7 @@ int SetMudName(string name){
     if(!valid_apply(({ "SECURE" }))){
         return 0;
     }
+    //debug_message("setting MudName to: "+name);
     MudName = name;
     return 1;
 }
@@ -1128,14 +1131,18 @@ int ReadName(){
     string *line_array;
     int port = query_host_port();
     MudName = "DeadSoulsNew";
-    if(!find_object(INSTANCES_D) || !ENABLE_INSTANCES ||
-            INSTANCES_D->GetMyInstanceName() == "global"){
+    if(!ENABLE_INSTANCES){
+          //  || (find_object(INSTANCES_D) &&
+          //  INSTANCES_D->GetMyInstanceName() == "global")){
+        //debug("The mud believes it is a global instance.");
         mconfig = "/secure/cfg/mudos.cfg";
     }
     else {
         mconfig = "/secure/cfg/mudos."+port+".cfg";
+        //debug("The mud is operating as a non-global instance: "+mconfig);
     }
     line_string = read_file(mconfig);
+    //debug("sizeof line_string: "+sizeof(line_string));
     if(!sizeof(line_string)){
         return 0;
     }
@@ -1149,8 +1156,10 @@ int ReadName(){
                 return 0;
             }
             MudName = tmp;
+            //debug("The mud thinks its name is: "+MudName);
             return 1;
         }
     }
+    //debug("The mud thinks its name is: "+MudName);
     return 0;
 }

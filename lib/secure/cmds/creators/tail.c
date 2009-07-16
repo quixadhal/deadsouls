@@ -11,13 +11,14 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     string *lines;
     string buff;
-    int scr;
+    int scr, err;
 
     if( !args ) return "You must specify a file to tail.";
-    else args = absolute_path((string)this_player()->query_cwd(), args);
+    else args = absolute_path(this_player()->query_cwd(), args);
     if( !file_exists(args) ) return "File " + args + " not found.";
-    if( !(buff = read_file(args)) ) return "Unable to tail " + args + ".";
-    scr = (((int *)this_player()->GetScreen())[1] || 24);
+    err = catch(buff = read_file(args));
+    if( err || !buff ) return "Unable to tail " + args + ".";
+    scr = ((this_player()->GetScreen())[1] || 24);
     if( scr > 100 ) scr = 100;
     if( sizeof(lines = explode(buff, "\n")) > scr ) 
         buff = implode(lines[<scr..], "\n");

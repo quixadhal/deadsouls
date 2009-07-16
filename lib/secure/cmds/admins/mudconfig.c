@@ -23,7 +23,7 @@ string array antimodals = ({ "imc2", "ced" });
 string array modals = antimodals + ({ "channelpipes", "fastcombat", 
         "catchtell","matchcommand", "matchobject", "autowiz", "locked",
         "localtime", "justenglish", "justhumans", "encumbrance", "pk", 
-        "compat", "exitsbare", "nmexits", 
+        "compat", "exitsbare", "nmexits", "grid", "minimap", "wizmap",
         "cgi", "dirlist", "creweb", "selectclass", "severable",
         "retain", "defaultparse", "disablereboot", "loglocal", "logremote",
         "questrequired", "autoadvance" });
@@ -462,7 +462,9 @@ static int ProcessOther(string which, string arg){
         write("This configuration change will require a few minutes to take effect completely.");
     }
     if(which == "GLOBAL_MONITOR") reload(SNOOP_D,0,1);
-    if(which == "IDLE_TIMEOUT" || which == "MAX_NEWBIE_LEVEL" || which == "FAST_COMBAT"){ 
+    if(which == "IDLE_TIMEOUT" || which == "MAX_NEWBIE_LEVEL" || 
+      which == "FAST_COMBAT" || which == "GRID" || which == "WIZMAP" ||
+      which == "MINIMAP"){ 
         reload(LIB_CREATOR,1,1);
         write("This configuration will take effect for each user the next time they log in.");
         return 1;
@@ -559,6 +561,9 @@ static int ProcessModal(string which, string arg){
         case "questrequired" : which = "REQUIRE_QUESTING";break;
         case "autoadvance" : which = "AUTO_ADVANCE";break;
         case "ced" : which = "CED_DISABLED";break;
+        case "minimap" : which = "MINIMAP";break;
+        case "wizmap" : which = "WIZMAP";break;
+        case "grid" : which = "GRID";break;
         default : break;
     }
     foreach(string element in config){
@@ -950,8 +955,13 @@ void help() {
             "\nmudconfig justenglish [ yes | no ]"
             "\nmudconfig justhumans [ yes | no ]"
             "\nmudconfig encumbrance [ yes | no ]"
-            "\nmudconfig severable [ yes | no ] (whether limbs can be severed in combat. Requires a warmboot.)"
+            "\nmudconfig severable [ yes | no ] (whether limbs can be "
+            "severed in combat. Requires a warmboot.)"
             "\nmudconfig pk [ yes | no ]"
+            "\nmudconfig minimap [ yes | no ] (whether players get a minimap)"
+            "\nmudconfig wizmap [ yes | no ] (whether cres get an area map)"
+            "\nmudconfig grid [ yes | no ] (enable or disable the room grid "
+            "system)"
             "\nmudconfig compat [ yes | no ]"
             "\nmudconfig retain [ yes | no ]"
             "\nmudconfig defaultparse [ yes | no ]"
@@ -959,10 +969,14 @@ void help() {
             "\nmudconfig matchcommand [ yes | no ]"
             "\nmudconfig matchobject [ yes | no ]"
             "\nmudconfig exitsbare [ yes | no ]"
-            "\nmudconfig nmexits [ yes | no ] (This togggles where default exits are displayed)"
-            "\nmudconfig fastcombat [ yes | no ] (heart rate overridden in combat)"
-            "\nmudconfig selectclass [ yes | no ] (whether new players choose a class on login)"
-            "\nmudconfig instances [ yes | no ] (whether mud instances are used)"
+            "\nmudconfig nmexits [ yes | no ] (This togggles where default "
+            "exits are displayed)"
+            "\nmudconfig fastcombat [ yes | no ] (heart rate overridden "
+            "in combat)"
+            "\nmudconfig selectclass [ yes | no ] (whether new players "
+            "choose a class on login)"
+            "\nmudconfig instances [ yes | no ] (whether mud instances "
+            "are used)"
             "\nmudconfig localtime [ yes | no ]"
             "\nmudconfig offset <offset from gmt in seconds>"
             "\nmudconfig extraoffset <offset from GMT in hours>"
@@ -981,25 +995,41 @@ void help() {
             "\nmudconfig defaultdomain </full/path>"
             "\nmudconfig email <the admin's email address>"
             "\nmudconfig liveupgrade <the default liveupgrade mud's name>"
-            "\nmudconfig hostip <the computer's ip address (eg 111.222.333.444)>"
-            "\nmudconfig websourceip <the remote web server's ip address (eg 111.222.333.444)>"
-            "\nmudconfig websourcename <the remote web server's ip name (eg a.b.com)>"
-            "\nmudconfig channelpipes [ enable | disable ] (whether to allow piping messages. not recommended.)"
-            "\nmudconfig intermud [ enable | disable | restrict | unrestrict | reset ]"
+            "\nmudconfig hostip <the computer's ip address "
+            "(eg 111.222.333.444)>"
+            "\nmudconfig websourceip <the remote web server's ip address "
+            "(eg 111.222.333.444)>"
+            "\nmudconfig websourcename <the remote web server's ip name "
+            "(eg a.b.com)>"
+            "\nmudconfig channelpipes [ enable | disable ] (whether to allow "
+            "piping messages. not recommended.)"
+            "\nmudconfig intermud [ enable | disable | restrict | "
+            "unrestrict | reset ]"
             "\nmudconfig imc2 [ enable | disable ]"
             "\nmudconfig imc2clientpass <client password for IMC2>"
             "\nmudconfig imc2serverpass <server password for IMC2>"
-            "\nmudconfig inet [ enable | disable | start | stop | restart | status ]"
-            "\nmudconfig ftp [ enable | disable | start | stop | restart | status ]"
-            "\nmudconfig hftp [ enable | disable | start | stop | restart | status ]"
-            "\nmudconfig rcp [ enable | disable | start | stop | restart | status ]"
-            "\nmudconfig oob [ enable | disable | start | stop | restart | status ]"
-            "\nmudconfig http [ enable | disable | start | stop | restart | status ]"
-            "\nmudconfig cgi [ enable | disable ] (Whether the mud webserver should use CGI)"
-            "\nmudconfig dirlist [ enable | disable ] (Allow the webserver to display dir contents)"
-            "\nmudconfig creweb [ enable | disable ] (Allow web based editing [requires cgi and dirlist])"
-            "\nmudconfig loglocal [ enable | disable ] (whether local channels are logged)"
-            "\nmudconfig logremote [ enable | disable ] (whether remote channels are logged)"
+            "\nmudconfig inet [ enable | disable | start | stop | restart "
+            "| status ]"
+            "\nmudconfig ftp [ enable | disable | start | stop | restart "
+            "| status ]"
+            "\nmudconfig hftp [ enable | disable | start | stop | restart "
+            "| status ]"
+            "\nmudconfig rcp [ enable | disable | start | stop | restart "
+            "| status ]"
+            "\nmudconfig oob [ enable | disable | start | stop | restart "
+            "| status ]"
+            "\nmudconfig http [ enable | disable | start | stop | restart "
+            "| status ]"
+            "\nmudconfig cgi [ enable | disable ] (Whether the mud webserver "
+            "should use CGI)"
+            "\nmudconfig dirlist [ enable | disable ] (Allow the webserver "
+            "to display dir contents)"
+            "\nmudconfig creweb [ enable | disable ] (Allow web based "
+            "editing [requires cgi and dirlist])"
+            "\nmudconfig loglocal [ enable | disable ] (whether local "
+            "channels are logged)"
+            "\nmudconfig logremote [ enable | disable ] (whether remote "
+            "channels are logged)"
             "\nmudconfig mudname <name>"
             "\nmudconfig mudport <port>"
             "\n\nSee also: admintool, config", this_player()

@@ -1,4 +1,5 @@
 cleric
+PLAYER_CLASS 0
 melee attack:1:4
 blunt attack:1:2
 projectile attack:1:2

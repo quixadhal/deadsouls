@@ -60,7 +60,7 @@ void eventDescribeEnvironment(int brief){
         }
         else desc = "\n";
         if( i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM ){
-#ifdef MINIMAP
+#if MINIMAP
             if(this_object()->GetProperty("minimapping")){ 
                 desc += simple_map(env)+"\n"; 
             }

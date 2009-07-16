@@ -1,0 +1,35 @@
+Different clients do different things. Dead Souls tries to handle
+the most common setups automatically. This may not be enough for you.
+
+Here are some common issues:
+
+1) You set the screen to something (like 100 50) but it keeps changing
+   to something else.
+
+This is usually because your client is sending invisible resizing commands
+to the mud, and the mud is honoring those commands. To stop this, you
+lock your screen settings, and then set the screen parameters:
+%^GREEN%^
+screenlock on
+screen 100 50
+%^RESET%^
+
+2) You set your width and/or height to a very large number but it's 
+   smaller when you check it.
+
+Your screen setting tries to limit itself to the size of the mud's
+maximum printable string size...a number which is fairly arbitrary and
+mostly there to avoid excessive spamming of players. This limit can
+only be changed by an administrator willing to recompile the driver
+with a changed value for the LARGEST_PRINTABLE_STRING opton.
+
+
+3) You set your width to something very large but not all text goes that wide.
+
+Some text, like this file, are written with hard returns somewhere before the
+80th column. This is usually due to a preference the author has, and is
+common among lib folks of a certain vintage. If you find instances where
+this is particularly unattractive, talk it over with your admin to see
+if they want to add it to their list of things to clean up.
+
+See also: env, terminal

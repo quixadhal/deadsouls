@@ -664,6 +664,7 @@ varargs string *chunk_string(string str, int width){
         ret += ({ tmp1 });
         str = replace_string(str,tmp1,"");
     }
+    rm(tmpfile);
     return ret;
 }
 
@@ -828,5 +829,4 @@ string cleaned_end(string str){
     str = cleaned_name(str);
     return str;
 }
-
 

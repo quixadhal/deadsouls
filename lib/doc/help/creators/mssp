@@ -1,0 +1,21 @@
+MSSP is a protocol that allows someone else's internet program to
+connect to your mud and ask it for information. For example, your
+mud's name, how many players are on, what your theme is, etc.
+
+It's useful because it lets you maintain an up to date
+source of information on your mud for multiple mud listing
+sites, without having to schlep to each one to update your
+listing to keep it current.
+
+To change your MSSP info, edit /secure/include/mssp.h and
+change the fields you feel need changing.
+
+VITALLY IMPORTANT NOTE: If you modify information in that
+file and create broken LPC code, you may render your mud
+impossible to log into, and unbootable. Make 100% certain you
+back up this file before editing it, and once you edit it,
+make sure it works by updating LIB_CONNECT.
+
+bk /secure/include/mssp.h
+update /secure/lib/connect.c
+

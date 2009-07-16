@@ -33,9 +33,10 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
         ob = find_object(filename);
         if(!ob) ob = load_object(filename);
     }
-    if((!ob || !objectp(ob)) && !quiet) {
-        write("No such object.");      
-        return 0;
+
+    if(!ob || !objectp(ob)){
+       if(!quiet) write("No such object.");      
+       return 0;
     }
 
     if(ob->GetDoor() && sizeof(ob->GetDoor())) {

@@ -423,9 +423,13 @@ void eventReceiveReport(string str){
 }
 
 int GetDeferment(){
-    string secs = upgrades_files+"/0^0secure0^0include0^0secrets.h";
-    if(file_exists(secs) && file_exists(SECRETS_H)){
-        rm(secs);
+    string *defers = ({ "secrets.h", "network.h", "mssp.h" });
+    string secs = upgrades_files+"/0^0secure0^0include0^0";
+    foreach(string deferment in defers){
+        if(file_exists(secs+deferment) && 
+          file_exists("/secure/include/"+deferment)){
+            rm(secs+deferment);
+        }
     }
     return 0;
 }

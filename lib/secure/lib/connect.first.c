@@ -184,7 +184,6 @@ static void InputEmail(string str) {
     }
     flush_messages();
     cp(IMC2_D+".c", "/secure/save/backup/imc2.orig");
-    IMC2_D->eventChangeIMC2Passwords();
     PLAYERS_D->AddPlayerInfo(Name);
     shutdown();
     destruct(this_object());

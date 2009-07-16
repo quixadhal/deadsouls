@@ -1,9 +1,18 @@
+#include <network.h>
 mapping reply, notes;
 
 string mssp_reply(){
     string *k;
     int i;
-    string ret;
+    string ret, ip = query_intermud_ip();
+    string intermud = "";
+   
+    if(find_object(INTERMUD_D)) intermud += "i3";
+    if(find_object(IMC2_D)){
+        if(sizeof(intermud)) intermud += "\t";
+        intermud += "IMC2";
+    }
+    if(!sizeof(intermud)) intermud = "0";
 
     reply = ([
             "NAME"             : mud_name(),
@@ -15,22 +24,22 @@ string mssp_reply(){
             "WHO"              : implode(map(filter(users(),
             (: (environment($1) && !($1->GetInvis())) :)), 
             (: $1->GetCapName():)), "\t"),
-            "HOSTNAME"         : "dead-souls.net",
+            "HOSTNAME"         : ip,
             "DESCRIPTION"      : "A fun mud!",
-            "CREATED"          : "2006",
-            "ICON"             : "http://lpmuds.net/favicon.ico",
-            "IP"               : query_intermud_ip(),
+            "CREATED"          : itoa(local_time()[5]),
+            "ICON"             : "http://"+ip+":"+PORT_HTTP+"/favicon.ico",
+            "IP"               : ip,
             "LANGUAGE"         : "English",
             "LOCATION"         : "United States",
             "MINIMUM AGE"      : "13",
-            "WEBSITE"          : "http://dead-souls.net",
+            "WEBSITE"          : "http://"+ip+":"+PORT_HTTP,
             "FAMILY"           : "LPMud",
             "GENRE"            : "Adventure",
             "SUBGENRE"         : "Adventure",
             "GAMEPLAY"         : "Adventure",
             "GAMESYSTEM"       : "Custom",
-            "INTERMUD"         : "I3\tIMC2",
-            "STATUS"           : "ALPHA",
+            "INTERMUD"         : intermud,
+            "STATUS"           : "Alpha",
             "AREAS"            : "7",
             "HELPFILES"        : "N/A",
             "MOBILES"          : "150",
@@ -75,10 +84,7 @@ string mssp_reply(){
             ]);
 
     notes = ([
-            "PORT-NOTES"             : "player port is 6666",
-            "CODEBASE-NOTES"         : "release a16",
             "FAMILY-NOTES"           : "descendant of Nightmare",
-            "STATUS-NOTES"           : "currently a code demo mud",
             "HELPFILES-NOTES"        : "each command, and hundreds of other docs",
             "MOBILES-NOTES"          : "npc's can be cloned, so there can be thousands",
             "OBJECTS-NOTES"          : "objects can be cloned, so there can be thousands",

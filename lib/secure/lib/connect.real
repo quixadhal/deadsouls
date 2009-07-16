@@ -19,13 +19,14 @@ inherit LIB_PAGER;
 #include <mssp.h>
 
 static private int CrackCount, NetDead, MaxPlayers; 
-static private string name, Name, Terminal, raza, TrueName, trabajo; 
-static private string Passwort, Gendre, CapNamen, E_Mail, my_ip; 
+static private string name, Name, Terminal, raza, TrueName, trabajo, extra; 
+static private string Passwort, Gendre, CapNamen, E_Mail, my_ip, client_ip; 
 static private object Player, pile; 
-static private mapping LastError;
+static private mapping LastError, UserVars;
 static private int *Screen;
-static private int rescue, yescre;
-static private string *ip_permitted = ({}), instname;
+static private int rescue, yescre, anyterm;
+static private string *ip_permitted = ({}), instname, telopt_user;
+static private string array anyterms = ({"97.107.133.86", "127.0.0.1"});
 
 //Change this to 0 to disable color codes in /news/welcome
 //then update the connect.c file.
@@ -46,19 +47,24 @@ static void eventSelectClass();
 
 int CheckIp(){
     int ips = 0;
-    my_ip = query_ip_number();
+    string tmp_ip;
+    if(!SAME_IP_MAX) return 1;
+    tmp_ip = query_ip_number();
+    if(telopt_user && telopt_user != my_ip) tmp_ip = telopt_user;
     if(!ip_permitted) ip_permitted = ({});
     ip_permitted += PLAYERS_D->GetAdminIPs();
-    if(!SAME_IP_MAX) return 1;
+    ip_permitted = singular_array(ip_permitted);
+    if(member_array(tmp_ip, ip_permitted) != -1) return 1;
     foreach(object jugador in users()){
-        if(query_ip_number(jugador) == my_ip) ips++;
+        if(query_ip_number(jugador) == tmp_ip) ips++;
     }
-    if(member_array(my_ip, ip_permitted) != -1) return 1;
     if(ips >= SAME_IP_MAX) return 0;
     return 1;
 }
 
 static void create(int binary) {
+    extra = "";
+    UserVars = ([]);
     if(query_windows()){
         MaxPlayers = 50;
     }
@@ -97,6 +103,8 @@ varargs static void logon(mixed foo) {
     if(sizeof(architecture())) welcome += " running on "+architecture()+".\n";
     else welcome += ".\n";
 
+    client_ip = query_ip_number();
+
     call_out((: eventTimeout :), LOGON_TIMEOUT);
     if(mud_name() == "Dead Souls" || mud_name() == "Dead Souls Dev" ){
         welcome += read_file(DS_WELCOME) || "Welcome to " + mud_name() + "!";
@@ -127,17 +135,8 @@ varargs static void logon(mixed foo) {
         receive("\n" + center("Driver: " + version() + 
                     "               Mudlib: "+
                     mudlib() + " " + mudlib_version()) + "\n");
-    }
-    if(CheckIp()){ 
-        if(!Moved) receive("\nWhat name do you wish? ");
-        input_to((: InputName :), I_NOESC); 
-    }
-    else {
-        receive("\nToo many users from your site are currently logged on.\n");
-        receive("Please try again later.\n");
-        flush_messages();
-        Destruct();
-        return;
+        receive("\nWhat name do you wish? ");
+        input_to((: InputName :), I_NOESC);
     }
 } 
 
@@ -146,6 +145,29 @@ static void InputName(string namen, string kill_me) {
     mixed tmp;
     int toomany;
     name = namen;
+
+    //tc("anyterm 0");
+    if(member_array(client_ip, anyterms) != -1){
+        //tc("anyterm 1", "green");
+        if(telopt_user){
+            int bar = sscanf(telopt_user, "%*d.%*d.%*d.%*d");
+            //tc("anyterm 2 "+telopt_user, "blue");
+            if(bar == 4){
+                //tc("anyterm 3 "+telopt_user, "black");
+                client_ip = telopt_user;
+                anyterm = 1;
+                extra = " ["+my_ip+"]";
+            }
+        }
+    }
+
+    if(!CheckIp()){
+        receive("\nToo many users from your site are currently logged on.\n");
+        receive("Please try again later.\n");
+        flush_messages();
+        Destruct();
+        return;
+    }
 
     if(sizeof(users()) >= MaxPlayers){
         toomany = 1;
@@ -167,7 +189,7 @@ static void InputName(string namen, string kill_me) {
         }
     }
     if(grepp(name, "MSSP-REQUEST")){
-        log_file("mssp",timestamp()+" "+my_ip+"\n");
+        log_file("mssp",timestamp() + " " + my_ip + extra + "\n");
         receive(mssp_reply());
         flush_messages();
         input_to((: InputName :), I_NOESC);
@@ -179,7 +201,7 @@ static void InputName(string namen, string kill_me) {
     }
     Name = convert_name(name);
     name = capitalize(name);
-    if( (int)master()->is_locked() || toomany) {
+    if( master()->is_locked() || toomany) {
         if(toomany){
             news = "Too many players logged in!";
         }
@@ -197,13 +219,13 @@ static void InputName(string namen, string kill_me) {
         eventCreatePlayer(name);
         return;
     }
-    if( !((int)BANISH_D->eventConnect(Name, query_ip_number())) ) {
+    if( !(BANISH_D->eventConnect(Name, client_ip)) ) {
         news = read_file(NEWS_BANISHED) || "You are not allowed here.\n";
         receive("\n" + news + "\n");
         Destruct();
         return; 
     }
-    if( (tmp = (mixed)CHARACTER_D->eventConnect(Name)) != 1 ) {
+    if( (tmp = CHARACTER_D->eventConnect(Name)) != 1 ) {
         if( tmp ) receive(tmp + "\n");
         else receive("One of your characters was recently logged in.\n"
                 "You must wait a little longer before logging in.\n");
@@ -243,11 +265,11 @@ static void InputPassword(string pass, string cap) {
                 receive("\nNo more attempts allowed\n");
                 unguarded( (: log_file("/secure/log/security", 
                   "Maximum password tries exceeded by " +
-                        Name + " from " + query_ip_number() + "\n") :) );
+                        Name + " from " + client_ip + extra + "\n") :) );
                 filter(users(), (: archp :))->eventPrint("System %^MAGENTA%^"
                         "<error>%^RESET%^ Maximum password "
                         "attempts exceeded by " + cap +
-                        " from " + query_ip_number() + ".\n",
+                        " from " + client_ip + ".\n",
                         MSG_ERROR);
                 Destruct();
                 return;
@@ -267,7 +289,7 @@ static void InputPassword(string pass, string cap) {
         return;
     }
     PLAYERS_D->AddPlayerInfo(Player);
-    if( !(string)Player->GetRace() || (string)Player->GetRace() == "blob"
+    if( !Player->GetRace() || Player->GetRace() == "blob"
             || Name == "guest" ) {
         Player->SetRace("human");
     }
@@ -279,7 +301,7 @@ static void InputPassword(string pass, string cap) {
 
 static void eventCreatePlayer(string cap) {
     string tmpdir, lcname = lower_case(Name);
-    if( !((int)BANISH_D->valid_name(lcname)) ) {
+    if( !(BANISH_D->valid_name(lcname)) ) {
         receive(capitalize(cap) + " is not a valid name.\n");
         receive(mud_name() + " requires that all names meet the following "
                 "requirements:\n");
@@ -302,7 +324,7 @@ static void eventCreatePlayer(string cap) {
             }
         } 
     }
-    if( !((int)BANISH_D->eventConnect(Name, query_ip_number())) ) {
+    if( !(BANISH_D->eventConnect(Name, client_ip)) ) {
         string news;
 
         news = read_file(NEWS_REGISTER) || "No registration info.\n";
@@ -323,7 +345,7 @@ static void AgeCheck(string ans, string cap) {
     }
     log_file("new_players", Name + " (" + ctime(time()) + ")\n");
     unguarded( (: log_file("/secure/log/new_players", Name + " from " 
-      + query_ip_number() + " (" + ctime(time()) + ")\n") :) );
+      + client_ip + extra + " (" + ctime(time()) + ")\n") :) );
     receive("\nCreate a password of at least 5 letters: \n");
     input_to((: CreatePassword :), I_NOECHO | I_NOESC, cap);
 } 
@@ -351,10 +373,18 @@ static void eventReEnterGame(string cap) {
                 deep_inventory(Player)->eventMove(ROOM_FURNACE);
         log_file("enter", cap + " (exec): " + ctime(time()) + "\n"); 
         unguarded( (: log_file("/secure/log/enter", Name + " (exec): " + 
-          ctime(time()) + " from " + query_ip_number()+ "\n") :) );
+          ctime(time()) + " from " + client_ip + extra + "\n") :) );
         Player->eventReconnect();
         Player->RemoveProperty("afk");
-        Player->CancelCharmode();
+        if(!anyterm){
+            Player->CancelCharmode();
+            Player->SetProperty("reprompt", 0);
+            Player->SetTeloptIp(0);
+        }
+        else {
+            //tc("telopt_ip: "+telopt_user, "cyan");
+            Player->SetTeloptIp(telopt_user);
+        }
         if(creatorp(Player)) 
             Player->AddChannel((CHAT_D->GetSystemChannels() - ({"muds"})));
         SNOOP_D->ReportReconnect(Player->GetKeyName());
@@ -375,10 +405,23 @@ static void ConfirmReconnect(string ans, string cap) {
         if(sizeof(deep_inventory(Player))) deep_inventory(Player)->eventMove(ROOM_FURNACE);
     log_file("enter", cap + " (reconnect) ("+ctime(time())+")\n");
     unguarded( (: log_file("/secure/log/enter", Name + " (reconnect) from " 
-      + query_ip_number() + " (" + ctime(time()) + ")\n") :) );
+      + client_ip + extra + " (" + ctime(time()) + ")\n") :) );
     exec(tmp = new(LIB_PLAYER), Player); 
     exec(Player, this_object()); 
     destruct(tmp);
+    if(anyterm || member_array(query_ip_number(Player), anyterms) != -1){
+        int oldlock = Player->GetProperty("screenlock");
+        Player->SetCharmode(1);
+        Player->SetProperty("reprompt",1);
+        Player->SetProperty("keepalive", 5);
+        Player->SetProperty("screenlock", 0);
+        Player->SetScreen(80, 25);
+        Player->SetProperty("screenlock", oldlock);
+        Player->SetTeloptIp(telopt_user);
+    }
+    else {
+        Player->SetTeloptIp(0);
+    }
     Player->eventPrint("\nAllowing login.\n", MSG_SYSTEM);
     Destruct();
 }
@@ -386,7 +429,7 @@ static void ConfirmReconnect(string ans, string cap) {
 static int CanLogin() {
     string group;
 
-    if( (int)BANISH_D->GetGuest(Name) ) return 1;
+    if( BANISH_D->GetGuest(Name) ) return 1;
     foreach(group in LOCKED_ACCESS_ALLOWED)
         if( member_group(Name, group) ) return 1;
     return 0;
@@ -415,8 +458,22 @@ static private void eventEnterGame() {
     if(creatorp(Player)) 
         Player->AddChannel(((CHAT_D->GetSystemChannels()) - ({"muds"})));
     SNOOP_D->CheckBot(Player->GetKeyName());
+    unguarded( (: log_file("/secure/log/enter", Name + " (enter): " +
+      ctime(time()) + " from " + client_ip + extra + "\n") :) );
+    if(anyterm || member_array(query_ip_number(Player), anyterms) != -1){
+        int oldlock = Player->GetProperty("screenlock");
+        Player->SetCharmode(1);
+        Player->SetProperty("reprompt",1);
+        Player->SetProperty("keepalive", 5);
+        Player->SetProperty("screenlock", 0);
+        Player->SetScreen(80, 25);
+        Player->SetProperty("screenlock", oldlock);
+        Player->SetTeloptIp(telopt_user);
+    }
+    else {
+        Player->SetTeloptIp(0);
+    }
     call_out( (: destruct(this_object()) :), 10);
-
 } 
 
 static void CreatePassword(string pass, string cap) {
@@ -461,7 +518,7 @@ static void InputGender(string str, string cap) {
 
 static void InputCapName(string name, string cap) {
     if( !name || name == "" ) name = cap;
-    if( !((int)BANISH_D->valid_cap_name(name, Name)) ) {
+    if( !(BANISH_D->valid_cap_name(name, Name)) ) {
         receive("\nThat was not a valid name format, choose again: \n");
         input_to((: InputCapName :), I_NOESC, cap);
         return;
@@ -559,7 +616,7 @@ static void cmdHelp(string args) {
         input_to((: InputRace :), I_NOESC);
         return;
     }
-    help = (string)RACES_D->GetHelp(args);
+    help = RACES_D->GetHelp(args);
     eventPage(explode(help, "\n"), MSG_HELP, f);
 }
 
@@ -652,7 +709,7 @@ static void InputClass(string str){
 
 static void cmdHelpClass(string args){
     function f;
-    string array Classes = (string array)CLASSES_D->GetClasses(1);
+    string array Classes = CLASSES_D->GetClasses(1);
     string help;
 
     f = function(string str) {
@@ -670,14 +727,14 @@ static void cmdHelpClass(string args){
         input_to((: InputClass :), I_NOESC);
         return;
     }
-    help = (string)HELP_D->GetHelp("classes "+args);
+    help = HELP_D->GetHelp("classes "+args);
     eventPage(explode(help, "\n"), MSG_HELP, f);
 }
 
 static void cmdListClasses() {
     string list;
 
-    list = format_page((string array)CLASSES_D->GetClasses(1), 5);
+    list = format_page(CLASSES_D->GetClasses(1), 5);
     receive(list);
     receive("\nClass: \n");
     input_to((: InputClass :), I_NOESC);
@@ -690,7 +747,7 @@ static void cmdPickClass(string args) {
         return;
     }
     if( member_array(args = lower_case(args),
-                (string array)CLASSES_D->GetClasses(1)) == -1 ) {
+                CLASSES_D->GetClasses(1)) == -1 ) {
         receive("No such Class.\nClass: \n");
         input_to((: InputClass :), I_NOESC);
         return;
@@ -854,4 +911,25 @@ mapping GetLastError() {
 
 int GetMaxPlayers(){
     return MaxPlayers;
+}
+
+mixed receive_environ(mixed foo){
+    string tmp, uservar;
+    mixed *uservars;
+    int ret;
+    //tc("foo: "+identify(foo));
+    ret = sscanf(foo, "%*sSER%sENDUSER%*s", tmp);
+    //tc("ret: "+ret+", foo: "+identify(foo));
+    if(ret == 3) telopt_user = tmp;
+    uservars = explode(foo, sprintf("%c", __ANSI_SUBSTITUTE__));
+    foreach(uservar in uservars){
+        mixed tmp_arr = explode(uservar, sprintf("%c", 1));
+        if(!sizeof(tmp_arr)) continue;
+        if(sizeof(tmp_arr) < 2) tmp_arr += ({ 0 });
+        UserVars[tmp_arr[0]] = tmp_arr[1];
+    }
+    if(!telopt_user && UserVars["USER"]) telopt_user = UserVars["USER"];
+    //tc("telopt_user: "+telopt_user, "green");
+    tc("UserVars: "+identify(UserVars));
+    return ret;
 }

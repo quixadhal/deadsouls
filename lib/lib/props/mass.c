@@ -8,6 +8,10 @@
 
 int Mass = 0;
 
+mixed direct_weigh_obj(){
+    return 1;
+}
+
 int AddMass(int x){
     if( Mass + x > 0 ){
         x = -Mass;
@@ -36,9 +40,10 @@ string array GetSave(){
 
 int GetWeight(){
     float h;
+    object env = room_environment();
 
-    if( environment() ){
-        h = environment()->GetGravity();
+    if(env){
+        h = env->GetGravity();
     }
     else {
         h = DEFAULT_GRAVITY;

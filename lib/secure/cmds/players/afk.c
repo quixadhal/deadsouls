@@ -4,6 +4,7 @@
  */
 
 #include <lib.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
 
@@ -19,6 +20,9 @@ mixed cmd(string args) {
         message("system", "You are away from your keyboard.", this_player() );
     }
     this_player()->SetProperty("afk", afk);
+    if(find_object(INSTANCES_D)){
+        INSTANCES_D->SendWhoUpdate(this_player()->GetKeyName());
+    }
     return 1;
 }
 

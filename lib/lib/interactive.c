@@ -44,7 +44,8 @@ private static int LastAge, Setup, quitting;
 private static object NetDiedHere;
 private static mapping LastError;
 private static string *UserId;
-private mapping Paranoia = ([]);
+private mapping Paranoia = ([]); 
+private static mapping PlayerStatus = ([]);
 
 static void create(){
     object::create();
@@ -106,7 +107,9 @@ int Setup(){
     interface::Setup();
     add_action((: cmdQuit :), "quit");
     add_action((: cmdParseRefresh :), "parserefresh");
-    HostSite = query_ip_number(this_object());
+    tmp = this_object()->GetTeloptIp();
+    if(tmp) HostSite = tmp; 
+    else HostSite = query_ip_number(this_object());
     LoginTime = time();
     SetId(({}));
     autosave::Setup();
@@ -140,7 +143,7 @@ int Setup(){
             SetRescueBit(0);
         }
     }
-    environment()->eventPrint(tmp, MSG_ENV, this_object());
+    //environment()->eventPrint(tmp, MSG_ENV, this_object());
     if( !(tmp = GetMessage("login")) )
         tmp = GetName() + " enters " + mud_name() + ".";
     if(!(archp(this_object()) && this_object()->GetInvis())){
@@ -162,6 +165,7 @@ int Setup(){
 }
 
 static void net_dead(){
+    object env = environment();
     interface::net_dead();
     Age += time() - LastAge;
     LastAge = time();
@@ -170,7 +174,7 @@ static void net_dead(){
     if(!(archp(this_object()) && this_object()->GetInvis())){
         PLAYERS_D->PlayerUpdate(GetKeyName(), -1);
         log_file("enter", GetCapName() + " (net-dead): "+ctime(time())+"\n");
-        environment()->eventPrint(GetName() + " suddenly disappears into "
+        if(env) env->eventPrint(GetName() + " suddenly disappears into "
                 "a sea of irreality.", MSG_ENV, this_object());
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
     }
@@ -558,5 +562,65 @@ nomask int eventReceiveObject(object ob){
 }
 
 static void heart_beat(){
+    string tip = this_object()->GetTeloptIp();
+    //debug("tip: "+tip+", HostSite: "+HostSite);
+    if(tip && tip != HostSite){
+         HostSite = tip;
+         save_player(GetKeyName());
+    }
+    if(!interactive() || !find_object(INSTANCES_D)) autosave::heart_beat();
+    if(!PlayerStatus) PlayerStatus = ([]);
+    if(!PlayerStatus["Idling"] && 
+      query_idle(this_object()) > 240){
+        PlayerStatus["Idling"] = 1;
+        if(find_object(INSTANCES_D)){
+            INSTANCES_D->SendWhoUpdate(GetKeyName());
+        }
+    }
+    if(this_object()->GetSleeping()){
+        if(!PlayerStatus["Sleeping"]){
+            PlayerStatus["Sleeping"] = 1;
+            INSTANCES_D->SendWhoUpdate(GetKeyName());
+        }
+    }    
+    else if(PlayerStatus["Sleeping"]){
+        PlayerStatus["Sleeping"] = 0;
+        INSTANCES_D->SendWhoUpdate(GetKeyName());
+    } 
+    if(this_object()->GetInCombat()){
+        if(!PlayerStatus["Combat"]){
+            PlayerStatus["Combat"] = 1;
+            INSTANCES_D->SendWhoUpdate(GetKeyName());
+        }
+    }
+    else if(PlayerStatus["Combat"]){
+        PlayerStatus["Combat"] = 0;
+        INSTANCES_D->SendWhoUpdate(GetKeyName());
+    }
+    if(in_edit(this_object()) || this_object()->GetCedmode()){
+        if(!PlayerStatus["Edit"]){
+            PlayerStatus["Edit"] = 1;
+            INSTANCES_D->SendWhoUpdate(GetKeyName());
+        }
+    }
+    else if(PlayerStatus["Edit"]){
+        PlayerStatus["Edit"] = 0;
+        INSTANCES_D->SendWhoUpdate(GetKeyName());
+    }
     autosave::heart_beat();
+}
+
+static string process_input(string str){
+    if(PlayerStatus["Idling"]){
+        PlayerStatus["Idling"] = 0;
+        if(find_object(INSTANCES_D)){
+            INSTANCES_D->SendWhoUpdate(GetKeyName());
+        }
+    }
+    if(GetProperty("afk") && strsrch(str, "afk")){
+        SetProperty("afk", 0);
+        tell_player(this_object(), "You are back from being afk.");
+        INSTANCES_D->SendWhoUpdate(GetKeyName());
+    }
+    return interface::process_input(str);
 }

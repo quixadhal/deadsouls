@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 export INDENT=$3
 export NEWLIB=$2
@@ -113,13 +113,14 @@ perl -pi -e s/"Files\ "/"\\\\cp\ \-f\ "/g diff.txt
 perl -pi -e s/"Only\ in\ next"/"\\\\rm\ \-f\ "/g diff.txt
 perl -pi -e s/"Only\ in\ "/"\\\\cp\ \-rf\ "/g diff.txt
 
-perl -pi -e s/"Files\ "/"diff\ "/g diff.sh.1
+perl -pi -e s/"Files\ "/"diff\ -Nur\ "/g diff.sh.1
 
 
 cat diff.txt | grep -v "\.prime" | grep -v "lib/core" |grep -v "\.o"|grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff2.txt
 cat diff.sh.1 | grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff.sh
 
 chmod 755 diff.sh
+chmod 755 diff.sh.1
 
 #vim diff.txt
 #echo "#!/usr/bin/bash" > copyfiles3
@@ -141,6 +142,8 @@ echo "rm -f /tmp/foo/next/lib/upgrades.txt" >> copyfiles3
 echo "cp -f next/lib/log/open/foo.txt next/lib/secure/log/intermud/" >> copyfiles3
 #echo "cp -f new/lib/save/rooms.o next/lib/save/" >> copyfiles3
 echo "cp -f new/lib/save/races.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/economy.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/classes.o next/lib/save/" >> copyfiles3
 echo "cp -f new/lib/secure/save/functions.o next/lib/secure/save/" >> copyfiles3
 echo "cp -f new/lib/secure/save/files.o next/lib/secure/save/" >> copyfiles3
 #echo "cp -f new/lib/save/map.o next/lib/save/" >> copyfiles3
@@ -160,4 +163,6 @@ echo "cp -f /contrib/indentall next/extra/crat/" >> copyfiles3
 #\cp -f $NEWLIB.zip /mnt/data/mud/deadsouls/
 #\cp -f $NEWLIB.zip /mnt/media/open/
 #\cp -f $NEWLIB.zip /export/home/$HOME/mud/
+
+./diff.sh.1 > /tmp/foo/diff.out
 

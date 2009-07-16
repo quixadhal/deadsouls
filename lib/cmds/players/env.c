@@ -54,6 +54,7 @@ mixed cmd(string args) {
 #endif
     ret += "Annoyblock: \t\t"+ ( (this_player()->GetAnnoyblock()) ? "on" : "off" )+"\n";
     ret += "Reprompt mode: \t\t"+ ( this_player()->GetProperty("reprompt") ? "on" : "off" )+"\n";
+    ret += "Screenlock mode: \t"+ ( this_player()->GetProperty("screenlock") ? "on" : "off" )+"\n";
     ret += "Timezone: \t\t"+ ( this_player()->GetProperty("timezone") ? 
                 this_player()->GetProperty("timezone") : "None specified" )+"\n";
 #ifdef __GET_CHAR_IS_BUFFERED__
@@ -87,11 +88,18 @@ mixed cmd(string args) {
 }
 
 void help() {
-    string de_bug;
-    if(creatorp(this_player())) de_bug = ", debug, showgrid, "+
-        "wizvision, godmode, wizmap, noclip.";
-    else de_bug = ".";
+    string *see_also = ({});
+    if(creatorp(this_player())){
+        see_also = ({ "debug" , "showgrid",
+        "wizvision", "godmode", "wizmap", "noclip" });
+    }
+    see_also += ({ "brief", "chancolors", "commandecho",
+      "terminal", "screen", "pk", "mute", "gag", "wimpy", "minimap",
+      "annoyblock", "reprompt", "charmode", "keepalive", "timezone",
+      "screenlock" });
+    //see_also = sort_array(see_also, 1);
     message("help", "Syntax: <env>\n\n"
-            "Displays some basic interface and play settings. " +
-            "See also: brief, terminal, screen, chancolors, pk, mute, gag, wimpy, minimap, annoyblock, reprompt, charmode, keepalive, commandecho, timezone"+de_bug, this_player());
+            "Displays some basic interface and play settings.\n" +
+            "See also: "+implode(sort_array(see_also, 1), ", ")+"\n",
+            this_player());
 }

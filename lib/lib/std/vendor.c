@@ -5,7 +5,7 @@
 #include "/lib/include/vendor.h"
 
 inherit LIB_SENTIENT;
-inherit "/lib/manycoins";
+inherit LIB_MANYCOINS;
 
 private static int MaxItems, VendorType, bargain;
 private static string StorageRoom, LocalCurrency;
@@ -182,7 +182,6 @@ int cmdShow(object who, string args){
 int cmdBrowse(object who, string args){
     object *obs;
     object *obs2;
-    string *list2;
     string *list;
     object sroom;
     int i, ii, maxi, number;
@@ -192,32 +191,32 @@ int cmdBrowse(object who, string args){
         eventForce("say I am having terrific difficulties today");
         return 1;
     }
-    if( !(maxi = sizeof(obs = filter(all_inventory(sroom), (: !userp($1) :) ))) ){
+    if(!(maxi = sizeof(obs = filter(all_inventory(sroom), (: !userp($1) :))))){
         eventForce("say I have nothing to sell right now.");
         return 1;
     }
     list = ({ "item #  Description                         Price", "" });
-    list2 = ({(obs[0]->GetKeyName())});
-    for(int counter = 1;counter < maxi;++counter){
-        if(member_array((obs[counter]->GetKeyName()),list2) < 0){
-            list2 += ({ ( obs[counter]->GetKeyName()) });
-        }
-    }
     obs2 = ({});
     foreach(object tempob in obs){
         string *base_names = ({});
-        foreach( object tempob2 in obs2 ) base_names += ({ base_name(tempob2) });
-        if(!sizeof(obs2)){
-            obs2 = ({tempob});
+        foreach( object tempob2 in obs2 ){
+            base_names += ({ base_name(tempob2) });
         }
-        else if(member_array(base_name(tempob), base_names) == -1) obs2 += ({ tempob });
+        if(member_array(base_name(tempob), base_names) == -1){
+            obs2 += ({ tempob });
+        }
     }
     maxi = sizeof(obs2); 
-    i = (int)this_player()->GetScreen()[0];
+    i = this_player()->GetScreen()[0];
     if(number = to_int(args)){
         if((number > 0) && (number <= maxi)){
+            int tmp;
             while( i-- ) list[1] += "_";
-            list += ({ sprintf("%d      %:-35s %d", number, (string)obs2[(number - 1)]->GetShort(), GetCost(obs2[(number - 1)],who)) });
+            if(intp(number) && 
+              (tmp = to_int(ceil(GetCost(obs2[(number - 1)],who))))){
+                list += ({ sprintf("%d      %:-35s %d", number, 
+                obs2[(number - 1)]->GetShort(), tmp) });
+            }
             this_player()->eventPage(list);
             return 1;
         }

@@ -165,7 +165,7 @@ mixed CanPutInto(object who, object what){
         return capitalize(GetDefiniteShort()) + " is closed.";
     }
 
-    if(inherits("/lib/std/storage",what) ){
+    if(inherits(LIB_STORAGE, what) ){
         yourdepth = what->GetRecurseDepth();
         mydepth = this_object()->GetRecurseDepth();
         if(yourdepth && mydepth) total = yourdepth + mydepth;

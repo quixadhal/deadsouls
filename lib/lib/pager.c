@@ -22,9 +22,6 @@ varargs mixed eventPage(mixed val, mixed msg_class, function f,mixed args...){
     int maxi;
 
     if( InPager ) return "You are already in the pager.";
-    if(query_charmode(this_object())){
-        receive("\r\e[2J");
-    }
     if( !stringp(val) && !arrayp(val) )
         error("Bad argument 1 to eventPage().\n");
     if(!sizeof(val)) return 0;

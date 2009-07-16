@@ -68,7 +68,11 @@ int SetDrainRate(int i){
     return i;
 }
 
-int eventUse(int i){
+varargs int eventUse(mixed i, mixed foo){
+    if(query_verb() == "use"){
+        write("That's not how it works.");
+        return 1;
+    }
     Lit = i;
     foreach(object ob in all_inventory(this_object())){
         ob->eventUse(i);

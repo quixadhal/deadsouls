@@ -49,6 +49,7 @@ int cmd( string a )
     "#include ROOMS_H\n"+
     "#include <localtime.h>\n"+
     "#include <daemons.h>\n"+
+    "#include <network.h>\n"+
     "#include <news.h>\n"+
     "#include <objects.h>\n"+
     "#include <commands.h>\n"+

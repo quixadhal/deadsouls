@@ -92,6 +92,7 @@ static private mapping tags = ([
         "ifree"         : "%^B_BLUE%^%^GREEN%^",
 
         "default"     : "%^BOLD%^BLUE%^",
+        "default-IMC2" : "%^BOLD%^WHITE%^%^B_BLUE%^",
         ]);
 
 static void Setup(){
@@ -104,11 +105,11 @@ static void Setup(){
 
     if(find_object(INTERMUD_D)){
         if(arrayp(INTERMUD_D->GetChannels()))
-            remote_chans += INTERMUD_D->GetChannels();
+            remote_chans += distinct_array(INTERMUD_D->GetChannels());
     }
     if(find_object(IMC2_D)){
         if(arrayp(IMC2_D->GetChanList()))
-            remote_chans += IMC2_D->GetChanList();
+            remote_chans += distinct_array(IMC2_D->GetChanList());
     }
 
     foreach(string foo in remote_chans){
@@ -125,6 +126,7 @@ static void Setup(){
             }
         }
     }
+    remote_chans = distinct_array(remote_chans);
 }
 
 static void create() {
@@ -167,7 +169,7 @@ string *AddRemoteChannel(mixed chan){
             chan -= ({ element });
         }
     }
-    return copy(distinct_array(remote_chans += chan));
+    return copy(remote_chans = distinct_array(remote_chans += chan));
 }
 
 string *RemoveRemoteChannel(mixed chan){
@@ -180,7 +182,7 @@ string *RemoveRemoteChannel(mixed chan){
             chan -= ({ element });
         }
     }
-    return copy(distinct_array(remote_chans -= chan));
+    return copy(remote_chans = distinct_array(remote_chans -= chan));
 }
 
 varargs string *GetRemoteChannels(int localized){
@@ -662,6 +664,9 @@ int cmdChannel(string verb, string str){
     if(member_array(GetRemoteChannel(verb), remote_chans) != -1
             && member_array(verb, local_chans) == -1){
         if (rc[0..5] == "Server") { //It's an IMC2 channel
+            if(IMC2_D->getonline() != 1){
+                return 1;
+            }
             name = replace_string(name, " ", "");
             if( ob ) {
                 IMC2_D->channel_out(name, rc, replace_string(replace_string(str,"$N ",""),"$O",target), emote);
@@ -681,7 +686,6 @@ int cmdChannel(string verb, string str){
     else {
         //INSTANCES_D->eventSendChannel(name, rc, str, emote, convert_name(targetkey), target_msg);
     }
-
     return 1;
 }
 
@@ -757,10 +761,17 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         if (member_array(lower_case(ch),keys(tags)) >= 0) { //If there's an entry for the channel
             this_msg = tags[lower_case(ch)]; //Use it
         } else { //Otherwise
-            this_msg = tags["default"];	//Use the default entry
+            if(member_array(ch, local_chans) < 0 && (prev == IMC2_D ||
+              member_array(ch, (keys(INTERMUD_D->GetChannelList()) 
+              || ({}))) < 0)){
+                this_msg = tags["default-IMC2"]; //Use the default IMC2 entry
+            }
+            else {
+                //debug("1");
+                this_msg = tags["default"]; //Use the default entry
+            }
         }
 
-        //this_msg += "<" + ch + ">%^RESET%^ ";
         msg = replace_string(msg, "$N", who);
         if( target ) {
             msg = replace_string(msg, "$O", target);
@@ -825,7 +836,15 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         if (member_array(lower_case(ch),keys(tags)) >= 0) { //If there's an entry for the channel
             chancolor = tags[lower_case(ch)]; //Use it
         } else { //Otherwise
-            chancolor = tags["default"]; //Use the default entry
+            if(member_array(ch, local_chans) < 0 && (prev == IMC2_D ||
+              member_array(ch, (keys(INTERMUD_D->GetChannelList()) 
+              || ({}))) < 0)){
+                chancolor = tags["default-IMC2"]; //Use the default IMC2 entry
+            }
+            else {
+                //debug("2");
+                chancolor = tags["default"]; //Use the default entry
+            }
         }
 
         pmsg = msg;

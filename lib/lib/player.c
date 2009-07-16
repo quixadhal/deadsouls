@@ -23,6 +23,7 @@ string *Muffed = ({});
 private mapping *Deaths;
 private int TrainingPoints, TitleLength;
 private static int heartcount;
+private mixed telopt_ip;
 
 /* *****************  /lib/player.c driver applies  ***************** */
 
@@ -36,6 +37,7 @@ static void create(){
 
 static void heart_beat(){
     mixed heartping = GetProperty("keepalive");
+    int idle = query_idle(this_object());
     heartcount++;
 
     if(!interactive(this_object())){
@@ -50,7 +52,8 @@ static void heart_beat(){
         }
     }
     interactive::heart_beat();
-    if( IDLE_TIMEOUT && query_idle(this_object()) >= IDLE_TIMEOUT 
+
+    if( IDLE_TIMEOUT && idle >= IDLE_TIMEOUT 
             && !builderp(this_object()) 
             && !present("testchar badge",this_object()) 
             && !present("idler_amulet",this_object()) 
@@ -284,27 +287,6 @@ int eventReleaseObject(object foo){
 }
 
 void eventLoadObject(mixed *value, int recurse){ }
-
-static mixed eventUse(object used, string cmd){
-    object old_agent;
-    mixed tmp;
-    string mess = "";
-
-    mess += "------\n";
-    mess += timestamp()+":\n";
-    mess += "/lib/player.c: eventUse() hit.\n";
-    mess += "stack: "+get_stack()+"\n";
-    mess += "previous: "+identify(previous_object(-1))+"\n"; 
-    mess += "------\n";
-    log_file("player_errors",mess);
-    return 0;
-    old_agent = this_agent(used);
-    tmp = parse_sentence(cmd);
-    this_agent(old_agent);
-    message("info", tmp, this_object());
-    if( stringp(tmp) ) message("error", tmp, this_object());
-    else return tmp;
-}
 
 /* *****************  /lib/player.c modal functions  ***************** */
 
@@ -653,4 +635,16 @@ varargs int eventTrain(string skill, int points){
         AddSkillPoints(skill, to_int( (max * x) / 100 ));
     }
     return 1;
+}
+
+mixed GetTeloptIp(){
+    if(previous_object() && base_name(previous_object()) != SEFUN &&
+      !(archp(this_player())) && previous_object() != this_object()) return 0;
+    return telopt_ip;
+}
+
+mixed SetTeloptIp(mixed str){
+    if(base_name(previous_object()) != LIB_CONNECT &&
+      !(archp(this_player()))) return 0;
+    return telopt_ip = str;
 }
