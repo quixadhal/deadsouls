@@ -21,7 +21,7 @@
 #define ENOSR 63
 #endif
 
-#ifndef MAX
+#ifdef WIN32
 #define MAX(A,B) ((A) > (B) ? (A) : (B))
 #endif
 
