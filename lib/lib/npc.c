@@ -92,7 +92,7 @@ void CheckEncounter(){
             int x = 0;
 
             if( functionp(Encounter) ){
-                x = (int)evaluate(Encounter, dude);
+                x = evaluate(Encounter, dude);
             }
             else if( arrayp(Encounter) ){	    
                 if( member_array(dude->GetKeyName(), Encounter) > -1 ){
@@ -286,7 +286,7 @@ mixed eventTurn(object who){
 
 void eventEnemyDied(object ob){
     living::eventEnemyDied(ob);
-    EnemyNames -= ({ (string)ob->GetKeyName() });
+    EnemyNames -= ({ ob->GetKeyName() });
 }
 
 int eventMove(mixed dest){
@@ -356,8 +356,8 @@ int eventReceiveObject(object who){
 
     ob = previous_object();
     if( !ob || !container::eventReceiveObject() ) return 0;
-    AddCarriedMass((int)ob->GetMass());
-    if(environment()) environment()->AddCarriedMass((int)ob->GetMass());
+    AddCarriedMass(ob->GetMass());
+    if(environment()) environment()->AddCarriedMass(ob->GetMass());
     return 1;
 }
 
@@ -367,7 +367,7 @@ int eventReleaseObject(object who){
     ob = previous_object();
     if( !ob || !container::eventReleaseObject() ) return 0;
     if( ob->GetMass() ){
-        AddCarriedMass( -((int)ob->GetMass()) );
+        AddCarriedMass( -(ob->GetMass()) );
         if(environment()) environment()->AddCarriedMass(-(ob->GetMass()));
     }
     return 1;
@@ -375,7 +375,7 @@ int eventReleaseObject(object who){
 
 varargs int eventShow(object who, string str){
     if( !living::eventShow(who, str) ) return 0;
-    eventPrint((string)this_player()->GetName() + " looks you over.");
+    eventPrint(this_player()->GetName() + " looks you over.");
     return 1;
 }
 
@@ -383,9 +383,7 @@ varargs int eventShow(object who, string str){
 
 int CanCarry(int amount){ return living::CanCarry(amount); }
 
-mixed CanGet(object who){ return GetName() + " is a living being!"; }
-
-int CanReceive(object ob){ return CanCarry((int)ob->GetMass()); }
+int CanReceive(object ob){ return CanCarry(ob->GetMass()); }
 
 /*  ***************  /lib/npc.c lfuns  ***************  */
 
@@ -569,7 +567,7 @@ varargs string GetLong(string str){
     what = "The "+GetGender()+" "+GetRace();
     str += living::GetLong(what);
     foreach(item in map(all_inventory(),
-                (: (string)$1->GetAffectLong(this_object()) :))){
+                (: $1->GetAffectLong(this_object()) :))){
         if(item && member_array(item,affects) == -1) affects += ({ item });
     }
     if(sizeof(affects)) str += implode(affects,"\n")+"\n";
@@ -582,8 +580,8 @@ varargs string GetLong(string str){
     }
     counts = ([]);
     foreach(item in map(
-                filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
-                (: (string)$1->GetEquippedShort() :)))
+                filter(all_inventory(), (: !($1->GetInvis(this_object())) :)),
+                (: $1->GetEquippedShort() :)))
         if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
@@ -637,7 +635,7 @@ int AddEnemy(object ob){
     string tmp;
 
     if( !living::AddEnemy(ob) ) return 0;
-    if( member_array(tmp = (string)ob->GetKeyName(), EnemyNames) == -1 )
+    if( member_array(tmp = ob->GetKeyName(), EnemyNames) == -1 )
         EnemyNames += ({ tmp });
     return 1;
 }

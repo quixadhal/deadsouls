@@ -3,8 +3,8 @@
 
 ADMIN: 
 
-* To change your mud's name, use the command: admintool
-  and select the "driver" menu. Do the same for port number.
+* To change your mud's name, use the command: mudconfig.
+  For example: mudconfig mudname My Cool New Mud
 
 * To make someone else an assistant admin also use admintool.
   Select groups, and modify the assist group.

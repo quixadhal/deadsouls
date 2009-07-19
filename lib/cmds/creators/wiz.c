@@ -1,21 +1,26 @@
-/*    /cmds/creators/wiz.c
- *    Created by Zin@Frontiers
- *    Sun Sep 21 21:00:16 1997 EDT
- */
-
 #include <lib.h>
-#include <daemons.h>
+#include <rooms.h>
 
-inherit LIB_DAEMON;
+mixed cmd(){
+    object who = this_player();
+    object room = load_object(ROOM_WIZ);
+    int ret, err;
 
-mixed cmd(string str) {
-    write("You speed to the Creators' Hall.\n");
-    this_player()->eventMoveLiving("/domains/default/room/wiz_hall");
+    if(!room){
+        write("There seems to be a problem with the wiz room.");
+        return 1;
+    }
+
+    err = catch( ret = who->eventMoveLiving(room) );
+
+    if(err || !ret){
+        write("Looks like some kind of problem getting into the wiz room.");
+    }
+
     return 1;
 }
 
-void help() {
+void help(){
     message("help", "Syntax: wiz\n\n"
-            "This command will move you to the Creators' Hall.\n\n",
-            this_player());
-}                                                    
+        "Transports you to the wiz room.\n", this_player());
+}

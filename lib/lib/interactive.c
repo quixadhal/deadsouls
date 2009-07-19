@@ -607,6 +607,15 @@ static void heart_beat(){
         PlayerStatus["Edit"] = 0;
         INSTANCES_D->SendWhoUpdate(GetKeyName());
     }
+    if(this_object()->GetTeloptIp() && !GetCharmode()){
+        int oldlock = GetProperty("screenlock");
+        SetCharmode(1);
+        SetProperty("reprompt",1);
+        SetProperty("keepalive", 5);
+        SetProperty("screenlock", 0);
+        SetScreen(80, 25);
+        SetProperty("screenlock", oldlock);
+    }
     autosave::heart_beat();
 }
 

@@ -57,6 +57,15 @@ mixed cmd(string args) {
         exec(cre_ob, ob);
         cre_ob->SetProperty("brand_spanking_new",0);
         cre_ob->Setup();
+        if(cre_ob->GetTeloptIp() && !cre_ob->GetCharmode()){
+            int oldlock = cre_ob->GetProperty("screenlock");
+            cre_ob->SetCharmode(1);
+            cre_ob->SetProperty("reprompt",1);
+            cre_ob->SetProperty("keepalive", 5);
+            cre_ob->SetProperty("screenlock", 0);
+            cre_ob->SetScreen(80, 25);
+            cre_ob->SetProperty("screenlock", oldlock);
+        }
         ob->eventDestruct();
         message("system", "You are now a creator.", cre_ob);
         message("shout", (string)cre_ob->GetName() + " is now a creator!",

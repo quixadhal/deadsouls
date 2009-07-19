@@ -413,6 +413,7 @@ static void ConfirmReconnect(string ans, string cap) {
         int oldlock = Player->GetProperty("screenlock");
         Player->SetCharmode(1);
         Player->SetProperty("reprompt",1);
+        Player->SetProperty("commandecho", "blue");
         Player->SetProperty("keepalive", 5);
         Player->SetProperty("screenlock", 0);
         Player->SetScreen(80, 25);
@@ -464,6 +465,7 @@ static private void eventEnterGame() {
         int oldlock = Player->GetProperty("screenlock");
         Player->SetCharmode(1);
         Player->SetProperty("reprompt",1);
+        Player->SetProperty("commandecho", "blue");
         Player->SetProperty("keepalive", 5);
         Player->SetProperty("screenlock", 0);
         Player->SetScreen(80, 25);
@@ -930,6 +932,6 @@ mixed receive_environ(mixed foo){
     }
     if(!telopt_user && UserVars["USER"]) telopt_user = UserVars["USER"];
     //tc("telopt_user: "+telopt_user, "green");
-    tc("UserVars: "+identify(UserVars));
+    tn("UserVars: "+identify(UserVars));
     return ret;
 }

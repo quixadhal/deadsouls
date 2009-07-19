@@ -154,13 +154,13 @@ mixed direct_get_obj(mixed args...){
     int theirsize = this_player()->GetSize(1);
     if(archp(this_player())) return 1;
     if(creatorp(this_player()) && !creatorp(this_object())){
-        return 1;
+        return get::direct_get_obj(args...);
     }
     if(interactive(this_player()) && creatorp(this_object())){
         return "NO.";
     }
     if(this_object()->GetBefriended(this_player())) return 1;
-    if((theirsize - mysize) > 1) return 1;
+    if((theirsize - mysize) > 1) return get::direct_get_obj(args...);
     return "It's too big!";
 }
 

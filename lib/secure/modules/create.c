@@ -20,7 +20,7 @@ string *item_arr = base_arr + ({"SetLanguage","SetRead","SetDefaultRead","SetDis
 string *meal_arr = item_arr + ({ "SetMealType", "SetStrength"}) -({"SetDamagePoints"});
 string *storage_arr = item_arr + ({"SetOpacity", "SetMaxCarry","SetInventory", "SetCanClose", "SetCanLock","SetMaxRecurse","SetLocked","SetClosed","SetKey"});
 string *room_arr = base_arr - ({"SetUnique"}) + ({"SetFlowLimit","SetFlyRoom", "SetSinkRoom", "SetTerrainType","AddTerrainType","SetLanguage", "SetRead", "SetDefaultRead", "SetNoObviousExits","SetDefaultExits","SetTown","SetNightLong","SetDayLong","SetClimate","SetAmbientLight","SetNightLight","SetDayLight","SetObviousExits", "SetInventory", "SetEnters"});
-string *npc_arr = base_arr - ({"SetItems"}) + ({"SetMass","SetBodyType","SetSize","SetRespiration","SetMount","SetCanBefriend","SetDefaultLanguage","SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat", "SetNoCondition", "SetAttackable", "SetPolyglot"});
+string *npc_arr = base_arr - ({"SetItems"}) + ({"SetMass","SetBodyType","SetSize","SetRespiration","SetMount","SetCanBefriend","SetDefaultLanguage","SetNativeLanguage","SetCustomXP", "SetSpellBook", "SetCanBite", "SetWimpy","SetWimpyCommand","SetPacifist", "SetBodyComposition", "SetSleeping","SetPermitLoad", "SetAutoStand","SetCurrency","SetSkills","SetStats","SetKeyName", "SetId", "SetLevel", "SetRace", "SetClass","SetGender", "SetInventory", "SetHealthPoints","SetMaxHealthPoints", "SetAdjectives", "SetMelee", "SetPosition", "SetWanderSpeed", "SetEncounter", "SetMorality", "SetHeartBeat", "SetNoCondition", "SetAttackable", "SetPolyglot", "SetPreventGet", "SetMount", "CanBefriend"});
 string *barkeep_arr = npc_arr + ({"SetLocalCurrency","SetMenuItems"});
 string *trainer_arr = npc_arr + ({"SetNoSpells", "AddTrainingSkills"});
 string *vendor_arr = npc_arr + ({"SetLocalCurrency","SetStorageRoom","SetMaxItems","SetVendorType"});
@@ -472,6 +472,12 @@ mixed eventModify(object ob, string str){
             case "setflyroom" : out = "SetFlyRoom";break;
             case "setsinkroom" : out = "SetSinkRoom";break;
             case "sinkroom" : out = "SetSinkRoom";break;
+            case "befriend" : out = "CanBefriend";break;
+            case "setbefriend" : out = "CanBefriend";break;
+            case "setcanbefriend" : out = "CanBefriend";break;
+            case "canbefriend" : out = "CanBefriend";break;
+            case "mount" : out = "SetMount";break;
+            case "setmount" : out = "SetMount";break;
             default : out = mode;
         }
     }

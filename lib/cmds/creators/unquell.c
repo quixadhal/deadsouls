@@ -1,5 +1,3 @@
-// By Magnafix 10-14-96
-// required addition of list_new_posts() in bboard daemon
 #include <daemons.h>
 #include <lib.h>
 
@@ -17,8 +15,6 @@ int cmd(string str){
 
     return 1;
 }
-
-
 
 string GetHelp(string str) {
     return "Syntax: <unquell>\n"

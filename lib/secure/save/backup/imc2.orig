@@ -21,7 +21,7 @@
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
 //#define HOSTNAME "server01.mudbytes.net"
 #define HOSTPORT 5000
-#define HOSTIP "64.186.131.155"
+#define HOSTIP "74.207.247.83"
 
 // Connection data for Kayle's server
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses

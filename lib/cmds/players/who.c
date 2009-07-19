@@ -108,6 +108,7 @@ int cmd(string args) {
             }
         }
         ret+=center(mud_name());
+        ret+="\n";
         ret+=SEP;
         ret+=tmp;
         instances = singular_array(INSTANCES_D->GetInstances());

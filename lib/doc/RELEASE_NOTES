@@ -1,4 +1,5 @@
----- 2.11a7 (unreleased) ---
+---- 2.11a8 ---
+- Released 2009-17-19
 - Driver is now a slightly modified pre-release Fluffos 2.17.
 - Fixed remote channel problem in CHAT_D.
 - /secure/include/mssp.h is now somewhat more individualized.
