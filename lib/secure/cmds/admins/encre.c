@@ -73,7 +73,10 @@ mixed cmd(string args) {
         if(file_exists(filep)) rm(filep);
         make_workroom(cre_ob, 1);
         if(directory_exists(home_dir)){
-            rename(home_dir, homedir(cre_ob,1)+"/estate");
+            string new_dir = homedir(cre_ob,1)+"/estate";
+            if(strsrch(new_dir, home_dir)){
+                rename(home_dir, new_dir);
+            }
         }
         cre_ob->eventForce("home");
         cre_ob->eventForce("cd");

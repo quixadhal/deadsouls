@@ -173,13 +173,17 @@ varargs string SetRace(string race, mixed extra){
         }
     }
 
-    foreach(tmp in args[0]){
-        mixt = copy(args[0]);
-        SetResistance(tmp...);
+    if(sizeof(args[0])){
+        foreach(tmp in args[0]){
+            mixt = copy(args[0]);
+            SetResistance(tmp...);
+        }
     }
-    foreach(tmp in args[1]){
-        mixt = copy(args[1]);
-        AddStat(tmp...);
+    if(sizeof(args[1])){
+        foreach(tmp in args[1]){
+            mixt = copy(args[1]);
+            AddStat(tmp...);
+        }
     }
     if( stringp(args[2]) ){
         mixt = copy(args[2]);
@@ -193,7 +197,6 @@ varargs string SetRace(string race, mixed extra){
     }
     if( sizeof(args[3]) == 2 ){
         mixt = copy(args[3]);
-
         SetLightSensitivity(args[3]...);
     }
     if( extra != 1 ) NewBody(race);

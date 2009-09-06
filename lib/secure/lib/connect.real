@@ -915,23 +915,14 @@ int GetMaxPlayers(){
     return MaxPlayers;
 }
 
-mixed receive_environ(mixed foo){
-    string tmp, uservar;
+void receive_environ(mixed foo){
     mixed *uservars;
-    int ret;
-    //tc("foo: "+identify(foo));
-    ret = sscanf(foo, "%*sSER%sENDUSER%*s", tmp);
-    //tc("ret: "+ret+", foo: "+identify(foo));
-    if(ret == 3) telopt_user = tmp;
     uservars = explode(foo, sprintf("%c", __ANSI_SUBSTITUTE__));
-    foreach(uservar in uservars){
+    foreach(string uservar in uservars){
         mixed tmp_arr = explode(uservar, sprintf("%c", 1));
         if(!sizeof(tmp_arr)) continue;
         if(sizeof(tmp_arr) < 2) tmp_arr += ({ 0 });
         UserVars[tmp_arr[0]] = tmp_arr[1];
     }
     if(!telopt_user && UserVars["USER"]) telopt_user = UserVars["USER"];
-    //tc("telopt_user: "+telopt_user, "green");
-    tn("UserVars: "+identify(UserVars));
-    return ret;
 }

@@ -1,3 +1,10 @@
+---- 2.11a10 (unreleased) ---
+- driver: Added Wodan's fix for NEW-ENVIRON.
+- Fixed skill problem in CLASSES_D.
+- i3router: Added Aidil's irn-mudlist-req and a check for when
+  a "disconnected" mud sends a packet.
+- Miscellaneous minor fixes.
+
 ---- 2.11a9 ---
 - Released 2009-07-19
 - Driver is now a slightly modified pre-release Fluffos 2.17.
@@ -6,7 +13,7 @@
 - Added commands: screenlock, weigh
 - driver: Added partial support for telopts NEW-ENVIRON (rfc 1572).
   A connection that supports this will cause the driver to call
-  an the receive_environ() apply in LIB_CONNECT, sending the env data
+  the receive_environ() apply in LIB_CONNECT, sending the env data
   as a single string.
 - Added support for using anyterm (http://anyterm.org) as
   a client while still identifying player IP's.

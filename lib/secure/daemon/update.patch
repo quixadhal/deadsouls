@@ -2,6 +2,10 @@
 #include <daemons.h>
 #include <commands.h>
 
+#ifndef LOG_D
+#define LOG_D "/secure/daemon/log"
+#endif
+
 mapping EventsMap = ([]);
 mixed *event_funs = ({});
 int connect_warn;

@@ -25,12 +25,12 @@ static int LevelSort(mixed one, mixed two){
         s2 = two->GetName();
         if(creatorp(two)) alpha = 1;
     }
-    if(stringp(one) && sizeof(instinfo) && instinfo[one]){
+    if(stringp(one) && sizeof(instinfo) && mapp(instinfo[one])){
         i1 = instinfo[one]["level"];
         s1 = one;
         if(instinfo[one]["creator"]) alpha = 1;
     }
-    if(stringp(two) && sizeof(instinfo) && instinfo[two]){
+    if(stringp(two) && sizeof(instinfo) && mapp(instinfo[two])){
         i2 = instinfo[two]["level"];
         s2 = two;
         if(instinfo[two]["creator"]) alpha = 1;

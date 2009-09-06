@@ -206,7 +206,8 @@ string *CompilePlayerList(){
     players = ({});
     if(!user_list) user_list = ({});
     foreach(string subdir in play_dirs){
-        plays += unguarded( (: get_dir,DIR_PLAYERS+"/"+subdir+"/" :) );
+        mixed tmp_plays = unguarded((: get_dir,DIR_PLAYERS+"/"+subdir+"/" :));
+        if(tmp_plays) plays += tmp_plays;
     }
 #if ENABLE_INSTANCES
     plays = filter(plays, (: grepp($1, ""+__PORT__) :) );

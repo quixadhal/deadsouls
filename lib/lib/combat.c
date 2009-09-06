@@ -32,7 +32,7 @@ private int Wimpy, Dead;
 private string WimpyCommand;
 private static int cParalyzed, tNextRound, AttacksPerHB;
 private static string TargetLimb, Party;
-private static object CurrentEnemy;
+private static object CurrentEnemy, genv;
 private static function fParalyzed, fNextRound;
 private static object *Hostiles, *Enemies, *SpecialTargets, *NonTargets;
 private static object *PriorEnemies;
@@ -1116,22 +1116,22 @@ mixed eventTurn(object who){
 }
 
 int eventWimpy(int i){
-    object env = room_environment();
     string dir, cmd;
+    genv = room_environment();
 
-    if( !env || !GetInCombat() ){
+    if( !genv || !GetInCombat() ){
         if(!i) return 0;
     }
     cmd = WimpyCommand || "go out";
-    if( (sscanf(cmd, "go %s", dir) && !((string)env->GetExit(dir))) ||
-            (sscanf(cmd, "enter %s", dir) && !((string)env->GetEnter(dir))) ){
+    if( (sscanf(cmd, "go %s", dir) && !(genv->GetExit(dir))) ||
+            (sscanf(cmd, "enter %s", dir) && !(genv->GetEnter(dir))) ){
         string *tmp;
 
-        tmp = filter((string *)environment()->GetExits(),
-                (: !((string)environment()->GetDoor($1)) :));
+        tmp = filter((genv->GetExits() || ({})),
+                (: !(genv->GetDoor($1)) :));
         if( !sizeof(tmp) ){
-            tmp = filter((string *)environment()->GetEnters(),
-                    (: !((string)environment()->GetDoor($1)) :));
+            tmp = filter(genv->GetEnters(),
+                    (: !(genv->GetDoor($1)) :));
             if( !sizeof(tmp) ){
                 this_object()->eventPrint("You need to escape, but you have nowhere to go!");
                 return 0;

@@ -11,7 +11,10 @@ inherit LIB_DAEMON;
 
 int cmd(string str) {
     if(!archp(previous_object())) return 0;
-    if(!str) return 0;
+    if(!str){
+        write("Syntax: unbanish <string>");
+        return 1;
+    }
     write(capitalize(str = lower_case(str))+" is no longer banished.\n");
     catch(call_other(BANISH_D, "unbanish_name", str));
     return 1;

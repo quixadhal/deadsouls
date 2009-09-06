@@ -132,50 +132,20 @@ mixed calculate_coordinates(string str, int x, int y, int z, string type){
 }
 
 object room_environment(object ob){
-#if 1
     foreach(object element in containers(ob)){
         if(inherits(LIB_ROOM, element)){
             return element;
         }
     }
     return 0;
-#else
-    object ret;
-    object *envs = containers(ob);
-    int i = sizeof(envs);
-    for(i--; i > 0; i--){
-        if(inherits(LIB_ROOM, envs[i])){
-            return envs[i];
-        }
-    }
-    return 0;
-#endif
-}
-
-float calculate_slope(int x1, int y1, int x2, int y2){
-    float x3 = x1 - x2;
-    float y3 = y1 - y2;
-    float ret = y3/x3;
-    return ret;
 }
 
 int bearing(int x1, int y1, int x2, int y2){
-    float ret;
-    int y = y2 + ( 0 - y1 );
-    int x = x2 + ( 0 - x1 );
-    ret = atan(calculate_slope(0,0,x,y));
-    ret = abs(ret * (180/3.141592));
-    if(x1 < x2 && y1 < y2){
-        ret = 90 - ret;
-    }
-    if(x1 < x2 && y1 > y2){
-        ret = ret + 90;
-    }
-    if(x1 > x2 && y1 > y2){
-        ret = 270 - ret;
-    }
-    if(x1 > x2 && y1 < y2){
-        ret += 270;
-    }
+    float inter = (y2 - y1);
+    float mark = (x2 - x1);
+    float range = sqrt(pow(mark, 2) + pow(inter, 2));
+    int corr = (mark >= 0 ? 0 : 180);
+    int ret = (acos(to_float(corr ? -inter : inter)/range) * (180/3.141592)) + corr;
+    //tc("ret: "+ret);
     return ret;
 }

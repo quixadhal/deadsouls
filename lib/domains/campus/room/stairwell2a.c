@@ -21,18 +21,19 @@ int PreExit(mixed args...){
 void create() {
     room::create();
     SetAmbientLight(30);
-    SetShort("Science Building Hallway");
-    SetLong("This is the main hallway in the LPC University Science Building. The hallway runs east and west from here. To the south is a sliding door. North of here is the stargate laboratory.");
+    SetShort("Science Building Stairwell, First floor");
+    SetLong("This is the first floor stairwell of the University Science Building.");
     AddExit("south", "/domains/campus/room/hazlab", (: PreExit :));
     SetClimate("indoors");
     SetItems( ([ 
         ({ "door","sliding door" }) : "A strange, metallic sliding door.",
       ]) );
     SetExits( ([
-        "north" : "/domains/campus/room/slab",
-        "east" : "/domains/campus/room/science1",
-        "west" : "/domains/campus/room/science3.c",
+        "north" : "/domains/campus/room/science6",
+        "up" : "/domains/campus/room/stairwell2b",
+        "west" : "/domains/campus/room/alcove1.c",
       ]) );
+
 }
 void init(){
     ::init();

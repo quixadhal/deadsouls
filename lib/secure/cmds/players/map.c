@@ -9,7 +9,7 @@ mixed cmd(string args) {
     if(!i) i = 6;
     if(!creatorp(this_player())) i = 3;
     if(i <= 30) i = 29;
-    ret = MAP_D->GetMap(environment(this_player()), i);
+    ret = MAP_D->GetMap(environment(this_player()), i, 1);
     write(ret);
     return 1; 
 }

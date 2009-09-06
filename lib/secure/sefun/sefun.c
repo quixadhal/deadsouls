@@ -637,8 +637,10 @@ varargs void input_to(mixed fun, int flag, mixed args...){
     gfun = fun;
 
     if(player && player->GetCharmode()){
-#ifdef __DSLIB__
+#if efun_defined(remove_get_char)
         remove_get_char(player);
+#endif
+#if efun_defined(remove_charmode)
         remove_charmode(player);
 #endif
     }

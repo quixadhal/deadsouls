@@ -11,7 +11,6 @@ static void create() {
                 "west" : "/domains/campus/room/plab"
                 ]) );
     SetDoor("west","/domains/campus/doors/red_door3");
-    SetObviousExits("w");
 }
 void init(){
     ::init();

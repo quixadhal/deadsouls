@@ -81,6 +81,7 @@ void AddClass(string file) {
                 if(sscanf(str, "PLAYER_CLASS %d", foo)){
                     if(!foo) player = 0;
                 }
+            return 0;
             } 
             return 1;
             });

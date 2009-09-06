@@ -11,23 +11,24 @@
 #include <daemons.h>
 #include <message_class.h>
 
-//This is the LPMuds.net experimental IMC2 server. If you are
-//already connected to LPMuds.net intermud using Intermud-3, do
-//not use the LPMuds.net IMC2 server.
-//#define HOSTPORT 8888
-//#define HOSTIP "97.107.133.86"
-
 // Connection data for Davion's server
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
 //#define HOSTNAME "server01.mudbytes.net"
 #define HOSTPORT 5000
 #define HOSTIP "74.207.247.83"
 
-// Connection data for Kayle's server
+// Connection data for Kayle and Samson's server
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
 //#define HOSTNAME "server02.mudbytes.net"
 //#define HOSTPORT 9000
 //#define HOSTIP "66.218.49.113"
+
+//This is the LPMuds.net experimental IMC2 server. If you are
+//already connected to LPMuds.net intermud using Intermud-3, do
+//not use the LPMuds.net IMC2 server.
+//#define HOSTPORT 8888
+//#define HOSTIP "97.107.133.86"
+
 
 // What name the network knows your mud as. Replace MUD_NAME with "whatever" if you want it to be different.
 #define MUDNAME (imc2_mud_name())

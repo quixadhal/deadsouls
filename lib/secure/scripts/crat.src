@@ -117,6 +117,8 @@ call me->RemoveChannel("havenlib")
 call me->AddChannel("muds")
 chan block muds
 chan block i2game
+chan block ibuild
+chan block ievennia
 chan unblock inews
 chan unblock i2news
 alias intermud intergossip http://lpmuds.net/intermud.html

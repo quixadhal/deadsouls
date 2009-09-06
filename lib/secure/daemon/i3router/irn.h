@@ -5,6 +5,7 @@
 static string my_name = ROUTER_NAME;
 static string my_password = IRN_PASSWORD;
 static string *ok_ips = ({});
+static string *desynced = ({});
 static int irn_reconnect = 0;
 static int irn_timeout = 120;
 static int irn_maxtry = 32;
@@ -147,6 +148,10 @@ void irn_checkstat(){
         setuptype = 1;
     }
 
+    foreach(mixed key, mixed val in irn_connections){
+        if(!sizeof(key) || !sizeof(val)) map_delete(irn_connections, key);
+    }
+
     if((sizeof(routers) -1) != sizeof(irn_connections)){
         string *stragglers = ({});
         trr("expected "+(sizeof(routers) -1)+" connections, "+identify(routers));
@@ -170,6 +175,17 @@ void irn_checkstat(){
     }
 }
 
+void check_desync(){
+    if(sizeof(desynced)){
+        desynced = singular_array(desynced);
+        foreach(string rtr in desynced){
+            trr(rtr+" desynced", "red");
+            this_object()->SendListReq(rtr, "mudlist");
+            desynced -= ({ rtr });
+        }
+    }
+}
+        
 static int GoodPeer(int fd, mixed data){
     string ip = explode(socket_address(fd)," ")[0];
     if(!irn_enabled) return 0;
@@ -516,6 +532,18 @@ static void irn_read_callback(int fd, mixed data){
         PingMap[data[2]] = time();
         this_object()->ReceiveList(data[7],"chanlist",data[2]);
         break;
+        case "irn-mudlist-req" :
+            if(!ValidatePeer(fd, data)) {
+                trr("irn-data: peer on fd"+fd+" failed validation.");
+                this_object()->close_connection(fd);
+                if(irn_sockets[fd]) map_delete(irn_sockets, fd);
+                irn_checkstat();
+                return;
+            }
+        PingMap[data[2]] = time();
+        trr("\nresponding to irn-mudlist-req from "+fd+"\n");
+        this_object()->SendWholeList(fd, "mudlist");
+        break;
         case "irn-data" :
             if(!ValidatePeer(fd, data)) {
                 trr("irn-data: peer on fd"+fd+" failed validation.");
@@ -532,6 +560,10 @@ static void irn_read_callback(int fd, mixed data){
                 }
             }
         } 
+        if(!MudList[data[6][2]] || !MudList[data[6][2]]["connect_time"]){
+            desynced += ({ data[2] });
+            desynced = singular_array(desynced);
+        }
         trr("irn_read_callback sending read_callback("+
                 identify(data[6][2])+", "+identify(data[6])+")");
         this_object()->read_callback(data[6][2],data[6]);
@@ -697,6 +729,24 @@ static void SendMessage(mixed data){
         write_data(router, packet);
     }
     }
+}
+
+varargs void SendListReq(mixed rtr, string type){
+    int fd;
+    if(!irn_enabled) return;
+    if(!stringp(rtr)) return;
+    if(!irn_connections[rtr]) return;
+    if(undefinedp(irn_connections[rtr]["fd"])) return;
+    if(irn_connections[rtr]["fd"] < 0) return;
+    fd = irn_connections[rtr]["fd"];
+    write_data(fd, ({
+                "irn-mudlist-req",
+                5,
+                my_name,
+                0,
+                rtr,
+                0,
+                }) );
 }
 
 string Report(){

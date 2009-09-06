@@ -102,7 +102,7 @@ mixed cmd(string str) {
                 return 1;
             }
             else {
-                write(mud_name()+" is not aware of that mud.\n");
+                write(mud_name()+" is offline or doesn't exist.\n");
                 return 1;
             }
         }

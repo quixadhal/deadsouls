@@ -502,11 +502,12 @@ varargs void SetCurrency(mixed val, int amount){
 mixed SetEncounter(mixed val){ return (Encounter = val); }
 
 mixed SetAggressive(mixed val){
-    if(sizeof(Encounter)) return Encounter;
-    else if(val) Encounter = 100;
-    else Encounter = 0;
+    if(!sizeof(Encounter)){
+        if(val) Encounter = 100;
+        else Encounter = 0;
+    }
+    return Encounter;
 }
-
 
 string *AddEncounter(string nom){
     if( !stringp(nom) ) error("Bad argument 1 to AddEncounter()\n");

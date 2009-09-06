@@ -54,7 +54,7 @@ int GetCaching(){
     return caching;
 }
 
-varargs mixed GetMap(mixed args, int size){
+varargs mixed GetMap(mixed args, int size, int forced){
 #if WIZMAP
     string ret = "";
     int i,x,line,tempy,tmpres, res = size;
@@ -78,7 +78,7 @@ varargs mixed GetMap(mixed args, int size){
         ret = "%^RED%^Map unavailable.%^RESET%^";
         return ret;
     }
-    if(caching && MapCache[mycoords]){
+    if((!forced ||caching) && MapCache[mycoords]){
         return MapCache[mycoords];
     }
     start = ([ "x" : myspot["coords"]["x"] - (res/2),
