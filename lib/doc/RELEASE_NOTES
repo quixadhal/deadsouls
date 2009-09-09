@@ -1,9 +1,16 @@
----- 2.11a10 (unreleased) ---
+---- 2.11a11 (unreleased) ---
 - driver: Added Wodan's fix for NEW-ENVIRON.
 - Fixed skill problem in CLASSES_D.
 - i3router: Added Aidil's irn-mudlist-req and a check for when
   a "disconnected" mud sends a packet.
-- Miscellaneous minor fixes.
+- Fixed problems in anyterm connections.
+- Re-enabled number.thing parsing (when did this break?).
+- The pause/unpause commands will now also work on players who aren't logged in.
+- Pausing or decre-ing a creator now also boots them from creweb.
+- Fixed imc2 remote who replies.
+- driver: The parser now defaults to the first matching object, 
+  without having to use "a thing" or "1st thing". For example:
+  "drop key" rather than "drop first key".
 
 ---- 2.11a9 ---
 - Released 2009-07-19

@@ -41,9 +41,76 @@ static void create(){
             DIR_COMMON_CMDS, DIR_SECURE_COMMON_CMDS });
 }
 
-static string process_input(string cmd){ 
-    current_command = cmd;
-    return cmd;
+static string process_input(string args){ 
+    string verb = query_verb();
+    object env = environment(this_object());
+    string *talks = ({ "say", "whisper", "yell", "shout", "speak" });
+    if(Paused){
+        this_object()->eventPrint("You are paused.");
+        return "";
+    }
+    if(!archp(this_object()) && MAX_COMMANDS_PER_SECOND){
+        if(last_cmd_time == time()) cmd_count++;
+        else {
+            last_cmd_time = time();
+            cmd_count = 1;
+        }
+        if(cmd_count > MAX_COMMANDS_PER_SECOND){
+            this_object()->eventPrint("You have exceeded the " +
+              MAX_COMMANDS_PER_SECOND + " commands per second limit.");
+            return "";
+        }
+    }
+    if(this_object()->GetSleeping() > 0){
+        if(verb != "wake"){
+            this_object()->eventPrint("You are asleep.");
+            return "";
+        }
+    }
+    if(OLD_STYLE_PLURALS && args && (member_array(verb, talks) == -1 ||
+      (member_array(verb, talks) != -1 && !strsrch(trim(args),"to ")))){
+        int numba, i, tmp_num;
+        string tmp_ret;
+        string *line = explode(args," ");
+        for(i = 1; i < sizeof(line); i++){
+            string element;
+            if(!line[i]) error("String handling error in old style plural parser.");
+            element = line[i];
+            if(sscanf(element,"%d.%d",numba,tmp_num) != 2 &&
+              sscanf(element,"%d.%s",numba,tmp_ret) == 2){
+                    args = replace_string(args, numba + ".", 
+                      numba + ordinal(numba) + " ");
+                    //tc("args: "+args, "green");
+                    continue;
+            }
+            if(numba = atoi(element)){
+                int j;
+                object o1;
+                string e1, e2, tmp_thing = "";
+                e1 = numba+ordinal(numba);
+                j = member_array(element, line);
+                while(j > 0){
+                    string old_tmp = tmp_thing;
+                    j--;
+                    e2 = line[j];
+                    if(sizeof(tmp_thing)) tmp_thing = e2 + " " + tmp_thing;
+                    else tmp_thing = e2;
+                    o1 = present(tmp_thing);
+                    if(!o1){
+                        o1 = present(old_tmp);
+                        if(o1){
+                            tmp_ret = e1 + " " + old_tmp;
+                            args=replace_string(args,old_tmp+" "+numba,tmp_ret);
+                            //tc("args: "+args, "blue");
+                        }
+                    }
+                }
+            }//end single number check
+        }
+    }
+    //tc("args: "+args, "white");
+    current_command = args;
+    return args;
 }
 
 /*  ***************  /lib/command.c command lfuns  ***************  */
@@ -54,21 +121,7 @@ static int cmdAll(string args){
     string verb, file;
     string *talks = ({ "say", "whisper", "yell", "shout", "speak" });
 
-    if(Paused){
-        return 0;
-    }
-
-    if(!archp(this_player()) && MAX_COMMANDS_PER_SECOND){
-        if(last_cmd_time == time()) cmd_count++;
-        else {
-            last_cmd_time = time();
-            cmd_count = 1;
-        }
-        if(cmd_count > MAX_COMMANDS_PER_SECOND){
-            write("You have exceeded the "+MAX_COMMANDS_PER_SECOND+" commands per second limit.");
-            return 1;
-        }
-    }    
+    //tc("command cmdAll: "+args, "green");
 
     if(!verb) verb = query_verb();
 
@@ -82,12 +135,6 @@ static int cmdAll(string args){
 
     old_agent = this_agent(this_object());
 
-    if(this_player()->GetSleeping() > 0){
-        if(verb != "wake"){
-            this_player()->eventPrint("You are asleep.");
-            return 1;
-        }
-    }
     env = environment();
     if(BARE_EXITS && env){
         localcmds = ({});
@@ -107,36 +154,6 @@ static int cmdAll(string args){
 
     if(COMMAND_MATCHING && sizeof(match_command(verb))){
         verb = match_command(verb);
-    }
-
-    if(OLD_STYLE_PLURALS && args && (member_array(verb, talks) == -1 ||
-                (member_array(verb, talks) != -1 && !strsrch(trim(args),"to ")))){
-        int numba, i;
-        string tmp_ret;
-        string *line = explode(args," ");
-        for(i = 1; i < sizeof(line); i++){
-            string element;
-            if(!line[i]) error("String handling error in old style plural parser.");
-            element = line[i];
-            if(sscanf(element,"%d.%s",numba,tmp_ret) == 2){
-                if(present(numba+ordinal(numba)+" "+tmp_ret,env)){
-                    args = replace_string(args,element,numba+ordinal(numba)+" "+tmp_ret);
-                    continue;
-                }
-            }
-            if(numba = atoi(element)){
-                object o1;
-                string e1, e2;
-                e1 = numba+ordinal(numba);
-                e2 = line[i-1];
-                o1 = present(e2+" "+numba,this_player());
-                if(!o1) o1 = present(e2+" "+numba,env);
-                if(o1){
-                    tmp_ret = e1+" "+e2;
-                    args = replace_string(args,e2+" "+numba,tmp_ret);
-                }
-            }//end single number check
-        }
     }
 
     if(query_custom_command(verb) && query_custom_command(verb) != "" && !creatorp(this_player()) ){
@@ -451,7 +468,8 @@ string GetCurrentCommand(){
 }
 
 int SetPlayerPaused(int i){
-    if( !this_player() || !archp(this_player()) ){
+    if( base_name(previous_object()) != LIB_CONNECT &&
+      (!this_player() || !archp(this_player())) ){
         error("Illegal attempt to pause a player: "+get_stack()+" "+identify(previous_object(-1)));
         log_file("adm/pause",timestamp()+" Illegal attempt to access SetPlayerPaused on "+identify(this_object())+" by "+identify(previous_object(-1))+"\n");
     }

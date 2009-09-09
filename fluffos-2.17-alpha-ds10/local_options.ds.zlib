@@ -65,9 +65,9 @@
  *   * Faster than SMALLOC but more memory overhead.
  *   * Requires sbrk().
  */
-#define SYSMALLOC
+#undef SYSMALLOC
 #undef SMALLOC
-#undef BSDMALLOC
+#define BSDMALLOC
 #undef MMALLOC
 
 /* You may optionally choose one (or none) of these malloc wrappers.  These
@@ -310,12 +310,12 @@
  * the mud_status() efun.  If this is off, mud_status() and memory_info()
  * ignore allocated strings, but string operations run faster.
  */
-#define STRING_STATS
+#undef STRING_STATS
 
 /*
  * Similarly for arrays ...
  */
-#define ARRAY_STATS
+#undef ARRAY_STATS
 
 /* LOG_CATCHES: define this to cause errors that are catch()'d to be
  *   sent to the debug log anyway.
@@ -850,7 +850,7 @@
  * [NOTE: malloc_debug(6) is a good compromise between efficiency and
  *  completeness of malloc debugging (malloc/free will be about half as fast).]
  */
-#define NEXT_MALLOC_DEBUG
+#undef NEXT_MALLOC_DEBUG
 
 
 /* GET_CHAR_IS_BUFFERED: Normally get_char() is unbuffered.  That is, once
@@ -866,8 +866,8 @@
 /* PACKAGE_COMPRESS: Enable MCCP support and compressed save files
    SAVE_GZ_EXTENSION: save extension for compressed files
  */
-#undef HAVE_ZLIB
-#undef PACKAGE_COMPRESS
+#define HAVE_ZLIB
+#define PACKAGE_COMPRESS
 #define SAVE_GZ_EXTENSION ".o.gz"
 
 /* CALL_OTHER_TYPE_CHECK: enable type checking for call_other()

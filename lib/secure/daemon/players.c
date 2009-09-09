@@ -24,12 +24,14 @@ mapping PlayerDataMap = ([]);
 mapping UserData = ([]);
 string *PendingEncres = ({});
 string *PendingDecres = ({});
+string *PendingPauses = ({});
+string *PendingUnpauses = ({});
 string *players = ({});
 string *creators = ({});
 string *user_list = ({});
 static object ob;
 static string gplayer, SaveFile;
-static int maxlevel;
+static int maxlevel, override;
 static string home_dir, LevelList = "";
 
 string player_save_file;
@@ -99,14 +101,15 @@ static mapping QuestLevels = ([
 
 
 void validate(){
-    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) &&
-            base_name(previous_object()) != CGI_LOGIN &&
+    if(!master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) &&
+            base_name(previous_object()) != CGI_LOGIN && !override &&
             base_name(previous_object()) != CMD_RID){
         string offender = identify(previous_object(-1));
         debug("PLAYERS_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" PLAYERS_D breach: "+offender+" "+get_stack());
         error("PLAYERS_D SECURITY VIOLATION: "+offender+" "+get_stack());
     }
+    override = 0;
 }
 
 // This function generates a table of required xp per level.
@@ -246,6 +249,8 @@ void create() {
     ret = RestoreObject(SaveFile);
     if(PendingEncres) PendingEncres = distinct_array(PendingEncres);
     if(PendingDecres) PendingDecres = distinct_array(PendingDecres);
+    if(PendingPauses) PendingPauses = distinct_array(PendingPauses);
+    if(PendingUnpauses) PendingUnpauses = distinct_array(PendingUnpauses);
     if(players) players = distinct_array(players);
     else players = ({});
     if(creators) creators = distinct_array(creators);
@@ -445,6 +450,58 @@ int RemoveUser(string str){
     return 1;
 }
 
+string *GetPendingPauses(){
+    validate();
+    if(!PendingPauses) PendingPauses = ({});
+    return copy(PendingPauses);
+}
+
+string *GetPendingUnpauses(){
+    validate();
+    if(!PendingUnpauses) PendingUnpauses = ({});
+    return copy(PendingUnpauses);
+}
+
+string *AddPendingPause(string str){
+    validate();
+    if(!PendingPauses) PendingPauses = ({});
+    if(str && str != "") PendingPauses += ({ lower_case(str) });
+    SaveObject(SaveFile);
+    return copy(PendingPauses);
+}
+
+string *RemovePendingPause(string str){
+    validate();
+    if(!PendingPauses) PendingPauses = ({});
+    if(!str || str == "") return copy(PendingPauses);
+    str = lower_case(str);
+    if(member_array(str, PendingPauses) != -1){
+        PendingPauses -= ({ lower_case(str) });
+    }
+    SaveObject(SaveFile);
+    return copy(PendingPauses);
+}
+
+string *AddPendingUnpause(string str){
+    validate();
+    if(!PendingUnpauses) PendingUnpauses = ({});
+    if(str && str != "") PendingUnpauses += ({ lower_case(str) });
+    SaveObject(SaveFile);
+    return copy(PendingUnpauses);
+}
+
+string *RemovePendingUnpause(string str){
+    validate();
+    if(!PendingUnpauses) PendingUnpauses = ({});
+    if(!str || str == "") return copy(PendingUnpauses);
+    str = lower_case(str);
+    if(member_array(str, PendingUnpauses) != -1){
+        PendingUnpauses -= ({ lower_case(str) });
+    }
+    SaveObject(SaveFile);
+    return copy(PendingUnpauses);
+}
+
 string *AddPendingEncre(string str){
     validate();
     if(!PendingEncres) PendingEncres = ({});
@@ -544,7 +601,8 @@ static mixed GetVariable(string val){
 mixed GetPlayerVariables(){
     string *vars = variables(this_object());
     vars -= ({"PlayerDataMap", "PendingEncres", "PendingDecres"});
-    vars -= ({"players", "creators", "user_list" });
+    vars -= ({"PendingPauses", "PendingUnpauses"});
+    vars -= ({"players", "creators", "user_list", "override" });
     vars -= ({"player_save_file", "namestr", "ob", "gplayer"});
     return vars;
 }
@@ -735,4 +793,13 @@ int SelektUsers(int gather){
     return 1;
 }
 
-
+int GetPaused(string player){
+    int ret = 0;
+    override = 1;
+    if(user_exists(player)){
+        gplayer = lower_case(player);
+        ret = unguarded( (: GetPlayerData(lower_case(gplayer), "Paused") :) );
+    }
+    override = 0;
+    return ret;
+}

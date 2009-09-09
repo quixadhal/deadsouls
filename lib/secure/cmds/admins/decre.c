@@ -29,6 +29,7 @@ mixed cmd(string args) {
     nom = convert_name(args);
     if( !user_exists(nom) ) return capitalize(nom) + " is not a member of " +
         possessive_noun(mud_name()) + " reality.";
+    WEB_SESSIONS_D->EndSession(lower_case(nom));
     if( !strsrch(file = player_save_file(nom), DIR_PLAYERS) )
         return "You cannot make "+capitalize(args)+" a player.";
 

@@ -25,7 +25,7 @@ mapping returnChannels(){
 static string chat_command(string str){
     string cmd, arg, tmp;
     int x;
-
+    //tc("chat: chat_command: "+str);
     if( (x = strsrch(str, " ")) == -1){
         cmd = str;
         arg = "";

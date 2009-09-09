@@ -311,10 +311,10 @@ void read_callback(int socket, mixed info){
 
 private void got_packet(string info){
     string str;
-    string a,b;
+    string a,b, my_ip;
     int i;
     string sender, origin, route, packet_type, target, destination, strdata;
-    int sequence;
+    int sequence, my_port;
     mapping data;
     object who;
     if(!sizeof(info)){
@@ -392,6 +392,15 @@ private void got_packet(string info){
             break;
         case "wHo": // Drop-through
         case "who":
+            if(sizeof(host)) my_ip = host;
+            else my_ip = INTERMUD_D->GetMyIp();
+            if(my_ip == "127.0.0.1"){
+                my_ip = "dead-souls.net";
+                my_port = 8000;
+            } 
+            else my_port = query_host_port();
+            who_str=CGI_WHO->gateway(1)+URL+"\ntelnet://"+my_ip+":"+my_port+"\n";
+            who_str += repeat_string("_", 75); 
             send_packet("*","who-reply",sender,origin,
               "text="+escape(pinkfish_to_imc2(who_str)));
             CHAT_D->eventSendChannel("SYSTEM","intermud","[" + capitalize(sender)+"@"+origin+

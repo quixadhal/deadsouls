@@ -36,7 +36,8 @@ varargs string gateway(mixed args){
                 else {
                     pass_hash = PLAYERS_D->GetPlayerData(who,"Password");
                 }
-                if(pass_hash != crypt(password, pass_hash)){
+                if(pass_hash != crypt(password, pass_hash) ||
+                  PLAYERS_D->GetPaused(who)){
                     Tries[ip]++;
                     ret = "Fail! Tries left: "+(max_tries - Tries[ip])+"<br>";
                     if(Tries[ip] >= max_tries){

@@ -38,19 +38,27 @@ static void create(){
 }
 
 static string process_input(string str){
+    //tc("interface process_input: "+str, "red");
+
     command::SetCommandFail(0);
-    command::process_input(str);
+    str = command::process_input(str);
     if( Client ){
         int cl;
+        //tc("%^B_BLACK%^b1", "red");
         sscanf(str, "%d %s", cl, str);
     }
-    if( (str = editor::process_input(str)) == "" ) return "";
+    if( (str = editor::process_input(str)) == "" ){
+        //tc("%^B_BLACK%^b2", "red");
+        return "";
+    }
     else {
         str = nmsh::process_input(str);
         if( str != "" ){
+            //tc("%^B_BLACK%^b3", "red");
             return chat_command(str);
         }
         else {
+            //tc("%^B_BLACK%^b4", "red");
             return "";
         }
     }

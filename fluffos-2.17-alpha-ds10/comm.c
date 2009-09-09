@@ -21,12 +21,16 @@
 #define ENOSR 63
 #endif
 
-#ifdef WIN32
+#ifndef MAX
 #define MAX(A,B) ((A) > (B) ? (A) : (B))
 #endif
 
 #ifndef ANSI_SUBSTITUTE
-#define ANSI_SUBSTITUTE 0x1e
+#define ANSI_SUBSTITUTE 0x20
+#endif
+
+#ifndef ENV_FILLER
+#define ENV_FILLER 0x1e
 #endif
 
 #ifndef ADDRFAIL_NOTIFY
@@ -1124,18 +1128,18 @@ static void copy_chars (interactive_t * ip, char * from, int num_bytes)
                         switch (ip->sb_buf[0]) {
 
                             case TELOPT_NEW_ENVIRON :
-                                c_end = ((sizeof(ip->sb_buf)));
                                 j = -1;
                                 k = 0;
-                                while(ip->sb_buf[k] > -1){
+                                while(ip->sb_buf[k] > -1 && k < (ip->sb_pos - 1)){
                                     k++;
-                                    if(!(ip->sb_buf[k])) env_buf[j] = ANSI_SUBSTITUTE;
+                                    if(!(ip->sb_buf[k])) env_buf[j] = ENV_FILLER;
                                     if(ip->sb_buf[k] == 1) env_buf[j] = 1;
                                     if((ip->sb_buf[k] > 31 && ip->sb_buf[k] < 128)){
                                         env_buf[j] = ip->sb_buf[k];
                                     }
                                     if(env_buf[j]) j++;
                                 }
+				env_buf[j] = 0;
                                 copy_and_push_string(env_buf);
                                 apply(APPLY_RECEIVE_ENVIRON, ip->ob, 1, ORIGIN_DRIVER);
                                 break;

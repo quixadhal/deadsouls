@@ -16,7 +16,7 @@ int authenticate(string name, string shibboleth){
 varargs void validate(string name, string shibboleth){
     int auth = 1;
     if(name && shibboleth) auth = authenticate(name, shibboleth);
-    if(!auth || (!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
+    if(!auth || (!master()->valid_apply(({ "SECURE", "ASSIST" })) &&
                 strsrch(base_name(previous_object()), DIR_WWW_GATEWAYS) &&
                 strsrch(base_name(previous_object()), SOCKET_HTTP))){
         string offender = identify(previous_object(-1));

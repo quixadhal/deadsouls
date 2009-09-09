@@ -99,7 +99,7 @@ fi
 
 #/opt/sfw/bin/gdiff -rq new/lib next/lib > diff.txt
 cd /tmp/foo
-diff -rq new/lib next/lib > diff.txt
+gdiff -rq new/lib next/lib > diff.txt
 
 perl -pi -e s/"\:\ "/"\/"/g diff.txt
 perl -pi -e s/"\ and\ "/"\ "/g diff.txt
@@ -113,7 +113,7 @@ perl -pi -e s/"Files\ "/"\\\\cp\ \-f\ "/g diff.txt
 perl -pi -e s/"Only\ in\ next"/"\\\\rm\ \-f\ "/g diff.txt
 perl -pi -e s/"Only\ in\ "/"\\\\cp\ \-rf\ "/g diff.txt
 
-perl -pi -e s/"Files\ "/"diff\ -Nur\ "/g diff.sh.1
+perl -pi -e s/"Files\ "/"gdiff\ -Nur\ "/g diff.sh.1
 
 
 cat diff.txt | grep -v "\.prime" | grep -v "lib/core" |grep -v "\.o"|grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff2.txt

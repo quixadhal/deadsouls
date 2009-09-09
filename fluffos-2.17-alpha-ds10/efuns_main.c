@@ -1245,6 +1245,7 @@ f_has_mxp (void)
 #endif
 
 #ifdef F_HAS_ZMP
+void
 f_has_zmp (void)
 {
 	int i=0;
