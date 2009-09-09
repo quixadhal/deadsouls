@@ -1,1 +1,1 @@
-string native_version() { return "2.11a11"; }
+string native_version() { return "2.11a12"; }
