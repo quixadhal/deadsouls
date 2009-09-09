@@ -53,7 +53,7 @@
 #define RETAIN_ON_QUIT           1
 #define FAST_COMBAT              1
 #define MAX_COMMANDS_PER_SECOND  10
-#define DEFAULT_PARSING          0
+#define DEFAULT_PARSING          1
 #define CALL_OUT_LOGGING         0
 #define EVENTS_LOGGING           0
 #define DISABLE_REBOOTS          0

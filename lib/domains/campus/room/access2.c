@@ -30,5 +30,5 @@ static void create() {
                 ]) );
     AddExit("north","/domains/campus/room/access1");
     AddExit("south","/domains/campus/room/access3");
-    SetObviousExits("n,s");
+    SetObviousExits("north, south");
 }

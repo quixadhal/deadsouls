@@ -1,16 +1,23 @@
 ---- 2.11a11 (unreleased) ---
-- driver: Added Wodan's fix for NEW-ENVIRON.
+- Driver: Added Wodan's fix for NEW-ENVIRON.
 - Fixed skill problem in CLASSES_D.
 - i3router: Added Aidil's irn-mudlist-req and a check for when
   a "disconnected" mud sends a packet.
 - Fixed problems in anyterm connections.
 - Re-enabled number.thing parsing (when did this break?).
+- Improved "thing number" parsing, e.g. "get purple thing 2" now works.
 - The pause/unpause commands will now also work on players who aren't logged in.
 - Pausing or decre-ing a creator now also boots them from creweb.
 - Fixed imc2 remote who replies.
-- driver: The parser now defaults to the first matching object, 
-  without having to use "a thing" or "1st thing". For example:
-  "drop key" rather than "drop first key".
+- The help command now translates synonyms to the target verbs, to
+  cut down on verb guessing.
+- The lines command has been verbified to simplify its synonymization
+  and documentation.
+- Fixed channel emote problem reported by Flumpy.
+- Command matching no longer arbitrarily picks the first matching
+  command if there is more than one.
+- Added command: bugs, queue
+- Fixed a problem in PLAYERS_D that prevented suicides from working.
 
 ---- 2.11a9 ---
 - Released 2009-07-19
@@ -18,7 +25,7 @@
 - Fixed remote channel problem in CHAT_D.
 - /secure/include/mssp.h is now somewhat more individualized.
 - Added commands: screenlock, weigh
-- driver: Added partial support for telopts NEW-ENVIRON (rfc 1572).
+- Driver: Added partial support for telopts NEW-ENVIRON (rfc 1572).
   A connection that supports this will cause the driver to call
   the receive_environ() apply in LIB_CONNECT, sending the env data
   as a single string.

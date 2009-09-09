@@ -49,7 +49,7 @@ static void create() {
     SetExits((["west":"/domains/campus/room/tunnel3"]));
     SetEnters((["portal":"/domains/campus/room/access1"]));
     SetDoor("west","/domains/campus/doors/u_door");
-    SetObviousExits("w");
+    SetObviousExits("west");
     new("/domains/campus/npc/seth")->eventMove(this_object());
 }
 void init(){

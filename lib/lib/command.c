@@ -42,10 +42,16 @@ static void create(){
 }
 
 static string process_input(string args){ 
-    string verb = query_verb();
+    string verb;
     object env = environment(this_object());
     string *talks = ({ "say", "whisper", "yell", "shout", "speak" });
-    if(Paused){
+    //tc("verb: "+verb+", args: "+args);
+    if(sizeof(args)){
+        string *tmpargs = explode(args, " ");
+        verb = tmpargs[0];
+    }
+    //tc("verb: "+verb+", args: "+args, "blue");
+    if(Paused && (member_array(verb, talks) == -1)){
         this_object()->eventPrint("You are paused.");
         return "";
     }
@@ -290,6 +296,7 @@ int eventExecuteQueuedCommands(){
     int i = 0;
     foreach(string tmp in QueuedCommands){
         i++;
+        tmp = process_input(tmp);
         call_out("eventForceQueuedCommand", i, tmp);
         QueuedCommands -= ({ tmp });
     }

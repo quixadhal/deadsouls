@@ -26,6 +26,8 @@ varargs mixed match_command(string verb, int subs){
         if(alphap(verb)) local_arr = regexp(localcmds,"^"+verb);
         if(sizeof(local_arr)){
             if(!subs){
+                if(member_array(verb, local_arr) != -1) return verb;
+                if(sizeof(local_arr) > 1) return verb;
                 return local_arr[0];
             }
             else return local_arr;

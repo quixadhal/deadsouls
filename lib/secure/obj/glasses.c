@@ -23,7 +23,7 @@ static void create(){
     //the tanstaafl id enables this object to function like a
     //qcs staff
     SetId(({"tanstaafl"}));
-    SetAdjectives(({"wire-rimmed", "wire rimmed"}));
+    SetAdjectives(({"wire", "rimmed"}));
     SetShort("wire-rimmed glasses");
     SetLong("A pair of glasses with magic properties for Creators.");
     SetMass(5);

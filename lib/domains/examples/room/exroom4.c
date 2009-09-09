@@ -89,7 +89,7 @@ to that direction.  Got it?  Good.
     //  set up a (: functional :) to do close up the exit when they leave.
 
     AddExit( "south", EXPATH + "exroom3", (: post_south :) );
-    SetObviousExits("n, s");
+    SetObviousExits("north, south");
     return 1;
 }
 

@@ -6,8 +6,6 @@
  *    created by Descartes of Borg 951119
  */
 
-
-
 #include <lib.h>
 #include <talk_type.h>
 #include "include/shout.h"
@@ -50,10 +48,12 @@ mixed do_shout_str(string str) {
 }
 
 mixed do_shout_in_wrd_str(string lang, string str) {
+    int cost = -100;
+    if(this_player()->GetPlayerPaused()) cost = -300;
     if( str[<1] != '!' && str[<1] != '?' && str[<1] != '.' )
         str = capitalize(str) + ".";
     else str = capitalize(str);
-    this_player()->AddStaminaPoints(-100);
+    this_player()->AddStaminaPoints(cost);
     return (mixed)this_player()->eventSpeak(0, TALK_WORLD, str, lang);
 }
 

@@ -94,6 +94,7 @@ int make_empties(){
 }
 
 void deletes(){
+    catch( rm("/cmds/players/lines.c") );
 }
 
 varargs static void eventUpdate(object whom){

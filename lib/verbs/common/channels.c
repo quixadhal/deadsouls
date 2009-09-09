@@ -1,12 +1,38 @@
-// /cmd// From Dead Souls
-// A utility to help wizards and players keep track of what lines they're
-// on, and to them turn all off and on with one command.
-// by Gregon@Dead Souls
-
+#include <lib.h>
 #include <daemons.h>
+#include <talk_type.h>
+
+inherit LIB_VERB;
+
+static void create() {
+    verb::create();
+    SetVerb("channels");
+    SetRules("", "STR");
+    SetHelp("Syntax: channels\n"
+            "        channels on\n"
+            "        channels off\n"
+            "With no argument this command will display the status "
+            "of the lines to which you have access.  With the argument on|off "
+            "it will turn all of the lines on or off.\n"
+            "See also: chan, mute, gag, earmuff, env");
+    SetSynonyms(({"chans","lines"}));
+}
+
+int cmd(string str);
+
+mixed can_channels(string str) { return 1; }
+
+mixed can_channels_str(string str) { return 1; }
+
+mixed do_channels(string str) {
+    return cmd(str);
+}
+
+mixed do_channels_str(string str) {
+    return cmd(str);
+}
 
 int cmd(string str) {
-
     string *channels;
     string *remote = ({});
     string *local = ({});
@@ -78,10 +104,3 @@ int cmd(string str) {
     write(ret);
     return 1;
 }		
-
-void help(){
-    message("help","Syntax: lines -or- lines [on|off]\n\n" 
-            "With no argument this command will display the status "
-            "of the lines to which you have access.  With the argument on|off "
-            "it will turn all of the lines on or off.",this_player());
-}

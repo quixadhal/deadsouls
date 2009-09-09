@@ -39,6 +39,9 @@ mixed cmd(string arg) {
         HelpMenu(arg);
         return 1;
     }
+    if(tmp = VERBS_D->GetVerb(arg)){
+        arg = last_string_element(tmp, "/")[0..<3];
+    }
     if( !(tmp = HELP_D->GetHelp(arg)) ) {
         return HELP_D->GetLastError();
     }

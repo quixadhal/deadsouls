@@ -103,7 +103,8 @@ static mapping QuestLevels = ([
 void validate(){
     if(!master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) &&
             base_name(previous_object()) != CGI_LOGIN && !override &&
-            base_name(previous_object()) != CMD_RID){
+            base_name(previous_object()) != CMD_RID &&
+            base_name(previous_object()) != CMD_SUICIDE){
         string offender = identify(previous_object(-1));
         debug("PLAYERS_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" PLAYERS_D breach: "+offender+" "+get_stack());

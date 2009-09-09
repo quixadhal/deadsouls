@@ -56,7 +56,7 @@ static void create() {
                 "beautiful sights and sounds of the square." ]) );
     SetSearch( ([ "fountain" : "It appears someone has already stolen all the coins in the fountain." ]) );
     SetSmell( ([ "default" : "You smell the clean and misty air of the fountain's spray." ]) );
-    SetObviousExits("n,s,e,w");
+    SetObviousExits("north, south, east, west");
     SetExits( ([
                 "east" : "/domains/campus/room/square",
                 "east" : "/domains/campus/room/square",
