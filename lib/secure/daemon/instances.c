@@ -220,6 +220,7 @@ static void SendData(mixed fd, mixed data){
         }
     }
     else targets = ({ fd });
+    targets = distinct_array(targets);
     foreach(int target in targets){
         this_object()->write_data(target, data);
     }
@@ -228,7 +229,6 @@ static void SendData(mixed fd, mixed data){
 varargs void SendWhoUpdate(string name, int status){
     mapping data = ([ "status" : status, "state" : 0 ]);
     object ob = find_player(name);
-    //tc("SendWhoUpdate "+name);
     if(ob && !ob->GetInvis()){
         string title = ob->GetShort();
         if(sizeof(strip_colours(title)) > 50){
@@ -322,7 +322,6 @@ static void ProcessWhoUpdate(mixed data){
         InstData[data[2]]["users"] = ([]);
     }
     InstData[data[2]]["users"][data[3]] = data[6];
-    //tc("who updats: "+identify(data), "blue");
 }
 
 static void ProcessTell(mixed data){
@@ -349,34 +348,27 @@ string GetName(){
 
 static void ReceiveICPData(mixed data, string addy, int port, int fd){
     string name;
-    //tc("ReceiveICPData("+identify(data)+", "+identify(addy)+", "+identify(port)+", "+identify(fd)+")", "green");
     if(!arrayp(data)){
-        //tc("fail 1", "red");
         return;
     }
     if(sizeof(data) < 7){
-        //tc("fail 2", "red");
         return;
     }
     name = data[2];
     if(data[0] != "startup-req"){
         if( InstData[name] && InstData[name]["online"]){
             if(InstData[name]["addy"] != addy){
-                //tc("fail 3");
                 return;
             }
             if(InstData[name]["port"] != port ){
-                //tc("fail 4");
                 return;
             }
             if(!undefinedp(InstData[name]["fd"]) && 
                     InstData[name]["fd"] != fd){
-                //tc(InstData[name]["fd"]+ ", fd: "+fd);
                 return;
             }
         }
         else{
-            //tc("fail 6");
             return;
         }
     }
@@ -386,11 +378,9 @@ static void ReceiveICPData(mixed data, string addy, int port, int fd){
             else ProcessStartup(data, addy, port, fd);
         break;
         case "channel-p" :
-            //tc("channel");
             CHAT_D->eventSendChannel(data[6]...);
         break;
         case "who-update":
-            //tc("who");
             ProcessWhoUpdate(data);
         break;
         case "tell":
@@ -657,21 +647,13 @@ static void CheckConnections(){
             i = sscanf(arr[4],"%s.%s.%s.%s.%d",a,b,c,d,p);
             if(i < 5) continue;
             foreach(mixed key, mixed val in InstData){
-                //tc("checking "+key);
                 if(key && mapp(val) && val["port"] == (p - OFFSET_ICP)){
                     InstData[key]["fd"] = -2;
-                    //tc("arr[4]: "+identify(arr[4]), "black");
-                    //tc("val: "+identify(val), "black");
                     if(val["addy"] == a+"."+b+"."+c+"."+d){
                         InstData[key]["fd"] = arr[0];
                         conns[key] = copy(InstData[key]);
                     }
                     else {
-                        //tc("LOL: ", "red");
-                        //tc("addy: "+val["addy"]);
-                        //tc("appy: "+a+"."+b+"."+c+"."+d);
-                        //tc("thingy: "+(p - OFFSET_ICP));
-                        //tc("thingy2: "+val["port"]);
                     }
                 }
             }

@@ -729,7 +729,7 @@ int do_connect(string args)
     foreach(mixed element in socket_status()){
         if(intp(element[0]) && element[0] != -1 && !grepp(element[3],"*")){ 
             if(!socks_array) socks_array = ({});
-            socks_array += element[0];
+            socks_array += ({ element[0] });
         }
     }
     socks_array = ({});

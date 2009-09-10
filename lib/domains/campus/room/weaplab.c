@@ -21,8 +21,8 @@ int PreExit(mixed args...){
 void create() {
     room::create();
     SetAmbientLight(30);
-    SetShort("copy of science6.c");
-    SetLong("This is the secondary hallway in the LPC University Science Building. The hallway runs west from here. To the south is a sliding door.");
+    SetShort("Weapons Lab");
+    SetLong("Weapons are tested here.");
     AddExit("south", "/domains/campus/room/hazlab", (: PreExit :));
     SetClimate("indoors");
     SetItems( ([ 

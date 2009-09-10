@@ -359,7 +359,6 @@ int cmdChannel(string verb, string str){
     if(grepp(verb, ":")){
         string *tmpv = explode(verb, ":");
         if(!sizeof(tmpv)) tmpv = ({"newbie"});
-        tc("tmpv: "+identify(tmpv), "red");
         verb = tmpv[0]+"emote";
         if(sizeof(tmpv) > 1) str = implode(tmpv[1..], ":") + str;
     }
@@ -367,11 +366,9 @@ int cmdChannel(string verb, string str){
     if(grepp(verb, ";")){
         string *tmpv = explode(verb, ";");
         if(!sizeof(tmpv)) tmpv = ({"newbie"});
-        tc("tmpv: "+identify(tmpv), "green");
         verb = tmpv[0]+"forcedemote";
         if(sizeof(tmpv) > 1) str = implode(tmpv[1..], ";") + str;
     }
-    tc("verb: "+verb+", str: "+str);
 
     if(sizeof(str) > 2){
         if((str[0..0] == ":" || str[0..0] == ";") &&

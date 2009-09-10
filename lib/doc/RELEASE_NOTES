@@ -1,4 +1,4 @@
----- 2.11a11 (unreleased) ---
+---- 2.11a14 (unreleased) ---
 - Driver: Added Wodan's fix for NEW-ENVIRON.
 - Fixed skill problem in CLASSES_D.
 - i3router: Added Aidil's irn-mudlist-req and a check for when
@@ -18,6 +18,7 @@
   command if there is more than one.
 - Added command: bugs, queue
 - Fixed a problem in PLAYERS_D that prevented suicides from working.
+- Fixed a problem in INSTANCES_D that double-pumped channel messages.
 
 ---- 2.11a9 ---
 - Released 2009-07-19

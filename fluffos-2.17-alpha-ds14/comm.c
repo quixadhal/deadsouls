@@ -1128,8 +1128,8 @@ static void copy_chars (interactive_t * ip, char * from, int num_bytes)
                         switch (ip->sb_buf[0]) {
 
                             case TELOPT_NEW_ENVIRON :
-                                j = -1;
-                                k = 0;
+                                j = 0;
+                                k = 1;
                                 while(ip->sb_buf[k] > -1 && k < (ip->sb_pos - 1)){
                                     k++;
                                     if(!(ip->sb_buf[k])) env_buf[j] = ENV_FILLER;
