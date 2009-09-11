@@ -8,8 +8,8 @@ static void create() {
     SetShort("a blue room");
     SetLong("This is a blue room. Probability Lab 2 is east.");
     SetExits( ([
-        "east" : "/domains/campus/room/plab2"
-      ]) );
+                "east" : "/domains/campus/room/plab2"
+                ]) );
     SetDoor("east","/domains/campus/doors/blue_door2");
 }
 void init(){

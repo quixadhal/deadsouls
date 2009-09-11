@@ -213,9 +213,9 @@ int cmdBrowse(object who, string args){
             int tmp;
             while( i-- ) list[1] += "_";
             if(intp(number) && 
-              (tmp = to_int(ceil(GetCost(obs2[(number - 1)],who))))){
+                    (tmp = to_int(ceil(GetCost(obs2[(number - 1)],who))))){
                 list += ({ sprintf("%d      %:-35s %d", number, 
-                obs2[(number - 1)]->GetShort(), tmp) });
+                            obs2[(number - 1)]->GetShort(), tmp) });
             }
             this_player()->eventPage(list);
             return 1;

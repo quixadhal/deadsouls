@@ -65,7 +65,7 @@ mixed cmd(string str){
         foreach(mixed key in insts){
             if(!instdata[key]) continue;
             ret += key + " " + instdata[key]["port"] + " " +
-            (instdata[key]["online"] ? "%^GREEN%^online" : "%^RED%^offline");
+                (instdata[key]["online"] ? "%^GREEN%^online" : "%^RED%^offline");
             ret += "%^RESET%^\n";
         }
         if(!sizeof(ret)){

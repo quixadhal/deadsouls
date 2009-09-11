@@ -311,7 +311,7 @@ string query_ip_number(object ob){
 string query_ip_name(object ob){
     if(!ob) ob = previous_object();
     if(!strsrch(architecture(), "Solaris") ||
-      ob->GetTeloptIp()) return query_ip_number(ob);
+            ob->GetTeloptIp()) return query_ip_number(ob);
     if(!AUTO_WIZ || ob == previous_object()) return efun::query_ip_name(ob);
     if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
         return efun::query_ip_name(ob);

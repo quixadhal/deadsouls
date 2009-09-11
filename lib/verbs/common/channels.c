@@ -77,7 +77,7 @@ int cmd(string str) {
             ret += "\nIMC2\n----\n";
             foreach(string chan in imc2){ 
                 ret += chan + "\t" + (this_player()->GetBlocked(chan) ?
-                  "(%^RED%^BLOCKED%^RESET%^)" : "") + "\n";
+                        "(%^RED%^BLOCKED%^RESET%^)" : "") + "\n";
             }
         }
         if(sizeof(i3)){
@@ -85,7 +85,7 @@ int cmd(string str) {
             ret += "\nIntermud-3\n----------\n";
             foreach(string chan in i3){ 
                 ret += chan + "\t" + (this_player()->GetBlocked(chan) ?
-                  "(%^RED%^BLOCKED%^RESET%^)" : "") + "\n";
+                        "(%^RED%^BLOCKED%^RESET%^)" : "") + "\n";
             }
         }
     }
@@ -94,7 +94,7 @@ int cmd(string str) {
         ret += "\n\nLOCAL CHANNELS\n---------------\n";
         foreach(string chan in local){
             ret += chan + "\t" + (this_player()->GetBlocked(chan) ?
-              "(%^RED%^BLOCKED%^RESET%^)" : "") + "\n";
+                    "(%^RED%^BLOCKED%^RESET%^)" : "") + "\n";
         }
     }
 

@@ -27,7 +27,7 @@ void init(){
 int DoWear(){
     this_player()->AddStatBonus("strength", (: CheckRing :) );
     write("You feel a resonant chord of strength roar within you "
-      "as you wear the ring.");
+            "as you wear the ring.");
     say(this_player()->GetName() + " wears " + GetShort() + ".");
     return 1;
 }

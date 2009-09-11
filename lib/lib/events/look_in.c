@@ -95,7 +95,7 @@ varargs mixed eventShowInterior(object who, object target){
     }
     if(!inherits(LIB_SURFACE, this_object())){
         environment(who)->eventPrint(who->GetName() + " looks inside " +
-            GetShort() + ".", who);
+                GetShort() + ".", who);
     }
     who->eventPrint(str);
 

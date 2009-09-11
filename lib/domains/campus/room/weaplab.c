@@ -26,12 +26,12 @@ void create() {
     AddExit("south", "/domains/campus/room/hazlab", (: PreExit :));
     SetClimate("indoors");
     SetItems( ([ 
-        ({ "door","sliding door" }) : "A strange, metallic sliding door.",
-      ]) );
+                ({ "door","sliding door" }) : "A strange, metallic sliding door.",
+                ]) );
     SetExits( ([
-        "south" : "/domains/campus/room/science6",
-        "west" : "/domains/campus/room/alcove2.c",
-      ]) );
+                "south" : "/domains/campus/room/science6",
+                "west" : "/domains/campus/room/alcove2.c",
+                ]) );
 
 }
 void init(){

@@ -161,7 +161,7 @@ mixed cmd(mixed args) {
             tell_player(player, "You've had your group membership changed "+
                     "in an important way.\n\nYour user object will be reloaded in "+
                     "a few moments.\n\n");
-             RELOAD_D->eventReload(player, 3);
+            RELOAD_D->eventReload(player, 3);
         }
     }
     dudename = "";

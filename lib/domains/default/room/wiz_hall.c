@@ -9,7 +9,7 @@ string LongDesc(){
         "the world they are building. The Builder's hall and Adventurer's "+
         "Guild are north. The Arch Room is south."+
         (!(ds) ? " To visit the Dead Souls "+
-        "test and development mud, visit the upstairs annex." : "")+
+         "test and development mud, visit the upstairs annex." : "")+
         " The test lab facilities are east.";
     desc += "\nA sign reads: "+load_object(ROOM_ARCH)->SignRead();
     return desc;

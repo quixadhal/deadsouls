@@ -16,7 +16,7 @@ static void create() {
     }
     if(!Books) Books = ([]);
     SetNoClean(1);
-        SaveObject(SaveFile);
+    SaveObject(SaveFile);
 }
 
 int eventDestruct(){

@@ -11,7 +11,7 @@ mixed cmd(string args) {
     if( !args || args == "" ) {
         amt = (int)this_player()->GetCustomDeviations();
         this_player()->eventPrint("You have " + amt + 
-        " deviation points left to use.", MSG_SYSTEM);
+                " deviation points left to use.", MSG_SYSTEM);
         return 1;
     }
     if(args == "enable"){

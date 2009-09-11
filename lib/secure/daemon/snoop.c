@@ -85,9 +85,9 @@ int CheckBot(string str){
         gfoo = 0;
         if(member_array(str, (ignored || ({}))) != -1) return 0;
         if((member_array(ip, (ignored_ips||({}))) != -1 ||
-           (archp(foo) && GLOBAL_MONITOR == 2)) &&
-           member_array(str, monitored) == -1 &&
-           member_array(str, snooped) == -1 ) return 0;
+                    (archp(foo) && GLOBAL_MONITOR == 2)) &&
+                member_array(str, monitored) == -1 &&
+                member_array(str, snooped) == -1 ) return 0;
         cloan=new("/secure/obj/snooper");
         cloan->eventStartSnoop(str);
         err = catch(SaveObject(SaveFile, 1));
@@ -294,18 +294,18 @@ int NotifyBot(string bot){
     mixed *arcs;
     if(base_name(previous_object()) != PLAYERS_D) return 0;
     arcs = filter(get_dir("/secure/log/adm/archive/"),
-      (: !strsrch($1, $(bot)+".") :) );
+            (: !strsrch($1, $(bot)+".") :) );
     foreach(string file in arcs){
         if(!file) continue;
         rename("/secure/log/adm/archive/"+file,
-          "/secure/log/adm/archive/_bot."+file);
+                "/secure/log/adm/archive/_bot."+file);
     }
     arcs = filter(get_dir("/secure/log/adm/"),
-      (: !strsrch($1, $(bot)+".") :) );
+            (: !strsrch($1, $(bot)+".") :) );
     foreach(string file in arcs){
         if(!file) continue;
         rename("/secure/log/adm/"+file,
-          "/secure/log/adm/_bot."+file);
+                "/secure/log/adm/_bot."+file);
     }
     return 1;
 }

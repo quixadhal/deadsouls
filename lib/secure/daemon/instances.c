@@ -23,7 +23,7 @@ varargs static void yenta(string arg, string clr){
         debug_message(arg);
     }
     unguarded( (: log_file("/secure/log/icp", timestamp() +
-      " " + strip_colours($(arg)) + "\n") :) );
+                    " " + strip_colours($(arg)) + "\n") :) );
 }
 
 varargs static int validate(int i, int soft){
@@ -154,7 +154,7 @@ mixed InstCreate(string name, string addy, int port){
         newcfg = read_file("/secure/cfg/runmud_template.bat");
         if(newcfg && query_windows()){
             newcfg = replace_string(newcfg, "TEMPLATE_MUDOS",
-              "mudos."+port+".win32");
+                    "mudos."+port+".win32");
             write_file("/secure/cfg/runmud_"+port+".bat", newcfg, 1);
         }
     }
@@ -212,6 +212,7 @@ mapping GetInstData(){
 
 static void SendData(mixed fd, mixed data){
     int array targets = ({});
+    //tc("instd trying to send: "+identify(data), "white");
     if(stringp(fd) && !undefinedp(InstData[fd])) fd = InstData[fd]["fd"];
     if(fd == -2) return;
     if(fd == -1){
@@ -222,6 +223,7 @@ static void SendData(mixed fd, mixed data){
     else targets = ({ fd });
     targets = distinct_array(targets);
     foreach(int target in targets){
+        //tc("sending data", "black");
         this_object()->write_data(target, data);
     }
 }
@@ -378,6 +380,7 @@ static void ReceiveICPData(mixed data, string addy, int port, int fd){
             else ProcessStartup(data, addy, port, fd);
         break;
         case "channel-p" :
+            //tc("received "+identify(data), "red");
             CHAT_D->eventSendChannel(data[6]...);
         break;
         case "who-update":
@@ -412,6 +415,7 @@ void eventSendChannel(string name, string ch, string msg, int emote,
         string target, string targmsg){
     mixed packet = ({ name, ch, msg, emote, target, targmsg });
     if(base_name(previous_object()) != CHAT_D) return;
+    //tc("channel. name: "+name+", ch: "+ch+", msg: "+msg);
     SendData(-1, ({ "channel-p", 5, Myname, 0, 0, 0, packet }) );
 }
 
@@ -624,7 +628,7 @@ static void SendStartup(int fd){
     }
     SendData(fd, 
             ({"startup-req", 5, Myname, 0, name, 0, INSTANCE_PW, 
-            local_users(), mud_name()}));
+             local_users(), mud_name()}));
     foreach(string user in local_users()){
         call_out("SendWhoUpdate", 0, user, 1);
     }
@@ -663,7 +667,7 @@ static void CheckConnections(){
         if(!foo || !InstData[foo]) continue;
         InstData[foo]["online"] = 0;
         if(member_array(foo, keys(conns)) == -1 
-          || InstData[foo]["fd"] == -1){
+                || InstData[foo]["fd"] == -1){
             InstConnect(foo);
         }
         else InstData[foo]["online"] = 1;

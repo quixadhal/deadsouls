@@ -71,7 +71,7 @@ static void terminal_type(string str){
 
 static void window_size(int width, int height){ 
     if(query_verb() == "screen" || 
-      !this_object()->GetProperty("screenlock")){
+            !this_object()->GetProperty("screenlock")){
         SetScreen(width, height); 
     }
 }
@@ -341,7 +341,7 @@ int GetLogHarass(){ return LogHarass; }
 int *SetScreen(int width, int height){ 
     if(!width) width = (__LARGEST_PRINTABLE_STRING__-1)/50;
     if(!height) height = __LARGEST_PRINTABLE_STRING__/width;
-    
+
     width--;
     if( width * height > __LARGEST_PRINTABLE_STRING__ ){
         if( width > height ) width = __LARGEST_PRINTABLE_STRING__/height;

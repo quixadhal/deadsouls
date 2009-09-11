@@ -32,10 +32,10 @@ varargs void eventPrint(string message, mixed args...);
 
 static void create(){
     Custom = ([
-        "stats" : 15,
-        "deviations" : 4,
-        "deviating" : 0,
-    ]);
+            "stats" : 15,
+            "deviations" : 4,
+            "deviating" : 0,
+            ]);
     Resistance = ([ "low" : 0, "medium" : 0, "high" : 0, "immune" : 0 ]);
     Resistance["none"] = ALL_DAMAGE;
 }

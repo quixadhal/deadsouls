@@ -47,11 +47,11 @@ varargs int StatReport(string str){
     if(!str){
 #if CED_DEBUG
         str = "screen: "+ScreenData["row"]+","+ScreenData["col"]+
-                " file: "+((FileData["topline"]+ScreenData["row"])-1)+
-                ","+ScreenData["col"]+", topline: "+FileData["topline"];
+            " file: "+((FileData["topline"]+ScreenData["row"])-1)+
+            ","+ScreenData["col"]+", topline: "+FileData["topline"];
 #else 
         str = "line: "+((FileData["topline"]+ScreenData["row"])-1)+
-                " col: "+ScreenData["col"]+" file: "+ FileData["file"];
+            " col: "+ScreenData["col"]+" file: "+ FileData["file"];
 #endif
     }
     receive(str);
@@ -181,7 +181,7 @@ static int rBackspace(){
         receive(FileData["map"][row]);
         ScreenData["col"]--;
         if((ScreenData["maxrow"] - 1) != ScreenData["row"] &&
-          FileData["map"][row+1]){
+                FileData["map"][row+1]){
             receive("\r\e["+(ScreenData["row"]+1)+";"+ScreenData["col"]+"H");
             receive("\r\e[2K");
             receive(FileData["map"][row+1]);
@@ -209,7 +209,7 @@ static int rEnter(){
         i = start;
         while(i <= end){
             if(FileData["map"][i] && grepp(FileData["map"][i],
-              ScreenData["search"])){
+                        ScreenData["search"])){
                 ScreenData["goto"] = 1;
                 ScreenData["search"] = 0;
                 ScreenData["searchhit"] = i;
@@ -226,7 +226,7 @@ static int rEnter(){
 #endif
         if(!ScreenData["goto"]){
             ScreenData["report"] = "String not found searching from line "+
-              start;
+                start;
         }
     }
     if(ScreenData["goto"]){
@@ -338,7 +338,7 @@ static int rDel(){
         receive("\r\e[2K");
         receive(FileData["map"][row]);
         if((ScreenData["maxrow"] - 1) != ScreenData["row"] &&
-          FileData["map"][row+1]){
+                FileData["map"][row+1]){
             receive("\r\e["+(ScreenData["row"]+1)+";"+ScreenData["col"]+"H");
             receive("\r\e[2K");
             receive(FileData["map"][row+1]);
@@ -429,7 +429,7 @@ int rCtrl(string c){
         int ret;
 #if CED_DISABLED
         ScreenData["report"] = "This alpha editor is not yet in shape to "+
-          "save files.";
+            "save files.";
 #else
         if(sizeof(FileData["file"]) && sizeof(FileData["map"])){
             ret = CeditSave();
@@ -448,7 +448,7 @@ int rCtrl(string c){
         int ret;
 #if CED_DISABLED
         ScreenData["report"] = "This alpha editor is not yet in shape "+
-          "to save files.";
+            "to save files.";
 #else
         if(sizeof(FileData["file"]) && sizeof(FileData["map"])){
             ret = CeditSave();
@@ -495,8 +495,8 @@ static int rArrow(string str){
                     break;
                 }
             }
-            ScreenData["row"]++; 
-            break;
+        ScreenData["row"]++; 
+        break;
         case "left" : ScreenData["col"]--; break;
         case "right" : ScreenData["col"]++; break;
     }

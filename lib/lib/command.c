@@ -42,13 +42,21 @@ static void create(){
 }
 
 static string process_input(string args){ 
-    string verb;
+    string verb, real_verb, tmpalias;
     object env = environment(this_object());
     string *talks = ({ "say", "whisper", "yell", "shout", "speak" });
+    talks += this_object()->GetChannels();
+
     //tc("verb: "+verb+", args: "+args);
     if(sizeof(args)){
         string *tmpargs = explode(args, " ");
         verb = tmpargs[0];
+    }
+    if(verb && tmpalias = this_object()->GetAlias(verb)){
+        real_verb = explode(tmpalias, " ")[0];
+    }
+    if(verb && tmpalias = this_object()->GetXverb(verb[0..0])){
+        real_verb = explode(tmpalias, " ")[0];
     }
     //tc("verb: "+verb+", args: "+args, "blue");
     if(Paused && (member_array(verb, talks) == -1)){
@@ -63,7 +71,7 @@ static string process_input(string args){
         }
         if(cmd_count > MAX_COMMANDS_PER_SECOND){
             this_object()->eventPrint("You have exceeded the " +
-              MAX_COMMANDS_PER_SECOND + " commands per second limit.");
+                    MAX_COMMANDS_PER_SECOND + " commands per second limit.");
             return "";
         }
     }
@@ -74,7 +82,7 @@ static string process_input(string args){
         }
     }
     if(OLD_STYLE_PLURALS && args && (member_array(verb, talks) == -1 ||
-      (member_array(verb, talks) != -1 && !strsrch(trim(args),"to ")))){
+                (member_array(verb, talks) != -1 && !strsrch(trim(args),"to ")))){
         int numba, i, tmp_num;
         string tmp_ret;
         string *line = explode(args," ");
@@ -82,13 +90,18 @@ static string process_input(string args){
             string element;
             if(!line[i]) error("String handling error in old style plural parser.");
             element = line[i];
+            talks = sort_array(talks, 1);
+            //tc("verb: "+verb, "blue");
+            //tc("real_verb: "+real_verb, "blue");
+            //tc("talks: "+identify(talks), "blue");
+            //tc("member: "+member_array(real_verb, talks));
             if(sscanf(element,"%d.%d",numba,tmp_num) != 2 &&
-              sscanf(element,"%d.%s",numba,tmp_ret) == 2 &&
-              (member_array(verb, talks) == -1)){
-                    args = replace_string(args, numba + ".", 
-                      numba + ordinal(numba) + " ");
-                    //tc("args: "+args, "green");
-                    continue;
+                    sscanf(element,"%d.%s",numba,tmp_ret) == 2 &&
+                    (member_array(real_verb, talks) == -1)){
+                args = replace_string(args, numba + ".", 
+                        numba + ordinal(numba) + " ");
+                //tc("args: "+args, "green");
+                continue;
             }
             if(numba = atoi(element)){
                 int j;
@@ -477,7 +490,7 @@ string GetCurrentCommand(){
 
 int SetPlayerPaused(int i){
     if( base_name(previous_object()) != LIB_CONNECT &&
-      (!this_player() || !archp(this_player())) ){
+            (!this_player() || !archp(this_player())) ){
         error("Illegal attempt to pause a player: "+get_stack()+" "+identify(previous_object(-1)));
         log_file("adm/pause",timestamp()+" Illegal attempt to access SetPlayerPaused on "+identify(this_object())+" by "+identify(previous_object(-1))+"\n");
     }

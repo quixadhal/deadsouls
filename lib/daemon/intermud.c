@@ -462,12 +462,12 @@ string GetMyIp(){
 void eventWrite(mixed val){
     object prev = previous_object();
     if(!prev || prev == this_object() 
-      || prev == find_object(PING_D)
-      || prev == find_object(SERVICES_D) 
-      || prev == find_object(CMD_CHANBAN)
-      || prev == find_object(CMD_CHANCREATE) 
-      || prev == find_object(CMD_CHANREMOVE) 
-      || prev == find_object(CMD_CHANUNBAN)){
+            || prev == find_object(PING_D)
+            || prev == find_object(SERVICES_D) 
+            || prev == find_object(CMD_CHANBAN)
+            || prev == find_object(CMD_CHANCREATE) 
+            || prev == find_object(CMD_CHANREMOVE) 
+            || prev == find_object(CMD_CHANUNBAN)){
         ::eventWrite(val);
     }
 }

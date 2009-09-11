@@ -13,7 +13,7 @@ static void create(){
     SetAdjectives( ({"magic", "thin", "unobtrusive"}) );
     SetShort("a thin ring");
     SetLong("This thin ring seems designed to be "+
-      "as light and unobtrusive as possible.");
+            "as light and unobtrusive as possible.");
     SetMass(10);
     SetBaseCost("silver",5000);
     SetArmorType(A_RING);
@@ -29,7 +29,7 @@ int DoWear(){
     this_player()->AddSkillBonus("blade attack", (: CheckRing :) );
     this_player()->AddSkillBonus("blade defense", (: CheckRing :) );
     write("You wear the ring and feel oddly dextrous...and somehow "+
-      "fancy.");
+            "fancy.");
     say(this_player()->GetName() + " wears " + GetShort() + ".");
     return 1;
 }

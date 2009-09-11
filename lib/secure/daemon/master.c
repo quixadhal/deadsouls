@@ -1132,8 +1132,8 @@ int ReadName(){
     int port = query_host_port();
     MudName = "DeadSoulsNew";
     if(!ENABLE_INSTANCES){
-          //  || (find_object(INSTANCES_D) &&
-          //  INSTANCES_D->GetMyInstanceName() == "global")){
+        //  || (find_object(INSTANCES_D) &&
+        //  INSTANCES_D->GetMyInstanceName() == "global")){
         //debug("The mud believes it is a global instance.");
         mconfig = "/secure/cfg/mudos.cfg";
     }
@@ -1162,4 +1162,4 @@ int ReadName(){
     }
     //debug("The mud thinks its name is: "+MudName);
     return 0;
-}
+    }

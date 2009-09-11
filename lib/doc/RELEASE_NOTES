@@ -1,4 +1,5 @@
----- 2.11a15 (unreleased) ---
+---- 2.11a16 ---
+- Released 2009-09-12
 - Driver: Added Wodan's fix for NEW-ENVIRON.
 - Fixed skill problem in CLASSES_D.
 - i3router: Added Aidil's irn-mudlist-req and a check for when

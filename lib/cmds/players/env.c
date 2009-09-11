@@ -59,16 +59,16 @@ mixed cmd(string args) {
     ret += "Reprompt mode: \t\t"+ ( this_player()->GetProperty("reprompt") ? "on" : "off" )+"\n";
     ret += "Screenlock mode: \t"+ ( this_player()->GetProperty("screenlock") ? "on" : "off" )+"\n";
     ret += "Timezone: \t\t"+ ( this_player()->GetProperty("timezone") ? 
-                this_player()->GetProperty("timezone") : "None specified" )+"\n";
+            this_player()->GetProperty("timezone") : "None specified" )+"\n";
 #ifdef __GET_CHAR_IS_BUFFERED__
     ret += "Charmode: \t\t"+ 
-            //( (query_charmode(player) > 0) ? "on" : "off" )+"\n";
+        //( (query_charmode(player) > 0) ? "on" : "off" )+"\n";
         ( (player->GetCharmode()) ? "on" : "off" )+"\n";
 #endif
     ret += "Commandecho: \t\t"+ ( this_player()->GetProperty("commandecho") ? this_player()->GetProperty("commandecho") : "off" )+"\n";
 #ifdef __DSLIB__
     ret += "Keepalive mode: \t"+ ( this_player()->GetProperty("keepalive") 
-                ? this_player()->GetProperty("keepalive") : "off" )+"\n";
+            ? this_player()->GetProperty("keepalive") : "off" )+"\n";
 #endif
 
     if(creatorp(this_player())){ 
@@ -82,7 +82,7 @@ mixed cmd(string args) {
 #endif
     }
     if(replee){
-         ret += "Reply target: \t\t"+replee+"\n";
+        ret += "Reply target: \t\t"+replee+"\n";
     }
     tmp = sort_array(explode(ret, "\n"),1);
     ret = implode(tmp, "\n");
@@ -94,12 +94,12 @@ void help() {
     string *see_also = ({});
     if(creatorp(this_player())){
         see_also = ({ "debug" , "showgrid",
-        "wizvision", "godmode", "wizmap", "noclip" });
+                "wizvision", "godmode", "wizmap", "noclip" });
     }
     see_also += ({ "brief", "chancolors", "commandecho",
-      "terminal", "screen", "pk", "mute", "gag", "wimpy", "minimap",
-      "annoyblock", "reprompt", "charmode", "keepalive", "timezone",
-      "screenlock" });
+            "terminal", "screen", "pk", "mute", "gag", "wimpy", "minimap",
+            "annoyblock", "reprompt", "charmode", "keepalive", "timezone",
+            "screenlock" });
     //see_also = sort_array(see_also, 1);
     message("help", "Syntax: <env>\n\n"
             "Displays some basic interface and play settings.\n" +

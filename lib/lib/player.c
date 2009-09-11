@@ -639,12 +639,12 @@ varargs int eventTrain(string skill, int points){
 
 mixed GetTeloptIp(){
     if(previous_object() && base_name(previous_object()) != SEFUN &&
-      !(archp(this_player())) && previous_object() != this_object()) return 0;
+            !(archp(this_player())) && previous_object() != this_object()) return 0;
     return telopt_ip;
 }
 
 mixed SetTeloptIp(mixed str){
     if(base_name(previous_object()) != LIB_CONNECT &&
-      !(archp(this_player()))) return 0;
+            !(archp(this_player()))) return 0;
     return telopt_ip = str;
 }

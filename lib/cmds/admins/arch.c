@@ -27,7 +27,7 @@ mixed cmd(){
 
 void help(){
     message("help", "Syntax: arch\n\n"
-        "Transports you to the arch room. \nSee also: wiz\n", this_player());
+            "Transports you to the arch room. \nSee also: wiz\n", this_player());
 }
 
 

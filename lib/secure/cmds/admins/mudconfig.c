@@ -54,7 +54,7 @@ mixed cmd(string str) {
 
     if(!securep(this_player())){
         write("This command is for full admins only. To become a "+
-          "full admin, you'll need to be added to the SECURE group.");
+                "full admin, you'll need to be added to the SECURE group.");
         return 1;
     }
 
@@ -463,8 +463,8 @@ static int ProcessOther(string which, string arg){
     }
     if(which == "GLOBAL_MONITOR") reload(SNOOP_D,0,1);
     if(which == "IDLE_TIMEOUT" || which == "MAX_NEWBIE_LEVEL" || 
-      which == "FAST_COMBAT" || which == "GRID" || which == "WIZMAP" ||
-      which == "MINIMAP"){ 
+            which == "FAST_COMBAT" || which == "GRID" || which == "WIZMAP" ||
+            which == "MINIMAP"){ 
         reload(LIB_CREATOR,1,1);
         write("This configuration will take effect for each user the next time they log in.");
         return 1;
@@ -597,7 +597,7 @@ static int ProcessModal(string which, string arg){
         reload(CMD_CED,1,1);
         reload(LIB_CREATOR,1,1);
         write("This configuration will take effect for each user "+
-          "the next time they log in.");
+                "the next time they log in.");
     }
     if(which == "NM_STYLE_EXITS"){
         reload(LIB_ROOM,1,1);
@@ -619,7 +619,7 @@ static int ProcessModal(string which, string arg){
             reload(ob, 0, 1);         
             reload(find_object(CHAT_D), 0, 1);
         }
-         else IMC2_D->remove();   
+        else IMC2_D->remove();   
     }
     if(which == "FAST_COMBAT"){
         reload(LIB_CREATOR,1,1);
@@ -956,12 +956,12 @@ void help() {
             "\nmudconfig justhumans [ yes | no ]"
             "\nmudconfig encumbrance [ yes | no ]"
             "\nmudconfig severable [ yes | no ] (whether limbs can be "
-            "severed in combat. Requires a warmboot.)"
+        "severed in combat. Requires a warmboot.)"
             "\nmudconfig pk [ yes | no ]"
             "\nmudconfig minimap [ yes | no ] (whether players get a minimap)"
             "\nmudconfig wizmap [ yes | no ] (whether cres get an area map)"
             "\nmudconfig grid [ yes | no ] (enable or disable the room grid "
-            "system)"
+        "system)"
             "\nmudconfig compat [ yes | no ]"
             "\nmudconfig retain [ yes | no ]"
             "\nmudconfig defaultparse [ yes | no ]"

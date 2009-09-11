@@ -27,15 +27,15 @@ void eventInventory() {
 
     items = map(filter(all_inventory(this_player()), 
                 (: !((int)$1->GetInvis(this_player())) &&
-                !($1->GetWorn()) :)),
+                 !($1->GetWorn()) :)),
             (: (string)$1->GetEquippedShort() :));
     wieldeds = map(filter(all_inventory(this_player()),
                 (: !((int)$1->GetInvis(this_player())) &&
-                ($1->GetWielded()) :)),
+                 ($1->GetWielded()) :)),
             (: (string)$1->GetEquippedShort() :));
     worns = map(filter(all_inventory(this_player()),
                 (: !((int)$1->GetInvis(this_player())) &&
-                !($1->GetWielded()) && $1->GetWorn() :)),
+                 !($1->GetWielded()) && $1->GetWorn() :)),
             (: (string)$1->GetEquippedShort() :));
     shorts = items + wieldeds + worns;
     if( !(i = sizeof(shorts)) ) {
@@ -51,11 +51,11 @@ void eventInventory() {
         while(i--) if( shorts[i] ) borg[shorts[i]]++;
         i = sizeof(shorts = keys(borg));
         while(i--) ret += capitalize(consolidate(borg[shorts[i]], 
-            shorts[i]))+"\n";
+                    shorts[i]))+"\n";
     }
     message("look", ret, this_player());
     if(!this_player()->GetInvis() && 
-      !environment(this_player())->GetProperty("meeting room"))
+            !environment(this_player())->GetProperty("meeting room"))
         message(MSG_ANNOYING, (string)this_player()->GetName() + " checks " +
                 possessive(this_player()) + " possessions.", 
                 environment(this_player()), ({ this_player() }));

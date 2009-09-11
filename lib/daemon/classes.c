@@ -78,9 +78,9 @@ void AddClass(string file) {
             return 0;
             }
             if(!strsrch(str, "PLAYER_CLASS")){
-                if(sscanf(str, "PLAYER_CLASS %d", foo)){
-                    if(!foo) player = 0;
-                }
+            if(sscanf(str, "PLAYER_CLASS %d", foo)){
+            if(!foo) player = 0;
+            }
             return 0;
             } 
             return 1;
@@ -148,7 +148,7 @@ varargs string *GetClasses(int player) {
     string *ret;
     if(player){
         ret = filter(keys(Classes), (: Classes[$1]["Complete"] &&
-          Classes[$1]["Player"] :));
+                    Classes[$1]["Player"] :));
     }
     else ret = filter(keys(Classes), (: Classes[$1]["Complete"] :));
     return ret;

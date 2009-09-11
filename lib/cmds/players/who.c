@@ -86,7 +86,7 @@ int cmd(string args) {
                 }
                 else {
                     tmp += " " + capitalize(obs[i]->GetKeyName())+ 
-                    " the Long-Titled.";
+                        " the Long-Titled.";
                 }
                 if(obs[i]->GetSleeping() > 0){
                     tmp += " (%^BLUE%^sleeping%^RESET%^) ";

@@ -10,8 +10,8 @@ void create() {
     SetLong("An alcove.");
     SetClimate("indoors");
     SetExits(([
-        "east" : "/domains/campus/room/stairwell2a",
-      ]));
+                "east" : "/domains/campus/room/stairwell2a",
+                ]));
 }
 
 void init(){

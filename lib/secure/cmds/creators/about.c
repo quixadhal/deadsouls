@@ -21,10 +21,10 @@ mixed cmd(string str) {
 
     if(interactive(thing)){
         write("Player save files are not subject to examination "
-          "with this command.");
+                "with this command.");
         return 1;
     }
- 
+
     file = lpc_file(base_name(thing));
 
     if(!file && thing->GetVirtual()){
@@ -41,7 +41,7 @@ mixed cmd(string str) {
     message( "info", file + "\n", this_player() );
 
     return this_player()->eventPage( explode(content, "\n"), 
-      MSG_SYSTEM | MSG_NOCOLOUR);
+            MSG_SYSTEM | MSG_NOCOLOUR);
 }
 
 string GetHelp(string str) {

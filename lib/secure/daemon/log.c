@@ -9,9 +9,9 @@ static void create() {
     daemon::create();
     SetNoClean(1);
     SpecialLogs = ([
-      INTERMUD_D : ({ LOG_I3, LOG_I3ERR }),
-      SERVICES_D : ({ LOG_I3, LOG_I3ERR }),
-    ]);
+            INTERMUD_D : ({ LOG_I3, LOG_I3ERR }),
+            SERVICES_D : ({ LOG_I3, LOG_I3ERR }),
+            ]);
 }
 
 int RotateLogs(){

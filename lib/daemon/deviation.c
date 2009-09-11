@@ -43,7 +43,7 @@ varargs int GetDeviationCost(object who, int xp){
     fxp = to_float(xp);
     foreach(mixed key, mixed val in who->GetStatsMap()){
         if(!StatDeviation || !StatDeviation[key] ||
-          StatDeviation[key][race]) continue;
+                StatDeviation[key][race]) continue;
         dev = (StatDeviation[key][race] - val["class"]);
         if(dev > 0){
             subt += (fxp * GetStatDeviation(dev));
@@ -51,7 +51,7 @@ varargs int GetDeviationCost(object who, int xp){
     }
     return to_int(subt);
 }
-        
+
 void SetDeviations(){
     mapping tmpmap = STATS_D->GetStats();
     if(sizeof(tmpmap)) StatDeviation = tmpmap;

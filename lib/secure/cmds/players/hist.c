@@ -49,13 +49,13 @@ mixed cmd(string args) {
     }
 
     if(!LOG_REMOTE_CHANS && 
-      member_array(args, CHAT_D->GetRemoteChannels(1)) != -1){
+            member_array(args, CHAT_D->GetRemoteChannels(1)) != -1){
         ret = CHAT_D->cmdLast(args);
         if(sizeof(ret)) return ret;
     }
 
     if(!LOG_LOCAL_CHANS && 
-      member_array(args, CHAT_D->GetRemoteChannels()) == -1){
+            member_array(args, CHAT_D->GetRemoteChannels()) == -1){
         ret = CHAT_D->cmdLast(args);
         if(sizeof(ret)) return ret;
     }

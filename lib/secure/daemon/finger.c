@@ -65,8 +65,8 @@ varargs string GetFinger(string who, int html) {
     }
     creator = 0;
     if( !user_exists(who) || (!RestoreObject(DIR_PLAYERS "/" +
-      who[0..0] + "/" + who) && !(creator = RestoreObject(DIR_CRES "/" +
-      who[0..0] + "/" + who))) ){
+                    who[0..0] + "/" + who) && !(creator = RestoreObject(DIR_CRES "/" +
+                            who[0..0] + "/" + who))) ){
         return capitalize(who) + " is unknown to " + mud_name() + ".";
     }
     if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;
@@ -160,7 +160,7 @@ mixed array GetRemoteFinger(string who) {
     if( !user_exists(who) ) return 0;
     else if( !RestoreObject(DIR_PLAYERS "/" + who[0..0] + "/" + who) &&
             !(creator = RestoreObject(DIR_CRES "/" +
-                        who[0..0] + "/" + who)) ) return 0;
+                    who[0..0] + "/" + who)) ) return 0;
     else if( !strsrch(player_save_file(who), DIR_CRES) ) creator = 1;
     ob = find_player(who);
     if( unguarded( (: file_size, user_path(who) + ".plan" :) ) > 0 ) {

@@ -416,7 +416,7 @@ int RemoveUser(string str){
     debug("REMOVE USER REQUEST: "+str, "red");
     if( ob = find_player(str) ) {
         message("system", "You are being ridded from " + mud_name() + ".",
-          ob);
+                ob);
         if( !((int)ob->eventDestruct()) ) destruct(ob);
     }
     purge_array = filter(objects(),(: !strsrch(base_name($1), home_dir) :));
@@ -447,7 +447,7 @@ int RemoveUser(string str){
     sfile = ESTATES_DIRS + "/" + str[0..0] + "/" + str;
     if(directory_exists(sfile)) rename(sfile, targetdir+"/"+str+"/estate");
     log_file("rid", "\n" + str + 
-      " by PLAYERS_D as a trivial/unused account.\n");
+            " by PLAYERS_D as a trivial/unused account.\n");
     return 1;
 }
 
@@ -712,9 +712,9 @@ static mapping GatherUserData(){
         SaveObject(SaveFile);
         unguarded( (: LoadPlayer(gplayer) :) );
         cands[gplayer] = ([ "LoginTime" : LoginTime, "Age" : Age,
-          "BirthTime" : BirthTime, "Email" : Email, "HostSite" : HostSite,
-          "CreatorAge" : CreatorAge, "CreatorBirth" : CreatorBirth,
-          "RealName" : RealName ]);
+                "BirthTime" : BirthTime, "Email" : Email, "HostSite" : HostSite,
+                "CreatorAge" : CreatorAge, "CreatorBirth" : CreatorBirth,
+                "RealName" : RealName ]);
         RestoreObject(SaveFile);
     }
     UserData = cands;
@@ -731,7 +731,7 @@ int SelektUsers(int gather){
         cands = GatherUserData();
     }
     else cands = UserData;
-     
+
     foreach(string user in sort_array(keys(cands),1)){
         int purge = 0;
         if(!cands[user]) continue;
@@ -747,7 +747,7 @@ int SelektUsers(int gather){
 
         //bot always get purged, and snoop logs tagged
         if(cands[user]["RealName"] == "John Smith" && 
-          cands[user]["Email"] == "me@here"){
+                cands[user]["Email"] == "me@here"){
             reset_eval_cost();
             SNOOP_D->NotifyBot(user);
             reset_eval_cost();
@@ -757,31 +757,31 @@ int SelektUsers(int gather){
         //They last logged in over 1 month ago, and their
         //in-game time is less than 30 seconds.
         else if(cands[user]["Age"] < 30 &&
-          (last = (time() - cands[user]["LoginTime"])) > 2592000){
-        debug("Purging: "+user+", age: "+time_elapsed(cands[user]["Age"])+
-        " last logged in "+ctime(cands[user]["LoginTime"])+", "+
-        time_elapsed(last)+" ago.", "green");
+                (last = (time() - cands[user]["LoginTime"])) > 2592000){
+            debug("Purging: "+user+", age: "+time_elapsed(cands[user]["Age"])+
+                    " last logged in "+ctime(cands[user]["LoginTime"])+", "+
+                    time_elapsed(last)+" ago.", "green");
             purge = 1;
         }
 
         //They last logged in over 6 months ago, and their in-game
         //time is less than two minutes.
         else if(cands[user]["Age"] < 121 && 
-          (last = (time() - cands[user]["LoginTime"])) > 15552000){ 
-        debug("Purging: "+user+", age: "+time_elapsed(cands[user]["Age"])+
-        " last logged in "+ctime(cands[user]["LoginTime"])+", "+
-        time_elapsed(last)+" ago.", "red"); 
+                (last = (time() - cands[user]["LoginTime"])) > 15552000){ 
+            debug("Purging: "+user+", age: "+time_elapsed(cands[user]["Age"])+
+                    " last logged in "+ctime(cands[user]["LoginTime"])+", "+
+                    time_elapsed(last)+" ago.", "red"); 
             purge = 1;
         }
 
         //They last logged in over a year ago, only once, and
         //for less than one hour.
         else if(cands[user]["Age"] < 3600 &&
-          (cands[user]["LoginTime"] - cands[user]["BirthTime"] < 100) &&
-          (last = (time() - cands[user]["LoginTime"])) > 31104000){
-        debug("Purging: "+user+", age: "+time_elapsed(cands[user]["Age"])+ 
-        " last logged in "+ctime(cands[user]["LoginTime"])+", "+
-        time_elapsed(last)+" ago.", "black");
+                (cands[user]["LoginTime"] - cands[user]["BirthTime"] < 100) &&
+                (last = (time() - cands[user]["LoginTime"])) > 31104000){
+            debug("Purging: "+user+", age: "+time_elapsed(cands[user]["Age"])+ 
+                    " last logged in "+ctime(cands[user]["LoginTime"])+", "+
+                    time_elapsed(last)+" ago.", "black");
             purge = 1;
         }
 

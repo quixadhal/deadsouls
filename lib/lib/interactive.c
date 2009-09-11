@@ -565,13 +565,13 @@ static void heart_beat(){
     string tip = this_object()->GetTeloptIp();
     //debug("tip: "+tip+", HostSite: "+HostSite);
     if(tip && tip != HostSite){
-         HostSite = tip;
-         save_player(GetKeyName());
+        HostSite = tip;
+        save_player(GetKeyName());
     }
     if(!interactive() || !find_object(INSTANCES_D)) autosave::heart_beat();
     if(!PlayerStatus) PlayerStatus = ([]);
     if(!PlayerStatus["Idling"] && 
-      query_idle(this_object()) > 240){
+            query_idle(this_object()) > 240){
         PlayerStatus["Idling"] = 1;
         if(find_object(INSTANCES_D)){
             INSTANCES_D->SendWhoUpdate(GetKeyName());

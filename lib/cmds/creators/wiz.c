@@ -22,5 +22,5 @@ mixed cmd(){
 
 void help(){
     message("help", "Syntax: wiz\n\n"
-        "Transports you to the wiz room.\n", this_player());
+            "Transports you to the wiz room.\n", this_player());
 }

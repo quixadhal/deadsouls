@@ -98,7 +98,7 @@ static private mapping tags = ([
 static void Setup(){
     remote_chans = ({});
     local_chans = ({"newbie","cre","gossip","admin","error", "intermud",
-        "death", "connections", "muds" });
+            "death", "connections", "muds" });
     syschans = ({ "intermud", "death", "connections", "muds" });
 
     local_chans += CLASSES_D->GetClasses();
@@ -704,12 +704,16 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     string chatlayout = "%s %s<%s>%s %s"; //Default: "%s %s<%s>%s %s" -> "Name COLOR<channel>RESET talks."
     string emotelayout = "%s<%s>%s %s"; //Default: "%s<%s>%s %s" -> "COLOR<channel>RESET Name emotes."
 
-    if(prev == INSTANCES_D) terminal = 1;
+    if(prev == INSTANCES_D){
+        terminal = 1;
+        //tc("chatd. who: "+who+", ch: "+ch+", msg: "+msg);
+    }
     if(prev == SERVICES_D) terminal = 1;
     if(prev == IMC2_D) terminal = 1;
     if(!terminal){
         string rch = GetRemoteChannel(ch);
         if(member_array(rch, remote_chans) == -1){
+            //tc("should be sending to instances now...", "blue");
             INSTANCES_D->eventSendChannel(who,ch,msg,emote,target,targmsg);
         }
     }
@@ -768,8 +772,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
             this_msg = tags[lower_case(ch)]; //Use it
         } else { //Otherwise
             if(member_array(ch, local_chans) < 0 && (prev == IMC2_D ||
-              member_array(ch, (keys(INTERMUD_D->GetChannelList()) 
-              || ({}))) < 0)){
+                        member_array(ch, (keys(INTERMUD_D->GetChannelList()) 
+                                || ({}))) < 0)){
                 this_msg = tags["default-IMC2"]; //Use the default IMC2 entry
             }
             else {
@@ -843,8 +847,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
             chancolor = tags[lower_case(ch)]; //Use it
         } else { //Otherwise
             if(member_array(ch, local_chans) < 0 && (prev == IMC2_D ||
-              member_array(ch, (keys(INTERMUD_D->GetChannelList()) 
-              || ({}))) < 0)){
+                        member_array(ch, (keys(INTERMUD_D->GetChannelList()) 
+                                || ({}))) < 0)){
                 chancolor = tags["default-IMC2"]; //Use the default IMC2 entry
             }
             else {

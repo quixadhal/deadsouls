@@ -33,7 +33,7 @@ mixed do_weigh_obj(object obj) {
     if(obj->GetWorn()) verb = "get a feel for";
 
     this_player()->eventPrint("You stare intently at " + name + " and " +
-      verb + " it.");
+            verb + " it.");
     environment(this_player())->eventPrint( this_player()->GetName() +
             " looks at " + name + ".", this_player());
     if( this_player()->GetInCombat() )
@@ -76,6 +76,6 @@ int eventWeigh(object who, object obj){
     else if(ret < 2) ret_str = "about one pound.";
     else ret_str = "about " + cardinal(ret) + " pounds.";
     write("You make a rough estimate that " + name + " weighs " +
-      ret_str);
+            ret_str);
     return 1;
 } 

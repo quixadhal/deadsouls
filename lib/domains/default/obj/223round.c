@@ -18,5 +18,5 @@ void create(){
     SetVendorType(VT_TREASURE);
 }
 void init(){
-::init();
+    ::init();
 }

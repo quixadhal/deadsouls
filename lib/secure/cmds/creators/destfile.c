@@ -25,7 +25,7 @@ mixed cmd(string args) {
         write(args + " destructed.");
         return 1;
     }
-        
+
     file = absolute_path((string)this_player()->query_cwd(), args);
     if(!(ob = find_object(file)) && !grepp(args, "/")){
         file = DEFINES_D->GetDefine(args);
