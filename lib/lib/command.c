@@ -83,7 +83,8 @@ static string process_input(string args){
             if(!line[i]) error("String handling error in old style plural parser.");
             element = line[i];
             if(sscanf(element,"%d.%d",numba,tmp_num) != 2 &&
-              sscanf(element,"%d.%s",numba,tmp_ret) == 2){
+              sscanf(element,"%d.%s",numba,tmp_ret) == 2 &&
+              (member_array(verb, talks) == -1)){
                     args = replace_string(args, numba + ".", 
                       numba + ordinal(numba) + " ");
                     //tc("args: "+args, "green");
