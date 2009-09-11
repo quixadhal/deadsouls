@@ -346,13 +346,17 @@ mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang
 
 mixed eventWander(){
     int fp;
+    object env = environment();
+    mixed outs;
+
+    if(!env || !(outs = env->GetExits())) return 0;
 
     if( !sizeof(WanderPath) ){
         string *sorties;
         string tmp;
 
         sorties = ({});
-        foreach(tmp in (string *)environment()->GetExits()){
+        foreach(tmp in outs){
             string dest, door;
             object ob;
             if(!permit_load) ob=find_object(dest = (string)environment()->GetExit(tmp));
