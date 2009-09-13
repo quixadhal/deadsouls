@@ -58,7 +58,7 @@
 // UNKNOWN_DATA_LOG is where unrecognized packets are logged to.
 // I wrote handlers for all packets I know of, so this should only pick
 // up tests and possibly if anyone is creating new packets.
-#define UNKNOWN_DATA_LOG DATA_LOG ".unk"
+#define UNKNOWN_DATA_LOG DATA_LOG
 
 // Your MUD's URL is shared with other muds when building the mud list.
 // This you could also put this in your who reply.

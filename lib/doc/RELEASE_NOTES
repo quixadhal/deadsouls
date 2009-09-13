@@ -1,5 +1,12 @@
+---- 2.11a18 ---
+- Released 2009-09-13
+- Fixed minor bugs in parsing.
+- Individualized a few logs to prevent instances stepping on
+  each other during log rotation.
+- Fixed some logic in the probability lab.
+
 ---- 2.11a17 ---
-- Released 2009-09-12
+- Released 2009-09-11
 - Driver: Added Wodan's fix for NEW-ENVIRON.
 - Fixed skill problem in CLASSES_D.
 - i3router: Added Aidil's irn-mudlist-req and a check for when

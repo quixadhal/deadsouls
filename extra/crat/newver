@@ -74,6 +74,9 @@ cd /tmp/foo
 \rm -f new/lib/secure/cfg/mudos.autobak.????
 \rm -f new/lib/news/*.????
 
+\rm -f new/lib/domains/campus/save/charl*
+\rm -f next/lib/domains/campus/save/charl*
+
 \cp -f new/lib/secure/daemon/update.patch next/lib/secure/daemon/update.patch
 \mv -f new/lib/secure/lib/connect.c new/lib/secure/lib/connect.real
 \cp -f new/lib/secure/lib/connect.first.c new/lib/secure/lib/connect.c

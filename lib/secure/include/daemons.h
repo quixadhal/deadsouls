@@ -52,6 +52,7 @@
 #define OOB_D                DIR_SECURE_DAEMONS "/oob"
 #define OPTIONS_D            DIR_SECURE_DAEMONS "/options"
 #define PARTY_D              DIR_DAEMONS "/party"
+#define PHYS_D               DIR_DAEMONS "/phys"
 #define PING_D               DIR_SECURE_DAEMONS "/ping"
 #define PLAYERS_D            DIR_SECURE_DAEMONS "/players"
 #define POLITICS_D           DIR_SECURE_DAEMONS "/politics"

@@ -1,12 +1,15 @@
 #include <lib.h>
-mapping Momentum = ([]);
+#include <daemons.h>
 
 inherit LIB_DAEMON;
+
+mapping Momentum = ([]);
 
 void create(){
     if(!Momentum) Momentum = ([]);
 }
 
+#if 0
 varargs int AddMomentum(object what, object from, object to, int speed){
     int x1, y1, z1, x2, y2, z2;
     int a, b;
@@ -21,7 +24,7 @@ varargs int AddMomentum(object what, object from, object to, int speed){
                 newdir = bearing(x1, y1, x2, y2);
                 olddir = Momentum[what]["dir"];
                 oldspeed = Momentum[what]["speed"];
-
+#endif
 
 
 

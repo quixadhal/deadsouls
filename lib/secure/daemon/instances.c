@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <logs.h>
 #include <news.h>
 #include <save.h>
 #include <daemons.h>
@@ -22,7 +23,7 @@ varargs static void yenta(string arg, string clr){
     if(verbose){
         debug_message(arg);
     }
-    unguarded( (: log_file("/secure/log/icp", timestamp() +
+    unguarded( (: log_file(LOG_ICP, timestamp() +
                     " " + strip_colours($(arg)) + "\n") :) );
 }
 
@@ -555,20 +556,20 @@ static int write_data(int fd, mixed data){
 static void Setup(){
     //yenta("icp setup got called");
     if ((icp_socket = socket_create(MUD, "read_callback", "close_callback")) < 0){
-        log_file("/secure/log/icp","setup: Failed to create socket.\n");
+        log_file(LOG_ICP, "setup: Failed to create socket.\n");
         return;
     }
     if (socket_bind(icp_socket, PORT_ICP) < 0) {
         socket_close(icp_socket);
-        log_file("/secure/log/icp","setup: Failed to bind socket to port.\n");
+        log_file(LOG_ICP, "setup: Failed to bind socket to port.\n");
         return;
     }
     if (socket_listen(icp_socket, "listen_callback") < 0) {
         socket_close(icp_socket);
-        log_file("/secure/log/icp","setup: Failed to listen to socket.\n");
+        log_file(LOG_ICP, "setup: Failed to listen to socket.\n");
         return;
     }
-    log_file("/secure/log/icp","icp setup ended\n");
+    log_file(LOG_ICP, "icp setup ended\n");
 }
 
 int eventCreateSocket(string host, int port){
@@ -583,7 +584,7 @@ int eventCreateSocket(string host, int port){
     x = socket_bind(x, 0);
     if( x != EESUCCESS ) {
         socket_close(ret);
-        log_file("/secure/log/icp", "Error in socket_bind(): "+x);
+        log_file(LOG_ICP, "Error in socket_bind(): "+x);
         return 0;
     }
     x = socket_connect(ret, host + " " + (port + OFFSET_ICP), 

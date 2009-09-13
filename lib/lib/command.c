@@ -115,6 +115,7 @@ static string process_input(string args){
                     e2 = line[j];
                     if(sizeof(tmp_thing)) tmp_thing = e2 + " " + tmp_thing;
                     else tmp_thing = e2;
+                    if(member_array(tmp_thing, talks) != -1) break;
                     o1 = present(tmp_thing);
                     if(!o1){
                         o1 = present(old_tmp);

@@ -42,6 +42,7 @@ int cmd( string a )
     "#include <cgi.h>\n"+
     "#include <dirs.h>\n"+
     "#include <privs.h>\n"+
+    "#include <logs.h>\n"+
     "#include <virtual.h>\n"+
     "#include <cfg.h>\n"+
     "#include <clock.h>\n"+

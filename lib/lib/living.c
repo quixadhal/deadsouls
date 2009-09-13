@@ -68,6 +68,9 @@ mixed direct_dismount_from_liv(){
 }
 
 mixed direct_attack_liv(){
+    if(this_player() == this_object()){
+        return "#You can't attack yourself.";
+    }
     if(intp(Attackable) && !Attackable){
         return "You are unable to attack "+this_object()->GetShort()+".";
     }
