@@ -269,6 +269,10 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
         log_file("harass/" + GetKeyName(), strip_colours(msg) + "\n");
     if( !TermInfo )
         TermInfo = (mapping)TERMINAL_D->query_term_info(GetTerminal());
+
+    if(this_object()->GetParanoia("cursefilter")){
+        msg = FILTER_D->eventFilter(msg, "curse");
+    }
     if( !(msg_class & MSG_NOCOLOUR) ){
         int indent;
 

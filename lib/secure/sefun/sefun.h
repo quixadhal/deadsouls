@@ -111,7 +111,7 @@ string trim(string str);
 mixed unguarded(function f);
 object unique(string fn, int rare);
 int user_exists(string str);
-string user_path(string name);
+varargs string user_path(string name, int legacy);
 string version();
 varargs int visibility(object ob);
 varargs int visible(object detectee_obj, object detector_obj);

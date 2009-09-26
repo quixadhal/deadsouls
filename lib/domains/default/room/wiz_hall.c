@@ -47,6 +47,7 @@ static void create() {
                 "up" : "/domains/default/room/wiz_hall2.c",
                 ]) );
     SetRead("sign", (: load_object(ROOM_ARCH)->SignRead() :) );
+    SetCoordinates("-2,3,0");
 }
 
 int CanReceive(object sneak) {
@@ -55,6 +56,7 @@ int CanReceive(object sneak) {
     foreach(object ob in living_stack){
         if(living(ob) && !creatorp(ob) && 
                 base_name(ob) != "/domains/default/npc/tree" &&
+                base_name(ob) != "/domains/default/npc/drone3" &&
                 base_name(ob) != "/secure/obj/floodmapper" &&
                 !member_group(ob,"TEST")) {
             message("info","Creator staff only, sorry.", ob);

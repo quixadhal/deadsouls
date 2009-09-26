@@ -36,6 +36,7 @@ void create() {
                 "/domains/Ylsrim/obj/stargate" : 1,
                 ]));
     SetRead("sign", (: ReadSign :) );
+    SetCoordinates("1000,1001,1");
 } 
 void init(){
     ::init();

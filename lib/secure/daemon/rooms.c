@@ -10,8 +10,9 @@ mapping Workrooms = ([]);
 
 mapping WorldMap = ([]);
 mapping WorldGrid = ([]);
+static mapping DroneCache = ([]);
 static string last_exit;
-static int global_manual;
+static int global_manual, cache_timer = time();
 int debugging;
 static string *cards = ({ "north", "south", "east", "west",
         "northeast", "northwest", "southeast", "southwest",
@@ -181,7 +182,8 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
     mixed a, b, c, d, e, f, g, h, i, j, k, l, m, n;
     int p, q, x, y, z;
     mixed xarr, yarr, zarr;
-    //string hashed_coord = crypt(coord, "xyz");
+
+    //tc("1", "red");
 
     if(this_player() && adminp(this_player())){
         room = arg_room;
@@ -190,7 +192,15 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
         room = base_name(previous_object());
     }
 
-    if(!player->GetProperty("LastLocation")) return 0;
+    if(!player) player = previous_object();
+
+    if(!player->GetProperty("LastLocation") && 
+      base_name(player) != room) return 0;
+
+    if(inherits(LIB_ROOM, previous_object())) global_manual = 1;
+
+    //tc("global_manual: "+global_manual, "red");
+
     sscanf(coord,"%d,%d,%d",x,y,z);
     xarr = GenerateNames(x);
     yarr = GenerateNames(y);
@@ -327,11 +337,18 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
         return 0;
     }
 
-    if(!(last_str = player->GetProperty("LastLocation"))){
+    if(!(last_str = player->GetProperty("LastLocation")) &&
+        player != ob){
         return 0;
     }
+    if(!(last_str)) last_str = "";
+
     name = base_name(ob);
     prefix = path_prefix(name);
+
+    if(manual && (!strsrch(name, "/open/") || !strsrch(name, "/realms/"))){
+        return 0;
+    }
 
     /* Still need to figure out exclusions for
      * an island or continent perimeter :(
@@ -699,4 +716,20 @@ varargs mixed GetDirectionRoom(mixed origin, string direction, int noclip){
 #else 
     return 0;
 #endif
+}
+
+mixed DroneCache(mixed foo){
+    string path;
+    object prev, env;
+    //tc("DroneCache: "+identify(DroneCache), "red");
+    prev = previous_object();
+    if(!prev) return 0;
+    env = environment(prev);
+    if(!env) return 0;
+    path = path_prefix(base_name(env));
+    if(time() - cache_timer > 60 || !DroneCache) DroneCache = ([]);
+    cache_timer = time();
+    if(!DroneCache[path]) DroneCache[path] = ({});
+    if(foo) DroneCache[path] = distinct_array(DroneCache[path] + foo );
+    else return copy(DroneCache[path]);
 }

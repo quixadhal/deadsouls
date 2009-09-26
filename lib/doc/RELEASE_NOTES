@@ -1,3 +1,23 @@
+---- 2.11a19 ---
+- Released 2009-09-26
+- Added a more efficient auto-mapping drone.
+- Rooms can now specify their own coords, for example:
+  SetCoordinates("-3000,3000,0");
+- Map daemon now periodically sweeps cached maps and updates
+  their info.
+- Parse matching now also checks for emotes.
+- Added commands: vaarsuvius, cursefilter, homedir, homeroom
+- Log rotation now better accommodates unix file semantics.
+- The "reply time" threshold for deleting the reply addressee
+  is now a full day.
+- Fixed a thingy that cancelled "more" in charmode after a
+  few seconds or so of reading
+- QCS now handles SetRead better.
+- The IMC2 password should now get clobbered more rarely.
+- Fixed a parsing ambiguity in "get from".
+- The instances daemon now properly reloads its configuration on boot.
+- User names on instances are now more thoroughly reserved.
+
 ---- 2.11a18 ---
 - Released 2009-09-13
 - Fixed minor bugs in parsing.

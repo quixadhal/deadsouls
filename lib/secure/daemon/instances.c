@@ -53,14 +53,12 @@ static void create() {
     if(!sizeof(sockets)) sockets = ([]);
     SaveFile = save_file(SAVE_INSTANCES);
     SetSaveFile(SaveFile);
-    if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
-        cp(old_savename(SaveFile), SaveFile);
-    }
     SetNoClean(1);
-    if(file_exists(SaveFile)){
+    if(unguarded( (: file_exists(SaveFile) :) )){
         RestoreObject(SaveFile);
     }
     if(ENABLE_INSTANCES){
+        debug_message("\nNOTE: This mud is a non-global instance.\n");
     }
     call_out("Setup", 0);
     set_heart_beat(10);

@@ -301,6 +301,7 @@ static void InputPassword(string pass, string cap) {
 
 static void eventCreatePlayer(string cap) {
     string tmpdir, lcname = lower_case(Name);
+    string *tmpfiles = ({});
     if( !(BANISH_D->valid_name(lcname)) ) {
         receive(capitalize(cap) + " is not a valid name.\n");
         receive(mud_name() + " requires that all names meet the following "
@@ -315,15 +316,21 @@ static void eventCreatePlayer(string cap) {
     }
     tmpdir = DIR_PLAYERS "/" + lcname[0..0] + "/";
     if(directory_exists(tmpdir)){
-        string *tmpfiles = get_dir(tmpdir);
-        foreach(string tmpfile in tmpfiles){
-            if(!strsrch(tmpfile, lcname+".")){
-                receive("\nThat name is taken. Please choose a new one.\n");
-                input_to( (: InputName :), I_NOESC );
-                return;
-            }
-        } 
+        tmpfiles += get_dir(tmpdir);
     }
+    tmpdir = DIR_CRES "/" + lcname[0..0] + "/";
+    if(directory_exists(tmpdir)){
+        tmpfiles += get_dir(tmpdir);
+    }
+    //tc("lcname: "+lcname);
+    foreach(string tmpfile in tmpfiles){
+        //tc("tmpfile: "+tmpfile);
+        if(!strsrch(tmpfile, lcname+".")){
+            receive("\nThat name is taken. Please choose a new one.\n");
+            input_to( (: InputName :), I_NOESC );
+            return;
+        }
+    } 
     if( !(BANISH_D->eventConnect(Name, client_ip)) ) {
         string news;
 
@@ -823,10 +830,13 @@ void eventCompleteChar(){
     Player->SetCapName(CapNamen);
     Player->SetEmail(E_Mail);
     Player->SetRealName(TrueName);    
-    if(lower_case(raza) != "prawn"){
+    if(lower_case(raza) != "poleepkwa"){
         Player->SetLanguage("Common",100);    
         Player->SetDefaultLanguage("Common");
         this_player()->SetWimpy(20);
+    }
+    else {
+        Player->SetGender("neutral");
     }
     if(yescre) Player->SetPrompt("cwd");
     else Player->SetPrompt("status");

@@ -44,13 +44,15 @@ static void create(){
 static string process_input(string args){ 
     string verb, real_verb, tmpalias;
     object env = environment(this_object());
-    string *talks = ({ "say", "whisper", "yell", "shout", "speak" });
+    string *talks = ({ "emote", "tell", "reply", "say", "whisper", "yell", "shout", "speak" });
     talks += this_object()->GetChannels();
+    talks += SOUL_D->GetEmotes();
 
     //tc("verb: "+verb+", args: "+args);
     if(sizeof(args)){
         string *tmpargs = explode(args, " ");
-        verb = tmpargs[0];
+        if(sizeof(tmpargs)) verb = tmpargs[0];
+        else verb = "";
     }
     if(verb && tmpalias = this_object()->GetAlias(verb)){
         real_verb = explode(tmpalias, " ")[0];

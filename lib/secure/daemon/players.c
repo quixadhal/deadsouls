@@ -671,14 +671,26 @@ int CheckBuilder(object who){
     return 0; 
 }
 
-string GetUserPath(mixed name){
+varargs string GetUserPath(mixed name, int legacy){
     string ret = "/tmp/";
+    object player;
     if(!creators) creators = ({});
     if(!players) players = ({});
     if(name && objectp(name)) name = name->GetKeyName();
     if(!name){
         if(!this_player()) return ret;
         else name = this_player()->GetKeyName();
+    }
+    if(user_exists(name) && !legacy){
+        player = unguarded( (: find_player($(name)) :) );
+        if(player) ret = player->GetUserPath();
+        else {
+            mapping tmpmap;
+            override = 1;
+            tmpmap = GetPlayerData(name, "Directories");
+            if(tmpmap) ret = tmpmap["home"];
+        }
+        if(ret) return ret;
     }
     if(member_array(name, creators) != -1){
         ret = REALMS_DIRS+"/"+name+"/";
@@ -689,6 +701,29 @@ string GetUserPath(mixed name){
     return ret;
 }
 
+string GetHomeRoom(string name){
+    string ret;
+    object dude;
+    mapping tmpmap;
+
+    //tc("1", "red");
+    if(!user_exists(name)) return 0;
+    //tc("2", "green");
+    
+    dude = unguarded( (: find_player($(name)) :) );
+    if(dude){
+        ret = dude->GetParanoia("homeroom");
+        //tc("3", "blue");
+    }
+    else {
+        override = 1;
+        tmpmap = GetPlayerData(name, "Paranoia");
+        ret = tmpmap["homeroom"];
+    }
+    //tc("4", "white");
+    return ret;
+}
+    
 static void UserUpdate(string name, int status){
     object ob = find_player(name);
     if(member_array(name, local_users()) != -1) status = 1;

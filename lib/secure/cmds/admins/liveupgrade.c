@@ -222,9 +222,11 @@ mixed cmd(string str) {
         string *files = ({});
         string nlu, secs = upgrades_files+"/0^0secure0^0include0^0secrets.h";
         object nlob;
-        if(file_exists(secs) && file_exists(SECRETS_H)){
-            rm(secs);
+        if(file_exists(SECRETS_H)){
+            catch( cp(SECRETS_H, "/secure/save/backup/secrets_" + 
+              imc2_mud_name() + "." + time() + ".bak") );
         }
+        if(file_exists(secs)) catch( rm(secs) );
         nlu = upgrades_files+"/0^0secure0^0cmds0^0admins0^0liveupgrade.c";
         if(file_exists(nlu)){
             catch( nlob = load_object(nlu) );

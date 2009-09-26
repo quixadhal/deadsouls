@@ -18,9 +18,7 @@ inherit LIB_HISTORY;
 #define CMD_EDITING              1
 #define CHAR_LIMIT               1024
 
-private string CurrentWorkingDirectory = "/";
-private string PreviousWorkingDirectory;
-private mapping Nicknames, Aliases, Xverbs; 
+private mapping Nicknames, Aliases, Xverbs, Directories; 
 private static int CWDCount, CWDBottom, CWDTop, CmdNumber; 
 private string Prompt; 
 private static string *Stack; 
@@ -36,6 +34,7 @@ static int *GetScreen(){ return ({ 79, 24 }); }
 static void create(){
     Nicknames = ([]); 
     Termstuff = ([]); 
+    Directories = ([ "current" : "/", "previous" : "/", "home" : 0 ]);
     recalled_command_num = sizeof(this_object()->GetCommandHist()) - 1;
     if(recalled_command_num > -1){
         recalled_command=this_object()->GetCommandHist()[recalled_command_num];
@@ -483,7 +482,7 @@ static string user_names(object ob){
 private static int set_cwd(string str){ 
     int x;
     string tmpstr = str;
-    if(str == "~-" || str == "-") str = PreviousWorkingDirectory;
+    if(str == "~-" || str == "-") str = Directories["previous"];
     if(!str || str == "") str = user_path(GetKeyName()); 
     if (str[<1] == '/' && str != "/") str = str[0..<2];
     replace_string(str, "//", "/"); 
@@ -502,11 +501,20 @@ private static int set_cwd(string str){
         }  
     } 
 
-    if(str != query_cwd()) PreviousWorkingDirectory = query_cwd();
-    CurrentWorkingDirectory = str; 
-    message("system", sprintf("%s:", CurrentWorkingDirectory), this_player()); 
+    if(str != query_cwd()) Directories["previous"] = query_cwd();
+    Directories["current"] = str; 
+    message("system", sprintf("%s:", Directories["current"]), this_player()); 
     return 1; 
 } 
+
+string GetUserPath(){
+    return Directories["home"];
+}
+
+string SetUserPath(string str){
+    if(this_player() != this_object()) return 0;
+    return Directories["home"] = str; 
+}
 
 private static void pushd(string str){ 
     if(CWDCount++ == DIRECTORY_STACK_SIZE){ 
@@ -570,9 +578,9 @@ void reset_prompt(){
     if(!stringp(Prompt)) Prompt = "> ";
 } 
 
-string query_cwd(){ return CurrentWorkingDirectory; } 
+string query_cwd(){ return Directories["current"]; } 
 
-string query_prev_wd(){ return PreviousWorkingDirectory; } 
+string query_prev_wd(){ return Directories["previous"]; } 
 
 string SetPrompt(string str){ return Prompt = str; }
 

@@ -10,7 +10,7 @@ void create() {
     SetLong("This is a bend in the hallway. The main Science Building hallway is north of here. A smaller hallway runs west from here, however it seems blocked by construction.");
     SetClimate("indoors");
     SetExits( ([
-                //"west" : "/domains/campus/room/science5",
+                "west" : "/domains/campus/room/science5",
                 "north" : "/domains/campus/room/science3.c",
                 ]) );
 

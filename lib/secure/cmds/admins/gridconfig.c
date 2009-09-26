@@ -1,5 +1,6 @@
 #include <lib.h>
 #include <daemons.h>
+#include <rooms.h>
 
 inherit LIB_DAEMON;
 
@@ -27,14 +28,37 @@ mixed findit(string str){
     return 0;
 }
 
+static mixed ResetGrid(){
+    object drone;
+    int err = 0;
+    MAP_D->zero();
+    ROOMS_D->zero();
+    ROOMS_D->eventDestruct();
+    MAP_D->eventDestruct();
+    drone = new("/domains/default/npc/drone3");
+    err += catch( drone->eventMove(ROOM_START) );
+    drone = new("/domains/default/npc/drone3");
+    catch( reload("/domains/Ylsrim/room/tower") );
+    err += catch( drone->eventMove("/domains/Ylsrim/room/tower") );
+    drone = new("/domains/default/npc/drone3");
+    catch( reload("/domains/Praxis/square") );
+    err += catch( drone->eventMove("/domains/Praxis/square") );
+    write("Remapping in progress. "+err+" errors encountered.");
+    return 1;
+}
+
 mixed cmd(string args) {
     string s1, s2, s3, coord, cmd;
     mixed file;
     object room;
     int err;
+    if(!this_player() || !archp(this_player())) return "lol";
     if(!args){
         write("Try: help gridconfig");
         return 1;
+    }
+    if(args == "reset"){
+        return ResetGrid();
     }
     if(sscanf(args,"%s %s %s",s1,s2,s3) == 3){
         file = findit(s2);
@@ -95,9 +119,13 @@ mixed cmd(string args) {
 
 string GetHelp(string args) {
     return ("Syntax: gridconfig set <room> <coordinates>\n"
-            "        gridconfig unset <room>\n\n"
+            "        gridconfig unset <room>\n"
+            "        gridconfig reset\n\n"
             "Modifies the grid coordinate table in ROOMS_D for the "
-            "specified room.\nSee also: mudconfig, admintool"
+            "specified room. If \"reset\" is the argument, the rooms "
+            "daemon and map daemon are purged and slowly rebuilt using "
+            "mapper drones. Note that this may lag your mud.\n"
+            "\nSee also: mudconfig, admintool"
             "\n\n"
             "");
 }

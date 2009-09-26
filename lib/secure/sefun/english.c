@@ -23,6 +23,7 @@ varargs mixed match_command(string verb, int subs){
     }
     localcmds += keys(VERBS_D->GetVerbs());
     if(member_array(verb,localcmds) == -1){
+        if(member_array(verb, SOUL_D->GetEmotes()) != -1) return verb;
         if(alphap(verb)) local_arr = regexp(localcmds,"^"+verb);
         if(sizeof(local_arr)){
             if(!subs){

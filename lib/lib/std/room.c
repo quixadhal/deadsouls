@@ -1244,6 +1244,23 @@ mixed GetCoords(){
     return copy(Coords);
 }
 
+string SetCoordinates(string str){
+    string ret;
+    int x, y, z, i;
+    if(!str) return 0;
+    i = sscanf(str, "%d,%d,%d", x, y, z);
+    if(i != 3){
+        i = sscanf(str, "%d,%d", x, y);
+        z = 0;
+    }
+    if(i < 2) return 0;
+    ret = x+","+y+","+z;
+    if(sizeof(ROOMS_D->GetGrid(ret))) return 0;
+    ROOMS_D->SetRoom(this_object(), this_object(), ret);
+    Coords = ({ x, y, z });
+    return ret;
+}
+
 static void init(){
     object prev = previous_object();
     if(undefinedp(RespirationType)){

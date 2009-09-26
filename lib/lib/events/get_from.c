@@ -23,15 +23,18 @@ mixed CanGetFrom(object who, object item){
     }
 
     if( !item ){
-        return 0;
+        return "#You seem oddly confused.";
     }
-    if( environment(item) != this_object() ){
-        return 0;
+    if( this_object()->GetClosed() ){
+        return "#It's closed!";
     }
-    if( environment(item) != this_object() ){
-        item = present(item->GetKeyName(),this_object());
-        if(!item) return 0;
+    if( !sizeof(all_inventory(this_object())) ){
+        return "#It's empty.";
     }
+    //if( environment(item) != this_object() ){
+    //    item = present(item->GetKeyName(),this_object());
+    //    if(!item) return "#That's not available from there.";
+    //}
 
     if( (environment() != environment(this_player())) &&
             (environment() != this_player()) ){
@@ -174,12 +177,12 @@ int inventory_visible(){
 
 mixed indirect_get_obj_from_obj(object item, object container){
     if(!item){
-        return 0;
+        return "#That's not there.";
     }
 
     if(!clonep(container)) return "#wat";
 
-    if(environment(item) != this_object()) return 0;
+    //if(environment(item) != this_object()) return "#That's not in there.";
 
     return CanGetFrom(this_player(), item);
 }
@@ -194,7 +197,7 @@ mixed indirect_get_obj_obj(object item, object container){
 
 mixed indirect_get_obs_from_obj(object array items, object storage){
     if( !items ){
-        return (storage == this_object());
+        return (storage == this_object() || "#It's not there.");
     }
     return 1;
 }

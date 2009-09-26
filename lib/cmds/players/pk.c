@@ -46,5 +46,5 @@ void help() {
             "\tPlayer killing also requires the mud to have its global PK "+
             "setting enabled in its config file, and the room you are in "+
             "must be PK enabled as well.\n"
-            "", this_player());
+            "See also: env", this_player());
 }

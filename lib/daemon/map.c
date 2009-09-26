@@ -5,8 +5,9 @@
 
 inherit LIB_DAEMON;
 mapping MapMap, MapCache;
-static int caching = 0;
+static int heart_count = 1, sweepflag, roomcount, caching = 0;
 static string SaveFile;
+static string *sweeprooms = ({});
 
 void create(){
 #if WIZMAP
@@ -17,7 +18,7 @@ void create(){
     if(file_exists(SaveFile)){
         RestoreObject(SaveFile, 1);
     }
-    set_heart_beat(300);
+    set_heart_beat(1);
 #endif
 }
 
@@ -28,9 +29,34 @@ void zero(){
 }
 
 void heart_beat(){
-    SaveObject(SaveFile, 1);
+    if(!(heart_count % 900)){ //Every 15 minutes save the cache
+        SaveObject(SaveFile, 1);
+    }
+    if(!(heart_count % 64800)){ //Every 18 hours refresh the cache
+        if(!sweepflag){
+            sweepflag = 1;
+            sweeprooms = keys(MapMap);
+        }
+    }
+    if(sweepflag){
+        if(sizeof(sweeprooms) <= roomcount){
+            sweepflag = 0;
+            roomcount = 0;
+            return;
+        }
+        if(MapMap[sweeprooms[roomcount]]["name"]){
+            //tc("sweeping: "+roomcount+", "+sweeprooms[roomcount]+", "+identify(MapMap[sweeprooms[roomcount]]["name"]));
+            this_object()->GetMap(MapMap[sweeprooms[roomcount]]["name"], 8, 1);
+        }
+        else {
+            map_delete(MapMap, sweeprooms[roomcount]);
+            map_delete(MapCache, sweeprooms[roomcount]);
+        }
+        roomcount++;
+    }
+    heart_count++;
 }
-
+        
 int eventDestruct(){
     SaveObject(SaveFile, 1);
     return daemon::eventDestruct();
@@ -70,6 +96,7 @@ varargs mixed GetMap(mixed args, int size, int forced){
     if(!args) args = base_name(environment(this_player()));
     if(objectp(args)) args = base_name(args);
     myspot=ROOMS_D->GetGridMap(args);
+    if(!myspot) return 0;
     mycoords = myspot["coord"];
     res = size;
     if(!MapCache) MapCache = ([]);
@@ -230,4 +257,3 @@ varargs mixed GetMap(mixed args, int size, int forced){
     return "";
 #endif
 }
-

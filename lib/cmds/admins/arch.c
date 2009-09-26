@@ -3,8 +3,14 @@
 
 mixed cmd(){
     object who = this_player();
+    object env = environment(this_player());
     object room = load_object(ROOM_ARCH);
     int ret, err;
+
+    if(env == room){
+        write("You're already there.");
+        return 1;
+    }
 
     if(!archp(who)){
         write("You are naughty, and must be punished.");

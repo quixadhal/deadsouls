@@ -81,6 +81,7 @@ mapping QueryMap(string str,object ob){
         case "SetEnters" : return ob->GetEnterMap();break;
         case "SetMenuItems" : return ob->GetMenuItems();break;
         case "SetSpellBook" : return ob->GetSpellBook();break;
+        case "SetRead" : return ob->GetReadsMap();break;
         default : return ([]);
     }
 

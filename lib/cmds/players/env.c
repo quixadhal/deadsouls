@@ -44,6 +44,7 @@ mixed cmd(string args) {
     ret += "Screen: \t\t"+identify(this_player()->GetScreen())+"\n";
     ret += "Terminal: \t\t"+this_player()->GetTerminal()+"\n";
     ret += "Brief mode: \t\t"+ ( (this_player()->GetBriefMode()) ? "on" : "off" )+"\n";
+    ret += "Cursefilter: \t\t"+ ( (this_player()->GetParanoia("cursefilter")) ? "on" : "off" )+"\n";
     ret += "Channel message colors: "+ ( (this_player()->GetNoChanColors()) ? "off" : "on" )+"\n";
     ret += "Playerkiller mode: \t"+ ( (this_player()->GetPK()) ? "on" : "off" )+"\n";
     ret += "Mute mode: \t\t"+ GetMuted()+" \n";
@@ -72,6 +73,10 @@ mixed cmd(string args) {
 #endif
 
     if(creatorp(this_player())){ 
+        ret += "Homedir: \t\t"+user_path(this_player())+"\n";
+        if(this_player()->GetParanoia("homeroom")){
+            ret += "Homeroom: \t\t"+this_player()->GetParanoia("homeroom")+"\n";
+        }
         ret += "Debug mode: \t\t"+ ( (this_player()->GetProperty("debug")) ? "on" : "off" )+"\n";
         ret += "Godmode: \t\t"+ ( (this_player()->GetGodMode()) ? "on" : "off" )+"\n";
         ret += "Wizvision: \t\t"+ ( (this_player()->GetWizVision()) ? "on" : "off" )+"\n";
@@ -96,7 +101,7 @@ void help() {
         see_also = ({ "debug" , "showgrid",
                 "wizvision", "godmode", "wizmap", "noclip" });
     }
-    see_also += ({ "brief", "chancolors", "commandecho",
+    see_also += ({ "brief", "chancolors", "commandecho", "cursefilter",
             "terminal", "screen", "pk", "mute", "gag", "wimpy", "minimap",
             "annoyblock", "reprompt", "charmode", "keepalive", "timezone",
             "screenlock" });

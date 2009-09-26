@@ -195,6 +195,7 @@ static void create() {
     SetInventory( ([
                 "/secure/obj/arch_board" : 1,
                 ]) );
+    SetCoordinates("-2,2,0");
 }
 int CanReceive(object ob) {
     if( !archp(ob)  && base_name(ob) != "/secure/obj/arch_board"){

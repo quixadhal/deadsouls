@@ -25,6 +25,13 @@ string array GetReads(){
     return keys(Reads);
 }
 
+mapping GetReadsMap(){
+    mapping ret = (Reads || ([]));
+    if(stringp(Read)) ret["default"] = Read;
+    else if(mapp(Read) && Read["default"]) ret["default"] = Read["default"];
+    return ret;
+}
+
 void RemoveRead(string item){
     if( !item || item == "default" ){
         Reads["default"] = 0;

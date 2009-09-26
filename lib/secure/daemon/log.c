@@ -27,7 +27,7 @@ int RotateLogs(){
                 write_file(temppath,"\nEND-OF-LOG\n");
                 fooname=substr+"-"+timestamp();
                 foopath=path+fooname;
-                rename(temppath,foopath);
+                cp(temppath,foopath);
                 if( file_size(path+"archive") != -2 ) mkdir(path+"archive");
                 cp(foopath,path+"archive/"+fooname);
                 rm(foopath);

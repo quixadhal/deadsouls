@@ -162,13 +162,44 @@ string PirateFilter(string str){
     return str;
 }
 
+string CurseFilter(string str){
+    string orig, lowered;
+    int i;
+    string *curses;
 
-string eventFilter(string str){
-    if(!str || !sizeof(str) || !stringp(str)) return "";
-    //comment out the following line to enable the filter
+    if(!sizeof(str)) return "";
+    curses = ({"bullshit", "motherfucking", "motherfuck",
+      "shitty", "fucking", "fucken", "mother fucking", "mother fuck",
+      "damned", "god damned", "goddamned", "christing", "cunting",
+      "assfuck", "buttfuck", "butt fuck", "shitlick", "shit lick",
+      "cocklick", "cock lick", "dicklick", "dick lick", "cuntlick",
+      "cunt lick", "shithead", "fuckhead", "shit head", "fuck head", 
+      "shit", "fuck", "cunt", "slut", "bastard", "asshole",
+      "cocksuck", "cock suck", "dicksuck", "dick suck", "suck dick",
+      "suck cock", "pussy", "twat", "jizz", "piss", "blowjob",
+      "buttsex", "butt sex", "anal sex", "faggot", "nigger", "kike",
+      "jap", "rimjob", "nafe", "handjob", "god damn", "goddamn", "damn",
+      "goddam", "whore", "son of a bitch", "bitch", "felch", "feltch",
+      "bukkake", "rape", "incest", "sodomy", "dildo", "christ", "jesus",
+      "heterosexual intercourse in the missionary position" });
+
+    lowered = lower_case(str);
+    orig = str;
+
+    foreach(string curse in curses){
+        i = sizeof(curse);
+        lowered = replace_string(lowered, curse, repeat_string("*", i));
+    }
+    for(i = 0; i < sizeof(str); i++){
+        if(lowered[i..i] == "*") str[i..i] = "*";
+    }
     return str;
-    write_file("/secure/log/prefilter.txt",str+"\n");
-    str = PirateFilter(str);
-    write_file("/secure/log/postfilter.txt",str+"\n");
+} 
+
+varargs string eventFilter(string str, string type){
+    if(!str || !sizeof(str) || !stringp(str)) return "";
+    if(!type) return str;
+    if(type == "curse") str = CurseFilter(str);
+    if(type == "pirate") str = PirateFilter(str);
     return str;
 }

@@ -4,8 +4,8 @@ int user_exists(string str){
     return master()->player_exists(str); 
 }
 
-string user_path(string name){
-    return PLAYERS_D->GetUserPath(name);
+varargs string user_path(string name, int legacy){
+    return PLAYERS_D->GetUserPath(name, legacy);
 }
 
 string *remote_users(){

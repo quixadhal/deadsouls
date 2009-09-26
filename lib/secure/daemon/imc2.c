@@ -506,29 +506,30 @@ private void send_text(string text){
 }
 
 void create(){
-#if DISABLE_IMC2
-    tn("IMC2: destruicted "+ctime(time()));
-    unguarded( (: destruct() :) );
-#else
     SaveFile = save_file(SAVE_IMC2);
     SetSaveFile(SaveFile);
+    if(unguarded( (: file_exists(SaveFile) :) ))
+        RestoreObject(SaveFile);
+    if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
+        cp(old_savename(SaveFile), SaveFile);
+    }
+#if DISABLE_IMC2
+    //tn("IMC2: destruicted "+ctime(time()));
+    //unguarded( (: destruct() :) );
+#else
     if(mode != MODE_CONNECT_ERROR){
         set_heart_beat(10);
     }
     counter = time();
     tn("IMC2: created "+ctime(time()));
-    if(unguarded( (: file_exists(SaveFile) :) )) 
-        RestoreObject(SaveFile);
-    if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
-        cp(old_savename(SaveFile), SaveFile);
-    }
-    call_out( (: Setup :), 1);
 #endif
+    call_out( (: Setup :), 1);
 }
 
 void Setup(){
     int temp, kill, my_port;
     string my_ip;
+
 #ifdef DISABLE_IMC2
     if(DISABLE_IMC2){
         kill = 1;
@@ -538,6 +539,7 @@ void Setup(){
     if(DISABLE_INTERMUD == 1){
         kill = 1;
     }
+
     if(kill || autodisabled){
         call_out( (: eventDestruct() :), 5);
         return;
@@ -588,6 +590,7 @@ void Setup(){
         return;
     }
 #endif
+    SaveObject(SaveFile, 1);
 }
 
 void heart_beat(){
@@ -618,6 +621,7 @@ void remove(){
     // This object is getting destructed.
     tn("removing imc2. stack: "+get_stack(1));
     mode=2;
+    //tc("SaveFile: "+SaveFile, "green");
     SaveObject(SaveFile, 1);
     socket_close(socket_num);
 #ifdef IMC2_LOGGING
@@ -1603,12 +1607,15 @@ EndText, NETWORK_ID,COMMAND_NAME);
     int UnSetAutoDisabled(int x){
         //This is just for taking away automatic disablement.
         //For enabling/disabling, see the mudconfig command.
-        if(x && autodisabled){
-            autodisabled = 0;
+        //tc("AD stack: "+get_stack(1));
+        if(!autodisabled) return 0;
+        autodisabled = 0;
+        if(x){
             eventChangeIMC2Passwords();
         }
-        if(!sizeof(SaveFile)) return autodisabled;
+        //if(!sizeof(SaveFile)) return autodisabled;
         if(unguarded((:directory_exists(path_prefix(SaveFile)):))){
+            //tc("SaveFile: "+SaveFile, "red");
             SaveObject(SaveFile,1);
             RELOAD_D->eventReload(this_object(), 2, 1);
         }

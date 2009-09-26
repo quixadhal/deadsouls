@@ -143,14 +143,16 @@ done
 echo "mkdir next/lib/secure/log/intermud" >> copyfiles3
 echo "rm -f /tmp/foo/next/lib/upgrades.txt" >> copyfiles3
 echo "cp -f next/lib/log/open/foo.txt next/lib/secure/log/intermud/" >> copyfiles3
-#echo "cp -f new/lib/save/rooms.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/books.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/soul.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/rooms.o next/lib/save/" >> copyfiles3
 echo "cp -f new/lib/save/races.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/map.o next/lib/save/" >> copyfiles3
 echo "cp -f new/lib/save/economy.o next/lib/save/" >> copyfiles3
 echo "cp -f new/lib/save/classes.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/secure/save/inet.o next/lib/secure/save/" >> copyfiles3
 echo "cp -f new/lib/secure/save/functions.o next/lib/secure/save/" >> copyfiles3
 echo "cp -f new/lib/secure/save/files.o next/lib/secure/save/" >> copyfiles3
-#echo "cp -f new/lib/save/map.o next/lib/save/" >> copyfiles3
-#echo "cp -f new/lib/save/portal.o next/lib/save/" >> copyfiles3
 echo "cp -f /contrib/newver next/extra/crat/" >> copyfiles3
 echo "cp -f /contrib/newpatch next/extra/crat/" >> copyfiles3
 echo "cp -f /contrib/livepatch next/extra/crat/" >> copyfiles3

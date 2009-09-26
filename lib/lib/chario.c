@@ -19,6 +19,9 @@
  * processed or discarded, and accumulation into CharStuff["charbuffer"]
  * resumes. 
  * -Crat 08FEB2009
+ *
+ *  Wow what's that even mean?
+ * -Crat 22SEP2009
  */
 
 #include <daemons.h>
@@ -171,6 +174,7 @@ int SetCharmode(int x){
     if(!x) CharStuff["charmode"] = 0;
 #ifdef __GET_CHAR_IS_BUFFERED__
     else CharStuff["charmode"] = 1;
+    //tc("about to remove get_char "+get_stack(1),"red");
     remove_get_char(this_object());
     if(!(this_object()->GetCedmode())){
         get_char("ReceiveChars", CharStuff["noecho"]);
@@ -211,8 +215,9 @@ void CheckCharmode(){
         CharStuff["charmode"] = 1;
     }
     if(CharStuff["charmode"] && !query_charmode(this_object())){
-        SetCharmode(CharStuff["charmode"]);
+        if(!in_edit() && !in_input()) SetCharmode(CharStuff["charmode"]);
         if(!this_player() || this_player() != this_object()){
+            //tc("hi what's this");
             this_object()->RedrawPrompt();
         }
     }

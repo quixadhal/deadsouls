@@ -63,7 +63,7 @@ static void create(){
     BirthTime = time();
     LastAge = time();
     News = ([]);
-    Paranoia = ([]);
+    Paranoia = (["homeroom" : user_path(GetKeyName(), 1)+"workroom"]);
     RescueBit = 0;
     SetShort("$N the unaccomplished");
     SetLong("$N is nondescript.");
