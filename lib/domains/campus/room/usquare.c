@@ -1,6 +1,5 @@
 #include <lib.h>
 inherit LIB_ROOM;
-inherit LIB_CLIMB;
 
 static void create() {
     room::create();
@@ -26,7 +25,7 @@ static void create() {
     SetInventory(([
                 "/domains/campus/npc/tim" : 1,
                 "/domains/campus/npc/wim" : 1,
-                "/domains/campus/obj/tree" : 1,
+                "/domains/campus/chamber/tree" : 1,
                 "/domains/campus/obj/bench" : 3,
                 "/domains/campus/obj/trashcan" : 1,
                 ]));
@@ -35,6 +34,7 @@ static void create() {
     SetFlyRoom("/domains/town/virtual/sky/28,99995,1");
     AddItem(new("/domains/campus/obj/lamp"));
 }
+
 void init(){
     ::init();
 }

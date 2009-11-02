@@ -15,7 +15,7 @@ mixed cmd(string args) {
     string file, res, nom;
 
     if( args == "" || !args ) return "Clone what?";
-    file = absolute_path((string)this_player()->query_cwd(), args);
+    file = absolute_path(this_player()->query_cwd(), args);
     if( file[<2..] != ".c" ) file = file + ".c";
     if( file_size(file) < 0  ){
         ob = get_object(args);
@@ -33,15 +33,15 @@ mixed cmd(string args) {
         return 1;
     }
     dest = ( living(ob) ? environment(this_player()) : this_player() );
-    if( !((int)ob->eventMove(dest)) &&
-            !((int)ob->eventMove(environment(this_player()))) ) {
+    if( !(ob->eventMove(dest)) &&
+            !(ob->eventMove(environment(this_player()))) ) {
         message("system", "Failed to properly move the object.",
                 this_player());
         return 1;
     }
-    if( !(nom = (string)ob->GetShort()) ) nom = "something peculiar";
-    if( !(res = (string)this_player()->GetMessage("clone", ob)) )
-        res = (string)this_player()->GetName() + " clones " + nom + ".";
+    if( !(nom = ob->GetShort()) ) nom = "something peculiar";
+    if( !(res = this_player()->GetMessage("clone", ob)) )
+        res = this_player()->GetName() + " clones " + nom + ".";
     message("info", "You clone " + nom + " ( " + file + " ).",
             this_player());
     message("other_action", res, environment(this_player()), 

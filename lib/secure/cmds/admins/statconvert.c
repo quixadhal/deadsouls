@@ -39,7 +39,7 @@ void Convert(string s, int change) {
     if(!archp(previous_object())) return 0;
     if( !sizeof(s) ) args = "*.c";
     else args = s;
-    files = (string *)wild_card(args);
+    files = wild_card(args);
     if( !i = sizeof(files) ) {
         message("info", "No file(s) found: "+implode(files, " "),
                 this_player() );
@@ -77,7 +77,7 @@ mixed cmd(string str) {
         GetHelp(0);
         return 1;
     }
-    files = absolute_path((string)this_player()->query_cwd(), files);
+    files = absolute_path(this_player()->query_cwd(), files);
     Convert(files, change);
     return 1;
 }

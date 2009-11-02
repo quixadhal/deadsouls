@@ -56,11 +56,11 @@ mixed do_light_obs(mixed *targs) {
         foreach(string *list in ua) this_player()->eventPrint(list[0]);
         return 1;
     }
-    obs = filter(obs, (: (int)$1->eventLight(this_player()) :));
+    obs = filter(obs, (: $1->eventLight(this_player()) :));
     if( !sizeof(obs) ) return 1;
     tmp = item_list(obs);
     this_player()->eventPrint("You light " + tmp + ".");
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " lights " + tmp + ".",
             this_player());
     return 1;
@@ -81,14 +81,14 @@ mixed do_light_obs_with_obj(mixed *targs, object source) {
         foreach(string *list in ua) this_player()->eventPrint(list[0]);
         return 1;
     }
-    obs = filter(obs, (: (int)$1->eventLight(this_player(), $(source)) :));
+    obs = filter(obs, (: $1->eventLight(this_player(), $(source)) :));
     if( !sizeof(obs) ) return 1;
     tmp = item_list(obs);
     this_player()->eventPrint("You light " + tmp + " with " +
-            (string)source->GetShort() + ".");
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+            source->GetShort() + ".");
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " lights " + tmp + " with " +
-            (string)source->GetShort() + ".",
+            source->GetShort() + ".",
             this_player());
     return 1;
 }

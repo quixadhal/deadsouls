@@ -18,7 +18,7 @@ mapping TmpMap = ([]);
 
 static private void validate() {
     if(!this_player()) return 0;
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) )
+    if( !(master()->valid_apply(({ "ASSIST" }))) )
         error("Illegal attempt access FUNCTIONS_D: "+get_stack()+" "+identify(previous_object(-1)));
     if(query_os_type() == "windows"){
         error("The functions daemon has been disabled for your mud "+

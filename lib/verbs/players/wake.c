@@ -39,7 +39,7 @@ mixed do_wake() {
         tell_room(environment(this_player()), this_player()->GetName()+ 
                 " appears to rouse somewhat from "+possessive(this_player())+
                 " slumber.", ({this_player()}) );
-        return (mixed)this_player()->SetSleeping(this_player()->GetSleeping() - 1);
+        return this_player()->SetSleeping(this_player()->GetSleeping() - 1);
     }
     else tell_player(this_player(),"You are nearing full wakefulness...");
     return 1;

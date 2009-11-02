@@ -194,7 +194,7 @@ mixed cmd(string str) {
     allnames = ({});
     if(!player) return 0;
 
-    if( !((int)master()->valid_apply(({ "SECURE" }))) )
+    if( !(master()->valid_apply(({ "SECURE" }))) )
         error("Illegal attempt to access liveupgrade: "+get_stack()+" "+identify(previous_object(-1)));
 
     if(!directory_exists("/secure/upgrades/bak")){

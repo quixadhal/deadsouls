@@ -12,12 +12,12 @@ int cmd(string str) {
         return 0;
     }
     if(member_array(str = lower_case(str), 
-                (string *)BANISH_D->query_allowed()) == -1) {
+                BANISH_D->query_allowed()) == -1) {
         notify_fail(capitalize(str)+" is not set to be let in.\n");
         return 0;
     }
     BANISH_D->unallow_name(str);
-    log_file("watch/players", (string)previous_object()->GetKeyName()+
+    log_file("watch/players", previous_object()->GetKeyName()+
             " UNLETIN "+str+": "+ctime(time())+"\n");
     return 1;
 }

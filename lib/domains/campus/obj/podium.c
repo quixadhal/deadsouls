@@ -116,7 +116,7 @@ int eventSay(string args) {
         write ("You mutter to yourself.\n") ;
         return 1 ;
     }
-    //foo = (string)this_player()->GetCapName() + 
+    //foo = this_player()->GetCapName() + 
     //" says: %^CYAN%^\"" + capitalize(args)+"\"";
     //say (foo) ;
     //write("You say: %^CYAN%^\"" + capitalize(args)+"\"");

@@ -18,7 +18,7 @@ static void create() {
     SetMass(100);
     SetMealType(MEAL_DRINK | MEAL_ALCOHOL);
     SetStrength(100);
-    SetMealMessages("You finish off the boubon and gasp! WHEW!! Mean stuff!",
+    SetMealMessages("You finish off the bourbon and gasp! WHEW!! Mean stuff!",
             "$N finishes off a bottle of bourbon and lets loose a rebel yell!");
     SetEmptyName("bottle");
     SetEmptyShort("an empty bottle of bourbon");

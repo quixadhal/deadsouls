@@ -9,7 +9,7 @@ mixed cmd(string args) {
     string *filenames;
     string *ret_arr;
 
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
+    if( !(master()->valid_apply(({ "ASSIST" }))) &&
             base_name(previous_object()) != "/secure/cmds/creators/findfun" && 
             base_name(previous_object()) != "/secure/cmds/creators/showfuns" )
         error("Illegal attempt to access file command: "+

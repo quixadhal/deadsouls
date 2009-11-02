@@ -17,7 +17,7 @@ void create() {
 }
 
 int extra_worn() {
-    if((int)this_player()->query_alignment() < 200) {
+    if(this_player()->query_alignment() < 200) {
         write("This helmet burns with disgust.");
         say(this_player()->query_cap_name()+" is burned trying to wear the knight's helm.");
         return 0;

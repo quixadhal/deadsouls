@@ -90,12 +90,14 @@ alias sroom cd /secure/room
 alias aw adminemote waves.
 alias cw creemote waves.
 alias welcome ds hi, $*. you can use this channel to ask questions. it's an intermud channel that dead souls muds listen to.
+alias going everything is going extremely well
 alias ngreet newbie hi, $*. let me know if you have any questions
 alias cgreet cre hi, $*. let me know if you have any questions
 alias us update /secure/daemon/imc2server/ssocket
 alias uss update /secure/daemon/imc2server/server
 alias ui update /secure/daemon/i3router/server
 call me->AddChannel("french")
+call me->AddChannel("mudnews")
 call me->AddChannel("fluffos")
 call me->AddChannel("ascii_art")
 call me->AddChannel("intergossip")
@@ -143,7 +145,6 @@ alias 4 bot
 alias 9 charmode on
 alias 0 charmode off
 unmuff mudbytes
-unmuff smaugmuds
 earmuff reuters
 earmuff sapid
 earmuff NZHerald
@@ -154,13 +155,14 @@ earmuff arthmoor
 earmuff MudBytes-Files
 earmuff SlayRadio
 earmuff Metaplace
+earmuff SmaugMuds
 gag on
 godmode on
 wizvision on
 call me->SetSkill("magic attack",100)
 call me->SetSkill("magic defense",100)
 call me->SetSkill("conjuring",100)
-screen 80 24
+#screen 80 24
 history 100
 automap on
 showgrid on

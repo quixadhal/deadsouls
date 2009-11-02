@@ -23,7 +23,7 @@ void GeneralNews() {
         int s;
 
         s = stat(NEWS_GENERAL)[1];
-        if( s != (int)player->GetNews("general") ) {
+        if( s != player->GetNews("general") ) {
             string news;
 
             news = GetNews("general");
@@ -31,13 +31,13 @@ void GeneralNews() {
             message("news", "\n%^RED%^General news:", player);
             player->eventPrint(news);
             message("prompt", "Press <return> to continue: ", player);
-            if( !((int)player->GetClass()) && !creatorp(player) )
+            if( !(player->GetClass()) && !creatorp(player) )
                 input_to((: NewbieNews :));
             else input_to((: ClassNews, "" :));
             return;
         }
     }
-    if( !((int)player->GetClass()) && !creatorp(player) )
+    if( !(player->GetClass()) && !creatorp(player) )
         NewbieNews();
     else ClassNews("");
 }
@@ -91,11 +91,11 @@ void ClassNews(string cl) {
             return;
         }
     }
-    if( (int)player->ClassMember(cl) && file_exists(DIR_NEWS "/"+cl) ) {
+    if( player->ClassMember(cl) && file_exists(DIR_NEWS "/"+cl) ) {
         int s;
 
         s = stat(DIR_NEWS "/" + cl)[1];
-        if( s != (int)player->GetNews(cl) ) {
+        if( s != player->GetNews(cl) ) {
             string news;
 
             news = GetNews(cl);
@@ -117,7 +117,7 @@ static void HighMortalNews() {
         int s;
 
         s = stat(NEWS_HM)[1];
-        if( s != (int)player->GetNews("hm") ) {
+        if( s != player->GetNews("hm") ) {
             string news;
 
             news = GetNews("hm");
@@ -138,7 +138,7 @@ static void AvatarNews() {
         int s;
 
         s = stat(NEWS_AVATAR)[1];
-        if( s != (int)player->GetNews("avatar") ) {
+        if( s != player->GetNews("avatar") ) {
             string news;
 
             news = GetNews("avatar");
@@ -159,7 +159,7 @@ static void CreatorNews() {
         int s;
 
         s = stat(NEWS_CREATOR)[1];
-        if( s != (int)player->GetNews("creator") ) {
+        if( s != player->GetNews("creator") ) {
             string news;
 
             news = GetNews("creator");
@@ -180,7 +180,7 @@ static void AdminNews() {
         int s;
 
         s = stat(NEWS_ADMIN)[1];
-        if( s != (int)player->GetNews("admin") ) {
+        if( s != player->GetNews("admin") ) {
             string news;
 
             news = GetNews("admin");

@@ -11,7 +11,7 @@ mixed cmd(string str) {
 
     orig = str;
     if( !str ) return "You must specify a file to backup.";
-    else str = absolute_path((string)this_player()->query_cwd(), str);
+    else str = absolute_path(this_player()->query_cwd(), str);
     if( !file_exists(str) ) str2 = str+".c";
     if( !file_exists(str) && !file_exists(str2)) {
         if(str == "here" || str == "room") ob = environment(this_player());

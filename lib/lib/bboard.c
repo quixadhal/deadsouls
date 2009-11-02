@@ -41,11 +41,11 @@ void init(){
 static private int valid_edit(string author){
     string who;
 
-    who = (string)this_player()->GetKeyName();
+    who = this_player()->GetKeyName();
     if(who == author) return 1;
     if(archp(this_player())) return 1;
     //if(member_array(who, __EditOK) != -1) return 1;
-    //return (int)master()->valid_apply(({}));
+    //return master()->valid_apply(({}));
     //write("You may not edit that.");
     return 0;
 }
@@ -54,7 +54,7 @@ int cmd_post(string str){
     string file;
 
     if(!str) return notify_fail("You must specify a subject.\n");
-    if(file_exists(file = DIR_TMP+"/"+(string)this_player()->GetKeyName())){
+    if(file_exists(file = DIR_TMP+"/"+this_player()->GetKeyName())){
         message("system", "You have an abandoned post waiting.",this_player());
         message("system", "        e)dit it, or start n)ew", this_player());
         message("prompt", "\nCommand (default 'n'): ", this_player());
@@ -87,7 +87,7 @@ void continue_post(string subj, string file){
 void end_post(string subj, string mail){
     string file, msg;
 
-    file = DIR_TMP "/" + (string)this_player()->GetKeyName();
+    file = DIR_TMP "/" + this_player()->GetKeyName();
     if(!(msg = read_file(file))){
         message("system", "No file read!", this_player());
         if(file_exists(file)) rm(file);
@@ -96,7 +96,7 @@ void end_post(string subj, string mail){
     else rm(file);
     if( !mail )
         BBOARD_D->add_post(query_board_id(),
-                (string)this_player()->GetCapName(), subj, msg);
+                this_player()->GetCapName(), subj, msg);
     message("system", "Message posted!", this_player());
 }
 
@@ -113,10 +113,10 @@ int cmd_read(string str){
             return 1;
         }
 
-        maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
+        maxi = sizeof(posts = BBOARD_D->query_posts(query_board_id()));
         if(!str){
             for(i=0, x = -1; i<maxi; i++)
-                if(member_array((string)this_player()->GetKeyName(),
+                if(member_array(this_player()->GetKeyName(),
                             posts[i]["read"]) == -1){
                     x = i;
                     break;
@@ -132,7 +132,7 @@ int cmd_read(string str){
             posts[x]["subject"] + "%^RESET%^\n\n";
         str += posts[x]["post"];
 
-        BBOARD_D->mark_read(query_board_id(),x,(string)this_player()->GetKeyName());
+        BBOARD_D->mark_read(query_board_id(),x,this_player()->GetKeyName());
         this_player()->eventPage(explode(str, "\n"), "system");
         return 1;
     }
@@ -147,17 +147,17 @@ int cmd_followup_and_respond(string str){
     if(!str) return notify_fail(capitalize(verb=query_verb())+" which
             post?\n");
     if((x=to_int(str)) < 1 ||
-            x>(int)BBOARD_D->query_number_posts(query_board_id()))
+            x>BBOARD_D->query_number_posts(query_board_id()))
 
         return notify_fail("Invalid post number.\n");
     x--;
-    post = (mapping)BBOARD_D->query_post(query_board_id(), x);
+    post = BBOARD_D->query_post(query_board_id(), x);
     if((verb = query_verb()) == "respond") f = (: continue_mail, post :);
     else f = (: continue_followup, post :);
     str = post["subject"];
     if(!str) str = "Re: "+possessive_noun(post["author"])+" post";
     else if(strlen(str) <= 4 || str[0..3] != "Re: ") str = "Re: "+str;
-    if(file_exists(file = DIR_TMP+"/"+(string)this_player()->GetKeyName())){
+    if(file_exists(file = DIR_TMP+"/"+this_player()->GetKeyName())){
         message("system", "You have an abandoned post waiting.",this_player());
         message("system", "        e)dit it, or start n)ew", this_player());
         message("prompt", "\nCommand (default 'n'): ", this_player());
@@ -196,9 +196,9 @@ int cmd_remove(string str){
     mapping post;
     int x;
     if((x = to_int(str)) < 1 ||
-            x > (int)BBOARD_D->query_number_posts(query_board_id()))
+            x > BBOARD_D->query_number_posts(query_board_id()))
         return notify_fail("Invalid post number.\n");
-    post = (mapping)BBOARD_D->query_post(query_board_id(), x-1);
+    post = BBOARD_D->query_post(query_board_id(), x-1);
     if(!valid_edit(convert_name(post["author"]))){
         write("You do not have permission to remove that!\n");
         return 1;
@@ -214,14 +214,14 @@ int cmd_edit(string str){
     int x;
 
     if((x = to_int(str)) < 1 ||
-            x > (int)BBOARD_D->query_number_posts(query_board_id()))
+            x > BBOARD_D->query_number_posts(query_board_id()))
         return notify_fail("Invalid post number.\n");
-    post = (mapping)BBOARD_D->query_post(query_board_id(), x-1);
+    post = BBOARD_D->query_post(query_board_id(), x-1);
     if(!valid_edit(convert_name(post["author"]))){
         write("You do not have permission to edit that post!\n");
         return 1;
     }
-    file = DIR_TMP+"/"+(string)this_player()->GetKeyName()+".bb";
+    file = DIR_TMP+"/"+this_player()->GetKeyName()+".bb";
     if(file_exists(file)) rm(file);
     write_file(file, post["post"]);
     this_player()->edit(file, (: end_edit, post["subject"], x-1 :) );
@@ -231,7 +231,7 @@ int cmd_edit(string str){
 void end_edit(string subj, int num){
     string file, msg;
 
-    file = DIR_TMP "/" + (string)this_player()->GetKeyName();
+    file = DIR_TMP "/" + this_player()->GetKeyName();
     if(!(msg = read_file(file))){
         message("system", "No file read!", this_player());
         return;
@@ -239,7 +239,7 @@ void end_edit(string subj, int num){
     else rm(file);
     BBOARD_D->remove_post(query_board_id(), num);
     BBOARD_D->add_post(query_board_id(),
-            (string)this_player()->GetCapName(), subj, msg);
+            this_player()->GetCapName(), subj, msg);
     message("system", "Message posted!", this_player());
 }
 
@@ -249,14 +249,14 @@ string GetExternalDesc(){
     int i, maxi;
 
     msg = item::GetExternalDesc();
-    maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
+    maxi = sizeof(posts = BBOARD_D->query_posts(query_board_id()));
     msg += "\n";
     if(!maxi) msg += "There are currently no posts.\n";
     else for(i=0; i < maxi; i++){
         int lu;
 
         if(!this_player()) lu = 1;
-        else if(member_array((string)this_player()->GetKeyName(),
+        else if(member_array(this_player()->GetKeyName(),
                     posts[i]["read"]) == -1) lu = 0;
         else lu = 1;
         msg += sprintf("[%:-3d] %s %:-17s \"%:-27s %s\n",

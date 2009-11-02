@@ -66,7 +66,7 @@ void sendHTTPGet()
         version() + CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
     int result = 0;
     results = "";
-    result = socket_write( socket, (string)str );
+    result = socket_write( socket, str );
 }
 
 int openHTTPConnection()

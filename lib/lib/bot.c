@@ -36,15 +36,15 @@ varargs int eventDie(mixed agent){
         ob = new(LIB_BOT_CORPSE);
         ob->SetCorpse(this_object());
         ob->eventMove(environment());
-        obs = filter(all_inventory(), (: !((int)$1->GetRetainOnDeath()) :));
+        obs = filter(all_inventory(), (: !($1->GetRetainOnDeath()) :));
         i = sizeof(obs);
         while(i--) obs[i]->eventMove(ob);
-        currs = (string *)this_object()->GetCurrencies() || ({});
+        currs = this_object()->GetCurrencies() || ({});
         foreach(curr in currs){
             object pile;
             int amt;
 
-            if( amt = (int)this_object()->GetCurrency(curr) ){
+            if( amt = this_object()->GetCurrency(curr) ){
                 pile = new(LIB_PILE);
                 pile->SetPile(curr, amt);
                 pile->eventMove(ob);

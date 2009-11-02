@@ -43,7 +43,7 @@ mixed can_whisper_in_wrd_to_liv(string wrd, object ob) {
 mixed can_whisper_to_liv_str(object targ, string str) {
     string lang;
 
-    lang = (string)this_player()->GetNativeLanguage() || "english";
+    lang = this_player()->GetNativeLanguage() || "english";
     return can_whisper_to_liv_in_wrd_str(targ, lang, str);
 }
 
@@ -52,7 +52,7 @@ mixed can_whisper_in_wrd_to_liv_str(string lang, object targ, string str) {
 }
 
 mixed can_whisper_to_liv_in_wrd_str(object targ, string lang, string str) {
-    return (mixed)this_player()->CanSpeak(targ, TALK_SEMI_PRIVATE, str, lang);
+    return this_player()->CanSpeak(targ, TALK_SEMI_PRIVATE, str, lang);
 }
 
 mixed do_whisper() { return 1; }
@@ -64,8 +64,8 @@ mixed do_whisper_in_wrd(string wrd) { return 1; }
 mixed do_whisper_in_wrd_to_liv(string str, object ob) { return 1; }
 
 mixed do_whisper_to_liv_str(object targ, string str) {
-    string lang = (string)this_player()->GetDefaultLanguage() ||
-        (string)this_player()->GetNativeLanguage();
+    string lang = this_player()->GetDefaultLanguage() ||
+        this_player()->GetNativeLanguage();
     return do_whisper_to_liv_in_wrd_str(targ, lang, str);
 }
 
@@ -79,5 +79,5 @@ mixed do_whisper_to_liv_in_wrd_str(object targ, string lang, string str) {
             str = capitalize(str) + ".";
         else str = capitalize(str);
     }
-    return (mixed)this_player()->eventSpeak(targ, TALK_SEMI_PRIVATE, str,lang);
+    return this_player()->eventSpeak(targ, TALK_SEMI_PRIVATE, str,lang);
 }

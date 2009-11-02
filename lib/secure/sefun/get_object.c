@@ -103,8 +103,8 @@ varargs object get_object( string str, object player, int living )
     if( player )
     {
         //  this option removed because Dead Souls doesn't support cwf
-        //  if( str == "cwf" ) str = (string)player-> query( "cwf" );
-        str = (absolute_path( (string)player-> get_path(), str ) || "");
+        //  if( str == "cwf" ) str = player-> query( "cwf" );
+        str = (absolute_path( player-> get_path(), str ) || "");
     }
 
     if( catch(ret = find_object(str)) ){

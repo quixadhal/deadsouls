@@ -25,7 +25,7 @@ mixed can_withdraw() {
     mixed  err;
 
     if( !(env = environment(this_player())) ) return 0;
-    err = (mixed)env->CanWithdraw( this_player() );
+    err = env->CanWithdraw( this_player() );
     if( !err ) return "This doesn't seem the proper place for it.";
     else return err;
 }
@@ -34,5 +34,5 @@ mixed do_withdraw() {
     object env;
 
     if( !(env = environment(this_player())) ) return 0;
-    return (mixed)env->eventWithdraw( this_player() );
+    return env->eventWithdraw( this_player() );
 }

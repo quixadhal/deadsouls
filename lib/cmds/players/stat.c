@@ -52,7 +52,7 @@ mixed cmd(string args) {
     else tmp1 += " / Awake";
     if( ob->GetParalyzed() ) tmp1 += " / Paralyzed";
     lines += ({ center(tmp1, cols), "" });
-    lines += ({ center("Health: " +(int)ob->GetHealthPoints() + "/"+
+    lines += ({ center("Health: " +ob->GetHealthPoints() + "/"+
                 ob->GetMaxHealthPoints() + "   Magic: " +
                 ob->GetMagicPoints() + "/" +
                 ob->GetMaxMagicPoints() + "   Stamina: " +
@@ -113,9 +113,9 @@ mixed cmd(string args) {
     if(sizeof(ECONOMY_D->__QueryCurrencies())){
         if(valid_currency("gold")) gold = "gold";
         else gold = ECONOMY_D->__QueryCurrencies()[0];
-        lines += ({ "", (string)ob->GetName()+" has amassed a net worth of " +
-                ( (int)ob->GetNetWorth(gold) ) + " "+gold+"."});
-        arr = filter( map((string *)ob->GetCurrencies(),
+        lines += ({ "", ob->GetName()+" has amassed a net worth of " +
+                ( ob->GetNetWorth(gold) ) + " "+gold+"."});
+        arr = filter( map(ob->GetCurrencies(),
                     (: ($(ob))->GetCurrency($1) &&
                      sprintf("%d %s", ($(ob))->GetCurrency($1), $1) :)),
                 (: $1 :));

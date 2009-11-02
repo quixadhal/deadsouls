@@ -12,7 +12,7 @@ int cmd(string str) {
         string curr;
 
         tmp = ({ "Currency        Rate    Infl    Mass" });
-        foreach( curr in (string *)ECONOMY_D->__QueryCurrencies() )
+        foreach( curr in ECONOMY_D->__QueryCurrencies() )
             tmp += ({ sprintf("%:-15s %:-7s %:-7s %f",
                         curr, currency_rate(curr) + "" ,
                         currency_inflation(curr) + "",
@@ -21,7 +21,7 @@ int cmd(string str) {
         return 1;
     }
     if(!archp(previous_object())) return 0;
-    log_file("economy", (string)previous_object()->GetCapName()+": " +
+    log_file("economy", previous_object()->GetCapName()+": " +
             str+" ("+ctime(time())+")\n");
     if(sscanf(str, "add %s %f %f %f", type, rate, infl, wt) == 4) {
         ECONOMY_D->add_currency(type, rate, infl, wt);

@@ -7,7 +7,7 @@ int PreExit(mixed args...){
     object who = this_player();
     write("You are scanned by a beam of light from the sliding door.");
     say(who->GetName()+" is scanned by a beam of light from the sliding door.");
-    if(!present("pass of dr kleiner",who)){
+    if(!present_file("/domains/campus/armor/badge2",who)){
         write("The door does not open.");
         return 0;
     }

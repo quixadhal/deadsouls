@@ -81,6 +81,7 @@ mkdir $OLDLIB/lib/domains/cave/txt 1>/dev/null 2>/dev/null
 mkdir $OLDLIB/lib/domains/cave/virtual 1>/dev/null 2>/dev/null
 mkdir $OLDLIB/lib/domains/cave/weap 1>/dev/null 2>/dev/null
 mkdir $OLDLIB/lib/doc/phints 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/campus/chamber 1>/dev/null 2>/dev/null
 
 if [ $3 ]
 then

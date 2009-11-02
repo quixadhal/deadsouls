@@ -12,7 +12,7 @@ int cmd(string str) {
     string *noms;
 
     if(!archp(previous_object())) return 0;
-    noms = (string *)BANISH_D->query_banished();
+    noms = BANISH_D->query_banished();
     if(str) {
         if(member_array(lower_case(str), noms) == -1) 
             write(str+" is not currently a banished name.\n");

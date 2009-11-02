@@ -40,7 +40,7 @@ mixed cmd(string args) {
 
         tmp += ({ sprintf(formatString, "Player", "Email", "Last On%^RESET%^") });
 
-        links = (mapping)CHARACTER_D->GetLinks();
+        links = CHARACTER_D->GetLinks();
         foreach(string p in sort_array(keys(links), 1)) {   
             class char_link l;
             int maxi;
@@ -67,7 +67,7 @@ mixed cmd(string args) {
                 this_player(1)->eventPrint("Aborted.", MSG_SYSTEM);
                 return;
                 }
-                tmp = (mixed)CHARACTER_D->eventLink(primary, secondary, email);
+                tmp = CHARACTER_D->eventLink(primary, secondary, email);
                 if( !tmp ) this_player(1)->eventPrint("Failed.", MSG_SYSTEM);
                 else if( tmp == 1) this_player(1)->eventPrint("Linked.", MSG_SYSTEM);
                 else this_player(1)->eventPrint(tmp, MSG_SYSTEM);
@@ -80,7 +80,7 @@ mixed cmd(string args) {
         mapping mp;
         string str;
 
-        mp = (mapping)CHARACTER_D->GetLink(convert_name(args));
+        mp = CHARACTER_D->GetLink(convert_name(args));
         if( !mp ) this_player()->eventPrint(capitalize(args) + " has no "
                 "links listed.", MSG_SYSTEM);
         else {

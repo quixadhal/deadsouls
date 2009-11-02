@@ -7,9 +7,9 @@
 int moral_act(object agent, object target, int amount) {
     int am, tm;
 
-    am = (int)agent->GetMorality();
+    am = agent->GetMorality();
     if( target ) {
-        tm = (int)target->GetMorality();
+        tm = target->GetMorality();
     }
     else {
         tm = 0;
@@ -37,5 +37,5 @@ int moral_act(object agent, object target, int amount) {
     else if( amount > -100 ) amount = -1 + amount/10;
     else if( amount > -1000 ) amount = amount/10;
     else amount = -(75 + random(25));
-    return (int)agent->eventMoralAct(amount);
+    return agent->eventMoralAct(amount);
 }

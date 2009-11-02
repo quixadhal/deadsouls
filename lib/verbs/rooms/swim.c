@@ -51,7 +51,7 @@ mixed can_swim_str(string str) {
     if( !env ) {
         return "You are nowhere.";
     }
-    if( (int)this_player()->GetStaminaPoints() < 15 ){
+    if( this_player()->GetStaminaPoints() < 15 ){
         return "You are too tired to swim anywhere right now.";
     }
     if(env->CanSwim(this_player(), str)){
@@ -71,9 +71,9 @@ mixed can_swim_into_str(string str) {
     if( !env ) {
         return "You are nowhere.";
     }
-    if( (int)this_player()->GetStaminaPoints() < 3 )
+    if( this_player()->GetStaminaPoints() < 3 )
         return "You are too tired right now.";
-    if((mixed)environment(this_player())->CanEnter(this_player(), str)){
+    if(environment(this_player())->CanEnter(this_player(), str)){
         if(envpos == POSITION_SWIMMING) return 1;
         return this_player()->CanSwim();
     }
@@ -90,10 +90,10 @@ mixed do_swim() {
 
 mixed do_swim_str(string str) {
     this_player()->AddStaminaPoints(-StaminaCost());
-    return (mixed)environment(this_player())->eventGo(this_player(), str);
+    return environment(this_player())->eventGo(this_player(), str);
 }
 
 mixed do_swim_into_str(string str) {
     this_player()->AddStaminaPoints(-StaminaCost());
-    return (mixed)environment(this_player())->eventEnter(this_player(), str);
+    return environment(this_player())->eventEnter(this_player(), str);
 }

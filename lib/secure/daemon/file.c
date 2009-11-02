@@ -13,7 +13,7 @@ string globaltemp;
 static mixed Report();
 
 static private void validate() {
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) ){
+    if( !(master()->valid_apply(({ "ASSIST" }))) ){
         log_file("adm/file","Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1))+"\n");
         error("Illegal attempt to access FILE_D: "+get_stack()+" "+identify(previous_object(-1)));
     }

@@ -33,20 +33,27 @@ int eventForce(string cmd){
     return GetShadowedObject()->eventForce(cmd);
 }
 
-int ProcessTalk(mixed args...){
-    string speech = lower_case(args[2]);
-    if(sizeof(speech) > 1) speech = truncate(speech,1);
+mixed eventTalkRespond(mixed args...){
+    string cmd = "";
+    string *punct = ({".",",","!","?",";"});
+    if(sizeof(args) > 3) cmd = args[3];
+    //debug("args: "+identify(args));
+    cmd = lower_case(cmd);
+    if(sizeof(cmd) && member_array(last(cmd, 1), punct) != -1){
+        cmd = truncate(cmd, 1);
+    }
     //No commanding players plz
     if(interactive(GetShadowedObject())) return 0;
-    call_out( (: eventForce :), 1, speech);
+    //debug("command: "+cmd);
+    call_out( (: eventForce :), 1, cmd);
     return 1;
 }
 
 int eventShadow(object whom){
     if(userp(whom)) return 0;
-    whom->SetTalkResponses( ([ "default" : (: ProcessTalk :) ]) );
+    whom->SetEncounter(0);
+    whom->SetGuard(0);
     whom->SetNoClean(1);
     set_heart_beat((query_heart_beat(whom) || 1));
     return ::eventShadow(whom);
 }
-

@@ -9,7 +9,7 @@ int charge = 20000;
 int maxcharge = 20000;
 int disguised = 0;
 
-int GetSuitHelp();
+varargs mixed GetSuitHelp(mixed who, string where);
 
 static void create(){
     ::create();
@@ -41,12 +41,18 @@ void init(){
     add_action("GetSuitHelp", "help");
 }
 
-mixed GetSuitHelp(string str){
-    string ret;
-    if(!str) return 0;
-    if(!stringp(str)) str = GetKeyName();
+varargs mixed GetSuitHelp(mixed who, string where){
+    string ret, str;
+    object env;
+    if(!who) return 0;
+    if(stringp(who)){
+        str = who;
+        who = this_player();
+    }
+    else str = GetKeyName();
+    env = environment(who);
     if(query_verb() == "wear" || (str && answers_to(str, this_object()))){
-        if(environment() == this_player() && charge){
+        if(environment() == who && charge){
             ret = "The suit's Heads Up Display crackles to life and reads:\n ";
             ret += "%^GREEN%^This suit allows you, mighty Arbiter, to travel in hazardous terrain "+
                 "with a minimum of inconvenience. In the interest of fulfilling the exigencies "+
@@ -62,7 +68,9 @@ mixed GetSuitHelp(string str){
                 "* Immunity from disease.\n"+
                 "\nNote that once the power level of the suit reaches zero, all enhancements "+
                 "become unavailable.%^RESET%^";
-            write(ret);
+            who->eventPrint("You wear "+GetShort()+".");
+            if(env) tell_room(env, who->GetName()+" wears "+
+              GetShort()+".", ({who}));
             return 1;
         }
     }

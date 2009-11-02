@@ -28,7 +28,7 @@ mixed cmd(string str) {
         mapping tmp;
         string opt, tmpstr;
 
-        tmp = (mapping)INTERMUD_D->GetMudList();
+        tmp = INTERMUD_D->GetMudList();
         if( str[0] != '-' ) str = "-n " + str;
         opt = str[1..1];
         str = str[3..];
@@ -67,7 +67,7 @@ mixed cmd(string str) {
     }
     else {
         borg = ([ ]);
-        foreach( mud, info in (mapping)INTERMUD_D->GetMudList() )
+        foreach( mud, info in INTERMUD_D->GetMudList() )
             if( all == 1 || info[0] == -1 ) borg[mud] = info;
     }
     if( !sizeof(borg) ) {

@@ -32,8 +32,8 @@ static void create() {
     SetClass("explorer");
     SetGender("male");
     SetEncounter(  (: CheckOrc :) );
-
 }
+
 void init(){
     ::init();
 }

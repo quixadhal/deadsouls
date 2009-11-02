@@ -30,5 +30,5 @@ mixed do_bait_obj_with_obj(object pole, object bait) {
         this_player()->eventPrint("You can't use it to bait itself!");
         return 1;
     }
-    return (mixed)bait->eventBait(this_player(), pole);
+    return bait->eventBait(this_player(), pole);
 }

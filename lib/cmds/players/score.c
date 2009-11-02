@@ -5,6 +5,7 @@
  */
 
 #include <lib.h>
+#include <daemons.h>
 
 inherit LIB_DAEMON;
 inherit LIB_HELP;
@@ -39,52 +40,70 @@ mixed cmd(string unused) {
 
 mixed eventScore() {
     string *str;
-    int birth, age, x, y, z;
+    int birth, age, x, y, z, qp, xp;
+    string *tmp;
+    mapping lev;
 
-    str  = ({ "You are "+(string)this_player()->GetShort() + " (" +
-        (string)this_player()->GetMoralityDescription() + ")." });
+    str  = ({ "You are "+this_player()->GetShort() + " (" +
+        this_player()->GetMoralityDescription() + ")." });
     str += ({ sprintf("You are a level %d %s%s %s.",
-                (int)this_player()->GetLevel(),
-                ( (int)this_player()->GetUndead() ? "undead " : ""),
-                capitalize((string)this_player()->GetRace() || "nothing"),
-                capitalize((string)this_player()->GetClass() || "commoner")) });
-    str += ({ "Your native town is "+(string)this_player()->GetTown()+", and "
-            "you are " + ((string)this_player()->GetReligion() ||
+                this_player()->GetLevel(),
+                ( this_player()->GetUndead() ? "undead " : ""),
+                capitalize(this_player()->GetRace() || "nothing"),
+                capitalize(this_player()->GetClass() || "commoner")) });
+    str += ({ "Your native town is "+this_player()->GetTown()+", and "
+            "you are " + (this_player()->GetReligion() ||
                 "agnostic") + " in faith." });
     str += ({ sprintf("You've solved %s, and have %s.",
-                consolidate(sizeof((string *)this_player()->GetQuests()),
+                consolidate(sizeof(this_player()->GetQuests()),
                     "one quest"),
-                consolidate(sizeof((string *)this_player()->GetTitles()),
+                consolidate(sizeof(this_player()->GetTitles()),
                     "one title") ) });
-    birth = (int)this_player()->GetBirth();
+    birth = this_player()->GetBirth();
     age = ( query_year(time()) - query_year(birth) );
     str += ({ sprintf("You were born on the %d%s day of %s, year %d. "
                 "(%d years old)", query_date(birth), ordinal(query_date(birth)),
                 query_month(birth), query_year(birth), age) });
-    if( x = (int)this_player()->GetTrainingPoints() < 1 ) {
-        y = (int)this_player()->GetLevel() + 1 + (x / -4);
+    if( x = this_player()->GetTrainingPoints() < 1 ) {
+        y = this_player()->GetLevel() + 1 + (x / -4);
         str += ({ "Training points await you at level " + y + "." });
     }
     else str += ({ "You have " + consolidate(
-                (int)this_player()->GetTrainingPoints(),
+                this_player()->GetTrainingPoints(),
                 "one training point") + "." });
-    if( (int)this_player()->GetWimpy() )
+    if( this_player()->GetWimpy() )
         str += ({ "You are feeling wimpy." }); else
             str += ({ "You are feeling brave." });
-    if( (int)this_player()->GetPoison() > 0 )
+    if( this_player()->GetPoison() > 0 )
         str += ({ "You are poisoned." });
-    x = (int)this_player()->GetFood() / 17;
+    x = this_player()->GetFood() / 17;
     if( x > sizeof(FoodDegree) - 1 ) x = (sizeof(FoodDegree) - 1);
-    y = (int)this_player()->GetDrink() / 17;
+    y = this_player()->GetDrink() / 17;
     if( y > sizeof(DrinkDegree) - 1 ) y = (sizeof(DrinkDegree) - 1);
-    z = (int)this_player()->GetAlcohol();
+    z = this_player()->GetAlcohol();
     if(z) z = (z/17) + 1;
     if( z > sizeof(DrunkDegree) - 1 ) z = (sizeof(DrunkDegree) - 1);
     str += ({ "You "+FoodDegree[x] });
     str += ({ sprintf("You are %s and %s.", DrinkDegree[y], DrunkDegree[z]) });
-    x = (int)this_player()->GetCustomStats();
+    x = this_player()->GetCustomStats();
+
+    tmp = ({});
+    qp = this_player()->GetQuestPoints();
+    xp = this_player()->GetExperiencePoints();
+    lev = PLAYERS_D->GetLevelList()[(this_player()->GetLevel()) + 1];
+
+    if(REQUIRE_QUESTING){
+        qp = lev["qp"] - qp;
+        if(qp > 0) tmp += ({"You require "+comma(qp)+" more quest points to advance."});
+    }
+
+    xp = lev["xp"] - xp;
+    if(xp > 0) tmp += ({"You require "+comma(xp)+" more experience points to advance."});
+    if(!sizeof(tmp)) tmp = ({"You qualify to advance a level."});
+    str += tmp; 
+
     if(x){
-        str += ({ "You have "+x+" customization points left. Type: help customize" });
+        str += ({ "\nYou have "+x+" customization points left. Type: help customize" });
     }
     this_player()->eventPage(str, "info");
     return 1;

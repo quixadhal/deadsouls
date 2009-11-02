@@ -91,7 +91,7 @@ varargs mixed eventLoad(object who, object where){
     else {
         write("You load your "+where->GetFirearmName()+".");
         say(this_player()->GetName()+" loads an ammunition "+
-                "clip into "+possessive(environment(this_object()))+" "+    
+                "clip into "+possessive(this_player())+" "+    
                 where->GetFirearmName()+".");
         where->SetLoaded(1);
     }

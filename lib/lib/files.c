@@ -17,7 +17,7 @@ string *wild_card(string str){
 
     if((cwd = absolute_path(query_cwd(), str)) == "/") return ({ "/" });
     if(cwd[sizeof(cwd) - 1] == '/') cwd = cwd[0..sizeof(cwd) - 2];
-    if((string)(pf = path_file(cwd)) == "/") pf[0] = "";
+    if((pf = path_file(cwd)) == "/") pf[0] = "";
     if(!(tmp = get_dir(cwd))) tmp = ({});
     tmp -= ({ "." });
     tmp -= ({ ".." });

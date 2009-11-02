@@ -18,7 +18,7 @@ void log_file(string fl, string msg) {
     if(fl[0..0] != "/"){
         if(living(previous_object(0)) || previous_object(0) == master())
             fl = DIR_LOGS + "/" + fl;
-        else if((int)master()->valid_apply(({ PRIV_CMDS, PRIV_MUDLIB }))) 
+        else if(master()->valid_apply(({ PRIV_CMDS, PRIV_MUDLIB }))) 
             fl = DIR_LOGS+"/"+fl;
         else if(previous_object() && query_privs(previous_object()) &&
                 member_array(PRIV_SECURE,explode(query_privs(previous_object()),":"))

@@ -31,5 +31,5 @@ mixed do_sleep() {
     tell_room(environment(this_player()), this_player()->GetName()+ 
             " closes "+possessive(this_player())+" eyes and appears to "+
             "lose consciousness.", ({this_player()}) );
-    return (mixed)this_player()->SetSleeping(random(10)+5);
+    return this_player()->SetSleeping(random(10)+5);
 }

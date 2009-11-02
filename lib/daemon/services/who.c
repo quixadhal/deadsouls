@@ -49,9 +49,9 @@ void eventReceiveWhoRequest(mixed *packet) {
         return;
     }
     if(sizeof(users()) > 100) mini = 1;
-    msg = map(filter(users(),(: (environment($1) && !((int)$1->GetInvis())) :)),
-            (: ({ (string)$1->GetCapName(), query_idle($1),
-                (mini ? "" : (string)$1->GetShort()) }) :));
+    msg = map(filter(users(),(: (environment($1) && !($1->GetInvis())) :)),
+            (: ({ $1->GetCapName(), query_idle($1),
+                (mini ? "" : $1->GetShort()) }) :));
     if(sizeof(identify(msg)) >= __LARGEST_PRINTABLE_STRING__){
         msg = ({({"Number of users: "+sizeof(msg), 0, "Too many results." })});
     }
@@ -70,7 +70,7 @@ void eventReceiveWhoRequest(mixed *packet) {
 varargs void eventSendWhoRequest(string mud) {
     string who, crypt_who;
 
-    who = (string)this_player(1)->GetKeyName();
+    who = this_player(1)->GetKeyName();
 
     if(this_player(1)->GetInvis()){
         foreach(string key, string val in user_table){

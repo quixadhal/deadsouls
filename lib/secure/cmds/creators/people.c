@@ -115,8 +115,8 @@ int cmd(string str) {
 
 static int filter_invis(object ob) {
     if(!ob || !sizeof(base_name(ob))) return 0;
-    if(!((int)ob->GetKeyName())) return 0;
-    if(!((int)ob->GetInvis(this_player()))) return 1;
+    if(!(ob->GetKeyName())) return 0;
+    if(!(ob->GetInvis(this_player()))) return 1;
     if(archp(this_player())) return 1;
     if(archp(ob)) return 0;
     return 1;
@@ -132,43 +132,43 @@ static int filter_hms(object ob) { return high_mortalp(ob); }
 
 static int filter_newbie(object ob) {
     return (!creatorp(ob) && !ambassadorp(ob) && (MAX_NEWBIE_LEVEL >=
-                (int)ob->GetLevel()));
+                ob->GetLevel()));
 }
 
 static int filter_mortal(object ob) {
     if(creatorp(ob) || high_mortalp(ob) || ambassadorp(ob)) return 0;
-    if((int)ob->GetLevel() <= MAX_NEWBIE_LEVEL) return 0;
+    if(ob->GetLevel() <= MAX_NEWBIE_LEVEL) return 0;
     return 1;
 }
 
-static int filter_undead(object ob) { return (int)ob->query_ghost(); }
+static int filter_undead(object ob) { return ob->query_ghost(); }
 
 static int general_sort(object alpha, object beta) {
     int x, y;
 
     if(archp(alpha)) {
         if(!archp(beta)) return -1;
-        else return strcmp((string)GetBaseName(alpha), 
-                (string)GetBaseName(beta));
+        else return strcmp(GetBaseName(alpha), 
+                GetBaseName(beta));
     }
     else if(archp(beta)) return 1;
     if(creatorp(alpha)) {
         if(!creatorp(beta)) return -1;
-        else return strcmp((string)GetBaseName(alpha),
-                (string)GetBaseName(beta));
+        else return strcmp(GetBaseName(alpha),
+                GetBaseName(beta));
     }
     else if(creatorp(beta)) return 1;
     if(ambassadorp(alpha)) {
         if(!ambassadorp(beta)) return -1;
-        else return strcmp((string)GetBaseName(alpha),
-                (string)GetBaseName(beta));
+        else return strcmp(GetBaseName(alpha),
+                GetBaseName(beta));
     }
     else if(ambassadorp(beta)) return 1;
-    if((x = (int)alpha->GetLevel()) > (y = (int)beta->GetLevel()))
+    if((x = alpha->GetLevel()) > (y = beta->GetLevel()))
         return -1;
     else if(x < y) return 1;
-    else return strcmp((string)GetBaseName(alpha),
-            (string)GetBaseName(beta));
+    else return strcmp(GetBaseName(alpha),
+            GetBaseName(beta));
 }
 
 static int special_sort(object alpha, object beta) {
@@ -176,14 +176,14 @@ static int special_sort(object alpha, object beta) {
     int x, y;
 
     if(__SortFlags[4]) {
-        if((a=(string)alpha->query_class())!=(b=(string)beta->query_class())) {
+        if((a=alpha->query_class())!=(b=beta->query_class())) {
             if(!a) a = "zzzz";
             if(!b) b= "zzzz";
             return strcmp(a, b);
         }
     }
     if(__SortFlags[0]) {
-        if((a=(string)alpha->query_race()) != (b=(string)beta->query_race())) {
+        if((a=alpha->query_race()) != (b=beta->query_race())) {
             if(!a) a = "zzzz";
             if(!b) b = "zzzz";
             return strcmp(a, b);
@@ -194,13 +194,13 @@ static int special_sort(object alpha, object beta) {
                 (b = file_name(room_env(beta)))) return strcmp(a, b);
     }
     if(__SortFlags[2]) {
-        if((x = (int)alpha->GetLevel()) != (y=(int)beta->GetLevel())) {
+        if((x = alpha->GetLevel()) != (y=beta->GetLevel())) {
             if(x > y) return -1;
             else return 1;
         }
     }
     if(__SortFlags[1]) {
-        if((x = (int)alpha->GetAge()) != (y = (int)beta->GetAge())) {
+        if((x = alpha->GetAge()) != (y = beta->GetAge())) {
             if(x > y) return -1;
             else return 1;
         }
@@ -225,12 +225,12 @@ static string map_info(object ob, string formatString) {
     string age, nom, blk, lev, ip, env, idle;
     int x;
 
-    x = (int)ob->GetAge();
+    x = ob->GetAge();
     if(x > 86400) age = sprintf("%:-2d D", x/86400);
     else if(x > 7200) age = sprintf("%:-2d h", x/3600);
     else age = sprintf("%:-2d m", x/60);
-    nom = (string)GetBaseName(ob);
-    if((int)ob->GetInvis()) nom = "("+nom+")";
+    nom = GetBaseName(ob);
+    if(ob->GetInvis()) nom = "("+nom+")";
 #ifndef __DSLIB__
     if(in_edit(ob) || in_input(ob)) nom = "["+nom+"]";
 #else
@@ -240,16 +240,16 @@ static string map_info(object ob, string formatString) {
     else if(in_edit(ob) || in_input(ob)) nom = "["+nom+"]";
 #endif
     if(creatorp(ob)) {
-        if((int)ob->GetBlocked("all")) blk = "ACG";
+        if(ob->GetBlocked("all")) blk = "ACG";
         else {
-            if((int)ob->GetBlocked("cre")) blk = " C";
+            if(ob->GetBlocked("cre")) blk = " C";
             else blk = "  ";
-            if((int)ob->GetBlocked("gossip")) blk += "G";
+            if(ob->GetBlocked("gossip")) blk += "G";
             else blk += " ";
         }
     }
     else blk = "   ";
-    if(!(x = (int)ob->GetLevel())) lev = "-";
+    if(!(x = ob->GetLevel())) lev = "-";
     else lev = x+"";
     if((x = query_idle(ob)) < 60) idle = "";
     else if(x >= 3600) idle = sprintf("%:-3d h", x/3600);
@@ -271,7 +271,7 @@ static private string query_people_time() {
 
     if(this_player()) tzone = this_player()->GetProperty("timezone");
     if(!tzone || !valid_timezone(tzone)) tzone = query_tz();
-    offset = (int)TIME_D->GetOffset(tzone);
+    offset = TIME_D->GetOffset(tzone);
     offset += EXTRA_TIME_OFFSET;
     if(query_os_type() != "windows" ) x = offset * 3600;
     else x = 0;

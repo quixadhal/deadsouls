@@ -27,6 +27,10 @@ int lock, key, room, direction;
 int ok, ok2;
 
 mixed cmd(string args){
+#ifndef __FLUFFOS__
+    write("This command only works under FluffOS.");
+    return 1;
+#else
     if(args == "clear"){
         write("Resetting the converter variables.");
         RELOAD_D->eventReload(this_object(),0);
@@ -42,6 +46,7 @@ mixed cmd(string args){
 string clean_string(string str){
     str = replace_string(str,"\"","\'",);
     return str;
+#endif
 }
 
 int Report(string str){

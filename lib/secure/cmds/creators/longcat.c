@@ -16,7 +16,7 @@ mixed cmd(string str) {
     int chunks, rem, currchunk, smax = (get_config(__MAX_STRING_LENGTH__) - 10);
 
     if( !str ) return "You must specify a file to longcat.";
-    else str = absolute_path((string)this_player()->query_cwd(), str);
+    else str = absolute_path(this_player()->query_cwd(), str);
     if( !file_exists(str) ) return "File " + str + " not found.";
     if((tmp = file_size(str)) < smax){
         if( !(tmp = read_file(str)) )

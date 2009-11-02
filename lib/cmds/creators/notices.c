@@ -42,7 +42,7 @@ mixed cmd(string str) {
         else return GetHelp(0);
     }
     x = time() - (OneDay * x);
-    if( !(int)NOTIFY_D->eventPrintNotices(this_player(), x) )
+    if( !NOTIFY_D->eventPrintNotices(this_player(), x) )
         return "No recent notices found.";
     else return 1;
 }

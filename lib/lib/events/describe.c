@@ -48,14 +48,14 @@ void eventDescribeEnvironment(int brief){
     }
     if( !brief ){
         if( i == VISION_CLEAR ){
-            desc = (string)env->GetObviousExits() || "";
+            desc = env->GetObviousExits() || "";
             if(desc && desc != "")
-                desc = capitalize((string)env->GetShort() || "")
+                desc = capitalize(env->GetShort() || "")
                     + " [" + desc + "]\n";
-            else desc = capitalize((string)env->GetShort()+"\n" || "\n");
+            else desc = capitalize(env->GetShort()+"\n" || "\n");
             if(!NM_STYLE_EXITS){
-                desc = capitalize((string)env->GetShort()+"\n" || "\n");
-                altern_obvious = "Obvious exit$Q: "+(string)env->GetObviousExits() || "none";
+                desc = capitalize(env->GetShort()+"\n" || "\n");
+                altern_obvious = "Obvious exit$Q: "+env->GetObviousExits() || "none";
             }
         }
         else desc = "\n";
@@ -71,28 +71,28 @@ void eventDescribeEnvironment(int brief){
                 desc += MAP_D->GetMap(environment(this_object()),6)+"\n"; 
             }
 #endif
-            desc += (string)env->GetLong();
+            desc += env->GetLong();
         }
-        if(functionp(tmp = (mixed)env->GetSmell("default")))
-            tmp = (string)(*tmp)("default");
+        if(functionp(tmp = env->GetSmell("default")))
+            tmp = (*tmp)("default");
         smell = tmp;
-        if(functionp(tmp = (mixed)env->GetListen("default")))
-            tmp = (string)(*tmp)("default");
+        if(functionp(tmp = env->GetListen("default")))
+            tmp = (*tmp)("default");
         sound = tmp;
-        if( functionp(tmp = (mixed)env->GetTouch("default")) )
+        if( functionp(tmp = env->GetTouch("default")) )
             tmp = evaluate(tmp, "default");
         touch = tmp;
     }
     else {
         if(i == VISION_CLEAR || i == VISION_LIGHT || i == VISION_DIM){
-            desc = (string)env->GetShort();
+            desc = env->GetShort();
             if(this_object()->GetProperty("minimapping")) desc += simple_map(env)+"\n";
             if(NM_STYLE_EXITS){
-                if( (tmp = (string)env->GetObviousExits()) && tmp != "" )
+                if( (tmp = env->GetObviousExits()) && tmp != "" )
                     desc += " [" + tmp + "]";
                 else desc += "\n";
             }
-            else altern_obvious = "Obvious exits: "+(string)env->GetObviousExits() || "none";
+            else altern_obvious = "Obvious exits: "+env->GetObviousExits() || "none";
         }
         else desc = "\n";
     }
@@ -112,12 +112,12 @@ void eventDescribeEnvironment(int brief){
         shorts = map(filter(all_inventory(env),
                     function(object ob){
                     if( living(ob) ) return 0;
-                    if( (int)ob->GetInvis(this_object()) && !ob->GetDoor() )
+                    if( ob->GetInvis(this_object()) && !ob->GetDoor() )
                     return 0;
                     if(ob->GetDoor() && load_object(ob->GetDoor())->GetHiddenDoor()) return 0;
-                    if( (int)ob->isFreshCorpse() ) return 0;
+                    if( ob->isFreshCorpse() ) return 0;
                     return 1;
-                    }), (: (string)$1->GetShort() :));
+                    }), (: $1->GetShort() :));
         foreach(string s in shorts){
             if( s ){
                 lying[s]++;
@@ -168,19 +168,19 @@ void eventDescribeEnvironment(int brief){
         if(this_player()) mount = this_player()->GetProperty("mount");
 
         obs = filter(all_inventory(env), function(object ob){
-                if( (int)ob->GetInvis(this_object()) &&
+                if( ob->GetInvis(this_object()) &&
                     !this_object()->GetWizVision() ) return 0;
                 if( living(ob) ) return 1;
-                if( (int)ob->isFreshCorpse() )
+                if( ob->isFreshCorpse() )
                 return 1;
                 }) - ({ this_object(), mount });
         maxi = sizeof(shorts = map(obs, (: 
                         ($1->GetInvis() ? "(invisible) " : "") + 
-                        (string)$1->GetHealthShort() :)));
+                        $1->GetHealthShort() :)));
         foreach(object liv in obs){
             int envtype = environment(liv)->GetMedium();
-            string s = (string)liv->GetHealthShort();
-            int pos = (int)liv->GetPosition();
+            string s = liv->GetHealthShort();
+            int pos = liv->GetPosition();
             if( !s ) continue;
             if(liv->GetInvis() && this_object()->GetWizVision()){
                 s = "(invis) " + s;
@@ -195,12 +195,12 @@ void eventDescribeEnvironment(int brief){
 
             if( pos == POSITION_STANDING) standing[s]++;
             else if( pos == POSITION_LYING || 
-                    ((int)liv->isFreshCorpse() && envtype == MEDIUM_LAND) )
+                    (liv->isFreshCorpse() && envtype == MEDIUM_LAND) )
                 lying[s]++;
             else if( pos == POSITION_SITTING ) sitting[s]++;
             else if( pos == POSITION_FLYING ) flying[s]++;
             else if( pos == POSITION_FLOATING ||
-                    ((int)liv->isFreshCorpse() && envtype != MEDIUM_LAND) )
+                    (liv->isFreshCorpse() && envtype != MEDIUM_LAND) )
                 floating[s]++;
             else if( pos == POSITION_SWIMMING ) swimming[s]++;
             else if( pos == POSITION_KNEELING ) kneeling[s]++;
@@ -331,14 +331,24 @@ void eventDescribeEnvironment(int brief){
                  && !($1 == this_player()) :));
         if(sizeof(mount_obs)){
             foreach(object element in mount_obs){
-                mount_stuffs += ({ element->GetShort() });
+                string invis = (element->GetInvis() ? "(invisible) " : "");
+                mount_stuffs += ({ invis+element->GetShort() });
             }
             mount_inv = conjunction(mount_stuffs);
         }
         if(!sizeof(desc)) desc = "";
-        if(inherits(LIB_VEHICLE,transport)){
+        if(inherits(LIB_CHAMBER,transport)){
             string tmpdesc = transport->GetVehicleInterior();
             if(!tmpdesc || !sizeof(tmpdesc)){ 
+                desc += "\nYou are in "+
+                    transport->GetPlainShort()+".";
+            }
+            else desc += "\n"+tmpdesc;
+            desc += "\nHere you see: "+mount_inv+".";
+        }
+        else if(inherits(LIB_VEHICLE,transport)){
+            string tmpdesc = transport->GetVehicleInterior();
+            if(!tmpdesc || !sizeof(tmpdesc)){
                 desc += "\nYou are riding in "+
                     transport->GetPlainShort()+".";
             }

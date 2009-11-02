@@ -60,7 +60,7 @@ void eventReceiveFingerReply(mixed array packet) {
 void eventSendFingerRequest(string who, string where) {
     string pl;
 
-    if( !(pl = (string)this_player(1)->GetKeyName()) ) return;
+    if( !(pl = this_player(1)->GetKeyName()) ) return;
     INTERMUD_D->eventWrite( ({ "finger-req", 5, mud_name(), pl, where, 0, 
                 who }) );
     tn("eventSendFingerRequest: "+identify( ({ "finger-req", 5, mud_name(), pl, where, 0,who }) ),"cyan");

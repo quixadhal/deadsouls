@@ -15,7 +15,7 @@ object *grooms = ({}), *occupied_rooms = ({});
 int last_deep_player_load, virtual_void;
 
 varargs void validate(){
-    if((!(int)master()->valid_apply(({ "SECURE", "ASSIST" })))){
+    if((!master()->valid_apply(({ "SECURE", "ASSIST" })))){
         string offender = identify(previous_object(-1));
         debug("RELOAD_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" RELOAD_D breach: "+offender+" "+get_stack());
@@ -115,6 +115,7 @@ void eventResetEmptyRooms(){
 int ReloadBaseSystem(){
     string *tmp = get_dir("/secure/sefun/");
     string *sefun_files = ({});
+    int loop = 2;
     catch( update(MASTER_D) );
     foreach(string file in tmp){
         if(!strsrch(file,"sefun.")) continue;
@@ -126,8 +127,23 @@ int ReloadBaseSystem(){
         int err;
         err = catch(update(file));
         if(err){ 
-            debug("file: "+file);
+            debug("error loading file: "+file);
         }
+    }
+    tmp = get_dir("/lib/");
+    while(loop){
+        foreach(string file in tmp){
+            object ob;
+            int err;
+            if(last(2, file) != ".c") continue;
+            reset_eval_cost();
+            err = catch(ob = load_object("/lib/"+file));
+            if(err || !ob){ 
+                debug("error loading file: /lib/"+file);
+            }
+            else reload(ob, 1, 1);
+        }
+        loop--;
     }
     reset_eval_cost();
     RELOAD_D->eventReload(load_object(SEFUN), 1, 1);
@@ -261,7 +277,7 @@ varargs int eventReload(mixed what, int when, int nodelay){
     if(!objectp(what)) return 0;
     if(Reloadees[what]) return 0;
     if( (previous_object() != what) && 
-            !((int)master()->valid_apply(({ "ASSIST" }))) ){
+            !(master()->valid_apply(({ "ASSIST" }))) ){
         log_file("adm/reload_d",get_stack()+" "+identify(previous_object(-1))+
                 " attempted to use RELOAD_D: "+timestamp()+"\n");
         tell_creators(get_stack()+" "+identify(previous_object(-1))+
@@ -329,7 +345,7 @@ mapping GetReloads(){
 }
 
 mapping ClearReloads(){
-    if(!((int)master()->valid_apply(({ "ASSIST" }))) ){
+    if(!(master()->valid_apply(({ "ASSIST" }))) ){
         log_file("adm/reload_d",get_stack()+" "+identify(previous_object(-1))+
                 " attempted to clear RELOAD_D: "+timestamp()+"\n");
         tell_creators(get_stack()+" "+identify(previous_object(-1))+
@@ -383,8 +399,20 @@ int ReloadUsers(){
 
     foreach(object player in users()){
         int invis = player->GetInvis();
+        string *bases = ({});
         string pstr = base_name(player);
-        reset_eval_cost();
+        foreach(object ob in deep_inventory(player)){
+            object parent;
+            string base;
+            if(!ob) continue;
+            base = base_name(ob);
+            if(member_array(base, bases) != -1) continue;
+            bases += ({ base });
+            err = catch(parent = load_object(base));
+            if(err || !parent) continue;
+            reload(parent, 1, 1);
+            reset_eval_cost();
+        }
         player->SetInvis(0);
         err = catch(RELOAD_D->ReloadPlayer(player));
         if(err){

@@ -17,7 +17,7 @@ mixed cmd(string args) {
     if( !args || args == "" ) return "Unlink whom from whom?";
     if( sscanf(args, "%s from %s", secondary, primary) != 2 )
         return "Unlink whom from whom?";
-    tmp = (mixed)CHARACTER_D->eventUnlink(primary, secondary);
+    tmp = CHARACTER_D->eventUnlink(primary, secondary);
     if( !tmp ) return "Unlink failed.";
     else if( tmp == 1 ){
         this_player(1)->eventPrint("Unlinked.");

@@ -17,7 +17,7 @@ static void create()
 mixed can_learn_str_from_liv(string str, object ob)
 {
     int pos = this_player()->GetPosition();
-    if( (int)this_player()->GetParalyzed() ) {
+    if( this_player()->GetParalyzed() ) {
         return "You cannot move!";
     }
     if( pos == POSITION_LYING &&

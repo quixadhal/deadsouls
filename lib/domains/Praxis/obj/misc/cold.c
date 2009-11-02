@@ -21,9 +21,9 @@ void create() {
 void suffer(object ob) {
     coughs--;
     if(coughs%2) return;
-    ob->add_hp(-((int)ob->query_hp()/10));
+    ob->add_hp(-(ob->query_hp()/10));
     message("my_action", "You cough horridly!", ob);
-    message("other_action", (string)ob->query_cap_name()+" coughs horribly!",
+    message("other_action", ob->query_cap_name()+" coughs horribly!",
             environment(ob), ob);
     if(!coughs) this_object()->remove();
 }

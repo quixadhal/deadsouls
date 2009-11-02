@@ -65,6 +65,7 @@ mkdir /tmp/foo/next/lib/domains/cave/save
 mkdir /tmp/foo/next/lib/domains/cave/txt
 mkdir /tmp/foo/next/lib/domains/cave/virtual
 mkdir /tmp/foo/next/doc/phints
+mkdir /tmp/foo/next/lib/domains/campus/chamber 
 
 cd /tmp/foo
 

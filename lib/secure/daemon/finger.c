@@ -27,6 +27,10 @@ static void create() {
     SetNoClean(1);
 }
 
+static int LoadPlayer(string path){
+    return unguarded( (: RestoreObject($(path)) :) );
+}
+
 varargs string GetFinger(string who, int html) {
     mapping mail_stat;
     object ob;
@@ -64,8 +68,8 @@ varargs string GetFinger(string who, int html) {
         return ret;
     }
     creator = 0;
-    if( !user_exists(who) || (!RestoreObject(DIR_PLAYERS "/" +
-                    who[0..0] + "/" + who) && !(creator = RestoreObject(DIR_CRES "/" +
+    if( !user_exists(who) || (!LoadPlayer(DIR_PLAYERS "/" +
+                    who[0..0] + "/" + who) && !(creator = LoadPlayer(DIR_CRES "/" +
                             who[0..0] + "/" + who))) ){
         return capitalize(who) + " is unknown to " + mud_name() + ".";
     }

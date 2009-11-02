@@ -18,7 +18,7 @@ mixed cmd(string args) {
 #else
     if( !args || args == "" ) return "You must specify a command to execute.";
     before = rusage();
-    catch(eval_cost = (int)previous_object()->eventForce(args));
+    catch(eval_cost = previous_object()->eventForce(args));
     after = rusage();
     usertime = after["utime"] - before["utime"];
     stime = after["stime"] - before["stime"];

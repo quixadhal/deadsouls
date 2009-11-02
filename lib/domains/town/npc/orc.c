@@ -40,3 +40,6 @@ static void create() {
 void init(){
     ::init();
 }
+void reset(){
+    //debug("reset origin: "+origin());
+}

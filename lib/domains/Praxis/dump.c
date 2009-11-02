@@ -31,7 +31,7 @@ void reset() {
 void mound_searching() {
     message("my_action", "You found a dagger in one of the mounds of trash!",
             this_player());
-    message("other_action", (string)this_player()->query_cap_name()+
+    message("other_action", this_player()->query_cap_name()+
             " found a dagger in one of the mounds of trash.", this_object(),
             ({ this_player() }));
     new("/domains/Praxis/obj/weapon/dagger")->move(this_object());
@@ -42,7 +42,7 @@ void mound_searching() {
 void smell_food(string str) {
     message("my_action", "You pass out from the stench of rotten elf food.",
             this_player());
-    message("other_action", (string)this_player()->query_cap_name()+
+    message("other_action", this_player()->query_cap_name()+
             " passes out from the stench of rotten elf food.", this_object(),
             ({ this_player() }));
     this_player()->add_sp(-3);

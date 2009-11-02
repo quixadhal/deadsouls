@@ -220,7 +220,7 @@ nomask static int cmd_nmsh(string str){
 
     if(!str) return 0; 
     if(this_player() != this_object()) return 0; 
-    if((int)this_player()->GetForced()) return 0; 
+    if(this_player()->GetForced()) return 0; 
     if(!(tmp = read_file(absolute_path(query_cwd(), str)))) 
         return notify_fail(sprintf("nmsh: script %s not found.\n")); 
     maxi = sizeof(lines = explode(tmp, "\n")); 
@@ -425,7 +425,7 @@ varargs nomask string write_prompt(string str){
 
 string process_input(string str){ 
     string tmp, xtra, request; 
-
+    //tc("nmsh process_input: "+str,"green");
     if(!str || str == "") return ""; 
     else if(GetClient() &&
             member_array(GetClient(), SUPPORTED_CLIENTS) != -1){
@@ -435,7 +435,16 @@ string process_input(string str){
         }
         else return str;
     }
-    else if((tmp = eventHistory(str)) == "") return "";     
+    else {
+        tmp = eventHistory(str);
+        //tc("tmp: "+tmp, "green");
+        //tc("str: "+str, "green");
+        if(tmp == ""){
+            //tc("tmp is null", "red");
+            return "";     
+        }
+    }
+    //tc("tmp is not null"+tmp,"green");
     if(tmp != str) message("system", tmp, this_object());
     return do_alias(do_nickname(tmp));
 } 
@@ -457,7 +466,7 @@ nomask static void process_request(string request, string xtra){
         break;
         case "ROOM":
             receive("<ROOM>"+
-                    (string)environment(this_object())->GetShort()+"\n");
+                    environment(this_object())->GetShort()+"\n");
         break;
         case "PRESENT":
             receive("<PRESENT>"+
@@ -472,11 +481,11 @@ nomask static void process_request(string request, string xtra){
 }
 
 static int request_vis(object ob){
-    return (userp(ob) && !((int)ob->GetInvis(this_object())));
+    return (userp(ob) && !(ob->GetInvis(this_object())));
 }
 
 static string user_names(object ob){
-    return (string)ob->GetName();
+    return ob->GetName();
 }
 
 private static int set_cwd(string str){ 
@@ -539,7 +548,7 @@ nomask private static string do_nickname(string str){
 
 nomask private static string do_alias(string str){ 
     string *words; 
-    string tmp; 
+    string tmp, ret; 
     int x; 
 
     if(!sizeof(words = explode(str, " "))) return "";
@@ -549,8 +558,9 @@ nomask private static string do_alias(string str){
     }
     if(!(tmp = Aliases[words[0]])) return implode(words, " "); 
     else str = implode(words[1..sizeof(words)-1], " "); 
-    return replace_string(tmp, "$*", str); 
-
+    ret = replace_string(tmp, "$*", str);
+    //tc("ret: "+ret, "green");
+    return ret;
 } 
 
 string GetAlias(string alias){
@@ -777,7 +787,8 @@ static int rCtrl(string str){
                     file_cmds = ({ "ced", "clone", "goto", "rehash", "reset",
                             "showtree", "bk", "cat", "cp", "diff", "ed", 
                             "grep", "head", "indent", "longcat", "more", "mv",
-                            "rm", "sed", "showfuns", "source", "tail", "update" });
+                            "rm", "sed", "showfuns", "source", "tail", 
+                            "update" });
                     dir_cmds = ({ "cd", "ls", "mkdir", "rmdir" });
                     both_cmds = file_cmds + dir_cmds;
 

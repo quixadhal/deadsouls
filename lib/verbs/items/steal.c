@@ -28,32 +28,32 @@ static void create() {
 
 mixed can_steal_wrd_from_liv(string wrd) {
     if( wrd != "money" ) return 0;
-    if( (int)this_player()->GetSkillLevel("stealing") < 1 )
+    if( this_player()->GetSkillLevel("stealing") < 1 )
         return "You are not skillful enough at stealing.";
-    if( (int)environment(this_player())->GetProperty("no steal") )
+    if( environment(this_player())->GetProperty("no steal") )
         return "Mystical forces prevent your thievery.";
-    if( (int)this_player()->GetStaminaPoints() < 10 )
+    if( this_player()->GetStaminaPoints() < 10 )
         return "You are too tired for such skullduggery.";
     if(intp(check_light())) return this_player()->CanManipulate();
     else return check_light();
 }
 
 mixed can_steal_obj_from_liv() {
-    if( (int)this_player()->GetSkillLevel("stealing") < 1 )
+    if( this_player()->GetSkillLevel("stealing") < 1 )
         return "You are not skillful enough at stealing.";
-    if( (int)environment(this_player())->GetProperty("no steal") )
+    if( environment(this_player())->GetProperty("no steal") )
         return "Mystical forces prevent your thievery.";
-    if( (int)this_player()->GetStaminaPoints() < 20 )
+    if( this_player()->GetStaminaPoints() < 20 )
         return "You are too tired for such skullduggery.";
     if(intp(check_light())) return this_player()->CanManipulate();
     else return check_light();
 }
 
 mixed do_steal_wrd_from_liv(string wrd, object liv) {
-    this_player()->eventPrint("You eye " + (string)liv->GetName() +
+    this_player()->eventPrint("You eye " + liv->GetName() +
             " with thoughts on " + possessive(liv) +
             " pockets.");
-    if( (int)this_player()->GetInCombat() )
+    if( this_player()->GetInCombat() )
         this_player()->SetAttack(0, (: eventSteal,this_player(), "money", liv :),
                 ROUND_OTHER);
     else eventSteal(this_player(), "money", liv);
@@ -63,17 +63,17 @@ mixed do_steal_wrd_from_liv(string wrd, object liv) {
 mixed do_steal_obj_from_liv(object item, object liv) {
     if(!item) return "That's not here.";
     if( environment(item) != liv ) {
-        this_player()->eventPrint((string)liv->GetName() + " does not have that.");
+        this_player()->eventPrint(liv->GetName() + " does not have that.");
         return 1;
     }
     if(item->GetProperty("no steal")){
         this_player()->eventPrint("that item cannot be stolen.");
         return 1;
     }
-    this_player()->eventPrint("You eye " + (string)liv->GetName() +
+    this_player()->eventPrint("You eye " + liv->GetName() +
             " with thoughts on " + possessive(liv) + " " +
-            remove_article((string)item->GetShort()) + ".");
-    if( (int)this_player()->GetInCombat() )
+            remove_article(item->GetShort()) + ".");
+    if( this_player()->GetInCombat() )
         this_player()->SetAttack(0, (: eventSteal, this_player(), ({ item }),
                     liv :), ROUND_OTHER);
     else eventSteal(this_player(), ({ item }), liv);
@@ -99,10 +99,10 @@ mixed do_steal_obs_from_liv(mixed *res, object liv) {
             return 1;
         }
     }
-    this_player()->eventPrint("You eye " + (string)liv->GetName() +
+    this_player()->eventPrint("You eye " + liv->GetName() +
             " with thoughts on " + possessive(liv) +
             " possessions.");
-    if( (int)this_player()->GetInCombat() )
+    if( this_player()->GetInCombat() )
         this_player()->SetAttack(0, (: eventSteal, this_player(), obs, liv :),
                 ROUND_OTHER);
     else eventSteal(this_player(), obs, liv);

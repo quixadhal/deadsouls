@@ -25,6 +25,7 @@
 #define LOG_EVENTS        DIR_LOGS "/events" UNIQ_EXT
 #define LOG_LIVEUPGRADE   DIR_SECURE_LOGS "/liveupgrade" UNIQ_EXT
 #define LOG_QUESTS        DIR_SECURE_LOGS "/quests" UNIQ_EXT
+#define LOG_RESET         DIR_LOGS "/reset" UNIQ_EXT
 #define LOG_ICP           DIR_SECURE_LOGS "/icp" UNIQ_EXT
 
 #endif /* s_logs_h */

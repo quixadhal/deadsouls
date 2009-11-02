@@ -42,7 +42,7 @@ void create() {
 int mail(string str) {
     object ob;
 
-    if((string)this_player()->query_name() == "guest") {
+    if(this_player()->query_name() == "guest") {
         notify_fail("Guest may not use the mailer.\n");
         return 0;
     }

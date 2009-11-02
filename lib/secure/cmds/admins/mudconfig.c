@@ -43,7 +43,7 @@ varargs static int ModCfg(string which, string arg);
 
 static private void validate() {
     if(!this_player()) return 0;
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) )
+    if( !(master()->valid_apply(({ "ASSIST" }))) )
         error("Illegal attempt to access mudconfig: "+get_stack()+" "+identify(previous_object(-1)));
 }
 

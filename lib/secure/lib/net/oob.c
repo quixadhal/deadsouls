@@ -25,7 +25,7 @@ mapping TranslatedFiles = ([]);
 int eventDumpFiles();
 
 static private void validate() {
-    if( !((int)master()->valid_apply(({ "SECURE" }))) )
+    if( !(master()->valid_apply(({ "SECURE" }))) )
         error("Illegal attempt to access LIB_OOB: "+get_stack()+" "+identify(previous_object(-1)));
 }
 

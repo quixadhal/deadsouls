@@ -8,7 +8,7 @@ int cmd(string str) {
     string *sites;
 
     if(!archp(previous_object())) return 0;
-    if(res=catch(sites = (string *)call_other(BANISH_D, "query_registered"))) {
+    if(res=catch(sites = call_other(BANISH_D, "query_registered"))) {
         write("Error in checking sites: "+res+"\n");
         return 1;
     }

@@ -251,7 +251,7 @@ void sendHTTPGet()
 #endif
     if( status == SOCK_CONNECTED )
     {
-        result = socket_write( socket, (string)str );
+        result = socket_write( socket, str );
 #ifdef _DEBUG
         player->eventPrint( "HTTP request sent to " + socket + " result = "+result );
 #endif

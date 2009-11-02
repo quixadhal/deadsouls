@@ -16,7 +16,7 @@ mixed cmd(string str) {
         }
     } else
         ob = this_player();
-    if (error = (mapping)ob->GetLastError()) {
+    if (error = ob->GetLastError()) {
         return sprintf("%s\n", master()->standard_trace(error, 1));
     } else write("No error.\n");
     return "dbxwhere run complete.";

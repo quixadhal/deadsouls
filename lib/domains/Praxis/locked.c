@@ -26,6 +26,6 @@ static int any_hook(string str) {
 }
 int CanReceive(object ob) {
     if(!ob) ob = previous_object();
-    if(!((int)ob->query_locked())) return 0;
+    if(!(ob->query_locked())) return 0;
     else return ::CanReceive(ob);
 }

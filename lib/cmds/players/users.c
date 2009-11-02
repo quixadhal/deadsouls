@@ -16,7 +16,7 @@ cmd() {
         if(user_ob[i]){
             if( user_ob[i]->GetInvis() )
                 continue;
-            name = (string)user_ob[i]->GetKeyName();
+            name = user_ob[i]->GetKeyName();
             if (stringp(name))
                 user_name += ({ capitalize(name) });
         }

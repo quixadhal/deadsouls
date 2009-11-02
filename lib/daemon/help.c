@@ -112,11 +112,11 @@ static private void LoadIndices() {
         Indices["creator documents"] = tmp;
     else Indices["creator document"] = ({});
 
-    if( tmp = (string array)CLASSES_D->GetClasses() )
+    if( tmp = CLASSES_D->GetClasses() )
         Indices["classes"] = tmp;
     else Indices["classes"] = ({});
 
-    if( tmp = (string array)RACES_D->GetRaces(1) )
+    if( tmp = RACES_D->GetRaces(1) )
         Indices["races"] = tmp;
     else Indices["races"] = ({});
 
@@ -176,7 +176,7 @@ string GetHelp(string str) {
         return "See: help channels";
     }
     if( sscanf(str, "adverbs %s", topic) || str == "adverbs" ) {
-        return (string)SOUL_D->GetHelp(str);
+        return SOUL_D->GetHelp(str);
     }
     tmp = GetIndices(str);
     if( sizeof(tmp) > 0){
@@ -489,7 +489,7 @@ string GetHelpByIndex(string index, string topic) {
         return 0;
 
         case "races":
-            if( help = (string)RACES_D->GetHelp(topic) ) {
+            if( help = RACES_D->GetHelp(topic) ) {
                 help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
                     "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
                 return help;
@@ -516,7 +516,7 @@ string GetHelpByIndex(string index, string topic) {
         return help;
 
         case "classes":
-            if( help = (string)CLASSES_D->GetHelp(topic) ) {
+            if( help = CLASSES_D->GetHelp(topic) ) {
                 help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
                     "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
                 if( file_exists(DIR_CLASS_HELP + "/" + topic) )

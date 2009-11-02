@@ -17,13 +17,13 @@ mixed cmd(string args) {
         int i;
         string tmp = "";
 
-        i = sizeof(cles = keys(msgs = (mapping)this_player()->GetMessages()));
+        i = sizeof(cles = keys(msgs = this_player()->GetMessages()));
         while(i--) tmp += sprintf("%:-10s %s\n", cles[i], msgs[cles[i]]);
         message("system", tmp, this_player());
         return 1;
     }
     if( sscanf(args, "%s %s", type, msg) != 2) return "Set it to what?";
-    if( !((int)this_player()->SetMessage(type, msg)) )
+    if( !(this_player()->SetMessage(type, msg)) )
         return "Invalid message type.";
     message("system", "Message " + type + " changed to:\n" + msg, 
             this_player());

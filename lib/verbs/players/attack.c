@@ -33,7 +33,7 @@ static void create() {
 varargs mixed can_attack_liv(object target) {
     int pos = this_player()->GetPosition();
 
-    if( (int)this_player()->GetParalyzed() ) {
+    if( this_player()->GetParalyzed() ) {
         return "You cannot move!";
     }
     if( pos == POSITION_SITTING || pos == POSITION_LYING &&
@@ -41,7 +41,7 @@ varargs mixed can_attack_liv(object target) {
         return "You cannot attack in that position!";
     }
     if( this_player() && environment(this_player()) &&
-            (int)environment(this_player())->GetProperty("no attack") ) {
+            environment(this_player())->GetProperty("no attack") ) {
         return "A mystical force prevents your malice.";
     }
     return 1;
@@ -115,8 +115,8 @@ varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
 
     this_player()->SetAttack(obs);
     tmp = item_list(obs);
-    obs->eventPrint((string)this_player()->GetName() + " attacks you!");
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    obs->eventPrint(this_player()->GetName() + " attacks you!");
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " attacks " + tmp + "!",
             ({ this_player(), obs... }));
     this_player()->eventPrint("You advance towards " + tmp + ".");

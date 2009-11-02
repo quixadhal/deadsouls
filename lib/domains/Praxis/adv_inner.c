@@ -43,7 +43,7 @@ int CanReceive(object ob) {
         message("my_action", "You cannot penetrate the magic force of the "
                 "blue shield.", this_player());
         message("other_action", sprintf("%s tries to pass through the magic "
-                    "blue shield, but fails.", (string)this_player()->query_cap_name()),
+                    "blue shield, but fails.", this_player()->query_cap_name()),
                 environment(this_player()), ({ this_player() }));
         return 0;
     }

@@ -11,7 +11,7 @@ mixed cmd(string args) {
     string file;
     float net_worth, max_worth;
 
-    file = MONEY_DIR + (string)previous_object()->GetKeyName();
+    file = MONEY_DIR + previous_object()->GetKeyName();
     account = ([]);
     if( !file_exists(save_file(file)) )
         return "You have no bank account on the old Dead Souls.";
@@ -25,7 +25,7 @@ mixed cmd(string args) {
             net_worth += val / tmp;
         }
     }
-    max_worth = (int)previous_object()->GetLevel() * 2000;
+    max_worth = previous_object()->GetLevel() * 2000;
     if( net_worth  > max_worth ) net_worth = max_worth;
     if( previous_object()->AddBank("Mariner's Bank of Praxis", "electrum",
                 to_int(currency_value(net_worth, "electrum")))

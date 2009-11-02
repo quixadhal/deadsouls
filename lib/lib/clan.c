@@ -16,8 +16,8 @@ static void create(){
 
 static void init(){
     if(!present(this_object(), this_player())) return;
-    if((string)this_player()->GetClan() != (string)GetClanName()) return;
-    if((string)this_player()->GetKeyName() == (string)GetLeader()){
+    if(this_player()->GetClan() != GetClanName()) return;
+    if(this_player()->GetKeyName() == GetLeader()){
         add_action("eventBring", "bring");
         add_action("eventInitiate", "initiate");
         add_action("eventRetire", "retire");
@@ -76,7 +76,7 @@ int eventBring(string str){
     who = find_player(lower_case(str));
     if(!who)
         return notify_fail(who->GetName() + " is nowhere to be found.\n");
-    if((string)who->GetClan() != (string)GetClanName())
+    if(who->GetClan() != GetClanName())
         return notify_fail(who->GetName() + " is not one of you!\n");
     if(   environment(who)->GetProperty("no teleport")
             || environment(this_player())->GetProperty("no teleport")
@@ -84,7 +84,7 @@ int eventBring(string str){
         return notify_fail("A magic force blocks your powers.\n");
     if(present(who, environment(this_player())))
         return notify_fail(capitalize(str) + " is here.\n");
-    if((int)this_player()->GetMagicPoints() < 70)
+    if(this_player()->GetMagicPoints() < 70)
         return notify_fail("Too low on magic power.\n");
     this_player()->AddMagicPoints(-70);
     who->eventPrint("%^CYAN%^Your clan leader summons you.%^RESET%^");
@@ -106,14 +106,14 @@ int eventInitiate(string str){
         return notify_fail("No one of that nature here.\n");
     if(stringp(ret = CanJoin(initiate))) return notify_fail(ret);
     else if(!ret) return ret;
-    if((int)this_player()->GetMagicPoints() < 300)
+    if(this_player()->GetMagicPoints() < 300)
         return notify_fail("Too low on magic power.\n");
     if(initiate->GetClan())
         return notify_fail("You may only initiate people without clan "
                 + "affiliation.\n");
-    initiate->SetClan((string)GetClanName());
+    initiate->SetClan(GetClanName());
     initiate->SetSkill(GetClanSkill(), 1, 1);
-    if(clanObject = new((string)GetClanObject()))
+    if(clanObject = new(GetClanObject()))
         clanObject->eventMove(initiate);
     this_player()->AddMagicPoints(-300);
     eventJoin(initiate);
@@ -122,10 +122,10 @@ int eventInitiate(string str){
 
 void eventJoin(object ob){
     ob->eventPrint("%^YELLOW%^You are now a member of the "
-            + pluralize((string)GetClanName()) + ".%^RESET%^");
-    environment(ob)->eventPrint("%^YELLOW%^" +(string)ob->GetName()
+            + pluralize(GetClanName()) + ".%^RESET%^");
+    environment(ob)->eventPrint("%^YELLOW%^" +ob->GetName()
             + " is now a member of the "
-            + pluralize((string)GetClanName()) + ".%^RESET%^", ob);
+            + pluralize(GetClanName()) + ".%^RESET%^", ob);
 }
 
 int eventRetire(string str){
@@ -136,7 +136,7 @@ int eventRetire(string str){
     retiree = present(lower_case(str), environment(this_player()));
     if(!retiree || !living(retiree))
         return notify_fail("No one of that nature here.\n");
-    if((string)retiree->GetClan() != (string)GetClanName())
+    if(retiree->GetClan() != GetClanName())
         return notify_fail(retiree->GetName() + " is not one of us!\n");
     clanObject = present(GetClanName() + "_clan_object", retiree);
     if(!clanObject) error("Problem with clan object.");
@@ -149,14 +149,14 @@ int eventRetire(string str){
 
 void eventUnjoin(object ob){
     ob->eventPrint("%^RED%^You are no longer a member of the "
-            + pluralize((string)GetClanName()) + ".%^RESET%^");
-    environment(ob)->eventPrint("%^RED%^" + (string)ob->GetName()
+            + pluralize(GetClanName()) + ".%^RESET%^");
+    environment(ob)->eventPrint("%^RED%^" + ob->GetName()
             + " is no longer a member of the "
-            + pluralize((string)GetClanName()) + ".%^RESET%^", ob);
+            + pluralize(GetClanName()) + ".%^RESET%^", ob);
 }
 
 void eventWelcome(object ob){
-    ob->eventPrint("%^YELLOW%^Welcome, fellow " + (string)GetClanName()
+    ob->eventPrint("%^YELLOW%^Welcome, fellow " + GetClanName()
             + ".%^RESET%^");
 }
 

@@ -15,8 +15,8 @@ mixed cmd(string args) {
     string cmd;
 
     if( !args || args == "" ) {
-        percentage = (int)this_player()->GetWimpy();
-        cmd = (string)this_player()->GetWimpyCommand();
+        percentage = this_player()->GetWimpy();
+        cmd = this_player()->GetWimpyCommand();
         if( !percentage )
             this_player()->eventPrint("You have wimpy turned off.", MSG_SYSTEM);
         else this_player()->eventPrint("Percentage: " + percentage + "%\n"

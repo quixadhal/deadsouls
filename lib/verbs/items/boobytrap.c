@@ -24,5 +24,5 @@ mixed can_boobytrap_obj_with_obj(string verb) {
 varargs mixed do_boobytrap_obj_with_obj(object target, object trap, mixed *words...) {
     string id;
     id = remove_article(lower_case(words[0]));
-    return (mixed)trap->eventBoobytrap(this_player(), id, trap);
+    return trap->eventBoobytrap(this_player(), id, trap);
 }

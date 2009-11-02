@@ -22,7 +22,7 @@ private static string *SearchPath;
 private static int last_cmd_time = 0;
 private static int cmd_count = 1;
 private string *localcmds = ({});
-private string *next_command = ({});
+private string parsed_command = "";
 private static string *QueuedCommands = ({});
 static string current_command = "";
 static string original_command = "";
@@ -42,11 +42,22 @@ static void create(){
 }
 
 static string process_input(string args){ 
-    string verb, real_verb, tmpalias;
+    string verb, real_verb, tmpalias, orig;
     object env = environment(this_object());
-    string *talks = ({ "emote", "tell", "reply", "say", "whisper", "yell", "shout", "speak" });
-    talks += this_object()->GetChannels();
-    talks += SOUL_D->GetEmotes();
+    string *talks = ({ "emote", "tell", "reply", "say", "whisper",
+      "yell", "shout", "speak" });
+    string *filecmds = ({ "ced", "clone", "goto", "rehash", "reset",
+      "showtree", "bk", "cat", "cp", "diff", "ed", "grep", "head", "indent",
+      "longcat", "more", "mv", "rm", "sed", "showfuns", "source",
+      "tail", "update", "cd", "ls", "mkdir", "rmdir" });
+    string *exempts = talks + filecmds;
+    exempts += this_object()->GetChannels();
+    exempts += SOUL_D->GetEmotes();
+
+    orig = args;
+
+    localcmds = ({});
+    filter(commands(), (: localcmds += ({ $1[0] }) :));
 
     //tc("verb: "+verb+", args: "+args);
     if(sizeof(args)){
@@ -61,7 +72,7 @@ static string process_input(string args){
         real_verb = explode(tmpalias, " ")[0];
     }
     //tc("verb: "+verb+", args: "+args, "blue");
-    if(Paused && (member_array(verb, talks) == -1)){
+    if(Paused && (member_array(verb, exempts) == -1)){
         this_object()->eventPrint("You are paused.");
         return "";
     }
@@ -83,8 +94,8 @@ static string process_input(string args){
             return "";
         }
     }
-    if(OLD_STYLE_PLURALS && args && (member_array(verb, talks) == -1 ||
-                (member_array(verb, talks) != -1 && !strsrch(trim(args),"to ")))){
+    if(OLD_STYLE_PLURALS && args && (member_array(verb, exempts) == -1 ||
+                (member_array(verb, exempts) != -1 && !strsrch(trim(args),"to ")))){
         int numba, i, tmp_num;
         string tmp_ret;
         string *line = explode(args," ");
@@ -92,14 +103,14 @@ static string process_input(string args){
             string element;
             if(!line[i]) error("String handling error in old style plural parser.");
             element = line[i];
-            talks = sort_array(talks, 1);
+            exempts = sort_array(exempts, 1);
             //tc("verb: "+verb, "blue");
             //tc("real_verb: "+real_verb, "blue");
-            //tc("talks: "+identify(talks), "blue");
-            //tc("member: "+member_array(real_verb, talks));
+            //tc("exempts: "+identify(exempts), "blue");
+            //tc("member: "+member_array(real_verb, exempts));
             if(sscanf(element,"%d.%d",numba,tmp_num) != 2 &&
                     sscanf(element,"%d.%s",numba,tmp_ret) == 2 &&
-                    (member_array(real_verb, talks) == -1)){
+                    (member_array(real_verb, exempts) == -1)){
                 args = replace_string(args, numba + ".", 
                         numba + ordinal(numba) + " ");
                 //tc("args: "+args, "green");
@@ -117,7 +128,7 @@ static string process_input(string args){
                     e2 = line[j];
                     if(sizeof(tmp_thing)) tmp_thing = e2 + " " + tmp_thing;
                     else tmp_thing = e2;
-                    if(member_array(tmp_thing, talks) != -1) break;
+                    if(member_array(tmp_thing, exempts) != -1) break;
                     o1 = present(tmp_thing);
                     if(!o1){
                         o1 = present(old_tmp);
@@ -132,8 +143,17 @@ static string process_input(string args){
         }
     }
     //tc("args: "+args, "white");
-    current_command = args;
-    return args;
+    parsed_command = args;
+    if(member_array(verb, localcmds) != -1){
+        //tc("ping");
+        current_command = orig;
+    }
+    else {
+        //tc("pong");
+        current_command = parsed_command;
+        parsed_command = "";
+    }
+    return current_command;
 }
 
 /*  ***************  /lib/command.c command lfuns  ***************  */
@@ -142,11 +162,17 @@ static int cmdAll(string args){
     object old_agent, env;
     mixed err;
     string verb, file;
-    string *talks = ({ "say", "whisper", "yell", "shout", "speak" });
 
-    //tc("command cmdAll: "+args, "green");
+    //tc("cmdAll: "+args, "red");
+
+    if(grepp(parsed_command," ")){
+        sscanf(parsed_command,"%s %s", verb, args);
+        parsed_command = "";
+    }
 
     if(!verb) verb = query_verb();
+
+    //tc("verb: "+verb+", args: "+args, "red");
 
     if(!this_object()->GetCharmode()){
         if(!args) this_object()->Push(verb);
@@ -161,7 +187,7 @@ static int cmdAll(string args){
     env = environment();
     if(BARE_EXITS && env){
         localcmds = ({});
-        filter(this_player()->GetCommands(), (: localcmds += ({ $1[0] }) :));
+        filter(commands(), (: localcmds += ({ $1[0] }) :));
         if(member_array(verb,CMD_D->GetCommands()) == -1 &&
                 member_array(verb,keys(VERBS_D->GetVerbs())) == -1 &&
                 member_array(verb,localcmds) == -1 ){
@@ -184,15 +210,15 @@ static int cmdAll(string args){
         return 1;
     }
     if( !(file = (query_custom_command(verb) )) || query_custom_command(verb) == ""){
-        if( !(file = (string)CMD_D->GetCommand(verb, GetSearchPath())) ){
+        if( !(file = CMD_D->GetCommand(verb, GetSearchPath())) ){
             string cmd;
             int dbg;
 
             if( verb && args ) cmd = verb + " " + args;
             else if(verb) cmd = verb;
             else if(args) cmd = args;
-            if( (int)this_object()->GetProperty("parse debug") ) dbg = 1;
-            else if( (int)this_object()->GetProperty("debug") ) dbg = 1;
+            if( this_object()->GetProperty("parse debug") ) dbg = 1;
+            else if( this_object()->GetProperty("debug") ) dbg = 1;
             else dbg = 0;
             if( (err = parse_sentence(cmd, dbg)) == 1 ){
                 this_agent(old_agent || 1);
@@ -200,8 +226,8 @@ static int cmdAll(string args){
             }
             if( err ){
                 if( err == -1 ){
-                    if( !(err = (string)VERBS_D->GetErrorMessage(verb)) &&
-                            !(err = (string)SOUL_D->GetErrorMessage(verb)) ){
+                    if( !(err = VERBS_D->GetErrorMessage(verb)) &&
+                            !(err = SOUL_D->GetErrorMessage(verb)) ){
                         err = "Such a command exists, but no default "
                             "syntax is known.";
                     }
@@ -215,7 +241,7 @@ static int cmdAll(string args){
         }
     }
 
-    if( (err = (mixed)call_other(file, "cmd", args)) != 1 ){
+    if( (err = call_other(file, "cmd", args)) != 1 ){
         string cmd;
 
         if( err ) SetCommandFail(err);
@@ -241,7 +267,7 @@ int cmdDebugAll(string args){
 
     old_agent = this_agent(this_object());
     verb = query_verb();
-    if( !(file = (string)CMD_D->GetCommand(verb, GetSearchPath())) ){
+    if( !(file = CMD_D->GetCommand(verb, GetSearchPath())) ){
         string cmd;
 
         if( args ) cmd = verb + " " + args;
@@ -255,7 +281,7 @@ int cmdDebugAll(string args){
         this_agent(old_agent || 1);
         return 1;
     }
-    if( (err = (mixed)call_other(file, "cmd", args)) != 1 ){
+    if( (err = call_other(file, "cmd", args)) != 1 ){
         string cmd;
 
         if( err ) SetCommandFail(err);
@@ -313,7 +339,7 @@ int eventExecuteQueuedCommands(){
     int i = 0;
     foreach(string tmp in QueuedCommands){
         i++;
-        tmp = process_input(tmp);
+        //tmp = process_input(tmp);
         call_out("eventForceQueuedCommand", i, tmp);
         QueuedCommands -= ({ tmp });
     }
@@ -460,7 +486,7 @@ varargs int eventRetryCommand(string lastcmd, int errtype, mixed args){
 string *AddSearchPath(mixed val){
     if(stringp(val)){
         if(!strsrch(val,"/secure/cmds/admins") || !strsrch(val,"/cmds/admins")){
-            if(!(int)master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) ){
+            if(!master()->valid_apply(({ "SECURE", "ASSIST", "LIB_CONNECT" })) ){
                 tell_creators("Security violation in progress: "+identify(previous_object(-1)) + ", "+get_stack());
                 error("Illegal attempt to modify path data: "+identify(previous_object(-1)) + ", "+get_stack());
 

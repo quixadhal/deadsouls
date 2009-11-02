@@ -1,7 +1,7 @@
 #include <lib.h>
 #include <objects.h>
 
-inherit  LIB_TRAINER;
+inherit LIB_TRAINER;
 void create(){
     trainer::create();
     SetKeyName("radagast");
@@ -32,4 +32,12 @@ void init() {
     SetSmell(([  "default" : "A rather odd, musty smell."]));
     SetListen(([  "default" : "Radagast seems to be constantly "+
                 "humming a quiet tune to himself."]));
+}
+
+int eventHelp(object who, string unused){
+    ::eventHelp(who);
+    this_object()->eventForce("speak Please note I only understand "+
+      "English. If you're speaking to me in another language, I will "+
+      "not understand!");
+    return 1;
 }

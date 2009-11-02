@@ -12,7 +12,7 @@ mapping FileQueue = ([]);
 string lucmd = CMD_LIVEUPGRADE;
 
 void validate(){
-    if(!(int)master()->valid_apply(({ "SECURE" })) ){
+    if(!master()->valid_apply(({ "SECURE" })) ){
         string offender = identify(previous_object(-1));
         debug("LUGET_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" LUGET_D breach: "+offender+" "+get_stack());
@@ -186,7 +186,7 @@ void write_callback(int fd){
         mudlib()+ "/" + mudlib_version() +" ("+ query_os_type()+";) "+ 
         version() + " "+
         CARRIAGE_RETURN+"\n"+CARRIAGE_RETURN+"\n";
-    result = socket_write(fd, (string)str);
+    result = socket_write(fd, str);
 }
 
 void read_callback(int fd, mixed data){

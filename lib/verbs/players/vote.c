@@ -26,7 +26,7 @@ mixed can_vote_for_str() {
     mixed  err;
 
     if( !(env = environment(this_player())) ) return 0;
-    err = (mixed)env->CanVote( this_player() );
+    err = env->CanVote( this_player() );
     if( !err ) return "This doesn't seem the proper place for it.";
     else return err;
 }
@@ -35,5 +35,5 @@ mixed do_vote_for_str( string str ) {
     object env;
 
     if( !str || !(env = environment(this_player())) ) return 0;
-    return (mixed)env->eventVote( this_player(), str );
+    return env->eventVote( this_player(), str );
 }

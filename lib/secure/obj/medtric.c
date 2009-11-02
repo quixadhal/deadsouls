@@ -1267,74 +1267,74 @@ mixed assess(string args) {
     }
     if(tmp1 = ob->GetGender()) {
         cols = ((int *)this_player()->GetScreen())[0];
-        tmp1 = (string)ob->GetCapName() + " aka " + (string)ob->GetShort() +
-            ", level " + (int)ob->GetLevel() + " " + (string)ob->GetGender();
-        if( !(tmp2 = (string)ob->GetRace()) ) tmp2 = "blob";
+        tmp1 = ob->GetCapName() + " aka " + ob->GetShort() +
+            ", level " + ob->GetLevel() + " " + ob->GetGender();
+        if( !(tmp2 = ob->GetRace()) ) tmp2 = "blob";
         tmp1 += " " + tmp2;
-        if( !(tmp2 = (string)ob->GetClass()) ) tmp2 = "drifter";
+        if( !(tmp2 = ob->GetClass()) ) tmp2 = "drifter";
         tmp1 += " " + capitalize(tmp2);
-        if( tmp2 = (string)ob->GetSpouse() )
+        if( tmp2 = ob->GetSpouse() )
             tmp1 += " (spouse: " + tmp2 + ")";
         lines = ({ center(tmp1, cols) });
-        if( (int)ob->GetUndead() ) tmp1 = "Undead";
+        if( ob->GetUndead() ) tmp1 = "Undead";
         else tmp1 = "Alive";
-        if( (int)ob->GetSleeping() ) tmp1 += " / Sleeping";
+        if( ob->GetSleeping() ) tmp1 += " / Sleeping";
         else tmp1 += " / Awake";
-        if( (int)ob->GetParalyzed() ) tmp1 += " / Paralyzed";
+        if( ob->GetParalyzed() ) tmp1 += " / Paralyzed";
         lines += ({ center(tmp1, cols), "" });
-        lines += ({ center("Health: " +(int)ob->GetHealthPoints() + "/"+
-                    (int)ob->GetMaxHealthPoints() + "   Magic: " +
-                    (int)ob->GetMagicPoints() + "/" +
-                    (int)ob->GetMaxMagicPoints() + "   Stamina: " +
-                    (int)ob->GetStaminaPoints() + "/" +
+        lines += ({ center("Health: " +ob->GetHealthPoints() + "/"+
+                    ob->GetMaxHealthPoints() + "   Magic: " +
+                    ob->GetMagicPoints() + "/" +
+                    ob->GetMaxMagicPoints() + "   Stamina: " +
+                    ob->GetStaminaPoints() + "/" +
                     to_int((float)ob->GetMaxStaminaPoints()) + "   Carry: " +
-                    (int)ob->GetCarriedMass() + "/" +
-                    (int)ob->GetMaxCarry(), cols) });
-        lines += ({ center("Food: " + (int)ob->GetFood() + "    " +
-                    "Drink: " + (int)ob->GetDrink() + "    " +
-                    "Alcohol: " + (int)ob->GetAlcohol() + "    " +
-                    "Caffeine: " + (int)ob->GetCaffeine() + "    " +
-                    "Poison: " + (int)ob->GetPoison() + "    ", cols) });
-        lines += ({ center("Training Points: " + (int)ob->GetTrainingPoints()) });
+                    ob->GetCarriedMass() + "/" +
+                    ob->GetMaxCarry(), cols) });
+        lines += ({ center("Food: " + ob->GetFood() + "    " +
+                    "Drink: " + ob->GetDrink() + "    " +
+                    "Alcohol: " + ob->GetAlcohol() + "    " +
+                    "Caffeine: " + ob->GetCaffeine() + "    " +
+                    "Poison: " + ob->GetPoison() + "    ", cols) });
+        lines += ({ center("Training Points: " + ob->GetTrainingPoints()) });
         lines += ({ "", "Limbs:" });
-        limbs = (string *)ob->GetWieldingLimbs();
-        arr = map((string *)ob->GetLimbs(),
+        limbs = ob->GetWieldingLimbs();
+        arr = map(ob->GetLimbs(),
                 (: sprintf("%:-14s%s (%d) %d/%d", $1,
                            ((member_array($1, $(limbs)) == -1) ? " " : "*"),
-                           (int)($(ob))->GetLimbClass($1),
-                           (int)($(ob))->GetHealthPoints($1),
-                           (int)($(ob))->GetMaxHealthPoints($1)) :));
+                           ($(ob))->GetLimbClass($1),
+                           ($(ob))->GetHealthPoints($1),
+                           ($(ob))->GetMaxHealthPoints($1)) :));
         i = sizeof(arr);
         while(i--) if( (y = strlen(arr[i])) > x ) x = y;
         x = cols/(x+2);
         lines += explode(format_page(arr, x), "\n") + ({ "", "Skills:" });
-        arr = map((string *)ob->GetSkills(),
+        arr = map(ob->GetSkills(),
                 function(string skill, object who) {
-                mapping mp = (mapping)who->GetSkill(skill);
+                mapping mp = who->GetSkill(skill);
                 int x;
                 x = to_int(percent(mp["points"],
-                        (int)who->GetMaxSkillPoints(skill, mp["level"])));
+                        who->GetMaxSkillPoints(skill, mp["level"])));
                 return sprintf("%:-18s (%d) %:2d%% - %d/%d",
                     skill, mp["class"], x,
-                    (int)who->GetSkillLevel(skill), mp["level"] );
+                    who->GetSkillLevel(skill), mp["level"] );
                 }, ob);
         i = sizeof(arr);
         while(i--) if( (y = strlen(arr[i])) > x ) x = y;
         x = cols/(x+2);
         lines += explode(format_page(arr, x), "\n") + ({ "", "Stats:" });
-        arr = map((string *)ob->GetStats(),
+        arr = map(ob->GetStats(),
                 (: sprintf("%:-12s (%d) %d/%d", $1,
-                           (int)($(ob))->GetStatClass($1),
-                           (int)($(ob))->GetStatLevel($1),
-                           (int)($(ob))->GetBaseStatLevel($1)) :));
+                           ($(ob))->GetStatClass($1),
+                           ($(ob))->GetStatLevel($1),
+                           ($(ob))->GetBaseStatLevel($1)) :));
         i = sizeof(arr);
         x = 0;
         while(i--) if( (y = strlen(arr[i])) > x ) x = y;
         x =cols/(x+2);
         lines += explode(format_page(arr, x), "\n");
-        lines += ({ "", (string)ob->GetName()+" has amassed a net worth of " +
-                ( (int)ob->GetNetWorth() * currency_rate("gold") ) + " gold."});
-        arr = filter( map((string *)ob->GetCurrencies(),
+        lines += ({ "", ob->GetName()+" has amassed a net worth of " +
+                ( ob->GetNetWorth() * currency_rate("gold") ) + " gold."});
+        arr = filter( map(ob->GetCurrencies(),
                     (: ($(ob))->GetCurrency($1) &&
                      sprintf("%d %s", ($(ob))->GetCurrency($1), $1) :)),
                 (: $1 :));

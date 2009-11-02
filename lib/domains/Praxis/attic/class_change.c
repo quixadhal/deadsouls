@@ -71,7 +71,7 @@ int changing(string str)
     }
     //wtf does this do?
     //str=extract(str, 9);
-    if(str == (string)this_player()->query_class())
+    if(str == this_player()->query_class())
     {
         write("Mad Wizard says: yer even crazier than I am!\n");
         return 1;
@@ -92,7 +92,7 @@ int changing(string str)
         write("Mad Wizard says: what kind of class is that?\n");
         return 1;
     }
-    if( (int)this_player()->query_money("gold") < 5000)
+    if( this_player()->query_money("gold") < 5000)
     {
         write("Mad Wizard says: You need more money than that.\n");
         return 1;

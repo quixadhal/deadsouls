@@ -18,7 +18,7 @@ mixed cmd(string args) {
     object *inv, *purge_array;
     string nom, file;
 
-    if( !((int)master()->valid_apply(({ PRIV_ASSIST, PRIV_SECURE, LIB_CONNECT }))) )
+    if( !(master()->valid_apply(({ PRIV_ASSIST, PRIV_SECURE, LIB_CONNECT }))) )
         error("Illegal decre attempt: "+get_stack()+" "+identify(previous_object(-1)));
 
     ob = 0;
@@ -61,7 +61,7 @@ mixed cmd(string args) {
                     thing->eventMove(ROOM_FURNACE);
                 }
             }	//Save the user to sync its state with his inventory
-        unguarded( (: ob->save_player((string)ob->GetKeyName()) :) );
+        unguarded( (: ob->save_player(ob->GetKeyName()) :) );
 
         //Move the user file to the player dir
         //
@@ -118,9 +118,9 @@ mixed cmd(string args) {
     call_out( (: ob->eventMove(ROOM_FURNACE) :), 1 );
     player_ob->eventMoveLiving(ROOM_START);
     player_ob->SetLoginSite(ROOM_START);
-    unguarded( (: player_ob->save_player((string)player_ob->GetKeyName()) :) );
+    unguarded( (: player_ob->save_player(player_ob->GetKeyName()) :) );
     message("system", "You are now a player.", player_ob);
-    message("system", (string)player_ob->GetName() + " is now a player!",
+    message("system", player_ob->GetName() + " is now a player!",
             this_player());
     return 1;
 }

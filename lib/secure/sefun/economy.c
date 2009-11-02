@@ -16,7 +16,7 @@ int currency_value(int x, string str) {
     return to_int(x * currency_rate(str));
 }
 
-string *mud_currencies() { return (string *)ECONOMY_D->__QueryCurrencies(); }
+string *mud_currencies() { return ECONOMY_D->__QueryCurrencies(); }
 
 int valid_currency(string str){
     if(member_array(str,mud_currencies()) != -1) return 1;

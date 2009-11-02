@@ -17,16 +17,16 @@ static void create() {
     SetClosed(0);
     SetMaxCarry(100);
     SetArmorType(A_PANTS);
-    SetInventory(([
-                "/domains/default/obj/vial_orange" : 1,
-                "/domains/town/obj/cavetroll_key" : 1,
-                ]));
     SetSmell( ([
                 "default" : "P.U.",
                 ]) );
     SetMoney( ([
-                "platinum" : random(50)+1,
+                "platinum" : random(5)+1,
                 ]) );
+    SetInventory(([
+            "/domains/default/obj/vial_orange" : 1,
+            "/domains/town/obj/cavetroll_key" : 1,
+            ]));
     SetSize(S_LARGE);
 }
 

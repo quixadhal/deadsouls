@@ -145,7 +145,7 @@ static void create() {
         string *chans;
         string channel;
 
-        if( pl && !(chans = (string *)pl->GetChannels()) ) continue;
+        if( pl && !(chans = pl->GetChannels()) ) continue;
         foreach(channel in chans) {
             if( !Channels[channel] ) Channels[channel] = ({});
             Channels[channel] = distinct_array(Channels[channel] + ({ pl }));
@@ -404,7 +404,7 @@ int cmdChannel(string verb, string str){
                 }
             }
 
-            if( !(mud = (string)INTERMUD_D->GetMudName(mud)) ) {
+            if( !(mud = INTERMUD_D->GetMudName(mud)) ) {
                 this_player()->eventPrint(mud_name() + " is not aware of "+
                         "such a place.", MSG_ERROR);
                 return 1;
@@ -492,8 +492,8 @@ int cmdChannel(string verb, string str){
     if( member_array(this_player(), Channels[verb]) == -1 ) return 0;
 
     //If blocked, allow no chatting
-    if( (int)this_player()->GetBlocked(verb) ) {
-        if( (int)this_player()->GetBlocked("all") ) {
+    if( this_player()->GetBlocked(verb) ) {
+        if( this_player()->GetBlocked("all") ) {
             this_player()->eventPrint("You cannot chat while totally blocked.",
                     MSG_ERROR);
             return 1;
@@ -655,10 +655,10 @@ int cmdChannel(string verb, string str){
 
     //If admin or cre channels, Capitalize a person's real name, because admins can be physically hidden
     if( verb == "admin" || verb == "cre" ) {
-        if( !(name = (string)this_player()->GetCapName()) )
-            name = capitalize((string)this_player()->GetKeyName());
+        if( !(name = this_player()->GetCapName()) )
+            name = capitalize(this_player()->GetKeyName());
     }
-    else name = (string)this_player()->GetName();
+    else name = this_player()->GetName();
 
     //Add the "Name" $N to the string
     if(!grepp(str,"$N") && emote) str = "$N "+str;
@@ -764,7 +764,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         string this_msg, tmp;
 
         if( target && (ob = find_player(convert_name(target))) ) {
-            target = (string)ob->GetName();
+            target = ob->GetName();
         }
 
         //Colorize emote channels
@@ -798,7 +798,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         eventAddLast(ch, tmp, pchan, msg);
 
         if(Channels[ch]){
-            obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
+            obs = filter(Channels[ch], (: $1 && !($1->GetBlocked($(ch))) :));
             foreach(object listener in obs) {
                 int ignore;
                 if(sscanf(who,"%s@%s",suspect,site) < 2) {
@@ -818,7 +818,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
                 ignore = 0;
             }
             if( member_array(ob, obs) != -1 ) {
-                if( ob && !((int)ob->GetBlocked(ch)) ) {
+                if( ob && !(ob->GetBlocked(ch)) ) {
                     int ignore;
                     //tmp = this_msg + targmsg;
                     //tmp = sprintf(emotelayout, this_msg, upper_case(ch), "%^RESET%^", targmsg);
@@ -865,7 +865,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         eventAddLast(ch, msg, pchan, pmsg, who);
 
         if(Channels[ch]) {
-            obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
+            obs = filter(Channels[ch], (: $1 && !($1->GetBlocked($(ch))) :));
             foreach(object ob in obs){
                 int ignore;
                 if(sscanf(who,"%s@%s",suspect,site) < 2) {
@@ -900,9 +900,9 @@ string *GetChannelList(string ch) {
     if( !Channels[ch] ) return ({});
     ret = ({});
     foreach(who in Channels[ch]) {
-        if( !who || (int)who->GetInvis() || (int)who->GetBlocked(ch) )
+        if( !who || who->GetInvis() || who->GetBlocked(ch) )
             continue;
-        ret += ({ (string)who->GetName() });
+        ret += ({ who->GetName() });
     }
     return ret;
 }

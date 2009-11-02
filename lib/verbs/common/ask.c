@@ -38,11 +38,11 @@ mixed can_ask_liv_str(string str) {
     }
     if( sscanf(str, "to %s", tmp) ) return 1;
     else if( sscanf(str, "for %s", tmp) ) return 1;
-    else return (mixed)this_player()->CanSpeak(/* ob */0, TALK_LOCAL, str);
+    else return this_player()->CanSpeak(/* ob */0, TALK_LOCAL, str);
 }
 
 mixed can_ask_str(string str) {
-    return (mixed)this_player()->CanSpeak(0, TALK_LOCAL, str);;
+    return this_player()->CanSpeak(0, TALK_LOCAL, str);;
 }
 
 mixed do_ask_liv_to_str(object ob, string str) {
@@ -55,7 +55,7 @@ mixed do_ask_liv_to_str(object ob, string str) {
     message("other_action", pre + this_player()->GetName()+" asks "
             "you to "+msg+".", ob);
     message("other_action", pre + this_player()->GetName()+" asks "+
-            (string)ob->GetName()+" to do something.",
+            ob->GetName()+" to do something.",
             environment(ob), ({ ob, this_player() }) );
     ob->eventAsk(this_player(), str);
     return 1;
@@ -71,7 +71,7 @@ mixed do_ask_liv_for_str(object ob, string str) {
     message("other_action", pre + this_player()->GetName()+" asks "+
             ob->GetName()+" for something.",
             environment(ob), ({ ob, this_player() }) );
-    if( !((int)ob->eventRequest(this_player(), str)) )
+    if( !(ob->eventRequest(this_player(), str)) )
         message("other_action", pre + this_player()->GetName()+" asks "
                 "you for "+msg+".", ob);
     return 1;
@@ -87,7 +87,7 @@ mixed do_ask_liv_about_str(object ob, string str) {
     message("other_action", pre + this_player()->GetName()+" asks "+
             ob->GetName()+" about something.",
             environment(ob), ({ ob, this_player() }) );
-    if( !((int)ob->eventConsult(this_player(), str)) )
+    if( !(ob->eventConsult(this_player(), str)) )
         message("other_action", pre + this_player()->GetName()+" asks "
                 "you about "+msg+".", ob);
     return 1;
@@ -100,12 +100,12 @@ mixed do_ask_liv_str(object ob, string str) {
     if( sscanf(str, "about %s", tmp) ) return do_ask_liv_about_str(ob, tmp);
     if( str[<1] != '?' ) str = capitalize(str) + "?";
     else str = capitalize(str);
-    return (mixed)this_player()->eventSpeak(ob, TALK_LOCAL, str);
+    return this_player()->eventSpeak(ob, TALK_LOCAL, str);
 }
 
 mixed do_ask_str(string str) {
     if( str[<1] != '?' ) str = capitalize(str) + "?";
     else str = capitalize(str);
-    return (mixed)this_player()->eventSpeak(0, TALK_LOCAL, str);
+    return this_player()->eventSpeak(0, TALK_LOCAL, str);
     return 1;
 }

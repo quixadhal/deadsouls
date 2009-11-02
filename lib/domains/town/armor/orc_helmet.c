@@ -3,7 +3,7 @@
 #include <damage_types.h>
 inherit LIB_ARMOR;
 
-int CheckOrc();
+varargs int CheckOrc(object who, mixed where);
 
 static void create(){
     armor::create();
@@ -23,15 +23,19 @@ static void create(){
     SetWear( (: CheckOrc :) );
 }
 
-int CheckOrc(){
-    string race = this_player()->GetRace();
+varargs int CheckOrc(object who, mixed where){
+    string race = who->GetRace();
+    object env = environment(who);
     if( race == "orc"  || race == "half-orc"){
-        write("You can almost feel the power of the bear as you wear its skull.");
-        say((string)this_player()->GetName() + " wears a bear skull helmet.");
+        who->eventPrint("You can almost feel the power of the bear as you "+
+          "wear its skull.");
+        if(env) tell_room(env, who->GetName()+" wears "+
+          GetShort()+".", ({who}));
         return 1;
     }
     else {
-        write("The helmet appears designed for orcish anatomy. It does not fit you.");
+        who->eventPrint("The helmet appears designed for orcish anatomy. "+
+          "It does not fit you.");
         return 0;
     }
 }

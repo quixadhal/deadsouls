@@ -22,7 +22,8 @@ void create(){
     bot::create();
     enter::create();
     SetPacifist(1);
-    SetNoCondition(0);
+    SetNoCondition(1);
+    SetNoBotCondition(1);
     SetEnterMessage("");
 }
 
@@ -79,7 +80,7 @@ varargs mixed eventEnter(object who, string what, string verb){
 }
 
 mixed CanGo(object who, string str){
-    if( (int)who->GetParalyzed() ) return "You are unable to move.";
+    if( who->GetParalyzed() ) return "You are unable to move.";
     else return 1;
 }
 
@@ -162,7 +163,7 @@ varargs string GetInternalDesc(){
 object array GetDummyItems(){
     DummyItems = ({});
     foreach(object item in all_inventory(this_object())){
-        if(base_name(item) == LIB_DUMMY){
+        if(base_name(item) == LIB_DUMMY ){
             DummyItems += ({ item });
         }
     }
@@ -176,7 +177,9 @@ varargs void AddItem(mixed item, mixed val, mixed adjectives){
 
     if( objectp(item) ){
         same_dummy = filter(dummies,(: ($1->GetId())[0] == (global_item->GetId())[0] :));
-        if(sizeof(same_dummy)) return;
+    if(sizeof(same_dummy) && base_name(item) != LIB_ELEVATOR_BUTTON){
+        return;
+    }
         ob = item;
     }
     else {
@@ -351,5 +354,9 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 
 varargs mixed GetBefriended(mixed who){
     return 1;
+}
+
+int eventRide(string direction){
+    return 0;
 }
 

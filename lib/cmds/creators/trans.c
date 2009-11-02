@@ -15,7 +15,7 @@ mixed cmd(string args) {
     if( !(ob = find_player(convert_name(args))) && !(ob = find_living(args)) )
         return "No such being exists anywhere presently.";
     if( environment(ob) == environment(this_player()) ) 
-        return (string)ob->GetCapName() + " is right here.";
+        return ob->GetCapName() + " is right here.";
     if(archp(ob) && !archp(this_player())){
         write("You can't trans an admin.");
         tell_player(ob, this_player()->GetName()+" just tried to trans you.");
@@ -23,10 +23,10 @@ mixed cmd(string args) {
     }
     ob->SetProperty("ReturnSite",base_name(environment(ob)));
     message("system", "You have been summoned by " + 
-            (string)this_player()->GetName() + ".", ob);
-    if( !((int)ob->eventMoveLiving(environment(this_player()))) )
-        return "Failed to move " + (string)ob->GetCapName() + ".";
-    else message("system", "You trans " + (string)ob->GetCapName() + 
+            this_player()->GetName() + ".", ob);
+    if( !(ob->eventMoveLiving(environment(this_player()))) )
+        return "Failed to move " + ob->GetCapName() + ".";
+    else message("system", "You trans " + ob->GetCapName() + 
             " to you.", this_player());
     return 1;
 }

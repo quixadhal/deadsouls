@@ -8,11 +8,12 @@ void create() {
     SetId( ({ "case" }) );
     SetAdjectives( ({ "mounted","wall","glass", "display" }) );
     SetShort("a glass display case");
-    SetLong("This is a glass case designed to contian and display firearms.");
+    SetLong("This is a glass case designed to contain and display firearms.");
     SetInventory(([
                 "/domains/default/weap/m16rifle" : 1,
                 "/domains/default/weap/9mil" : 1,
                 "/domains/default/weap/357pistol" : 1,
+                "/domains/default/weap/prifle" : 1,
                 ]));
     SetOpacity(0);
     SetCanClose(1);

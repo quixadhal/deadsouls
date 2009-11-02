@@ -16,7 +16,7 @@ int cmd(string str) {
         notify_fail("Correct syntax: whoguests\n");
         return 0;
     }
-    catch(guests = (string *)BANISH_D->query_guests());
+    catch(guests = BANISH_D->query_guests());
     message("info", "The following people are currently allowed in when "
             "the mud is locked: ", this_player());
     if(!sizeof(guests)) message("info", "No guests allowed.", this_player());

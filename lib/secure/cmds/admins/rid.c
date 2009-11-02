@@ -39,7 +39,7 @@ varargs int cmd(string who, string reason) {
         who = ob->GetCapName();
         message("system", "You are being ridded from " + mud_name() + ".",
           ob);
-        if( !((int)ob->eventDestruct()) ) destruct(ob);
+        if( !(ob->eventDestruct()) ) destruct(ob);
     }
     file = player_save_file(str);
     targetdir = DIR_RID + "/" + str[0..0] + "/" + str; 
@@ -58,7 +58,7 @@ varargs int cmd(string who, string reason) {
     }
 
     write("Enter reason for ridding " + who + ".");
-    file = DIR_TMP + "/" + (string)this_player()->GetKeyName();
+    file = DIR_TMP + "/" + this_player()->GetKeyName();
     rm(file);
     this_player()->eventEdit(file, (: EndRid, who :));
     return 1;

@@ -146,7 +146,7 @@ static void eventDawn() {
     obs = filter(users(), (: environment($1) &&
                 environment($1)->GetClimateExposed() &&
                 inherits(LIB_ROOM,environment($1)) &&
-                !((int)environment($1)->GetProperty("no time")) :));
+                !(environment($1)->GetProperty("no time")) :));
     message("environment",
             "%^YELLOW%^The sun appears just over the horizon.%^RESET%^",
             obs );
@@ -161,9 +161,9 @@ static void eventMorning() {
     call_out( (: eventNoon :), Noon - GetCurrentTime());
     TimeOfDay = "day";
     obs = filter(users(), (: environment($1) &&
-                (string)environment($1)->GetClimateExposed() &&
+                environment($1)->GetClimateExposed() &&
                 inherits(LIB_ROOM,environment($1)) &&
-                !((int)environment($1)->GetProperty("no time")) :));
+                !(environment($1)->GetProperty("no time")) :));
     message("environment", "%^BOLD%^YELLOW%^The sun now shines completely "
             "on a new day.%^RESET%^", obs);
     i = sizeof(MorningCalls);
@@ -186,9 +186,9 @@ static void eventTwilight() {
     call_out( (: eventNight :), Night - GetCurrentTime() );
     TimeOfDay = "twilight";
     obs = filter(users(), (: environment($1) &&
-                (string)environment($1)->GetClimateExposed() &&
+                environment($1)->GetClimateExposed() &&
                 inherits(LIB_ROOM,environment($1)) &&
-                !((int)environment($1)->GetProperty("no time")) :));
+                !(environment($1)->GetProperty("no time")) :));
     message("environment", "%^CYAN%^The sun begins to fall away into "
             "twilight.%^RESET%^", obs);
     i = sizeof(TwilightCalls);
@@ -203,9 +203,9 @@ static void eventNight() {
             (DAY_LENGTH * HOUR_LENGTH) - GetCurrentTime() );
     TimeOfDay = "night";
     obs = filter(users(), (: environment($1) &&
-                (string)environment($1)->GetClimateExposed() &&
+                environment($1)->GetClimateExposed() &&
                 inherits(LIB_ROOM,environment($1)) &&
-                !((int)environment($1)->GetProperty("no time")) :));
+                !(environment($1)->GetProperty("no time")) :));
     message("environment",
             "%^BOLD%^BLUE%^Night darkens all that is real.%^RESET%^", obs);
     i = sizeof(NightCalls);
@@ -581,11 +581,11 @@ int eventShow(object who, string args) {
     string str;
     if( !who || !sizeof(args) ) return 0;
     if( !str = GetLong(args) ) return 0;
-    if( !(string)environment(who)->GetClimateExposed() ) {
+    if( !environment(who)->GetClimateExposed() ) {
         who->eventPrint("You can't see that from here!");
         return 1;
     }
     who->eventPrint(str);
-    environment(who)->eventPrint((string)who->GetName() + " gazes toward the sky.", who);
+    environment(who)->eventPrint(who->GetName() + " gazes toward the sky.", who);
     return 1;
 }

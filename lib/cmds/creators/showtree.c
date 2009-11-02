@@ -24,7 +24,7 @@ mixed cmd(string str) {
         }
     }	
     tmp = get_object(file);
-    file = absolute_path((string)this_player()->query_cwd(), file);
+    file = absolute_path(this_player()->query_cwd(), file);
     if(!file_exists(file) && !file_exists(file+".c")){
         if(tmp)
             file = base_name(tmp);

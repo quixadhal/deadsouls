@@ -173,7 +173,7 @@ static void receive_snoop(string str){ receive_message("snoop", "%"+str); }
 int Setup(){
     command::Setup();
     nmsh::Setup();
-    TermInfo = (mapping)TERMINAL_D->query_term_info(Terminal);
+    TermInfo = TERMINAL_D->query_term_info(Terminal);
 }
 
 int eventFlushQueuedMessages(){
@@ -268,7 +268,7 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     if( GetLogHarass() )
         log_file("harass/" + GetKeyName(), strip_colours(msg) + "\n");
     if( !TermInfo )
-        TermInfo = (mapping)TERMINAL_D->query_term_info(GetTerminal());
+        TermInfo = TERMINAL_D->query_term_info(GetTerminal());
 
     if(this_object()->GetParanoia("cursefilter")){
         msg = FILTER_D->eventFilter(msg, "curse");
@@ -379,7 +379,7 @@ string SetTerminal(string terminal){
         break;
     }
     if( terminal != Terminal ) 
-        TermInfo = (mapping)TERMINAL_D->query_term_info(terminal);
+        TermInfo = TERMINAL_D->query_term_info(terminal);
     return Terminal = terminal;
 }
 

@@ -34,5 +34,5 @@ varargs mixed do_close_obj(object ob, mixed *args...) {
     string what;
 
     what = remove_article(lower_case(args[0]));
-    return (mixed)ob->eventClose(this_player(), what);
+    return ob->eventClose(this_player(), what);
 }

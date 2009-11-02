@@ -55,7 +55,7 @@ mixed indirect_give_obj_to_liv(object item){
     if( !item ) return 0;
     if( this_player() == this_object() ) return "Are you confused?";
     if( environment(item) != this_player() ) return "You don't have that!";
-    return CanCarry((int)item->GetMass());
+    return CanCarry(item->GetMass());
 }
 
 mixed indirect_give_obs_to_liv(object *item){
@@ -139,7 +139,7 @@ int Setup(){
     if( file_size(tmp = user_path(GetKeyName()) + "cmds") == -2 )
         AddSearchPath( ({ tmp }) );
     if( archp() ) AddSearchPath( ({ DIR_ADMIN_CMDS, DIR_SECURE_ADMIN_CMDS }) );
-    if( bugs = (int)BUGS_D->GetAssignedBugs(GetKeyName()) )
+    if( bugs = BUGS_D->GetAssignedBugs(GetKeyName()) )
         message("system", "\n        >>>  You have " +
                 consolidate(bugs, "an incomplete bug") +
                 " assigned to you!!!!  <<<\n", this_object());
@@ -156,7 +156,7 @@ int Setup(){
 }
 
 int eventForce(string cmd){
-    if( !((int)master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
+    if( !(master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
     else return player::eventForce(cmd);
 }
 

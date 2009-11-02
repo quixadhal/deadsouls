@@ -26,7 +26,7 @@ void StartServer();
 void StopServer();
 
 static private void validate() {
-    if( !((int)master()->valid_apply(({ "SECURE" }))) )
+    if( !(master()->valid_apply(({ "SECURE" }))) )
         error("Illegal attempt to access OOB_D: "+get_stack()+" "+identify(previous_object(-1)));
 }
 

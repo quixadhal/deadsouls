@@ -85,7 +85,7 @@ int eventReceiveObject(object ob){
         return tmp;
     }
     AddCarriedMass(ob->GetMass());
-    if(environment()) environment()->AddCarriedMass((int)ob->GetMass());
+    if(environment()) environment()->AddCarriedMass(ob->GetMass());
     parse_refresh();
     return 1;
 }

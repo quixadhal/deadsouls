@@ -27,7 +27,7 @@ static void create(){
 
 mixed CanGo(object who, string str){
     int noclip;
-    if( (int)who->GetParalyzed() ) return "You are unable to move.";
+    if( who->GetParalyzed() ) return "You are unable to move.";
     noclip = who->GetProperty("noclip");
     if( !noclip && !Exits[str] && str != "up" && str != "down" &&
             !(sizeof(this_object()->GetFlyRoom())) &&
@@ -74,13 +74,13 @@ mixed eventGo(object who, string str){
         }
     }
 
-    if(!noclip && sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ){
+    if(!noclip && sizeof(Doors) && Doors[str] && Doors[str]->GetClosed() ){
         message("my_action", "You bump into " + 
-                (string)Doors[str]->GetShort(str) + ".", who);
+                Doors[str]->GetShort(str) + ".", who);
         return 1;
     }
     if(!noclip && Exits[str] && Exits[str]["pre"] && 
-            !((int)evaluate(Exits[str]["pre"], str)) )
+            !(evaluate(Exits[str]["pre"], str)) )
         return 1;
     if(!Exits[str]){
         if( str == "up" && sizeof(this_object()->GetFlyRoom())){
@@ -191,7 +191,7 @@ object GetDummyItem(mixed id){
     dummies = ({});
 
     for(i=0; i<sizeof(all_inv); i++){
-        if ( (mixed)all_inv[i]->isDummy() )  dummies += ({ all_inv[i] });
+        if ( all_inv[i]->isDummy() )  dummies += ({ all_inv[i] });
     }
     if( stringp(id) ){
         id = ({ id });

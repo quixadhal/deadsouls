@@ -46,10 +46,10 @@ mixed can_stand(){
 }
 
 mixed do_stand_up() {
-    return (mixed)this_player()->eventStand();
+    return this_player()->eventStand();
 }
 
 mixed do_stand() {
-    return (mixed)this_player()->eventStand();
+    return this_player()->eventStand();
 }
 

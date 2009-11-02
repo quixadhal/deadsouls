@@ -29,6 +29,7 @@ static void create() {
     AddEnter("crawlspace" , "/domains/campus/room/crawlspace");
     SetProperty("no attack", 1);
 }
+
 void init(){
     ::init();
 }

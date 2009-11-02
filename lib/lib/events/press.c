@@ -50,7 +50,6 @@ varargs mapping SetPress(mixed key, mixed desc){
 
 varargs mixed CanPress(object who, string component){
     mixed val;
-
     if( !component ){
         component = "default";
     }

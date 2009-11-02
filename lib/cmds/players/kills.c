@@ -20,12 +20,12 @@ mixed cmd(string args) {
         write("You have never harmed a living thing.");
         return 1;
     }
-    ret = "You are " +(string)this_player()->GetShort() + ", level " +
-        (int)this_player()->GetLevel();
-    if( (tmp = (string)this_player()->GetClass()) ) 
+    ret = "You are " +this_player()->GetShort() + ", level " +
+        this_player()->GetLevel();
+    if( (tmp = this_player()->GetClass()) ) 
         ret += " " + capitalize(tmp);
     else ret += " Drifter";
-    ret += " (" + (string)this_player()->GetRace() + ")\n";
+    ret += " (" + this_player()->GetRace() + ")\n";
     ret+= "Your list of victories comprises the following:\n\n";
     stats = map(keys(kills),
             (: sprintf("%:-20s: %:-1i", $1, 

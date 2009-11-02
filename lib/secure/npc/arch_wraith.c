@@ -5,8 +5,8 @@
 inherit LIB_SENTIENT;
 object *enemies = ({});
 object quarry;
-int draining;
-string qname;
+int draining, self_destruct;
+string qname, ip;
 
 int eventDrain(mixed args...){
     int avoid;
@@ -85,6 +85,8 @@ int eventDrain(mixed args...){
 }
 
 static void create() {
+    object tp = this_player();
+    if(!tp || !archp(tp)) self_destruct = 1;
     sentient::create();
     SetKeyName("archwraith");
     SetAdjectives( ({"arch", "shadowy", "undead", "unholy", "malevolent", "spiteful"}) );
@@ -101,7 +103,7 @@ static void create() {
     SetUndead(1);
     SetUndeadType("wraith");
     SetAttackable(0);
-    SetCombatAction(100, (: eventDrain :));
+    SetPacifist(1);
     SetNoClean(1);
 }
 

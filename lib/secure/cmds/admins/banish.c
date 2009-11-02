@@ -32,7 +32,7 @@ int cmd(string str) {
     }
     else {
         write("A player by that name already exists.\n");
-        this_player()->eventPrint((string)FINGER_D->GetFinger(str));
+        this_player()->eventPrint(FINGER_D->GetFinger(str));
     }
     return 1;
 }

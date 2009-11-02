@@ -25,7 +25,7 @@ mixed cmd(string str){
     return 1;
 }
 
-help() {
+void help() {
     message("help", "Syntax: homeroom [path]\n\n"
             "Sets the specified file to be your \"home\" "
             "room, i.e. the room you teleport to "

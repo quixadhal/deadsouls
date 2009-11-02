@@ -59,7 +59,7 @@ varargs mixed do_jump_into_obj(object ob, mixed *args...) {
     string id;
 
     id = remove_article(lower_case(args[0]));
-    return (mixed)ob->eventJump(this_player(), id, JUMP_INTO);
+    return ob->eventJump(this_player(), id, JUMP_INTO);
 }
 
 varargs mixed do_jump_off_obj(object ob, mixed *args...) {
@@ -74,14 +74,14 @@ varargs mixed do_jump_from_obj(object ob, mixed *args...) {
     string id;
 
     id = remove_article(lower_case(args[0]));
-    return (mixed)ob->eventJump(this_player(), id, JUMP_FROM);
+    return ob->eventJump(this_player(), id, JUMP_FROM);
 }
 
 varargs mixed do_jump_through_obj(object ob, mixed *args...) {
     string id;
 
     id = remove_article(lower_case(args[0]));
-    return (mixed)ob->eventJump(this_player(), id, JUMP_THROUGH);
+    return ob->eventJump(this_player(), id, JUMP_THROUGH);
 }
 
 varargs mixed do_jump_across_obj(object ob, mixed *args...) {
@@ -92,7 +92,7 @@ varargs mixed do_jump_over_obj(object ob, mixed *args...) {
     string id;
 
     id = remove_article(lower_case(args[0]));
-    return (mixed)ob->eventJump(this_player(), id, JUMP_OVER);
+    return ob->eventJump(this_player(), id, JUMP_OVER);
 }
 
 varargs mixed do_jump_onto_obj(object ob, mixed *args...) {
@@ -103,5 +103,5 @@ varargs mixed do_jump_on_obj(object ob, mixed *args...) {
     string id;
 
     id = remove_article(lower_case(args[0]));
-    return (mixed)ob->eventJump(this_player(), id, JUMP_ON);
+    return ob->eventJump(this_player(), id, JUMP_ON);
 }    

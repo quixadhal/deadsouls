@@ -23,13 +23,13 @@ static void create() {
 mixed can_target_liv(object target) {
     int pos = this_player()->GetPosition();
 
-    if( (int)this_player()->GetParalyzed() ) {
+    if( this_player()->GetParalyzed() ) {
         return "You cannot move!";
     }
     if( pos == POSITION_SITTING || pos == POSITION_LYING ) {
         return "You cannot target in that position!";
     }
-    if( (int)environment(this_player())->GetProperty("no target") ) {
+    if( environment(this_player())->GetProperty("no target") ) {
         message("environment", "A mystical force prevents your malice.",
                 this_player());
         return this_player()->CanManipulate();
@@ -77,8 +77,8 @@ varargs mixed do_target_lvs(mixed *targets, int exclusive) {
     if(sizeof(notarget)) this_player()->AddNonTargets(notarget);
     this_player()->SetAttack(obs);
     tmp = item_list(obs);
-    obs->eventPrint((string)this_player()->GetName() + " targets you!");
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    obs->eventPrint(this_player()->GetName() + " targets you!");
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " targets " + tmp + "!",
             ({ this_player(), obs... }));
     this_player()->eventPrint("You target " + tmp + ".");

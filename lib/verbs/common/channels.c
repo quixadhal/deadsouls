@@ -41,7 +41,7 @@ int cmd(string str) {
     string ret = "", RemChans = CHAT_D->GetRemoteChannels();
     int i;
 
-    channels = distinct_array((string *)this_player()->GetChannels());
+    channels = distinct_array(this_player()->GetChannels());
 
     if(!str) str = "";
 

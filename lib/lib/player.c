@@ -104,7 +104,7 @@ void eventReconnect(){
 varargs int eventShow(object who, string str){
     if( !living::eventShow(who, str) ) return 0;
     if( this_player() != this_object() )
-        eventPrint((string)this_player()->GetName() + " looks you over.");
+        eventPrint(this_player()->GetName() + " looks you over.");
     return 1;
 }
 
@@ -185,7 +185,7 @@ varargs int eventDie(mixed agent){
         eventCompleteHeal(GetMaxHealthPoints()/2);
         AddMagicPoints(-(random(GetMagicPoints())));
         this_object()->eventMove(ROOM_DEATH);
-        this_object()->save_player((string)this_object()->GetKeyName());
+        this_object()->save_player(this_object()->GetKeyName());
         this_object()->eventDescribeEnvironment();
     }
     flush_messages();
@@ -290,7 +290,7 @@ void eventLoadObject(mixed *value, int recurse){ }
 
 /* *****************  /lib/player.c modal functions  ***************** */
 
-int CanReceive(object ob){ return CanCarry((int)ob->GetMass()); }
+int CanReceive(object ob){ return CanCarry(ob->GetMass()); }
 
 mixed CanUse(){ return 1; }
 
@@ -301,7 +301,7 @@ int Setup(){
     if( !interactive::Setup() ) return 0;
     if( !GetClass() ) SetClass("explorer");
     if( GetClass() ){
-        foreach(classes in (string array)CLASSES_D->GetClasses())
+        foreach(classes in CLASSES_D->GetClasses())
             if( ClassMember(classes) && classes != GetClass() )
                 AddChannel(classes);
     }
@@ -320,7 +320,7 @@ int Setup(){
         if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
         PLAYERS_D->AddPlayerInfo(this_object());
 
-        foreach(classes in (string array)CLASSES_D->GetClasses())
+        foreach(classes in CLASSES_D->GetClasses())
             if( ClassMember(classes) && classes != GetClass() )
                 AddChannel(classes);
         if( avatarp() ) AddChannel(({ "avatar" }));
@@ -443,7 +443,11 @@ string *SetTitles(string *titles){
     SetShort("whatever");
 }
 
-string *AddTitle(string title){
+string *AddTitle(mixed title){
+    if(arrayp(title)){
+        if(this_object()->GetGender() == "female") title = title[1];
+        else title = title[0];
+    }
     if( !stringp(title) ) return Titles;
     else if( member_array(title, Titles) != -1 ) return Titles;
     else {
@@ -453,14 +457,13 @@ string *AddTitle(string title){
     }
 }
 
-string *RemoveTitle(string title){
-    if( !stringp(title) ) return Titles;
-    if( member_array(title, Titles) == -1 ) return Titles;
-    else {
-        Titles -= ({ title });
+string *RemoveTitle(mixed title){
+    if( stringp(title) ) title = ({ title });
+    foreach(string sub in title){
+        Titles -= ({ sub });
         SetShort("whatever");
-        return Titles;
     }
+    return Titles;
 }
 
 string *GetTitles(){ return Titles; }
@@ -517,15 +520,15 @@ varargs string GetLong(string str){
     str += interactive::GetLong() + "\n";
     str += living::GetLong(nominative(this_object()));
     foreach(item in map(all_inventory(),
-                (: (string)$1->GetAffectLong(this_object()) :))){
+                (: $1->GetAffectLong(this_object()) :))){
         if(item && member_array(item,affects) == -1) affects += ({ item });
     }
     if(sizeof(affects)) str += implode(affects,"\n")+"\n";
     if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
     counts = ([]);
     foreach(item in map(
-                filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
-                (: (string)$1->GetEquippedShort() :)))
+                filter(all_inventory(), (: !($1->GetInvis(this_object())) :)),
+                (: $1->GetEquippedShort() :)))
         if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
@@ -567,7 +570,7 @@ string SetClass(string str){
         ResetLevel();
         TrainingPoints = points;   /* leave points alone */
         AddChannel(GetClass());
-        foreach(classes in (string array)CLASSES_D->GetClasses())
+        foreach(classes in CLASSES_D->GetClasses())
             if( ClassMember(classes) && classes != GetClass() )
                 AddChannel(classes);
     }

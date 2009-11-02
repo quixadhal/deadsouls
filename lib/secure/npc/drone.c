@@ -160,7 +160,7 @@ string eDE(int brief) {
         eventPrint("You are nowhere.","Room Desc");
         return;
     }
-    desc = (string)env->GetObviousExits() || "";
+    desc = env->GetObviousExits() || "";
     desc = capitalize(env->GetInternalShort() || env->GetShort() || "")
         + " [" + desc + "]\n";
     desc += (env->GetInternalLong() || env->GetLong() || "");

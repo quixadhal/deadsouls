@@ -23,14 +23,14 @@ void create() {
 }
 
 int room_103() {
-    if(present((string)"/domains/Praxis/hotel"->query_key_id(103),this_player()))
+    if(present("/domains/Praxis/hotel"->query_key_id(103),this_player()))
         return 1;
     write( "You cannot go in there!");
     return 0;
 }
 
 int room_104() {
-    if(present((string)"/domains/Praxis/hotel"->query_key_id(104),this_player()))
+    if(present("/domains/Praxis/hotel"->query_key_id(104),this_player()))
         return 1;
     write( "You cannot go in there!");
     return 0;

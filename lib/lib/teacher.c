@@ -89,10 +89,10 @@ static void init(){
     string str;
     sentient::init();
     if( !living(this_player()) ) return;
-    str = (string)this_player()->GetKeyName();
+    str = this_player()->GetKeyName();
     if( Students[str] ){
         eventForce("speak You will have to start your "             
-                "studies anew, "+(string)this_player()->GetName());
+                "studies anew, "+this_player()->GetName());
         map_delete(Students, str);
     }
 }
@@ -141,7 +141,7 @@ mapping GetStudents(){ return copy(Students); }
 
 int eventHelp(object who, string unused){
     eventForce("speak I am not sure of what you are "
-            "asking, " + (string)who->GetName() + ".");
+            "asking, " + who->GetName() + ".");
     if(sizeof( GetTeachingLanguages() )){
         eventForce("speak My area of expertise covers " +
                 Expertise() + ".");
@@ -160,7 +160,7 @@ int eventTeachLanguage(object who, string verb, string language){
 
         language = capitalize(language);
 
-        if( Students[ (string)who->GetKeyName() ] ){
+        if( Students[ who->GetKeyName() ] ){
             eventForce("speak I am already teaching you!");
             return 0;
         }
@@ -169,7 +169,7 @@ int eventTeachLanguage(object who, string verb, string language){
             eventForce("speak I know nothing about the " +capitalize(language)+" language.");
             return 0;
         }
-        if( !commercial && (int)this_player()->GetTrainingPoints() < 1 ){
+        if( !commercial && this_player()->GetTrainingPoints() < 1 ){
             eventForce("speak You need more training points.");        
             return 0;
         }
@@ -178,7 +178,7 @@ int eventTeachLanguage(object who, string verb, string language){
                     "You don't seem to have the right amount of the right currency.");
             return 0;
         }
-        Students[ (string)who->GetKeyName() ] = language;
+        Students[ who->GetKeyName() ] = language;
         eventStart(who, language);
         call_out((: ContinueTeaching, who, language, 0 :), TEACHING_WAIT);
         return 1;
@@ -189,9 +189,9 @@ int eventTeachLanguage(object who, string verb, string language){
 static int ContinueTeaching(object who, string language, int x){
     language = capitalize(language);
     if( !present(who, environment()) ) return 0;
-    if( !Students[(string)who->GetKeyName()] ) return 0;
+    if( !Students[who->GetKeyName()] ) return 0;
     if( x > 4 ){
-        map_delete(Students, (string)who->GetKeyName());
+        map_delete(Students, who->GetKeyName());
         eventComplete(who, language);
         who->AddLanguagePoints(language,5+((who->GetStatLevel("intelligence")/10)*2)+random(10));
         if(!commercial) who->AddTrainingPoints(-1);
@@ -215,7 +215,7 @@ int eventStart(object who, string language){
     who->eventPrint(GetName() + " begins teaching you "
             "about the " + language + " language.");
     environment()->eventPrint(GetName() + " begins teaching " +
-            (string)who->GetName() + "...", who);
+            who->GetName() + "...", who);
     return 1;
 }
 
@@ -229,6 +229,6 @@ int eventContinue(object who, string language, int x){
 int eventComplete(object who, string language){
     who->eventPrint("You feel somewhat more competent in " + language + ".");
     eventForce("speak I can teach you no more for now, " +
-            (string)who->GetName() + ".");
+            who->GetName() + ".");
     return 1;
 }

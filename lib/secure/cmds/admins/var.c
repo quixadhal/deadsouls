@@ -18,7 +18,7 @@ int CheckVar(string var, object ob){
 int cmd(string str) {
     int i;
     mixed ret;
-    string cmd, what;
+    string cmd, what, tmpstr;
 
     if(!this_player() || !archp(this_player())){
         write("Sorry, this is an arch command.");
@@ -46,6 +46,9 @@ int cmd(string str) {
         }
         if(sscanf(newval,"%d",tmp)) newval = tmp;
     }
+
+    tmpstr = DEFINES_D->GetDefine(what);
+    if(tmpstr) what = tmpstr;
 
     ob = get_object(what);
 

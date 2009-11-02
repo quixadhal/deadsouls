@@ -59,7 +59,7 @@ mixed can_fly_str(string str) {
     if( !env ) {
         return "You are nowhere.";
     }
-    if( (int)this_player()->GetStaminaPoints() < 15 ){
+    if( this_player()->GetStaminaPoints() < 15 ){
         return "You are too tired to fly anywhere right now.";
     }
     if(env->CanFly(this_player(), str)){
@@ -79,9 +79,9 @@ mixed can_fly_into_str(string str) {
     if( !env ) {
         return "You are nowhere.";
     }
-    if( (int)this_player()->GetStaminaPoints() < 3 )
+    if( this_player()->GetStaminaPoints() < 3 )
         return "You are too tired right now.";
-    if((mixed)environment(this_player())->CanEnter(this_player(), str)){
+    if(environment(this_player())->CanEnter(this_player(), str)){
         if(envpos == POSITION_FLYING) return 1;
         return this_player()->CanFly();
     }
@@ -99,10 +99,10 @@ mixed do_fly() {
 
 mixed do_fly_str(string str) {
     this_player()->AddStaminaPoints(-StaminaCost());
-    return (mixed)environment(this_player())->eventGo(this_player(), str);
+    return environment(this_player())->eventGo(this_player(), str);
 }
 
 mixed do_fly_into_str(string str) {
     this_player()->AddStaminaPoints(-StaminaCost());
-    return (mixed)environment(this_player())->eventEnter(this_player(), str);
+    return environment(this_player())->eventEnter(this_player(), str);
 }

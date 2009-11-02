@@ -30,7 +30,7 @@ mixed do_lead_liv(object ob) {
         return 1;
     }
     if( this_player()->SetFollowed(ob, 1) ) {
-        ob->eventPrint((string)this_player()->GetName() + " is now leading you.");
+        ob->eventPrint(this_player()->GetName() + " is now leading you.");
         this_player()->eventPrint("You are now leading " + ob->GetName() + ".");
     }
     else this_player()->eventPrint("You are not empowered to lead " + ob->GetName() + ".");

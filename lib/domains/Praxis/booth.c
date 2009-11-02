@@ -38,7 +38,7 @@ void init() {
 int vote(string str) {
     string me;
 
-    me=(string)this_player()->query_name();
+    me=this_player()->query_name();
     if(str!="a" && str!="b") {
         notify_fail("You may only vote for a or b.\n");
         return 0;

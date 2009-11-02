@@ -24,9 +24,20 @@ int direct_pour_out_obj(){ return 1;}
 int direct_empty_obj(){ return 1;}
 
 mixed indirect_drink_from_obj(){
-    if( environment() != this_player() ) return 0;
-    if( FlaskUses < 1 ) return "The flask is empty.";
-    return 1;
+    if( environment() != this_player() &&
+      !inherits(LIB_BASE_DUMMY, this_object())){
+        return "#You don't have it.";
+    }
+    if( FlaskUses < 1 ) return "The "+this_object()->GetKeyName()+" is empty.";
+    return this_object()->CanDrink();
+}
+
+mixed direct_drink_from_obj(){
+    return indirect_drink_from_obj();
+}
+
+mixed direct_drink_obj(){
+    return indirect_drink_from_obj();
 }
 
 static void create(){
@@ -186,12 +197,16 @@ varargs mixed eventDrink(object who, object target, string foo){
     return 1;
 }
 
-mixed CanDrink(object who, string what){
+varargs mixed CanDrink(object who, string what){
+    mixed ret;
+    if(!who) who = this_player();
     if(!FlaskUses){
         say(who->GetName()+" sadly looks at "+GetShort()+".");
-        return "The "+GetKeyName()+" is empty.";
+        return "The "+this_object()->GetKeyName()+" is empty.";
     }
-    return who->CanDrink(this_object());
+    ret = who->CanDrink(this_object());
+    //debug("ret: "+identify(ret));
+    return ret;
 }
 
 mixed eventPour(object who, object from){

@@ -1,6 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
-inherit "/lib/props/ambiance";
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -36,6 +36,11 @@ static void create() {
     SetListen("default","You hear faint echoes of dripping water.");
     set_heart_beat(10);
 }
+
+void init(){
+    ::init();
+}
+
 int SteamBlast(){
     object *temparr,*stuff,*lstuff;
     int i;
@@ -53,6 +58,7 @@ int SteamBlast(){
     tell_room(this_object(), "You are hit by a blast of scalding-hot steam!");
     return 1;
 }
+
 void heart_beat(){
     if(random(10) == 1) SteamBlast();
     return;

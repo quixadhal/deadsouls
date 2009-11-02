@@ -12,11 +12,11 @@ string previous_title(object tp);
 int get_cost(string which, int lev);
 
     int CanReceive(object ob) {
-        if(!(int)VOTING_D->is_time_to_vote())
+        if(!VOTING_D->is_time_to_vote())
             return ::CanReceive(ob);
-        if(creatorp(this_player()) || (int)this_player()->query_level() < 2)
+        if(creatorp(this_player()) || this_player()->query_level() < 2)
             return ::CanReceive(ob);
-        if((int)VOTING_D->query_voted((string)this_player()->query_name(),
+        if(VOTING_D->query_voted(this_player()->query_name(),
                     this_player()->query_class()))
             return ::CanReceive(ob);
         else {
@@ -144,7 +144,7 @@ string get_female(int lev) {
     return female_title[20-lev];
 }
 
-int advance() { return (int)ADVANCE_D->advance(); }
+int advance() { return ADVANCE_D->advance(); }
 
 int train(string str) {
     string which, which_tmp;
@@ -164,7 +164,7 @@ int train(string str) {
         notify_fail("No such skill.\n");
         return 0;
     }
-    return (int)ADVANCE_D->train_player(this_player(), which, amount);
+    return ADVANCE_D->train_player(this_player(), which, amount);
 }
 
 int improve(string str) {
@@ -181,12 +181,12 @@ int improve(string str) {
         notify_fail("You have no such stat.\n");
         return 0;
     }
-    stat_cost = get_cost(str, (int)this_player()->query_base_stats(str));
-    if( (int)this_player()->query_exp()-stat_cost < (int)ADVANCE_D->get_exp( (int)this_player()->query_level() ) ) {
+    stat_cost = get_cost(str, this_player()->query_base_stats(str));
+    if( this_player()->query_exp()-stat_cost < ADVANCE_D->get_exp( this_player()->query_level() ) ) {
         notify_fail("You are not experienced enough to improve yourself in that way.\n");
         return 0;
     }
-    this_player()->SetStat(str, (int)this_player()->query_base_stats(str) + 1);
+    this_player()->SetStat(str, this_player()->query_base_stats(str) + 1);
     this_player()->add_exp(-stat_cost);
     write("You feel much ");
     say(this_player()->query_cap_name()+" looks much ");
@@ -201,10 +201,10 @@ int improve(string str) {
 
 int get_cost(string stat, int lev) {
     switch(stat) {
-        case "intelligence": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-        case "constitution": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-        case "wisdom": return (int)ADVANCE_D->get_stat_cost(1, lev); break;
-        default: return (int)ADVANCE_D->get_stat_cost(2, lev); break;
+        case "intelligence": return ADVANCE_D->get_stat_cost(1, lev); break;
+        case "constitution": return ADVANCE_D->get_stat_cost(1, lev); break;
+        case "wisdom": return ADVANCE_D->get_stat_cost(1, lev); break;
+        default: return ADVANCE_D->get_stat_cost(2, lev); break;
     }
 }
 
@@ -212,24 +212,24 @@ int cost(string str) {
     int bing;
 
     write("Costs for advancement, training, and improvement:\n");
-    bing = (int)ADVANCE_D->get_exp( (int)this_player()->query_level() + 1 );
+    bing = ADVANCE_D->get_exp( this_player()->query_level() + 1 );
     if(bing < 1) write("level:\t\tIt will cost you nothing to advance.");
     else write("level:\t\t"+bing+"\n");
     write("\nskills: You train by spending the amount of experience you
             desire.\n");
     write("\n");
     write("strength:\t\t" + get_cost("strength",
-                (int)this_player()->query_base_stats("strength")) +
+                this_player()->query_base_stats("strength")) +
             "\t\tconstitution:\t\t" + get_cost("constitution",
-                (int)this_player()->query_base_stats("constitution")) );
+                this_player()->query_base_stats("constitution")) );
     write("intelligence:\t\t" + get_cost("intelligence",
-                (int)this_player()->query_base_stats("intelligence")) +
+                this_player()->query_base_stats("intelligence")) +
             "\t\tdexterity:\t\t" + get_cost("dexterity",
-                (int)this_player()->query_base_stats("dexterity")) );
+                this_player()->query_base_stats("dexterity")) );
     write("wisdom:\t\t" + get_cost("wisdom",
-                (int)this_player()->query_base_stats("wisdom")) +
+                this_player()->query_base_stats("wisdom")) +
             "\t\tcharisma:\t\t" + get_cost("charisma",
-                (int)this_player()->query_base_stats("charisma")) );
+                this_player()->query_base_stats("charisma")) );
     return 1;
 }
 

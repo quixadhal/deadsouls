@@ -71,16 +71,16 @@ int cmd(string str) {
         return 1;
     }
 
-    if( !((int)ob->eventMove(this_player())) &&
-            !((int)ob->eventMove(environment(this_player()))) ) {
+    if( !(ob->eventMove(this_player())) &&
+            !(ob->eventMove(environment(this_player()))) ) {
         write("Failed to properly move the object.");
         return 1;
     }
 
     nom = ob->GetShort();
 
-    if( !(ret = (string)this_player()->GetMessage("clone", ob)) )
-        ret = (string)this_player()->GetName() + " clones " + nom + ".";
+    if( !(ret = this_player()->GetMessage("clone", ob)) )
+        ret = this_player()->GetName() + " clones " + nom + ".";
 
     say(ret);
     write("You clone " + nom + " ( " + str + " ).");

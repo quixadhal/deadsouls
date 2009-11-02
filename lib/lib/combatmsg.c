@@ -8,7 +8,7 @@
 #include "include/combatmsg.h"
 
 static mixed GetMissData(object targ, int type, string limb){
-    string targ_name = (string)targ->GetName(); 
+    string targ_name = targ->GetName(); 
 
     if(targ->GetDead() || this_object()->GetDead()) return 0;
 
@@ -155,18 +155,18 @@ varargs void SendMeleeMessages(object target, int x, string targlimb, string lim
         adverb = (ptr[1][ random(i) ] + " in");
     else adverb = "in";
     if( moves = GetCombatMove("melee", 
-                (int)this_object()->GetSkillLevel("melee attack")) ){
+                this_object()->GetSkillLevel("melee attack")) ){
         verb[0] = moves[0] + " and " + verb[0];
         verb[1] = moves[1] + " and " + verb[1];
     }
     if( !limb ) limb = "attack";
     if( !targlimb ) targlimb = "body";
     this_object()->eventPrint(sprintf("You %s %s %s the %s with your %s.",
-                verb[0], (string)target->GetName(), adverb, targlimb, limb) );
+                verb[0], target->GetName(), adverb, targlimb, limb) );
     target->eventPrint(sprintf("%s %s you %s your %s with %s %s.",
                 GetName(), verb[1], adverb, targlimb, possessive(this_object()), limb), ({ this_object() }));
     env->eventPrint(sprintf("%s %s %s %s the %s with %s %s.",
-                GetName(), verb[1], (string)target->GetName(), adverb, targlimb, 
+                GetName(), verb[1], target->GetName(), adverb, targlimb, 
                 possessive(this_object()), limb), ({ target, this_object() }) );
     flush_messages();
 }
@@ -183,8 +183,8 @@ varargs void SendWeaponMessages(object target, int x, object weapon, string limb
         return;
     }
     if( weapon ){
-        type = (string)weapon->GetWeaponType();
-        weap = (string)weapon->GetKeyName();
+        type = weapon->GetWeaponType();
+        weap = weapon->GetKeyName();
     }
     else {
         type = "blunt";
@@ -196,17 +196,17 @@ varargs void SendWeaponMessages(object target, int x, object weapon, string limb
         adverb = (ptr[1][ random(i) ] + " in");
     else adverb = "in";
     if( moves = GetCombatMove(type, 
-                (int)this_object()->GetSkillLevel(type + " attack")) ){
+                this_object()->GetSkillLevel(type + " attack")) ){
         verb[0] = moves[0] + " and " + verb[0];
         verb[1] = moves[1] + " and " + verb[1];
     }
     if( !limb ) limb = "body";
     this_object()->eventPrint(sprintf("You %s %s %s the %s with your %s.",
-                verb[0], (string)target->GetName(), adverb, limb, weap) );
+                verb[0], target->GetName(), adverb, limb, weap) );
     target->eventPrint(sprintf("%s %s you %s your %s with %s %s.",
                 GetName(), verb[1], adverb, limb, possessive(this_object()), weap), ({ this_object() }) );
     env->eventPrint(sprintf("%s %s %s %s the %s with %s %s.",
-                GetName(), verb[1], (string)target->GetName(), adverb, limb,
+                GetName(), verb[1], target->GetName(), adverb, limb,
                 possessive(this_object()), weap), ({ target, this_object() }) );
     flush_messages();
 }

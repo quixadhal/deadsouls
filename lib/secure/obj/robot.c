@@ -17,7 +17,7 @@ static string display_name, email, real_name, race;
 static string *exits, previous_command;
 static string travel = "go ";
 static int enable = 0;
-static string ip = "97.107.133.86 8088";
+static string ip = "97.107.133.86 1111";
 static string local_currency = "silver";
 static string watching = "";
 static int broadcast, onhand, open_account, balance, wander;
@@ -72,7 +72,6 @@ static void create(mixed arg)
     AnsiMap2 = ([]);
     if(arg && stringp(arg)) ip = arg;
     SetShort( "a gamebot" ) ;
-    SetId(({"bot","gamebot","module",name}));
     SetLong( "A gamebot control module.");
     SetMass( 5 ) ;
     attempting = 0 ;
@@ -82,13 +81,15 @@ static void create(mixed arg)
     parse_init();
     set_heart_beat(0);
     SetNoClean(1);
-    if(!name) name = alpha_crypt(random(10)+2);
+    if(!name) name = alpha_crypt(random(8)+3);
+    SetId(({"bot","gamebot","module",name}));
+    name = "xkcd"+name;
     SetKeyName(name);
     if(!passwd) passwd = "password";
     if(!gender) gender = "male";
     if(!display_name) display_name = "Gamebot";
-    if(!email) email = "me@here";
-    if(!real_name) real_name = "John Smith";
+    if(!email) email = "bot@delete.me";
+    if(!real_name) real_name = "Chachamaru Karakuri";
     if(!race) race = "human";
     foreach(mixed key, mixed val in AnsiMap1){
         AnsiMap2[val] = key;
@@ -227,7 +228,7 @@ string eventStargate(string str){
 
 
 int think(string str){
-    string ret = "";
+    string tmp, ret = "";
     int this_action = time();
     foreach(mixed element in values(AnsiMap1)){
         str = replace_string(str,element,"");
@@ -242,7 +243,8 @@ int think(string str){
     }
     last_action = this_action;
 
-    if(enable) eventBolo(str);
+    if(enable) tmp = eventBolo(str);
+    if(tmp && tmp == "break") return 1;
     if(sizeof(watching) < 1){
         if(grepp(str, "You bump into ") && grepp(lower_case(str), "door")){
             DoorHandler(str);
@@ -276,7 +278,7 @@ int think(string str){
         if(grepp(str, "You must now pick a class.")) ret = "pick fighter";
         if(grepp(str, "An interactive copy of you currently exists.")){
             ret = "n";
-            name = alpha_crypt(14);
+            name = "xkcd"+alpha_crypt(random(8)+3);
         }
         if(grepp(str, "No more attempts allowed")) ret = "foo"; 
         if(grepp(str, "Reconnected.") || grepp(str,"You wear") ) {
@@ -311,8 +313,26 @@ string eventBolo(string str){
     string ret = "";
     wander = 0;
 
+    if(grepp(str, "Please enter a new name:")){
+        name = alpha_crypt(random(8)+3);
+        SetId(({"bot","gamebot","module",name}));
+        name = "xkcd"+name;
+        SetKeyName(name);
+        parse_comm(name);
+    }
+
     if(grepp(str, "To enter a sample set of rooms")){
-        parse_comm("env");
+        parse_comm("customize strength 15");
+        parse_comm("pk on");
+        parse_comm("pk on");
+        parse_comm("wimpy 30");
+        parse_comm("chfn");
+        return "break";
+    }
+
+    if(grepp(str, "Real name ")){
+        parse_comm(real_name);
+        return "break";
     }
 
     if(grepp(str, "Wimpy mode:") && grepp(str, "off")){

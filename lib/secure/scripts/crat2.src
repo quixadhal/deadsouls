@@ -1,4 +1,6 @@
-title %^RED%^Red $N%^RESET%^
+#title %^RED%^Red $N%^RESET%^
+#title %^GREEN%^Green $N%^RESET%^
+#title %^BLUE%^Blue $N%^RESET%^
 describe $N looks a bit rumpled and tired.
 home
 update

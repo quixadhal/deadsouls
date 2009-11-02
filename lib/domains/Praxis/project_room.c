@@ -37,7 +37,7 @@ int start_fun(string group) {
         message("my_action", "Start what?", this_player());
         return 1;
     }
-    //if(!PROJECT_D->add_group(group, (string)this_player()->query_name()))
+    //if(!PROJECT_D->add_group(group, this_player()->query_name()))
     //   return notify_fail("Error in the daemon.\n");
     //message("my_action", sprintf("Group '%s' successfully created.",
     // group), this_player());

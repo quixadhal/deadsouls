@@ -24,7 +24,8 @@ int eventDematerialize(){
     else what = "The energy whip";
     tell_room(env,what+" fades away and disappears.", ({ owner }));
     if(owner){
-        tell_object(owner,"Your energy whip fades away and disappears.");
+        tell_object(owner,"%^CYAN%^Your energy whip fades away and  "
+          "disappears.%^RESET%^");
     }
     ::eventDestruct();
     return 1;

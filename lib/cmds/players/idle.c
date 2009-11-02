@@ -13,12 +13,12 @@ mixed cmd(string args) {
     if( !who || who->GetInvis() )
         return "Unable to locate anyone by that name.";
     if( !interactive(who) )
-        return (string)who->GetName() + " is link dead.";
+        return who->GetName() + " is link dead.";
     x = query_idle(who);
     if( x > 4 ) {
         this_player()->eventPrint(who->GetName()+" has been idle for "+time_elapsed(x)+".");
     }
-    else this_player()->eventPrint((string)who->GetName() + " is "
+    else this_player()->eventPrint(who->GetName() + " is "
             "not idle.");
     return 1;
 }

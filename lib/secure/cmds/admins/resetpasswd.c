@@ -26,7 +26,7 @@ mixed cmd(string args) {
         return 1;
     }
 
-    if( (int)previous_object()->GetForced() )
+    if( previous_object()->GetForced() )
         return "You cannot be forced to change a password.";
     if( previous_object() != this_player() )
         return "You're being sploited to reset someone's password.";

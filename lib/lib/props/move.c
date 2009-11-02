@@ -28,7 +28,7 @@ int eventMove(mixed dest){
     if( environment() ){
         int x;
 
-        x = (int)environment()->CanRelease(me);
+        x = environment()->CanRelease(me);
         if( !x && !archp() ){
             return 0;
         }

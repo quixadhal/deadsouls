@@ -37,8 +37,8 @@ static void create() {
 
 int CheckFighter(string dir) {
     object ob;
-    if( (int)this_player()->ClassMember("fighter") ||
-            (int)creatorp(this_player()) ) return 1;
+    if( this_player()->ClassMember("fighter") ||
+            creatorp(this_player()) ) return 1;
     if( ob = present("fighter", this_object()) ) {
         ob->eventForce("speak I cannot allow you to enter the halls of the great warriors of Ylsrim");
         return 0;

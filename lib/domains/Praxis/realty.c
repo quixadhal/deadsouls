@@ -102,19 +102,19 @@ static int cmd_buy(string str) {
     if(!present("atmos", this_object())) 
         return notify_fail("Atmos is missing!\n");
     if(str == "deed") {
-        if((int)this_player()->query_money("gold") <
+        if(this_player()->query_money("gold") <
                 currency_value(DEED_COST, "gold")) {
             message("my_action", "You do not have enough gold.",this_player());
             return 1;
         }
         message("my_action", "You purchase a deed.", this_player());
-        message("other_action", (string)this_player()->query_cap_name()+
+        message("other_action", this_player()->query_cap_name()+
                 " purchases a deed.", this_object(), ({ this_player() }));
         this_player()->AddCurrency("gold", -currency_value(DEED_COST, "gold"));
         ob = new(OB_DEED);
-        if((int)ob->move(this_player())) {
+        if(ob->move(this_player())) {
             message("my_action", "You drop your deed.", this_player());
-            message("other_action", (string)this_player()->query_cap_name()+
+            message("other_action", this_player()->query_cap_name()+
                     " drops "+possessive(this_player())+" deed.", this_object(),
                     ({ this_player() }));
             ob->move(this_object());
@@ -122,19 +122,19 @@ static int cmd_buy(string str) {
         return 1;
     }
     else if(str == "order" || str == "work order" ) {
-        if((int)this_player()->query_money("gold") <
+        if(this_player()->query_money("gold") <
                 currency_value(ORDER_COST, "gold")) {
             ob->eventForce("speak You are too low on gold!");
             return 1;
         }
         message("my_action", "You purchase a work order.", this_player());
-        message("other_action", (string)this_player()->query_cap_name()+
+        message("other_action", this_player()->query_cap_name()+
                 " purchases a work order.", this_object(), ({ this_player() }));
         this_player()->AddCurrency("gold", -currency_value(ORDER_COST, "gold"));
         ob = new(OB_ORDER);
-        if((int)ob->move(this_player())) {
+        if(ob->move(this_player())) {
             message("my_action", "You drop the work order!", this_player());
-            message("other_action", (string)this_player()->query_cap_name()+
+            message("other_action", this_player()->query_cap_name()+
                     " drops "+possessive(this_player())+" work order.",
                     this_object(), ({ this_player() }));
             ob->move(this_object());

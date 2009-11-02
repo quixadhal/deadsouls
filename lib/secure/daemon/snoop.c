@@ -37,6 +37,7 @@ static void create() {
     }
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
     prevusers = users();
+    catch(mkdir("/secure/log/adm/archive"));
 }
 
 void RegisterSnooper(){
@@ -54,7 +55,7 @@ void UnregisterSnooper(){
 }
 
 void eventLoadRogues(){
-    if( !((int)master()->valid_apply(({ PRIV_SECURE }))) ) return;
+    if( !(master()->valid_apply(({ PRIV_SECURE }))) ) return;
     foreach(string rogue in monitored) this_object()->CheckBot(rogue);
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
 }
@@ -135,7 +136,7 @@ int SnoopClean(){
 }
 
 int eventDestruct(){
-    if( !((int)master()->valid_apply(({ "SECURE" }))) )
+    if( !(master()->valid_apply(({ "SECURE" }))) )
         error("Illegal attempt to destruct snoop: "+get_stack()+" "+identify(previous_object(-1)));
     return ::eventDestruct();
 }
@@ -276,7 +277,7 @@ int ReportReconnect(string str){
 string Report(){
     string ret = "";
     mapping TmpWatchers = ([]);
-    if( !((int)master()->valid_apply(({ PRIV_SECURE }))) ){
+    if( !(master()->valid_apply(({ PRIV_SECURE }))) ){
         return 0;
     }
     foreach(mixed key, mixed val in Watchers){

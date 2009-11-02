@@ -6,14 +6,14 @@ inherit LIB_DAEMON;
 int cmd(string str) {
     int x;
 
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) ){
+    if( !(master()->valid_apply(({ "ASSIST" }))) ){
         return 0;
     }
 
     if(!str || str == "" || !sscanf(str, "%d", x)){
         this_object()->help();
     }
-    x = (int)EVENTS_D->SetRebootInterval(x);
+    x = EVENTS_D->SetRebootInterval(x);
     message("info", "Reboot interval set to "+x+" hours.", this_player());
     return 1;
 }

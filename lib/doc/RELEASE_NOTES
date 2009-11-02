@@ -1,3 +1,52 @@
+---- 2.11a22 ---
+- Released 2009-11-1
+- Removed unnecessary casts.
+- It's possible to peer into virtual rooms now.
+- Added a sample ranged weapon: /domains/default/armor/pcannon.c
+- Added Tricky's A* implementation.
+- Improved the thoroughness od warmboots.
+- Improved back-compatibility with MudOS v22.2b14-ds.
+
+---- 2.11a21 ---
+- Released 2009-10-24
+- Under some conditions, insufficient time was provided during
+  a reconnect to allow the reconnection. This has been corrected.
+- Driver is now a slightly modified FluffOS 2.18.
+- Fixed history list recalculation.
+- Number parsing is no longer done for add_action()'s.
+- IMC2 tells now propagate properly to instances.
+
+---- 2.11a20 ---
+- Released 2009-10-08
+- Added some rooms to campus lab.
+- Fixed a problem in delayed command queues.
+- The wizmap is now not caching by default, to avoid
+  gaps in mapping.
+- Slightly streamlined the character generation process, removing
+  questions that are rarely answered and not requiring "pick" to
+  precede the race and class.
+- Added the ob, name, and obname elements to the MagicProtection class in
+  magic_protection.h in order to better track and control multiple
+  magic protections. See /powers/spells/buffer.c for an example of
+  a spell that checks these in order to avoid stacking.
+- Fixed IMC2 colors.
+- Exempted file commands from Diku "2.thing" parsing rules.
+- The lib now explicitly ignores resets that originate from the
+  driver, in order to avoid odd over-aggressive resets.
+- Any npc can now be a command-obeying zombie, not just "sentient" npc's.
+- Fixed some problems with effective vision and peering.
+- It's no longer possible to follow someone if they are invisible or
+  if you are lying down.
+- Cleaned up some parsing of LIB_FLASK and LIB_INSTALL.
+- Zombies can be re-raised after they are re-killed now.
+- Finger now works properly on instances. Note that fingering
+  *across* instances does not work, and needs be done through
+  intermud finger.
+- It is now more difficult to accidentally drown in the sea east of town.
+- Added gendered title (e.g. "the Countess") handling to the
+  advancement process.
+- Added sefun: comma()
+
 ---- 2.11a19 ---
 - Released 2009-09-26
 - Added a more efficient auto-mapping drone.

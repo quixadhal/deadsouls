@@ -40,90 +40,90 @@ mixed do_bump_liv(object ob) {
 
     if( !ob ) return 0;
     if( !(env = environment(ob)) ) return 0;
-    if( (int)ob->GetProperty("no bump") ) {
+    if( ob->GetProperty("no bump") ) {
         message("my_action", "You try to bump "+
-                (string)ob->GetCapName()+".",
+                ob->GetCapName()+".",
                 this_player() );
-        message("other_action", (string)this_player()->GetCapName()+" tries "
-                "to bump "+(string)ob->GetCapName()+".",
+        message("other_action", this_player()->GetCapName()+" tries "
+                "to bump "+ob->GetCapName()+".",
                 environment(ob), ({ ob, this_player() }) );
-        message("other_action", (string)this_player()->GetCapName()+" tries "
+        message("other_action", this_player()->GetCapName()+" tries "
                 "to bump you.",
                 ob);
         if( !playerp(ob) )
-            ob->eventForce("growl "+(string)this_player()->GetKeyName());
+            ob->eventForce("growl "+this_player()->GetKeyName());
         return 1;
     }
     if( var = ob->eventBump(this_player()) ) return var;
     this_player()->AddStaminaPoints( -(random(15) + 3) );
-    if( ( (int)ob->GetStatLevel("agility") / 2 ) >
-            ( (int)this_player()->GetStatLevel("strength")) ) {
+    if( ( ob->GetStatLevel("agility") / 2 ) >
+            ( this_player()->GetStatLevel("strength")) ) {
         message("my_action", "You deftly sidestep "+
-                possessive_noun((string)this_player()->GetCapName())+" attempt "
+                possessive_noun(this_player()->GetCapName())+" attempt "
                 "to bump you.",
                 ob);
-        message("other_action", (string)ob->GetCapName()+" deftly sidesteps "
+        message("other_action", ob->GetCapName()+" deftly sidesteps "
                 "your attempt to bump "+objective(ob)+".",
                 this_player() );
-        message("other_action", (string)ob->GetCapName()+" deftly sidesteps "+
-                possessive_noun((string)this_player()->GetCapName())+" attempt "
+        message("other_action", ob->GetCapName()+" deftly sidesteps "+
+                possessive_noun(this_player()->GetCapName())+" attempt "
                 "to bump "+objective(ob)+".",
                 env, ({ this_player(), ob }));
         return 1;
     }
-    Strength = (int)this_player()->GetStatLevel("strength") +
-        random((int)this_player()->GetStatLevel("speed") / 2);
-    TargetStrength = (int)ob->GetStatLevel("strength") +
-        random( (int)ob->GetStatLevel("agility") / 2 );
+    Strength = this_player()->GetStatLevel("strength") +
+        random(this_player()->GetStatLevel("speed") / 2);
+    TargetStrength = ob->GetStatLevel("strength") +
+        random( ob->GetStatLevel("agility") / 2 );
     if( (Strength - TargetStrength) < -10 ) {
         this_player()->eventReceiveDamage(ob, BLUNT, random(5) + 1);
-        message("other_action", (string)ob->GetCapName()+" shoves you "
+        message("other_action", ob->GetCapName()+" shoves you "
                 "to the ground!",
                 this_player() );
-        message("my_action", (string)this_player()->GetCapName()+" is shoved "
+        message("my_action", this_player()->GetCapName()+" is shoved "
                 "to the ground while trying to bump you.",
                 ob);
-        message("other_action", (string)this_player()->GetCapName()+" is shoved "
-                "to the ground while trying to bump "+(string)ob->GetCapName()+".",
+        message("other_action", this_player()->GetCapName()+" is shoved "
+                "to the ground while trying to bump "+ob->GetCapName()+".",
                 env, ({ ob, this_player() }) );
         return 1;
     }
     else if( (Strength - TargetStrength) < (5 + random(20)) ) {
         this_player()->eventReceiveDamage(ob, BLUNT, random(3) + 1);
-        message("my_action", "You fail to bump "+(string)ob->GetCapName()+" out "
+        message("my_action", "You fail to bump "+ob->GetCapName()+" out "
                 "of the way.", this_player() );
-        message("other_action", (string)this_player()->GetCapName()+" fails in "
+        message("other_action", this_player()->GetCapName()+" fails in "
                 "an attempt to bump you.",
                 ob);
-        message("other_action", (string)this_player()->GetCapName()+" fails in "
-                "an attempt to bump "+(string)ob->GetCapName()+".",
+        message("other_action", this_player()->GetCapName()+" fails in "
+                "an attempt to bump "+ob->GetCapName()+".",
                 environment(ob), ({ ob, this_player() }) );
         return 1;
     } else {
         this_player()->AddStatPoints("strength", random(5));
-        Exits = (string *)env->GetExits();
+        Exits = env->GetExits();
         Exits = filter(Exits,
                 (: !(object)$(env)->GetDoor($1) ||
                  !(object)$(env)->GetDoor($1)->GetClosed() :) );
         if( !sizeof(Exits) ) {
-            message("system", "There is nowhere for "+(string)ob->GetCapName()
+            message("system", "There is nowhere for "+ob->GetCapName()
                     +" to go!", this_player() );
             return 1;
         }
         NewLocation = Exits[ random(sizeof(Exits)) ];
         NewLocation = environment(ob)->GetExit(NewLocation);
         OldLocation = base_name(environment(ob));
-        message("my_action", "You shove "+(string)ob->GetCapName()+" out "
+        message("my_action", "You shove "+ob->GetCapName()+" out "
                 "of the way!",
                 this_player() );
         message("other_action", "You are shoved out of the way by "+
-                (string)this_player()->GetCapName()+"!",
+                this_player()->GetCapName()+"!",
                 ob);
-        message("other_action", (string)this_player()->GetCapName()+" shoves "+
-                (string)ob->GetCapName()+" out of the way!",
+        message("other_action", this_player()->GetCapName()+" shoves "+
+                ob->GetCapName()+" out of the way!",
                 environment(ob), ({ ob, this_player() }) );
-        if( !(int)ob->eventMove(NewLocation) ) {
-            message("other_action", (string)ob->GetCapName()+" is bounced "
+        if( !ob->eventMove(NewLocation) ) {
+            message("other_action", ob->GetCapName()+" is bounced "
                     "back into the room.", environment(ob), ob);
             message("my_action", "You are bounced back to your original "
                     "location.",
@@ -133,7 +133,7 @@ mixed do_bump_liv(object ob) {
             if( !userp(ob) )
                 call_out((: MoveBack :), 12 + random(6), ob, OldLocation);
         }
-        if( (int)ob->GetHealthPoints() > 5 )
+        if( ob->GetHealthPoints() > 5 )
             ob->eventReceiveDamage(this_player(), BLUNT, random(5));
         return 1;
     }

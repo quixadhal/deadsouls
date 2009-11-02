@@ -105,10 +105,9 @@ static void create(){
 
 mixed CanDrink(object ob){
     int strength, type;
-
     if( !ob ) return 0;
-    strength = (int)ob->GetStrength();
-    type = (int)ob->GetMealType();
+    strength = ob->GetStrength();
+    type = ob->GetMealType();
     if( (type & MEAL_ALCOHOL) && ((strength + GetAlcohol()) >
                 GetStatLevel("durability")) )
         return "That drink is too strong for you right now.";
@@ -121,14 +120,13 @@ mixed CanDrink(object ob){
 }
 
     mixed CanEat(object ob){
-        if( ((int)ob->GetStrength() + GetFood()) > 100 )
+        if( (ob->GetStrength() + GetFood()) > 100 )
             return "This is more food than you can handle right now.";
         else return 1;
     }
 
 varargs int eventDie(mixed agent){
     int x;
-
     if( (x = body::eventDie(agent)) != 1 ) return x;
     return 1;
 }
@@ -136,8 +134,8 @@ varargs int eventDie(mixed agent){
 mixed eventDrink(object ob){
     int type, strength;
 
-    type = (int)ob->GetMealType();
-    strength = (int)ob->GetStrength();
+    type = ob->GetMealType();
+    strength = ob->GetStrength();
     if( type & MEAL_POISON ) AddPoison(strength);
     if( type & MEAL_DRINK ) AddDrink(strength);
     if( type & MEAL_ALCOHOL ) AddAlcohol(strength);
@@ -146,9 +144,9 @@ mixed eventDrink(object ob){
 }
 
 mixed eventEat(object ob){
-    AddFood((int)ob->GetStrength());
-    if( (int)ob->GetMealType() & MEAL_POISON )
-        AddPoison((int)ob->GetStrength());
+    AddFood(ob->GetStrength());
+    if( ob->GetMealType() & MEAL_POISON )
+        AddPoison(ob->GetStrength());
     return 1;
 }
 

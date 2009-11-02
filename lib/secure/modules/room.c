@@ -96,7 +96,7 @@ mixed make(string str) {
     if(file_exists(arg2)) new_file = arg2;
     else if(strsrch(arg2,"./") != -1) {
         arg2 = replace_string(arg2,"./","");
-        new_file = absolute_path((string)this_player()->query_cwd(), arg2);
+        new_file = absolute_path(this_player()->query_cwd(), arg2);
     }
     else if(directory_exists(path_prefix(arg2))){
         new_file  = arg2;

@@ -13,7 +13,7 @@ void init() {
 }
 
 void heart_beat() {
-    if(!__Target || (int)__Target->query_ghost()) go_home();
+    if(!__Target || __Target->query_ghost()) go_home();
     ::heart_beat();
     if(__Target && environment(__Target) != environment(this_object()))
         go_home();
@@ -24,7 +24,7 @@ void set_target(object ob) {
     __Target = ob;
     eventMove(environment(ob));
     ob->add_follower(this_object());
-    command("kill "+(string)ob->query_name());
+    command("kill "+ob->query_name());
 }
 
 void go_home() {

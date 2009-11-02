@@ -79,7 +79,7 @@ varargs mixed eventEnter(object who, string what, string verb){
 }
 
 mixed CanGo(object who, string str){
-    if( (int)who->GetParalyzed() ) return "You are unable to move.";
+    if( who->GetParalyzed() ) return "You are unable to move.";
     else return 1;
 }
 

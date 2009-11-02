@@ -9,7 +9,7 @@
 inherit LIB_DAEMON;
 
 int cmd(string str) {
-    if(!str) str = DIR_ERROR_LOGS+"/"+(string)previous_object()->GetKeyName();
+    if(!str) str = DIR_ERROR_LOGS+"/"+previous_object()->GetKeyName();
     else str = DIR_ERROR_LOGS+"/"+str;
     write(str+":\n");
     if(!tail(str)) write("No errors in "+str+".\nTry /log/runtime or /log/catch\n");
@@ -17,10 +17,11 @@ int cmd(string str) {
 }
 
 void help() {
-    write("Syntax: <elog ([error log])>\n\n"
+    write("Syntax: elog [error log]\n\n"
             "This will tail your personal error log if issued without any\n"
-            "arguements.  If an argument is given, it searches for a file\n"
-            "by that name in the mud's error log directory.\n\nSee also:\n"
+            "arguments.  If an argument is given, it searches for a file\n"
+            "by that name in the mud's error log directory.\nFor example:\n"
+            "elog\nelog town\nelog secure\nelog lib\n\nSee also:\n"
             "log, replog\n"
          );
 }

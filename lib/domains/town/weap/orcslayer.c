@@ -28,7 +28,7 @@ static void create() {
     AddItem("thing" , "A thing.");
 }
 int eventStrike(object target) {
-    if( (string)target->GetRace() != "orc" ) return item::eventStrike(target);
+    if( target->GetRace() != "orc" ) return item::eventStrike(target);
     message("environment", "The orc slayer sword glows blue and emits a ghastly shrieking sound!",
             environment(target));
     return item::eventStrike(target) + random(50)+10;

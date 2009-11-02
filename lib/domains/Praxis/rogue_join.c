@@ -36,7 +36,7 @@ void create() {
 }
 
 int preview() {
-    if((string)this_player()->query_class() != "explorer") {
+    if(this_player()->query_class() != "explorer") {
         write("This is not for you.");
         return 1;
     }
@@ -64,7 +64,7 @@ int become(string str) {
         notify_fail("You cannot become that here.\n");
         return 0;
     }
-    if((string)this_player()->query_class() != "explorer") {
+    if(this_player()->query_class() != "explorer") {
         write("You are much too old to start learning our ways now!");
         return 1;
     }
@@ -78,7 +78,7 @@ int become(string str) {
 }
 
 int go_down() {
-    if((string)this_player()->query_class() != "rogue") {
+    if(this_player()->query_class() != "rogue") {
         write("You cannot penetrate the force field that blocks the passage.");
         say(this_player()->query_cap_name()+" tries to get into the heart of the fortress, but fails.", this_player());
         return 0;

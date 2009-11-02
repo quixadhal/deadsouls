@@ -95,6 +95,15 @@ int make_empties(){
 
 void deletes(){
     catch( rm("/cmds/players/lines.c") );
+    catch( rm("/domains/campus/room/spath.c") );
+    catch( rm("/domains/campus/room/store.c") );
+    catch( rm("/domains/campus/room/square.c") );
+    catch( rm("/domains/campus/room/u_lab.c") );
+    catch( rm("/domains/campus/room/uptree.c") );
+    catch( rm("/domains/campus/room/tunnel3.c") );
+    catch( rm("/domains/campus/obj/tree.c") );
+    catch( rm("/secure/cmds/creators/vi.c") );
+    catch( rm("/lib/inventory.c") );
 }
 
 varargs static void eventUpdate(object whom){

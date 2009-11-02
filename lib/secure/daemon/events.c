@@ -36,7 +36,7 @@ static void create() {
 mixed eventCancelShutdown() {
     int ret = -3;
 #ifdef __CALLOUT_HANDLES__
-    if( !((int)master()->valid_apply( ({ PRIV_ASSIST }) )) ) return -2;
+    if( !(master()->valid_apply( ({ PRIV_ASSIST }) )) ) return -2;
     if(callout > -1) ret = remove_call_out(callout);
     else ret = -1;
     if(!ret || ret == -1) callout = -1;
@@ -60,7 +60,7 @@ int GetRebooting(){
 }
 
     void eventReboot(int x) {
-        if( previous_object() && !((int)master()->valid_apply(({ PRIV_ASSIST }))) )
+        if( previous_object() && !(master()->valid_apply(({ PRIV_ASSIST }))) )
             return;
         InReboot = 1;
         if( x < 1 ) x = 1;
@@ -98,7 +98,7 @@ static void eventAnnounceReboot(int x) {
 }
 
 void eventShutdown() { 
-    if( !((int)master()->valid_apply( ({ PRIV_ASSIST }) )) ) return;
+    if( !(master()->valid_apply( ({ PRIV_ASSIST }) )) ) return;
     Shutdown();
 }
 

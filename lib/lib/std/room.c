@@ -302,7 +302,9 @@ varargs void AddItem(mixed item, mixed val, mixed adjectives){
 
     if( objectp(item) ){
         same_dummy = filter(all_inventory(),(: base_name($1) == base_name(global_item) :));
-        if(sizeof(same_dummy)) return;
+        if(sizeof(same_dummy) && base_name(item) != LIB_ELEVATOR_BUTTON){
+            return;
+        }
         ob = item;
     }
     else {
@@ -821,7 +823,7 @@ int CanAttack( object attacker, object who ){
 varargs int eventShow(object who, string args){
     string str;
 
-    if( !(str = (string)SEASONS_D->GetLong(args)) ){
+    if( !(str = SEASONS_D->GetLong(args)) ){
         who->eventPrint("You do not see that there.");
         return 1;
     } 
@@ -851,8 +853,8 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 
         case TALK_SEMI_PRIVATE:
             target->eventHearTalk(who, target, cls, verb, msg, lang);
-            eventPrint("%^BOLD%^CYAN%^" + (string)who->GetName() +
-                    " whispers something to " + (string)target->GetName() + ".",
+            eventPrint("%^BOLD%^CYAN%^" + who->GetName() +
+                    " whispers something to " + target->GetName() + ".",
                     MSG_CONV, ({ who, target }));
             return 1;
 
@@ -880,11 +882,11 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 
                 tmp = GetEnter(exit);
                 if( !find_object(tmp) ) continue;
-                if( (door = GetDoor(exit)) && (int)door->GetClosed() ) continue;
+                if( (door = GetDoor(exit)) && door->GetClosed() ) continue;
                 tmp->eventHearTalk(who, target, TALK_LOCAL, verb, msg, lang);
             }
             obs = filter(all_inventory(),
-                    (: (int)$1->is_living() && $1 != $(who) :));
+                    (: $1->is_living() && $1 != $(who) :));
             obs->eventHearTalk(who, target, cls, verb, msg, lang);
             return 1;
 
@@ -935,11 +937,10 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
 
 static void create(){
     exits::create();
-    reset(query_reset_number());
+    inventory::reset(query_reset_number());
     set_heart_beat(0);
     if( replaceable(this_object()) && !GetNoReplace() ){
         string array tmp= inherit_list(this_object());
-
         if( sizeof(tmp) == 1 ){
             replace_program(tmp[0]);
         }
@@ -967,7 +968,11 @@ int CanReceive(object ob){
 }
 
 varargs void reset(int count){
-    mixed *inv = deep_inventory(this_object());
+    mixed *inv;
+    
+    if(origin() == "driver") return;
+
+    inv = deep_inventory(this_object());
     if(inv && sizeof(inv)){
         if( sizeof(filter(inv, (: interactive($1) || $1->GetNoClean() :))) ){
             return;

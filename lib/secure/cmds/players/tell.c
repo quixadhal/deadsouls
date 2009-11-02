@@ -139,7 +139,7 @@ mixed cmd(string str) {
                 machine_message=machine->send_message();
             }
         }
-        if( (err = (mixed)this_player()->CanSpeak(ob, "tell", msg)) != 1){
+        if( (err = this_player()->CanSpeak(ob, "tell", msg)) != 1){
             if(ob && !creatorp(ob)) this_player()->AddMagicPoints(15);
             this_player()->eventTellHist("You tried to tell "+retname+": "+
                     "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
@@ -168,7 +168,7 @@ mixed cmd(string str) {
         if(machine_message) message("info", machine_message, this_player());
 #ifdef BLOCK_TELLS_TO_AFK
         if(ob->GetProperty("afk")) {
-            message("my_action", (string)ob->GetName()+
+            message("my_action", ob->GetName()+
                     " is afk and cannot receive your message.", this_player()); 
         }
 #endif
@@ -176,17 +176,17 @@ mixed cmd(string str) {
         ob->SetProperty("reply", lower_case(me));
         ob->SetProperty("reply_time", time());
         if(!archp(ob) && userp(ob) && (query_idle(ob) > 60))
-            message("my_action", (string)ob->GetName()+
+            message("my_action", ob->GetName()+
                     " is idle and may not have been paying attention.", this_player());
         else if((in_edit(ob) || in_input(ob))
 #ifdef __DSLIB__
                 && !query_charmode(ob)
 #endif
                )
-            message("my_action", (string)ob->GetCapName()+" is in input "+
+            message("my_action", ob->GetCapName()+" is in input "+
                     "and may not be able to respond.", this_player());
         else if(ob->GetSleeping())
-            message("my_action", (string)ob->GetCapName()+" is sleeping "+
+            message("my_action", ob->GetCapName()+" is sleeping "+
                     "and is unable to respond.", this_player());
     }
     else {

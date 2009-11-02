@@ -118,7 +118,7 @@ mixed ChangeClass(string class_name){
 string GetClass(){ return Class; }
 
 int ClassMember(string class_name){
-    return (int)CLASSES_D->ClassMember(Class, class_name);
+    return CLASSES_D->ClassMember(Class, class_name);
 }
 
 string SetClan(string clan){ return (Clan = clan); }

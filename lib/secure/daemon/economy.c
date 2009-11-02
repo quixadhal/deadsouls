@@ -47,7 +47,7 @@ string ewrite(string str){
 }
 
 static private void validate() {
-    if( !((int)master()->valid_apply(({ PRIV_ASSIST }))) ){
+    if( !(master()->valid_apply(({ PRIV_ASSIST }))) ){
         write(identify(previous_object(-1)));
         error("Illegal attempt to modify economy data");
     }

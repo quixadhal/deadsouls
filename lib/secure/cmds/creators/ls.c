@@ -19,13 +19,13 @@ int cmd(string str) {
     int moref, brief, size;
     int all_files, long_details, time_sort, no_load_info, i, x, maxi;
 
-    if(str == "" || !str) str = (string)previous_object()->query_cwd();
+    if(str == "" || !str) str = previous_object()->query_cwd();
     if(!str) return notify_fail("No current working directory.\n");
     i = sizeof(args = explode(str, " "));
     if(args[0][0] == '-') {
         if((x = strlen(args[0])) > 1) options = explode(args[0][1..x-1], "");
         else options = ({});
-        if(i == 1) paths = ({ (string)previous_object()->query_cwd() });
+        if(i == 1) paths = ({ previous_object()->query_cwd() });
         else paths = args[1..i-1];
     }
     else {
@@ -45,7 +45,7 @@ int cmd(string str) {
         }
     }
     for(i=0, maxi = sizeof(paths), files = ({}); i<maxi; i++)
-        if(tmp = (string *)wild_card(paths[i])) files += tmp;
+        if(tmp = wild_card(paths[i])) files += tmp;
     if(!sizeof(files)) { 
         message("error", "No such file or directory.", this_player());
         return 1;
@@ -125,12 +125,12 @@ static private string long_list(string dir, mixed *files) {
 
     if(!(maxi = sizeof(files))) return "";
     else ret = "";
-    if((int)master()->valid_read(dir, previous_object())) acc = "r";
+    if(master()->valid_read(dir, previous_object())) acc = "r";
     else acc = "-";
-    if((int)master()->valid_write(dir, previous_object())) acc += "w";
+    if(master()->valid_write(dir, previous_object())) acc += "w";
     else acc += "-";
     if(member_array(dir[0..strlen(dir)-2],
-                (string *)previous_object()->GetSearchPath()) != -1) acc += "x";
+                previous_object()->GetSearchPath()) != -1) acc += "x";
     else acc += "-";
     for(i=0, maxi=sizeof(files); i<maxi; i++) {
         if(files[i][1] == -2) loaded = "";
@@ -151,7 +151,7 @@ static private string short_list(string dir, mixed *files, int n, int s) {
 
     i = sizeof(newfiles=map_array(files,"map_files",this_object(),({dir,n,s})));
     while(i--) if((x=strlen(newfiles[i])) > long) long = x;
-    tmp = (string)previous_object()->GetEnvVar("SCREEN");
+    tmp = previous_object()->GetEnvVar("SCREEN");
     if(!tmp || !sscanf(tmp, "%d", x) || !x) x = 80;
     x = x-2;
     if(long > x/3-3) long = x/3-3;
@@ -178,7 +178,7 @@ static string map_files(mixed *file, int *flags) {
         else return file[0];
     }
     if(!flags[1]) {
-        if(find_object((string)flags[0]+file[0]) && file[1] != -2) tmp = "*";
+        if(find_object(flags[0]+file[0]) && file[1] != -2) tmp = "*";
         else tmp = " ";
     }
     else tmp = "";

@@ -8,7 +8,7 @@ inherit LIB_CGI;
 string gfile;
 
 void validate(){
-    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
+    if(!master()->valid_apply(({ "SECURE", "ASSIST" })) &&
             strsrch(base_name(previous_object()), SOCKET_HTTP)){
         string offender = identify(previous_object(-1));
         debug("showlog.c SECURITY VIOLATION: "+offender+" ",get_stack(),"red");

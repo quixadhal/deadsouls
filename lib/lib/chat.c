@@ -34,12 +34,12 @@ static string chat_command(string str){
         cmd = str[0..(x-1)];
         arg = str[(x+1)..];
     }
-    if( cmd == "list" && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
-    else if( Channels[cmd] && (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
+    if( cmd == "list" && CHAT_D->cmdChannel(cmd, arg) ) return "";
+    else if( Channels[cmd] && CHAT_D->cmdChannel(cmd, arg) ) return "";
     else if( (sscanf(cmd, "%semote", tmp) || sscanf(cmd, "%s:", tmp)
                 || sscanf(cmd, "%s|%*s", tmp))
             && Channels[tmp] ){
-        if( (int)CHAT_D->cmdChannel(cmd, arg) ) return "";
+        if( CHAT_D->cmdChannel(cmd, arg) ) return "";
         else return str;
     }
     else return str;
@@ -73,7 +73,7 @@ string *AddChannel(mixed val){
             }
         }
     }
-    tmp = (string *)CHAT_D->eventRegisterMember(val);
+    tmp = CHAT_D->eventRegisterMember(val);
     for(i=0, maxi = sizeof(tmp); i < maxi; i++) Channels[tmp[i]] = 1;
     return keys(Channels);
 }
@@ -91,7 +91,7 @@ string *RemoveChannel(mixed val){
             }
         }
     }
-    tmp = (string *)CHAT_D->eventRemoveMember(val);
+    tmp = CHAT_D->eventRemoveMember(val);
     for(i=0, maxi = sizeof(tmp); i < maxi; i++) map_delete(Channels, tmp[i]);
     return keys(Channels);
 }

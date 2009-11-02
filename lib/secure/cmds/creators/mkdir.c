@@ -21,7 +21,7 @@ int help();
             notify_fail("mkdir: "+str+": file already exists.\n");
             return 0;
         }
-        if( (int)master()->valid_write(str, previous_object(), "rmdir") == 0 )
+        if( master()->valid_write(str, previous_object(), "rmdir") == 0 )
         {
             notify_fail(str+": Permission denied.\n");
             return 0;

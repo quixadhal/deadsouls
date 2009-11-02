@@ -12,7 +12,7 @@
 inherit LIB_DAEMON;
 
 int CheckMud(string name){
-    if(!(name = (string)INTERMUD_D->GetMudName(name)) ) return 0;
+    if(!(name = INTERMUD_D->GetMudName(name)) ) return 0;
     if(!INTERMUD_D->GetMudList()[name][0]) return 0;
     return 1;
 }

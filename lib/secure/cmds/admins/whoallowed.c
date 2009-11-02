@@ -13,7 +13,7 @@ int cmd(string str) {
     string *noms;
 
     if(!archp(previous_object())) return 0;
-    if(!sizeof(noms = (string *)BANISH_D->query_allowed())) {
+    if(!sizeof(noms = BANISH_D->query_allowed())) {
         write("No one is currently allowed to login from a restricted site.\n");
         return 1;
     }

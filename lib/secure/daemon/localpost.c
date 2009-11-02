@@ -35,28 +35,28 @@ void load_groups() {
             if(a == "include") {
                 switch(sizeof(parts)) {
                     case 2:
-                        tmp += (mapping)call_other(parts[0],parts[1]);
+                        tmp += call_other(parts[0],parts[1]);
                         break;
                     case 3:
-                        tmp+=(mapping)call_other(parts[0],parts[1],
+                        tmp+=call_other(parts[0],parts[1],
                                 parts[2]);
                         break;
                     default:
-                        tmp += (mapping)call_other(parts[0], parts[1],
+                        tmp += call_other(parts[0], parts[1],
                                 parts[2], parts[3]);
                         break;
                 }
             }
             else switch(sizeof(parts)) {
                 case 2: 
-                    tmp[a] = (string *)call_other(parts[0],parts[1]);
+                    tmp[a] = call_other(parts[0],parts[1]);
                     break;
                 case 3:
-                    tmp[a] = (string *)call_other(parts[0],parts[1],
+                    tmp[a] = call_other(parts[0],parts[1],
                             parts[2]);
                     break;
                 default:
-                    tmp[a] = (string *)call_other(parts[0],parts[1],
+                    tmp[a] = call_other(parts[0],parts[1],
                             parts[2], parts[3]);
             }
         }
@@ -88,15 +88,15 @@ varargs string *send_post(mapping borg, mixed who) {
     if(tmpstr != OBJ_POST && tmpstr != REMOTEPOST_D && tmpstr != FOLDERS_D)
         return (pointerp(who) ? who : ({ who }));
     rejects = ({});
-    grps = (mapping)OPTIONS_D->query_groups(borg["from"]);
-    borg["id"] = (string)LETTERS_D->create_letter(borg["message"]);
+    grps = OPTIONS_D->query_groups(borg["from"]);
+    borg["id"] = LETTERS_D->create_letter(borg["message"]);
     msg = borg["message"];
     map_delete(borg, "message");
     remote_mail = ([]);
     if(pointerp(who)) {
         i = sizeof(who);
         tmpwho = ({});
-        x = (int)OPTIONS_D->query_option(borg["from"], "metoo");
+        x = OPTIONS_D->query_option(borg["from"], "metoo");
         while(i--) {
             if(pointerp(who[i] = map_groups(who[i], grps, borg["from"]))) 
                 tmpwho += who[i];
@@ -113,7 +113,7 @@ varargs string *send_post(mapping borg, mixed who) {
         }
         j = sizeof(cles = keys(remote_mail));
         while(j--) 
-            if(!((int)REMOTEPOST_D->send_post(borg+(["message":msg]), cles[j]))){
+            if(!(REMOTEPOST_D->send_post(borg+(["message":msg]), cles[j]))){
                 rejects += remote_mail[cles[j]];
             }
         return rejects;
@@ -129,11 +129,11 @@ varargs string *send_post(mapping borg, mixed who) {
         }
         i = sizeof(cles = keys(remote_mail));
         while(i--) 
-            if(!((int)REMOTEPOST_D->send_post(borg+(["message":msg]), cles[i])))
+            if(!(REMOTEPOST_D->send_post(borg+(["message":msg]), cles[i])))
                 rejects += remote_mail[cles[i]];
         return rejects;
     }
-    else if(pointerp(tmp = (string *)OPTIONS_D->query_group(who)) &&
+    else if(pointerp(tmp = OPTIONS_D->query_group(who)) &&
             (i = sizeof(tmp))) {
         while(i--) {
             if(sscanf(tmp[i], "%s@%s", a, b) == 2) {
@@ -145,13 +145,13 @@ varargs string *send_post(mapping borg, mixed who) {
         }
         i = sizeof(cles = keys(remote_mail));
         while(i--)
-            if(!((int)REMOTEPOST_D->send_post(borg+(["message":msg]),cles[i])))
+            if(!(REMOTEPOST_D->send_post(borg+(["message":msg]),cles[i])))
                 rejects += remote_mail[cles[i]];
         return rejects;
     }
     else {
         if(sscanf(who, "%s@%s", a, b) == 2) {
-            if(!((int)REMOTEPOST_D->send_post(borg+(["message":msg]),b)))
+            if(!(REMOTEPOST_D->send_post(borg+(["message":msg]),b)))
                 return ({ who });
         }
         else if(!user_exists(who)) return ({ who });
@@ -161,9 +161,9 @@ varargs string *send_post(mapping borg, mixed who) {
 }
 
 static private mixed map_groups(string str, mapping grps, string who) {
-    if(__MudGroups[str]) return (string *)__MudGroups[str] - ({ who });
+    if(__MudGroups[str]) return __MudGroups[str] - ({ who });
     else if(grps[str] && sizeof(grps[str]))
-        return (string *)grps[str] - ({ who });
+        return grps[str] - ({ who });
     else return str;
 }
 

@@ -69,10 +69,10 @@ varargs mixed eventPut(object who, object storage, string prep){
         return 0;
     }
     who->eventPrint("You put " + GetShort() + prep +
-            (string)storage->GetShort() + ".");
-    environment(who)->eventPrint((string)who->GetName() + " puts " +
+            storage->GetShort() + ".");
+    environment(who)->eventPrint(who->GetName() + " puts " +
             GetShort() + prep +
-            (string)storage->GetShort() + ".", who);
+            storage->GetShort() + ".", who);
     if(inherits(LIB_STORAGE, this_object())){
         depth = this_object()->GetRecurseDepth();
         if(depth && inherits(LIB_STORAGE, storage)) storage->AddRecurseDepth(depth); 

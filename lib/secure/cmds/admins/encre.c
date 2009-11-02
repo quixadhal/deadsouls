@@ -18,7 +18,7 @@ mixed cmd(string args) {
     filep = player_save_file(args);
     filec = replace_string(filep, "players", "creators");
 
-    if( !((int)master()->valid_apply(({ PRIV_ASSIST, PRIV_SECURE, LIB_CONNECT }))) )
+    if( !(master()->valid_apply(({ PRIV_ASSIST, PRIV_SECURE, LIB_CONNECT }))) )
         error("Illegal encre attempt: "+get_stack()+" "+identify(previous_object(-1)));
 
     if( args == "" || !stringp(args) ) 
@@ -68,7 +68,7 @@ mixed cmd(string args) {
         }
         ob->eventDestruct();
         message("system", "You are now a creator.", cre_ob);
-        message("shout", (string)cre_ob->GetName() + " is now a creator!",
+        message("shout", cre_ob->GetName() + " is now a creator!",
                 users(), ({ this_player(), cre_ob }));
         if(file_exists(filep)) rm(filep);
         make_workroom(cre_ob, 1);
@@ -102,7 +102,7 @@ mixed cmd(string args) {
         else if(book) book->eventMove(ROOM_FURNACE);
         cre_ob->AddChannel(({"cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat" }));
         cre_ob->SetPolyglot(1);
-        cre_ob->save_player((string)cre_ob->GetKeyName());
+        cre_ob->save_player(cre_ob->GetKeyName());
     }
     return 1;
 }

@@ -818,7 +818,8 @@ void start_logon(){
             data["text"] = "$N " + data["text"];
 
         localchan = CHANNEL_BOT->GetLocalChannel(data["channel"]);
-        CHANNEL_BOT->eventSendChannel(sender, localchan, data["text"], emote, "", "");
+        CHANNEL_BOT->eventSendChannel(sender, localchan, 
+         imc2_to_pinkfish(data["text"]), emote, "", "");
     }
 
     void channel_out(string user,string chan,string msg,int emote){
@@ -842,7 +843,11 @@ void start_logon(){
         object who;
         int sz;
         string blmsg, ret, eret;
-        if(target) who = FIND_PLAYER(lower_case(target));
+        if(target){
+            who = FIND_PLAYER(lower_case(target));
+            INSTANCES_D->SendTell(lower_case(target), data["text"],
+              sender + "@" + origin);
+        }
         if(who) target = GET_CAP_NAME(who);
         else return;
         data["text"]=imc2_to_pinkfish(data["text"]);
@@ -960,6 +965,7 @@ void start_logon(){
     string imc2_to_pinkfish(string str){
         string output="";
         int sz;
+        str = replace_string(str, "/~", "/~~");
         /*
            For colors explanation, refer to IMC Packet Documentation by Xorith.
            Thanks very much for putting that out, by the way. :)

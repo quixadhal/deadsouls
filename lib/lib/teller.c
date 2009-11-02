@@ -70,7 +70,7 @@ string GetBankName(){ return BankName; }
 string GetLocalCurrency(){ return LocalCurrency; }
 
     mixed CanBank(object who){
-        if( !(int)who->GetAccountInfo( GetBankName() ) )
+        if( !who->GetAccountInfo( GetBankName() ) )
             return "You must create an account with "+GetBankName()+" first.";
         return 1;
     }
@@ -79,7 +79,7 @@ int AddSurcharge(object who, string currency, int amount){
     int charge;
     string type;
 
-    if( (string)who->GetTown() == GetTown() ){
+    if( who->GetTown() == GetTown() ){
         type = "standard";
         charge = GetLocalFee();
     } else {
@@ -107,9 +107,9 @@ int eventBalance(object who){
     float val;
     int total;
 
-    mp = (mapping)who->GetAccountInfo( GetBankName() );
+    mp = who->GetAccountInfo( GetBankName() );
     if( !mp ) return 0;
-    environment()->eventPrint( (string)who->GetName() + " requests "
+    environment()->eventPrint( who->GetName() + " requests "
             "current balance.", ({ who }) );
     ret = "Your account with "+GetBankName()+" was "
         "opened "+ctime(mp["open"])+".\n";
@@ -141,12 +141,12 @@ int eventBalance(object who){
 int eventDeposit(object who, string currency, int amount){
     int i;
     if( amount < 1 ){
-        eventForce("speak " + (string)who->GetName() + ", "
+        eventForce("speak " + who->GetName() + ", "
                 "That transaction is unacceptable.");
         return 1;
     }
     if( !currency ) currency = GetLocalCurrency();
-    if( !(i = (int)who->GetCurrency(currency)) ){
+    if( !(i = who->GetCurrency(currency)) ){
         eventForce("speak You are not carrying any "+currency+".");
         return 1;
     }
@@ -156,7 +156,7 @@ int eventDeposit(object who, string currency, int amount){
     }
     who->eventPrint(sprintf("You deposit %d %s into your "
                 "account.", amount, currency));
-    environment()->eventPrint((string)who->GetName() + " makes "
+    environment()->eventPrint(who->GetName() + " makes "
             "a deposit.", ({ who }) );
     who->AddCurrency(currency, -amount);
     who->AddBank(GetBankName(), currency, amount);
@@ -169,11 +169,11 @@ int eventWithdraw(object who, string currency, int amount){
     x = amount;
     if( amount < 1 ){
         eventForce("speak Withdrawing a negative amount is not a prudent "
-                "idea, "+ (string)who->GetName() +".");
+                "idea, "+ who->GetName() +".");
         return 1;
     }
     if( !currency ) currency = GetLocalCurrency();
-    if( !(i = (int)who->GetBank(GetBankName(), currency)) ){
+    if( !(i = who->GetBank(GetBankName(), currency)) ){
         eventForce("speak You have no "+currency+" in your account.");
         return 1;
     }
@@ -184,7 +184,7 @@ int eventWithdraw(object who, string currency, int amount){
     }
     if( !(amount = AddSurcharge(who, currency, amount)) ) return 1;
     charge = x - amount;
-    if( (int)who->AddCurrency(currency, x) < 0 ){
+    if( who->AddCurrency(currency, x) < 0 ){
         eventForce("speak You are unable to carry that "
                 "much "+currency+"!");
         who->eventPrint("The bank credits your account with the fee.");
@@ -195,7 +195,7 @@ int eventWithdraw(object who, string currency, int amount){
     who->eventPrint(sprintf("You withdraw %d %s from your account.",
                 amount, currency));
     environment()->eventPrint(sprintf("%s withdraws some %s.",
-                (string)who->GetName(), currency), ({ who }));
+                who->GetName(), currency), ({ who }));
     return 1;
 }
 
@@ -204,11 +204,11 @@ int eventExchange(object who, int amount, string str1, string str2){
     float val;
 
     if( amount < 1 ){
-        eventForce("speak " + (string)who->GetName() + ", that "
+        eventForce("speak " + who->GetName() + ", that "
                 "transaction cannot be completed.");
         return 1;
     }
-    if( amount > (int)who->GetCurrency(str1) ){
+    if( amount > who->GetCurrency(str1) ){
         eventForce("speak You do not have enough of that currency to exchange.");
         return 1;
     }
@@ -235,9 +235,9 @@ int eventExchange(object who, int amount, string str1, string str2){
         eventForce("speak That isn't even worth one " + str2 + "!");
         return 1;
     }
-    if( (int)who->AddCurrency(str2, i) < 0 ){
+    if( who->AddCurrency(str2, i) < 0 ){
         eventForce("speak You cannot carry that much "+str2+", " +
-                (string)who->GetName()+".");
+                who->GetName()+".");
         return 1;
     }
     who->AddCurrency(str1, -amount);
@@ -246,7 +246,7 @@ int eventExchange(object who, int amount, string str1, string str2){
     if( charge )
         who->eventPrint(sprintf("You were charged a fee of %d %s.",      
                     charge, str2) );
-    environment()->eventPrint((string)who->GetName()+" exchanges some "+
+    environment()->eventPrint(who->GetName()+" exchanges some "+
             str1+" for "+str2+".", who);
     return 1;
 }
@@ -254,13 +254,13 @@ int eventExchange(object who, int amount, string str1, string str2){
 int eventOpenAccount(object who){
     if( who->GetAccountInfo( GetBankName() ) ){
         eventForce("speak You already have an account with "+GetBankName()+", " +
-                (string)who->GetName()+"!");
+                who->GetName()+"!");
         return 1;
     }
-    if( (int)who->GetCurrency( GetLocalCurrency() ) < OpenFee ){
+    if( who->GetCurrency( GetLocalCurrency() ) < OpenFee ){
         eventForce(" speak "+ sprintf("You must have at least %d %s to open "
                     "an account at this branch of %s, %s.", GetOpenFee(),
-                    GetLocalCurrency(), GetBankName(), (string)who->GetName()));
+                    GetLocalCurrency(), GetBankName(), who->GetName()));
         return 1;
     }
     if( OpenFee < 1 ) return 0;
@@ -269,9 +269,9 @@ int eventOpenAccount(object who){
     who->eventPrint(sprintf("You deposit %d %s and open an account "
                 "with %s.", OpenFee, GetLocalCurrency(), GetBankName()) );
     eventBalance(who);
-    environment()->eventPrint((string)who->GetName() + " opens an "
+    environment()->eventPrint(who->GetName() + " opens an "
             "account.", who);
-    eventForce("smile "+(string)who->GetKeyName());
+    eventForce("smile "+who->GetKeyName());
     return 1;
 }
 
@@ -342,9 +342,9 @@ int cmdParse(object who, string cmd, string str){
             return eventOpenAccount(who);
         break;
         default:
-        eventForce("speak " + (string)who->GetName() + ", I do not "
+        eventForce("speak " + who->GetName() + ", I do not "
                 "understand what you want.");
-        eventForce("whisper to " + (string)who->GetKeyName() + " Try "
+        eventForce("whisper to " + who->GetKeyName() + " Try "
                 "\"help banking\" if you are confused.");
 
     }

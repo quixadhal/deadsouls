@@ -27,7 +27,7 @@ int scry(string str) {
 
     if(!str) return notify_fail("Scry what?\n");
     write("You gaze into the crystal ball.");
-    if((int)this_player()->query_mp() < 5) {
+    if(this_player()->query_mp() < 5) {
         write("Your magic powers are just too weak to help you.");
         return 1;
     }

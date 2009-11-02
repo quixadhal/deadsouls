@@ -61,23 +61,23 @@ static mapping LevelTitles = ([
         1:"the utter novice",
         2:"the simple novice",
         3:"the beginner",
-        4:"the adventurer",
-        5:"the experienced adventurer",
-        6:"the expert adventurer",
-        7:"the great adventurer",
-        8:"the master adventurer",
-        9:"the Freeman",
+        4:({"the adventurer","the adventuress"}),
+        5:({"the experienced adventurer","the experienced adventuress"}),
+        6:({"the expert adventurer","the expert adventuress"}),
+        7:({"the great adventurer","the great adventuress"}),
+        8:({"the master adventurer","the master adventuress"}),
+        9:({"the Freeman","the Freewoman"}),
         10:"the Citizen",
         11:"the Knight",
-        12:"the Baron",
-        13:"the Count",
-        14:"the Earl",
-        15:"the Marquis",
-        16:"the Duke",
-        17:"the Arch Duke",
-        18:"the Praetor",
-        19:"the Quaestor",
-        20:"the Caesar"
+        12:({"the Baron","the Baroness"}),
+        13:({"the Count","the Viscountess"}),
+        14:({"the Earl","the Countess"}),
+        15:({"the Marquis","the Marquise"}),
+        16:({"the Duke","the Duchess"}),
+        17:({"the Archduke","the Archduchess"}),
+        18:({"the Praetor","the Praetrix"}),
+        19:({"the Quaestor","the Quaestrix"}),
+        20:({"the Caesar","the Caesara"}),
 ]);
 
 static mapping QuestLevels = ([
@@ -119,6 +119,7 @@ void validate(){
 // player progresses, this ratio decreases.
 mapping CompileLevelList(){
     int i=1;
+    mixed title;
     int seed=300;
     float mod;
     LevelList = "";
@@ -142,8 +143,11 @@ mapping CompileLevelList(){
                 }
             }
             else Levels[i]["qp"] = 0;
-            if(LevelTitles[i]){
-                Levels[i]["title"] = LevelTitles[i];
+            if(title = LevelTitles[i]){
+                string line;
+                if(stringp(title)) line = title;
+                else line = implode(title, "/");
+                Levels[i]["title"] = line;
             }
             maxlevel = i;
             LevelList += ( Levels[i]["title"] || "Untitled" );
@@ -291,9 +295,9 @@ static int AutoAdvance(object ob, int level){
         ob->eventPrint("%^RED%^%^B_BLACK%^You automatically advance to "+
                 "level "+level+". Congratulations!%^RESET%^");
         ob->AddTrainingPoints(level);
-        if(Levels[level]["title"]){
-            ob->AddTitle(Levels[level]["title"]);
-            ob->RemoveTitle(Levels[level-1]["title"]);
+        if(LevelTitles[level]){
+            ob->AddTitle(LevelTitles[level]);
+            ob->RemoveTitle(LevelTitles[level-1]);
         }
     }
     return ret;
@@ -417,7 +421,7 @@ int RemoveUser(string str){
     if( ob = find_player(str) ) {
         message("system", "You are being ridded from " + mud_name() + ".",
                 ob);
-        if( !((int)ob->eventDestruct()) ) destruct(ob);
+        if( !(ob->eventDestruct()) ) destruct(ob);
     }
     purge_array = filter(objects(),(: !strsrch(base_name($1), home_dir) :));
     foreach(object tainted in purge_array){
@@ -613,8 +617,8 @@ static mixed GetPlayerVariable(string val){
     mixed ret;
     if(!val) return vars;
     if(member_array(val,variables(this_object())) == -1){
-        write("No such player variable exists.");
-        return 0;
+        //write("No such player variable exists.");
+        return ret;
     }
     ret = fetch_variable(val);
     return ret;
@@ -781,8 +785,9 @@ int SelektUsers(int gather){
         if(!(count % 5)) interval++;
 
         //bot always get purged, and snoop logs tagged
-        if(cands[user]["RealName"] == "John Smith" && 
-                cands[user]["Email"] == "me@here"){
+        if((cands[user]["RealName"] == "John Smith" && 
+                cands[user]["Email"] == "me@here") ||
+                cands[user]["Email"] == "bot@delete.me"){
             reset_eval_cost();
             SNOOP_D->NotifyBot(user);
             reset_eval_cost();

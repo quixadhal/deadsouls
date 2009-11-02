@@ -50,7 +50,7 @@ mixed do_throw_obj(object ob) {
 mixed do_throw_obj_word_obj(object what, string word, object where) {
     object enemy;
     object env = environment(this_player());
-    if( where && living(where) && (int)what->GetClass() > 1 ) {
+    if( where && living(where) && what->GetClass() > 1 ) {
         enemy = where;
     }
     else {
@@ -62,7 +62,7 @@ mixed do_throw_obj_word_obj(object what, string word, object where) {
     }
     if( this_player()->GetInCombat() || enemy ) {
         this_player()->eventPrint("You prepare to throw " +
-                (string)what->GetShort() + ".");
+                what->GetShort() + ".");
         this_player()->SetAttack(enemy, (: eventThrow, this_player(), what,
                     where :), (enemy ? ROUND_WEAPON :
                         ROUND_OTHER));

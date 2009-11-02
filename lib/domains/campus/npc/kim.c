@@ -23,6 +23,7 @@ static void create() {
                 ]));
     SetLevel(1);
     SetRace("human");
+    SetLanguage("common", 100);
     SetSkill("bargaining", 1);
     SetGender("female");
     SetLocalCurrency("dollars");

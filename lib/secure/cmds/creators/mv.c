@@ -35,14 +35,14 @@ cmd(string str) {
         return help();  
     } else {
         if(!force){
-            if(file_size(t2=absolute_path((string)this_player()->query_cwd(),t2)) > 0)
+            if(file_size(t2=absolute_path(this_player()->query_cwd(),t2)) > 0)
             {
                 notify_fail("mv: "+t2+" already exists.\n");
                 return 0;
             }
         }
-        t1=absolute_path((string)this_player()->query_cwd(),t1);
-        t2=absolute_path((string)this_player()->query_cwd(),t2);
+        t1=absolute_path(this_player()->query_cwd(),t1);
+        t2=absolute_path(this_player()->query_cwd(),t2);
         if(directory_exists(t1)) dir = 1;
         else if(file_exists(t1)) dir = 0;
         else {

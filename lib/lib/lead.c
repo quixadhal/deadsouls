@@ -5,6 +5,7 @@
  */
 
 #include <lib.h>
+#include <position.h>
 #include "include/lead.h"
 
 private static mapping Followers;
@@ -106,10 +107,15 @@ int eventMoveFollowers(object dest){
     mapping follower;
     object ob;
     int followChance;
+    int badpos;
+
+    badpos = (POSITION_NULL|POSITION_SITTING|POSITION_LYING|POSITION_KNEELING);
 
     foreach(ob in GetFollowers()){
+        int pos = ob->GetPosition();
         follower = Followers[ob];
-        if(ob->GetSleeping() || ob->GetParalyzed() || query_verb() == "noclip"){
+        if(ob->GetSleeping() || ob->GetParalyzed() || pos & badpos
+          || this_object()->GetInvis() ){
             eventEvade(ob);
             RemoveFollower(ob);
             continue;

@@ -16,6 +16,6 @@ static void create() {
 mixed can_empty_obj(string verb) { return this_player()->CanManipulate(); }
 
 mixed do_empty_obj(object from) {
-    return (mixed)from->eventEmpty(this_player());
+    return from->eventEmpty(this_player());
 }
 

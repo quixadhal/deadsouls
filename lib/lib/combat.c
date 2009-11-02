@@ -533,7 +533,6 @@ static int Destruct(){
 varargs int eventDie(mixed agent){
     object ob, env = room_environment();
     int x;
-
     if(this_object()->GetGodMode()) return 0;
 
     if(Dead) return 1;
@@ -1020,7 +1019,7 @@ void eventKillEnemy(object ob){
         int x;
 
         if(!estatep(ob)) eventTrainSkill("murder", GetLevel(), level, 1,GetCombatBonus(level)); 
-        x = (int)ob->GetMorality();
+        x = ob->GetMorality();
         if( x > 0 ) x = -x;
         else if( GetMorality() > 200 ) x = 100;
         else x = 0;

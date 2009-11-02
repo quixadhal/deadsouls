@@ -24,7 +24,7 @@ int cmd( string a )
 
     evaldefs = "";
 
-    filename = user_path((string)previous_object()->GetKeyName());
+    filename = user_path(previous_object()->GetKeyName());
     if( file_size( filename ) != -2 && !securep(previous_object()) ) {
         notify_fail( "You must have a valid home directory!\n" );
         return 0;
@@ -76,7 +76,7 @@ int cmd( string a )
     rm( filename );
     if( ret = find_object( filename ) ) destruct( ret );
     write_file( filename, file,1 );
-    ret = (mixed)call_other(filename, "eval");
+    ret = call_other(filename, "eval");
     write( wrap( "Result = " + identify( ret ) ) );
     if( ret = find_object( filename ) ) destruct( ret );
     return 1;

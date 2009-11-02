@@ -7,7 +7,7 @@ inherit LIB_TELLER;
 static void create() {
     ::create();
     SetKeyName("zoe");
-    SetId( ({ "teller","banker","executive" }) );
+    SetId( ({ "teller","banker","executive","shawty" }) );
     SetAdjectives( ({ "bank","executive","friendly","efficient" }) );
     SetShort("Zoe the bank teller");
     SetLevel(12);

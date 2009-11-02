@@ -22,7 +22,7 @@ mixed can_smoke_obj(string verb) { return this_player()->CanManipulate(); }
 mixed can_smoke_from_obj(string verb) { return this_player()->CanManipulate(); }
 
     mixed do_smoke_obj(object ob) {
-        if( (int)this_player()->GetInCombat() )
+        if( this_player()->GetInCombat() )
             this_player()->SetAttack(0, (: eventSmoke, this_player(), ob :),
                     ROUND_OTHER);
         else eventSmoke(this_player(), ob);
@@ -30,7 +30,7 @@ mixed can_smoke_from_obj(string verb) { return this_player()->CanManipulate(); }
     }
 
     mixed do_smoke_from_obj(object ob, string id) {
-        if( (int)this_player()->GetInCombat() )
+        if( this_player()->GetInCombat() )
             this_player()->SetAttack(0, (: eventSmoke, this_player(), ob, id :),
                     ROUND_OTHER);
         else eventSmoke(this_player(), ob, id);
@@ -38,5 +38,5 @@ mixed can_smoke_from_obj(string verb) { return this_player()->CanManipulate(); }
     }
 
 varargs void eventSmoke(object who, object what, string id) {
-    return (mixed)what->eventSmoke(who, what);
+    return what->eventSmoke(who, what);
 }

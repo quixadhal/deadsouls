@@ -56,12 +56,12 @@ int horoscope(string str) {
     }
     if(ob == this_player()) cost = 60;
     else cost = 110;
-    if((int)this_player()->query_money("gold") < cost) {
+    if(this_player()->query_money("gold") < cost) {
         notify_fail("You do not have enough gold.\n");
         return 0;
     }
-    mag = (int)ob->query_spiritual();
-    phy = (int)ob->query_physical();
+    mag = ob->query_spiritual();
+    phy = ob->query_physical();
     this_player()->AddCurrency("gold", -cost);
     write("You pay "+cost+" gold for Mora to give you a reading for today.");
     say(this_player()->query_cap_name()+" pays Mora for a horoscope reading.", this_player());

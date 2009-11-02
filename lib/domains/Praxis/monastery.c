@@ -68,13 +68,13 @@ int confess(string str) {
         return 0;
     }
     ok = 0;
-    if(sscanf((string)this_player()->getenv("TITLE"), "%s murderer $N%*s", res)
+    if(sscanf(this_player()->getenv("TITLE"), "%s murderer $N%*s", res)
             != 1) {
         notify_fail("You are no murderer.\n");
         return 0;
     }
     i = sizeof(inv = all_inventory(this_object()));
-    while(i--) if((string)inv[i]->query_class() == "monk") ok = 1;
+    while(i--) if(inv[i]->query_class() == "monk") ok = 1;
     if(!ok) {
         write("There is no one here to whom you may confess.");
         return 1;
@@ -98,12 +98,12 @@ void forgive(object ob) {
 
     if(member_array(ob, begging) == -1) return;
     begging -= ({ ob });
-    tmp = (string)call_other("/domains/Praxis/"+(string)ob->query_class()+"_hall",
+    tmp = call_other("/domains/Praxis/"+ob->query_class()+"_hall",
             "get_new_title", ob);
     message("info", "You are now forgiven.", ob);
     ob->setenv("TITLE", tmp);
     ob->add_mp(-500);
-    ob->add_hp(100- ((int)ob->query_skill("faith")));
+    ob->add_hp(100- (ob->query_skill("faith")));
 }
 
 

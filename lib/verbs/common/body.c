@@ -45,7 +45,7 @@ mixed can_body() {
     }
 
 mixed do_body() {
-    message("other_action", (string)this_player()->GetName()+" checks "+
+    message("other_action", this_player()->GetName()+" checks "+
             reflexive(this_player())+" for injuries.",
             environment(this_player()), this_player() );
     eventCheckBody(this_player());
@@ -67,16 +67,16 @@ varargs void eventCheckBody(object ob, object receiver) {
     mp = ([ ]);
     if( !ob ) return;
     if( !receiver ) receiver = ob;
-    i = sizeof(limbs = (string *)ob->GetLimbs());
+    i = sizeof(limbs = ob->GetLimbs());
     while(i--) {
-        damage = to_int( percent( (int)ob->GetHealthPoints(limbs[i]),
-                    (int)ob->GetMaxHealthPoints(limbs[i]) ));
+        damage = to_int( percent( ob->GetHealthPoints(limbs[i]),
+                    ob->GetMaxHealthPoints(limbs[i]) ));
         if( !mp[damage] ) mp[damage] = ({ limbs[i] });
         else mp[damage] += ({ limbs[i] });
     }
     i = sizeof(key = sort_array(keys(mp), 1));
     name = (ob == receiver ? "Your" : capitalize(possessive(ob)));
-    ret = possessive_noun((string)ob->GetCapName()) + " bodily damage "
+    ret = possessive_noun(ob->GetCapName()) + " bodily damage "
         "report:\n\n";
     foreach(damage in key) {
         string str;
@@ -105,9 +105,9 @@ varargs void eventCheckBody(object ob, object receiver) {
             else ret += (color + str + "%^RESET%^\n");
         }
     }
-    if( i = sizeof(limbs = (string *)ob->GetMissingLimbs()) ) {
+    if( i = sizeof(limbs = ob->GetMissingLimbs()) ) {
         ret += "\n"+(ob == receiver ?
-                "You are missing " : (string)ob->GetName()+" is missing ");
+                "You are missing " : ob->GetName()+" is missing ");
         switch(i) {
             case 0: break;
             case 1: ret += "a "+limbs[0]+"."; break;

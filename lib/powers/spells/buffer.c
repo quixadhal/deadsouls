@@ -10,6 +10,7 @@
 #include <magic.h>
 #include <damage_types.h>
 #include <magic_protection.h>
+#include <function.h>
 
 inherit LIB_SPELL;
 
@@ -34,22 +35,46 @@ static void create() {
 
 int eventCast(object who, int level, string race, object array targets) {
     class MagicProtection protection;
+    class MagicProtection *Protections;
     object target = targets[0];
-    int prot_level, skill, wis;
+    int prot_level, skill, wis, maxprot;
+
+    maxprot = (who->GetMaxHealthPoints()) / 2;
+
+    Protections = target->GetMagicProtection();
+    foreach(class MagicProtection tmp in Protections){
+        if(!tmp->obname) continue;
+        if(tmp->obname == file_name(this_object())){
+            if(!(functionp(tmp->hit) & FP_OWNER_DESTED)){ 
+                if(target == this_player()){
+                    write("You are already protected by a buffer!");
+                }
+                else {
+                    write("They are already protected by a buffer!");
+                }
+                return 1;
+            }
+        }
+    }
 
     wis = who->GetStatLevel("wisdom");
     skill = who->GetSkillLevel("magic defense");
-    prot_level = level;
-    prot_level *= (random(skill/10) + 1);
-    prot_level += random(wis/2);
+    prot_level = level * 3;
+    prot_level += (skill * 3);
+    prot_level += (wis / 2);
+
+    if(prot_level > maxprot) prot_level = maxprot;
 
     protection = new(class MagicProtection);
-    protection->bits = BLUNT | BLADE | KNIFE | MAGIC;
+    protection->bits = ALL_EXTERNAL_DAMAGE;
     protection->caster = who;
-    protection->absorb = 2*prot_level;
+    protection->absorb = prot_level;
     protection->args = level;
     protection->hit = (: hitCallback :);
     protection->end = (: endCallback :);
+    protection->obname = file_name(this_object());
+    protection->ob = this_object();
+    protection->name = "magical buffer";
     target->AddMagicProtection(protection);
     if( target == who ) {
         send_messages("", "A %^BOLD%^CYAN%^translucent magical shield%^RESET%^ "
@@ -68,8 +93,8 @@ int hitCallback(object who, object agent, int x, class MagicProtection cl) {
     string str;
     object Caster = cl->caster;
 
-    if( (int)agent->GetUndead() ) return 0;
-    str = (string)agent->GetName() || (string)agent->GetShort();
+    if( agent->GetUndead() ) return 0;
+    str = agent->GetName() || agent->GetShort();
     if( who == Caster ) {
         who->eventTrainSkill("magic defense",cl->args,x,1);
     }

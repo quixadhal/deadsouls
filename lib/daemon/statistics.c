@@ -18,7 +18,7 @@ mixed eventKill(object target) {
     string nom, file;
 
     if( !userp(pl = previous_object()) ) return 0;
-    nom = (string)pl->GetKeyName();
+    nom = pl->GetKeyName();
     file = DIR_KILLS "/" + nom[0..0];
     if( file_size(file) != -2 ) {
         unguarded( (: mkdir, file :) );
@@ -28,7 +28,7 @@ mixed eventKill(object target) {
         kills = ([]);
     }
     else kills = restore_variable(unguarded((: read_file, file :)));
-    nom = (string)target->GetShort() || (string)target->GetKeyName();
+    nom = target->GetShort() || target->GetKeyName();
     if( !kills[nom] ) kills[nom] = 1;
     else kills[nom]++;
     unguarded((: rm, file :));

@@ -14,7 +14,7 @@ static void create() {
     SetBaseCost("silver",20);
     SetMealType(MEAL_DRINK | MEAL_ALCOHOL);
     SetStrength(30);
-    SetMealMessages("You finish off the boubon and gasp! WHEW!! Mean stuff!",
+    SetMealMessages("You finish off the bourbon and gasp! WHEW!! Mean stuff!",
             "$N finishes off a bottle of bourbon and gasps.");
 }
 void init(){

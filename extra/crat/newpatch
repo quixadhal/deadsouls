@@ -63,6 +63,7 @@ mkdir $OLDLIB/lib/domains/cave/txt
 mkdir $OLDLIB/lib/domains/cave/virtual
 mkdir $OLDLIB/lib/domains/cave/weap
 mkdir $OLDLIB/lib/doc/phints
+mkdir $OLDLIB/lib/domains/campus/chamber
 
 if [ $3 ]
 then

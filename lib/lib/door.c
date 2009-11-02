@@ -142,7 +142,7 @@ varargs mixed eventClose(object who){
         }
         if(who){
             who->eventPrint("You close " + GetShort(tmp) + ".");
-            room->eventPrint((string)who->GetName() + " closes " + GetShort(tmp) + ".",
+            room->eventPrint(who->GetName() + " closes " + GetShort(tmp) + ".",
                     who);
         }
     }
@@ -171,17 +171,17 @@ varargs mixed eventLock(object who, mixed key, mixed foo){
             tmp = GetShort(side);
             if( !(sizeof(key->GetId() & GetKeys(side))) ){
                 who->eventPrint("You fail to lock " + tmp +
-                        " with " + (string)key->GetShort()+".");
-                room->eventPrint((string)who->GetName() + " attempts to " 
+                        " with " + key->GetShort()+".");
+                room->eventPrint(who->GetName() + " attempts to " 
                         "lock " + tmp + " with " +
-                        (string)key->GetShort() + ", but fails.",who);
+                        key->GetShort() + ", but fails.",who);
                 return 1;
             }
             SetLocked(1);
             who->eventPrint("You lock " + tmp +
-                    " with " + (string)key->GetShort()+".");
-            room->eventPrint((string)who->GetName() + " locks " + tmp +
-                    " with " + (string)key->GetShort() + ".", who);
+                    " with " + key->GetShort()+".");
+            room->eventPrint(who->GetName() + " locks " + tmp +
+                    " with " + key->GetShort() + ".", who);
             return 1;
         }
     }
@@ -217,7 +217,7 @@ varargs int eventOpen(object who, object tool){
         }
         if(who){
             who->eventPrint("You open " + GetShort(tmp) + ".");
-            room->eventPrint((string)who->GetName() + " opens " + GetShort(tmp) + ".",
+            room->eventPrint(who->GetName() + " opens " + GetShort(tmp) + ".",
                     who);
         }
     }
@@ -274,16 +274,16 @@ mixed eventUnlock(object who, object key){
             tmp = GetShort(side);
             if(!sizeof((key_id & (GetKeys(side) || ({}))))){
                 who->eventPrint("You fail to unlock " + tmp +
-                        " with " + (string)key->GetShort()+".");
-                room->eventPrint((string)who->GetName() + " attempts to "
+                        " with " + key->GetShort()+".");
+                room->eventPrint(who->GetName() + " attempts to "
                         "unlock " + tmp + " with " +
-                        (string)key->GetShort() + ", but fails.",who);
+                        key->GetShort() + ", but fails.",who);
                 return 1;
             }
             SetLocked(0);
             who->eventPrint("You unlock " + tmp + ".");
-            room->eventPrint((string)who->GetName() + " unlocks " + tmp +
-                    " with " + (string)key->GetShort() + ".", who);
+            room->eventPrint(who->GetName() + " unlocks " + tmp +
+                    " with " + key->GetShort() + ".", who);
             return 1;
         }
     }
@@ -360,7 +360,7 @@ varargs string GetShort(string side){
     }
     if( stringp(Sides[side]["Short"]) )
         return Sides[side]["Short"];
-    else return (string)evaluate(Sides[side]["Short"], side);
+    else return evaluate(Sides[side]["Short"], side);
 }
 
 string GetDefiniteShort(){
@@ -382,7 +382,7 @@ string GetLong(string side){
     else tmp = "It is open.";
     if( stringp(Sides[side]["Long"] ) )
         return Sides[side]["Long"] + "\n" + tmp;
-    else return (string)evaluate(Sides[side]["Long"], side);
+    else return evaluate(Sides[side]["Long"], side);
 }
 
 varargs string *SetKeys(string side, mixed *args...){
@@ -419,7 +419,7 @@ varargs mixed eventKnock(object who, mixed what){
         }
         if(who){
             who->eventPrint("You knock on the " + remove_article(GetShort(tmp)) + ".");
-            room->eventPrint((string)who->GetName() + " knocks on the " + remove_article(GetShort(tmp)) + ".",
+            room->eventPrint(who->GetName() + " knocks on the " + remove_article(GetShort(tmp)) + ".",
                     who);
         }
     }
@@ -445,7 +445,7 @@ varargs mixed eventScratch(object who, mixed what){
         }
         if(who){
             who->eventPrint("You scratch on the " + remove_article(GetShort(tmp)) + ".");
-            room->eventPrint((string)who->GetName() + " scratches on the " + remove_article(GetShort(tmp)) + ".",
+            room->eventPrint(who->GetName() + " scratches on the " + remove_article(GetShort(tmp)) + ".",
                     who);
         }
     }

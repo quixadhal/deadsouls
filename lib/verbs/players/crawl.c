@@ -21,7 +21,7 @@ static void create() {
 
 mixed can_crawl_str(string str) {
     if( !environment(this_player()) ) return "You are nowhere.";
-    if( (int)this_player()->GetStaminaPoints() <3 )
+    if( this_player()->GetStaminaPoints() <3 )
         return "You are too tired to crawl anywhere right now.";
     if(this_player()->GetPosition() != POSITION_LYING &&
             this_player()->GetPosition() != POSITION_SITTING){
@@ -32,7 +32,7 @@ mixed can_crawl_str(string str) {
 
 mixed can_crawl_into_str(string str) {
     if( !environment(this_player()) ) return "You are nowhere.";
-    if( (int)this_player()->GetStaminaPoints() <3 )
+    if( this_player()->GetStaminaPoints() <3 )
         return "You are too tired right now.";
     if(this_player()->GetPosition() != POSITION_LYING &&
             this_player()->GetPosition() != POSITION_SITTING){
@@ -43,7 +43,7 @@ mixed can_crawl_into_str(string str) {
 
 mixed do_crawl_str(string str) {
     this_player()->AddStaminaPoints(-5);
-    (mixed)environment(this_player())->eventGo(this_player(), str);
+    environment(this_player())->eventGo(this_player(), str);
     return 1;
 }
 

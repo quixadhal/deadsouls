@@ -300,5 +300,6 @@ string cleaned_name(string str);
 string cleaned_end(string str);
 string new_savename(string name);
 string old_savename(string name);
+string comma(mixed x);
 
 #endif /* l_sefun_h */

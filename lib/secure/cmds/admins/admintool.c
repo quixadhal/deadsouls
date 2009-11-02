@@ -6,7 +6,7 @@ inherit LIB_DAEMON;
 
 static private void validate() {
     if(!this_player()) return 0;
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) )
+    if( !(master()->valid_apply(({ "ASSIST" }))) )
         error("Illegal attempt to access admintool: "+get_stack()+" "+identify(previous_object(-1)));
 }
 
@@ -731,7 +731,7 @@ int DoRid(string who) {
         return 1;
     }
     if( ob = find_player(ridded)) {
-        who = (string)ob->GetCapName();
+        who = ob->GetCapName();
         message("system", "You are being ridded from " + mud_name() + ".",
                 ob);
         ob->eventForce("quit");
@@ -747,7 +747,7 @@ int DoRid(string who) {
 int LogRid(string str){
     validate();
     globalstr = str;
-    log_file("rid", "\n" + ridded + " by " + (string)this_player()->GetCapName() + "\n" + str + "\n");
+    log_file("rid", "\n" + ridded + " by " + this_player()->GetCapName() + "\n" + str + "\n");
     write(ridded + " has been ridded from " + mud_name() + ".");
     Menu();
     return 1;
@@ -773,7 +773,7 @@ int eventBanishUser(string str){
     }
     else {
         write("A player by that name already exists.\n");
-        this_player()->eventPrint((string)FINGER_D->GetFinger(str));
+        this_player()->eventPrint(FINGER_D->GetFinger(str));
     }
     Menu();
     return 1;

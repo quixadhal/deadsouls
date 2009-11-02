@@ -48,7 +48,7 @@ mixed can_turn_obj_off(mixed foo) {
 }
 
 mixed do_turn() {
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " turns around.", this_player());
     this_player()->eventPrint("You turn around.");
     return 1;

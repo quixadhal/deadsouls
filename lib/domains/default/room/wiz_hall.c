@@ -56,6 +56,7 @@ int CanReceive(object sneak) {
     foreach(object ob in living_stack){
         if(living(ob) && !creatorp(ob) && 
                 base_name(ob) != "/domains/default/npc/tree" &&
+                base_name(ob) != "/secure/npc/arch_wraith" &&
                 base_name(ob) != "/domains/default/npc/drone3" &&
                 base_name(ob) != "/secure/obj/floodmapper" &&
                 !member_group(ob,"TEST")) {

@@ -26,6 +26,12 @@ int ActionFunction(){
     return 1;
 }
 
+varargs string readSign() {
+    string ret = "WARNING! Orcs, dwarves, and some other races cannot "+
+    "swim! If you jump into the sea you will sink and drown!";
+    return ret;
+}
+
 int ActionFunction2(){
     object *cres, dude;
     if(!sizeof(get_livings(this_object()))) return 0;
@@ -47,11 +53,18 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetShort("Shore Edge");
-    SetNightLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon. A lone lamp post lights this area.");
-    SetDayLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon.");
+    SetNightLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon. A lone lamp post lights this area. \n%^GREEN%^There is a sign here you can read.%^RESET%^");
+    SetDayLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon. \n%^GREEN%^There is a sign here you can read.%^RESET%^");
+    SetItems( ([
+      "sign":"A sign on the ground. To read it, 'read sign'.",
+      "ground":"The local surface.",
+      "horizon":"Where the sky loves the sea.",
+      "town":"A population center to the west.",
+      "road":"Leads west, to the town.",
+    ]) );
+    SetRead("sign", (: readSign :) );
     SetExits( ([
                 "west" : "/domains/town/room/vill_road4.c",
-                "east" : "/domains/town/virtual/surface/33,100000",
                 ]) );
     //SetFrequency determines how often the room checks 
     //whether it should perform an action. If it is set

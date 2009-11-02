@@ -151,7 +151,7 @@ varargs mixed eventPick(object who, string id, object tool){
     limb = prehensiles[random(sizeof(prehensiles))];
 
     if( !tool ){
-        strength = (int)who->GetSkillLevel("stealth");
+        strength = who->GetSkillLevel("stealth");
     }
     else {
         tmp = tool->eventPickLock(who, id, this_object());

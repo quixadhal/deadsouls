@@ -131,7 +131,7 @@ mixed eventSell(object who, string args){
         return 1;
     }
     x = query_value(ob->GetBaseCost(),query_base_currency(),GetLocalCurrency());
-    if( x > (int)who->GetCurrency(GetLocalCurrency()) ){
+    if( x > who->GetCurrency(GetLocalCurrency()) ){
         eventForce("speak You do not have that much in " + GetLocalCurrency());
         return 1;
     }
@@ -140,22 +140,22 @@ mixed eventSell(object who, string args){
         eventForce("speak I seem to be having some troubles.");
         return 1;
     }
-    if( !((int)ob->eventMove(this_object())) ){
+    if( !(ob->eventMove(this_object())) ){
         eventForce("speak Sorry, today is just not my day");
         return 1;
     }
-    eventForce("give " + (string)ob->GetKeyName() + " to " +
-            (string)who->GetKeyName());
+    eventForce("give " + ob->GetKeyName() + " to " +
+            who->GetKeyName());
     if( environment(ob) == this_object() ){
         eventForce("speak heh, you cannot carry that.  I will drop it.");
-        eventForce("drop " + (string)ob->GetKeyName());
+        eventForce("drop " + ob->GetKeyName());
         if( environment(ob) == this_object()){
             ob->eventMove(environment());
         }
     }
     who->AddCurrency(GetLocalCurrency(), -x);
     eventForce("speak Thank you for your business, " +
-            (string)who->GetName());
+            who->GetName());
     return 1;
 }
 

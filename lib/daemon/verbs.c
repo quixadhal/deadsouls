@@ -24,10 +24,10 @@ static int ScheduledVerbLoad(string *cache){
         string *verb_list;
         if( ob = find_object(verb) ) catch(ob->eventDestruct());
         if( !catch(ob = load_object(verb)) && ob ) {
-            if( !(verb_list = (string *)ob->GetVerbs()) )
+            if( !(verb_list = ob->GetVerbs()) )
                 verb_list = ({ explode(verb, "/")[<1][0..<3] });
             else if(verb_list && ob->GetSynonyms()) {
-                verb_list += (string *)ob->GetSynonyms();
+                verb_list += ob->GetSynonyms();
             }
             Verbs += expand_keys(([ verb_list : verb ]));
         }
@@ -74,7 +74,7 @@ varargs void eventReloadVerbs(mixed val) {
 
 string GetErrorMessage(string verb) {
     if( !Verbs[verb] ) return 0;
-    else return (string)Verbs[verb]->GetErrorMessage();
+    else return Verbs[verb]->GetErrorMessage();
 }
 
 int GetValidVerb(string verb) {

@@ -63,22 +63,22 @@ mixed eventJump(object who, string id, int type){
         switch(type){
             case JUMP_INTO:
                 omsg = "$N jumps into the " + id + ".";
-                imsg = "$N comes landing in.";
+                imsg = "$N leaps in.";
                 break;
 
             case JUMP_FROM:
                 omsg = "$N jumps out of here.";
-                imsg = "$N comes landing in.";
+                imsg = "$N leaps in.";
                 break;
 
             case JUMP_THROUGH:
                 omsg = "$N jumps through the " + id + ".";
-                imsg = "$N comes landing in.";
+                imsg = "$N leaps in.";
                 break;
 
             case JUMP_OVER:
                 omsg = "$N jumps over the " + id + ".";
-                imsg = "$N comes landing in.";
+                imsg = "$N leaps in.";
                 break;
         }
         who->eventMoveLiving(dest, omsg, imsg);

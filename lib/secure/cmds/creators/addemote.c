@@ -20,7 +20,7 @@ static void AddRule(string rule, string emote);
 
 static private void validate() {
     if(!this_player()) return 0;
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
+    if( !(master()->valid_apply(({ "ASSIST" }))) &&
             !member_group(this_player(), "EMOTES") )
         error("Illegal attempt to access addemote: "+get_stack()+" "+identify(previous_object(-1)));
 }
@@ -222,7 +222,7 @@ static void ShowEmote(string emote) {
 }
 
 mixed cmd(string args) {
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
+    if( !(master()->valid_apply(({ "ASSIST" }))) &&
             !member_group(this_player(), "EMOTES") ){
         write("You are not admin, nor a member of the EMOTES group.");
         return 1;

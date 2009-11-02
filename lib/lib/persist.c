@@ -127,7 +127,7 @@ string GetSaveString(){
     }
     mp["#base_name#"] = base_name(this_object());
     if( SaveRecurse )
-        mp["#inventory#"] = (string *)all_inventory()->GetSaveString() - ({ 0 });
+        mp["#inventory#"] = all_inventory()->GetSaveString() - ({ 0 });
     return save_variable(mp);
 }
 

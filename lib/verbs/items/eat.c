@@ -29,7 +29,7 @@ void eventEat(object who, object what) {
     if( !what ) {
         return;
     }
-    return (mixed)what->eventEat(who);
+    return what->eventEat(who);
 }
 
 mixed can_eat_obj() { 

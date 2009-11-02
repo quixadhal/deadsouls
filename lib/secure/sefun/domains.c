@@ -30,18 +30,18 @@ varargs string domain(mixed val, int path) {
     string nom, tmp, foo;
     int hits;
 
-    if(objectp(val) && domain_exists(tmp=(string)val->GetDomain())){ 
+    if(objectp(val) && domain_exists(tmp=val->GetDomain())){ 
         if(!path) return tmp;
         if(val->GetDomainPath()) return val->GetDomainPath();
         else return tmp;
     }
     if(stringp(val) && val=load_object(val) &&
-            domain_exists(tmp=(string)val->GetDomain())){
+            domain_exists(tmp=val->GetDomain())){
         if(!path) return tmp;
         if(val->GetDomainPath()) return val->GetDomainPath();
         else return tmp;
     }
-    nom = (objectp(val) ? file_name(val) : (string)val);
+    nom = (objectp(val) ? file_name(val) : val);
     if((hits = (sscanf(nom, DOMAINS_DIRS+"/%s/%*s", tmp)))){
         if(path) return DOMAINS_DIRS+"/"+tmp;
         return tmp;

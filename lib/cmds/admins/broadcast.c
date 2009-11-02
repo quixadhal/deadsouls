@@ -12,7 +12,7 @@ int cmd(string str) {
     if(!archp(previous_object())) return 0;
     message("broadcast",
             sprintf("%%^RED%%^Broadcast message from %s: %%^YELLOW%%^%s%%^RESET%%^",
-                (string)this_player()->GetName(), str), users());
+                this_player()->GetName(), str), users());
     return 1;
 }
 

@@ -129,7 +129,7 @@ mixed eventGetFrom(object who, object array what){
     if( !(maxi = sizeof(what)) ){
         return 0;
     }
-    shorts = map(what, (: (string)$1->GetShort() :));
+    shorts = map(what, (: $1->GetShort() :));
     for(i=0; i<maxi; i++){
         mp[shorts[i]]++;
     }

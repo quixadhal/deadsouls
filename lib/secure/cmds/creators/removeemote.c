@@ -13,7 +13,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args){
     string verb, rule;
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
+    if( !(master()->valid_apply(({ "ASSIST" }))) &&
             !member_group(this_player(), "EMOTES") ){
         write("You are not admin, nor a member of the EMOTES group.");
         return 1;

@@ -23,13 +23,13 @@ static void create() {
 
 mixed can_say_to_liv(object ob) {
     if( !ob ) return 0;
-    return "What is it you are trying to say to "+ (string)ob->GetName() + "?";
+    return "What is it you are trying to say to "+ ob->GetName() + "?";
 }
 
 mixed can_say_to_liv_str(object targ, string str) {
-    string lang = (string)this_player()->GetDefaultLanguage() || 
-        (string)this_player()->GetNativeLanguage();
-    return (mixed)this_player()->CanSpeak(targ, TALK_LOCAL, str, lang);
+    string lang = this_player()->GetDefaultLanguage() || 
+        this_player()->GetNativeLanguage();
+    return this_player()->CanSpeak(targ, TALK_LOCAL, str, lang);
 }
 
 mixed can_say(mixed args...) {
@@ -37,10 +37,10 @@ mixed can_say(mixed args...) {
 }
 
 mixed can_say_str(string str) {
-    string lang = (string)this_player()->GetDefaultLanguage() ||
-        (string)this_player()->GetNativeLanguage();
+    string lang = this_player()->GetDefaultLanguage() ||
+        this_player()->GetNativeLanguage();
     if( !str ) return 0;
-    return (mixed)this_player()->CanSpeak(0, TALK_LOCAL, str, lang);
+    return this_player()->CanSpeak(0, TALK_LOCAL, str, lang);
 }
 
 mixed do_say(mixed args...){
@@ -51,9 +51,9 @@ mixed do_say(mixed args...){
 mixed do_say_to_liv(object ob) { return 1; }
 
 mixed do_say_to_liv_str(object targ, string str) {
-    string lang = (string)this_player()->GetDefaultLanguage() ||
-        (string)this_player()->GetNativeLanguage();
-    return (mixed)this_player()->eventSpeak(targ, TALK_LOCAL, str, lang);
+    string lang = this_player()->GetDefaultLanguage() ||
+        this_player()->GetNativeLanguage();
+    return this_player()->eventSpeak(targ, TALK_LOCAL, str, lang);
 }
 
 mixed do_say_str(string str) { return do_say_to_liv_str(0, str); }

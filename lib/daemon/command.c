@@ -46,12 +46,12 @@ void eventRehash(mixed paths) {
 string GetCommand(string cmd, string *path) {
     string *tmp;
 
-    if( Commands[cmd] && sizeof(tmp = (path & (string *)Commands[cmd])) )
+    if( Commands[cmd] && sizeof(tmp = (path & Commands[cmd])) )
         return sprintf("%s/%s", tmp[0], cmd);
     else {
         tmp = (path & Paths);
         if( sizeof(tmp = path - tmp) ) eventRehash(tmp);
-        if( Commands[cmd] && sizeof(tmp = (path & (string *)Commands[cmd])) )
+        if( Commands[cmd] && sizeof(tmp = (path & Commands[cmd])) )
             return sprintf("%s/%s", tmp[0], cmd);
     }
     return 0;

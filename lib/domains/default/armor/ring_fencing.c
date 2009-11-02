@@ -3,7 +3,7 @@
 #include <damage_types.h>
 inherit LIB_ARMOR;
 
-int DoWear();
+varargs int DoWear(object who, string where);
 int CheckRing(string skill);
 
 static void create(){
@@ -25,12 +25,13 @@ void init(){
     ::init();
 }
 
-int DoWear(){
-    this_player()->AddSkillBonus("blade attack", (: CheckRing :) );
-    this_player()->AddSkillBonus("blade defense", (: CheckRing :) );
-    write("You wear the ring and feel oddly dextrous...and somehow "+
-            "fancy.");
-    say(this_player()->GetName() + " wears " + GetShort() + ".");
+varargs int DoWear(object who, string where){
+    object env = environment(who);
+    who->AddSkillBonus("blade attack", (: CheckRing :) );
+    who->AddSkillBonus("blade defense", (: CheckRing :) );
+    who->eventPrint("You wear the ring and feel oddly dextrous..."+
+      "and somehow fancy.");
+    if(env) tell_room(env, who->GetName()+" wears "+GetShort()+".", ({who}));
     return 1;
 }
 

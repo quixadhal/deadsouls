@@ -15,6 +15,13 @@
 #include <message_class.h>
 #include "include/connect.h"
 
+#define CUSTOM_FORMAT 0
+#define REAL_NAME 0
+
+#ifndef __ANSI_SUBSTITUTE__
+#define __ANSI_SUBSTITUTE__ 0x1e
+#endif
+
 inherit LIB_PAGER;
 #include <mssp.h>
 
@@ -282,7 +289,7 @@ static void InputPassword(string pass, string cap) {
         if(rescue) unguarded( (: wipe_inv(name) :) );
     }
 
-    Player = (object)master()->player_object(Name);
+    Player = master()->player_object(Name);
     if( !Player ) {
         receive("\nIt seems some work is being done right now, try later.\n");
         Destruct();
@@ -294,8 +301,10 @@ static void InputPassword(string pass, string cap) {
         Player->SetRace("human");
     }
 
-    call_out( (: eventCheckPending, lower_case(Name) :), 3);
-    if( !NetDead ) eventEnterGame();
+    if( !NetDead ){
+        call_out( (: eventCheckPending, lower_case(Name) :), 3);
+        eventEnterGame();
+    }
     else eventReEnterGame(cap);
 }
 
@@ -395,6 +404,7 @@ static void eventReEnterGame(string cap) {
         if(creatorp(Player)) 
             Player->AddChannel((CHAT_D->GetSystemChannels() - ({"muds"})));
         SNOOP_D->ReportReconnect(Player->GetKeyName());
+        call_out( (: eventCheckPending, lower_case(Name) :), 3);
     }
     receive("\nProblem reconnecting.\n");
     Destruct();
@@ -431,6 +441,7 @@ static void ConfirmReconnect(string ans, string cap) {
         Player->SetTeloptIp(0);
     }
     Player->eventPrint("\nAllowing login.\n", MSG_SYSTEM);
+    call_out( (: eventCheckPending, lower_case(Name) :), 3);
     Destruct();
 }
 
@@ -520,9 +531,15 @@ static void InputGender(string str, string cap) {
     }
     if(str == "none") str = "neuter";
     Gendre = str;
-    receive("\nYou may format " + cap + " to appear however you wish using "
-            "spaces, ', or -.\nEnter a display name (default: " + cap +"): \n");
-    input_to((: InputCapName :), I_NOESC, cap);
+    if(CUSTOM_FORMAT){
+        receive("\nYou may format " + cap + " to appear however you wish "
+                "using spaces, ', or -.\nEnter a display name "
+                "(default: " + cap +"): \n");
+        input_to((: InputCapName :), I_NOESC, cap);
+    }
+    else {
+        InputCapName(cap, cap);
+    }
 }
 
 static void InputCapName(string name, string cap) {
@@ -550,8 +567,14 @@ static void InputEmail(string email) {
         return; 
     } 
     E_Mail = email;
-    receive("\nIf you do not mind, please enter your real name (optional): \n");
-    input_to( (: InputRealName :), I_NOESC );
+    if(REAL_NAME){
+        receive("\nIf you do not mind, please enter your real name "
+            "(optional): \n");
+        input_to( (: InputRealName :), I_NOESC );
+    }
+    else {
+        InputRealName("");
+    }
 }
 
 static void InputRealName(string rname) {
@@ -567,7 +590,9 @@ static void InputRealName(string rname) {
         receive("\thelp RACE - (e.g. \"help human\") gives you information on "
                 "a race\n");
         receive("\tpick RACE - pick a particular race for yourself\n");
-        receive("\nRace: \n");
+        receive("\n\tValid races: ");
+        receive(implode(sort_array(RACES_D->GetRaces(1), 1), " "));
+        receive("\n\nRace: \n");
         input_to((: InputRace :), I_NOESC);
     }
     else InputRace("pick human");
@@ -575,6 +600,7 @@ static void InputRealName(string rname) {
 
 static void InputRace(string str) {
     string cmd, args;
+    string *valid = ( RACES_D->GetRaces(1) || ({}) );
 
     if( str == "" || !str ) {
         receive("\nRace: ");
@@ -585,6 +611,10 @@ static void InputRace(string str) {
         cmd = str;
         args = 0;
     }
+    if(member_array(cmd, valid) != -1){
+        args = cmd;
+        cmd = "pick";
+    } 
     switch(cmd) {
         case "list":
             cmdList();
@@ -595,6 +625,7 @@ static void InputRace(string str) {
         return;
 
         case "pick":
+            //tc("pick: "+args);
             cmdPick(args);
         return;
 
@@ -607,7 +638,7 @@ static void InputRace(string str) {
 
 static void cmdHelp(string args) {
     function f;
-    string array races = (string array)RACES_D->GetRaces(1);
+    string array races = RACES_D->GetRaces(1);
     string help;
 
     f = function(string str) {
@@ -632,7 +663,7 @@ static void cmdHelp(string args) {
 static void cmdList() {
     string list;
 
-    list = format_page((string array)RACES_D->GetRaces(1), 5);
+    list = format_page(sort_array(RACES_D->GetRaces(1), 1), 5);
     receive(list);
     receive("\nRace: \n");
     input_to((: InputRace :), I_NOESC);
@@ -645,12 +676,13 @@ static void cmdPick(string args) {
         return;
     }
     if( member_array(args = lower_case(args),
-                (string array)RACES_D->GetRaces(1)) == -1 ) {
+                RACES_D->GetRaces(1)) == -1 ) {
         receive("No such race.\nRace: \n");
         input_to((: InputRace :), I_NOESC);
         return;
     }
     raza = args;
+    //tc("raza: "+args);
     if(!AUTO_WIZ){
         if(CLASS_SELECTION){
             eventSelectClass();
@@ -680,12 +712,15 @@ static void eventSelectClass(){
     receive("\thelp CLASS - (e.g. \"help explorer\") gives you information on "
             "a class\n");
     receive("\tpick CLASS - pick a particular class for yourself\n");
+    receive("\n\tValid classes: ");
+    receive(implode(sort_array(CLASSES_D->GetClasses(1), 1), " "));
     receive("\nClass: \n");
     input_to((: InputClass :), I_NOESC);
 }
 
 static void InputClass(string str){
     string cmd, args;
+    string *valid = ( CLASSES_D->GetClasses(1) || ({}) );
 
     if( str == "" || !str ) {
         receive("\nClass: ");
@@ -695,6 +730,10 @@ static void InputClass(string str){
     if( sscanf(str, "%s %s", cmd, args) != 2 ) {
         cmd = str;
         args = 0;
+    }
+    if(member_array(cmd, valid) != -1){
+        args = cmd;
+        cmd = "pick";
     }
     switch(cmd) {
         case "list":
@@ -743,7 +782,7 @@ static void cmdHelpClass(string args){
 static void cmdListClasses() {
     string list;
 
-    list = format_page(CLASSES_D->GetClasses(1), 5);
+    list = format_page(sort_array(CLASSES_D->GetClasses(1), 1), 5);
     receive(list);
     receive("\nClass: \n");
     input_to((: InputClass :), I_NOESC);

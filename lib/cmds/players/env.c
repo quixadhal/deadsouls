@@ -49,7 +49,7 @@ mixed cmd(string args) {
     ret += "Playerkiller mode: \t"+ ( (this_player()->GetPK()) ? "on" : "off" )+"\n";
     ret += "Mute mode: \t\t"+ GetMuted()+" \n";
     ret += "Gag mode: \t\t"+ GetGagged()+" \n";
-    ret += "Wimpy mode: \t\t"+ ( ((int)this_player()->GetWimpy()) ? "on" : "off" )+"\n";
+    ret += "Wimpy mode: \t\t"+ ( (this_player()->GetWimpy()) ? "on" : "off" )+"\n";
 #if efun_defined(compressedp)
     ret += "MCCP mode: \t\t"+(compressedp(this_player()) ? "on" : "off")+"\n";
 #endif

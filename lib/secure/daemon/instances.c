@@ -37,7 +37,7 @@ varargs static int validate(int i, int soft){
             return 0;
         }
     }
-    if(previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
+    if(previous_object() != this_object() && !(master()->valid_apply(({ "ASSIST" }))) ){
         yenta("SECURITY ALERT: validation failure in INSTANCES_D.\n","red");
         if(soft) return 0;
         error("Illegal attempt to access router socket daemon: "+get_stack()+
@@ -127,6 +127,9 @@ mixed InstCreate(string name, string addy, int port){
             }
             if(!strsrch(line, "#define LOG_LOCAL_CHANS")){
                 line = "#define LOG_LOCAL_CHANS          0";
+            }
+            if(!strsrch(line, "#define AUTO_WIZ")){
+                line = "#define AUTO_WIZ                 0";
             }
             newconf +=  line + "\n";
         }
@@ -278,7 +281,7 @@ varargs void SendTell(string who, string msg, string interwho){
     string sender, vname;
     if(interwho){
         ob = previous_object();
-        if(base_name(ob) != SERVICES_D) return;
+        if(base_name(ob) != SERVICES_D && base_name(ob) != IMC2_D) return;
         sender = interwho;
         vname = interwho;
     }

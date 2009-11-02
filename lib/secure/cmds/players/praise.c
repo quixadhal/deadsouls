@@ -41,19 +41,19 @@ mixed cmd(string text) {
     ob = (ob || environment(this_player()));
     if( text != "" ) {
         if( ob ) {
-            tmp = (string)this_player()->GetCapName() + " reports praise in: " +
+            tmp = this_player()->GetCapName() + " reports praise in: " +
                 identify(ob) + "\non " + ctime(time()) + "\n";
             secondary = GetCreator(ob);
         }
         else 
-            tmp = (string)this_player()->GetCapName() + " reports praise on: " +
+            tmp = this_player()->GetCapName() + " reports praise on: " +
                 ctime(time()) + ":\n";
         log_file("praise", tmp + text + "\n\n");
         if( secondary ) log_file("reports/" + secondary, tmp + text + "\n\n");
         message("system", "Praise reported!!! Thank you!!!", this_player());
         return 1;
     }
-    rm( file = DIR_TMP "/" + (string)this_player()->GetKeyName() );
+    rm( file = DIR_TMP "/" + this_player()->GetKeyName() );
     this_player()->eventEdit( file, (: eventEndEdit, ob :) );
     return 1;
 }
@@ -61,19 +61,19 @@ mixed cmd(string text) {
 void eventEndEdit(object ob) {
     string tmp, text, file, secondary;
 
-    file = DIR_TMP "/" + (string)this_player()->GetKeyName();
+    file = DIR_TMP "/" + this_player()->GetKeyName();
     if( !file_exists(file) || !(text = read_file(file)) ) {
         message("system", "Praise report aborted.", this_player());
         return;
     }
     rm(file);
     if( ob ) {
-        tmp = (string)this_player()->GetCapName() + " reports praise in: " +
+        tmp = this_player()->GetCapName() + " reports praise in: " +
             identify(ob) + "\non: " + ctime(time()) + "\n";
         secondary = GetCreator(ob);
     }
     else 
-        tmp = (string)this_player()->GetCapName() + " reports praise on " +
+        tmp = this_player()->GetCapName() + " reports praise on " +
             ctime(time()) + ":\n";
     log_file("praise", tmp + text + "\n\n");
     if( secondary ) log_file("reports/" + secondary, tmp + text + "\n\n"); 

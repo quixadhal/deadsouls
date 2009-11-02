@@ -95,7 +95,7 @@ string ReadSign(){
 }
 
 int eventDestruct(){
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) )
+    if( !(master()->valid_apply(({ "ASSIST" }))) )
         error("Illegal attempt to destroy object: "+get_stack()+" "+identify(previous_object(-1)));
     else return ::eventDestruct();
 }

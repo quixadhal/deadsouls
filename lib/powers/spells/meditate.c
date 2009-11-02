@@ -1,11 +1,3 @@
-/*    /spells/buffer.c
- *    From Nightmare LPMud
- *    Created by Blitz 
- *    Converted to new spell system by BillGates 961119
- *    Version: @(#) buffer.c 1.6@(#)
- *    Last modified: 96/11/10
- */
-
 #include <lib.h>
 #include <magic.h>
 #include <damage_types.h>
@@ -24,12 +16,13 @@ static void create() {
     SetDifficulty(1);
     SetMorality(10);
     SetHelp("Syntax: <cast meditate>\n"
-            "A magical restoration spell that allows the caster to "
-            "restore their health and strength more quickly.\n\n");
+            "A spell that allows the caster to "
+            "restore their stamina more quickly.\n\n");
 }
 
 int eventCast(object who, int level) {
     int wis, skill, stamina_level;
+    object mojo = new("/secure/obj/meditate_mojo");
     wis = who->GetStatLevel("wisdom");
     skill = who->GetSkillLevel("magic defense");
     stamina_level = level;
@@ -38,7 +31,8 @@ int eventCast(object who, int level) {
     stamina_level += 10;
 
     who->AddStaminaPoints(stamina_level);
-    new("/secure/obj/meditate_mojo")->eventMove(who);
+    mojo->AddDuration(who->GetSkillLevel("conjuring"));
+    mojo->eventMove(who);
 
     send_messages("", "A %^BOLD%^MAGENTA%^dark magical field%^RESET%^ "
             "briefly appears around $agent_possessive_noun body.", who, 0,

@@ -108,7 +108,7 @@ void reset() {
 
 int do_drunkard() {
     if(present("guard") && !this_player()->query_invis()) {
-        present("guard")->eventForce("kill "+(string)this_player()->query_name());
+        present("guard")->eventForce("kill "+this_player()->query_name());
         this_player()->add_follower(present("guard"));
         write("The guard foils you before you can slip the key in!");
         say(this_player()->query_cap_name()+" is foiled trying to break "
@@ -147,8 +147,8 @@ int Bugga(string str) {
     if(this_player()->is_player()) return 0;
     ob = (object)this_player()->query_current_attacker();
     if(!ob) return 1;
-    limb = (string)ob->return_limb();
-    if((string)ob->query_class() == "rogue") amount = 24 + random(30);
+    limb = ob->return_limb();
+    if(ob->query_class() == "rogue") amount = 24 + random(30);
     else amount = 20 + random(20);
     ob->do_damage(limb, amount);
     tell_object(ob, "The guard bashes your "+limb+" with his "

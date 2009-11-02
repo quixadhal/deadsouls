@@ -65,10 +65,10 @@ static void create() {
                 ]) );
     AvailableSpells = ( ([
                 "fireball" : 1000,
+                "light" : 100,
                 "missile" : 500,
                 "buffer" : 200,
                 "meditate" : 500,
-                "inner strength" : 500,
                 "whip" : 10000,
                 ]) );
     SetPolyglot(1);
@@ -173,6 +173,6 @@ int eventReceiveObject() {
         return 1;
     }
 
-    AddCarriedMass((int)ob->GetMass());
+    AddCarriedMass(ob->GetMass());
     return 1;
 }

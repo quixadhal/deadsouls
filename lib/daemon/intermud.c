@@ -84,14 +84,14 @@ static void Setup(){
                 PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(), 
                 mudlib() + " " + mudlib_version(), version(), "LPMud",
                 MUD_STATUS, ADMIN_EMAIL,
-                (mapping)SERVICES_D->GetServices(), ExtraInfo() }) );
+                SERVICES_D->GetServices(), ExtraInfo() }) );
     tn("INTERMUD_D setup: "+identify( ({
                     "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
                     Password, MudList["ID"], ChannelList["ID"], query_host_port(),
                     PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(),
                     mudlib() + " " + mudlib_version(), version(), "LPMud",
                     MUD_STATUS, ADMIN_EMAIL,
-                    (mapping)SERVICES_D->GetServices(), ([]) }) ), "red");;
+                    SERVICES_D->GetServices(), ([]) }) ), "red");;
     call_out( (: FirstPing :), 5);
     call_out( (: load_object :), 5, IMC2_D);
 }
@@ -101,7 +101,7 @@ int GetConnectedStatus(){
 }
 
     void eventClearVars(){
-        if( !((int)master()->valid_apply(({ PRIV_ASSIST, INTERMUD_D }))) )
+        if( !(master()->valid_apply(({ PRIV_ASSIST, INTERMUD_D }))) )
             error("Illegal attempt to reset intermud: "+get_stack()+" "+identify(previous_object(-1)));
         Tries = 0;
         MudList = ([]);
@@ -407,10 +407,10 @@ string nextboot(){
         return "never";
     }
 
-    offset = (int)TIME_D->GetOffset(local_time()[9]);
+    offset = TIME_D->GetOffset(local_time()[9]);
     offset += EXTRA_TIME_OFFSET;
 
-    x = (int)EVENTS_D->GetRebootInterval() * 3600;
+    x = EVENTS_D->GetRebootInterval() * 3600;
     x = (time() - uptime()) + x;
     if(!LOCAL_TIME) 
         x += offset * 3600;

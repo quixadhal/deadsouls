@@ -30,7 +30,7 @@ mixed do_stealth_wrd(string args) {
     object caster  = this_player();
     object env = environment(caster);
 
-    int skill = (int)this_agent()->GetSkillLevel("stealth");
+    int skill = this_agent()->GetSkillLevel("stealth");
     if( skill < 20 ) {
         caster->eventPrint("You are not devious enough.");
         return 1;
@@ -38,9 +38,9 @@ mixed do_stealth_wrd(string args) {
 
 
     if( args == "on" ) {  
-        if( (int)caster->GetStaminaPoints() < 50 ) {
+        if( caster->GetStaminaPoints() < 50 ) {
             caster->eventPrint("You are too tired to move silently.",env);
-            env->eventPrint((string)caster->GetName() + " looks tired.",caster);
+            env->eventPrint(caster->GetName() + " looks tired.",caster);
             return 0;
         }
 

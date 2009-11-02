@@ -46,7 +46,7 @@ void heart_beat(){
         if( !fisher ) continue;
         if( !(ob = present(fisher)) || !living(ob) || !pole ) continue;
         if( !present(pole, ob) ) continue;
-        if( (int)pole->GetBroken() ) continue;
+        if( pole->GetBroken() ) continue;
         if( (object)ob->GetInCombat() ){
             message("my_action", "You are no longer fishing.", ob);
             RemoveFishing(ob);
@@ -72,15 +72,15 @@ void heart_beat(){
         /* if this room is impossible to fish, or if using a non-fishing 
          * device, no fishing can really occur
          */
-        if( !Chance || !(x = (int)pole->eventFish(who)) ) chance = 0;
+        if( !Chance || !(x = pole->eventFish(who)) ) chance = 0;
         else {
             pro = (Chance + x + who->GetStatLevel("luck"))/3;
-            chance = (Chance + x + (int)who->GetStatLevel("luck")) /
+            chance = (Chance + x + who->GetStatLevel("luck")) /
                 (1 + random(5));
         }
         /* Give extra weight to fishing skill */
         if( chance ) 
-            chance = random(chance/2 + (int)who->GetSkillLevel("fishing")/2);
+            chance = random(chance/2 + who->GetSkillLevel("fishing")/2);
         y = 0;
         foreach(fish, x in Fish) y += x;
         y = random(y);
@@ -105,9 +105,9 @@ void heart_beat(){
 }
 
     mixed CanCast(object who, string where){
-        if( (int)this_player()->GetInCombat() ) 
+        if( this_player()->GetInCombat() ) 
             return "You are too busy to fish!";
-        if( Fishing[(string)this_player()->GetKeyName()] )
+        if( Fishing[this_player()->GetKeyName()] )
             return "You are already fishing!";
         if( GetMaxFishing() <= sizeof(Fishing) ) 
             return "It is too crowded here to fish.";
@@ -116,7 +116,7 @@ void heart_beat(){
 
 mixed CanStop(object who, string str){
     if( str != "fishing" ) return 0;
-    str = (string)this_player()->GetKeyName();
+    str = this_player()->GetKeyName();
     if( !Fishing[str] ) return "You are not fishing!";
     return 1;
 }
@@ -140,24 +140,24 @@ static void eventCatch(object who, string fish, object pole){
 
     if( !who || !present(who) ) return;
     if( !pole || !present(pole, who) ){
-        message("my_action", "Having given up " + (string)pole->GetShort() + 
+        message("my_action", "Having given up " + pole->GetShort() + 
                 ", you lose your catch!", who);
         return;
     }
-    if( !((int)pole->eventCatch(who, fish)) ) return;
+    if( !(pole->eventCatch(who, fish)) ) return;
     food=new(fish);
     RemoveFishing(who);
-    who->AddSkillPoints("fishing", (int)fish->GetFight()+(int)fish->GetMass());
-    message("my_action", "You find " + (string)fish->GetShort() + " on " +
-            (string)pole->GetShort() + "!", who);
-    message("other_action", (string)who->GetName() + " finds " + 
-            (string)fish->GetShort() + " on " + (string)pole->GetShort() + 
+    who->AddSkillPoints("fishing", fish->GetFight()+fish->GetMass());
+    message("my_action", "You find " + fish->GetShort() + " on " +
+            pole->GetShort() + "!", who);
+    message("other_action", who->GetName() + " finds " + 
+            fish->GetShort() + " on " + pole->GetShort() + 
             "!", this_object(), ({ who }));
-    if( !((int)food->eventMove(who)) ){
-        message("my_action", "You drop " + (string)food->GetShort() + "!",
+    if( !(food->eventMove(who)) ){
+        message("my_action", "You drop " + food->GetShort() + "!",
                 who);
-        message("other_action", (string)who->GetName() + " drops " +
-                (string)food->GetShort() + "!", this_object(), ({ who }) );
+        message("other_action", who->GetName() + " drops " +
+                food->GetShort() + "!", this_object(), ({ who }) );
         food->eventMove(this_object());
     }
 }
@@ -165,7 +165,7 @@ static void eventCatch(object who, string fish, object pole){
 mixed eventStop(object who, string str){
     RemoveFishing(this_player());
     message("my_action", "You stop fishing.", who);
-    message("other_action", (string)who->GetName() + " stops "
+    message("other_action", who->GetName() + " stops "
             "fishing.", this_object(), ({ who }) );
     return 1;
 }
@@ -192,7 +192,7 @@ mapping GetFish(){ return Fish; }
 mapping SetFishing(object who, object pole){
     if( !living(who) ) return Fishing;
     if( !query_heart_beat() ) set_heart_beat(1);
-    Fishing[(string)who->GetKeyName()] = pole;
+    Fishing[who->GetKeyName()] = pole;
     return Fishing;
 }
 

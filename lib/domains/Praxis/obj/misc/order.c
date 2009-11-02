@@ -114,7 +114,7 @@ static void input_exit(string str) {
     mapping valid_exits;
     string file;
 
-    if(member_array(str, (string *)environment(this_player())->query_exits())
+    if(member_array(str, environment(this_player())->query_exits())
             != -1) {
         message("system", "A room already exists in that direction!",
                 this_player());

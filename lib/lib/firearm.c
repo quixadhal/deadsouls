@@ -246,13 +246,8 @@ int eventFire(mixed str){
     else dex = 200;
     last_shot = time();
     if((ob && living(ob)) && (i < dex || autohit==1)){
-        NumLimbs=sizeof(ob->GetLimbs());
-        TorsoNum=member_array(ob->GetTorso(),ob->GetLimbs());
-        i=random(100);
-        if(i < 50) limbhit=TorsoNum;
-        else limbhit=random(NumLimbs);
-        limbarr=ob->GetLimbs();
-        limbname=limbarr[limbhit];
+        if(random(2)) limbname = ob->GetTorso();
+        else limbname = scramble_array(ob->GetLimbs())[0];
         tell_room(environment(environment(this_object())),"The bullet smashes into "+
                 capitalize(str)+"'s "+limbname+"!\n",ob);
         tell_object(ob,"The bullet smashes into your "+limbname+"!\n");

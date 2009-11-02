@@ -17,12 +17,12 @@ int cmd(string str) {
     if(sizeof(query_os_type())) extra = " for "+query_os_type();
     tz = this_player()->GetProperty("timezone");
     if(!tz || !valid_timezone(tz)) tz = query_tz();
-    offset = (int)TIME_D->GetOffset(tz);
+    offset = TIME_D->GetOffset(tz);
     offset += EXTRA_TIME_OFFSET;
     if(query_os_type() != "windows" ) x = offset * 3600;
     else x = 0;
     scr = ((int *)this_player()->GetScreen())[0];
-    nr = (time() - uptime()) + ((int)EVENTS_D->GetRebootInterval() * 3600);
+    nr = (time() - uptime()) + (EVENTS_D->GetRebootInterval() * 3600);
     tmp = center(mud_name(), scr) + "\n";
     tmp += sprintf("%:-"+(scr/2)+"s%"+(scr/2)+"s\n", "Driver: " + version(),
             "Library: " + mudlib() + " " + mudlib_version()+extra);

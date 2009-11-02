@@ -26,7 +26,7 @@ mixed cmd(string args) {
         return 1;
     }
 
-    file = absolute_path((string)this_player()->query_cwd(), args);
+    file = absolute_path(this_player()->query_cwd(), args);
     if(!(ob = find_object(file)) && !grepp(args, "/")){
         file = DEFINES_D->GetDefine(args);
     }

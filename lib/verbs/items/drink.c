@@ -33,7 +33,7 @@ mixed can_drink_obj(string verb) { return this_player()->CanManipulate(); }
 mixed can_drink_from_obj(string verb) { return this_player()->CanManipulate(); }
 
     mixed do_drink_obj(object ob) {
-        if( (int)this_player()->GetInCombat() )
+        if( this_player()->GetInCombat() )
             this_player()->SetAttack(0, (: eventDrink, this_player(), ob :),
                     ROUND_OTHER);
         else eventDrink(this_player(), ob);
@@ -41,7 +41,7 @@ mixed can_drink_from_obj(string verb) { return this_player()->CanManipulate(); }
     }
 
     mixed do_drink_from_obj(object ob, string id) {
-        if( (int)this_player()->GetInCombat() )
+        if( this_player()->GetInCombat() )
             this_player()->SetAttack(0, (: eventDrink, this_player(), ob, id :),
                     ROUND_OTHER);
         else eventDrink(this_player(), ob, id);
@@ -49,5 +49,5 @@ mixed can_drink_from_obj(string verb) { return this_player()->CanManipulate(); }
     }
 
 varargs void eventDrink(object who, object what, string id) {
-    return (mixed)what->eventDrink(who, id);
+    return what->eventDrink(who, id);
 }

@@ -14,7 +14,7 @@ cmd() {
         return 1;
     }
     this_player()->set_disable();
-    this_player()->save_player((string)this_player()->GetKeyName());
+    this_player()->save_player(this_player()->GetKeyName());
     write(this_player()->GetName()+" is now saved.");
     return 1;
 }

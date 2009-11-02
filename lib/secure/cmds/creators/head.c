@@ -14,7 +14,7 @@ int cmd(string str) {
     int x;
 
     if(!str) return notify_fail("Syntax: <head [file]>\n");
-    file = absolute_path((string)this_player()->query_cwd(),str);
+    file = absolute_path(this_player()->query_cwd(),str);
     if(!file_exists(file)) return notify_fail("No such file: "+file+"\n");
     else if(!(str = read_file(file)))
         return notify_fail("Empty file: "+file+"\n");

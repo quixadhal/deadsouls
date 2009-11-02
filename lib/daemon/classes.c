@@ -42,7 +42,7 @@ static void create() {
 }
 
     static private void validate() {
-        if( !((int)master()->valid_apply(({ PRIV_ASSIST }))) )
+        if( !(master()->valid_apply(({ PRIV_ASSIST }))) )
             error("Illegal attempt to modify class data");
     }
 

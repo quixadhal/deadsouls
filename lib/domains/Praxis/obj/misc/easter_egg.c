@@ -36,7 +36,7 @@ void init() {
 int cmd_hide(string str) {
     if(present(str, this_player()) != this_object()) return 0;
     message("my_action", "You hide "+GetShort()+".", this_player());
-    message("other_action", (string)this_player()->query_cap_name()+
+    message("other_action", this_player()->query_cap_name()+
             " hides something.", environment(this_player()), ({this_player()}));
     SetInvis(1);
     eventMove(environment(this_player()));
@@ -46,7 +46,7 @@ int cmd_hide(string str) {
 int cmd_search(string str) {
     if(!query_invis()) return 0;
     message("my_action", "You find "+GetShort()+"!", this_player());
-    message("other_action", (string)this_player()->query_cap_name()+
+    message("other_action", this_player()->query_cap_name()+
             "finds "+GetShort()+"!", environment(this_player()), 
             ({ this_player() }));
     SetInvis(0);

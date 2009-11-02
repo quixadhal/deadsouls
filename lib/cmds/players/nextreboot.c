@@ -20,10 +20,10 @@ mixed cmd(string form) {
     tz = this_player()->GetProperty("timezone");
     if(!tz || !valid_timezone(tz)) tz = query_tz();
 
-    offset = (int)TIME_D->GetOffset(tz);
+    offset = TIME_D->GetOffset(tz);
     offset += EXTRA_TIME_OFFSET;
 
-    x = (int)EVENTS_D->GetRebootInterval() * 3600;
+    x = EVENTS_D->GetRebootInterval() * 3600;
     x = (time() - uptime()) + x;
     if(query_os_type() != "windows" ) 
         x += offset * 3600;

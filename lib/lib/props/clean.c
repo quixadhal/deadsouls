@@ -68,6 +68,9 @@ int eventDestruct(){
 int clean_up(int ref_exists){ 
     object array inv; 
     object env;
+
+    if(origin() == "driver") return 0;
+
     if( NoClean || ref_exists ){
         return NEVER_AGAIN;
     }

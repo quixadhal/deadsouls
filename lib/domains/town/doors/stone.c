@@ -28,7 +28,7 @@ varargs int eventOpen(object who, object tool) {
 
     room = environment(who);
     who->eventPrint("You fail to open " + GetShort(tmp) + ".");
-    room->eventPrint((string)who->GetName() + " fails to open " + GetShort(tmp) + ".",
+    room->eventPrint(who->GetName() + " fails to open " + GetShort(tmp) + ".",
             who);
     return 0;
 }
@@ -39,7 +39,7 @@ varargs mixed eventClose(object who){
 
     room = environment(who);
     who->eventPrint("You fail to close " + GetShort(tmp) + ".");
-    room->eventPrint((string)who->GetName() + " fails to close " + GetShort(tmp) + ".",
+    room->eventPrint(who->GetName() + " fails to close " + GetShort(tmp) + ".",
             who);
     return 0;
 }

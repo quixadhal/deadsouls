@@ -32,7 +32,7 @@ mixed do_backstab_liv(object ob) {
     object env;
 
     if(!(env = environment(this_player()))) return 0;
-    if( (int)this_player()->GetPosition() != POSITION_STANDING )
+    if( this_player()->GetPosition() != POSITION_STANDING )
         this_player()->eventStand();   
     if(!ob || !present(ob, env)) {
         this_player()->eventPrint("Your hapless victim is no longer present.");
@@ -119,7 +119,7 @@ int eventStab(object backstabber, object target, object weapon) {
     float adjustment;
     int numberWielded;
 
-    if(!(weaponType = (string)weapon->GetWeaponType())) return 0;
+    if(!(weaponType = weapon->GetWeaponType())) return 0;
     numberWielded = sizeof(backstabber->GetWielded());
 
     x = weapon->GetClass() * 5.0;
@@ -137,7 +137,7 @@ int eventStab(object backstabber, object target, object weapon) {
     if(weaponType != "knife") x = (x - 50.0) / 4.0;
     if(x < 1.0) x = 0.0;
 
-    damage = (int)target->eventReceiveDamage(backstabber,
+    damage = target->eventReceiveDamage(backstabber,
             weapon->GetDamageType(), to_int(x), 0, target->GetTorso());
     if(damage > 0) {
         weapon->eventReceiveDamage(BLUNT, damage, 0, target->GetTorso());

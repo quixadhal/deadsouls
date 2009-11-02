@@ -29,7 +29,7 @@ cmd(string str)
             notify_fail("rmdir: "+str+": not a directory.\n");
             return 0; break;
     }
-    if( (int)master()->valid_write(str, this_object(), "rmdir") == 0 )
+    if( master()->valid_write(str, this_object(), "rmdir") == 0 )
     {
         notify_fail(str+": Permission denied.\n");
         return 0;

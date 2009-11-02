@@ -48,26 +48,26 @@ mixed eventCatch(object who, string fish){
     int mass;
 
     SetBait(0);
-    mass = (int)fish->GetMass();
+    mass = fish->GetMass();
     if( mass > PoleStrength && eventBreak() ){
-        message("my_action", "Just as you notice " + (string)fish->GetShort() +
+        message("my_action", "Just as you notice " + fish->GetShort() +
                 " on " + GetShort() + ", it breaks "
                 "and you lose your catch!", who);
         message("my_action", possessive_noun(who) + " " +
                 strip_article(GetShort()) + " breaks as " +
-                nominative(who) + " tries to land " + (string)fish->GetShort()+
+                nominative(who) + " tries to land " + fish->GetShort()+
                 "!", environment(who), ({ who }));
         return 0;
     }
     PoleStrength -= (mass/10) + 1;
     if( PoleStrength < 1 ) PoleStrength = 0;
-    if( !((int)fish->eventCatch(who, this_object()))) return 0;
-    if( !((int)who->CanCarry(mass)) ){
+    if( !(fish->eventCatch(who, this_object()))) return 0;
+    if( !(who->CanCarry(mass)) ){
         message("my_action", "For a fleeting moment, you notice " +
-                (string)fish->GetShort() + " on your " +
+                fish->GetShort() + " on your " +
                 strip_article(GetShort()) + ", but then it is lost.",
                 who);
-        message("other_action", (string)who->GetName() + " loses a catch.",
+        message("other_action", who->GetName() + " loses a catch.",
                 environment(who), ({ who }));
         return 0;
     }
@@ -75,7 +75,7 @@ mixed eventCatch(object who, string fish){
 }
 
 int eventFish(object who){
-    if( (int)who->GetSkillLevel("fishing") >= random(5) )
+    if( who->GetSkillLevel("fishing") >= random(5) )
         return GetChance() + GetBait();
     else return 0;
 }

@@ -80,7 +80,7 @@ int MarriageRequest(mixed arg1, mixed arg2, mixed arg3){
 mixed performMarriage(object spouse1, object spouse2){
     mixed tmp;
     eventForce("say hmmm...");
-    tmp = (mixed)environment(this_player())->CanMarry(this_player(),
+    tmp = environment(this_player())->CanMarry(this_player(),
             spouse1, spouse2);
     if( !tmp ){
         this_player()->eventPrint("This place is not holy to you.");
@@ -90,16 +90,16 @@ mixed performMarriage(object spouse1, object spouse2){
         this_player()->eventPrint(tmp);
         return 1;
     }
-    tmp = (mixed)environment(this_player())->eventMarry(this_player(),
+    tmp = environment(this_player())->eventMarry(this_player(),
             spouse1, spouse2);
     if( tmp == 1 ){
         object ring;
 
         ring = new(OBJ_WED_RING);
-        ring->SetSpouse((string)spouse2->GetCapName());
+        ring->SetSpouse(spouse2->GetCapName());
         ring->eventMove(spouse1);
         ring = new(OBJ_WED_RING);
-        ring->SetSpouse((string)spouse1->GetCapName());
+        ring->SetSpouse(spouse1->GetCapName());
         ring->eventMove(spouse2);
     }
 }

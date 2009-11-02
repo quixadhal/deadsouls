@@ -13,8 +13,8 @@ mixed cmd(string args) {
     string rname;
 
     message("system", "Changing user information for " +
-            (string)previous_object()->GetCapName() + ": ", previous_object());
-    rname = (string)previous_object()->GetRealName();
+            previous_object()->GetCapName() + ": ", previous_object());
+    rname = previous_object()->GetRealName();
     message("prompt", "Real name [" + rname + "] ", previous_object());
     f = function(string str, string old, object ob) {
         function g;
@@ -25,8 +25,8 @@ mixed cmd(string args) {
             message("system", "Real name changed to " + str, ob);
         }
         else message("system", "Real name unchanged.", ob);
-        str = (string)ob->GetEmail();
-        message("prompt", "Email (preceed with # to make admin only) ["
+        str = ob->GetEmail();
+        message("prompt", "Email (prepend # to make admin only) ["
                 + str + "] ", ob);
         g = function(string str, string old, object ob) {
             function h;
@@ -65,20 +65,20 @@ mixed cmd(string args) {
                 else {
                     who->SetWebPage(str);
                     message("system", "Home page changed.", who);
-                    this_player()->save_player((string)this_player()->GetKeyName());
+                    this_player()->save_player(this_player()->GetKeyName());
                     update("/secure/daemon/finger");
                 }
             };
             input_to(h, 0, ob);
-            this_player()->save_player((string)this_player()->GetKeyName());
+            this_player()->save_player(this_player()->GetKeyName());
             update("/secure/daemon/finger");
         };
         input_to(g, 0, str, ob);
-        this_player()->save_player((string)this_player()->GetKeyName());
+        this_player()->save_player(this_player()->GetKeyName());
         update("/secure/daemon/finger");
     };
     input_to(f, "" + rname, previous_object());
-    this_player()->save_player((string)this_player()->GetKeyName());
+    this_player()->save_player(this_player()->GetKeyName());
     update("/secure/daemon/finger");
     return 1;
 }

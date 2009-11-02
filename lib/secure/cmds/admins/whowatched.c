@@ -11,8 +11,8 @@ int cmd(string str) {
         return 0;
     }
     if(!archp(previous_object())) return 0;
-    if(str == "name") who = (string *)BANISH_D->query_watched_names();
-    else if(str == "site") who = (string *)BANISH_D->query_watched_sites();
+    if(str == "name") who = BANISH_D->query_watched_names();
+    else if(str == "site") who = BANISH_D->query_watched_sites();
     else {
         notify_fail("Whowatched what?\n");
         return 0;

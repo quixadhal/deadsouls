@@ -21,8 +21,8 @@ int cmd(string str) {
         write("Someone attempted to force you to rm "+str+".");
         return 1;
     }
-    tmp = absolute_path((string)ob->query_cwd(), str);
-    if(!archp(ob) || !sizeof(files = (string *)wild_card(tmp)))
+    tmp = absolute_path(ob->query_cwd(), str);
+    if(!archp(ob) || !sizeof(files = wild_card(tmp)))
         files = ({ tmp });
     if(!(i=sizeof(files))) {
         message("system", "File "+tmp+" does not exist.", this_player());

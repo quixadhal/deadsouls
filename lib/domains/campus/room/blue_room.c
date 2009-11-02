@@ -12,6 +12,7 @@ static void create() {
                 ]) );
     SetDoor("south","/domains/campus/doors/blue_door");
 }
+
 void init(){
     ::init();
 }

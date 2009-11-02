@@ -14,7 +14,7 @@ mixed cmd(string str) {
     int i, tmp;
 
     if(str) return 0;  /* to allow the wiz command to work */
-    currs = (string *)this_player()->GetCurrencies();
+    currs = this_player()->GetCurrencies();
     currs = filter(currs, (: this_player()->GetCurrency($1) > 0 :));
     if( !currs || !sizeof(currs) ) {
         write("You are broke.");

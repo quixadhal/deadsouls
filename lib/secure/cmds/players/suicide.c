@@ -43,7 +43,7 @@ mixed cmd(string str) {
                 "Call stack:\n"+ sprintf("%O\n", previous_object(-1)));
         return 0;
     }
-    who = (string)this_player()->GetKeyName();
+    who = this_player()->GetKeyName();
     if( who == "guest" ) return "Guest is not suicidal!";
     if( member_group(who, PRIV_SECURE) || member_group(who, PRIV_ASSIST) )
         return "You must first have your security privileges removed.";
@@ -62,7 +62,7 @@ static private void GetPassword(string input) {
         this_player()->eventPrint("Suicide aborted.");
         return;
     }
-    tmp = (string)this_player()->GetPassword();
+    tmp = this_player()->GetPassword();
     if( tmp != crypt(input, tmp) ) {
         this_player()->eventPrint("Wrong password.  Suicide aborted.");
         return;
@@ -74,7 +74,7 @@ static private void GetPassword(string input) {
 }
 
 static private void GetYesOrNo(string input) {
-    tmp = (string)this_player()->GetKeyName();
+    tmp = this_player()->GetKeyName();
     if( !sizeof(input) || (input = lower_case(input))[0] != 'y' ) {
         if( input && input[0] == 'a' ) {
             this_player()->eventPrint("Suicide has been aborted.");
@@ -139,11 +139,11 @@ static private void EndSuicide(string who) {
     this_player()->eventPrint("You have suicided.  Please try " 
             "again another time.");
     environment(this_player())->eventPrint(
-            (string)this_player()->GetName()+" has ended "+
+            this_player()->GetName()+" has ended "+
             possessive(this_player())+" own life before your very eyes.",
             this_player() );
     if( sizeof( ob = filter(users(), (: archp :)) ) )
-        ob->eventPrint("["+(string)this_player()->GetName()+" has "
+        ob->eventPrint("["+this_player()->GetName()+" has "
                 "committed suicide]");
     PLAYERS_D->RemoveUser(who);
     this_player()->eventMove(ROOM_FURNACE);

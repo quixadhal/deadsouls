@@ -13,7 +13,7 @@ string cmd(string str) {
     if( !str ) return "You must specify a file or wildcard.";
     else if(str == "*") flag = 1;
     else if(str == "*/*") flag = 2;
-    else str = absolute_path((string)this_player()->query_cwd(), str);
+    else str = absolute_path(this_player()->query_cwd(), str);
     if( !file_exists(str) && !flag) return "File " + str + " not found.";
     else if( !(tmp = read_file(str)) && !flag)
         return "Unable to read file " + str + ".";

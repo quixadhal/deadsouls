@@ -69,7 +69,7 @@ void reset() {
 }
 
 int CanReceive() {
-    if((int)previous_object()->query_level() > 10) {
+    if(previous_object()->query_level() > 10) {
         message("my_action", "A magic force prevents you from going "
                 "further into the mountain.", this_player());
         return 0;

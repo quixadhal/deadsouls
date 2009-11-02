@@ -26,7 +26,7 @@ static void logon() {
 static void InputPassword(string str);
 
     static void InputName(string str) {
-        if( !((int)BANISH_D->valid_name(Name = convert_name(CapName = str))) 
+        if( !(BANISH_D->valid_name(Name = convert_name(CapName = str))) 
                 || lower_case(str) == "guest") {
             receive("That is not a valid name.\n");
             receive("Name: ");

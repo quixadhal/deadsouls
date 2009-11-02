@@ -252,7 +252,7 @@ mixed indirect_steal_obj_from_liv(object item, mixed args...){
     if( this_player() == this_object() ) return "Are you a fool?";
     if( this_player()->GetInCombat() )
         return "You are too busy fighting at the moment.";
-    tmp = (mixed)item->CanDrop(this_object());
+    tmp = item->CanDrop(this_object());
     if( tmp != 1 )
         return GetName() + " will not let go of " + item->GetShort()+".";
     return 1;
@@ -560,7 +560,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill){
             }
             AddStaminaPoints(-20);
 
-            tmp = (mixed)target->eventSteal(who, what, target,skill2);
+            tmp = target->eventSteal(who, what, target,skill2);
 
             /* You can't steal from this target */
             if( !tmp )
@@ -596,7 +596,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill){
 
         amt = GetNetWorth();
         eventPrint("You reach for " + possessive_noun(target) + " money.");
-        tmp = (mixed)target->eventSteal(who, what, target, skill2);
+        tmp = target->eventSteal(who, what, target, skill2);
 
         /* You can't steal from this target */
         if( !tmp )
@@ -669,7 +669,7 @@ varargs mixed eventSteal(object who, mixed what, object target, int skill){
         return 1;
     }
     for(i=0; i<sizeof(what); i++){
-        if( (mixed)what[i]->eventSteal(who) != 1 ) what[i] = 0;
+        if( what[i]->eventSteal(who) != 1 ) what[i] = 0;
     }
     return 1;
 }

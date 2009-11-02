@@ -15,10 +15,10 @@ int cmd(string str) {
         if(!list[i]->GetInvis() && list[i]->GetKeyName())
             if(present("mailer", list[i]))
                 printf("%s - In mailer.\n",
-                  arrange_string( (string)list[i]->GetName(), 20));
+                  arrange_string( list[i]->GetName(), 20));
             else if(in_edit(list[i]) || in_input(list[i]))
                 printf("%s - Editing.\n",
-                  arrange_string( (string)list[i]->GetName(), 20));
+                  arrange_string( list[i]->GetName(), 20));
     return 1;
 }
 

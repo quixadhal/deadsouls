@@ -11,7 +11,7 @@ string DescribeItems(mixed var);
 string DescribeLiving(mixed var);
 
 mixed cmd(string str) {
-    int i;
+    int i, err;
     string file;
     object env, *livings, *items;
 
@@ -29,21 +29,19 @@ mixed cmd(string str) {
         case "d" : str = "down";break;
     }
     env = environment(this_player());
-    if( !file = (string)env->GetExit(str) ) file = (string)env->GetEnter(str);
+    if( !file = env->GetExit(str) ) file = env->GetEnter(str);
     if( !sizeof(file) )
         return "You cannot peer that way.";
     if( (i = this_player()->GetEffectiveVision()) > 5 )
         return "It is too bright to do that.";
-    if( i < 3 )
-        return "It is too dark to attempt that.";
-    if( env->GetDoor(str) && !(((string)env->GetDoor(str))->CanPeer()) ) {
+    if( env->GetDoor(str) && !((env->GetDoor(str))->CanPeer()) ) {
         message("my_action", sprintf("%s is blocking your view %s.",
                     (capitalize(env->GetDoor(str)->GetShort(str))), str),
                 this_player() );
         return 1;
     }
-    if( !unguarded((: file_exists, file + ".c" :)) ||
-            (!env = load_object(file)) ) {
+    err = catch(env = load_object(file));
+    if(err || !env){
         message("my_action", "It is not safe to peer "+str+"!", this_player() );
         return 1;
     }
@@ -56,16 +54,16 @@ mixed cmd(string str) {
         return "It is too dark there.";
 
     items = filter(all_inventory(env),
-            (: !(int)$1->GetInvis(this_player()) :) );
+            (: !$1->GetInvis(this_player()) :) );
     items = items - (livings = filter(items, (: living :)));
     message("my_action", "%^GREEN%^"
             "Peering "+str+" you see...",
             this_player() );
     message("other_action",
-            (string)this_player()->GetCapName()+" peers "+str+".",
+            this_player()->GetCapName()+" peers "+str+".",
             environment(this_player()), this_player() );
     message("room_description",
-            ("\n"+(string)env->GetLong(0)+"\n" || "\nA void.\n"),
+            ("\n"+env->GetLong(0)+"\n" || "\nA void.\n"),
             this_player() );
     if( sizeof(items) )
         message("room_inventory",

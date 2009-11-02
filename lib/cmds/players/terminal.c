@@ -11,7 +11,7 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     if( !args || args == "" ) return "Set it to what?";
     message("system", "Terminal set to " + 
-            (string)this_player()->SetTerminal(args) + ".", this_player());
+            this_player()->SetTerminal(args) + ".", this_player());
     return 1;
 }
 

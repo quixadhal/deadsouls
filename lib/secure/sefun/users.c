@@ -23,7 +23,7 @@ string *remote_users(){
 
 string *local_users(){
     string *ret;
-    ret = map(filter(users(),(: (environment($1) && !((int)$1->GetInvis())) :)),
-            (: (string)$1->GetKeyName():));
+    ret = map(filter(users(),(: (environment($1) && !($1->GetInvis())) :)),
+            (: $1->GetKeyName():));
     return ret;
 }

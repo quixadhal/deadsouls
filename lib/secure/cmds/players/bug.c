@@ -112,14 +112,14 @@ static void Assign(string *args) {
 
         if( (x = to_int(args[0])) > 0 ) { /* assume a bug id for now */
             if( !archp(this_player()) ) 
-                Assign( ({ args[0], (string)this_player()->GetCapName() }) );
+                Assign( ({ args[0], this_player()->GetCapName() }) );
             else {
                 message("prompt", "Enter the creator to assign it to [" +
-                        (string)this_player()->GetCapName() + "]: ",
+                        this_player()->GetCapName() + "]: ",
                         this_player());
                 input_to(function(string str, string id) {
                         if( !str || str == "" ) 
-                        str = (string)this_player()->GetCapName();
+                        str = this_player()->GetCapName();
                         Assign( ({ str, id }) );
                         }, args[0]);
             }
@@ -144,7 +144,7 @@ static void Assign(string *args) {
 
                 message("system", "Enter comments on the bug...", 
                     this_player());
-                file = DIR_TMP "/" + (string)this_player()->GetKeyName();
+                file = DIR_TMP "/" + this_player()->GetKeyName();
                 rm(file);
                 this_player()->eventEdit(file, (: EndAssign, args :));
                 return;
@@ -169,7 +169,7 @@ static void Assign(string *args) {
         else who = args[1];
         comments = args[2];
         if( !archp(this_player()) && (convert_name(who) !=
-                    (string)this_player()->GetKeyName()) ) {
+                    this_player()->GetKeyName()) ) {
             message("system", "Only arches may assign bugs to other people.",
                     this_player());
             message("prompt", "Hit return: ", this_player());
@@ -182,7 +182,7 @@ static void Assign(string *args) {
             input_to( (: PreMenu :) );
             return;
         }
-        if( !((int)BUGS_D->eventAssign(x, who)) ) {
+        if( !(BUGS_D->eventAssign(x, who)) ) {
             message("system", "Failed to assign bug.", this_player());
             return;
         }
@@ -195,7 +195,7 @@ static void Assign(string *args) {
 static void EndAssign(string *args) {
     string file, contents;
 
-    file = DIR_TMP "/" + (string)this_player()->GetKeyName();
+    file = DIR_TMP "/" + this_player()->GetKeyName();
     contents = (read_file(file) || "");
     rm(file);
     Assign(args + ({ contents }));
@@ -223,7 +223,7 @@ static void Complete(string *args) {
         return;
     }
     message("system", "Enter in your comments:", this_player());
-    file = DIR_TMP "/" + (string)this_player()->GetKeyName();
+    file = DIR_TMP "/" + this_player()->GetKeyName();
     if( file_exists(file) ) rm(file);
     this_player()->eventEdit(file, (: EndComplete, x :));
 }
@@ -232,14 +232,14 @@ void EndComplete(int x) {
     string file, stuff;
 
     if( previous_object() != this_player(1) ) return;
-    file = DIR_TMP "/" + (string)this_player()->GetKeyName();
+    file = DIR_TMP "/" + this_player()->GetKeyName();
     if( !(stuff = read_file(file)) ) {
         message("system", "Edit aborted.", this_player());
         rm(file);
         return;
     }
     rm(file);
-    if( !((int)BUGS_D->eventComplete(x, stuff)) ) {
+    if( !(BUGS_D->eventComplete(x, stuff)) ) {
         message("system", "Failed to set the bug completed.", this_player());
         return;
     }
@@ -261,7 +261,7 @@ static void Delete(string *args) {
 
         if( (x = to_int(args[0])) < 1 ) 
             message("system", "Invalid bug ID.", this_player());
-        else if( !((int)BUGS_D->eventDelete(x)) ) 
+        else if( !(BUGS_D->eventDelete(x)) ) 
             message("system", "Delete failed.", this_player());
         else message("system", "Deletion succeeded.", this_player());
         return;
@@ -276,7 +276,7 @@ static void Report(string *args) {
 
         data = "Room: " + file_name(environment(this_player()));
         bug = implode(args, " ");
-        if( x = (int)BUGS_D->eventReport((string)this_player()->GetCapName(), 
+        if( x = BUGS_D->eventReport(this_player()->GetCapName(), 
                     "approval", bug, data) ) {
             BUGS_D->eventAssign(x, query_privs(environment(this_player())));
             message("system", "Bug reported.", this_player());
@@ -311,7 +311,7 @@ static void EndReport(string type, string data, string file) {
         return;
     }
     if( !file ) {
-        file = DIR_TMP "/" + (string)this_player()->GetKeyName();
+        file = DIR_TMP "/" + this_player()->GetKeyName();
         rm(file);
         message("system", "Enter in a description of the bug.  When done, "
                 "enter a period on a line by itself.", this_player());
@@ -327,10 +327,10 @@ static void EndReport(string type, string data, string file) {
     if( type == "runtime" ) {
         mapping last_error;
 
-        if( last_error = (mapping)this_player()->GetLastError() )
-            data += "\n" + (string)master()->standard_trace(last_error) + "\n";
+        if( last_error = this_player()->GetLastError() )
+            data += "\n" + master()->standard_trace(last_error) + "\n";
     }
-    if( !(x = (int)BUGS_D->eventReport((string)this_player()->GetCapName(),
+    if( !(x = BUGS_D->eventReport(this_player()->GetCapName(),
                     type, tmp, data)) ) {
         message("system", "Bug report failed.", this_player());
         return;
@@ -375,9 +375,9 @@ varargs static void View(string *args, int print) {
         string tmp = "";
         int bug_id;
 
-        bugs = (mapping)BUGS_D->GetBugs();
+        bugs = BUGS_D->GetBugs();
         foreach( bug_id, bug in bugs ) {
-            if( bug["who"] != (string)this_player()->GetCapName() )
+            if( bug["who"] != this_player()->GetCapName() )
                 continue;
             if( args[0] == "1" || (args[0] == "2" && !bug["assigned"]) ||
                     (args[0] == "3" && bug["assigned"] && !bug["date fixed"]) ||
@@ -416,8 +416,8 @@ varargs static void View(string *args, int print) {
         string nom, tmp = "";
         int bug_id;
 
-        nom = (string)this_player()->GetKeyName();
-        bugs = (mapping)BUGS_D->GetBugs();
+        nom = this_player()->GetKeyName();
+        bugs = BUGS_D->GetBugs();
         if( !creatorp(this_player()) ) {
             View( ({ args[0] }), print );
             return;
@@ -452,7 +452,7 @@ varargs static void View(string *args, int print) {
         if( print && creatorp(this_player()) ) {
             string file;
 
-            rm(file = user_path((string)this_player()->GetKeyName()) + "bugs");
+            rm(file = user_path(this_player()->GetKeyName()) + "bugs");
             write_file(file, strip_colours(tmp));
         }
         else this_player()->eventPage(explode(tmp, "\n"), MSG_SYSTEM, f);

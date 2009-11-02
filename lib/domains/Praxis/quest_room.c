@@ -34,13 +34,13 @@ void list_quests(object tp, int x) {
     }
     quest_list = ({});
     for(i=0; i<sizeof(inv); i++) {
-        if(member_array((string)inv[i]->query_name(), (string *)tp->query_quests()) == -1) quest_list += ({ inv[i] });
+        if(member_array(inv[i]->query_name(), tp->query_quests()) == -1) quest_list += ({ inv[i] });
     }
     if(!x) {
         tell_object(tp, "There are "+sizeof(quest_list)+" quests you "
                 "have not solved. They are these quests:\n");
         for(i=0; i<sizeof(quest_list); i++) {
-            tell_object(tp, (i+1)+": "+(string)present(quest_list[i], this_object())->GetShort()+"\n");
+            tell_object(tp, (i+1)+": "+present(quest_list[i], this_object())->GetShort()+"\n");
         }
     }
     else {
@@ -48,7 +48,7 @@ void list_quests(object tp, int x) {
             tell_object(tp, "No such quest.\n");
             return;
         }
-        tell_object(tp, (string)present(quest_list[x-1], this_object())->GetLong());
+        tell_object(tp, present(quest_list[x-1], this_object())->GetLong());
     }
 }
 
@@ -57,7 +57,7 @@ int query_quest_points(string str) {
     object ob;
 
     ob = present(str);
-    x = (int)ob->query_quest_points();
+    x = ob->query_quest_points();
     return x;
 }
 
@@ -65,7 +65,7 @@ int check_quests(object tp, int lev) {
     int qp;
     string *list;
 
-    qp= (int)tp->query_quest_points();
+    qp= tp->query_quest_points();
     if(lev>=5) if(qp < POINTS_NEEDED/4) return 0;
     else if(lev >= 10) if(qp < POINTS_NEEDED/2) return 0;
     else if(lev >= 15) if(qp < (3*POINTS_NEEDED)/4) return 0;

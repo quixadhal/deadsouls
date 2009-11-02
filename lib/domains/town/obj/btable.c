@@ -81,7 +81,7 @@ int eventHit() {
                   break;
         case 13 : card = "King";
                   break;
-        default : card = (string)x + 1;
+        default : card = ""+(x + 1);
     }
     switch (random(4)) {
         case 1 : suit = "Hearts";
@@ -179,7 +179,7 @@ int eventDeal(string args) {
         write("You must wager an amount.\n");
         return 1;
     }
-    if ((int)this_player()->GetCurrency("silver") < bet) {
+    if (this_player()->GetCurrency("silver") < bet) {
         write("You don't have that many silver!");
         return 1;
     }

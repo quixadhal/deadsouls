@@ -13,7 +13,7 @@ string absolute_path(string curr, string newp) {
     string name, rest;
 
     if(curr && (curr == "cwd") && this_player())
-        curr = (string)this_player()->query_cwd();
+        curr = this_player()->query_cwd();
     if(!newp || newp == "" || newp == ".") return curr;
     if( (newp == "here") && this_player() )
     {
@@ -24,9 +24,9 @@ string absolute_path(string curr, string newp) {
     {
         case "~":
             if( newp == "~" || newp == "~/" )
-                newp = user_path( (string)this_player()-> GetKeyName() )[0..<2];
+                newp = user_path( this_player()-> GetKeyName() )[0..<2];
             else if( newp[1..1] == "/" )
-                newp = user_path( (string)this_player()-> GetKeyName() ) +
+                newp = user_path( this_player()-> GetKeyName() ) +
                     newp[2..len];
             else if( sscanf( newp, "~%s/%s", name, rest ) == 2 )
                 newp = user_path( name ) + rest;

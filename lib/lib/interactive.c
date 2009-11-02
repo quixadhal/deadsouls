@@ -152,7 +152,7 @@ int Setup(){
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
     }
 
-    if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))){
+    if(!catch(mp = FOLDERS_D->mail_status(GetKeyName()))){
         if(mp["unread"]){
             eventPrint("\n%^RED%^%^BOLD%^>>> " + mp["unread"] + " of your " +
                     (mp["total"] == 1 ? mp["total"] + " letter is" :
@@ -237,7 +237,7 @@ mixed eventMarry(object who, object to_whom){
     object env;
     if( (env = previous_object()) != environment() ) return 0;
     m = new(class marriage);
-    m->Spouse = (string)to_whom->GetCapName();
+    m->Spouse = to_whom->GetCapName();
     m->WeddingDate = time();
     m->DivorceDate = 0;
     m->Location = file_name(env);
@@ -250,7 +250,7 @@ int eventMove(mixed dest){
     int x;
     x = move::eventMove(dest);
     if( x ){
-        if( !(str = (string)environment()->GetProperty("login")) ){
+        if( !(str = environment()->GetProperty("login")) ){
             if(clonep(environment())) LoginSite = file_name(environment());
             else LoginSite = base_name(environment());
         }
@@ -270,7 +270,7 @@ int cmdQuit(){
     if(!env) env = load_object(ROOM_FURNACE);
 
     if( previous_object() && !
-            ((int)master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
+            (master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
     if( env->GetProperty("no quit") &&
             ! sizeof(previous_object(-1)) ){
         message("system", "You are unable to escape this reality!",
@@ -321,12 +321,12 @@ int GetBirth(){ return BirthTime - (YEAR * 18); }
 string query_cwd(){ return interface::query_cwd(); }
 
 void SetEmail(string str){
-    if(!((int)master()->valid_apply(({ GetKeyName() })))) return;
+    if(!(master()->valid_apply(({ GetKeyName() })))) return;
     Email = str;
 }
 
 string GetEmail(){
-    if(!((int)master()->valid_apply(({ GetKeyName() })))) return 0;
+    if(!(master()->valid_apply(({ GetKeyName() })))) return 0;
     else return Email;
 }
 
@@ -385,13 +385,13 @@ void SetNews(string type, int sz){ News[type] = sz; }
 int GetNews(string type){ return News[type]; }
 
 void SetPassword(string str){
-    if(!((int)master()->valid_apply(({ GetKeyName() })))) return;
+    if(!(master()->valid_apply(({ GetKeyName() })))) return;
     Password = str;
     save_player(GetKeyName());
 }
 
 string GetPassword(){
-    if(!((int)master()->valid_apply(({ GetKeyName() })))) return 0;
+    if(!(master()->valid_apply(({ GetKeyName() })))) return 0;
     else return Password;
 }
 
@@ -400,7 +400,7 @@ void SetRank(string str){ Rank = str; }
 string GetRank(){ return Rank; }
 
 void SetRealName(string str){
-    if(!((int)master()->valid_apply(({ GetKeyName() })))) return;
+    if(!(master()->valid_apply(({ GetKeyName() })))) return;
     RealName = str;
 }
 
@@ -480,7 +480,7 @@ string GetName(){ return object::GetName(); }
 varargs int GetInvis(object ob){ return object::GetInvis(ob); }
 
 mixed *GetCommands(){
-    if( !((int)master()->valid_apply( ({ GetKeyName() }) )) ) return ({});
+    if( !(master()->valid_apply( ({ GetKeyName() }) )) ) return ({});
     else return commands();
 }
 
@@ -494,7 +494,7 @@ class marriage *GetMarriages(){ return Marriages; }
 
 string GetHostSite(){
     if( WhereBlock ){
-        if( !((int)master()->valid_access(({ PRIV_ASSIST }))) )
+        if( !(master()->valid_access(({ PRIV_ASSIST }))) )
             return "Confidential";
         else return HostSite;
     }
@@ -555,8 +555,8 @@ nomask int eventReceiveObject(object ob){
         tell_player(this_object(),"%^YELLOW%^NOTICE:%^RESET%^ "+identify(ob)+
                 " enters your inventory.");
     }
-    this_object()->AddCarriedMass((int)ob->GetMass());
-    if(environment()) environment()->AddCarriedMass((int)ob->GetMass());
+    this_object()->AddCarriedMass(ob->GetMass());
+    if(environment()) environment()->AddCarriedMass(ob->GetMass());
     if(ob->GeteventPrints()) NotifyReceipt(ob);
     return ret;
 }

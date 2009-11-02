@@ -42,11 +42,11 @@ mixed GoHome(string str) {
     if(ob == prev)
         return "You twitch.";
     if(who == this_player()->GetKeyName())
-        if( (int)this_player()->eventMoveLiving(ob,"$N goes home.","$N returns home.") ) {
+        if( this_player()->eventMoveLiving(ob,"$N goes home.","$N returns home.") ) {
             return 1;
         }
     if(who != this_player()->GetKeyName())
-        if( (int)this_player()->eventMoveLiving(ob,"$N leaves to visit "+capitalize(who)+".",
+        if( this_player()->eventMoveLiving(ob,"$N leaves to visit "+capitalize(who)+".",
                     "$N comes in for a visit.") ) {
             return 1;
         }

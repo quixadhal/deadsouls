@@ -18,7 +18,7 @@ mixed cmd(string args) {
     cols = ((int *)previous_object()->GetScreen())[0];
     cmds = (mixed *)ob->GetCommands();
     previous_object()->more(({ center("Local commands for " +
-                    (string)ob->GetName(), cols) }) +
+                    ob->GetName(), cols) }) +
             map(cmds, (: sprintf("%:-10s %:-40s %s",
                         $1[0], 
                         sprintf("%O", $1[2]),

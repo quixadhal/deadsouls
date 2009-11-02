@@ -7,13 +7,31 @@ int bool_reverse(mixed arg){
 
 int atoi(string str){
     int integer;
-    if(!str) return 0;
-    if(!sscanf(str, "%d", integer)) return 0;
+    if(str) sscanf(str, "%d", integer);
     return integer;
 }
 
-string itoa(int i){
+string itoa(mixed i){
     return ""+i;
+}
+
+string comma(mixed x){
+    string ret = "", pre = "", post = "";
+    int count = 0, i;
+    if(floatp(x)) sscanf(itoa(x),"%s.%s",pre,post);
+    else if(intp(x)) pre = itoa(x);
+    else return 0;
+    i = sizeof(pre);
+    while(i){
+        count++;
+        ret = pre[<count..<count] + ret;
+        if(!(count % 3) && (i = sizeof(pre[<count+1..<count+1]))){
+            ret = "," + ret;
+        }
+    }
+    if(!sizeof(ret)) ret = "0";
+    if(sizeof(post)) ret += "." + post[0..1];
+    return ret;
 }
 
 int bitshiftedp(int x){

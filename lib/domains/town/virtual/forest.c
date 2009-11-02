@@ -21,8 +21,8 @@ mixed SearchFun(object who, string str){
     if( found || !(ob = new("/domains/Ylsrim/etc/pole")))
         return "You find nothing of interest.";
     found = 1;
-    eventPrint((string)who->GetName() + " finds a fishing pole "                        "among the abandoned campsite.", who);
-    if( !((int)ob->eventMove(this_player())) ) {
+    eventPrint(who->GetName() + " finds a fishing pole "                        "among the abandoned campsite.", who);
+    if( !(ob->eventMove(this_player())) ) {
         ob->eventMove(this_object());
     }
     return "You find a fishing pole!";

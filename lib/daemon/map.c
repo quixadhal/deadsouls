@@ -2,6 +2,9 @@
 #include <daemons.h>
 #include <save.h>
 #define FLOW_DEBUGGING 0
+#ifndef MAP_CACHE
+#define MAP_CACHE 1
+#endif
 
 inherit LIB_DAEMON;
 mapping MapMap, MapCache;
@@ -92,7 +95,7 @@ varargs mixed GetMap(mixed args, int size, int forced){
         return ret;
     }
     if(!size) size = 4;
-    if(size > 15) size = 6;
+    if(size > 15 && !creatorp(this_player())) size = 6;
     if(!args) args = base_name(environment(this_player()));
     if(objectp(args)) args = base_name(args);
     myspot=ROOMS_D->GetGridMap(args);
@@ -105,7 +108,7 @@ varargs mixed GetMap(mixed args, int size, int forced){
         ret = "%^RED%^Map unavailable.%^RESET%^";
         return ret;
     }
-    if((!forced ||caching) && MapCache[mycoords]){
+    if(!forced && caching && MapCache[mycoords]){
         return MapCache[mycoords];
     }
     start = ([ "x" : myspot["coords"]["x"] - (res/2),

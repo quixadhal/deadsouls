@@ -127,8 +127,10 @@ static string eventHistory(string str){
 
 static string Push(string cmd){
     int j, crunch;
+    //tc("Push: "+cmd);
     CommandNumber = sizeof(History);
     if(CommandNumber && History[CommandNumber-1] == cmd){
+        //tc(CommandNumber+": "+cmd, "red");
         return cmd;
     }
     if(member_array(cmd, values(History)) != -1){
@@ -141,6 +143,7 @@ static string Push(string cmd){
     }
     if(crunch){
         mapping newmap = ([]);
+        //tc("crunch");
         j = 0;
         for(int i = 0; i < CommandNumber; i++){
             if(History[i]){
@@ -150,20 +153,19 @@ static string Push(string cmd){
         }
         History = newmap;
         CommandNumber = sizeof(History);
+        //tc(CommandNumber+": "+cmd, "green");
         return cmd;
     }
-    if(CommandNumber >= HistorySize){
+    History[CommandNumber] = cmd;
+    if(CommandNumber > HistorySize){
         mapping newmap = ([]);
         foreach(mixed key, mixed val in History){
             if(key > 0) newmap[key-1] = val;
         } 
         History = newmap;
-        CommandNumber = sizeof(History);
     }
-    else {
-        History[CommandNumber] = cmd;
-    }
-    CommandNumber = sizeof(History);
+    CommandNumber = (sizeof(History) - 1);
+    //tc(CommandNumber+": "+cmd, "blue");
     return cmd;
 }
 
@@ -188,7 +190,7 @@ int GetCommandNumber(){
     }
 
 mapping GetHistoryList(){
-    if( !((int)master()->valid_apply(({ GetKeyName() }))) ) return ([]);
+    if( !(master()->valid_apply(({ GetKeyName() }))) ) return ([]);
     return copy(History);
 }
 
@@ -197,7 +199,7 @@ mapping GetCommandHist(){
 }
 
     int SetHistorySize(int x){
-        if( !((int)master()->valid_apply(({ GetKeyName() }))) )
+        if( !(master()->valid_apply(({ GetKeyName() }))) )
             return HistorySize;    
         if( x == HistorySize ) return HistorySize;
         if( x > MAX_HISTORY_SIZE ) return HistorySize;

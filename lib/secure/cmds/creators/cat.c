@@ -14,7 +14,7 @@ mixed cmd(string str) {
     string tmp;
 
     if( !str ) return "You must specify a file to cat.";
-    else str = absolute_path((string)this_player()->query_cwd(), str);
+    else str = absolute_path(this_player()->query_cwd(), str);
     if( !file_exists(str) ) return "File " + str + " not found.";
     else if( !(tmp = read_file(str)) )
         return "Unable to read file " + str + ".";

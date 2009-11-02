@@ -95,7 +95,7 @@ mixed cmd(string args) {
     if(this_player()){
         tmpfiles = map(explode(args, " "),
                 function(string x) {
-                string tmp = (string)this_player()->query_cwd();
+                string tmp = this_player()->query_cwd();
                 if( x[<2..] != ".c" ) x = x + ".c";
                 return absolute_path(tmp, x);
                 });
@@ -106,7 +106,7 @@ mixed cmd(string args) {
         i = sizeof(tmpfiles);
         files = ({});
         while(i--) {
-            if( sizeof(tmp = (string *)wild_card(tmpfiles[i])) )
+            if( sizeof(tmp = wild_card(tmpfiles[i])) )
                 files += tmp;
             else {
                 this_player()->eventPrint(tmpfiles[i] + ": File not found.");

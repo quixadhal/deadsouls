@@ -42,7 +42,8 @@ static void create() {
     SetProperty("no attack", 1);
     ob = new(LIB_BOARD);
     ob->SetKeyName("chalkboard");
-    ob->SetId( ({ "board", "chalkboard", "dusty board", "dusty chalkboard" }) );    ob->set_board_id("adv_guild_board");
+    ob->SetId( ({ "board", "chalkboard", "dusty board", "dusty chalkboard" }) );    
+    ob->set_board_id("adv_guild_board");
     ob->set_max_posts(30);
     ob->SetShort("a dusty chalkboard");
     ob->eventMove(this_object());
@@ -59,11 +60,11 @@ mixed ReadSign(){
     }
     ret += "\nTo advance, ask the guildmaster.\nExample:\n\n";
     ret += "ask dirk to advance";
-    return (mixed)this_player()->eventPage(({ret}));
+    return this_player()->eventPage(({ret}));
 }
 
 mixed ReadScroll(){
-    return (mixed)this_player()->eventPage("/domains/town/txt/quests.txt");
+    return this_player()->eventPage("/domains/town/txt/quests.txt");
 }
 
 void init(){

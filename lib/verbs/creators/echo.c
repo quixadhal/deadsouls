@@ -63,7 +63,7 @@ void eventEcho(object *targs, string str) {
 
     foreach(ob in targs) {
         if( archp(ob) )
-            ob->eventPrint((string)this_player()->GetCapName() +
+            ob->eventPrint(this_player()->GetCapName() +
                     " echoes: " + str, MSG_CONV);
         else ob->eventPrint(str, MSG_CONV);
     }

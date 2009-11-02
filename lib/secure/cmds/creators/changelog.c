@@ -9,7 +9,7 @@
 #include <objects.h>
 
 #define CHANGELOG "ChangeLog"
-#define TMP_FILE DIR_TMP + "/" + (string)previous_object()->GetKeyName() + ".change"
+#define TMP_FILE DIR_TMP + "/" + previous_object()->GetKeyName() + ".change"
 
 inherit LIB_DAEMON;
 
@@ -20,8 +20,8 @@ int cmd(string str) {
     string file;
     int i;
 
-    if(!str) str = (string)this_player()->get_path();
-    str = absolute_path((string)this_player()->get_path(), str);
+    if(!str) str = this_player()->get_path();
+    str = absolute_path(this_player()->get_path(), str);
     if(file_size(str) == -1) return notify_fail("Invalid path.\n");
     if(file_size(file = str) != -2) {
         i = sizeof(tmp = explode(str, "/"));
@@ -51,8 +51,8 @@ void post_change(mixed *args) {
     str = replace_string(str, "\n", " ");
     maxi = sizeof(tmp = explode(wrap(str, 60), "\n"));
     str = "-  "+ change+"\n";
-    str += "   "+ctime(time())+" by "+(string)previous_object()->GetCapName()+
-        "("+(string)previous_object()->query_rname()+"):\n";
+    str += "   "+ctime(time())+" by "+previous_object()->GetCapName()+
+        "("+previous_object()->query_rname()+"):\n";
     for(i=0; i<maxi; i++) str += "     * "+tmp[i]+"\n";
     if(str2 = read_file(file)) str2 = str+"\n\n"+str2;
     else str2 = str;

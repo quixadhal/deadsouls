@@ -16,7 +16,7 @@ mixed cmd(mixed args) {
     int reload_player, action = 0;
     mapping GroupsMap = ([]);
 
-    if( !this_player() || !((int)master()->valid_apply(({ "ASSIST" }))) )
+    if( !this_player() || !(master()->valid_apply(({ "ASSIST" }))) )
         error("Illegal attempt to access groupmod: "+get_stack()+" "+identify(previous_object(-1)));
 
 

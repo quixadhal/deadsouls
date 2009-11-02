@@ -51,7 +51,7 @@ int throw_stone(string str) {
         notify_fail("Throw what?\n");
         return 0;
     }
-    if(who != (string)target->query_name()) {
+    if(who != target->query_name()) {
         message("say", "The stone misses completely.", this_player());
         message("say", this_player()->query_cap_name()+" throws a "
                 "stone in some random direction.", environment(this_player()),
@@ -104,7 +104,7 @@ int throw_stone(string str) {
             break;
     }
     target->do_damage(limb, random(50)+10);
-    if(((int)target->check_on_limb(limb) == 2) || (target->query_hp() < 0)) 
+    if((target->check_on_limb(limb) == 2) || (target->query_hp() < 0)) 
         target->die();
     return 1;
 }

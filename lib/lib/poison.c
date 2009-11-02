@@ -24,10 +24,10 @@ mixed indirect_poison_obj_with_obj(){
 mixed eventSpreadPoison(object who, object target){
     if( !who || !target || !PoisonUses ) return 0;
     PoisonUses--;
-    if( random(50) > (int)who->GetStatLevel("coordination") ){
+    if( random(50) > who->GetStatLevel("coordination") ){
         this_player()->eventPrint("You fumble around with the poison, "
                 "spilling it on yourself.");
-        environment(this_player())->eventPrint((string)who->GetName() +
+        environment(this_player())->eventPrint(who->GetName() +
                 " fumbles around with some "
                 "poison, spilling it on " +
                 reflexive(who) + ".",

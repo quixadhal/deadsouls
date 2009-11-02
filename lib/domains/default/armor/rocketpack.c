@@ -135,14 +135,14 @@ int boost(string str, int coasting){
     }
     Exit = environment(owner)->GetExitData(str);
 
-    if( sizeof(Doors) && Doors[str] && (int)Doors[str]->GetClosed() ){
+    if( sizeof(Doors) && Doors[str] && Doors[str]->GetClosed() ){
         message("my_action", "You bump into " +
-                (string)Doors[str]->GetShort(str) + ".", owner);
+                Doors[str]->GetShort(str) + ".", owner);
         return 1;
     }
 
     if( Exit && Exit["pre"] &&
-            !((int)evaluate(Exit["pre"], str)) ){
+            !(evaluate(Exit["pre"], str)) ){
         return 1;
         //return 1;
     }

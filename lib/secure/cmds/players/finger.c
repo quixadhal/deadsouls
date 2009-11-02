@@ -15,7 +15,7 @@ mixed cmd(string str) {
     if(!str) {
         string ret;
 
-        ret = (string)FINGER_D->GetFinger(0);
+        ret = FINGER_D->GetFinger(0);
         if( !ret ) return "General finger appears broken.";
         this_player()->eventPage(explode(ret, "\n"), MSG_SYSTEM);
         return 1;
@@ -25,7 +25,7 @@ mixed cmd(string str) {
     else {
         string ret;
 
-        ret = (string)FINGER_D->GetFinger(convert_name(str));
+        ret = FINGER_D->GetFinger(convert_name(str));
         if( !ret ) return "Finger of "+ capitalize(str) + " failed.";
         this_player()->eventPage(explode(ret, "\n"), MSG_SYSTEM);
     }
@@ -37,7 +37,7 @@ void remote_finger(object ob, string who, string mud) {
     // when I tried to add the IMC2 finger, so i just split it up with a return;
     // Shadyman, 2006-Sept-14
 
-    if ( mud = (string)INTERMUD_D->GetMudName(mud) ) {
+    if ( mud = INTERMUD_D->GetMudName(mud) ) {
         SERVICES_D->eventSendFingerRequest(convert_name(who), mud);
         message("system", "Remote finger sent to " + mud + ".", this_player());
         return;

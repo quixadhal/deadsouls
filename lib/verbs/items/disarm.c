@@ -21,5 +21,5 @@ varargs mixed can_disarm_obj(mixed args...) {
 }
 
 varargs mixed do_disarm_obj(object target) {
-    return (mixed)target->eventDisarm(this_player());
+    return target->eventDisarm(this_player());
 }

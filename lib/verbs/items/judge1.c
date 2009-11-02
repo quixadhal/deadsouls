@@ -38,7 +38,7 @@ mixed do_judge_obj_to_obj(object obj1, object obj2) {
     int level;
     string name1, name2;
     object caster = this_player();
-    if( !((int)caster->GetSkillLevel("bargaining")) ) {
+    if( !(caster->GetSkillLevel("bargaining")) ) {
         return "You do not have the skills to judge items."; }
     if (!obj1 || !obj2) return "You must judge one thing vs another.";
     if (obj1 == obj2) return "That would do a lot of good!";
@@ -59,9 +59,9 @@ mixed do_judge_obj_to_obj(object obj1, object obj2) {
 
     level = caster->GetSkillLevel("bargaining");
     caster->eventPrint("You stare intently at "+name1+" and "+name2+".");
-    environment(caster)->eventPrint( (string)caster->GetName() +
+    environment(caster)->eventPrint( caster->GetName() +
             " concentrates on " + name1 + " and " + name2 + ".", caster);
-    if( (int)this_player()->GetInCombat() )
+    if( this_player()->GetInCombat() )
         this_player()->SetAttack(0,
                 (: eventJudge, this_player(), obj1, obj2, level :),
                 ROUND_OTHER);
@@ -83,16 +83,16 @@ int eventJudge(object caster, object obj1, object obj2, int level) {
                 "to compare them.");
         return 0;
     }
-    if( cost > (int)caster->GetStaminaPoints() ) {
+    if( cost > caster->GetStaminaPoints() ) {
         caster->eventPrint("You are too weary to judge right now.");
         environment(caster)->eventPrint(
-                (string)caster->GetName() + " looks tired.", caster);
+                caster->GetName() + " looks tired.", caster);
         return 0;
 
     }
     caster->AddStaminaPoints(-cost);
-    obj1lvl = (int)obj1->GetValue();
-    obj2lvl = (int)obj2->GetValue();
+    obj1lvl = obj1->GetValue();
+    obj2lvl = obj2->GetValue();
 
     if( level < (5 + random(35))) {
 

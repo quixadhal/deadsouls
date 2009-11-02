@@ -1,6 +1,5 @@
 #include <lib.h>
 inherit LIB_ROOM;
-inherit "/lib/props/ambiance";
 
 int eventHopDown(){
     write("You hop down into the hole, noting that there is no ladder for getting back up.");

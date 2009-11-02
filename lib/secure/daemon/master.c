@@ -11,6 +11,7 @@
 #include ROOMS_H
 #include <cfg.h>
 #include <lib.h>
+#include <logs.h>
 #include <objects.h>
 #include <privs.h>
 #include <dirs.h>
@@ -1024,7 +1025,7 @@ static void eventReset(){
         reset_handle = call_out( (: eventReset :), TIME_TO_RESET );
     }
     x = reclaim_objects();
-    write_file(DIR_LOGS "/reset", "Reset " + ResetNumber + " occurred at: " +
+    write_file(LOG_RESET, "Reset " + ResetNumber + " occurred at: " +
             ctime(time()) + "\n");
     if(!RESET_ALL) obs = objects( (: !environment($1) && (random(100) < 26) :) );
     else obs = objects( (: !environment($1) :) );
@@ -1051,7 +1052,7 @@ static void eventReset(){
         if( f ) catch(evaluate(f));
     }
     in_reset = 0;
-    write_file(DIR_LOGS "/reset", "\t" + x + " objects reclaimed, " +
+    write_file(LOG_RESET, "\t" + x + " objects reclaimed, " +
             (sizeof(obs) - y) + " objects reset, " + y + " objects "
             "cleaned.\n");
 }
@@ -1132,8 +1133,8 @@ int ReadName(){
     int port = query_host_port();
     MudName = "DeadSoulsNew";
     if(!ENABLE_INSTANCES){
-        //  || (find_object(INSTANCES_D) &&
-        //  INSTANCES_D->GetMyInstanceName() == "global")){
+          //  || (find_object(INSTANCES_D) &&
+          //  INSTANCES_D->GetMyInstanceName() == "global")){
         //debug("The mud believes it is a global instance.");
         mconfig = "/secure/cfg/mudos.cfg";
     }
@@ -1162,4 +1163,4 @@ int ReadName(){
     }
     //debug("The mud thinks its name is: "+MudName);
     return 0;
-    }
+}

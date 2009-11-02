@@ -22,7 +22,7 @@ int event_pending(object ob) {
     string fn;
     int i;
 
-    tmp = (mapping)EVENTS_D->GetEvents();
+    tmp = EVENTS_D->GetEvents();
     fn = file_name(ob);
     i = sizeof(cles = keys(tmp));
     while(i--) if( tmp[cles[i]]["object"] == fn ) return 1;

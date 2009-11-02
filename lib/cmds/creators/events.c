@@ -19,7 +19,7 @@ int cmd(string str) {
     string name;
 
     if(!str && archp(previous_object())) {
-        mp = (mapping)EVENTS_D->GetEvents();
+        mp = EVENTS_D->GetEvents();
         i = sizeof(obs = keys(mp));
         message("info", "The following events are pending:", this_player());
         while(i--) {
@@ -35,7 +35,7 @@ int cmd(string str) {
         else
             name = this_player()->GetKeyName();
         j = 0;
-        mp = (mapping)EVENTS_D->GetEvents();
+        mp = EVENTS_D->GetEvents();
         i = sizeof(obs = keys(mp));
         if (i) {
             while(i--)

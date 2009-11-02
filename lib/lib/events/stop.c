@@ -22,7 +22,7 @@ varargs mixed eventStop(object who, string what, mixed args){
     if(who != this_object()) return 0;
     if(what == "fishing"){
         object ob = environment(who);
-        return (mixed)ob->eventStop(this_player(), "fishing");
+        return ob->eventStop(this_player(), "fishing");
     }
     if(what == "fighting"){
         mixed *enemies = this_object()->GetEnemies();

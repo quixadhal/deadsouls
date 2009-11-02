@@ -40,12 +40,12 @@ mixed cmd(string args) {
     if(ob != this_player()){
         if(result){
             message("system", "You have been returned to your previous location by " +
-                    (string)this_player()->GetName() + ".", ob);
-            message("system", "You return " + (string)ob->GetCapName() +
+                    this_player()->GetName() + ".", ob);
+            message("system", "You return " + ob->GetCapName() +
                     " to their previous location.", this_player());
         }
         else {
-            return "Failed to move " + (string)ob->GetCapName() + ".";
+            return "Failed to move " + ob->GetCapName() + ".";
         }
     }
     return 1;

@@ -74,8 +74,8 @@ static int Destruct(){
 
 void SetCorpse(object who){
     object *worn = ({});
-    string tmpshort = (string)who->GetShort();
-    if(sizeof(who->GetRiders())) tmpshort = (string)who->GetPlainShort();
+    string tmpshort = who->GetShort();
+    if(sizeof(who->GetRiders())) tmpshort = who->GetPlainShort();
     SetKeyName(who->GetKeyName());
     SetId(({ "body","corpse",who->GetId()... }) );
     Owner = who->GetCapName();
@@ -95,6 +95,9 @@ void SetCorpse(object who){
     Player = interactive(who);
     Playerob = who;
     BaseFile = base_name(who)+".c";
+    if(who->GetProperty("basefile") && !strsrch(BaseFile, LIB_SENTIENT)){
+        BaseFile = who->GetProperty("basefile");
+    }
     LivingLong = who->GetLong();
     LivingShort = who->GetShort();
     SetMaxCarry(who->GetMaxCarry());

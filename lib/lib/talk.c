@@ -136,9 +136,9 @@ varargs mixed CanSpeak(object target, string verb, string msg, string lang){
         if( target == this_object() )
             return "Are you really intent on talking to yourself?";
         if( userp(target) && !interactive(target) )
-            return (string)target->GetName() + " is net-dead.";
-        if( (int)target->GetBlocked("tell") )
-            return (string)target->GetName() + " is blocking all tells.";
+            return target->GetName() + " is net-dead.";
+        if( target->GetBlocked("tell") )
+            return target->GetName() + " is blocking all tells.";
     }
     return 1;
 }
@@ -156,9 +156,9 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
         case TALK_PRIVATE:
             if( target != this_object() ) return 0;
             if( verb == "reply" )
-                tmp = "%^BOLD%^RED%^" + (string)who->GetName() +
+                tmp = "%^BOLD%^RED%^" + who->GetName() +
                     " replies,%^RESET%^ \"" + msg + "%^RESET%^\"";
-            else tmp = "%^BOLD%^RED%^" + (string)who->GetName() +
+            else tmp = "%^BOLD%^RED%^" + who->GetName() +
                 " tells you,%^RESET%^ \"" + msg + "%^RESET%^\"";
             if(target->GetMuffed() && member_array(who->GetKeyName(),target->GetMuffed()) == -1){
                 eventTellHist(tmp);
@@ -168,7 +168,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
 
         case TALK_SEMI_PRIVATE:
             if( target != this_object() ) return 0;
-            tmp = "%^BOLD%^" + SpeakColor + (string)who->GetName() + " whispers in " +
+            tmp = "%^BOLD%^" + SpeakColor + who->GetName() + " whispers in " +
                 capitalize(lang) + " to you,%^RESET%^ \"" + msg + "%^RESET%^\"";
             this_object()->eventPrint(tmp, MSG_CONV);
             eventTalkHist(tmp, "whisper");
@@ -177,8 +177,8 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
         case TALK_LOCAL:
             if( target ){
                 if( target != this_object() ){
-                    if( msg[<1] == '?' ) tmp = (string)target->GetName();
-                    else tmp = "to " + (string)target->GetName();
+                    if( msg[<1] == '?' ) tmp = target->GetName();
+                    else tmp = "to " + target->GetName();
                     if( lang ) tmp += " in " + capitalize(lang);
                 }
                 else {
@@ -186,15 +186,15 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
                     else tmp = "to you";
                     if( lang ) tmp += " in " + capitalize(lang);
                 }
-                tmp = (string)who->GetName() + " " + pluralize(verb) + " " + tmp +
+                tmp = who->GetName() + " " + pluralize(verb) + " " + tmp +
                     ", \"";
                 tmp = tmp + "%^BOLD%^CYAN%^\"" + msg + "%^RESET%^\"";
                 eventTalkHist(tmp, "say");
                 this_object()->eventPrint(tmp, MSG_CONV);
             }
             else if( verb == "yell" ){
-                tmp = "%^BOLD%^GREEN%^You hear a " + (string)who->GetGender()
-                    + " " + (string)who->GetRace() + " yell in " + capitalize(lang) +
+                tmp = "%^BOLD%^GREEN%^You hear a " + who->GetGender()
+                    + " " + who->GetRace() + " yell in " + capitalize(lang) +
                     " from a distance,%^RESET%^ \"" + msg + "%^RESET%^\"";
                 eventTalkHist(tmp, "yell");
                 this_object()->eventPrint(tmp, MSG_CONV);
@@ -202,7 +202,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
             else {
                 if( lang ) tmp = pluralize(verb) + " in " + capitalize(lang);
                 else tmp = pluralize(verb);
-                tmp = (string)who->GetName() + " " + tmp + ", \"";
+                tmp = who->GetName() + " " + tmp + ", \"";
                 tmp = tmp + "%^BOLD%^" + SpeakColor + msg + "%^RESET%^\"";
                 this_object()->eventPrint(tmp, MSG_CONV);
                 eventTalkHist(tmp, verb);
@@ -210,14 +210,14 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
             break;
 
         case TALK_AREA:
-            tmp = "%^BOLD%^GREEN%^" + (string)who->GetName() + " yells in " +
+            tmp = "%^BOLD%^GREEN%^" + who->GetName() + " yells in " +
                 capitalize(lang) + ",%^RESET%^ \"" + msg + "%^RESET%^\"";
             eventTalkHist(tmp, "yell");
             this_object()->eventPrint(tmp, MSG_CONV);
             break;
 
         case TALK_WORLD:
-            tmp = "%^BOLD%^BLUE%^" + (string)who->GetName() + " shouts in " +
+            tmp = "%^BOLD%^BLUE%^" + who->GetName() + " shouts in " +
                 capitalize(lang) + ",%^RESET%^ \"" + msg + "%^RESET%^\"";
             eventTalkHist(tmp, "shout");
             this_object()->eventPrint(tmp, MSG_CONV); 
@@ -226,7 +226,7 @@ varargs mixed eventHearTalk(object who, object target, int cls, string verb,
         default:
             return 0;
     }
-    eventTalkRespond(who, target, cls, msg, lang);
+    this_object()->eventTalkRespond(who, target, cls, msg, lang);
     return 1;
 }
 
@@ -261,7 +261,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang){
     else msg = capitalize(msg);
     switch( cls ){
         case TALK_PRIVATE:
-            tmp = "%^BOLD%^RED%^You tell " + (string)target->GetName() +
+            tmp = "%^BOLD%^RED%^You tell " + target->GetName() +
                 ",%^RESET%^ \"" + msg + "%^RESET%^\"";
             this_object()->eventPrint(tmp, MSG_CONV);	
             target->eventHearTalk(this_object(), target, cls, "tell", msg);
@@ -272,7 +272,7 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang){
             if( !target ) tmp = "%^BOLD%^CYAN%^You whisper in " + capitalize(lang) +
                 ",%^RESET%^ \"" + msg + "%^RESET%^\"";
             else tmp = "%^BOLD%^CYAN%^You whisper in " + capitalize(lang) + " to " +
-                (string)target->GetName() + ",%^RESET%^ \"" + msg + "%^RESET%^\"";
+                target->GetName() + ",%^RESET%^ \"" + msg + "%^RESET%^\"";
             eventTalkHist(tmp, "whisper");
             this_object()->eventPrint(tmp, MSG_CONV);	
             env->eventHearTalk(this_object(), target, cls, "whisper",
@@ -288,11 +288,11 @@ varargs mixed eventSpeak(object target, int cls, string msg, string lang){
                         (msg[<1] >= 'A' && msg[<1] <= 'Z')) msg = msg + ".";
             }
             if( target && msg[<1] == '?' ){
-                tmp = "You " + verb + " " + (string)target->GetName();
+                tmp = "You " + verb + " " + target->GetName();
                 if( lang ) tmp = tmp + " in " + capitalize(lang);
             }
             else if( target ){
-                tmp = "You " + verb + " to " + (string)target->GetName();
+                tmp = "You " + verb + " to " + target->GetName();
                 if( lang ) tmp = tmp + " in " + capitalize(lang);
             }
             else {

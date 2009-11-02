@@ -13,7 +13,7 @@ inherit LIB_DAEMON;
 void eventInventory();
 
     mixed cmd(string args) {
-        if( (int)this_player()->GetInCombat() )
+        if( this_player()->GetInCombat() )
             this_player()->SetAttack(0, (: eventInventory :), ROUND_OTHER);
         else eventInventory();
         return 1;
@@ -26,17 +26,17 @@ void eventInventory() {
     int i;
 
     items = map(filter(all_inventory(this_player()), 
-                (: !((int)$1->GetInvis(this_player())) &&
+                (: !($1->GetInvis(this_player())) &&
                  !($1->GetWorn()) :)),
-            (: (string)$1->GetEquippedShort() :));
+            (: $1->GetEquippedShort() :));
     wieldeds = map(filter(all_inventory(this_player()),
-                (: !((int)$1->GetInvis(this_player())) &&
+                (: !($1->GetInvis(this_player())) &&
                  ($1->GetWielded()) :)),
-            (: (string)$1->GetEquippedShort() :));
+            (: $1->GetEquippedShort() :));
     worns = map(filter(all_inventory(this_player()),
-                (: !((int)$1->GetInvis(this_player())) &&
+                (: !($1->GetInvis(this_player())) &&
                  !($1->GetWielded()) && $1->GetWorn() :)),
-            (: (string)$1->GetEquippedShort() :));
+            (: $1->GetEquippedShort() :));
     shorts = items + wieldeds + worns;
     if( !(i = sizeof(shorts)) ) {
         message("system", "You are carrying nothing.", this_player());
@@ -56,7 +56,7 @@ void eventInventory() {
     message("look", ret, this_player());
     if(!this_player()->GetInvis() && 
             !environment(this_player())->GetProperty("meeting room"))
-        message(MSG_ANNOYING, (string)this_player()->GetName() + " checks " +
+        message(MSG_ANNOYING, this_player()->GetName() + " checks " +
                 possessive(this_player()) + " possessions.", 
                 environment(this_player()), ({ this_player() }));
 }

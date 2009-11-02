@@ -21,16 +21,16 @@ mixed cmd(string args) {
     int x, cols, birth, i;
 
     cols = ((int *)this_player()->GetScreen())[0];
-    tmp = ({ center("Biography for " + (string)this_player()->GetShort() +
+    tmp = ({ center("Biography for " + this_player()->GetShort() +
                 " on " + mud_name(), cols), "" });
-    birth = (int)this_player()->GetBirth();
+    birth = this_player()->GetBirth();
     x = query_year(birth);
     if( x < 0 ) yrstr = (-x) + " BN";
     else yrstr = x + "";
     tmp += ({ sprintf("%:-"+(cols/2)+"s%"+(cols/2)+"s", "Level: " +
-                (int)this_player()->GetLevel(), "Age: " +
+                this_player()->GetLevel(), "Age: " +
                 ((time() - birth)/YEAR) + " years") });
-    tmp = ({ "You are " + (string)this_player()->GetMoralityDescription()
+    tmp = ({ "You are " + this_player()->GetMoralityDescription()
             + "." });
     tmp += ({ sprintf("You were born on the %d%s day of %s, year %s.",
                 query_date(birth), ordinal(query_date(birth)),
@@ -46,7 +46,7 @@ mixed cmd(string args) {
             x = query_year(marr->WeddingDate);
             if( x < 0 ) yrstr = (-x) + " BN";
             else yrstr = x + "";
-            town = (string)(marr->Location)->GetTown();
+            town = (marr->Location)->GetTown();
             if( !town || town == "wilderness" ) town = ".";
             else town = " in " + town + ".";
             tmp += ({ "You married " + marr->Spouse + " the " +
@@ -67,7 +67,7 @@ mixed cmd(string args) {
                 x = query_year(marr->DivorceDate);
                 if( x < 0 ) yrstr2 = (-x) + " BN";
                 else yrstr2 = x + "";
-                town = (string)(marr->Location)->GetTown();
+                town = (marr->Location)->GetTown();
                 if( !town || town == "wilderness" ) town = "";
                 else town = " in " + town;		
                 tmp += ({ "You married " + marr->Spouse + " " +
@@ -80,7 +80,7 @@ mixed cmd(string args) {
             }
         }
     }
-    deaths = (mapping *)this_player()->GetDeaths();
+    deaths = this_player()->GetDeaths();
     if( !(x = sizeof(deaths)) )
         tmp += ({ "You have never suffered the pain of death." });
     else {
@@ -103,7 +103,7 @@ mixed cmd(string args) {
                         (i >= sizeof(d2)) ? "" :			
                         d2[i]["enemy"]) });
     }	    
-    kills = (mapping)STATISTICS_D->GetKills((string)this_player()->GetKeyName());
+    kills = STATISTICS_D->GetKills(this_player()->GetKeyName());
     npcs = sort_array(keys(kills), 1);
     if( !(x = sizeof(npcs)) )
         tmp += ({ "You have never brought harm to another." });

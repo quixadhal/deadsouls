@@ -161,7 +161,7 @@ varargs string item_list(mixed array items...) {
 
 string possessive_noun(mixed val) {
     if(!val) return "its";
-    if(objectp(val)) val = (string)val->GetName();
+    if(objectp(val)) val = val->GetName();
     else if(!stringp(val)) error("Bad argument 1 to possessive_noun().\n");
     switch(val[strlen(val)-1]) {
         case 'x': case 'z': case 's': return sprintf("%s'", val);
@@ -170,7 +170,7 @@ string possessive_noun(mixed val) {
 }
 
 string possessive(mixed val) {
-    switch(objectp(val) ? (string)val->GetGender() : (string)val) {
+    switch(objectp(val) ? val->GetGender() : val) {
         case "male": return "his";
         case "female": return "her";
         case "neutral": return "hir";
@@ -181,7 +181,7 @@ string possessive(mixed val) {
 string strip_article(mixed val) {
     int x;
 
-    if( objectp(val) ) val = (string)val->GetShort();
+    if( objectp(val) ) val = val->GetShort();
     x = strlen(val);
     if( x <= 2 ) return val;
     if( val[0..1] == "a " || val[0..1] == "A " ) return val[2..];
@@ -193,7 +193,7 @@ string strip_article(mixed val) {
 }
 
 string nominative(mixed val) {
-    switch(objectp(val) ? (string)val->GetGender() : (string)val) {
+    switch(objectp(val) ? val->GetGender() : val) {
         case "male": return "he";
         case "female": return "she";
         case "neutral": return "sie";
@@ -202,7 +202,7 @@ string nominative(mixed val) {
 }
 
 string objective(mixed val) {
-    switch(objectp(val) ? (string)val->GetGender() : (string)val) {
+    switch(objectp(val) ? val->GetGender() : val) {
         case "male": return "him";
         case "female": return "her";
         case "neutral": return "hir";
@@ -232,12 +232,12 @@ string pluralize(mixed single) {
     }
 
     if(objectp(single)) {
-        if(str = (string)single->query_plural_name()){
+        if(str = single->query_plural_name()){
             return str;
         }
-        else str = (string)single->GetKeyName();
+        else str = single->GetKeyName();
     }
-    else if(stringp(single)) str = (string)single;
+    else if(stringp(single)) str = single;
     else error("Bad argument 1 to pluralize()");
 
     if(!str){
@@ -376,7 +376,11 @@ string cardinal(int x) {
 }
 #else
 string cardinal(int x){
-    return query_num(x);
+    string sign;
+    if(undefinedp(x) || !intp(x)) return sign; 
+    sign = ( x < 0 ? "negative " : "");
+    x = abs(x);
+    return sign+query_num(x);
 }
 #endif
 

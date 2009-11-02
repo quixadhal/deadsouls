@@ -20,24 +20,24 @@ int cmd(string str) {
         return notify_fail("You cannot grant such access.\n");
     path = homedir(this_player()) + "/";
     if(file_size(path+"adm") != -2) mkdir(path+"adm");
-    file = absolute_path((string)this_player()->query_cwd(), file);
+    file = absolute_path(this_player()->query_cwd(), file);
     if(!file_exists(path+"adm/access.c"))
         write_file(path+"adm/access.c", "#include <lib.h>\n\ninherit LIB_ACCESS;\n");
     if(file_size(file) == -2 && file[strlen(file)-1] != '/') file = file + "/";
     if(type == "read" || type == "all") {
-        if(!((int)call_other(path+"adm/access","grant_access","read",file,who)))
+        if(!(call_other(path+"adm/access","grant_access","read",file,who)))
             return notify_fail("Read access grant failed!\n");
         if( file_size(file) == -2 ) {
-            if( !((int)call_other(path + "adm/access", "grant_access", "read",
+            if( !(call_other(path + "adm/access", "grant_access", "read",
                             file[0..<2], who)) )
                 return notify_fail("Read access grant failed.\n");
         }
     }
     if(type == "write" || type == "all") {
-        if(!((int)call_other(path+"adm/access","grant_access","write",file,who)))
+        if(!(call_other(path+"adm/access","grant_access","write",file,who)))
             return notify_fail("Write access grant failed!\n");
         if( file_size(file) == -2 ) {
-            if( !((int)call_other(path + "adm/access", "grant_access", "write",
+            if( !(call_other(path + "adm/access", "grant_access", "write",
                             file[0..<2], who)) )
                 return notify_fail("Write access grant failed.\n");
         }
