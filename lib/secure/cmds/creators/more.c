@@ -15,8 +15,8 @@ mixed cmd(string str) {
     return this_player()->eventPage(str, MSG_SYSTEM | MSG_NOCOLOUR);
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <more FILE>\n\n"
+string GetHelp(){
+    return ("Syntax: more <FILE>\n\n"
             "Pages through the file you name.  While inside the pager, you "
             "have access to the following commands:\n" +
             LIB_PAGER->GetHelp("pager") + "\n\n"

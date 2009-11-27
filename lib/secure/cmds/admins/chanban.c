@@ -22,7 +22,18 @@ mixed cmd(string args) {
                 this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
                 0, chan, ({ mud }), ({}) }) );
 
-    write(mud+" has been banned from "+chan+".");
+    write("Ban request for "+mud+" from "+chan+" has been sent.");
 
     return 1;
+}
+
+string GetHelp() {
+    return ("Syntax: chanban <channel> <mudname>\n\n"
+      "This submits to the intermud router a request to ban the "
+      "specified mud from a channel you own. If you do not own "
+      "the channel you specify, then the router will not honor "
+      "your request. Use the \"real\" channel name, rather than "
+      "its local nickname, ie imud_code and not intercre.\n"
+      "Example: chanban imud_gossip haven\n"
+      "See also: chanunban, chancreate, chanremove");
 }

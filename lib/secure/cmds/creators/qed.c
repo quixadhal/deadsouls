@@ -45,13 +45,13 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <qed ([filename])>\n\n", this_player());
-    message("help", "This is the quiet version of ed. While editing, "
+string GetHelp() {
+    return ("Syntax: qed [filename]\n\n"
+            "This is the quiet version of ed. While editing, "
             "you will receive only editing data and some other limited "
             "messages. "
             "Once done editing, the game messages you missed will be "
             "displayed to you. Be careful where you use this command, for you "
             "may engage in combat and be killed without knowing about it "
-            "until you complete your editing.\n\nSee also: ed", this_player());
+            "until you complete your editing.\nSee also: ed, ced, qcs, creweb");
 }

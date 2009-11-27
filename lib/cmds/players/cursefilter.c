@@ -21,9 +21,9 @@ mixed cmd(string str) {
     return "Type: help cursefilter";
 }
 
-void help() {
-    message("help", "Syntax: cursefilter [ on | off ]\n\n"
-            "If enabled, tries to shield you from some common "+
+string GetHelp() {
+    return ("Syntax: cursefilter [ on | off ]\n\n"
+            "If enabled, tries to shield you from some common "
             "discourteous words.\n"
-            "See also: env", this_player());
+            "See also: env");
 }

@@ -11,7 +11,6 @@ mixed cmd(string str) {
     if (str) {
         ob = find_player(str);
         if (!ob) {
-            //write("No such player.");
             return "Player not found.";
         }
     } else
@@ -20,4 +19,9 @@ mixed cmd(string str) {
         return sprintf("%s\n", master()->standard_trace(error, 1));
     } else write("No error.\n");
     return "dbxwhere run complete.";
+}
+
+string GetHelp(){
+    return "Syntax: dbxwhere [person]\n\n"
+    "Debugging thingy.\nSee also: dbxframe";
 }

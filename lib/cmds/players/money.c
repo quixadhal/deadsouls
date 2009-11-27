@@ -36,9 +36,8 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: <money>\n\n"
-            "Allows you to search your pockets for all your money\n"
-            "of all currency types.\n"
-         );
+string GetHelp() {
+    return ("Syntax: money\n\n"
+            "Allows you to search your pockets for all your money "
+            "of all currency types.");
 }

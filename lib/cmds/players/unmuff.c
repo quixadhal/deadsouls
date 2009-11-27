@@ -15,12 +15,9 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: unmuff\n"
-            "        unmuff <name>\n\n"
+string GetHelp() {
+            return ("Syntax: unmuff <name>\n\n"
             "This command allows you to stop ignoring channel messages from the name specified.\n"
-            "See also: earmuff, whomuffed\n\n",
-            this_player() );
+            "See also: earmuff, whomuffed");
 }
 

@@ -1,11 +1,12 @@
 #include <lib.h>
-void help();
+
+string GetHelp();
 
 inherit LIB_DAEMON;
 
 int cmd(string str) {
     if(!sizeof(str)){
-        help();
+        write(GetHelp());
         return 1;
     }
 
@@ -38,11 +39,9 @@ int cmd(string str) {
     return 1;
 }
 
-
-void help() {
-    message("help", "Syntax: areagoto <room>\n\n"
+string GetHelp(){
+    return ("Syntax: areagoto <room>\n\n"
             "Permits a builder to travel to rooms under her control. "
             "For a list of such rooms: arealist room\n"
-            "See also: arealist, areaclone",
-            this_player());
+            "See also: arealist, areaclone");
 }

@@ -8,13 +8,9 @@ int cmd(string arg){
     return 1;
 }
 
-int help(){
-    write( @EndText
-Syntax: fdinfo
-Effect: Lists the status of the machines's file descriptors
-See man: dump_file_descriptors
-See also: netstat, mstatus, cache, callouts, dumpallobj, opcprof
-EndText
-    );
-    return 1;
+string GetHelp(){
+    return "Syntax: fdinfo\n\n"
+        "Lists the status of the machines's file descriptors."
+        "\nSee man: dump_file_descriptors"
+        "\nSee also: netstat, mstatus, cache, callouts, dumpallobj, opcprof";
 }

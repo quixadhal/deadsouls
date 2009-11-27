@@ -66,10 +66,9 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax:  shutdown cancel\n"
+string GetHelp(){
+    return ("Syntax:  shutdown cancel\n"
             "         shutdown [reason]\n\n"
             "This will shut down the game immediately, or cancel "
-            "a scheduled shutdown. Use with great care.\n\nSee also: end"
-         );
+            "a scheduled shutdown. Use with great care.\nSee also: end");
 }

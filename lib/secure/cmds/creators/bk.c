@@ -39,9 +39,10 @@ mixed cmd(string str) {
     return 1;
 }
 
-int help() {
-    message("help", "Syntax: <bk [file]>\n\n"
+string GetHelp(){
+    return ("Syntax: bk [file]\n"
+            "        bk here\n\n"
             "Copies the specified file into your bak/ directory, and "
-            "appends a unique identifying number to the backup file name.",
-            this_player());
+            "appends a unique identifying number to the backup file name.\n"
+            "See also: restore, find, reload");
 }

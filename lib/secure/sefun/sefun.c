@@ -229,9 +229,7 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
     gfun = fun;
     gdelay = delay;
 
-#ifdef __FLUFFOS__
     get_garbage();
-#endif
     if(prev) prevbase = base_name(prev);
     else error("call_out with no previous_object()");
 
@@ -616,18 +614,35 @@ int sefun_exists(string str){
     return 0;
 }
 
-int query_charmode(object ob){
-    int ret = -1;
-    globalob = ob;
-#ifdef __DSLIB__
-    ret = unguarded( (: efun::query_charmode(globalob) :) );
-#endif
-    return ret;
+#if efun_defined(query_charmode)
+varargs int in_input(object ob){
+    int ret;
+    if(ob) globalob = ob;
+    else globalob = previous_object();
+    if(!(efun::query_charmode(globalob)) &&
+      !(globalob->GetProperty("was_charmode")) &&
+      !(globalob->GetCharmode())){
+         if(efun::in_input(globalob)) ret = 2;
+    }
+    return (ret ? 1 : 0);
 }
+
+int query_charmode(object ob){
+    if(ob) globalob = ob;
+    else globalob = previous_object();
+    return efun::query_charmode(globalob);
+}
+
+#else
+int query_charmode(object ob){
+    return -1;
+}
+#endif
 
 varargs void input_to(mixed fun, int flag, mixed args...){
     object prev = previous_object();
     object player = this_player();
+    int was;
 
     gargs = args;
     gfun = fun;
@@ -648,10 +663,13 @@ varargs void input_to(mixed fun, int flag, mixed args...){
     if(player && player->GetCharmode()){
 #if efun_defined(remove_get_char)
         remove_get_char(player);
+        was = 1;
 #endif
 #if efun_defined(remove_charmode)
         remove_charmode(player);
+        was = 1;
 #endif
+    player->SetProperty("was_charmode", 1);
     }
     if(sizeof(gargs)){
         efun::input_to(gfun, gdelay, gargs...);

@@ -13,7 +13,6 @@ mixed cmd(string str){
         str = absolute_path(this_player()->query_cwd(), str);
         if(!str) return "File not found.";
         room = find_object(str);
-        //tc("room: "+identify(room));
         if(room) path = base_name(room);
     }
     if(!path){
@@ -25,13 +24,13 @@ mixed cmd(string str){
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: homeroom [path]\n\n"
+string GetHelp() {
+    return ("Syntax: homeroom [path]\n\n"
             "Sets the specified file to be your \"home\" "
             "room, i.e. the room you teleport to "
             "when you type \"home\" with no arguments. If you do "
             "not specify a path, your current room environment is "
             "set to be your home."
-            "\n\n"
-            "See also: env, homedir", this_player());
+            "\n"
+            "See also: env, homedir");
 }

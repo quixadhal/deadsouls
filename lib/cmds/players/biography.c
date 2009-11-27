@@ -134,11 +134,11 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <biography>\n\n"
+string GetHelp(){
+    return ("Syntax: biography\n\n"
             "Biography gives you a full account of the sort of life you "
             "have lived on " + mud_name() + ".  This information details "
             "such things as your birth, deaths, marriages, and other life "
-            "information.\n\n"
+            "information.\n"
             "See also: score");
 }

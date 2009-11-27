@@ -15,7 +15,7 @@ int cmd(string str) {
     string *pages;
     int i;
 
-    if(!str) return notify_fail("Usage: <man [function]>\n");
+    if(!str) return notify_fail("Usage: man <function>\n");
     i = sizeof(MAN_PAGES);
     pages = ({});
     while(i--) 
@@ -29,12 +29,9 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: man FUNCTION\n\n"
+string GetHelp() {
+    return ("Syntax: man <FUNCTION>\n\n"
             "This command provides information on the function specified, "
             "if it has a help file in the /doc/efun/all, /doc/sefun, or "
-            "/doc/lfun/all directories. "
-            "\n\n",
-            this_player());
+            "/doc/lfun/all directories.");
 }
-

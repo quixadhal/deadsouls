@@ -38,9 +38,9 @@ mixed cmd(string args) {
     write("Of "+massacre+" targets, "+survivors+" survived the purge.");
     return 1;
 }
-    
-void help() {
-    message("help", "Syntax: vaarsuvius THING\n"
-            "Destructs every THING found.\n\n"
-            "See also: zap, dest, destfile", this_player());
+
+string GetHelp(){
+    return ("Syntax: vaarsuvius <THING>\n\n"
+            "Destructs every THING found.\n"
+            "See also: zap, dest, destfile");
 }

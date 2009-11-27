@@ -273,15 +273,11 @@ mixed cmd(string str) {
             if(!contents) contents = "";
             if(last(contents,1) != "\n") contents += "\n";
             write_file(element, contents, 1);
-            //eventBackup(NewFiles[element]);
             reset_eval_cost();
             call_out( (: eventBackup :), 0, NewFiles[element]);
             if(directory_exists(NewFiles[element])) true();
             else {
                 call_out( (: eventCopy :), 0, element);
-                //string path = path_prefix(NewFiles[element]);
-                //if(!directory_exists(path)) mkdir_recurse(path);
-                //rename(element, NewFiles[element]);
             }
         }
         if(member_array(INET_D,preload_file) == -1 && inet) inet->eventDestruct();
@@ -441,10 +437,7 @@ string GetHelp() {
             "        liveupgrade apply\n"
             "        liveupgrade cancel\n"
             "        liveupgrade revert\n"
-            "        liveupgrade alpha\n"
-            //"To use oob updates (not recommended), use the -o flag. The default "
-            //"is currently an http connection to dead-souls.net, which is vastly "
-            //"faster and more secure than oob.\n"
+            "        liveupgrade alpha\n\n"
             "To upgrade all files to the next appropriate level for your lib version:\n"
             "liveupgrade all\n"
             "Wait until you receive the completion message before finalizing the upgrade. "
@@ -459,5 +452,5 @@ string GetHelp() {
             "liveupgrade revert\n"
             "To enable liveupgrading between alpha and stable versions:\n"
             "liveupgrade alpha\n\n"
-            "Web proxies are *NOT* supported. OOB is no longer supported.\n");
+            "Web proxies are *NOT* supported. OOB is no longer supported.");
 }

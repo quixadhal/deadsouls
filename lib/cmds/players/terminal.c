@@ -15,10 +15,10 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <terminal [term type]>\n\n"
+string GetHelp() {
+    return ("Syntax: terminal <term type>\n\n"
             "Allows you to set your terminal type manually in the " 
             "event the MUD does not automatically recognize the proper "
-            "setting.\n\n"
-            "See also: screen", this_player());
+            "setting.\n"
+            "See also: screen, env");
 }

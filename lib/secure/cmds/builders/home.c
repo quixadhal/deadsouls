@@ -57,11 +57,11 @@ mixed cmd(string str){
     return unguarded( (: GoHome($(str)) :) );
 }
 
-void help() {
-    message("help", "Syntax: home\n        home [creator]\n\n"
+string GetHelp(){
+    return ("Syntax: home\n        home [creator]\n\n"
             "Without arguments, this command will take you to your workroom.  "
             "With arguments, it takes you to the workroom of the person "
             "you specify. Non-creator builders can only go to their own "
-            "workroom.\n\n"
-            "See also: goto, trans, homeroom", this_player());
+            "workroom.\n"
+            "See also: goto, trans, homeroom");
 }

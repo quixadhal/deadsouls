@@ -72,6 +72,10 @@
     "mccain","biden","palin","chitonw","wachovia","wamu",\
     "dogoodi","idoogod","yamaglonchi","hotchka","tacgnol",\
     "zangano","zafacon","doushnou","yanaglonchi","rowsdower",\
+    "gleepy","gloop","gloopy","neeby","nabba","nooby","la","la","la",\
+    "lo","lo","sabba","sibby","sabba","nooby","abba","nabba",\
+    "le","le","le","lo","lo","tooby","ooby","walla","dede","scozzafava",\
+    "AUSCANZUKUS",\
 })
 
 string translate(string str, int prof) {

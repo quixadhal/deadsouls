@@ -101,7 +101,6 @@ int eventManageQueries(){
     return 1;
 }
 
-
 mixed cmd(string args) {
     int x;
     headers_left = ({});
@@ -167,8 +166,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <doctool [doctype] FUNCTION_NAME>\n\n"
+string GetHelp(){
+    return ("Syntax: doctool [doctype] FUNCTION_NAME\n\n"
             "Assists in creating sefun and lfun documentation.\n"
             "Because it automatically scans many files and performs \n"
             "operations on them, this command may seriously lag the \n"
@@ -176,6 +175,6 @@ void help() {
             "substantial occasional lag is acceptable."
             "\n\n"
             "It is not unusual for this command to error out on \"Too long "
-            "evaluation\" the first few times you run it.\n\n"
-            "See also: man, help", this_player());
+            "evaluation\" the first few times you run it.\n"
+            "See also: man, help");
 }

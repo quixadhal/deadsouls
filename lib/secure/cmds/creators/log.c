@@ -18,9 +18,9 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: <log [log file]>\n\n"
-            "Tails the log file named (i.e. a file in the mud log directory).\n\n"
-            "See also:\nelog, replog\n"
-         );
+string GetHelp(){
+    return ("Syntax: log [log file]\n\n"
+            "Tails the log file named (i.e. a file "
+            "in the mud log directory).\n"
+            "See also:\nelog, replog\n");
 }

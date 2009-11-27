@@ -47,9 +47,8 @@ mixed cmd(string str){
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: stargate [name]\n\n"
+string GetHelp() {
+    return ("Syntax: stargate [name]\n\n"
             "Without an argument, lists known stargates. If the name "
-            "of a stargate is specified, information on it is listed.",
-            this_player());
+            "of a stargate is specified, information on it is listed.");
 }                                                    

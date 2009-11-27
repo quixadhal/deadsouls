@@ -1,8 +1,3 @@
-/*	/secure/cmds/creators/dsversion.c
- *  Created by Brodbane of Eve
- *	Date Created: 4/1/06
- */
-
 #include <lib.h>
 #include NETWORK_H
 #include <socket_err.h>
@@ -355,22 +350,6 @@ string GetErorMessage() {
     return "There was a problem";
 }
 
-string GetHelp() {
-    return ("Syntax: dsversion [version]\n\n" +
-            "Shows the latest version of Dead Souls and release notes.\n"+
-            "e.g. dsversion, dsversion r1, dsversion 2.0r1");
+string GetHelp(){
+    return "Syntax: rss\n\nwhatever";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -43,7 +43,11 @@ mixed cmd(string arg) {
         arg = last_string_element(tmp, "/")[0..<3];
     }
     if( !(tmp = HELP_D->GetHelp(arg)) ) {
-        return HELP_D->GetLastError();
+        tmp = this_player()->GetAlias(arg);
+        if(tmp) arg = explode(tmp, " ")[0];
+        if(!(tmp = HELP_D->GetHelp(arg))){
+            return HELP_D->GetLastError();
+        }
     }
     help = center(mud_name()+" System Help", screen[0]) + tmp;
     if(sizeof(help) < 2000)    help = wrap(help, screen[0]);

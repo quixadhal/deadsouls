@@ -33,10 +33,9 @@ inherit LIB_DAEMON;
 #endif
     }
 
-void help() {
-    message("help", "Syntax: wizmap [on | off]\n\n"
+string GetHelp() {
+    return ("Syntax: wizmap [on | off]\n\n"
             "If enabled, a simple map of your surroundings is displayed "
             "when your environment is described to you.\nSee also: "
-            "env, terminal, brief, mute, gag, minimap.",
-            this_player());
+            "env, terminal, brief, mute, gag, minimap.");
 }

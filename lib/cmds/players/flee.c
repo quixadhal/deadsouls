@@ -11,10 +11,8 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: flee\n\n"
+string GetHelp() {
+            return ("Syntax: flee\n\n"
             "If you need to leave combat in a hurry, and don't care which way you go.\n"
-            "This command doesn't work for creators.\n\n",
-            this_player() );
+            "This command doesn't work for creators.");
 }

@@ -57,8 +57,7 @@ mixed cmd(string str) {
     return tmp;
 }
 
-int help() {
-    message("help", "Syntax: <showfuns [file]>\n\n"
-            "Displays the functions defined in the file.",
-            this_player());
+string GetHelp(){
+    return ("Syntax: showfuns <file>\n\n"
+            "Displays the functions defined in the file.");
 }

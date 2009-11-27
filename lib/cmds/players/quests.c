@@ -36,10 +36,7 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: quests\n\n"
-            "This command lists the quests you have completed.\n\n",
-            this_player() );
+string GetHelp(){
+            return ("Syntax: quests\n\n"
+            "This command lists the quests you have completed.");
 }
-

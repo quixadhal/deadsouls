@@ -149,7 +149,8 @@ int Setup(){
     if(!(archp(this_object()) && this_object()->GetInvis())){
         PLAYERS_D->PlayerUpdate(GetKeyName(), 1);
         log_file("enter", GetCapName()+" (enter): "+ctime(time())+"\n");
-        CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
+        CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
+          GetCapName() + " logs into "+mud_name()+"]",0);
     }
 
     if(!catch(mp = FOLDERS_D->mail_status(GetKeyName()))){
@@ -176,7 +177,8 @@ static void net_dead(){
         log_file("enter", GetCapName() + " (net-dead): "+ctime(time())+"\n");
         if(env) env->eventPrint(GetName() + " suddenly disappears into "
                 "a sea of irreality.", MSG_ENV, this_object());
-        CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
+        CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
+          GetCapName() + " goes net-dead on "+mud_name()+"]",0);
     }
     SNOOP_D->ReportLinkDeath(this_object()->GetKeyName());
     eventMove(ROOM_FREEZER);
@@ -192,7 +194,8 @@ void eventReconnect(){
     eventPrint("Reconnected.", MSG_SYSTEM);
     PLAYERS_D->PlayerUpdate(GetKeyName(), 1);
     if(!(archp(this_object()) && this_object()->GetInvis())){
-        CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);
+        CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
+          GetCapName() + " has rejoined " + mud_name() + "]",0);
         environment()->eventPrint(GetCapName() + " has rejoined this reality.",
                 MSG_ENV, this_object());
     }
@@ -217,7 +220,7 @@ int eventDestruct(){
         log_file("dests", name + " "+ctime(time())+" "+
                 stack+"\n---\n\n");
         CHAT_D->eventSendChannel("SYSTEM","connections","[" +
-                name + " has been destructed]", 0);
+                name + " has been destructed from "+mud_name()+"]", 0);
         if(env) env->eventPrint(name + " disintegrates!",
                 MSG_ENV, (ob || ({})));
     }
@@ -295,7 +298,8 @@ int cmdQuit(){
         PLAYERS_D->PlayerUpdate(GetKeyName(), 0);
         log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
         if(env) message("environment", tmp, env, ({this_object()}));
-        CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
+        CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
+          GetCapName() + " quits "+mud_name()+"]",0);
     }
     if(in_edit()){
         ed_cmd(".");

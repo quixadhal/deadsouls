@@ -1,10 +1,25 @@
+---- 2.11a23 (unreleased) ---
+- Driver: added Kalinash's fix for Solaris on 64 bit SPARC.
+- Added commands: anchor, unanchor
+- Note on anchoring: it is intentional that admins can move around
+  if they wish while anchored, but creators cannot.
+- Removed commands: mc, isql, language
+- The help command now handles aliased commands.
+- Corrected some quirks in editing and the detection of in_input()
+  that caused some entered characters to be invisible in charmode.
+- Standardized help output for commands. Note that the standard is now
+  for the help message to be a string returned from GetHelp(), not
+  a write() or a message() or whatever crazy thing occurs to people
+  in the middle of the night in 1994.
+- The "boards" command now indicates the location of the boards listed.
+
 ---- 2.11a22 ---
 - Released 2009-11-1
 - Removed unnecessary casts.
 - It's possible to peer into virtual rooms now.
 - Added a sample ranged weapon: /domains/default/armor/pcannon.c
 - Added Tricky's A* implementation.
-- Improved the thoroughness od warmboots.
+- Improved the thoroughness of warmboots.
 - Improved back-compatibility with MudOS v22.2b14-ds.
 
 ---- 2.11a21 ---

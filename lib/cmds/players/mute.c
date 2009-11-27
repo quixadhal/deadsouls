@@ -22,13 +22,11 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: mute on [ remote | local ]\n"
+string GetHelp() {
+            return ("Syntax: mute on [ remote | local ]\n"
             "        mute off [ remote | local ]\n\n"
             "This command allows you to avoid or listen to channel messages.\n"
             "You can mute all channels with: mute on\n"
             "You can mute only intermud channels with: mute remote on\n"
-            "See also: gag, env\n\n",
-            this_player() );
+            "See also: gag, env");
 }

@@ -27,8 +27,8 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: <reset [(object)]> or <reset [(file)]> or <reset>\n\n"+
+string GetHelp() {
+    return ("Syntax: reset [object | file]\n\n"+
             "Resets the object named or the environment you are in if no object\n"+
-            "is named.\n");
+            "is named.");
 }

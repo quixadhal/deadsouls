@@ -31,7 +31,7 @@ mixed cmd(string args) {
 }
 
 string GetHelp() {
-    return ("Syntax: <callouts>\n\n"
-            "Lists all pending callouts.\n\n"
+    return ("Syntax: callouts\n\n"
+            "Lists all pending callouts.\n"
             "See also: events, mstatus, netstat");
 }

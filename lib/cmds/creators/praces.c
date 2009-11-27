@@ -18,10 +18,9 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("info",
-            "Syntax: praces\n"
-            "A simple tool for creators which will list available player races.",
-            this_player() );
+string GetHelp() {
+            return ("Syntax: praces\n\n"
+            "A simple tool for creators which will list "
+            "available player races.");
 }
 

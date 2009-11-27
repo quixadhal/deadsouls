@@ -34,10 +34,9 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <version>\n\n"
-            "Gives you version information about the LPMud as well as how "
+string GetHelp() {
+    return ("Syntax: version\n\n"
+            "Gives you version information about "+mud_name()+" as well as how "
             "long the mud has been up in your local time if you have it "
-            "specified.", this_player()
-           );
+            "specified.");
 }

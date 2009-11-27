@@ -52,13 +52,11 @@ void remote_finger(object ob, string who, string mud) {
     message("system", mud_name() + " is blissfully unaware of that mud on either the I3 or IMC2 networks.", this_player());
 }
 
-void help() {
-    message("help",
-            "Syntax: <finger (([player])(@)([mud]))>\n\n"
+string GetHelp(){
+            return "Syntax: finger [[player]@[mud]]\n\n"
             "Gives you information about a player named. If you do not mention "
             "a particular mud, it searches for that player info here. "
             " If you mention another mud but no player, "
-            "it may give you general info on the players on that mud.\n\n"
-            "See also: mail, rwho, tell, users, who", this_player()
-           );
+            "it may give you general info on the players on that mud.\n"
+            "See also: mail, rwho, tell, users, who";
 }

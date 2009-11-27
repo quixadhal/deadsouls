@@ -22,10 +22,18 @@ mixed cmd(string args) {
                 this_player()->GetKeyName(), INTERMUD_D->GetNameserver(), 
                 0, chan, ({}), ({ mud }) }) );
 
-    //unguarded( (: update("/daemon/intermud") :) );
-    //load_object("/secure/cmds/creators/update")->cmd("/daemon/intermud");
-
-    write(mud+" has been unbanned from "+chan+".");
+    write("Unban request for "+mud+" from "+chan+" has been sent.");
 
     return 1;
+}
+
+string GetHelp(){
+    return ("Syntax: chanunban <channel> <mudname>\n\n"
+      "This submits to the intermud router a request to unban the "
+      "specified mud from a channel you own. If you do not own "
+      "the channel you specify, then the router will not honor "
+      "your request. Use the \"real\" channel name, rather than "
+      "its local nickname, ie imud_code and not intercre.\n"
+      "Example: chanunban imud_gossip nanvaent\n"
+      "See also: chanban, chancreate, chanremove");
 }

@@ -21,6 +21,7 @@ int cmd(string str){
     return 1;
 }
 
-string GetHelp(string str){
-    return "Reports or changes the amount of light your body radiates.";
+string GetHelp(){
+    return "Syntax: lightme [NUMBER]\n\n"+
+    "Reports or changes the amount of light your body radiates.";
 }

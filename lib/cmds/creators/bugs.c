@@ -9,9 +9,9 @@ int cmd() {
     return 1;
 }
 
-void help() {
-    write("Syntax: bugs\n\n"+
-            "Returns the number of unresolved bug reports in the bug "+
-            "tracking system.\n"+
-            "See also: bug\n");
+string GetHelp() {
+    return ("Syntax: bugs\n\n"
+            "Returns the number of unresolved bug reports in the bug "
+            "tracking system.\n"
+            "See also: bug");
 }

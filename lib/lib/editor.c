@@ -17,10 +17,19 @@ varargs void eventEdit(string file, function callback){
     EditCallback = callback;
 #ifdef __DSLIB__
     if(this_object()->GetCharmode()){
-        this_object()->SetProperty("was_charmode", 1);
+        this_object()->erase_prompt();
         this_object()->CancelCharmode();
-    } 
+        this_object()->SetProperty("was_charmode", 1);
+    }
+    else this_object()->CancelCharmode();
 #endif
+#if efun_defined(remove_get_char)
+    //remove_get_char(this_object());
+#endif
+#if efun_defined(remove_charmode)
+    //remove_charmode(this_object());
+#endif
+    //this_object()->SetNoEcho(0);
     ed_start(file, !creatorp());
     if( !creatorp() || file_size(file) < 1 ) ed_cmd("$a");
 }

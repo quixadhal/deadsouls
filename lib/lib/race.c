@@ -355,7 +355,6 @@ int GetAlcohol(){ return body::GetAlcohol(); }
 
 static void heart_beat(){
     body::heart_beat();
-    language::heart_beat();
     genetics::heart_beat();
     set_heart_beat(GetHeartRate());
 }

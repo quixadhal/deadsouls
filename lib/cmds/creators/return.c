@@ -51,9 +51,9 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <return [living]>\n\n"
+string GetHelp() {
+    return ("Syntax: return [living]\n\n"
             "Sends someone back, after a trans.\n"
-            "With no arguments, sends you to your last location.\n\n"
-            "See also: goto", this_player());
+            "With no arguments, sends you to your last location.\n"
+            "See also: goto");
 }

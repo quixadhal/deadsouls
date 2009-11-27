@@ -7,5 +7,3 @@ mixed cmd(string str) {
     else tell_room(environment(this_player()),"A hollow voice says: \"%^CYAN%^Fool!%^RESET%^\"");
     return 1;
 }
-
-

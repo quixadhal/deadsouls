@@ -18,8 +18,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <removeclass CLASS>\n\n"
-            "Removes a class from the game.\n\n"
+string GetHelp(){
+    return ("Syntax: removeclass <CLASS>\n\n"
+            "Removes a class from the game.\n"
             "See also: addclass, addemote, addrace, removerace");
 }

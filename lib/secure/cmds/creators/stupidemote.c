@@ -97,10 +97,10 @@ mixed cmd(string args){
     return 1;
 }
 
-string GetHelp(string args) {
-    return ("Syntax: <stupidemote EMOTE>\n"
-            "        <stupidemote EMOTE RULE>\n"
-            "You must be admin or member of the EMOTES group to use this command.\n\n"
+string GetHelp(){
+    return ("Syntax: stupidemote <EMOTE> [RULE]\n\n"
+            "You must be admin or member of the EMOTES group to "
+            "use this command.\n"
             "This command allows you to add the most common kinds of "
             "emote straight from the command line.  Using the first syntax, "
             "You can add a simple, untargetted emote.  For example, "

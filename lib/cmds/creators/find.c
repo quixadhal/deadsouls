@@ -8,7 +8,7 @@ int cmd(string str){
     return 1;
 }
 
-string GetHelp(string str) {
+string GetHelp(){
     return "Syntax: find [-s] [-i] <name>\n"
         "This command searches the list of files known to the file daemon for files "
         "matching the specified search parameter. This list of files is refreshed approximately "

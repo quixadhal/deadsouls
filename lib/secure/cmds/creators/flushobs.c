@@ -25,9 +25,9 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: <flushobs>\n\n"+
+string GetHelp(){
+    return ("Syntax: flushobs\n\n"+
             "Immediately incinerates anything in the furnace and "+
             "destructs all cloned non-interactive objects that "+
-            "lack an environment.\n");
+            "lack an environment.");
 }

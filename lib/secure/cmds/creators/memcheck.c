@@ -32,10 +32,8 @@ string cmd(string unused) {
     }
 }
 
-void help() {
-    message("help", "Syntax: <memcheck>\n\n"
-            "Gives you information about leaked memory. "
-            "\n\n" 
-            "See also: mstatus, netstat", 
-            this_player());
+string GetHelp() {
+    return ("Syntax: memcheck\n\n"
+            "Gives you information about leaked memory.\n"
+            "See also: mstatus, netstat");
 }

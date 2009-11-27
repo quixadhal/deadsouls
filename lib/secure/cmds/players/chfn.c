@@ -83,8 +83,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <chfn>\n\n"
-            "Allows you to change your real life information.\n\n"
-            "See also: passwd", this_player());
+string GetHelp(){
+    return ("Syntax: chfn\n\n"
+            "Allows you to change your finger information.\n"
+            "See also: passwd, finger");
 }

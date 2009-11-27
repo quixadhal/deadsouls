@@ -9,11 +9,10 @@
 inherit LIB_DAEMON;
 
 int cmd(string str);
-int help();
+string GetHelp();
 
 
-int
-cmd(string str) {
+mixed cmd(string str){
     string t1, t2, *tmp;
     int force = 0;
     int dir = 0;
@@ -23,7 +22,7 @@ cmd(string str) {
     }
 
     if(!str || !sizeof(str)){
-        return help();
+        return GetHelp();
     }
 
     if(sscanf(str,"-f %s %s",t1,t2) == 2) {
@@ -32,7 +31,7 @@ cmd(string str) {
     }
     if(!str||sscanf(str,"%s %s",t1,t2)!=2) {
         /* We should add checks for flags here. */
-        return help();  
+        return GetHelp();  
     } else {
         if(!force){
             if(file_size(t2=absolute_path(this_player()->query_cwd(),t2)) > 0)
@@ -62,15 +61,12 @@ cmd(string str) {
     return 1;
 }
 
-int help() {
-    write(
-            "Syntax:\nmv <file1> <file2|directory>\n" +
-            "Renames a file or moves it into the directory specified.\n" +
-            "The -f flag forces the overwriting of an existing file.\n\n"+
-            "Examples:\n"+
-            "mv -f workroom.bak workroom.c\n"+
-            "mv workroom.bak /tmp/");
-    return 1;
+string GetHelp() {
+    return "Syntax: mv <file1> <file2|directory>\n\n" 
+        "Renames a file or moves it into the directory specified.\n" 
+        "The -f flag forces the overwriting of an existing file.\n\n"
+        "Examples:\n"+
+        "mv -f workroom.bak workroom.c\n"+
+        "mv workroom.bak /tmp/\n\n"
+        "See also: rm";
 }
-
-/* EOF */

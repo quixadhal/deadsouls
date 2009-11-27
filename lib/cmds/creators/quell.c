@@ -23,7 +23,7 @@ int cmd(string str){
 }
 
 string GetHelp(string str) {
-    return "Syntax: quell\n"
+    return "Syntax: quell\n\n"
         "This command brings peace between combatants in your environment.\n"
-        "See also: unquell\n";
+        "See also: unquell";
 }

@@ -191,8 +191,8 @@ static string map_files(mixed *file, int *flags) {
     return tmp + file[0] + ((file[1] == -2) ? "/" : "");
 }
 
-void help() {
-    message("help", "Syntax: <ls [-ablmnst] (directories|files)>\n\n"
+string GetHelp(){
+    return ("Syntax: <ls [-ablmnst] (directories|files)>\n\n"
             "If you pass a single directory as an argument, it will list all "
             "files and directories in that directory.  If you list a single "
             "file, then information about that file will be displayed.  If you "
@@ -212,6 +212,5 @@ void help() {
             "    Access permissions, in the form of rwx\n"
             "    Time last modified\n"
             "    Size of the file\n"
-            "    File name\n\nSee also: cd, mkdir, mv, pwd, rm, rmdir", 
-        this_player());
+            "    File name\n\nSee also: cd, mkdir, mv, pwd, rm, rmdir");
 }

@@ -5,14 +5,14 @@ inherit LIB_DAEMON;
 
 string *ret = ({});
 
-void help();
+string GetHelp();
 
 int cmd(string str) {
     object ob;
     ret = ({});
 
     if(!str || str == ""){
-        help();
+        write(GetHelp());
         return 1;
     }
 
@@ -40,11 +40,11 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: variables <object or file>\n\n"
-            "Lists the names and type of variables in the named object or file.\n"
+string GetHelp(){
+    return ("Syntax: variables <object or file>\n\n"
+            "Lists the names and type of variables in the named "
+            "object or file.\n"
             "Examples: \n"
             "variables fighter\n"
-            "variables workroom.c\n"
-         );
+            "variables workroom.c");
 }

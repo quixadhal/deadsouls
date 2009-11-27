@@ -1,6 +1,6 @@
 #include <lib.h>
 
-void help();
+string GetHelp();
 
 inherit LIB_DAEMON;
 
@@ -9,7 +9,7 @@ int cmd(string str) {
     string which, what, nom, ret;
 
     if(sscanf(str,"%s %s",which, what) != 2){
-        help();
+        write(GetHelp());
         return 1;
     }
 
@@ -88,12 +88,10 @@ int cmd(string str) {
     return 1;
 }
 
-
-void help() {
-    message("help", "Syntax: areaclone [ npc | weapon | armor | obj ] <name>\n\n"
+string GetHelp(){
+    return ("Syntax: areaclone [ npc | weapon | armor | obj ] <name>\n\n"
             "Allows a builder to bring into existence a copy of one of "
             "her creations. To see the available items, use the arealist "
-            "command.\n\n"
-            "See also: arealist, areagoto", 
-            this_player());
+            "command.\n"
+            "See also: arealist, areagoto");
 }

@@ -38,24 +38,24 @@ mixed cmd(string str) {
     return 1;
 }
 
-int help() {
-    message("system", "Syntax:\n"
-            "        create room DIRECTION FILE\n"
-            "        create room none FILE\n"
-            "        create npc FILE\n"
-            "        create barkeep FILE\n"
-            "        create vendor FILE\n"
-            "        create trainer FILE\n"
-            "        create armor FILE\n"
-            "        create worn_storage FILE\n"
-            "        create weapon FILE\n"
-            "        create item FILE\n"
-            "        create container FILE\n"
-            "        create bed FILE\n"
-            "        create chair FILE\n"
-            "        create table FILE\n"
-            "        create book FILE\n"
-            "        create door DIRECTION FILE\n"
+string GetHelp() {
+    return ("Syntax:\n"
+            "        create room <DIRECTION> <FILE>\n"
+            "        create room none <FILE>\n"
+            "        create npc <FILE>\n"
+            "        create barkeep <FILE>\n"
+            "        create vendor <FILE>\n"
+            "        create trainer <FILE>\n"
+            "        create armor <FILE>\n"
+            "        create worn_storage <FILE>\n"
+            "        create weapon <FILE>\n"
+            "        create item <FILE>\n"
+            "        create container <FILE>\n"
+            "        create bed <FILE>\n"
+            "        create chair <FILE>\n"
+            "        create table <FILE>\n"
+            "        create book <FILE>\n"
+            "        create door <DIRECTION> <FILE>\n"
             "\nThis command makes a generic copy of the type of thing "
             "you specify. In the case of a room, the room you are in is "
             "copied into the direction you specify. In the case of other "
@@ -63,6 +63,5 @@ int help() {
             "After that object materializes, you can make changes to it "
             "with the \"modify\" command. These changes are saved "
             "automatically.\n\n"
-            "See also: modify, copy, delete, add, initfix\n",
-        this_player());
+            "See also: modify, copy, delete, add, initfix");
 }

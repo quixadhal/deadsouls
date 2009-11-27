@@ -61,9 +61,9 @@ void eventInventory() {
                 environment(this_player()), ({ this_player() }));
 }
 
-void help() {
-    message("help", "Syntax: <inventory>\n\n"
-            "Lists all items you are carrying currently.  This command "
+string GetHelp() {
+    return ("Syntax: inventory\n\n"
+            "Lists all items you are carrying currently. This command "
             "will take up one round of combat if you happen to be in "
-            "combat.", this_player());
+            "combat.");
 }

@@ -83,9 +83,8 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: whereis <player>\n\n"
+string GetHelp() {
+    return ("Syntax: whereis <player>\n\n"
             "Indicates the filename and coordinates (if available) "+
-            "of the named player.\n\n",
-            this_player());
+            "of the named player.");
 }                                                    

@@ -95,7 +95,6 @@ int PlaceHolder(){
 }
 
 varargs int Menu(string str){
-
     validate();
     if(str) menu = str;
     if(!menu) menu = "main";
@@ -267,7 +266,7 @@ int GroupsMenu(){
     return 1;
 }
 
-string GetHelp(string str) {
+string GetHelp(){
     return ("Syntax: <admintool>\n\n"
             "Menu-driven tool used to edit the MUD's configuration.\n"
             "To change mud name or port number, choose the Driver menu.\n"

@@ -482,16 +482,16 @@ static string GetBugString(int id, mapping bugs) {
     return tmp;
 }
 
-string GetHelp(string str) {
+string GetHelp(){
     string tmp;
 
-    tmp = "Syntax: <bug>\n";
+    tmp = "Syntax: bug\n";
     if( creatorp(this_player()) ) {
-        tmp += "        <bug -a (BUG_ID CREATOR>)\n";
-        tmp += "        <bug -c (BUG_ID)>\n";
+        tmp += "        bug -a <BUG_ID CREATOR>\n";
+        tmp += "        bug -c <BUG_ID>\n";
     }
-    if( archp(this_player()) ) tmp += "        <bug -d (BUG_ID)>\n";
-    tmp += "        <bug -r>\n        <bug -v ([1-4] [1-3])>\n\n";
+    if( archp(this_player()) ) tmp += "        bug -d <BUG_ID>\n";
+    tmp += "        bug -r\n        bug -v [1-4] [1-3]\n\n";
     tmp += "The command interface to the Dead Souls Bug Tracking System.  "
         "You can simply type \"bug\" and be prompted for further options, "
         "or, if you understand the system, pass command line arguments "
@@ -502,7 +502,7 @@ string GetHelp(string str) {
         "to the players who have reported them.  It gives admins a way to "
         "track and assign mudlib level bugs.  The options above correspond "
         "to assigning, completing, deleting, reporting, and viewing bugs "
-        "respectively.\n\n"
+        "respectively.\n"
         "See also: praise";
     return tmp;
 }

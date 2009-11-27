@@ -28,12 +28,11 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <emote [message]>\n\n"
+string GetHelp() {
+    return ("Syntax: emote <message>\n\n"
             "Places any message you specify directly after your name.  For "
             "example, \"emote smiles.\" would have others see "
             "\"Descartes smiles.\".  Non-avatars lose a stamina point for "
-            "each emote to discourage abuse.\n"
-            "", this_player());
+            "each emote to discourage abuse.");
 }
 

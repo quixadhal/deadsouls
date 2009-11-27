@@ -20,12 +20,9 @@ inherit LIB_DAEMON;
         return 1;
     }
 
-void help() {
-    message("help",
-            "Syntax: brief on\n"
-            "        brief off\n\n"
+string GetHelp() {
+    return ("Syntax: brief [on | off]\n\n"
             "This command allows you to toggle brief room descriptions "
-            "on or off.\nSee also: env\n",
-            this_player() );
+            "on or off.\nSee also: env");
 }
 

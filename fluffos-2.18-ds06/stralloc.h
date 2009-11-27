@@ -48,7 +48,7 @@
 #endif
 
 typedef struct malloc_block_s {
-#ifdef DEBUGMALLOC_EXTENSIONS
+#if defined(DEBUGMALLOC_EXTENSIONS) || (SIZEOF_PTR == 8)
     int extra_ref;
 #endif
     unsigned short size;

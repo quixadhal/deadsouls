@@ -18,11 +18,8 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: chancolors on\n"
-            "        chancolors off\n\n"
-            "This command allows you to toggle whether you see colors in channel messages. \nNote: This doesn't apply to the normal colors of the channel name.\n\n",
-            this_player() );
+string GetHelp() {
+            return ("Syntax: chancolors [on | off]\n\n"
+            "This command allows you to toggle whether you see colors in channel messages. \nNote: This doesn't apply to the normal colors of the channel name.");
 }
 

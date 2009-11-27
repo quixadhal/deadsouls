@@ -44,7 +44,7 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string str) {
+string GetHelp(){
     return ("Syntax: deviate\n"
             "        deviate enable\n"
             "        deviate STAT AMOUNT\n\n"
@@ -55,6 +55,6 @@ string GetHelp(string str) {
             "deviation nor its penalty. Before proceeding, read the "
             "helpfile for deviation:\nhelp deviation\n\n"
             "If you decide to deviate, first enable it by typing:\n"
-            "deviate enable\n\nSee also: deviation, customize, "
+            "deviate enable\nSee also: deviation, customize, "
             "stat, stats, score");
 }

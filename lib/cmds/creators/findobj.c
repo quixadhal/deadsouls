@@ -40,7 +40,7 @@ mixed cmd(string args) {
 }
 
 string GetHelp() {
-    return ("Syntax: findobj STRING\n\n"
+    return ("Syntax: findobj <STRING>\n\n"
             "Displays matching objects that are loaded into memory.\n\n"
-            "examples: \n\nfindobj staff\nfindobj /lib/dummy");
+            "Examples: \n\nfindobj staff\nfindobj /lib/dummy");
 }

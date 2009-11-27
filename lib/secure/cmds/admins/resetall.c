@@ -31,11 +31,10 @@ int cmd(string str) {
     return 1;
 }
 
-
-void help() {
-    write("Syntax: <resetall>\n\n"+
-            "Unloads and reloads all rooms currently in memory.\n"+
-            "This tends to destroy all non-interactive objects in "+
-            "the rooms, and dumps all players at the start room "+
-            "or The Void, so use this command with caution.\n");
+string GetHelp() {
+    return ("Syntax: resetall\n\n"
+            "Unloads and reloads all rooms currently in memory. "
+            "This tends to destroy all non-interactive objects in "
+            "the rooms, and dumps all players at the start room "
+            "or The Void, so use this command with caution.");
 }

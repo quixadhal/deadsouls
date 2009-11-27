@@ -46,8 +46,8 @@ mixed cmd(string str) {
     return 1;
 }
 
-int help() {
-    message("help", "Syntax: <longcat [file]>\n\n"
+string GetHelp() {
+    return ("Syntax: longcat <file>\n\n"
             "    /\___/\ \n"
             "   /       \ \n"
             "  |  #    # | \n"
@@ -86,6 +86,5 @@ int help() {
             "Displays the contents of the file mentioned all at once, "
             "with no limit on the output size. Note that the output "
             "for ludicrously large files may lag the mud and cause "
-            "the command to error out with a \"Too long evaluation\".",
-        this_player());
+            "the command to error out with a \"Too long evaluation\".");
 }

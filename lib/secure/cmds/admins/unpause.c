@@ -37,8 +37,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string args) {
-    return ("Syntax: pause PLAYER\n\n"
+string GetHelp(){
+    return ("Syntax: unpause <PLAYER>\n\n"
             "Causes the player to be able to run commands "
-            "after being paused.\n\n");
+            "after being paused.");
 }

@@ -103,6 +103,10 @@ void deletes(){
     catch( rm("/domains/campus/room/tunnel3.c") );
     catch( rm("/domains/campus/obj/tree.c") );
     catch( rm("/secure/cmds/creators/vi.c") );
+    catch( rm("/secure/cmds/creators/isql.c") );
+    catch( rm("/secure/cmds/players/mc.c") );
+    catch( rm("/cmds/players/language.c") );
+    catch( rm("/secure/lib/include/bboard.h") );
     catch( rm("/lib/inventory.c") );
 }
 

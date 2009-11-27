@@ -33,15 +33,8 @@ mixed cmd(string args) {
         mapping history;
         int cmd_num, i;
 
-        //history = previous_object()->GetHistoryList();
-        //cmd_num = previous_object()->GetCommandNumber();
         history = this_player()->GetCommandHist();
         cmd_num = sizeof(history);
-        //x = (cmd_num - 2) % sizeof(history);
-        //if( x == 9 ) arr = history;
-        //else arr = history[(x+1)..] + history[0..x];
-        //if( cmd_num < sizeof(history) + 1 ) i = 1;
-        //else i = cmd_num - sizeof(history);
         foreach(mixed key, mixed cmd in history) {
             if( !cmd ) continue;
             tmp += ({ sprintf("%:-5d %s", key, cmd) });
@@ -52,8 +45,8 @@ mixed cmd(string args) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <history>\n"
-            "        <history SIZE>\n\n"
+    return ("Syntax: history\n"
+            "        history <SIZE>\n\n"
             "This command lets you check your command history.  A command " 
             "history is kept for the commands you enter, allowing you "
             "quick access to execute or modify previous commands.  The size "

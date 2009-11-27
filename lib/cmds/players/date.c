@@ -37,9 +37,7 @@ mixed cmd(string timezone) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: date\n\n"
-            "Displays current time and date in local time.",
-            this_player() );
+string GetHelp() {
+            return ("Syntax: date\n\n"
+            "Displays current time and date in local time.");
 }

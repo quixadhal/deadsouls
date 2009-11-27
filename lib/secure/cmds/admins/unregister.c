@@ -25,12 +25,10 @@ int cmd(string str) {
     return 1;
 }
 
-
-void help() {
-    write("Syntax: <unregister [site]>\n\n"
-            "Takes a site off the list of sites which must register their\n"
-            "character before being allowed in.\n\nSee also:\n"
-            "register, whoregistered, banish, unbanish, whobanished, letin,\n"
-            "wholetin, unletin\n"
-         );
+string GetHelp() {
+    return ("Syntax: unregister <site>\n\n"
+            "Takes a site off the list of sites which must register their "
+            "character before being allowed in.\nSee also: "
+            "register, whoregistered, banish, unbanish, whobanished, letin, "
+            "wholetin, unletin");
 }

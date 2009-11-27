@@ -41,17 +41,21 @@ int CheckOK(){
 }
 
 int eventPing(){
+    mixed chans;
     if(DISABLE_INTERMUD) return 1;
+    chans = INTERMUD_D->GetChannels();
     Pinging = 1;
     OK = 0;
-
     if(!sizeof(muds)) {
         Pinging = 0;
         return 0;
     }
-
     foreach(string mud in muds){
         INTERMUD_D->eventWrite(({ "auth-mud-req", 5, mud_name(), 0, mud, 0 }));
+    }
+    if(!sizeof(chans)){
+        string rtr = INTERMUD_D->GetNameservers()[0][0];
+        INTERMUD_D->eventWrite(({ "chanlist-req", 5, mud_name(), 0, rtr, 0 }));
     }
     return 1;
 }

@@ -42,12 +42,12 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <rm [file]>\n\n"
+string GetHelp(){
+    string ret = "Syntax: rm [file]\n\n"
             "The command deletes the file named.  Once deleted, the file "
-            "cannot be recovered.", this_player());
+            "cannot be recovered. Seriously.";
     if(archp(this_player()))
-        message("help", "Note for arches: wild cards work with this command, "
-                "but there is no prompt, so be VERY CAREFULL!!!!", 
-                this_player());
+        ret += "Note for arches: wild cards work with this command, "
+                "but there is no prompt, so be VERY CAREFULL!!!!"; 
+    return ret;
 }

@@ -41,13 +41,12 @@ int order_sites(string alpha, string beta) {
     else return (sizeof(a) > sizeof(b));
 }
 
-void help() {
-    write("Syntax: <whoregistered ([site])>\n\n"
-            "Without an argument, it lists all sites which need to register\n"
-            "in order to create a character on the mud.  Given with a site\n"
-            "as an argument, it will confirm if that site must register.\n"
-            "Sites must be in ip numeric format.\n\nSee also:\n"
-            "register, unregister, banish, unbanish, whobanished, letin, unletin\n"
-            "wholetin, watch, unwatch, whowatched\n"
-         );
+string GetHelp(){
+    return ("Syntax: whoregistered [site]\n\n"
+            "Without an argument, it lists all sites which need to register "
+            "in order to create a character on the mud.  Given with a site "
+            "as an argument, it will confirm if that site must register. "
+            "Sites must be in ip numeric format.\nSee also: "
+            "register, unregister, banish, unbanish, whobanished, "
+            "watch, unwatch, whowatched");
 }

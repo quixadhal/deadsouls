@@ -33,13 +33,11 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: <addguest [player list]>\n\n"
+string GetHelp() {
+            return ("Syntax: addguest [player list]\n\n"
             "Adds a single player or group of players to the database of guests "
             "allowed onto the mud when it is locked.  This is generally used to "
             "allow people in who are not in any of the groups defined in "
-            "LOCKED_ACCESS_ALLOWED or to allow on player testers.\n\n"
-            "See also: removeguests, whoguests", this_player()
-           );
+            "LOCKED_ACCESS_ALLOWED or to allow on player testers.\n"
+            "See also: removeguests, whoguests");
 }

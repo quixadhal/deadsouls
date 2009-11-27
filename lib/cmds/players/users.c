@@ -4,8 +4,7 @@
 
 inherit LIB_DAEMON;
 
-int
-cmd() {
+int cmd(){
     int i;
     object *user_ob;
     string ret, name, *user_name;
@@ -29,25 +28,19 @@ cmd() {
     return 1;
 }
 
-int
-sort_names(string name1, string name2) {
-    if (name1 == name2)
-        return 0;
-    if (name1 < name2)
-        return -1;
-    else
-        return 1;
-}
+    int sort_names(string name1, string name2){
+        if (name1 == name2)
+            return 0;
+        if (name1 < name2)
+            return -1;
+        else
+            return 1;
+    }
 
-int help()
-{
-    write( @EndText
-Syntax: users
-Effect: Lists the names of player logged in. 
-A shorter and quicker version of "who"
-See also: who, where
-See also: say, tell, class
-EndText
-    );
-    return 1;
+string GetHelp(){
+    return "Syntax: users\n\n"
+        "Lists the names of player logged in. "
+        "A shorter and quicker version of \"who\".\n"
+        "See also: who, where\n"
+        "See also: say, tell, class\n";
 }

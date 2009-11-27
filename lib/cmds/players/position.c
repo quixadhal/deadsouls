@@ -38,9 +38,8 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: position [living thing]\n\n"
+string GetHelp() {
+    return ("Syntax: position [living thing]\n\n"
             "Reports the posture of the person named, or if no argument is "
-            "provided, your own physical posture."
-            "\n", this_player());
+            "provided, your own physical posture.");
 }

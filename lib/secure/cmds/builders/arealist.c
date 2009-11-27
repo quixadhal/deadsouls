@@ -1,5 +1,6 @@
 #include <lib.h>
-void help();
+
+string GetHelp();
 
 inherit LIB_DAEMON;
 
@@ -27,7 +28,7 @@ int cmd(string str) {
     }
 
     if(!sizeof(str)){
-        help();
+        write(GetHelp());
         return 1;
     }
 
@@ -63,13 +64,11 @@ int cmd(string str) {
     return 1;
 }
 
-
-void help() {
-    message("help", "Syntax: arealist [ npc | room | weapon | armor | obj ]\n\n"
+string GetHelp(){
+    return ("Syntax: arealist [ npc | room | weapon | armor | obj ]\n\n"
             "Provides a list of the available files in a given category "
             "that are under the control of the builder issuing the command. "
             "For example, to see the list of rooms belonging to a builder, "
-            "she might issue the command: arealist room\n\n"
-            "See also: areaclone, areagoto\n",
-            this_player());
+            "she might issue the command: arealist room\n"
+            "See also: areaclone, areagoto");
 }

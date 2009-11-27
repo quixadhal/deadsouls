@@ -139,9 +139,8 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: <grep [-nr] '[pattern]' [file] (> [redirect])>\n\n"
+string GetHelp() {
+            return ("Syntax: grep [-nr] '[pattern]' [file] (> [redirect])\n\n"
             "Searches a file or group of files for a specific pattern.  "
             "If the pattern is a single word, then no '' is needed.  Patterns "
             "of more than one word or beginning with a '-' however, need to be enclosed in ''.  "
@@ -149,6 +148,5 @@ void help() {
             "\n  Options:\n"
             "    -r  recursive search, search extends to child directories.\n"
             "    -n  numbered lines, includes line numbers of successful hits."
-            "\n\nSee also: cd, ls, mv, pwd, rm", this_player()
-           );
+            "\nSee also: cd, ls, mv, pwd, rm");
 } 

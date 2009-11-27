@@ -8,14 +8,12 @@
 #include <lib.h>
 inherit LIB_DAEMON;
 
-int help();
+string GetHelp();
 
-    int 
-cmd(string str)
-{
+mixed cmd(string str){
     if( !str )
     {
-        return help();
+        return GetHelp();
     }
     str = absolute_path(this_player()->query_cwd(), str);
     switch( file_size(str) )
@@ -38,11 +36,8 @@ cmd(string str)
     return 1;
 }
 
-int
-help() {
-    write("Command: rmdir\nSyntax: rmdir <directory>\n"+
-            "This command allows you to remove the specified directory.  If\n"+
-            "the directory is not empty then the command will fail.\n");
-    return 1;
+string GetHelp(){
+    return ("Syntax: rmdir <directory>\n\n"+
+            "This command allows you to remove the specified directory. If "
+            "the directory is not empty then the command will fail.");
 }
-/* EOF */

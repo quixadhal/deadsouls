@@ -76,7 +76,7 @@ mixed cmd(string str){
     }
 }
 
-string GetHelp(string args) {
+string GetHelp(){
     return ("Syntax: instconfig list\n"
             "        instconfig create <name> <port>\n"
             "        instconfig remove <name>\n\n"
@@ -85,6 +85,6 @@ string GetHelp(string args) {
             "instconfig create Alpha 5555\n\n"
             "To remove it:\n"
             "instconfig remove Alpha\n\n"
-            "See also: instances, admintool, mudconfig\n");
+            "See also: instances, admintool, mudconfig");
 }
 

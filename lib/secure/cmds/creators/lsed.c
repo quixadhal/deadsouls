@@ -76,8 +76,8 @@ static void LsedFile(string file, string *cmds, int num_cmds) {
     message("system", ret, this_player());
 }
 
-void help() {
-    message("system", "Syntax: <lsed [script] [filelist]>\n\n"
+string GetHelp() {
+    return ("Syntax: lsed <script> <filelist>\n\n"
             "Allows you to perform editor commands on a file or set of files "
             "from a script.  You simply write a script of editor commands "
             "and save it to a file.  For example, say that you wanted to "
@@ -91,7 +91,7 @@ void help() {
             "driver will only let an execution thread run so long "
             "before automatically terminating it with a too long evaluation "
             "error, so avoid running lsed on a large number of files at "
-            "once.\n\n"
-            "See also: ed", this_player());
+            "once.\n"
+            "See also: ed");
 }
 

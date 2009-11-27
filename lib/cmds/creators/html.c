@@ -31,9 +31,8 @@ mixed cmd(string args){
     return 1;
 }
 
-string GetHelp(string str) {
-    return "Syntax: html FILE\n"
+string GetHelp() {
+    return "Syntax: html <FILE>\n\n"
         "Outputs to the screen an htmlified version of the "
         "file specified.";
 }
-

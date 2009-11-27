@@ -16,8 +16,8 @@ static void create() {
     daemon::create();
     SetNoClean(1);
     SetHelp("Syntax: score\n\n"
-            "Displays information about your character.\n\n"
-            "See also: stat, status, env\n");
+            "Displays information about your character.\n"
+            "See also: stat, status, env");
 }
 
 static string *FoodDegree =

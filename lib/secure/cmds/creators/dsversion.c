@@ -10,7 +10,7 @@
 
 inherit LIB_DAEMON;
 
-#define HTTP_ADDRESS "66.197.134.110"
+#define HTTP_ADDRESS "97.107.133.86"
 #define HTTP_HOST "dead-souls.net"
 #define HTTP_PORT 80
 #define HTTP_PATH "/RELEASE_NOTES"
@@ -86,13 +86,13 @@ void write_callback( int fd ){
         {
             // Process HTML here
 #ifdef _DEBUG
-            player->eventPrint("Connection closed by host.");
+            player->eventPrint("dsversion: Connection closed by host.");
 #endif
             ProcessHTTPResult();
         }
         if( status == SOCK_CONNECTING )
         {       
-            player->eventPrint("Connection attempt failed.");
+            player->eventPrint("dsversion: Connection attempt failed.");
         }
         socket_close( fd ) ;
         status = SOCK_DISCONNECTED;

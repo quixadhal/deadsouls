@@ -25,10 +25,9 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: <whobanished ([name])>\n\n"
-            "Without an argument, this command lists all names currently\n"
-            "listed as being banished.  Otherwise it will confirm whether\n"
-            "the name is banished or not.\n"
-         );
+string GetHelp(){
+    return ("Syntax: whobanished [name]\n\n"
+            "Without an argument, this command lists all names currently "
+            "listed as being banished.  Otherwise it will confirm whether "
+            "the name is banished or not.");
 }

@@ -28,9 +28,9 @@ int cmd(string str) {
     }
     return 1;
 }
-void help() {
-    write("Syntax: <whoallowed ([name])>\n\n"
-            "Lists the names of players who may be allowed into the game\n"
-            "from sites which must register characters in order to play.\n"
-         );
+
+string GetHelp() {
+    return ("Syntax: whoallowed [name]\n\n"
+            "Lists the names of players who may be allowed into the game "
+            "from sites which must register characters in order to play.");
 }

@@ -14,7 +14,7 @@ int cmd() {
     return 1;
 }
 
-void help() {
-    write("Syntax: rotatelogs\n\n");
-    write("Archives old logs if they are too large.");
+string GetHelp(){
+    return ("Syntax: rotatelogs\n\n"
+      "Archives old logs if they are too large.");
 }

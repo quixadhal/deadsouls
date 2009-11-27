@@ -15,7 +15,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string args) {
     if( !args || (args != "on" && args != "off") ) {
-        return "Syntax: <classblock on|off>";
+        return "Syntax: classblock <on|off>";
     }
     if( args == "on" ) {
         foreach(string class_name in CLASSES_D->GetClasses()) {
@@ -39,8 +39,8 @@ mixed cmd(string args) {
 }
 
 string GetHelp() {
-    return ("Syntax: <classblock on|off>\n\n"
+    return ("Syntax: classblock <on|off>\n\n"
             "Allows you to make sure that you are blocking all or no "
-            "class chat lines.\n\n"
+            "class chat lines.\n"
             "See also: codeblock");
 }

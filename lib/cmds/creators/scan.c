@@ -78,7 +78,7 @@ string inventory(object ob, int level, int scan) {
 }
 
 string GetHelp(string str) {
-    return "Syntax: <scan (-e) (-d) (-i) (-f) ([object])>\n\n"
+    return "Syntax: scan [-e] [-d] [-i] [-f] [object]\n\n"
         "Scans the inventory of the object you name.  If you do "
         "not specify an object, then it gives you your inventory.  "
         "If you specify the -e option, the command does the "

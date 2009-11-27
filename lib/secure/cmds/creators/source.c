@@ -86,8 +86,8 @@ mixed cmd(string args) {
 
 }
 
-void help() {
-    message("system", "Syntax: source [-gq] <filename>\n\n"
+string GetHelp() {
+    return ("Syntax: source [-gq] <filename>\n\n"
             "If <filename> exists and is readable, this command "
             "will read each line of that file and force you to "
             "execute that line as if you had entered it on the "
@@ -96,7 +96,7 @@ void help() {
             "in this way each time you log in.\n\n"
             "To include system load output, use the -g flag.\n\n"
             "If a set of commands need to occur with some time between "
-            "them (for example, to avois the MAX_COMMANDS_PER_SECOND limit) "
-            "use the -q flag. For example:\n source -q /secure/scripts/crat2.src\n\n"
-            "", this_player());
+            "them (for example, to avoid the MAX_COMMANDS_PER_SECOND limit) "
+            "use the -q flag. For example:\n "
+            "source -q /secure/scripts/crat2.src");
 }

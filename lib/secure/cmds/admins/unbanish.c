@@ -20,8 +20,7 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: <unbanish [name]>\n\n"
-            "Removes a name from the list of banished names.\n"
-         );
+string GetHelp(){
+    return ("Syntax: unbanish <name>\n\n"
+            "Removes a name from the list of banished names.");
 }

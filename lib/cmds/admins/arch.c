@@ -13,7 +13,8 @@ mixed cmd(){
     }
 
     if(!archp(who)){
-        write("You are naughty, and must be punished.");
+        write("\nYou are naughty, and must be punished.\n");
+        who->eventDestruct();
         return 1;
     }
 
@@ -27,13 +28,10 @@ mixed cmd(){
     if(err || !ret){
         write("Looks like some kind of problem getting into the arch room.");
     }
-
     return 1;
 }
 
-void help(){
-    message("help", "Syntax: arch\n\n"
-            "Transports you to the arch room. \nSee also: wiz\n", this_player());
+string GetHelp(){
+    return "Syntax: arch\n\n"
+            "Transports you to the arch room. \nSee also: wiz\n";
 }
-
-

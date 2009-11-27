@@ -14,13 +14,12 @@ varargs int cmd(string str){
     return 1;
 }
 
-void help()
-{
-    write("Syntax: defines <token>\n\n"
+string GetHelp(){
+    return ("Syntax: defines <token>\n\n"
             "Returns the defined value for the speficied token, if "
             "it is defined in the default includes.\n"
             "Examples:\n"
             "define SEVERABLE_LIMBS\n"
-            "define MAX_NEWBIE_LEVEL\n\n"
+            "define MAX_NEWBIE_LEVEL\n"
             "See also: types");
 }

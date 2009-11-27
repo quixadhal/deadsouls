@@ -1,4 +1,6 @@
 #include <message_class.h>
+#include <daemons.h>
+#include <rooms.h>
 #include <terrain_types.h>
 #include <position.h>
 #include <medium.h>
@@ -8,6 +10,7 @@
 #endif
 
 private static object LastEnvironment = 0;
+int anchored;
 
 varargs int eventPrint(string str, mixed args...);
 varargs void eventAnnounceCanonicalId(object env);
@@ -16,10 +19,52 @@ object GetLastEnvironment(){
     return LastEnvironment;
 }
 
+int GetAnchored(){
+    return anchored;
+}
+
+int SetAnchored(int x){
+    object prev = this_player();
+    if(!prev || (prev != this_object() && !adminp(prev))) return anchored;
+    if(x > 0) anchored = ((anchored != 2) ? (archp(prev) ? 2 : 1) : 2);
+    else anchored = ((anchored == 2) ? (archp(prev) ? 0 : 2) : 0);
+    return anchored;
+}
+
 int eventMove(mixed dest){
-    object ob,me,furn,prev;
+    object ob,me,furn,prev, env = environment();
     int depth;
     mixed tmp, ret;
+
+    if(anchored && living()){
+        if(env){
+            int ok;
+            string tmpdest;
+            string myvoid = ROOMS_D->GetVoid(this_object());
+            string *dests = ({ ROOM_FREEZER, ROOM_DEATH, ROOM_VOID, myvoid });
+            string *envs = dests + ({ ROOM_POD, ROOM_FURNACE });
+            if(objectp(dest)) tmpdest = base_name(dest);
+            else tmpdest = dest;
+            if(member_array(tmpdest, dests) != -1) ok = 1;
+            else if(member_array(base_name(env), envs) != -1) ok = 1;
+            if(this_player() && archp(this_player())) ok = 1;
+            if(!ok){
+                if(this_player()){ 
+                    if(this_player() == this_object()){
+                        tell_object(this_object(), "You are anchored here.");
+                    }
+                    else {
+                        tell_object(this_object(), this_player()->GetName()+
+                          " tried to move you but you are anchored here.");
+                    }
+                }
+                return 0;
+            }
+            else tell_object(this_object(), "You are about to be moved "+
+              "to "+identify(dest));
+        }
+    }
+
     me = this_object();
 
     if( !me ){

@@ -125,25 +125,24 @@ static void GetDest(string which, string *titles, int i, int maxi) {
     eventOrderTitles(tmp, maxi);
 }
 
-void help() {
+string GetHelp() {
     if( creatorp(this_player()) ) {
-        message("help", "Syntax: <title [title]>\n\n"
+        return ("Syntax: title <title>\n\n"
                 "Allows you to change your title.  You must include the "
                 "token $N in your title, which will be replaced with your "
                 "name as appropriate.  For example:\n"
                 "\ttitle We are $N of Borg\n"
                 "would make my short appear as:\n"
-                "\tWe are Descartes of Borg.\n\n", this_player());
+                "\tWe are Descartes of Borg.");
     }
     else {
-        message("help", "Syntax: <title>\n\n"
+        return ("Syntax: title\n\n"
                 "Allows you to reorder your titles.  Your first two titles "
                 "appear in your short description.  This command is "
                 "interactive, meaning it prompts you for what to do.  "
                 "hit 'q' at any point to save your changes and exit out of "
                 "this command.\nYou can also type (title 1) or (title 2) "
-                "to change how many titles appear in your description.",
-                this_player() );
+                "to change how many titles appear in your description.");
     }
 }
 

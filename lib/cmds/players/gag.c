@@ -22,14 +22,12 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: gag on [ remote | local ]\n"
+string GetHelp() {
+    return "Syntax: gag on [ remote | local ]\n"
             "        gag off [ remote | local ]\n\n"
             "This command prevents you from talking on channels.\n"
             "Good for when you're hiding or using multiple chars.\n"
             "You can gag yourself on all channels with: gag on\n"
             "You can gag yourself only on intermud channels with: gag remote on\n"
-            "See also: mute, env\n\n",
-            this_player() );
+            "See also: mute, env";
 }

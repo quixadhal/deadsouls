@@ -24,10 +24,8 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: <whoguests>\n\n"
-            "Lists all the guests allowed into the game when it is locked.\n\n"
-            "See also: addguest, removeguest", this_player()
-           );
+string GetHelp(){
+            return ("Syntax: whoguests\n\n"
+            "Lists all the guests allowed into the game when it is locked.\n"
+            "See also: addguest, removeguest");
 }

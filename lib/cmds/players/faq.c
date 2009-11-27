@@ -46,16 +46,15 @@ static void GetFAQ(string args) {
     this_player()->eventPage(explode(file, "\n"), "help");
 }
 
-void help() {
-    message("help", "Syntax: <faq ([FAQ])>\n\n"
+string GetHelp() {
+    return ("Syntax: faq [FAQ]\n\n"
             "If you specify a particular FAQ to read, this command will "
             "display that FAQ for you.  If you fail to specify a FAQ, it "
             "will give you a list of FAQs from which to choose.  FAQ "
             "stands for Frequently Asked Questions.  Reading the FAQs is "
             "a good way of coming to understand topics basic to " +
-            mud_name() + ".\n\n"
-            "See also: help" + (creatorp(this_player()) ? ", man" : ""),
-            this_player());
+            mud_name() + ".\n"
+            "See also: help" + (creatorp(this_player()) ? ", man" : ""));
 }
 
 

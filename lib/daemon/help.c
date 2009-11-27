@@ -157,10 +157,10 @@ string GetHelp(string str) {
 
     Error = 0;
     if( !str || str == "" || str == "help" ) {
-        return ("Syntax: <help>\n"
-                "        <help index>\n"
-                "        <help TOPIC>\n"
-                "        <help INDEX TOPIC>\n\n"
+        return ("Syntax: help\n"
+                "        help index\n"
+                "        help <TOPIC>\n"
+                "        help <INDEX> <TOPIC>\n\n"
                 "The special topic, \"help index\", puts you into "
                 "a menu driven index of categories for which help exists.\n\n"
                 "For players, \"help commands\" will provide an index of "

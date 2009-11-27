@@ -43,6 +43,6 @@ mixed cmd(string unused) {
     return 1;
 }
 
-void help() {
-    write("Syntax: uptime\n\nReports how long Dead Souls has been up.\n");
+string GetHelp(){
+    return ("Syntax: uptime\n\nReports how long "+mud_name()+" has been up.");
 }

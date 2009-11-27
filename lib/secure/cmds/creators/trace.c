@@ -15,10 +15,18 @@ mixed cmd(string args) {
     return 1;
 }
 
-int help() {
-    message("help", "Syntax: <trace [level]>\n\n"
+string GetHelp() {
+    string ret = "";
+#ifdef __TRACE__
+    ret = "Syntax: trace [level]\n\n"
             "Displays function call tracing to you. See \"man trace\""
-            " for details on tracing levels.",
-            this_player());
+            " for details on tracing levels.";
+#else
+    ret = "This command is disabled.\n"
+            "See \"man trace\""
+            " for details.";
+#endif
+
+    return ret;
 }
 

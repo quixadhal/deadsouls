@@ -71,8 +71,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string topic) {
-    return ("Syntax: <heal LIVING>\n\n"
+string GetHelp(){
+    return ("Syntax: heal <LIVING>\n\n"
             "Allows you to restore a living being's health, stamina, "
-            "magic, and severed limbs.\n\n");
+            "magic, and severed limbs. Wow!");
 }

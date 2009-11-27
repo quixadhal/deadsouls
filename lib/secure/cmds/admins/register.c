@@ -60,15 +60,15 @@ void abort() {
     write("%^RED%^Site not registered!");
 }
 
-void help() {
-    write("Syntax: <register [site]>\n\n");
-    write("Makes a given site needs to register their characters with\n");
-    write("law before being able to play the mud.  A reason must be given\n");
-    write("and it must be good.  In general, only law should be using\n");
-    write("this command.  And if you are not law, you better mail law.\n");
-    write("This command only works with numeric addresses, ie:\n");
-    write("    register 134.181.*                ok\n");
-    write("    register 134.181.1.12             ok\n");
-    write("    register orlith.bates.edu         BAD\n");
-    write("See also: unbanish, whobanished, whoregistered, whowatched\n");
+string GetHelp(){
+    return "Syntax: register <site>\n\n"
+    "Makes a given site needs to register their characters with "
+    "law before being able to play the mud.  A reason must be given "
+    "and it must be good.  In general, only law should be using "
+    "this command.  And if you are not law, you better mail law. "
+    "This command only works with numeric addresses, ie:\n"
+    "    register 134.181.*                ok\n"
+    "    register 134.181.1.12             ok\n"
+    "    register orlith.bates.edu         BAD\n"
+    "See also: unbanish, whobanished, whoregistered, whowatched";
 }

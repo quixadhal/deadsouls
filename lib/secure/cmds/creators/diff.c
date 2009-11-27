@@ -87,12 +87,8 @@ int cmd( string a )
     return 1;
 }
 
-int help()
-{
-    write( ""+
-            "Syntax: diff <file1> <file2>\n"+
-            "Effect: Finds the differences between two files.\n"+
-            "" );
-    return 1;
+string GetHelp(){
+            return ("Syntax: diff <file1> <file2>\n\n"
+            "Reports the differences between two files.");
 }
 

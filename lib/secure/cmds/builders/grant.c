@@ -47,12 +47,10 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <grant [access] to [whom] on [file|directory]>\n\n"
+string GetHelp(){
+    return ("Syntax: grant <accesstype> to <whom> on <file|directory>\n\n"
             "Allows you to give creators access to files or directories "
-            "under your control.  The access parameter is \"read\", "
+            "under your control.  The accesstype parameter is \"read\", "
             "\"write\", or \"all\".\n" 
-            "There is no \"ungrant\" or \"deny\" command. "
-            "",
-            this_player());
+            "There is no \"ungrant\" or \"deny\" command. ");
 }

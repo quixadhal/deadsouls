@@ -82,20 +82,16 @@ int cmd( string a )
     return 1;
 }
 
-int help()
-{
-    write( SYNTAX + @EndText
-Effect: calls a function containing <lpc commands>
-Example: If you type:
-eval return 1 + cos( 0.0 )
-the command creates a temporary file in your home dir containing the line:
-eval() { return 1 + cos( 0.0 ); }
-then does call_other on the files's eval() function, giving:
-Result = 2.000000
-
-Note: You can add custom defines for yourself with the file 'evaldefs.h'
-in your home directory.
-EndText
-    );
-    return 1;
+string GetHelp(){
+return SYNTAX + "\nCalls a function containing <lpc commands>\n"
+"Example: If you type:\n"
+"eval return 1 + cos( 0.0 )\n"
+"the command creates a temporary file in your "
+"home dir containing the line:\n"
+"eval() { return 1 + cos( 0.0 ); }\n"
+"then does call_other on the files's eval() "
+"function, giving:\n"
+"Result = 2.000000\n\n"
+"Note: You can add custom defines for yourself "
+"with the file 'evaldefs.h' in your home directory.";
 }

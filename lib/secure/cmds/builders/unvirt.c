@@ -89,13 +89,13 @@ mixed cmd(string str){
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: unvirt\n\n"
+string GetHelp() {
+    return ("Syntax: unvirt\n\n"
             "This command will gather the room data of the virtual room you "
             "are standing in, and try to make a non-virtual room with it, "
             "writing to the file that the virtual room is pretending to use. "
             "If you lack write permissions to that file, the command will fail "
-            "in a rather ugly way."
-            "\n\n"
-            "See also: modify, create, delete, copy, areaclone, areagoto, arealist", this_player());
+            "in a rather ugly way.\n"
+            "See also: modify, create, delete, copy, areaclone, "
+            "areagoto, arealist");
 }

@@ -70,9 +70,8 @@ mixed cmd(string args) {
 }
 
 string GetHelp(string args) {
-    return ("Syntax: domaincreate DOMAIN\n\n"
+    return ("Syntax: domaincreate <domainname>\n\n"
             "This command creates a new directory in the /domains dir, "
-            "and adds the appropriate subdirs needed by a domain."
-            "\n\n"
+            "and adds the appropriate subdirs needed by a domain.\n"
             "See also: domainadmin, admintool");
 }

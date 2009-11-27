@@ -90,11 +90,12 @@ static void ConfirmPass(string str, mixed who, string newpass) {
     this_player()->eventPrint("\nPassword changed.", MSG_SYSTEM);
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <passwd>\n"
-            "        <passwd PLAYER>\n\n"
-            "If you are not an arch, then the second syntax is not available "
-            "to you.  This command allows you to change your password.\n\n"
-            "See also: chfn");
+string GetHelp(){
+    int i;
+    string ret = "Syntax: passwd\n";
+    if(i = (archp(this_player()))) ret += "        passwd <PLAYER>\n";
+    ret += "\nThis command allows you to change your password";
+    if(i) ret += " or that of the specified player";
+    ret += ".\n See also: chfn";
+    return ret;
 }
-

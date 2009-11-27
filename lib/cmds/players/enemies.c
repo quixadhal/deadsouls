@@ -28,10 +28,8 @@ mixed cmd(string str) {
     return ret;
 }
 
-void help() {
-    message("help",
-            "Syntax: enemies\n"
-            "This command reports who feels antagonism toward you.",
-            this_player() );
+string GetHelp() {
+            return ("Syntax: enemies\n\n"
+            "This command reports with whom you're not getting along.");
 }
 

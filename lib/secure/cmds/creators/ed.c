@@ -42,9 +42,16 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <ed ([filename])>\n\n", this_player());
-    tell_player(this_player(),"For a briefer walkthrough, quit this help doc by typing: %^GREEN%^q%^RESET%^");
-    tell_player(this_player(),"Then type: %^GREEN%^faq ed%^RESET%^\n\n");
-    this_player()->eventPage(explode(read_file("/doc/help/creators/editor"), "\n"), "help");
+string GetHelp() {
+    return ("Syntax: ed [filename]\n\n"
+            "Ye olde LP mud in-game text editor. It is a line-mode editor, "
+            "meaning it is archaic, hard to use, and complimicated. "
+            "But it's the "
+            "one way to edit stuff in-game that works for sure. "
+            "For a brief walkthrough:\n"
+            "%^GREEN%^faq ed%^RESET%^\n"
+            "For a lengthy doc:\n"
+            "%^GREEN%^help editor%^RESET%^\n"    
+            "For a web page FAQ, use your web browser to go to; http://dead-souls.net/editor.html\n\n"
+            "See also: ced, creweb, qcs");
 }

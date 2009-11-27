@@ -63,12 +63,8 @@ void post_change(mixed *args) {
     write_file(DIR_LOGS+"/"+CHANGELOG, str);
 }
 
-void help()
-{
-    message( "help",
-            "Syntax: changelog <directory>\n"
+string GetHelp(){
+            return ("Syntax: changelog <directory>\n"
             "Lets you enter documentation on changes you have made to files in "
-            "directory <directory>\n"
-            , this_player()
-           );
+            "directory <directory>\n");
 }

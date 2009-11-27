@@ -95,7 +95,7 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
+string GetHelp() {
     string *see_also = ({});
     if(creatorp(this_player())){
         see_also = ({ "debug" , "showgrid",
@@ -105,9 +105,7 @@ void help() {
             "terminal", "screen", "pk", "mute", "gag", "wimpy", "minimap",
             "annoyblock", "reprompt", "charmode", "keepalive", "timezone",
             "screenlock" });
-    //see_also = sort_array(see_also, 1);
-    message("help", "Syntax: <env>\n\n"
+    return ("Syntax: env\n\n"
             "Displays some basic interface and play settings.\n" +
-            "See also: "+implode(sort_array(see_also, 1), ", ")+"\n",
-            this_player());
+            "See also: "+implode(sort_array(see_also, 1), ", "));
 }

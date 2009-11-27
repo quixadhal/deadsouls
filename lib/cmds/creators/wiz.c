@@ -3,11 +3,17 @@
 
 mixed cmd(){
     object who = this_player();
+    object env = environment(this_player());
     object room = load_object(ROOM_WIZ);
     int ret, err;
 
     if(!room){
         write("There seems to be a problem with the wiz room.");
+        return 1;
+    }
+
+    if(env && env == room){
+        write("Wiz!");
         return 1;
     }
 
@@ -20,7 +26,7 @@ mixed cmd(){
     return 1;
 }
 
-void help(){
-    message("help", "Syntax: wiz\n\n"
-            "Transports you to the wiz room.\n", this_player());
+string GetHelp(){
+    return ("Syntax: wiz\n\n"
+            "Transports you to the wiz room.");
 }

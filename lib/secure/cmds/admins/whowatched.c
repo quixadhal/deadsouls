@@ -21,3 +21,9 @@ int cmd(string str) {
     this_player()->more(explode(format_page(who, 5), "\n"));
     return 1;
 }
+
+string GetHelp(){
+    return ("Syntax: whowatched name\n"
+      "        whowatched site\n\n"
+      "Lists the sites or names watched.");
+}

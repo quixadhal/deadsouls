@@ -39,8 +39,7 @@ varargs int cmd(string str){
     return 1;
 }
 
-void help()
-{
-    write("Syntax: annoyblock [ on | off ]\n"+
+string GetHelp(){
+    return ("Syntax: annoyblock [ on | off ]\n\n"
             "Blocks annoying messages like \"Joe looks around.\""); 
 }

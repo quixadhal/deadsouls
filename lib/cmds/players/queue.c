@@ -20,7 +20,7 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: queue <command1;command2>\n\n"
-            "Stacks commands to be executed in order.\n\n", this_player());
+string GetHelp(){
+    return ("Syntax: queue <command1;command2>\n\n"
+            "Stacks commands to be executed in order.");
 }

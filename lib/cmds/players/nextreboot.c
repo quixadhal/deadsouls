@@ -35,8 +35,8 @@ mixed cmd(string form) {
     return 1;
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <nextreboot>\n\n"
+string GetHelp(){
+    return ("Syntax: nextreboot\n\n"
             "Tells you when the next regularly scheduled reboot for " +
             mud_name() + " will occur.");
 }

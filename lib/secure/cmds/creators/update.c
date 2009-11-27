@@ -43,12 +43,12 @@ static void ReturnAndRelease(object *dudes, string file){
 }
 
 static void create() {
-    SetHelp("Syntax: <update [-r] [file list]>\n"
+    SetHelp("Syntax: update [-r] [file list]\n\n"
             "Destructs the master copy of the file named "
             "and then attempts to reload a new version "
             "of it.\n"
             "The -r flag attempts to update all "
-            "files in the target's inheritance tree.\n");
+            "files in the target's inheritance tree.");
 }
 
 mixed cmd(string args) {

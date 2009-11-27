@@ -25,12 +25,11 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: <unwatch [site|name] [ip or site to be unwatched]>\n\n"
+string GetHelp(){
+            return ("Syntax: unwatch <[site|name] | "
+            "[ip or site to be unwatched]>\n\n"
             "Sets it up so that whenever a player of a certain name, or "
-            "a player from a certain site logs in it will get logged.  "
-            "Examples: unwatch name forlock    unwatch site 134.181.*\n\n"
-            "See also: watch, whowatched", this_player()
-           );
+            "a player from a certain site logs in it will get logged.\n"
+            "Examples: unwatch name forlock    unwatch site 134.181.*\n"
+            "See also: watch, whowatched");
 }

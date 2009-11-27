@@ -15,3 +15,10 @@ mixed cmd(string args) {
 
     return 1;
 }
+
+string GetHelp() {
+    return ("Syntax: snoopreport\n\n"
+      "Displays a list of who is snooping whom, who is being "
+      "monitored (aka logged), and so on.\nSee also: snoop, unsnoop, "
+      "monitor");
+}

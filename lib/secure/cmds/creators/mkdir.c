@@ -8,12 +8,12 @@
 #include <lib.h>
 inherit LIB_DAEMON;
 
-int help();
+string GetHelp();
 
-    int cmd(string str) {
+    mixed cmd(string str) {
         if( !str )
         {
-            return help();
+            return GetHelp();
         }
         str = absolute_path(this_player()->query_cwd(), str);
         if( file_size(str) != -1 )
@@ -30,13 +30,10 @@ int help();
         return 1;
     }
 
-int
-help() {
-    write("Command: mkdir\nSyntax: mkdidr <directory>\n");
-    write("This command makes a new directory with the name specified.\n"+
-            "If no path information is supplied, th new directory will be\n"+
-            "a sub directory of the present working directory.  For more\n"+
-            "on specifying paths see help cd.\n");
-    return 1;
+string GetHelp(){
+    return ("Syntax: mkdir <directory>\n\n"
+            "This command makes a new directory with the name specified. "
+            "If no path information is supplied, the new directory will be "
+            "a sub directory of the present working directory. For more "
+            "on specifying paths see: help cd");
 }
-/* EOF */

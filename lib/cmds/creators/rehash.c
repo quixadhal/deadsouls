@@ -17,11 +17,9 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: rehash <path>\n\n"
+string GetHelp() {
+    return ("Syntax: rehash <path>\n\n"
             "This command allows creators to refresh the specified path's "
-            "command parsing lookup tables.",
-            this_player() );
+            "command parsing lookup tables.");
 }
 

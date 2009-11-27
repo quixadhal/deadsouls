@@ -2384,7 +2384,13 @@ static program_t *epilog (void) {
 
     prog->function_table = (function_t *)p;
     for (i = 0; i < num_func; i++)
-        prog->function_table[i] = *FUNC(func_index_map[i]);
+    {
+        function_t *tf;
+
+        tf = FUNC(func_index_map[i]);
+
+        memcpy(&prog->function_table[i], tf, sizeof(function_t));
+    }
 
     p += align(sizeof(function_t) * num_func);
 

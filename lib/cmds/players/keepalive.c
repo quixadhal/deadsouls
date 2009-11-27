@@ -39,9 +39,8 @@ mixed cmd(string args) {
     }
 }
 
-string GetHelp(string str) {
-    return ("Syntax: keepalive <NUMBER>\n"
-            "        keepalive\n\n"
+string GetHelp(){
+    return ("Syntax: keepalive [NUMBER]\n\n"
             "Without an argument, keepalive will display your current "
             "keepalive interval. When provided an integer argument, this "
             "command sets how often an invisible 'keepalive' signal is "
@@ -53,4 +52,3 @@ string GetHelp(string str) {
 #endif
             "\nSee also: env");
 }
-

@@ -14,9 +14,8 @@ int cmd(string str)
     return 1;
 }
 
-int help()
-{
-    write("NOTE: This is not a command in itself.\n" +
+string GetHelp(){
+    return ("NOTE: This is not a command in itself.\n" +
             "Certain wizard commands require that you specify\n" +
             "objects in a certain format.\n" +
             "The format uses prefixes to specify types of\n" +
@@ -45,5 +44,4 @@ int help()
             "See also: patch\n"+
             "See man: to_object, get_object, get_objects\n"+
             "");
-    return 1;
 }

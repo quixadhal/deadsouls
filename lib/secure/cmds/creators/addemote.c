@@ -255,7 +255,7 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string str) {
+string GetHelp(){
     return ("Syntax: <addemote>\n"
             "        <addemote EMOTE>\n"
             "        <addemote -edit>\n"

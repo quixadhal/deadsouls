@@ -126,14 +126,12 @@ mixed cmd(string args) {
 }
 
 string GetKeyName() { return PlayerName; }
-void help() {
-    message("help",
-            "Syntax: decre <person>\n\n"
+
+string GetHelp(){
+            return ("Syntax: decre <person>\n\n"
             "Demotes the specified creator to player status. "
             "If the target is not "
             "logged in, they will be made a player when "
-            "they next log in."
-            "\n\n"
-            "See also: encre, rid", this_player()
-           );
+            "they next log in.\n"
+            "See also: encre, rid");
 }

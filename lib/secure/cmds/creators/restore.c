@@ -79,8 +79,8 @@ mixed cmd(string str) {
     return 1;
 }
 
-int help() {
-    message("help", "Syntax: <restore STRING> [NUMBER]\n\n"
+string GetHelp(){
+    return ("Syntax: restore <STRING> [NUMBER]\n\n"
             "Restores the specified file  from your bak/ directory. "
             "If you specify a number, the command will try to find "
             "the Nth newest file to restore. Examples:\n"
@@ -94,6 +94,5 @@ int help() {
             "you are currently standing in, and will reload it, if possible. "
             "This is the only case in which the command will automatically "
             "reload a restored object.\n"
-            "See also: bk", 
-            this_player());
+            "See also: bk");
 }

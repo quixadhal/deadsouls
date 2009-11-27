@@ -18,7 +18,7 @@ string itoa(mixed i){
 string comma(mixed x){
     string ret = "", pre = "", post = "";
     int count = 0, i;
-    if(floatp(x)) sscanf(itoa(x),"%s.%s",pre,post);
+    if(floatp(x)) sscanf(x+"","%s.%s",pre,post);
     else if(intp(x)) pre = itoa(x);
     else return 0;
     i = sizeof(pre);
@@ -30,7 +30,9 @@ string comma(mixed x){
         }
     }
     if(!sizeof(ret)) ret = "0";
-    if(sizeof(post)) ret += "." + post[0..1];
+    if(sizeof(post)){
+        ret += "." + post[0..1];
+    }
     return ret;
 }
 

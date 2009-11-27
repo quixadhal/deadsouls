@@ -40,9 +40,9 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
+string GetHelp(){
     string ret = "";
-    ret += "Syntax: ced FILE\n\n";
+    ret += "Syntax: ced [FILE]\n\n";
     ret += "This command starts a character-mode editing session on the "+
         "specified file. Note that without charmode enabled, this "+
         "will not work. Special commands are issued by pressing the "+
@@ -74,5 +74,5 @@ void help() {
         "ced is disabled for now."+
 #endif
         "";
-    message("help", ret, this_player());
+    return ret;
 }

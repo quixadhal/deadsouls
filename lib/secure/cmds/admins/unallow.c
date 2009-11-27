@@ -22,11 +22,10 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: <unallow [name]>\n\n"
+string GetHelp(){
+    return ("Syntax: unallow <name>\n\n"
             "Removes a name from the list of names which may be used by\n"
             "players from banned sites to create a new character.\n"
-            "\nSee also:\nletin, wholetin, banish, whobanished, unbanish,\n"
-            "register, unregister, whoregistered\n"
-         );
+            "See also:\nletin, wholetin, banish, whobanished, unbanish, "
+            "register, unregister, whoregistered");
 }

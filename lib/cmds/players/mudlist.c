@@ -125,9 +125,8 @@ int alphabet(string a, string b) {
     else return -1;
 }
 
-void help() {
-    message("help", "Syntax: <mudlist>\n"
-            "        <mudlist -dmn [arg]>\n\n"
+string GetHelp() {
+    return ("Syntax: mudlist [-d] [-m] [-n] [arg]\n"
             "        <mudlist imc2>\n\n"
             "Without any arguments, it gives a full listing of all muds "
             "with which this mud is capable of communication through "
@@ -140,6 +139,6 @@ void help() {
             "Note that the argument need not be complete, for example:\n"
             "\t mudlist -n idea\n"
             "will list IdeaExchange as well as any other mud whose name "
-            "begins with the string \"idea\".\n\n"
-            "See also: finger, mail, rwho, tell", this_player());
+            "begins with the string \"idea\".\n"
+            "See also: finger, mail, rwho, tell");
 }

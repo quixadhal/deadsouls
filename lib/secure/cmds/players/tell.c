@@ -31,14 +31,13 @@ mixed cmd(string str) {
     int i, maxi, insttell;
     string who, msg, tmp, tmp2, machine_message, retname, me;
 
-    if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
+    if(!str) return notify_fail("Syntax: tell <who> <message>\n");
     if(str == "hist" || str == "history"){
         string ret = "Your tell history: \n\n"; 
         ret += implode(this_player()->GetTellHistory(),"\n");
         print_long_string(this_player(), ret);
         return 1;
     }
-
     if(!creatorp(this_player()) && this_player()->GetMagicPoints() < 15) {
         write("You lack sufficient magic to tell to anyone right now.");
         return 1;
@@ -57,18 +56,23 @@ mixed cmd(string str) {
             tmp = lower_case(implode(words[0..i], " "));
             tmp2 = lower_case(implode(words[0..i+1], " "));
 
+            mud = tmp;
+
             if( CheckMud(tmp) && !CheckMud(tmp2) ){ 
-                mud = tmp;
                 if(i+1 < maxi) msg = implode(words[i+1..maxi-1], " ");
                 else msg = "";
                 break;
             }
+            if( IMC2_D->GetMudName(tmp) && !(IMC2_D->GetMudName(tmp2)) ){
+                msg = tmpmsg;
+                break;
+            }
         }
-        if(!mud && tmpmud){
-            mud = IMC2_D->GetMudName(tmpmud);
-            msg = tmpmsg;
+        if(!CheckMud(mud) && !(IMC2_D->GetMudName(mud))){
+            write("No such mud found.");
+            return 1;
         }
-        if(msg == "") return notify_fail("Syntax: <tell [who] [message]>\n");
+        if(!sizeof(msg)) return notify_fail("Syntax: tell <who> <message>\n");
         if(!mud) mud = -1;
     }
     if(!mud || mud == -1){
@@ -90,7 +94,7 @@ mixed cmd(string str) {
                 break;
             }
         }
-        if(!who) {
+        if(!who){
             if(!mud){
                 words -= ({ retname });
                 msg = implode(words," ");
@@ -102,7 +106,12 @@ mixed cmd(string str) {
                 return 1;
             }
             else {
-                write(mud_name()+" is offline or doesn't exist.\n");
+                if(grepp(who, "@")){
+                    write("Malformed message.");
+                }
+                else {
+                    write(mud_name()+" is offline or doesn't exist.\n");
+                }
                 return 1;
             }
         }
@@ -200,14 +209,12 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help(string str) {
-    message("help",
-            "Syntax: <tell [player] [message]>\n"
-            "        <tell [player]@[mud] [message]>\n\n"
+string GetHelp(){
+            return ("Syntax: tell <player> <message>\n"
+            "        tell <player>@<mud> <message>\n\n"
             "Sends the message to the player named either on this mud if no "
             "mud is specified, or to the player named on another mud when "
             "another mud is specified. If the other mud is on an IMC2 network "
             "rather than an Intermud-3 network, use \"imc2 tell\""
-            "\n\n"
-            "See also: imc2, say, shout, yell, emote",this_player());
+            "\nSee also: imc2, say, shout, yell, emote");
 }

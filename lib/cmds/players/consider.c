@@ -66,8 +66,6 @@ int eventConsider(object whom, object opponent){
         DamType = 0;
     }
 
-
-
     score += whom->GetStatLevel("speed") * 2;
     score += whom->GetStatLevel("strength") * 3;
     score += whom->GetMaxHealthPoints() / 15;
@@ -112,18 +110,13 @@ mixed cmd(string str) {
     return 1;
 }
 
-
-void help() {
-    message("help",
-            "Syntax: consider <creature>\n"
+string GetHelp() {
+    return ("Syntax: consider <creature>\n\n"
             "Gives you an idea of how tough a creature would be to defeat "
             "in combat. Gauges relative strengths, skills, weapons, "
             "armor, levels, health, and so on. The resulting comparison "
             "may not be very useful, because a change during combat (such "
-        "as the opponent changing weapons) or items of unusual class "
+            "as the opponent changing weapons) or items of unusual class "
             "or protection (such as magical armor) may not be taken into "
-            "account."
-            "\n",
-            this_player() );
+            "account.");
 }
-

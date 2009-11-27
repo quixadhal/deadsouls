@@ -264,7 +264,7 @@ int socket_create (enum socket_mode mode, svalue_t * read_callback, svalue_t * c
             socket_perror("socket_create: setsockopt", 0);
             OS_socket_close(fd);
             return EESETSOCKOPT;
-        }
+        } 
         if (set_socket_nonblocking(fd, 1) == -1) {
             socket_perror("socket_create: set_socket_nonblocking", 0);
             OS_socket_close(fd);

@@ -45,7 +45,8 @@ mixed cmd(string str) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: about OBJECT\n\n"
+    return ("Syntax: about <OBJECT>\n"
+            "        about here\n\n"
             "Displays the code for the object, if the file is "
             "available.\nSee also: more, find, findobj");
 }

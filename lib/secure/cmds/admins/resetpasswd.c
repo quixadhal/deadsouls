@@ -90,9 +90,9 @@ static void ConfirmPass(string str, string newpass) {
     this_player()->eventPrint("\nPassword changed.", MSG_SYSTEM);
 }
 
-void help() {
-    message("help", "Syntax: resetpasswd <player>\n\n"
+string GetHelp() {
+    return ("Syntax: resetpasswd <player>\n\n"
             "Allows you to change someone's password if they "
-            "are not logged on.\n\n"
-            "See also: passwd", this_player());
+            "are not logged on.\n"
+            "See also: passwd");
 }

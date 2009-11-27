@@ -38,9 +38,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string args) {
-    return ("Syntax: pause PLAYER\n\n"
+string GetHelp(){
+    return ("Syntax: pause <PLAYER>\n\n"
             "Causes the player to be unable to run any commands. Useful for "
-            "immediately halting problem behavior.\n\n"
-            "");
+            "immediately halting problem behavior.");
 }

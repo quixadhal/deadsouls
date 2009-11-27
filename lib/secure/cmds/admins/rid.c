@@ -38,7 +38,7 @@ varargs int cmd(string who, string reason) {
     if( ob = find_player(str) ) {
         who = ob->GetCapName();
         message("system", "You are being ridded from " + mud_name() + ".",
-          ob);
+                ob);
         if( !(ob->eventDestruct()) ) destruct(ob);
     }
     file = player_save_file(str);
@@ -47,11 +47,11 @@ varargs int cmd(string who, string reason) {
     if( rename(file, save_file(targetdir + "/" + str + ".bak")) ) {
         write("Rename failed, security violation logged.");
         log_file("security", "\n*****\nRid violation attempted\n"
-          "Target: " + who + "\nCall stack:\n" + 
-          sprintf("%O\n", previous_object(-1)));
+                "Target: " + who + "\nCall stack:\n" + 
+                sprintf("%O\n", previous_object(-1)));
         return 1;
     }
-    
+
     if(reason){
         EndRid(who, reason);
         return 1;
@@ -78,18 +78,15 @@ varargs static void EndRid(string who, string reason) {
     }
     else str = reason;
     log_file("rid", "\n" + who + " by " + actor +
-      "\n" + str + "\n");
+            "\n" + str + "\n");
     write(who + " has been ridded from " + mud_name() + ".");
     PLAYERS_D->RemovePendingEncre(lower_case(who));
     PLAYERS_D->RemoveUser(lower_case(who));
 }
 
-void help() {
-    write( @EndText
-Syntax: rid <name>
-Effect: Deletes, nukes, wipes out and annhilates unwanted player <name>
-See also: demote, promote, sponsor
-EndText
-    );
+string GetHelp(){
+    return "Syntax: rid <name>\n\n"
+        "Deletes, nukes, wipes out and annhilates unwanted player <name>\n"
+        "See also: demote, promote, sponsor";
 }
 

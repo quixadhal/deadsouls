@@ -22,7 +22,7 @@ int cmd(string str) {
     }
     if(!str) return 0;
     if(sscanf(lower_case(str), "%s %s", who, email) != 2) {
-        notify_fail("Syntax: <allow [who] [email]>\n");
+        notify_fail("Syntax: allow <who> <email>\n");
         return 0;
     }
     if(user_exists(who)) {
@@ -36,10 +36,11 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: <allow [who] [email] >\n\n");
-    write("Members of law may allow people from sites on register to create\n");
-    write("new characters with this command.  [who] is the character name,\n");
-    write("[email] is the player's real life email address.\n");
-    write("See also: whobanished, whoregistered, whowatched\n");
+string GetHelp(){
+    return "Syntax: allow <who> <email>\n\n"
+    "Members of law may allow people from sites on register to create "
+    "new characters with this command.  <who> is the character name, "
+    "<email> is the player's real life email address. "
+    "See also: whobanished, whoregistered, whowatched";
 }
+

@@ -30,8 +30,8 @@ mixed cmd(string str) {
     return 1;
 }
 
-string GetHelp(string str) {
-    return "Syntax: unrid <user name>\n\n"
+string GetHelp(){
+    return "Syntax: unrid <username>\n\n"
         "This command restores a character that was "
         "banished via the \"rid\" command.";
 }

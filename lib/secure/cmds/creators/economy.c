@@ -35,15 +35,15 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <economy add [type] [exchange rate] "
-            "[inflation rate] [weight]>\n"
-            "        <economy change [what] for [currency] to [value]>\n\n"
+string GetHelp(){
+    return ("Syntax: economy add <type> <exchange <rate> "
+            "<inflation rate> <weight>\n"
+            "        economy change <what> for <currency> to <value>\n\n"
             "This allows only approval people to modify the economic settings for "
             "the mud.  The add parameter signifies that the arch intends to add "
             "a new currency to the game.  The change parameter instead signifies "
             "that the arch is changing something in a currenct currency.  Examples:\n"
-            "<economy add gold 1.0 0.03 0.1>\n<economy change rate for gold to 1.1>\n"
+            "economy add gold 1.0 0.03 0.1\neconomy change rate for gold to 1.1\n"
             "The exchange rate parameter is multiplied by the value of "
             "query(\"value\") in mud objects to give the value in the currency of "
             "an object.  The inflation rate parameter of the add command sets "
@@ -51,6 +51,5 @@ void help() {
             "will inflate (or deflate) over the course of a mud year.  The weight "
             "paramter sets how much one piece of the currency will weigh in "
             "standard mud weight units.  Finally, changing values for current "
-            "currencies use the parameters: rate, inflation, weight.", this_player()
-           );
+            "currencies use the parameters: rate, inflation, weight.");
 }

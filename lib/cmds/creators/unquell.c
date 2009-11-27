@@ -3,7 +3,6 @@
 
 inherit LIB_COMMAND;
 
-
 int cmd(string str){
     write("You snap your fingers, and permit hostilities to resume.");
     say(this_player()->GetCapName()+" snaps "+possessive()+" fingers "+
@@ -16,8 +15,8 @@ int cmd(string str){
     return 1;
 }
 
-string GetHelp(string str) {
-    return "Syntax: <unquell>\n"
+string GetHelp(){
+    return "Syntax: unquell\n\n"
         "Allows quelled combat to resume.\n"
-        "See also: quell\n";
+        "See also: quell";
 }

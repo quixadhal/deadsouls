@@ -26,7 +26,7 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <afk>\n\n"
-            "Toggles your 'away from keyboard' flag.\n\n", this_player());
+string GetHelp() {
+    return ("Syntax: afk\n\n"
+            "Toggles your 'away from keyboard' flag.");
 }

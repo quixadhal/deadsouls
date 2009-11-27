@@ -44,10 +44,9 @@ varargs int cmd(string str){
 #endif
 }
 
-void help()
-{
-    write("Syntax: showgrid [ on | off ]\n"+
+string GetHelp(){
+    return ("Syntax: showgrid [ on | off ]\n\n"
             "Adds global grid coordinates for you environment "
-            "to the room description, if "+
+            "to the room description, if "
             "ROOMS_D enables them and they are available."); 
 }

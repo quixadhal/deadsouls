@@ -34,9 +34,9 @@ mixed cmd() {
 
 }
 
-void help() {
-    message("help", "Syntax: <mudtime>\n\n"
+string GetHelp() {
+    return ("Syntax: mudtime\n\n"
             "Displays the time inside of the MUD. This is entirely "
-            "separate from what time it is anywhere in the real world."
-            "\n", this_player());
+            "separate from what time it is anywhere in the real world, "
+            "should one still exist.");
 }

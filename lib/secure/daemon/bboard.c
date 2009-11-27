@@ -15,6 +15,7 @@ private string __Owner;
 private mapping *__Posts;
 static private string __CurrentID;
 string list_new_posts(string id);
+string Location;
 
 void create() {
     daemon::create();
@@ -25,11 +26,18 @@ void create() {
 }
 
 static private void save_board() {
-    if(!__CurrentID) return;
+    if(!__CurrentID){
+        //tc("tong");
+        return;
+    }
     if(!unguarded((: file_exists,save_file(DIR_BOARDS+"/"+__CurrentID) :))){
         int i;
 
-        if(!sizeof(__Posts)) return;
+        if(!sizeof(__Posts)){
+            //tc("tlong!");
+            __Owner = query_privs(previous_object(0));
+            __Posts = ({});
+        }
         i = strlen(__CurrentID);
         while(i--) 
             if((__CurrentID[i] < 'a' || __CurrentID[i] > 'z') && __CurrentID[i] != '_')
@@ -38,13 +46,22 @@ static private void save_board() {
     SaveObject(save_file(DIR_BOARDS+"/"+__CurrentID));
 }
 
-static private void restore_board() {
-    if(!__CurrentID) return;
+static private int restore_board() {
+    if(!__CurrentID){
+        //tc("ting");
+        return 0;
+    }
     if(!unguarded((: file_exists, save_file(DIR_BOARDS+"/"+__CurrentID) :))){
         __Owner = query_privs(previous_object(0));
         __Posts = ({});
+        //tc("glinb");
+        return 0;
     }
-    else RestoreObject(save_file(DIR_BOARDS+"/"+__CurrentID));
+    else {
+        //tc("bling");
+        RestoreObject(save_file(DIR_BOARDS+"/"+__CurrentID));
+    }
+    return 1;
 }
 
 static private int valid_access() {
@@ -68,6 +85,28 @@ void add_post(string id, string who, string subj, string msg) {
     if(!msg || msg == "") return;
     __Posts += ({ ([ "author" : who, "subject" : subj, "time" : time(),
                 "post" : msg, "read" : ({ convert_name(who) }) ]) });
+    save_board();
+}
+
+void RegisterLocation(string id, string location){
+    //tc("0", "red");
+    if(__CurrentID != id) {
+        __CurrentID = id;
+        //tc("1", "red");
+        restore_board();
+    }
+    //tc("2", "red");
+    if(!valid_access()){
+        //tc("3", "red");
+        return;
+    }
+    //tc("4", "red");
+    if(!location || !stringp(location)){
+        //tc("5", "red");
+        return;
+    }
+    //tc("6", "red");
+    Location = location;
     save_board();
 }
 
@@ -124,14 +163,15 @@ int query_number_posts(string id) {
     return sizeof(__Posts);
 }
 
-string list_new_posts(string id){
+varargs string list_new_posts(string id, int location){
     string mag;
     int i;
     mixed count;
 
     if(__CurrentID != id) {
         __CurrentID = id;
-        restore_board();
+        Location = 0;
+        i = restore_board();
     }
 
     count = 0;
@@ -142,10 +182,9 @@ string list_new_posts(string id){
     }
 
     id = replace_string(id, "_", " ");
+    if(location) id += " ( "+Location+" ) ";
     mag = "";
     mag += capitalize(id) + " has "+(count ? count : "no") + " new message"+
         (count == 1 ? "" : "s")+ " posted.";
     return mag;
 }
-
-

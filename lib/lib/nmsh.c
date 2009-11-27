@@ -425,7 +425,6 @@ varargs nomask string write_prompt(string str){
 
 string process_input(string str){ 
     string tmp, xtra, request; 
-    //tc("nmsh process_input: "+str,"green");
     if(!str || str == "") return ""; 
     else if(GetClient() &&
             member_array(GetClient(), SUPPORTED_CLIENTS) != -1){
@@ -437,14 +436,10 @@ string process_input(string str){
     }
     else {
         tmp = eventHistory(str);
-        //tc("tmp: "+tmp, "green");
-        //tc("str: "+str, "green");
         if(tmp == ""){
-            //tc("tmp is null", "red");
             return "";     
         }
     }
-    //tc("tmp is not null"+tmp,"green");
     if(tmp != str) message("system", tmp, this_object());
     return do_alias(do_nickname(tmp));
 } 
@@ -559,7 +554,6 @@ nomask private static string do_alias(string str){
     if(!(tmp = Aliases[words[0]])) return implode(words, " "); 
     else str = implode(words[1..sizeof(words)-1], " "); 
     ret = replace_string(tmp, "$*", str);
-    //tc("ret: "+ret, "green");
     return ret;
 } 
 
@@ -692,6 +686,7 @@ static int rDel(){
 static int rEnter(){
     string charbuffer = this_object()->GetCharbuffer();
     string tmp;
+    this_object()->SetNoEcho(0);
     /* re-add any removed pinkfish */
     charbuffer = replace_string(charbuffer,"%%^^","%^");
     EchoCommand(charbuffer);

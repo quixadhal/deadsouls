@@ -278,8 +278,8 @@ static private string query_people_time() {
     return tzone + " time is: " + ctime(time() + x);
 }
 
-void help() {
-    message("help", "Syntax: people [-abceghlmnprsu]\n\n"
+string GetHelp() {
+    return ("Syntax: people [-abceghlmnprsu]\n\n"
             "Gives you a listing of people on "+mud_name()+".  Output is "
             "formatted into columns with the following meanings:\n"
             "    amount of time spent total on "+mud_name()+"\n"
@@ -303,11 +303,12 @@ void help() {
             "    -r sort the listing by current environment\n"
             "    -s sort the listing by class\n"
             "    -u list all undead people\n\n"
-            "People in the editor or in mail or posting will be marked with [].  "
+            "People in the editor or in mail or posting will be "
+            "marked with [].  "
             "People who are invisible to others, but not to you will be marked "
             "with ().  The default sort is by arch, then by creator, then by "
             "ambassador, then by level.  You can perform multiple sorts, but "
             "you cannot change the priority.  Sorts priority is: class, race, "
             "realm, level, age.  You can also include multiple groups in your "
-            "listing.\n\nSee also: who, users", this_player());
+            "listing. Fart.\nSee also: who, users");
 }

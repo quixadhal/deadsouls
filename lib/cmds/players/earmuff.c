@@ -16,15 +16,13 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: earmuff\n"
+string GetHelp() {
+            return ("Syntax: earmuff\n"
             "        earmuff <name>\n"
             "        earmuff @<mud>\n\n"
             "This command allows you to ignore channel messages from the name specified.\n"
             "You can also earmuff all channel messages coming from a "
             "specific mud, for example: earmuff @Spammy Mud II\n"
-            "See also: whomuffed, unmuff\n\n",
-            this_player() );
+            "See also: whomuffed, unmuff");
 }
 

@@ -38,8 +38,7 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <kills>\n\n"
-            "A list of your victories."
-            "\n\n",this_player());
+string GetHelp() {
+    return ("Syntax: kills\n\n"
+            "A list of your victories.");
 }

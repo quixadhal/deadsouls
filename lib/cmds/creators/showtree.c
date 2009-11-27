@@ -69,13 +69,12 @@ string ShowTree(string file, string func, int indent) {
     return (found ? str : "");
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <showtree FILE>\n"
-            "        <showtree FUNC in FILE>\n\n"
+string GetHelp() {
+    return ("Syntax: showtree <FILE | FUNC in FILE>\n\n"
             "In its first version, shows you the full inheritance "
             "tree for the named object.  In its second form, it shows "
             "you all files in the inheritance tree which contain the "
             "function you name, specifically noting those objects which "
-            "have definitions for the function.\n\n"
+            "have definitions for the function.\n"
             "See also: help");
 }

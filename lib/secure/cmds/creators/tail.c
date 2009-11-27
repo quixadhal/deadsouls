@@ -26,9 +26,9 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <tail [file]>\n\n"
-            "Displays the last screenful of information for the specified "
-            "file.\n\n"
-            "See also: cat, head, more.", this_player());
+string GetHelp() {
+    return ("Syntax: tail <file>\n\n"
+            "Displays the last lines of the specified "
+            "file.\n"
+            "See also: cat, head, more.");
 }

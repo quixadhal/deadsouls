@@ -19,14 +19,14 @@ mixed cmd(string str){
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: homedir [directory]\n\n"
+string GetHelp() {
+    return ("Syntax: homedir [directory]\n\n"
             "Sets the specified directory to be your \"home\" "
             "directory, i.e. the directory your path changes to "
             "when you type \"cd\" with no arguments. If you do "
             "not specify a directory, your home directory is "
             "reset to your default.\nNOTE: Changing your home "
             "directory may have an impact on where the QCS puts items "
-            "you create.\n\n"
-            "See also: pwd, cd, env, homeroom", this_player());
+            "you create.\n"
+            "See also: pwd, cd, env, homeroom");
 }

@@ -33,10 +33,9 @@ mixed cmd(string args) {
 #endif
 }
 
-void help() {
-    message("help", "Syntax: minimap [on | off]\n\n"
+string GetHelp() {
+    return ("Syntax: minimap [on | off]\n\n"
             "If enabled, a simple map of your surroundings is displayed "
             "when your environment is described to you.\nSee also: "
-            "env, terminal, brief, mute, gag.",
-            this_player());
+            "env, terminal, brief, mute, gag.");
 }

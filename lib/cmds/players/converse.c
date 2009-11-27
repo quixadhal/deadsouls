@@ -32,13 +32,13 @@ static void eventChat(string args) {
     input_to( (: eventChat :) );
 }
 
-void help() {
-    message("help", "Syntax: <converse>\n\n"
+string GetHelp() {
+    return ("Syntax: converse\n\n"
             "Puts you into conversation mode, which means that anything you "
             "type will act as if you are placing the \"say\" command before "
             "it.  Once in conversation mode, you exit the same way you do "
             "from the mail or bulletin board editor, that is, by typing "
             "a '.' alone on a line.  You may also issue commands while "
-            "in conversation mode by putting a ! before whatever you type.\n\n"
-            "See also: say, tell", this_player());
+            "in conversation mode by putting a ! before whatever you type.\n"
+            "See also: say, tell");
 }

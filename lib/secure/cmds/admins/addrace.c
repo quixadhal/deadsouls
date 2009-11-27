@@ -15,7 +15,7 @@ mixed cmd(string args) {
     string file;
     int player;
 
-    if( !args || args == "" ) return "Syntax: <addrace race (1|0)>";
+    if( !args || args == "" ) return "Syntax: addrace <RACE> [1 | 0]";
     if( sscanf(args, "%s %d", file, player) != 2 ) {
         file = args;
     }
@@ -26,9 +26,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <addrace RACE>\n"
-            "        <addrace RACE 0|1>\n\n"
+string GetHelp(){
+    return ("Syntax: addrace <RACE> [0 | 1]\n\n"
             "Allows you to add a new race to the racial data stored in the "
             "races daemon.  Specifically, you create a configuration file "
             "and then issue this command to load the new race into the "
@@ -48,6 +47,6 @@ string GetHelp(string str) {
             "For example, the right hand may come any time after the right "
             "arm, but it must come after the right arm.\n"
             "This system is admittedly rather complex, but it beats hard "
-            "coding these values.\n\n"
+            "coding these values.\nExample: addrace murlok 0\n"
             "See also: addclass, addemote");
 }

@@ -46,9 +46,8 @@ varargs int cmd(string str){
     return 1;
 }
 
-void help()
-{
-    write("Syntax: inherits FILE THING\n\n"+
+string GetHelp(){
+    return ("Syntax: inherits <FILE> <THING>\n\n"+
             "Tries to match FILE with the list of inherited files "+
-            "for THING.\n\nSee also: showtree, findobj, findfun, showfuns");
+            "for THING.\nSee also: showtree, findobj, findfun, showfuns");
 }

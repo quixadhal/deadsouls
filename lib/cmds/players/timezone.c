@@ -23,7 +23,7 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string str) {
+string GetHelp(){
     return ("Syntax: timezone [zone]\n\n"
             "Without an argument, timezone will display your current "
             "timezone. If provided a valid timezone known to the mud, "

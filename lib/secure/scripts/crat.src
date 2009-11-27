@@ -146,6 +146,9 @@ alias 9 charmode on
 alias 0 charmode off
 unmuff mudbytes
 earmuff reuters
+earmuff gammon
+earmuff azereth
+earmuff blackdawn
 earmuff sapid
 earmuff NZHerald
 earmuff TheOnion

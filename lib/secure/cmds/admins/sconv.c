@@ -332,7 +332,7 @@ int ConvertArea(string arg){
     return 1;
 }
 
-void help() {
+string GetHelp() {
     message("help", "Syntax: sconv <file> <area>\n\n"
             "Tries to convert a Smaug area file into a Dead Souls domain.\n"
             "Example: sconv /tmp/fubar.are Foo\n"

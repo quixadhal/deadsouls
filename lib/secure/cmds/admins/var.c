@@ -3,7 +3,7 @@
 
 inherit LIB_DAEMON;
 
-void help();
+string GetHelp();
 mixed var, newval;
 object ob;
 
@@ -26,14 +26,14 @@ int cmd(string str) {
     }
 
     if(!str || str == ""){
-        help();
+        write(GetHelp());
         return 1;
     }
 
     i = sscanf(str,"%s %s %s", cmd, var, what);
 
     if(i != 3 || (cmd != "get" && cmd != "set")){
-        help();
+        write(GetHelp());
         return i;
     }
 
@@ -41,7 +41,7 @@ int cmd(string str) {
         int tmp;
         i = sscanf(what,"%s %s", newval, what);
         if(i != 2){
-            help();
+            write(GetHelp());
             return i;
         }
         if(sscanf(newval,"%d",tmp)) newval = tmp;
@@ -93,8 +93,8 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: var get <variable name> <object or file>\n"
+string GetHelp(){
+    return ("Syntax: var get <variable name> <object or file>\n"
             "        var set <variable name> <new value> <object or file>\n\n"
             "Sets or gets the value of a variable in an object.\n"
             "Examples:\n"

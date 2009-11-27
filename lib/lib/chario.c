@@ -154,8 +154,11 @@ static int ReceiveChars(string str){
     return CharStuff["charmode"];
 }
 
-int CancelCharmode(){
+varargs int CancelCharmode(int extra){
     int ret = 1;
+#if CHAR_DEBUG
+    debug("cancelling! stack: "+get_stack());
+#endif
     if(!CharStuff) CharStuff = ([]);
     flush_messages();
     CharStuff["charbuffer"] = "";
@@ -167,6 +170,8 @@ int CancelCharmode(){
 #else
     ReceiveChars(sprintf("%c",13));
 #endif
+    if(extra) ReceiveChars(sprintf("%c",13));
+    this_object()->SetProperty("was_charmode", 0);
     return ret;
 }
 
@@ -174,7 +179,6 @@ int SetCharmode(int x){
     if(!x) CharStuff["charmode"] = 0;
 #ifdef __GET_CHAR_IS_BUFFERED__
     else CharStuff["charmode"] = 1;
-    //tc("about to remove get_char "+get_stack(1),"red");
     remove_get_char(this_object());
     if(!(this_object()->GetCedmode())){
         get_char("ReceiveChars", CharStuff["noecho"]);
@@ -210,14 +214,13 @@ static string SetTempbuffer(string str){
 }
 
 void CheckCharmode(){
-    if(!in_edit() && this_object()->GetProperty("was_charmode")){
-        this_object()->SetProperty("was_charmode", 0);
+    if(!in_edit() && !in_input() && this_object()->GetProperty("was_charmode")){
         CharStuff["charmode"] = 1;
     }
     if(CharStuff["charmode"] && !query_charmode(this_object())){
         if(!in_edit() && !in_input()) SetCharmode(CharStuff["charmode"]);
         if(!this_player() || this_player() != this_object()){
-            //tc("hi what's this");
+            SetCharmode(1);
             this_object()->RedrawPrompt();
         }
     }
@@ -246,4 +249,3 @@ int SetNoEcho(int x){
 int GetNoEcho(){
     return CharStuff["noecho"];
 }
-

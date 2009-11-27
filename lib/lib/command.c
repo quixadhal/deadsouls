@@ -71,8 +71,9 @@ static string process_input(string args){
     if(verb && tmpalias = this_object()->GetXverb(verb[0..0])){
         real_verb = explode(tmpalias, " ")[0];
     }
+    if(!real_verb) real_verb = verb;
     //tc("verb: "+verb+", args: "+args, "blue");
-    if(Paused && (member_array(verb, exempts) == -1)){
+    if(Paused && (member_array(real_verb, exempts) == -1)){
         this_object()->eventPrint("You are paused.");
         return "";
     }
@@ -94,7 +95,7 @@ static string process_input(string args){
             return "";
         }
     }
-    if(OLD_STYLE_PLURALS && args && (member_array(verb, exempts) == -1 ||
+    if(OLD_STYLE_PLURALS && args && (member_array(real_verb, exempts) == -1 ||
                 (member_array(verb, exempts) != -1 && !strsrch(trim(args),"to ")))){
         int numba, i, tmp_num;
         string tmp_ret;

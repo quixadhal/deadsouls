@@ -46,7 +46,7 @@ varargs private void eventNotify(object who, string text) {
         who->eventPrint("Error adding notice.");
 }
 
-string GetHelp(string str) {
+string GetHelp(){
     return ("Syntax: notify\n"
             "        notify <message>\n\n"
             "This command allows users with proper access to "
@@ -54,5 +54,5 @@ string GetHelp(string str) {
             "All new notifications are displayed to any creator "
             "upon login.  Typing \"notify\" alone will put you "
             "into the text editor.  Otherwise, the passed "
-            "message will be used.\n\n");
+            "message will be used.");
 }

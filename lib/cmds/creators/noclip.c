@@ -32,8 +32,8 @@ varargs int cmd(string args){
     return 1;
 }
 
-void help(){
-    write("Syntax: noclip [ on | off ]\n"+
+string GetHelp(){
+    return ("Syntax: noclip [ on | off ]\n\n"+
             "Allows you to travel to adjacent rooms known to the "+
             "mud, even if a door is in the way or there is no "+
             "explicit exit in that direction.\nSee also: "+

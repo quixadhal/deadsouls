@@ -47,8 +47,8 @@ mixed cmd(string args) {
     else return ret_arr;
 }
 
-void help() {
-    message("help", "Syntax: <files [-x] [-c] [SUBSTRING]>\n\n"
+string GetHelp() {
+    return ("Syntax: files [-x] [-c] [SUBSTRING]\n\n"
             "With no arguments, this command reloads the file "
             "daemon's data. If given a substring, it will also search "
             "filenames and return those with the substring in their path. "
@@ -59,6 +59,5 @@ void help() {
             "information."
             "\n\n"
             "Note: This command is deprecated for finding files. For "
-            "searching the mud for files, use the \"find\" command instead.\n"
-            "", this_player());
+            "searching the mud for files, use the \"find\" command instead.");
 }

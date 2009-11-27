@@ -29,10 +29,10 @@ mixed cmd(string str) {
     return 1;
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <realms>\n\n"
+string GetHelp() {
+    return ("Syntax: realms\n\n"
             "A creator command that displays individual author "
             "statistics relative to the \"areas\" found within "
-            "their directories.\n\n"
+            "their directories.\n"
             "See also: man author_stats");
 }

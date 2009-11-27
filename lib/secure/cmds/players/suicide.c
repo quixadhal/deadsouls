@@ -151,9 +151,9 @@ static private void EndSuicide(string who) {
     return;
 }
 
-string GetHelp(string str) {
+string GetHelp(){
     return "Syntax: suicide\n\n"
-        "Ends your character's existence on "+mud_name()+" FOREVER.  "
+        "Ends your character's existence on "+mud_name()+" FOREVAR.  "
         "It is non-reversible.  Once you issue this command, you will be asked"
         "for a password to confirm your identity.  Once password is confirmed, "
         "you will no longer exist in the MUD's database.  You may also opt "

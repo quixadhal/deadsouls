@@ -183,8 +183,6 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
     int p, q, x, y, z;
     mixed xarr, yarr, zarr;
 
-    //tc("1", "red");
-
     if(this_player() && adminp(this_player())){
         room = arg_room;
     }
@@ -198,8 +196,6 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
       base_name(player) != room) return 0;
 
     if(inherits(LIB_ROOM, previous_object())) global_manual = 1;
-
-    //tc("global_manual: "+global_manual, "red");
 
     sscanf(coord,"%d,%d,%d",x,y,z);
     xarr = GenerateNames(x);
@@ -332,24 +328,21 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
     else{
         ob = previous_object();
     }
-
     if(clonep(ob)){
         return 0;
     }
-
     if(!(last_str = player->GetProperty("LastLocation")) &&
         player != ob){
         return 0;
     }
     if(!(last_str)) last_str = "";
-
     name = base_name(ob);
     prefix = path_prefix(name);
-
     if(manual && (!strsrch(name, "/open/") || !strsrch(name, "/realms/"))){
-        return 0;
+        if(!this_player() || !archp(this_player())){
+            return 0;
+        }
     }
-
     /* Still need to figure out exclusions for
      * an island or continent perimeter :(
      */
@@ -357,7 +350,6 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
             prefix == "/domains/town/virtual/sub"){
         return 0;
     }
-
     room_name = last_string_element(name, "/");
     if(!sizeof(WorldMap)){
         if(name == ROOM_FURNACE){
@@ -721,7 +713,6 @@ varargs mixed GetDirectionRoom(mixed origin, string direction, int noclip){
 mixed DroneCache(mixed foo){
     string path;
     object prev, env;
-    //tc("DroneCache: "+identify(DroneCache), "red");
     prev = previous_object();
     if(!prev) return 0;
     env = environment(prev);

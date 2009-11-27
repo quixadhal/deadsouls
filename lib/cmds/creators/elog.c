@@ -16,12 +16,11 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: elog [error log]\n\n"
+string GetHelp() {
+    return ("Syntax: elog [error log]\n\n"
             "This will tail your personal error log if issued without any\n"
             "arguments.  If an argument is given, it searches for a file\n"
             "by that name in the mud's error log directory.\nFor example:\n"
-            "elog\nelog town\nelog secure\nelog lib\n\nSee also:\n"
-            "log, replog\n"
-         );
+            "elog\nelog town\nelog secure\nelog lib\n\nSee also: "
+            "log, replog");
 }

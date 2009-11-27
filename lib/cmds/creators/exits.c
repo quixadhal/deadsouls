@@ -8,8 +8,7 @@
 
 inherit LIB_DAEMON;
 
-mixed cmd()
-{
+mixed cmd(){
     string *asExits, sDir, sExit;
     string *asEnters;
     object oEnv;
@@ -51,8 +50,7 @@ mixed cmd()
     return 1;
 }
 
-void help() 
-{
-    message("help", "Usage : exits\n\nDisplays exit and enter "
-            "information for the current room.", this_player() );
+string GetHelp(){ 
+    return ("Syntax: exits\n\nDisplays exit and enter "
+            "information for the current room.");
 }

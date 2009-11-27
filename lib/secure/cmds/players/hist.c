@@ -109,8 +109,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string topic) {
-    string ret = "Syntax: hist CHANNEL [number]\n"
+string GetHelp(){
+    string ret = "Syntax: hist <CHANNEL> [number]\n"
         "        hist [ say | whisper | tell | yell | shout ]\n\n"
         "Gives you the backscroll of the specified communication.\n";
     if(!LOG_REMOTE_CHANS){

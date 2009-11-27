@@ -38,8 +38,8 @@ mixed cmd(string str) {
 #endif
 }
 
-string GetHelp(string str) {
-    return ("Syntax: profile <file or object>\n"+
+string GetHelp(){
+    return ("Syntax: profile <file or object>\n\n"+
             "Provides a report of the given object's function "+
             "profile data. See \"man function_profile\" for details "+
             "of what this data is. This command requires that the "+

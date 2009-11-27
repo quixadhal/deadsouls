@@ -19,10 +19,9 @@ int cmd(string str){
 
 }
 
-string GetHelp(string str) {
-    return "Syntax: wizroll <NUMBERdNUMBER>\n"
+string GetHelp(){
+    return "Syntax: wizroll <NUMBERdNUMBER>\n\n"
         "Simulates a roll of dice. For example, 'wizroll 2d6' simulates a "
         "roll of two six-sided dice. Dice are not limited to realistic "
-        "topologies. One may roll a 99d1025.\n"
-        "";
+        "topologies. One may roll a 99d1025.";
 }

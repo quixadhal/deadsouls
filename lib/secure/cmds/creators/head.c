@@ -13,7 +13,7 @@ int cmd(string str) {
     string file;
     int x;
 
-    if(!str) return notify_fail("Syntax: <head [file]>\n");
+    if(!str) return notify_fail("Syntax: head <file>\n");
     file = absolute_path(this_player()->query_cwd(),str);
     if(!file_exists(file)) return notify_fail("No such file: "+file+"\n");
     else if(!(str = read_file(file)))
@@ -24,8 +24,8 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <head [file]>\n\n"
-            "Gives you the first 22 lines in the file named.\n\n"
-            "See also: cat, more, tail", this_player());
+string GetHelp() {
+    return ("Syntax: head <file>\n\n"
+            "Gives you the first lines in the file specified.\n"
+            "See also: cat, more, tail");
 }

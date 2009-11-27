@@ -22,13 +22,8 @@ int cmd(string str) {
     return 1;
 }
 
-int help()
-{
-    write( @EndText
-Syntax: unmonitor <user>
-Effect: Stops the logging of a user's input and output.
-See also: monitor, snoop, unsnoop
-EndText
-    );
-    return 1;
+string GetHelp(){
+    return "Syntax: unmonitor <user>\n\n"
+        "Stops the logging of a user's input and output.\n"
+        "See also: monitor, snoop, unsnoop";
 }

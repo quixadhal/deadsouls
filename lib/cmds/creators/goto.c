@@ -51,7 +51,11 @@ mixed cmd(string str) {
             }
         }
         else if(!file_exists(str) && !file_exists(str + ".c")){
-            write("Location not found.");
+            str == lower_case(str);
+            if(str == "home" || str == "workroom"){
+                write("Try: help home");
+            }
+            else write("Location not found.");
             return 1;
         }
     }
@@ -65,12 +69,9 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: goto [living thing|file]\n\n"
+string GetHelp() {
+    return ("Syntax: goto [living thing|file]\n\n"
             "This command will move you to where the living thing is if it can "
             "be found, otherwise it will search for the file named and try to "
-            "move you into that file.\n\nSee also: home, move, trans, expel.",
-            this_player()
-           );
+            "move you into that file.\nSee also: home, move, trans, expel.");
 }

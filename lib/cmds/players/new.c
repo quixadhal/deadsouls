@@ -13,7 +13,7 @@ mixed cmd(string str) {
     return eventNoob();
 }
 
-void help() {
+string GetHelp() {
     eventNoob();
 }
 

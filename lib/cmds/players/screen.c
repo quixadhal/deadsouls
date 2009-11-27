@@ -26,9 +26,9 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <screen [width] [height]>\n\n"
-            "Sets the dimensions of your computer screen so that " +
-            mud_name() + " knows how to send information to your screen.\n\n"
-            "See also: screenlock, brief, terminal, env", this_player());
+string GetHelp() {
+    return ("Syntax: screen [WIDTH HEIGHT]\n\n"
+            "Sets the dimensions of your computer screen so that "+ 
+            mud_name() + " knows how to send information to your screen.\n"
+            "See also: screenlock, brief, terminal, env");
 }

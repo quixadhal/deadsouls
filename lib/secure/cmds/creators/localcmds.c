@@ -27,8 +27,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <localcmds>\n\n"
-            "Gives you a listing of all commands available to the living "
-            "thing you name.", this_player());
+string GetHelp(){
+    return ("Syntax: localcmds\n\n"
+            "Gives you a listing of all local (e.g. add_action() based) "
+            "commands available to you.");
 }

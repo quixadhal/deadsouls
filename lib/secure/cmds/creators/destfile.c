@@ -42,12 +42,11 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: destfile <file>\n\n"
+string GetHelp() {
+    return ("Syntax: destfile <file>\n\n"
             "Destructs the instance of the loaded object of that name."
             "\nExamples:\ndestfile /realms/cratylus/area/obj/table#527\n"
             "destfile /daemon/skills\n"
-            "destfile LIB_CONNECT"
-            "\n\n"
-            "See also: dest, zap, clean, update, reload", this_player());
+            "destfile LIB_CONNECT\n"
+            "See also: dest, zap, clean, update, reload");
 }

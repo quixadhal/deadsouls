@@ -12,7 +12,7 @@ static int stage2, stilldirty, roomscleaned, warm_boot_in_progress = 0;
 string savefile = save_file(SAVE_RELOAD);
 static string *exceptions = ({ RELOAD_D, RSOCKET_D });
 object *grooms = ({}), *occupied_rooms = ({});
-int last_deep_player_load, virtual_void;
+static int last_deep_player_load, virtual_void;
 
 varargs void validate(){
     if((!master()->valid_apply(({ "SECURE", "ASSIST" })))){
@@ -176,12 +176,16 @@ int ReloadBaseSystem(){
 varargs mixed ReloadPlayer(mixed who, int deep){
     mixed mx;
     string name, pwb_room;
-    object tmp_bod, new_bod;
+    object tmp_bod, new_bod, env;
     int err;
     validate();
 
     if(stringp(who)) who = find_player(who);
     if(!who) return 0;
+    env = environment(who);
+    if(!env) who->eventMove(ROOM_START);
+    env = environment(who);
+    if(!env) return 0;
     pwb_room = file_name(room_environment(who));
 
     if(deep){

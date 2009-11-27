@@ -48,10 +48,8 @@ string cmd(string str) {
     return "Done."; 
 }
 
-void help() {
-    message("help",
-            "Syntax: <indent [file | * | */*]>\n\n"
+string GetHelp() {
+            return ("Syntax: indent [file | * | */*]\n\n"
             "Indents a specified file, or all files in a directory."
-            "\n\nSee also: cd, ls, mv, pwd, rm, lsed, grep", this_player()
-           );
+            "\nSee also: cd, ls, mv, pwd, rm, lsed, grep");
 }

@@ -14,7 +14,7 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     string file;
 
-    if( !args || args == "" ) return "Syntax: <addclass CLASS>";
+    if( !args || args == "" ) return "Syntax: addclass <CLASS>";
     if( !file_exists(file=DIR_SECURE_CFG "/classes/" + args) )
         return "File not found: " + file;
     CLASSES_D->AddClass(file);
@@ -23,7 +23,7 @@ mixed cmd(string args) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <addclass CLASS>\n\n"
+    return ("Syntax: addclass <CLASS>\n\n"
             "Allows you to add a new class to the class data stored in the "
             "classes daemon.  Specifically, you create a configuration file "
             "and then issue this command to load the new class into the "
@@ -40,6 +40,6 @@ string GetHelp(string str) {
             "This system is admittedly rather complex, but it beats hard "
             "coding these values.  In addition, a web-based administration "
             "client is being developed to make class creation nothing more "
-            "than filling in a form.\n\n"
+            "than filling in a form.\n"
             "See also: addemote, addrace");
 }

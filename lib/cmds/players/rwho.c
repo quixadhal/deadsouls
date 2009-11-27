@@ -51,12 +51,11 @@ mixed cmd(string str) {
     return "Oops, rwho checks fell through, and broke.";
 }
 
-void help() {
-    write("Syntax: <rwho [mud]>\n\n"
+string GetHelp(){
+    return ("Syntax: rwho <mud>\n\n"
             "Gives you a who list in abbreviated form from a mud on the\n"
             "global network following the CD protocols for intermud communication.\n"
             "The information given by the who varies from mud to mud.\n"
             "By default, this command consults the i3 network. You can specify IMC2\n"
-            "with the following syntax: rwho mudname@imc2\n"
-         );
+            "with the following syntax: rwho mudname@imc2");
 }

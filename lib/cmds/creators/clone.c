@@ -50,10 +50,10 @@ mixed cmd(string args) {
 }
 
 string GetHelp() {
-    return ("Syntax: <clone [filename]>\n\n"
+    return ("Syntax: clone <filename | object>\n\n"
             "Clones the object from the code stored in the file named.  "
             "If for some reason the object cannot be moved to your "
             "inventory (it is alive, you cannot carry it, etc.), then "
-            "it will be moved into your environment.\n\n"
+            "it will be moved into your environment.\n"
             "See also: dest, message");
 }

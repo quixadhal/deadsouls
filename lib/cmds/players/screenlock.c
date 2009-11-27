@@ -15,14 +15,10 @@ inherit LIB_DAEMON;
         return 1;
     }
 
-void help() {
-    message("help",
-            "Syntax: screenlock on\n"
-            "        screenlock off\n\n"
+string GetHelp(){
+            return ("Syntax: screenlock [on | off]\n\n"
             "This command allows you to toggle whether your client is "
             "allowed to automatically change your screen size settings "
             "after the initial login negotiation.\n"
-            "See also: screen, terminal, env\n",
-            this_player() );
+            "See also: screen, terminal, env");
 }
-

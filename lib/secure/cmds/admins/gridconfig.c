@@ -24,6 +24,7 @@ mixed findit(string str){
     }
     if(file_exists(file)) return file;
     err = catch(room = load_object(tmpfile));
+    tc("room: "+identify(room)); 
     if(room) return room;
     return 0;
 }
@@ -87,6 +88,9 @@ mixed cmd(string args) {
         }
         coord = coord + (s3 ? "" : ",0");
         ROOMS_D->SetRoom(room, this_player(), coord);
+        tc("room: "+identify(room), "red");
+        tc("file: "+identify(file), "green");
+        tc("coord: "+identify(coord), "blue");
         write("Coordinates for "+file+" are: "+
                 ROOMS_D->GetCoordinates(room));
         return 1;
@@ -124,8 +128,8 @@ string GetHelp(string args) {
             "Modifies the grid coordinate table in ROOMS_D for the "
             "specified room. If \"reset\" is the argument, the rooms "
             "daemon and map daemon are purged and slowly rebuilt using "
-            "mapper drones. Note that this may lag your mud.\n"
-            "\nSee also: mudconfig, admintool"
-            "\n\n"
-            "");
+            "mapper drones. Note that this may lag your mud. Note also "
+            "that the rooms daemon will disregard coordinate setting "
+            "of rooms in /realms/ and /open/ .\n"
+            "See also: mudconfig, admintool");
 }

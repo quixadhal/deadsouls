@@ -34,10 +34,9 @@ varargs int cmd(string str){
     return 1;
 }
 
-void help()
-{
+string GetHelp(){
     string type_help = implode(types,", ");
-    write("Syntax: types <name> <value>\n\n"
+    return ("Syntax: types <name> <value>\n\n"
             "Returns the defined bit checks or defined token "
             "for the specified value.\n"
             "Examples:\n"

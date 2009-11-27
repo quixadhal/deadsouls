@@ -125,8 +125,10 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string blah) {
-    return ("Syntax: stat <living>\n\n"
-            "Displays statistical information of a living object.\n"
-            "See also: score, status, env.");
+string GetHelp(){
+    string ret = "Syntax: stat";
+    if(creatorp(this_player())) ret += " [living]";
+    ret += "\n\nDisplays statistical information of a living object.\n"+
+        "See also: score, status, env.";
+    return ret;
 }

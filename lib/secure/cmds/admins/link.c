@@ -94,10 +94,10 @@ mixed cmd(string args) {
     }
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <link SECONDARY to PRIMARY>\n"
-            "        <link PLAYER>\n"
-            "        <link>\n\n"
+string GetHelp(){
+    return ("Syntax: link <SECONDARY> to <PRIMARY>\n"
+            "        link <PLAYER>\n"
+            "        link\n\n"
             "In the first form, it allows you to mark two characters "
             "as being controlled by the same real individual.  It "
             "creates a relationship where one character is considered "

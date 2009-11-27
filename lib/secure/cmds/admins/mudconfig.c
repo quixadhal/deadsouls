@@ -5,7 +5,7 @@
 #include <commands.h>
 #include NETWORK_H
 #include <sockets.h>
-void help();
+string GetHelp();
 
 inherit LIB_DAEMON;
 
@@ -59,7 +59,7 @@ mixed cmd(string str) {
     }
 
     if(!str || sscanf(str, "%s %s", which, arg) != 2){
-        help();
+        write(GetHelp());
         return 1;
     }
     cp(CONFIG_H,"/secure/save/backup/config."+time());
@@ -945,9 +945,8 @@ varargs static int ModCfg(string which, string arg){
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: mudconfig PARAMETER VALUE \n\n"
+string GetHelp(){
+            return ("Syntax: mudconfig PARAMETER VALUE \n\n"
             "Modifies various system settings.\n"
             "Examples: \n"
             "\nmudconfig autowiz [ yes | no ]"
@@ -1032,6 +1031,5 @@ void help() {
             "channels are logged)"
             "\nmudconfig mudname <name>"
             "\nmudconfig mudport <port>"
-            "\n\nSee also: admintool, config", this_player()
-            );
+            "\n\nSee also: admintool, config");
 }

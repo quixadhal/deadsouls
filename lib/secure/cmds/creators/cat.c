@@ -24,8 +24,9 @@ mixed cmd(string str) {
     return 1;
 }
 
-int help() {
-    message("help", "Syntax: <cat [file]>\n\n"
-            "Displays the contents of the file mentioned all at once.",
-            this_player());
+string GetHelp(){
+    return ("Syntax: cat <file>\n\n"
+            "Displays the contents of the file mentioned all at once. "
+            "May truncate output if it is a long file.\n"
+            "See also: longcat");
 }

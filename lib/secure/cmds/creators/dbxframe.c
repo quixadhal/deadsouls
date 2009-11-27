@@ -7,7 +7,7 @@ int cmd(string str) {
     string ret = "";
 
     if (!str || (sscanf(str, "%d", num)==0 && sscanf(str, "%s %d", who, num)==0)) {
-        write("dbxframe [<who>] <frame>");
+        write("dbxframe [who] <frame>");
         return 1;
     }
     if (who) {
@@ -36,4 +36,9 @@ int cmd(string str) {
             unguarded( (: read_file(frame["program"], frame["line"]+1, 5) :) ));
     tell_object(this_player(),ret);
     return 1;
+}
+
+string GetHelp(){
+    return "Syntax: dbxframe [who] <frame>\n\n"
+    "Some kind of thing.";
 }
