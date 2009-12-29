@@ -94,14 +94,14 @@ void eventConvert(object who, string args){
             return;
         }
         if( ob != who ){
-            eventForce("speak " + (string)ob->GetName() + " must request "
+            eventForce("speak " + ob->GetName() + " must request "
                     "conversion of " + possessive(ob) + " own free will.");
             return;
         }
     }
     who->SetProperty("converting", GetReligion(1));
     eventForce("speak I will give it a try, I hope my faith serves me");
-    call_out((: eventForce("convert " + (string)($(who))->GetKeyName()) :), 1);
+    call_out((: eventForce("convert " + ($(who))->GetKeyName()) :), 1);
 }
 
 void eventPreview(object who, string args){
@@ -130,23 +130,23 @@ void eventJoin(object who, string args){
                 pluralize(myclass));
         return;
     }
-    if( (int)who->ClassMember(myclass) ){
+    if( who->ClassMember(myclass) ){
         eventForce("speak You are already " + add_article(myclass));
         return;
     }
-    if( (string)who->GetClass() == (string)who->SetClass(GetClass()) ){
+    if( who->GetClass() == who->SetClass(GetClass()) ){
         eventForce("speak You cannot become " + add_article(GetClass()) + "!");
-        eventForce("attack " + (string)who->GetKeyName());
+        eventForce("attack " + who->GetKeyName());
         return;
     }
-    if( !((string)who->GetReligion()) && GetReligion() )
+    if( !(who->GetReligion()) && GetReligion() )
         who->SetReligion(GetReligion(0), GetReligion(1));
-    environment()->eventPrint(GetName() + " makes " + (string)who->GetName() +
+    environment()->eventPrint(GetName() + " makes " + who->GetName() +
             " " + add_article(GetClass()) + ".",
             ({ who, this_object() }));
     eventForce("speak welcome new " + GetClass() + "!");
     eventForce("speak Inside this hall, you will find sanctuary.");
-    eventForce(GetClass() + " " + (string)who->GetName() +
+    eventForce(GetClass() + " " + who->GetName() +
             " just joined our ranks!");
     who->SetShort("foo");  /* reset title */
     return;
@@ -155,7 +155,7 @@ void eventJoin(object who, string args){
 int eventPreAttack(object ob){
     if( member_array(ob, GetEnemies()) > -1 ) return sentient::eventPreAttack(ob);
     eventForce(GetClass() + " " + pluralize((GetClass() || "citizen")) + "! Our home is " 
-            "being raided by " + (string)ob->GetName() + "!");
+            "being raided by " + ob->GetName() + "!");
     return sentient::eventPreAttack(ob);
 }
 

@@ -15,7 +15,7 @@ static void create() {
     SetClimate("indoors");
     SetShort("weaponry storage");
     SetLong("Weaponry storage.");
-    SetObviousExits("e");
+    SetObviousExits("east");
     SetExits( ([ "west" : "/domains/Ylsrim/room/"+ "weaponry" ]) );
 }
 

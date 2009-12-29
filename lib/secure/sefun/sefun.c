@@ -87,6 +87,7 @@
 #endif
 #include "/secure/sefun/minimap.c"
 #include "/secure/sefun/fuzzymatch.c"
+#include "/secure/sefun/astar.c"
 
 object globalob;
 string globalstr;
@@ -181,17 +182,17 @@ string dump_file_descriptors(){
 }
 
 void reset_eval_cost(){
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+    if(master()->valid_apply(({ "SECURE", "ASSIST" })))
         efun::reset_eval_cost();
 }
 
 void set_eval_limit(int i){
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+    if(master()->valid_apply(({ "SECURE", "ASSIST" })))
         efun::set_eval_limit(i);
 }
 
 string debug_info(int debuglevel, mixed arg){
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+    if(master()->valid_apply(({ "SECURE", "ASSIST" })))
         return efun::debug_info(debuglevel, arg);
     else return "This sefun is not available to unprivileged objects.";
 }
@@ -297,19 +298,23 @@ varargs int call_out(mixed fun, mixed delay, mixed args...){
 }
 
 string query_ip_number(object ob){
+    string ret;
     if(!ob) ob = previous_object();
-    if(!AUTO_WIZ || ob == previous_object()) return efun::query_ip_number(ob);
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
-        return efun::query_ip_number(ob);
+    ret = ob->GetTeloptIp();
+    if(!ret) ret = efun::query_ip_number(ob);
+    if(!AUTO_WIZ || ob == previous_object()) return ret;
+    if(master()->valid_apply(({ "SECURE", "ASSIST" })))
+        return ret;
     return "0.0.0.0";
 }
 
 //addr_server calls don't work well on Solaris and spam stderr
 string query_ip_name(object ob){
     if(!ob) ob = previous_object();
-    if(!strsrch(architecture(), "Solaris")) return query_ip_number(ob);
+    if(!strsrch(architecture(), "Solaris") ||
+            ob->GetTeloptIp()) return query_ip_number(ob);
     if(!AUTO_WIZ || ob == previous_object()) return efun::query_ip_name(ob);
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST" })))
+    if(master()->valid_apply(({ "SECURE", "ASSIST" })))
         return efun::query_ip_name(ob);
     return "w.x.y.z";
 }
@@ -339,7 +344,7 @@ object find_object( string str ){
     thing = base_name(ret);
     if(!strsrch(thing, "/domains/")) return ret;
     if(base_name(previous_object()) == SERVICES_D) return ret;
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
+    if(master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
     if(base_name(ret) == "/secure/obj/snooper") return 0;
     if(archp(ret) && ret->GetInvis()) return 0;
     else return ret;
@@ -349,7 +354,7 @@ object find_player( string str ){
     object ret = efun::find_player(str);
     if(ret && !ret->GetInvis()) return ret;
     if(base_name(previous_object()) == SERVICES_D) return ret;
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
+    if(master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return ret;
     if(ret && archp(ret) && ret->GetInvis()) return 0;
     else return ret;
 }
@@ -365,7 +370,7 @@ object *livings() {
         unprivlivs += ({ dude });
     }
 #endif
-    if((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return privlivs;
+    if(master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) return privlivs;
     if(base_name(previous_object()) == SERVICES_D) return privlivs;
     else return unprivlivs;
 }
@@ -387,7 +392,7 @@ varargs mixed objects(mixed arg1, mixed arg2){
     if(arg1) tmp_obs = efun::objects(arg1);
     else tmp_obs = efun::objects();
 
-    if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
+    if(!(master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
             base_name(previous_object())  != SERVICES_D){
 #ifdef __FLUFFOS__
         tmp_obs = filter(tmp_obs, (: !($1->GetInvis() && archp($1)) :) );
@@ -429,7 +434,7 @@ varargs mixed objects(mixed arg1, mixed arg2){
 #ifdef __FLUFFOS__
 mixed array users(){
     object *ret = filter(efun::users(), (: ($1) && environment($1) :) );
-    if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
+    if(!(master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
             base_name(previous_object())  != SERVICES_D)
         ret = filter(ret, (: !($1->GetInvis() && archp($1)) :) );
     return ret;
@@ -441,7 +446,7 @@ mixed array users(){
         foreach(mixed foo in efun::users()){
             if(objectp(foo) && environment(foo)) ret += ({ foo });
         }
-    if(!((int)master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
+    if(!(master()->valid_apply(({ "SECURE", "ASSIST", "SNOOP_D" }))) &&
             base_name(previous_object())  != SERVICES_D)
         foreach(mixed foo in ret){
             if(foo->GetInvis() && archp(foo)) ret -= ({ foo });
@@ -460,7 +465,7 @@ int destruct(object ob) {
     if(!previous_object() || previous_object() == master() ||
             previous_object() == this_object()) ok = 1;
 
-    else if((int)master()->valid_apply(({ "ASSIST" }) + privs)) ok = 1;
+    else if(master()->valid_apply(({ "ASSIST" }) + privs)) ok = 1;
 
     else if(previous_object(0) && tmp = query_privs(previous_object(0))){
         if(previous_object(0) == ob) ok = 1;
@@ -473,7 +478,7 @@ int destruct(object ob) {
         log_file("destructs",timestamp()+"\n"+stat+"\n"+get_stack(1)+"\n--\n");
     }
     if(ob == this_object()){
-        if( !((int)master()->valid_apply(({ "SECURE" }))) )
+        if( !(master()->valid_apply(({ "SECURE" }))) )
             error("Illegal attempt to destruct SEFUN: "+get_stack()+" "+identify(previous_object(-1)));
     }
     if(ok) return efun::destruct(ob);
@@ -486,22 +491,28 @@ static void shutdown_logic(int code){
 
 varargs void shutdown(int code) {
     object *persistents;
-    if(!((int)master()->valid_apply(({"ASSIST"}))) &&
-            !((int)master()->valid_apply(({"SECURE"})))) return;
+    object portals = find_object(PORTAL_D);
+    object rooms = find_object(ROOMS_D);
+    object players = find_object(PLAYERS_D);
+    if(!(master()->valid_apply(({"ASSIST"}))) &&
+            !(master()->valid_apply(({"SECURE"})))) return;
     if(code == -9) efun::shutdown(code);
     else call_out( (: shutdown_logic :), 0, code);
     if(this_player())
-        log_file("shutdowns", (string)this_player()->GetCapName()+
+        log_file("shutdowns", this_player()->GetCapName()+
                 " shutdown "+mud_name()+" at "+ctime(time())+"\n");
     else log_file("shutdowns", "Game shutdown by "+
             file_name(previous_object(0))+" at "+ctime(time())+"\n");
     persistents = objects( (: $1->GetPersistent() :) );
+    if(portals) catch( portals->eventDestruct() );
+    if(rooms) catch( rooms->eventDestruct() );
+    if(players) catch( players->eventDestruct() );
     persistents->SaveObject();
 }
 
 int valid_snoop(object snooper, object target){
     if(member_group(target, PRIV_SECURE)) {
-        message("system", (string)snooper->GetCapName()+" is trying to snoop "
+        message("system", snooper->GetCapName()+" is trying to snoop "
                 "you.", target);
         if(!member_group(snooper, PRIV_SECURE)) return 0;
     }
@@ -516,12 +527,12 @@ int valid_snoop(object snooper, object target){
 varargs object snoop(object who, object target) {
     if(!target) return efun::snoop(who);
     if(!creatorp(who) && base_name(who) != "/secure/obj/snooper" ) return 0;
-    if(!((int)master()->valid_apply(({ "ASSIST" })))) {
-        if(!((int)target->query_snoopable())) return 0;
+    if(!(master()->valid_apply(({ "ASSIST" })))) {
+        if(!(target->query_snoopable())) return 0;
         else return efun::snoop(who, target);
     }
     else if(member_group(target, PRIV_SECURE)) {
-        message("system", (string)who->GetCapName()+" is now snooping "
+        message("system", who->GetCapName()+" is now snooping "
                 "you.", target);
         return efun::snoop(who, target);
     }
@@ -535,7 +546,7 @@ varargs object snoop(object who, object target) {
     }
 
 object query_snooping(object ob) {
-    if(!((int)master()->valid_apply(({})))) return 0;
+    if(!(master()->valid_apply(({})))) return 0;
     else return efun::query_snooping(ob);
 }
 
@@ -603,18 +614,35 @@ int sefun_exists(string str){
     return 0;
 }
 
-int query_charmode(object ob){
-    int ret = -1;
-    globalob = ob;
-#ifdef __DSLIB__
-    ret = unguarded( (: efun::query_charmode(globalob) :) );
-#endif
-    return ret;
+#if efun_defined(query_charmode)
+varargs int in_input(object ob){
+    int ret;
+    if(ob) globalob = ob;
+    else globalob = previous_object();
+    if(!(efun::query_charmode(globalob)) &&
+            !(globalob->GetProperty("was_charmode")) &&
+            !(globalob->GetCharmode())){
+        if(efun::in_input(globalob)) ret = 2;
+    }
+    return (ret ? 1 : 0);
 }
+
+int query_charmode(object ob){
+    if(ob) globalob = ob;
+    else globalob = previous_object();
+    return efun::query_charmode(globalob);
+}
+
+#else
+int query_charmode(object ob){
+    return -1;
+}
+#endif
 
 varargs void input_to(mixed fun, int flag, mixed args...){
     object prev = previous_object();
     object player = this_player();
+    int was;
 
     gargs = args;
     gfun = fun;
@@ -633,10 +661,15 @@ varargs void input_to(mixed fun, int flag, mixed args...){
     gfun = fun;
 
     if(player && player->GetCharmode()){
-#ifdef __DSLIB__
+#if efun_defined(remove_get_char)
         remove_get_char(player);
-        remove_charmode(player);
+        was = 1;
 #endif
+#if efun_defined(remove_charmode)
+        remove_charmode(player);
+        was = 1;
+#endif
+        player->SetProperty("was_charmode", 1);
     }
     if(sizeof(gargs)){
         efun::input_to(gfun, gdelay, gargs...);

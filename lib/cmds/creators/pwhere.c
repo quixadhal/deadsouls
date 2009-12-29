@@ -26,17 +26,12 @@ varargs int cmd(string str){
     }
     else room = tmp;
     write(name+" is"+(mount ? " mounted on "+mount->GetPlainShort() : "")+
-      " in "+room->GetShort()+" ( "+base_name(room)+" )");
+            " in "+room->GetShort()+" ( "+base_name(room)+" )");
     return 1;
 }
 
-int help()
-{
-    write( @EndText
-Syntax: pwhere <player>
-Tells you the location of the person specified.
-See also: people, who
-EndText
-    );
-    return 1;
+string GetHelp(){
+    return "Syntax: pwhere <player>\n\n"
+        "Tells you the location of the person specified.\n"
+        "See also: people, who";
 }

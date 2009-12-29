@@ -15,8 +15,8 @@ mixed cmd(string args) {
     string cmd;
 
     if( !args || args == "" ) {
-        percentage = (int)this_player()->GetWimpy();
-        cmd = (string)this_player()->GetWimpyCommand();
+        percentage = this_player()->GetWimpy();
+        cmd = this_player()->GetWimpyCommand();
         if( !percentage )
             this_player()->eventPrint("You have wimpy turned off.", MSG_SYSTEM);
         else this_player()->eventPrint("Percentage: " + percentage + "%\n"
@@ -75,12 +75,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <wimpy>\n"
-            "        <wimpy on>\n"
-            "        <wimpy off>\n"
-            "        <wimpy PERCENTAGE>\n"
-            "        <wimpy COMMAND>\n\n"
+string GetHelp(){
+    return ("Syntax: wimpy [on | off | PERCENTAGE | COMMAND]\n\n"
             "Wimpy is a system that allows you to automatically execute "
             "a command when your health points get below a certain percentage "
             "of your maximum health points.  The wimpy command allows you "
@@ -102,7 +98,7 @@ string GetHelp(string str) {
             "wimpy and will not try any other command, even if the gate "
             "fails (too low on mp, Mystery Person is not online, etc.).\n"
             "Without any arguments, the wimpy command displays your current "
-            "settings.\n\n"
+            "settings.\n"
             "See also: attack, status");
 }
 

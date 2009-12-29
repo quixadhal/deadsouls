@@ -92,23 +92,24 @@ static private mapping tags = ([
         "ifree"         : "%^B_BLUE%^%^GREEN%^",
 
         "default"     : "%^BOLD%^BLUE%^",
+        "default-IMC2" : "%^BOLD%^WHITE%^%^B_BLUE%^",
         ]);
 
 static void Setup(){
     remote_chans = ({});
     local_chans = ({"newbie","cre","gossip","admin","error", "intermud",
-        "death", "connections", "muds" });
+            "death", "connections", "muds" });
     syschans = ({ "intermud", "death", "connections", "muds" });
 
     local_chans += CLASSES_D->GetClasses();
 
     if(find_object(INTERMUD_D)){
         if(arrayp(INTERMUD_D->GetChannels()))
-            remote_chans += INTERMUD_D->GetChannels();
+            remote_chans += distinct_array(INTERMUD_D->GetChannels());
     }
     if(find_object(IMC2_D)){
         if(arrayp(IMC2_D->GetChanList()))
-            remote_chans += IMC2_D->GetChanList();
+            remote_chans += distinct_array(IMC2_D->GetChanList());
     }
 
     foreach(string foo in remote_chans){
@@ -125,6 +126,7 @@ static void Setup(){
             }
         }
     }
+    remote_chans = distinct_array(remote_chans);
 }
 
 static void create() {
@@ -143,7 +145,7 @@ static void create() {
         string *chans;
         string channel;
 
-        if( pl && !(chans = (string *)pl->GetChannels()) ) continue;
+        if( pl && !(chans = pl->GetChannels()) ) continue;
         foreach(channel in chans) {
             if( !Channels[channel] ) Channels[channel] = ({});
             Channels[channel] = distinct_array(Channels[channel] + ({ pl }));
@@ -167,7 +169,7 @@ string *AddRemoteChannel(mixed chan){
             chan -= ({ element });
         }
     }
-    return copy(distinct_array(remote_chans += chan));
+    return copy(remote_chans = distinct_array(remote_chans += chan));
 }
 
 string *RemoveRemoteChannel(mixed chan){
@@ -180,7 +182,7 @@ string *RemoveRemoteChannel(mixed chan){
             chan -= ({ element });
         }
     }
-    return copy(distinct_array(remote_chans -= chan));
+    return copy(remote_chans = distinct_array(remote_chans -= chan));
 }
 
 varargs string *GetRemoteChannels(int localized){
@@ -355,11 +357,17 @@ int cmdChannel(string verb, string str){
     }
 
     if(grepp(verb, ":")){
-        verb = replace_string(verb,":","emote");
+        string *tmpv = explode(verb, ":");
+        if(!sizeof(tmpv)) tmpv = ({"newbie"});
+        verb = tmpv[0]+"emote";
+        if(sizeof(tmpv) > 1) str = implode(tmpv[1..], ":") + str;
     }
 
     if(grepp(verb, ";")){
-        verb = replace_string(verb,";","forcedemote");
+        string *tmpv = explode(verb, ";");
+        if(!sizeof(tmpv)) tmpv = ({"newbie"});
+        verb = tmpv[0]+"forcedemote";
+        if(sizeof(tmpv) > 1) str = implode(tmpv[1..], ";") + str;
     }
 
     if(sizeof(str) > 2){
@@ -396,7 +404,7 @@ int cmdChannel(string verb, string str){
                 }
             }
 
-            if( !(mud = (string)INTERMUD_D->GetMudName(mud)) ) {
+            if( !(mud = INTERMUD_D->GetMudName(mud)) ) {
                 this_player()->eventPrint(mud_name() + " is not aware of "+
                         "such a place.", MSG_ERROR);
                 return 1;
@@ -484,8 +492,8 @@ int cmdChannel(string verb, string str){
     if( member_array(this_player(), Channels[verb]) == -1 ) return 0;
 
     //If blocked, allow no chatting
-    if( (int)this_player()->GetBlocked(verb) ) {
-        if( (int)this_player()->GetBlocked("all") ) {
+    if( this_player()->GetBlocked(verb) ) {
+        if( this_player()->GetBlocked("all") ) {
             this_player()->eventPrint("You cannot chat while totally blocked.",
                     MSG_ERROR);
             return 1;
@@ -647,10 +655,10 @@ int cmdChannel(string verb, string str){
 
     //If admin or cre channels, Capitalize a person's real name, because admins can be physically hidden
     if( verb == "admin" || verb == "cre" ) {
-        if( !(name = (string)this_player()->GetCapName()) )
-            name = capitalize((string)this_player()->GetKeyName());
+        if( !(name = this_player()->GetCapName()) )
+            name = capitalize(this_player()->GetKeyName());
     }
-    else name = (string)this_player()->GetName();
+    else name = this_player()->GetName();
 
     //Add the "Name" $N to the string
     if(!grepp(str,"$N") && emote) str = "$N "+str;
@@ -662,6 +670,9 @@ int cmdChannel(string verb, string str){
     if(member_array(GetRemoteChannel(verb), remote_chans) != -1
             && member_array(verb, local_chans) == -1){
         if (rc[0..5] == "Server") { //It's an IMC2 channel
+            if(IMC2_D->getonline() != 1){
+                return 1;
+            }
             name = replace_string(name, " ", "");
             if( ob ) {
                 IMC2_D->channel_out(name, rc, replace_string(replace_string(str,"$N ",""),"$O",target), emote);
@@ -678,10 +689,6 @@ int cmdChannel(string verb, string str){
             }
         }
     }
-    else {
-        //INSTANCES_D->eventSendChannel(name, rc, str, emote, convert_name(targetkey), target_msg);
-    }
-
     return 1;
 }
 
@@ -691,10 +698,14 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     int terminal;
     string prev = base_name(previous_object());
     string pchan,pmsg;
-    string chatlayout = "%s %s<%s>%s %s"; //Default: "%s %s<%s>%s %s" -> "Name COLOR<channel>RESET talks."
-    string emotelayout = "%s<%s>%s %s"; //Default: "%s<%s>%s %s" -> "COLOR<channel>RESET Name emotes."
+    string chatlayout = "%s %s<%s>%s %s";
+    string emotelayout = "%s<%s>%s %s";
+    //string chatlayout = "%s says, %s(%s)%s '%s'";
+    //string emotelayout = "%s(%s)%s %s";
 
-    if(prev == INSTANCES_D) terminal = 1;
+    if(prev == INSTANCES_D){
+        terminal = 1;
+    }
     if(prev == SERVICES_D) terminal = 1;
     if(prev == IMC2_D) terminal = 1;
     if(!terminal){
@@ -703,10 +714,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
             INSTANCES_D->eventSendChannel(who,ch,msg,emote,target,targmsg);
         }
     }
-
-    //Uncomment these next two lines instead of the two above for another channel chat format
-    //string chatlayout = "%s says, %s(%s)%s '%s'"; //Default: "%s %s<%s>%s %s" -> "Name COLOR<channel>RESET talks."
-    //string emotelayout = "%s(%s)%s %s"; //Default: "%s<%s>%s %s" -> "COLOR<channel>RESET Name emotes."
 
     pchan=ch;
     if(!channeler) channeler = this_player();
@@ -729,7 +736,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
             return;
         }
     }
-    if( file_name(previous_object()) == SERVICES_D || file_name(previous_object()) == IMC2_D) {
+    if( file_name(previous_object()) == SERVICES_D || 
+            file_name(previous_object()) == IMC2_D) {
         ch = GetLocalChannel(ch);
         if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);
     }
@@ -750,34 +758,38 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         string this_msg, tmp;
 
         if( target && (ob = find_player(convert_name(target))) ) {
-            target = (string)ob->GetName();
+            target = ob->GetName();
         }
 
         //Colorize emote channels
-        if (member_array(lower_case(ch),keys(tags)) >= 0) { //If there's an entry for the channel
-            this_msg = tags[lower_case(ch)]; //Use it
-        } else { //Otherwise
-            this_msg = tags["default"];	//Use the default entry
+        if (member_array(lower_case(ch),keys(tags)) >= 0){
+            this_msg = tags[lower_case(ch)];
+        } else { 
+            if(member_array(ch, local_chans) < 0 && (prev == IMC2_D ||
+                        member_array(ch, (keys(INTERMUD_D->GetChannelList()) 
+                                || ({}))) < 0)){
+                this_msg = tags["default-IMC2"]; //Use the default IMC2 entry
+            }
+            else {
+                this_msg = tags["default"]; //Use the default entry
+            }
         }
 
-        //this_msg += "<" + ch + ">%^RESET%^ ";
         msg = replace_string(msg, "$N", who);
         if( target ) {
             msg = replace_string(msg, "$O", target);
             targmsg = replace_string(targmsg, "$N", who);
             targmsg = capitalize(replace_string(targmsg, "$O", "you"));
         }
-        //tmp = this_msg + msg;
 
         //Put together the channel emote message
-        //tmp = sprintf(emotelayout, this_msg, upper_case(ch), "%^RESET%^", msg);
         tmp = sprintf(emotelayout, this_msg, ch, "%^RESET%^", msg);
 
         //Store message in the history list
         eventAddLast(ch, tmp, pchan, msg);
 
         if(Channels[ch]){
-            obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
+            obs = filter(Channels[ch], (: $1 && !($1->GetBlocked($(ch))) :));
             foreach(object listener in obs) {
                 int ignore;
                 if(sscanf(who,"%s@%s",suspect,site) < 2) {
@@ -788,19 +800,23 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
                 if( listener == ob ) continue;
                 if(sizeof(listener->GetMuffed()))
                     foreach(string jerk in listener->GetMuffed()){
-                        if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-                        if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+                        if(jerk && lower_case(suspect) == lower_case(jerk)){ 
+                            ignore = 1;
+                        }
+                        if(jerk && lower_case(site) == lower_case(jerk)){
+                            ignore = 1;
+                        }
                     }
                 if(listener->GetNoChanColors()) tmp = decolor(tmp);
-                if(!ignore && CanListen(listener,ch) && !(listener->GetMuted(ch)))
+                if(!ignore && CanListen(listener,ch) && 
+                        !(listener->GetMuted(ch))){
                     listener->eventPrint(tmp, MSG_CHAN);
+                }
                 ignore = 0;
             }
             if( member_array(ob, obs) != -1 ) {
-                if( ob && !((int)ob->GetBlocked(ch)) ) {
+                if( ob && !(ob->GetBlocked(ch)) ) {
                     int ignore;
-                    //tmp = this_msg + targmsg;
-                    //tmp = sprintf(emotelayout, this_msg, upper_case(ch), "%^RESET%^", targmsg);
                     tmp = sprintf(emotelayout, this_msg, ch, "%^RESET%^", targmsg);
                     if(sizeof(ob->GetMuffed()))
                         foreach(string jerk in ob->GetMuffed()){
@@ -825,18 +841,24 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         if (member_array(lower_case(ch),keys(tags)) >= 0) { //If there's an entry for the channel
             chancolor = tags[lower_case(ch)]; //Use it
         } else { //Otherwise
-            chancolor = tags["default"]; //Use the default entry
+            if(member_array(ch, local_chans) < 0 && (prev == IMC2_D ||
+                        member_array(ch, (keys(INTERMUD_D->GetChannelList()) 
+                                || ({}))) < 0)){
+                chancolor = tags["default-IMC2"]; //Use the default IMC2 entry
+            }
+            else {
+                chancolor = tags["default"]; //Use the default entry
+            }
         }
 
         pmsg = msg;
 
         //Put together the channel emote message
-        //msg = sprintf(chatlayout, who, chancolor, upper_case(ch), "%^RESET%^", pmsg);
         msg = sprintf(chatlayout, who, chancolor, ch, "%^RESET%^", pmsg);
         eventAddLast(ch, msg, pchan, pmsg, who);
 
         if(Channels[ch]) {
-            obs = filter(Channels[ch], (: $1 && !((int)$1->GetBlocked($(ch))) :));
+            obs = filter(Channels[ch], (: $1 && !($1->GetBlocked($(ch))) :));
             foreach(object ob in obs){
                 int ignore;
                 if(sscanf(who,"%s@%s",suspect,site) < 2) {
@@ -871,9 +893,9 @@ string *GetChannelList(string ch) {
     if( !Channels[ch] ) return ({});
     ret = ({});
     foreach(who in Channels[ch]) {
-        if( !who || (int)who->GetInvis() || (int)who->GetBlocked(ch) )
+        if( !who || who->GetInvis() || who->GetBlocked(ch) )
             continue;
-        ret += ({ (string)who->GetName() });
+        ret += ({ who->GetName() });
     }
     return ret;
 }

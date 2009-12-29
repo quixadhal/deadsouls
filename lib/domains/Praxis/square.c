@@ -42,8 +42,7 @@ void create() {
                 "/domains/Praxis/obj/misc/stargate" : 1,
                 ]));
     SetRead("sign", (: ReadSign :) );
-
-    /* The following is to load Manny's dragon. */
+    SetCoordinates("1000,-1000,0");
 }
 
 int CanReceive(object ob) { 

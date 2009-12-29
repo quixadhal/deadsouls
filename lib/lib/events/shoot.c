@@ -12,14 +12,13 @@ int MustWield(int i){
     else return 0;
 }
 
-mixed eventShoot(mixed shooter, mixed target){
+varargs mixed eventShoot(object who, mixed target, string dir, string whom){
     string tmp;
     if(target && objectp(target)){
         tmp=target->GetName();
         target = tmp;
     }
     if(target) write("You shoot at "+target+" with your weapon.");
-
     return 1;
 }
 
@@ -72,3 +71,12 @@ varargs mixed indirect_shoot_liv_with_obj(mixed args...){
 varargs mixed indirect_shoot_obj_at_liv(mixed args...){
     return indirect_shoot_obj_at_obj(args...);
 }
+
+varargs mixed direct_shoot_obj_wrd(mixed args...){
+    return direct_shoot_obj_at_obj(args...);
+}
+
+varargs mixed direct_shoot_obj_wrd_at_wrd(mixed args...){
+    return direct_shoot_obj_at_obj(args...);
+}
+

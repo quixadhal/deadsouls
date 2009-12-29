@@ -70,7 +70,7 @@ mixed cmd(string args) {
             return 1;
             }
 
-            string GetHelp(string args) {
+            string GetHelp(){
             return ("Syntax: switchrouter <NAME> <IP> <PORT>\n\n"
                 "Stops the intermud daemon, changes the default intermud "
                 "router to the ip and port you specify, wipes the previous "
@@ -80,12 +80,13 @@ mixed cmd(string args) {
                 //"*gjs 198.144.203.194 9000 (The \"official\" intermud.org router)\n"
                 //"*adsr 62.49.9.82 9000 (Arren's unmoderated router)\n"
                 "*i4 204.209.44.3 8080 (The \"official\" Dead Souls router)\n"
-                "*yatmim 149.152.218.102 23 (The backup/alternate router for *i4)\n"
+                //"*yatmim 149.152.218.102 23 (The backup/alternate router for *i4)\n"
+                "*dalet 97.107.133.86 8787 (The backup/alternate router for *i4)\n"
                 "*wpr 195.242.99.94 8080 (An alternate run in Europe)\n"
                 "The official current Dead Souls router's IP will always be "
                 "available at:\n"
                 "http://dead-souls.net/router.html"
                 "\n\n"
-                "See also: mudlist, mudconfig");
+                "See also: mudlist, mudconfig, http://intermud.org");
             }
 

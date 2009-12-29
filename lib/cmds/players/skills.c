@@ -64,9 +64,9 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string foo) {
-    return "Syntax: <skills>\n\n"
+string GetHelp(){
+    return "Syntax: skills\n\n"
         "Lists all of your skills as well as how skilled you are "
-        "at the skill in question.\n\n"
+        "at the skill in question.\n"
         "See also: stats, status";
 }

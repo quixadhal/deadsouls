@@ -35,10 +35,10 @@ void create(){
 static void init(){
     string str;
     if( !living(this_player()) ) return;
-    str = (string)this_player()->GetKeyName();
+    str = this_player()->GetKeyName();
     if( Students[str] ){
         me->eventForce("speak You will have to start your "             
-                "studies anew, "+(string)this_player()->GetName());
+                "studies anew, "+this_player()->GetName());
         map_delete(Students, str);
     }
 }
@@ -111,7 +111,7 @@ mapping GetStudents(){ return copy(Students); }
 
 int eventHelp(object who, string unused){
     if(who) me->eventForce("speak I am not sure of what you are "
-            "asking, " + (string)who->GetName() + ".");
+            "asking, " + who->GetName() + ".");
     if(sizeof( GetTrainingSkills() )){
         me->eventForce("speak My area of training expertise covers " +
                 Expertise() + ".");
@@ -171,7 +171,7 @@ int eventTrain(object who, string verb, string skill){
 
     if(skill) skill = lower_case(skill);
 
-    if( Students[ (string)who->GetKeyName() ] ){
+    if( Students[ who->GetKeyName() ] ){
         me->eventForce("speak I am already training you!");
         return 0;
     }
@@ -180,17 +180,17 @@ int eventTrain(object who, string verb, string skill){
         return 0;
     }
     if( member_array(skill, 
-                (string *)this_player()->GetSkills() ) == -1 ){
+                this_player()->GetSkills() ) == -1 ){
         me->eventForce("speak You do not appear to be the type "
                 "who would be skilled in " + skill + "!");
         me->eventForce("speak I cannot train you in a skill you don't know at all. You may need to join a guild or a class that enables you to train in this skill.");
         return 0;
     }
-    if( (int)this_player()->GetTrainingPoints() < 1 ){
+    if( this_player()->GetTrainingPoints() < 1 ){
         me->eventForce("speak You need more training points!");        
         return 0;
     }
-    Students[ (string)who->GetKeyName() ] = skill;
+    Students[ who->GetKeyName() ] = skill;
     eventStart(who, skill);
     call_out((: ContinueTraining, who, skill, 0 :), TRAINING_WAIT);
     return 1;
@@ -198,9 +198,9 @@ int eventTrain(object who, string verb, string skill){
 
 static int ContinueTraining(object who, string skill, int x){
     if( !present(who, environment()) ) return 0;
-    if( !Students[(string)who->GetKeyName()] ) return 0;
+    if( !Students[who->GetKeyName()] ) return 0;
     if( x > 4 ){
-        map_delete(Students, (string)who->GetKeyName());
+        map_delete(Students, who->GetKeyName());
         eventComplete(who, skill);
         who->eventTrain(skill, 1);
         return 1;
@@ -222,7 +222,7 @@ int eventStart(object who, string skill){
     who->eventPrint(me->GetName() + " begins teaching you "
             "about the skill of " + skill + ".");
     environment()->eventPrint(me->GetName() + " begins teaching " +
-            (string)who->GetName() + "...", who);
+            who->GetName() + "...", who);
     return 1;
 }
 
@@ -236,6 +236,6 @@ int eventContinue(object who, string skill, int x){
 int eventComplete(object who, string skill){
     who->eventPrint("You feel more adept with your " + skill + ".");
     me->eventForce("speak I can teach you no more for now, " +
-            (string)who->GetName() + ".");
+            who->GetName() + ".");
     return 1;
 }

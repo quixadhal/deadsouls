@@ -32,8 +32,8 @@ void reset() {
 }
 
 int go_north() {
-    if((string)this_player()->query_position() == "player" || 
-            (string)this_player()->query_position() == "high mortal") {
+    if(this_player()->query_position() == "player" || 
+            this_player()->query_position() == "high mortal") {
         write("The magic of Horace stops you.");
         say(this_player()->query_cap_name()+" is stopped by the magic of Horace.",
                 this_player());

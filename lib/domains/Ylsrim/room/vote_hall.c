@@ -23,7 +23,7 @@ static void create() {
     SetLong("You are in the voting hall of Ylsrim. This is where people come to nominate candidates for class leader and to cast their vote.  There is a list posted on the wall here.");
     SetItems( ([ "list" : "This is the list of candidates." ]) );
     SetRead( "list", (: ReadList :) );
-    SetObviousExits("d");
+    SetObviousExits("down");
     SetExits( ([ "down" : "/domains/Ylsrim/room/bazaar" ]) );
 }
 

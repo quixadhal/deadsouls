@@ -341,7 +341,7 @@ int ConvertArea(string arg){
     return 1;
 }
 
-void help() {
+string GetHelp() {
     message("help", "Syntax: cwgconv <source path> <areaname> <domain name>\n\n"
             "Tries to convert a CWG area into a Dead Souls domain.\n"
             "Example: cconv /tmp/areadir 3 newdomain\n"

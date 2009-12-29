@@ -10,8 +10,8 @@ mixed cmd(string args) {
     int x = this_player()->GetCharmode();
 
     if( args == "" || !args ) 
-        args = user_path((string)this_player()->GetKeyName()) + "tmp.edit";
-    if( (int)this_player()->GetForced() ) {
+        args = user_path(this_player()->GetKeyName()) + "tmp.edit";
+    if( this_player()->GetForced() ) {
         message("system", "Someone tried to force you to edit "+ args +"\n" +
                 identify(previous_object(-1)), this_player());
         return 0;
@@ -28,7 +28,7 @@ mixed cmd(string args) {
                 "simply hit: Ctrl-Q");
         this_player()->SetProperty("cedWarned", 1);
     }
-    args = absolute_path( (string)this_player()->query_cwd(), args );
+    args = absolute_path( this_player()->query_cwd(), args );
     if( (x = file_size(args)) == -2 ) 
         return "You cannot edit a directory!";
     else if( x == -1 )
@@ -40,9 +40,9 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
+string GetHelp(){
     string ret = "";
-    ret += "Syntax: ced FILE\n\n";
+    ret += "Syntax: ced [FILE]\n\n";
     ret += "This command starts a character-mode editing session on the "+
         "specified file. Note that without charmode enabled, this "+
         "will not work. Special commands are issued by pressing the "+
@@ -74,5 +74,5 @@ void help() {
         "ced is disabled for now."+
 #endif
         "";
-    message("help", ret, this_player());
+    return ret;
 }

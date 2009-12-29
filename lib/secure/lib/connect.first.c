@@ -26,7 +26,7 @@ static void logon() {
 static void InputPassword(string str);
 
     static void InputName(string str) {
-        if( !((int)BANISH_D->valid_name(Name = convert_name(CapName = str))) 
+        if( !(BANISH_D->valid_name(Name = convert_name(CapName = str))) 
                 || lower_case(str) == "guest") {
             receive("That is not a valid name.\n");
             receive("Name: ");
@@ -184,7 +184,6 @@ static void InputEmail(string str) {
     }
     flush_messages();
     cp(IMC2_D+".c", "/secure/save/backup/imc2.orig");
-    IMC2_D->eventChangeIMC2Passwords();
     PLAYERS_D->AddPlayerInfo(Name);
     shutdown();
     destruct(this_object());

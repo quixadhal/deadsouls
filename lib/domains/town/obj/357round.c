@@ -6,7 +6,7 @@ void create(){
     round::create();
     SetKeyName(".357 round");
     SetId(({"round","bullet"}));
-    SetAdjectives(({"357","caliber","revolver","pistol"}));
+    SetAdjectives(({".357","caliber","revolver","pistol"}));
     SetShort("a .357 pistol round");
     SetLong("This is a .357 caliber revolver bullet. It has not been fired.");
     SetCaliber(357);

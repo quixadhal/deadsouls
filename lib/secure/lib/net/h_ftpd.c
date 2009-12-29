@@ -59,12 +59,14 @@ inherit LIB_SOCKET;
 
 private void eventCmdPasv(string arg);
 
-private class  ftp_session Session;
 private        string      Password  = 0;
-private        string      host_ip  = "127.0.0.1";
-private        mixed       outfile   = ([]);
+private static class       ftp_session Session;
+private static string      host_ip  = "127.0.0.1";
+private static mixed       outfile   = ([]);
 private static int         MaxBuffer = get_config(__MAX_BYTE_TRANSFER__);
 private static int         MaxFile   = get_config(__MAX_READ_FILE_SIZE__);
+private static int         PassivePort = -1;
+private static int         passive = 0;
 private static mapping     dispatch  = ([
         "user" : (: eventCmdUser :), "pass" : (: eventCmdPass :),
         "retr" : (: eventCmdRetr :), "stor" : (: eventCmdStor :),
@@ -77,11 +79,7 @@ private static mapping     dispatch  = ([
         "cwd"  : (: eventCmdCwd  :), "mkd"  : (: eventCmdMkd  :),
         "pwd"  : (: eventCmdPwd  :), "rmd"  : (: eventCmdRmd  :),
         "pasv" : (: eventCmdPasv :), "passive" : (: eventCmdPasv :)
-
         ]);
-
-private        int         PassivePort = -1;
-private        int         passive = 0;
 
 static void create(int fd, object owner){
     socket::create(fd, owner); 
@@ -106,7 +104,6 @@ private void eventReadFtpData(mixed text){
             error(sprintf("Assertion failed: \"##x\" (File: %s)\n",  __FILE__));
     }
 }
-
 
 private void eventDestructDataPipe(mixed f){
     if(Session->dataPipe){

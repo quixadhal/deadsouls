@@ -10,7 +10,7 @@ static void create() {
     SetVerb("initfix");
     SetRules("OBJ", "here");
     SetErrorMessage("initfix what?");
-    SetHelp("Syntax: <initfix OBJ>\n\n"
+    SetHelp("Syntax: initfix <OBJ>\n\n"
             "If you have write permissions to the file of the object "
             "specified, this command adds an init(){} function. Lacking "
             "this function makes many objects break or behave unpredictably.\n"

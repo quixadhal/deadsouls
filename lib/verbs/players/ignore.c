@@ -1,5 +1,3 @@
-
-
 #include <lib.h>
 
 inherit LIB_VERB;
@@ -9,12 +7,10 @@ static void create() {
     SetVerb("ignore");
     SetRules("LVS","");
     SetErrorMessage("Whom are you trying to ignore?");
-    SetHelp("Syntax: <ignore LIVING>\n"
-            "        <ignore all>\n"	
-            "\n"
+    SetHelp("Syntax: ignore <LIVING | all>\n\n"
             "Allows one to stop attacking a living being "
             "or beings. Helpful for not wasting time on the "
-            "wrong targets.\n\n"
+            "wrong targets.\n"
             "See also: attack\n");
 }
 
@@ -40,8 +36,8 @@ mixed do_ignore_liv(object ob) {
     if(member_array(ob,this_player()->GetNonTargets()) != -1){
 
         this_player()->eventPrint("You are now ignoring " + ob->GetName() + ".");
-        ob->eventPrint((string)this_player()->GetName() + " ignores you!");
-        environment(this_player())->eventPrint((string)this_player()->GetName() +
+        ob->eventPrint(this_player()->GetName() + " ignores you!");
+        environment(this_player())->eventPrint(this_player()->GetName() +
                 " ignores " + ob->GetName() + "!",
                 ({ this_player(), ob }));
     }
@@ -64,11 +60,10 @@ mixed do_ignore_lvs(mixed *targets) {
     if(member_array(this_player(),obs) != -1) obs -= ({ this_player() });
     this_player()->AddNonTargets(obs);
     tmp = item_list(obs);
-    obs->eventPrint((string)this_player()->GetName() + " ignores you!");
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    obs->eventPrint(this_player()->GetName() + " ignores you!");
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " ignores" + tmp + "!",
             ({ this_player(), obs... }));
     this_player()->eventPrint("You ignore " + tmp + ".");
     return 1;
 }
-

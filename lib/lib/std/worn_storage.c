@@ -15,7 +15,7 @@ void create(){
     s_save = base_storage::GetSave();
     my_save = distinct_array(a_save + s_save);
     base_armor::AddSave(my_save);
-    base_storage::PutCheck();
+    base_storage::create();
 }
 
 void init(){

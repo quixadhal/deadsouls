@@ -341,7 +341,7 @@ int ConvertArea(string arg){
     return 1;
 }
 
-void help() {
+string GetHelp() {
     message("help", "Syntax: cconv <source path> <areaname> <domain name>\n\n"
             "Tries to convert a Circle area into a Dead Souls domain.\n"
             "Example: cconv /tmp/areadir qq newdomain\n"

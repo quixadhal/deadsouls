@@ -39,8 +39,7 @@ varargs int cmd(string str){
     return 1;
 }
 
-void help()
-{
-    write("Syntax: wizvision [ on | off ]\n"+
+string GetHelp(){
+    return ("Syntax: wizvision [ on | off ]\n\n"+
             "Enables clear vision in all lighting situations."); 
 }

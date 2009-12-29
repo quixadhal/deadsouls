@@ -18,9 +18,7 @@ inherit LIB_HISTORY;
 #define CMD_EDITING              1
 #define CHAR_LIMIT               1024
 
-private string CurrentWorkingDirectory = "/";
-private string PreviousWorkingDirectory;
-private mapping Nicknames, Aliases, Xverbs; 
+private mapping Nicknames, Aliases, Xverbs, Directories; 
 private static int CWDCount, CWDBottom, CWDTop, CmdNumber; 
 private string Prompt; 
 private static string *Stack; 
@@ -36,6 +34,7 @@ static int *GetScreen(){ return ({ 79, 24 }); }
 static void create(){
     Nicknames = ([]); 
     Termstuff = ([]); 
+    Directories = ([ "current" : "/", "previous" : "/", "home" : 0 ]);
     recalled_command_num = sizeof(this_object()->GetCommandHist()) - 1;
     if(recalled_command_num > -1){
         recalled_command=this_object()->GetCommandHist()[recalled_command_num];
@@ -221,7 +220,7 @@ nomask static int cmd_nmsh(string str){
 
     if(!str) return 0; 
     if(this_player() != this_object()) return 0; 
-    if((int)this_player()->GetForced()) return 0; 
+    if(this_player()->GetForced()) return 0; 
     if(!(tmp = read_file(absolute_path(query_cwd(), str)))) 
         return notify_fail(sprintf("nmsh: script %s not found.\n")); 
     maxi = sizeof(lines = explode(tmp, "\n")); 
@@ -389,7 +388,9 @@ varargs nomask string write_prompt(string str){
     string ret, uncolor;
     int diff, tmp, bottom = GetScreen()[1];
     int side = GetScreen()[0];
-    if(!this_object()) return "";
+
+    if(!this_object() || origin() == "driver") return "";
+
     if(!Termstuff) Termstuff = ([]);
     if(!Termstuff["Terminal"]){
         Termstuff["Terminal"] = this_object()->GetTerminal();
@@ -426,7 +427,6 @@ varargs nomask string write_prompt(string str){
 
 string process_input(string str){ 
     string tmp, xtra, request; 
-
     if(!str || str == "") return ""; 
     else if(GetClient() &&
             member_array(GetClient(), SUPPORTED_CLIENTS) != -1){
@@ -436,7 +436,12 @@ string process_input(string str){
         }
         else return str;
     }
-    else if((tmp = eventHistory(str)) == "") return "";     
+    else {
+        tmp = eventHistory(str);
+        if(tmp == ""){
+            return "";     
+        }
+    }
     if(tmp != str) message("system", tmp, this_object());
     return do_alias(do_nickname(tmp));
 } 
@@ -458,7 +463,7 @@ nomask static void process_request(string request, string xtra){
         break;
         case "ROOM":
             receive("<ROOM>"+
-                    (string)environment(this_object())->GetShort()+"\n");
+                    environment(this_object())->GetShort()+"\n");
         break;
         case "PRESENT":
             receive("<PRESENT>"+
@@ -473,17 +478,17 @@ nomask static void process_request(string request, string xtra){
 }
 
 static int request_vis(object ob){
-    return (userp(ob) && !((int)ob->GetInvis(this_object())));
+    return (userp(ob) && !(ob->GetInvis(this_object())));
 }
 
 static string user_names(object ob){
-    return (string)ob->GetName();
+    return ob->GetName();
 }
 
 private static int set_cwd(string str){ 
     int x;
     string tmpstr = str;
-    if(str == "~-" || str == "-") str = PreviousWorkingDirectory;
+    if(str == "~-" || str == "-") str = Directories["previous"];
     if(!str || str == "") str = user_path(GetKeyName()); 
     if (str[<1] == '/' && str != "/") str = str[0..<2];
     replace_string(str, "//", "/"); 
@@ -502,11 +507,20 @@ private static int set_cwd(string str){
         }  
     } 
 
-    if(str != query_cwd()) PreviousWorkingDirectory = query_cwd();
-    CurrentWorkingDirectory = str; 
-    message("system", sprintf("%s:", CurrentWorkingDirectory), this_player()); 
+    if(str != query_cwd()) Directories["previous"] = query_cwd();
+    Directories["current"] = str; 
+    message("system", sprintf("%s:", Directories["current"]), this_player()); 
     return 1; 
 } 
+
+string GetUserPath(){
+    return Directories["home"];
+}
+
+string SetUserPath(string str){
+    if(this_player() != this_object()) return 0;
+    return Directories["home"] = str; 
+}
 
 private static void pushd(string str){ 
     if(CWDCount++ == DIRECTORY_STACK_SIZE){ 
@@ -531,7 +545,7 @@ nomask private static string do_nickname(string str){
 
 nomask private static string do_alias(string str){ 
     string *words; 
-    string tmp; 
+    string tmp, ret; 
     int x; 
 
     if(!sizeof(words = explode(str, " "))) return "";
@@ -541,8 +555,8 @@ nomask private static string do_alias(string str){
     }
     if(!(tmp = Aliases[words[0]])) return implode(words, " "); 
     else str = implode(words[1..sizeof(words)-1], " "); 
-    return replace_string(tmp, "$*", str); 
-
+    ret = replace_string(tmp, "$*", str);
+    return ret;
 } 
 
 string GetAlias(string alias){
@@ -570,9 +584,9 @@ void reset_prompt(){
     if(!stringp(Prompt)) Prompt = "> ";
 } 
 
-string query_cwd(){ return CurrentWorkingDirectory; } 
+string query_cwd(){ return Directories["current"]; } 
 
-string query_prev_wd(){ return PreviousWorkingDirectory; } 
+string query_prev_wd(){ return Directories["previous"]; } 
 
 string SetPrompt(string str){ return Prompt = str; }
 
@@ -674,6 +688,7 @@ static int rDel(){
 static int rEnter(){
     string charbuffer = this_object()->GetCharbuffer();
     string tmp;
+    this_object()->SetNoEcho(0);
     /* re-add any removed pinkfish */
     charbuffer = replace_string(charbuffer,"%%^^","%^");
     EchoCommand(charbuffer);
@@ -769,7 +784,8 @@ static int rCtrl(string str){
                     file_cmds = ({ "ced", "clone", "goto", "rehash", "reset",
                             "showtree", "bk", "cat", "cp", "diff", "ed", 
                             "grep", "head", "indent", "longcat", "more", "mv",
-                            "rm", "sed", "showfuns", "source", "tail", "update" });
+                            "rm", "sed", "showfuns", "source", "tail", 
+                            "update" });
                     dir_cmds = ({ "cd", "ls", "mkdir", "rmdir" });
                     both_cmds = file_cmds + dir_cmds;
 
@@ -1005,4 +1021,3 @@ static int rAscii(string str){
 static int rAnsi(string str){
     return 1;
 }
-

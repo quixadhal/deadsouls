@@ -74,7 +74,7 @@ mixed eventConnect(string who) {
 mixed eventLink(string primary, string secondary, string email) {
     class char_link ch;
 
-    if( !((int)master()->valid_apply(({ PRIV_LAW }))) )
+    if( !(master()->valid_apply(({ PRIV_LAW }))) )
         return "Permission denied.";
     if( !user_exists(primary = convert_name(primary)) )
         return "No such user: primary";
@@ -121,7 +121,7 @@ mixed eventSaveTime() {
     string who;
 
     if( !userp(ob = previous_object()) ) return 0;
-    who = (string)ob->GetKeyName();
+    who = ob->GetKeyName();
     if( !(c = Links[who]) ) {
         foreach(string pl, class char_link cl in Links) {
             if( member_array(who, cl->Secondaries) != -1 ) {
@@ -140,7 +140,7 @@ mixed eventSaveTime() {
 mixed eventUnlink(string primary, string who) {
     class char_link ch;
 
-    if( !((int)master()->valid_apply(({ PRIV_ASSIST }))) )
+    if( !(master()->valid_apply(({ PRIV_ASSIST }))) )
         return "Permission denied.";
     primary = convert_name(primary);
     who = convert_name(who);
@@ -167,7 +167,7 @@ mixed eventUnlink(string primary, string who) {
 }
 
 mapping GetLinks() {
-    if( !((int)master()->valid_apply(({ PRIV_ASSIST }))) ) return ([]);
+    if( !(master()->valid_apply(({ PRIV_ASSIST }))) ) return ([]);
     else return Links;
 }
 

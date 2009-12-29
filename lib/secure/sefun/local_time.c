@@ -40,8 +40,14 @@ string query_tz(){
     return tz;
 }
 
-mixed local_ctime(int i){
-    return ctime(i + ((TIME_D->GetOffset(query_tz()) ) * 3600));
+varargs mixed local_ctime(int i, string tzone){
+    int x, offset;
+    if(!tzone || !valid_timezone(tzone)) tzone = query_tz();
+    offset = TIME_D->GetOffset(tzone);
+    offset += EXTRA_TIME_OFFSET;
+    if(query_os_type() != "windows" ) x = offset * 3600;
+    else x = 0;
+    return ctime(i + x);
 }
 
 varargs mixed local_time(mixed val){
@@ -77,7 +83,7 @@ string set_tz(string str){
         return "Invalid time zone.";
     }
     tz = str;
-    if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE" }))) ) 
+    if( !(master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE" }))) ) 
         error("Illegal attempt to modify timezone: "+get_stack()+" "+identify(previous_object(-1)));
     unguarded( (: write_file("/cfg/timezone.cfg",tz,1) :) );
     return "Mud time zone is now "+read_file("/cfg/timezone.cfg");

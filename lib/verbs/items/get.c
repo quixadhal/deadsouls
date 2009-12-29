@@ -121,7 +121,7 @@ mixed do_get_obj_out_of_obj(object ob, object storage) {
             return "";
         }
     }
-    return (mixed)storage->eventGetFrom(this_player(), ({ ob }));
+    return storage->eventGetFrom(this_player(), ({ ob }));
 }
 
 mixed do_get_obj_from_obj(object ob, object storage) {
@@ -149,7 +149,7 @@ mixed do_get_obs(mixed *targs) {
     }
     foreach(object item in obs) {
 
-        if( (mixed)item->CanGet(this_player()) != 1 ) continue;
+        if( item->CanGet(this_player()) != 1 ) continue;
         item->eventGet(this_player());
     }
     return 1;
@@ -170,7 +170,7 @@ mixed do_get_obs_out_of_obj(mixed *targs, object storage) {
         }
         return 1;
     }
-    return (mixed)storage->eventGetFrom(this_player(), obs);
+    return storage->eventGetFrom(this_player(), obs);
 }
 
 mixed do_get_obs_from_obj(mixed *obs, object storage) {

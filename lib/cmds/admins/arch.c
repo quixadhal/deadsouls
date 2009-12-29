@@ -1,21 +1,37 @@
-/*    /cmds/creators/wiz.c
- *    Created by Zin@Frontiers
- *    Sun Sep 21 21:00:16 1997 EDT
- */
-
 #include <lib.h>
-#include <daemons.h>
+#include <rooms.h>
 
-inherit LIB_DAEMON;
+mixed cmd(){
+    object who = this_player();
+    object env = environment(this_player());
+    object room = load_object(ROOM_ARCH);
+    int ret, err;
 
-mixed cmd(string str) {
-    write("You speed to the Arch room.\n");
-    this_player()->eventMoveLiving("/secure/room/arch");
+    if(env == room){
+        write("You're already there.");
+        return 1;
+    }
+
+    if(!archp(who)){
+        write("\nYou are naughty, and must be punished.\n");
+        who->eventDestruct();
+        return 1;
+    }
+
+    if(!room){
+        write("There seems to be a problem with the arch room.");
+        return 1;
+    }
+
+    err = catch( ret = who->eventMoveLiving(room) );
+
+    if(err || !ret){
+        write("Looks like some kind of problem getting into the arch room.");
+    }
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <arch>\n\n"
-            "This command will move you to the Arch room.\n\n",
-            this_player());
-}                                                    
+string GetHelp(){
+    return "Syntax: arch\n\n"
+        "Transports you to the arch room. \nSee also: wiz\n";
+}

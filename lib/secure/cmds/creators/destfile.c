@@ -25,8 +25,8 @@ mixed cmd(string args) {
         write(args + " destructed.");
         return 1;
     }
-        
-    file = absolute_path((string)this_player()->query_cwd(), args);
+
+    file = absolute_path(this_player()->query_cwd(), args);
     if(!(ob = find_object(file)) && !grepp(args, "/")){
         file = DEFINES_D->GetDefine(args);
     }
@@ -42,12 +42,11 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: destfile <file>\n\n"
+string GetHelp() {
+    return ("Syntax: destfile <file>\n\n"
             "Destructs the instance of the loaded object of that name."
             "\nExamples:\ndestfile /realms/cratylus/area/obj/table#527\n"
             "destfile /daemon/skills\n"
-            "destfile LIB_CONNECT"
-            "\n\n"
-            "See also: dest, zap, clean, update, reload", this_player());
+            "destfile LIB_CONNECT\n"
+            "See also: dest, zap, clean, update, reload");
 }

@@ -1,4 +1,5 @@
 thief
+PLAYER_CLASS 0
 melee attack:2:2
 blunt attack:2:2
 knife attack:1:2

@@ -40,3 +40,5 @@ static void create() {
 void init(){
     ::init();
 }
+void reset(){
+}

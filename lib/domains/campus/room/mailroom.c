@@ -47,7 +47,7 @@ mixed CanMail(object who, string args) {
     //do mail stuff here, but this is a newbie area, and
     //it's a little too confusing to newcomers not to be able
     //to send mail from a post office.
-    //if( GetTown() != (string)who->GetTown() )
+    //if( GetTown() != who->GetTown() )
     //    return "Any mail you might have will be at your home post office.";
     return 1;
 }
@@ -58,7 +58,7 @@ mixed eventMail(object who, string args) {
         who->eventPrint("Failed to load postal object!");
         return 1;
     }
-    if( !((int)ob->eventMove(who)) ) {
+    if( !(ob->eventMove(who)) ) {
         who->eventPrint("You can't seem to carry the postal object.");
         return 1;
     }

@@ -69,7 +69,7 @@ void create() {
 } 
 
 static private int valid_access(object ob) { 
-    return (int)master()->valid_apply( ({ "ASSIST" }) );
+    return master()->valid_apply( ({ "ASSIST" }) );
 } 
 
 int valid_cap_name(string cap, string nom) {
@@ -159,7 +159,7 @@ string *query_registered() {
 void banish_name(string str) { 
     if(!valid_access(previous_object())) return;
     unguarded( (: log_file, "banish", 
-                (string)this_player()->GetName() + " banished " + str + "." :) );
+                this_player()->GetName() + " banished " + str + "." :) );
     __Names = distinct_array(__Names + ({ lower_case(str) })); 
     save_banish(); 
 } 

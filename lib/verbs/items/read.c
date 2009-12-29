@@ -46,11 +46,11 @@ mixed do_read_obj_at_obj(object ob, object target) {
 }
 
 mixed do_read_str_on_obj(string str, object ob) {
-    if(ob) return (mixed)ob->eventRead(this_player(), str);
+    if(ob) return ob->eventRead(this_player(), str);
 }
 
 mixed do_read_str_in_obj(string str, object ob) {
-    if(ob) return (mixed)ob->eventRead(this_player(), str);
+    if(ob) return ob->eventRead(this_player(), str);
 }
 
 mixed do_read_str_of_obj(string str, object ob) {

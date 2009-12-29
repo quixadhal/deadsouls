@@ -18,6 +18,7 @@ inherit LIB_DAEMON;
 private mapping Classes = ([]);
 private int converted = 0;
 static string SaveFile;
+static int player, foo;
 
 static void create() {
     daemon::create();
@@ -41,7 +42,7 @@ static void create() {
 }
 
     static private void validate() {
-        if( !((int)master()->valid_apply(({ PRIV_ASSIST }))) )
+        if( !(master()->valid_apply(({ PRIV_ASSIST }))) )
             error("Illegal attempt to modify class data");
     }
 
@@ -62,7 +63,7 @@ void AddClass(string file) {
     mapping cls = ([]);
     string array lines, tmp;
     string class_name;
-
+    player = 1;
     validate();
     if( !file_exists(file) ) error("No such file: " + file);
     lines = explode(read_file(file), "\n");
@@ -76,6 +77,12 @@ void AddClass(string file) {
             if( str[0] == ' ' || str[0] == '\t' ) {
             return 0;
             }
+            if(!strsrch(str, "PLAYER_CLASS")){
+            if(sscanf(str, "PLAYER_CLASS %d", foo)){
+            if(!foo) player = 0;
+            }
+            return 0;
+            } 
             return 1;
             });
     class_name = lines[0];
@@ -83,6 +90,7 @@ void AddClass(string file) {
     Classes[class_name] = cls;
     lines = lines[1..];
     cls["Multis"] = ([]);
+    cls["Player"] = player;
     while( sizeof(tmp = explode(lines[0], ":")) == 2 ) {
         cls["Multis"][tmp[0]] = tmp[1];
         lines = lines[1..];
@@ -90,7 +98,6 @@ void AddClass(string file) {
     cls["Skills"] = ([]);
     while(sizeof(tmp = explode(lines[0], ":")) == 3) {
         mapping s = ([]);
-
         s["Average"] = to_int(tmp[2]);
         s["SkillClass"] = to_int(tmp[1]);
         cls["Skills"][tmp[0]] = s;
@@ -137,12 +144,23 @@ void SetComplete(string class_name) {
     SaveObject(SaveFile);
 }
 
-varargs string array GetClasses() {
-    return filter(keys(Classes), (: Classes[$1]["Complete"] :));
+varargs string *GetClasses(int player) {
+    string *ret;
+    if(player){
+        ret = filter(keys(Classes), (: Classes[$1]["Complete"] &&
+                    Classes[$1]["Player"] :));
+    }
+    else ret = filter(keys(Classes), (: Classes[$1]["Complete"] :));
+    return ret;
 }
 
 mixed GetClass(string str){
     return copy(Classes[str]);
+}
+
+int GetPlayerClass(string str){
+    if(!Classes[str]) return ;
+    return Classes[str]["Player"];
 }
 
 string GetHelp(string class_name) {
@@ -170,4 +188,3 @@ string GetHelp(string class_name) {
     }
     return help + "\n";
 }
-

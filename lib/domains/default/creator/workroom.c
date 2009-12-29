@@ -15,7 +15,7 @@ static void create() {
                 ]) );
     SetInventory(([
                 ]));
-    SetObviousExits("d");
+    SetObviousExits("down");
     SetExits( ([ "down" : "/domains/default/room/start.c",
                 ]) );
 }

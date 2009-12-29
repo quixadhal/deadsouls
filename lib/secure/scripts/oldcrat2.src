@@ -1,0 +1,43 @@
+title %^RED%^Red $N%^RESET%^
+describe $N looks a bit rumpled and tired.
+home
+update
+clean
+clone /domains/default/obj/bbucket
+remove all
+get all
+unwield all
+put all in bin
+cd
+cd area/obj
+clone chest
+open chest
+look in chest
+get all from chest
+dest staff
+dest robe
+dest hat
+clone /domains/default/armor/arbitersuit
+#clone /secure/obj/glasses
+#clone /realms/$N/area/obj/key
+wear arbiter suit
+wear first glasses
+clone /domains/town/obj/8ball
+clone /domains/town/obj/d20
+clone /domains/town/obj/d6
+clone /domains/campus/weap/grenade
+clone /domains/campus/weap/waterpistol
+clone /domains/campus/obj/omni
+clone /domains/town/obj/pipe
+clone /domains/town/obj/match
+clone /domains/town/obj/match
+clone /domains/town/obj/match
+clone /domains/town/obj/match
+clone /domains/town/obj/match
+#clone /domains/default/obj/gps
+clone /secure/obj/weirder.c
+put all in my arbiter suit
+drop chest
+drop bin
+save
+

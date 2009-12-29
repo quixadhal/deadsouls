@@ -11,7 +11,7 @@ mixed cmd(string str) {
 
     orig = str;
     if( !str ) return "You must specify a file to backup.";
-    else str = absolute_path((string)this_player()->query_cwd(), str);
+    else str = absolute_path(this_player()->query_cwd(), str);
     if( !file_exists(str) ) str2 = str+".c";
     if( !file_exists(str) && !file_exists(str2)) {
         if(str == "here" || str == "room") ob = environment(this_player());
@@ -39,9 +39,10 @@ mixed cmd(string str) {
     return 1;
 }
 
-int help() {
-    message("help", "Syntax: <bk [file]>\n\n"
+string GetHelp(){
+    return ("Syntax: bk [file]\n"
+            "        bk here\n\n"
             "Copies the specified file into your bak/ directory, and "
-            "appends a unique identifying number to the backup file name.",
-            this_player());
+            "appends a unique identifying number to the backup file name.\n"
+            "See also: restore, find, reload");
 }

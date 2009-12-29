@@ -45,10 +45,10 @@ int read(string str) {
     }
     write("The following great foods are served here at the Last Dragon Restaurant.");
     write("--------------------------------------------------------------------");
-    write("Praxian lobster\t\t\t"+ (int)ob->get_price("lobster") + " gold");
-    write("A plate of sea worms\t\t"+(int)ob->get_price("worms")+" gold");
-    write("A serving of fish		"+(int)ob->get_price("fish")+" gold");
-    write("Some fries\t\t\t"+ (int)ob->get_price("fries")+" gold");
+    write("Praxian lobster\t\t\t"+ ob->get_price("lobster") + " gold");
+    write("A plate of sea worms\t\t"+ob->get_price("worms")+" gold");
+    write("A serving of fish		"+ob->get_price("fish")+" gold");
+    write("Some fries\t\t\t"+ ob->get_price("fries")+" gold");
     write("-----------------------------------------------------------");
     write("<buy dish_name> gets you the food.");
     return 1;

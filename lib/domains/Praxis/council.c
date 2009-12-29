@@ -150,7 +150,7 @@ int cmd_law( string arg )
 
     if( arg )
     {
-        if( undefinedp( policy = (mapping)POLITICS_D-> query_policy( arg ) ) )
+        if( undefinedp( policy = POLITICS_D-> query_policy( arg ) ) )
             write( "There is no law: " + arg + "\n" );
         else
             display_policy( policy, 1 );

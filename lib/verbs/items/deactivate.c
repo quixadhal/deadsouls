@@ -6,11 +6,11 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("deactivate");
-    SetRules("", "OBJ","OBJ on OBJ");
+    SetRules("", "OBJ","OBJ on OBJ","STR on OBJ");
     SetErrorMessage("Deactivate something?");
-    SetHelp("Syntax: <deactivate> THING\n"
+    SetHelp("Syntax: deactivate THING\n"
             "        \n"
-            "");  
+            "See also: activate");  
 }
 
 mixed can_deactivate() {
@@ -22,6 +22,10 @@ mixed can_deactivate_obj(mixed foo) {
 }
 
 mixed can_deactivate_obj_on_obj(mixed foo) {
+    return this_player()->CanManipulate();
+}
+
+mixed can_deactivate_str_on_obj(mixed foo) {
     return this_player()->CanManipulate();
 }
 
@@ -37,3 +41,8 @@ varargs mixed do_deactivate_obj(mixed foo, mixed foo2) {
 varargs mixed do_deactivate_obj_on_obj(mixed foo, mixed foo2) {
     return foo->eventTurnOff(foo2);
 }
+
+varargs mixed do_deactivate_str_on_obj(mixed foo, mixed foo2) {
+    return foo2->eventTurnOff(foo);
+}
+

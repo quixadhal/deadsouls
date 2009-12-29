@@ -24,7 +24,6 @@ varargs string match_mud_name(string mud, string *list){
         if(mudlist[element]["ip"]+" "+mudlist[element]["player_port"] == mud)
             return mudlist[element]["name"];
     }
-
     return "";
 }
 
@@ -470,10 +469,10 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string args) {
+string GetHelp(){
     return ("Syntax: router [subcommand [arg]]\n\n"
             "With no arguments, router status is displayed.\n"
-            "examples:\n" 
+            "Examples:\n" 
             "router reload : bounces the router without dropping connections\n"
             "router restart : bounces the router dropping all connections\n"
             "router reset : like restart but also clears all saved mud info\n"
@@ -492,7 +491,6 @@ string GetHelp(string args) {
             "router mudlist -i : display muds sorted by ip\n" 
             "router mudlist -f : display connected muds sorted by file descriptor\n" 
             "\n"
-            "To bring the router online or offline, use the mudconfig command."
-            "\n\n"
-            "");
+            "To bring the router online or offline, use the "
+            "mudconfig command.");
 }

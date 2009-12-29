@@ -14,7 +14,7 @@ mixed cmd(string str) {
     int i, tmp;
 
     if(str) return 0;  /* to allow the wiz command to work */
-    currs = (string *)this_player()->GetCurrencies();
+    currs = this_player()->GetCurrencies();
     currs = filter(currs, (: this_player()->GetCurrency($1) > 0 :));
     if( !currs || !sizeof(currs) ) {
         write("You are broke.");
@@ -36,9 +36,8 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: <money>\n\n"
-            "Allows you to search your pockets for all your money\n"
-            "of all currency types.\n"
-         );
+string GetHelp() {
+    return ("Syntax: money\n\n"
+            "Allows you to search your pockets for all your money "
+            "of all currency types.");
 }

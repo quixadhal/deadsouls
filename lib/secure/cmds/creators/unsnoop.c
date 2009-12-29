@@ -18,13 +18,8 @@ int cmd(string str) {
     return 1;
 }
 
-int help()
-{
-    write( @EndText
-Syntax: unsnoop <user>
-Effect: Stops snooping the specified user.
-See also: snoop, monitor, unmonitor
-EndText
-    );
-    return 1;
+string GetHelp(){
+    return "Syntax: unsnoop <user>\n\n"
+        "Stops snooping the specified user.\n"
+        "See also: snoop, monitor, unmonitor";
 }

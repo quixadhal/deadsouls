@@ -58,7 +58,7 @@ int donate(string str) {
         notify_fail("That would be a nifty trick indeed!\n");
         return 0;
     }
-    if((int)this_player()->query_money("gold") < amount) {
+    if(this_player()->query_money("gold") < amount) {
         notify_fail("You don't have that much gold!\n");
         return 0;
     }

@@ -30,9 +30,10 @@ int SetBodyMass(int x){
 
 int GetWeight(){
     float h;
+    object env = room_environment();
 
-    if( environment() ){
-        h = environment()->GetGravity();
+    if(env){
+        h = env->GetGravity();
     }
     else {
         h = DEFAULT_GRAVITY;

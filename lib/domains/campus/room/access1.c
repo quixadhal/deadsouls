@@ -1,6 +1,6 @@
 #include <lib.h>
 inherit LIB_ROOM;
-inherit "/lib/props/ambiance";
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -23,5 +23,9 @@ static void create() {
                 ]));
     AddExit("north","/domains/campus/room/access0");
     AddExit("south","/domains/campus/room/access2");
-    SetObviousExits("n,s");
+    SetObviousExits("north, south");
+}
+
+void init(){
+    ::init();
 }

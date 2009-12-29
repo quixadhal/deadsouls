@@ -109,7 +109,6 @@ string GetHelp(string args) {
             "\domainadmin -d SnuffLand snuffy\n"
             "This permits the creator to use QCS within the domain's "
             "directories. "
-            "Write privileges are listed in /secure/cfg/write.cfg"
-            "\n\n"
+            "Write privileges are listed in /secure/cfg/write.cfg\n"
             "See also: domaincreate, admintool");
 }

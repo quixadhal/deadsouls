@@ -90,6 +90,14 @@ int eventReport(string who, string type, string bug, string data) {
     }
 }
 
+int BugCheck(){
+    int bugs = 0;
+    foreach(int id, mapping rep in Bugs){
+        if(!rep["resolution"]) bugs++;
+    }
+    return bugs;
+}
+
 int GetAssignedBugs(string who) {
     mapping rep;
     int id, x = 0;

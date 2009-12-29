@@ -18,7 +18,7 @@ mapping TmpMap = ([]);
 
 static private void validate() {
     if(!this_player()) return 0;
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) )
+    if( !(master()->valid_apply(({ "ASSIST" }))) )
         error("Illegal attempt access FUNCTIONS_D: "+get_stack()+" "+identify(previous_object(-1)));
     if(query_os_type() == "windows"){
         error("The functions daemon has been disabled for your mud "+
@@ -197,7 +197,10 @@ varargs mixed GetInstances(string str, string where){
         string funex;
         object cle;
         if(grepp(val, str) && !strsrch(key,where)){
-            if(!sizeof(key) || catch(cle = load_object(key)) || !cle) continue;
+            if(!sizeof(key) || !unguarded( (: file_exists($(key)) :)) ||
+                    catch(cle = load_object(key)) || !cle){
+                continue;
+            }
             funex = function_exists(str, cle,1);
             if(funex && !grepp(cooked_list,funex+"\n")){
                 cooked_list += funex+"\n";

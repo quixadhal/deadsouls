@@ -32,10 +32,10 @@ varargs void eventPrint(string message, mixed args...);
 
 static void create(){
     Custom = ([
-        "stats" : 15,
-        "deviations" : 4,
-        "deviating" : 0,
-    ]);
+            "stats" : 15,
+            "deviations" : 4,
+            "deviating" : 0,
+            ]);
     Resistance = ([ "low" : 0, "medium" : 0, "high" : 0, "immune" : 0 ]);
     Resistance["none"] = ALL_DAMAGE;
 }
@@ -223,7 +223,7 @@ int GetStatBonus(string stat){
     i = sizeof(obs = keys(StatsBonus[stat]));
     while(i--){
         if( !obs[i] ) map_delete(StatsBonus[stat], obs[i]);
-        else x += (int)evaluate(StatsBonus[stat][obs[i]], stat);
+        else x += evaluate(StatsBonus[stat][obs[i]], stat);
     }
     return x;
 }
@@ -269,44 +269,47 @@ int SetDeviating(int x){ return (Custom["deviating"] = (x ? 1 : 0)); }
 
 varargs mixed GetEffectiveVision(mixed location, int raw_score){
     int array l;
-    object env, rider;
+    object env, rider, where;
     int bonus = GetVisionBonus();
     int a, y, x = 0;
+
+    env = environment();
 
     if(raw_score && !intp(raw_score)){
         location = raw_score;
         raw_score = 0;
     }
 
-    if(sizeof(get_livings(this_object())) && 
+    //fixme
+    if(!location && sizeof(get_livings(this_object())) && 
             rider = get_random_living(this_object())){
-        if(rider->GetProperty("mount") == this_object() &&
-                environment(this_object())){
-            return rider->GetEffectiveVision(environment(this_object()));
+        if(rider->GetProperty("mount") == this_object() && env){
+            return rider->GetEffectiveVision(env);
         }
     }
 
     if(location){
-        if(objectp(location)) env = location;
+        if(objectp(location)) where = location;
         else if(stringp(location)){
             int err;
-            //if(!file_exists(location)) location += ".c";
-            //if(!file_exists(location)) return 0;
-            err = catch( env = load_object(location) );
-            if(err || !env) return 0;
+            err = catch( where = load_object(location) );
+            if(err || !where) return 0;
         }
     }
     if( Blind && !raw_score){
         return VISION_BLIND;
     }
-    if( !env && !location ){
-        env = environment();
+    if( !where && !location ){
+        where = env;
     }
-    if(!env) return 0;
-    x = GetRadiantLight(0);
-    a = env->GetAmbientLight();
-    if(x) x = x/2;
-    x += GetRadiantLight(a) + a;
+    if(!where) return 0;
+    x = (env == where ? GetRadiantLight(0) : 0);
+    a = where->GetAmbientLight();
+    if(x){
+        x = x/2;
+        x += GetRadiantLight(a) + a;
+    }
+    else x = a * 2;
     l = GetLightSensitivity();
     l[0] -= bonus;
     l[1] += bonus;

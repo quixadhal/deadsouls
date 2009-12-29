@@ -346,37 +346,41 @@ mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang
 
 mixed eventWander(){
     int fp;
+    object env = environment();
+    mixed outs;
+
+    if(!env || !(outs = env->GetExits())) return 0;
 
     if( !sizeof(WanderPath) ){
         string *sorties;
         string tmp;
 
         sorties = ({});
-        foreach(tmp in (string *)environment()->GetExits()){
+        foreach(tmp in outs){
             string dest, door;
             object ob;
-            if(!permit_load) ob=find_object(dest = (string)environment()->GetExit(tmp));
-            else ob=load_object(dest = (string)environment()->GetExit(tmp));
+            if(!permit_load) ob=find_object(dest = environment()->GetExit(tmp));
+            else ob=load_object(dest = environment()->GetExit(tmp));
 
             if(!ob)
                 continue;
-            door = (string)environment()->GetDoor(tmp);
+            door = environment()->GetDoor(tmp);
             if( door  &&
-                    (int)door->GetClosed() ) continue;
+                    door->GetClosed() ) continue;
             sorties += ({ "go " + tmp });
         }
 
-        foreach(tmp in (string *)environment()->GetEnters(1)){
+        foreach(tmp in environment()->GetEnters(1)){
             string dest, door;
             object ob;
-            if(!permit_load) ob=find_object(dest = (string)environment()->GetEnter(tmp));
-            else ob=load_object(dest = (string)environment()->GetEnter(tmp));
+            if(!permit_load) ob=find_object(dest = environment()->GetEnter(tmp));
+            else ob=load_object(dest = environment()->GetEnter(tmp));
 
             if(!ob)
                 continue;
-            door = (string)environment()->GetDoor(tmp);
+            door = environment()->GetDoor(tmp);
             if( door  &&
-                    (int)door->GetClosed() ) continue;
+                    door->GetClosed() ) continue;
             sorties += ({ "enter " + tmp });
         }
         if( sizeof(sorties) ){
@@ -404,10 +408,6 @@ mixed eventWander(){
 }
 
 /********************** sentient.c driver applies ************************/
-static void create(){
-    npc::create();
-}
-
 static void heart_beat(){
     if( !this_object() || !environment() ){
         return;

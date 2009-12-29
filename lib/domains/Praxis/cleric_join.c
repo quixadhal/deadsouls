@@ -33,11 +33,11 @@ void create() {
 }
 
 int preview() {
-    if((string)this_player()->query_class() != "explorer") {
+    if(this_player()->query_class() != "explorer") {
         message("info", "This is not for you.", this_player());
         return 1;
     }
-    message("info", (string)this_player()->query_cap_name()+" seeks to learn about clerics.", this_object(), ({ this_player() }));
+    message("info", this_player()->query_cap_name()+" seeks to learn about clerics.", this_object(), ({ this_player() }));
     message("info", "Welcome, explorer!", this_player());
     message("info", "Clerics are deeply religious people of greatly varied "
             "beliefs, yet united in their belief in the sanctity of the natural world.  Their "
@@ -58,7 +58,7 @@ int become(string str) {
         notify_fail("You cannot become that here.\n");
         return 0;
     }
-    if((string)this_player()->query_class() != "explorer") {
+    if(this_player()->query_class() != "explorer") {
         write("You are much too old to start learning our ways now!");
         return 1;
     }
@@ -73,7 +73,7 @@ int become(string str) {
 
 int go_north(string str) {
     if(str !="north") return notify_fail("What?\n");
-    if((string)this_player()->query_class() != "cleric") {
+    if(this_player()->query_class() != "cleric") {
         write("You cannot penetrate the force field that blocks the passage.");
         say(this_player()->query_cap_name()+" tries to get into the "
                 "church's inner sanctum, but fails.", this_player());

@@ -10,4 +10,4 @@ object unique(string fn, int rare) {
     return (object)UNIQUE_D->GetUniqueCopy(fn, rare);
 }
 
-int query_reset_number() { return (int)master()->GetResetNumber(); }
+int query_reset_number() { return master()->GetResetNumber(); }

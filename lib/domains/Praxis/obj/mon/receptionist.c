@@ -69,7 +69,7 @@ int cmd_rent(string str) {
     x = -1;
     while(i--) {
         if(ROOMS[arr[i]]["name"] == str &&
-                !((int)environment(this_object())->query_occupied(arr[i]))) {
+                !(environment(this_object())->query_occupied(arr[i]))) {
             x = arr[i];
             break;
         }
@@ -77,7 +77,7 @@ int cmd_rent(string str) {
     if(x == -1)
         return notify_fail("No such room is available right now.\n");
     cost = currency_value(ROOMS[x]["cost"], "gold");
-    if(cost > (int)this_player()->query_money("gold")) {
+    if(cost > this_player()->query_money("gold")) {
         this_object()->eventForce("speak You do not have enough money "
                 "for one of those rooms!");
         return 1;
@@ -87,7 +87,7 @@ int cmd_rent(string str) {
     message("my_action", sprintf("You rent room %d of the Nightmare Inn.",
                 x), this_player());
     message("other_action", sprintf("%s rents a room at the Nightmare Inn.",
-                (string)this_player()->query_cap_name()), environment(this_object()),
+                this_player()->query_cap_name()), environment(this_object()),
             ({ this_player() }) );
     ob = new(LIB_ITEM);
     ob->SetKeyName("hotel key");
@@ -97,11 +97,11 @@ int cmd_rent(string str) {
     ob->SetValue(100);
     ob->SetRead(sprintf("The Nightmare Inn.\nRoom %d.\n", x));
     ob->SetId( ({ "key", "hotel key", 
-                (string)environment(this_object())->query_key_id(x) }) );
-    if((int)ob->move(this_player())) {
+                environment(this_object())->query_key_id(x) }) );
+    if(ob->move(this_player())) {
         message("my_action", "You drop your key!", this_player());
         message("other_action", sprintf("%s drops %s key!",
-                    (string)this_player()->query_cap_name(), possessive(this_player())),
+                    this_player()->query_cap_name(), possessive(this_player())),
                 environment(this_object()), ({ this_player() }) );
         ob->move(environment(this_object()));
     }

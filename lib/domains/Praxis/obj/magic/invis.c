@@ -33,7 +33,7 @@ int test_invis(object who, object whom) {
         return 0;
     }
     if(__Invis[0] != who) return 0;
-    if((string)whom->query_race() == __Invis[1]) return 1;
+    if(whom->query_race() == __Invis[1]) return 1;
     return 0;
 }
 

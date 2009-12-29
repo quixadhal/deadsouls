@@ -44,7 +44,8 @@ private static int LastAge, Setup, quitting;
 private static object NetDiedHere;
 private static mapping LastError;
 private static string *UserId;
-private mapping Paranoia = ([]);
+private mapping Paranoia = ([]); 
+private static mapping PlayerStatus = ([]);
 
 static void create(){
     object::create();
@@ -62,7 +63,7 @@ static void create(){
     BirthTime = time();
     LastAge = time();
     News = ([]);
-    Paranoia = ([]);
+    Paranoia = (["homeroom" : user_path(GetKeyName(), 1)+"workroom"]);
     RescueBit = 0;
     SetShort("$N the unaccomplished");
     SetLong("$N is nondescript.");
@@ -106,7 +107,9 @@ int Setup(){
     interface::Setup();
     add_action((: cmdQuit :), "quit");
     add_action((: cmdParseRefresh :), "parserefresh");
-    HostSite = query_ip_number(this_object());
+    tmp = this_object()->GetTeloptIp();
+    if(tmp) HostSite = tmp; 
+    else HostSite = query_ip_number(this_object());
     LoginTime = time();
     SetId(({}));
     autosave::Setup();
@@ -140,16 +143,17 @@ int Setup(){
             SetRescueBit(0);
         }
     }
-    environment()->eventPrint(tmp, MSG_ENV, this_object());
+    //environment()->eventPrint(tmp, MSG_ENV, this_object());
     if( !(tmp = GetMessage("login")) )
         tmp = GetName() + " enters " + mud_name() + ".";
     if(!(archp(this_object()) && this_object()->GetInvis())){
         PLAYERS_D->PlayerUpdate(GetKeyName(), 1);
         log_file("enter", GetCapName()+" (enter): "+ctime(time())+"\n");
-        CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " logs in]",0);
+        CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
+                GetCapName() + " logs into "+mud_name()+"]",0);
     }
 
-    if(!catch(mp = (mapping)FOLDERS_D->mail_status(GetKeyName()))){
+    if(!catch(mp = FOLDERS_D->mail_status(GetKeyName()))){
         if(mp["unread"]){
             eventPrint("\n%^RED%^%^BOLD%^>>> " + mp["unread"] + " of your " +
                     (mp["total"] == 1 ? mp["total"] + " letter is" :
@@ -162,6 +166,7 @@ int Setup(){
 }
 
 static void net_dead(){
+    object env = environment();
     interface::net_dead();
     Age += time() - LastAge;
     LastAge = time();
@@ -170,9 +175,10 @@ static void net_dead(){
     if(!(archp(this_object()) && this_object()->GetInvis())){
         PLAYERS_D->PlayerUpdate(GetKeyName(), -1);
         log_file("enter", GetCapName() + " (net-dead): "+ctime(time())+"\n");
-        environment()->eventPrint(GetName() + " suddenly disappears into "
+        if(env) env->eventPrint(GetName() + " suddenly disappears into "
                 "a sea of irreality.", MSG_ENV, this_object());
-        CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " goes net-dead]",0);
+        CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
+                GetCapName() + " goes net-dead on "+mud_name()+"]",0);
     }
     SNOOP_D->ReportLinkDeath(this_object()->GetKeyName());
     eventMove(ROOM_FREEZER);
@@ -188,7 +194,8 @@ void eventReconnect(){
     eventPrint("Reconnected.", MSG_SYSTEM);
     PLAYERS_D->PlayerUpdate(GetKeyName(), 1);
     if(!(archp(this_object()) && this_object()->GetInvis())){
-        CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " has rejoined " + mud_name() + "]",0);
+        CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
+                GetCapName() + " has rejoined " + mud_name() + "]",0);
         environment()->eventPrint(GetCapName() + " has rejoined this reality.",
                 MSG_ENV, this_object());
     }
@@ -213,7 +220,7 @@ int eventDestruct(){
         log_file("dests", name + " "+ctime(time())+" "+
                 stack+"\n---\n\n");
         CHAT_D->eventSendChannel("SYSTEM","connections","[" +
-                name + " has been destructed]", 0);
+                name + " has been destructed from "+mud_name()+"]", 0);
         if(env) env->eventPrint(name + " disintegrates!",
                 MSG_ENV, (ob || ({})));
     }
@@ -233,7 +240,7 @@ mixed eventMarry(object who, object to_whom){
     object env;
     if( (env = previous_object()) != environment() ) return 0;
     m = new(class marriage);
-    m->Spouse = (string)to_whom->GetCapName();
+    m->Spouse = to_whom->GetCapName();
     m->WeddingDate = time();
     m->DivorceDate = 0;
     m->Location = file_name(env);
@@ -246,7 +253,7 @@ int eventMove(mixed dest){
     int x;
     x = move::eventMove(dest);
     if( x ){
-        if( !(str = (string)environment()->GetProperty("login")) ){
+        if( !(str = environment()->GetProperty("login")) ){
             if(clonep(environment())) LoginSite = file_name(environment());
             else LoginSite = base_name(environment());
         }
@@ -266,7 +273,7 @@ int cmdQuit(){
     if(!env) env = load_object(ROOM_FURNACE);
 
     if( previous_object() && !
-            ((int)master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
+            (master()->valid_apply( ({ GetKeyName() }) )) ) return 0;
     if( env->GetProperty("no quit") &&
             ! sizeof(previous_object(-1)) ){
         message("system", "You are unable to escape this reality!",
@@ -291,7 +298,8 @@ int cmdQuit(){
         PLAYERS_D->PlayerUpdate(GetKeyName(), 0);
         log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
         if(env) message("environment", tmp, env, ({this_object()}));
-        CHAT_D->eventSendChannel("SYSTEM","connections","[" + GetCapName() + " quits]",0);
+        CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
+                GetCapName() + " quits "+mud_name()+"]",0);
     }
     if(in_edit()){
         ed_cmd(".");
@@ -317,12 +325,12 @@ int GetBirth(){ return BirthTime - (YEAR * 18); }
 string query_cwd(){ return interface::query_cwd(); }
 
 void SetEmail(string str){
-    if(!((int)master()->valid_apply(({ GetKeyName() })))) return;
+    if(!(master()->valid_apply(({ GetKeyName() })))) return;
     Email = str;
 }
 
 string GetEmail(){
-    if(!((int)master()->valid_apply(({ GetKeyName() })))) return 0;
+    if(!(master()->valid_apply(({ GetKeyName() })))) return 0;
     else return Email;
 }
 
@@ -381,13 +389,13 @@ void SetNews(string type, int sz){ News[type] = sz; }
 int GetNews(string type){ return News[type]; }
 
 void SetPassword(string str){
-    if(!((int)master()->valid_apply(({ GetKeyName() })))) return;
+    if(!(master()->valid_apply(({ GetKeyName() })))) return;
     Password = str;
     save_player(GetKeyName());
 }
 
 string GetPassword(){
-    if(!((int)master()->valid_apply(({ GetKeyName() })))) return 0;
+    if(!(master()->valid_apply(({ GetKeyName() })))) return 0;
     else return Password;
 }
 
@@ -396,7 +404,7 @@ void SetRank(string str){ Rank = str; }
 string GetRank(){ return Rank; }
 
 void SetRealName(string str){
-    if(!((int)master()->valid_apply(({ GetKeyName() })))) return;
+    if(!(master()->valid_apply(({ GetKeyName() })))) return;
     RealName = str;
 }
 
@@ -476,7 +484,7 @@ string GetName(){ return object::GetName(); }
 varargs int GetInvis(object ob){ return object::GetInvis(ob); }
 
 mixed *GetCommands(){
-    if( !((int)master()->valid_apply( ({ GetKeyName() }) )) ) return ({});
+    if( !(master()->valid_apply( ({ GetKeyName() }) )) ) return ({});
     else return commands();
 }
 
@@ -490,7 +498,7 @@ class marriage *GetMarriages(){ return Marriages; }
 
 string GetHostSite(){
     if( WhereBlock ){
-        if( !((int)master()->valid_access(({ PRIV_ASSIST }))) )
+        if( !(master()->valid_access(({ PRIV_ASSIST }))) )
             return "Confidential";
         else return HostSite;
     }
@@ -551,12 +559,80 @@ nomask int eventReceiveObject(object ob){
         tell_player(this_object(),"%^YELLOW%^NOTICE:%^RESET%^ "+identify(ob)+
                 " enters your inventory.");
     }
-    this_object()->AddCarriedMass((int)ob->GetMass());
-    if(environment()) environment()->AddCarriedMass((int)ob->GetMass());
+    this_object()->AddCarriedMass(ob->GetMass());
+    if(environment()) environment()->AddCarriedMass(ob->GetMass());
     if(ob->GeteventPrints()) NotifyReceipt(ob);
     return ret;
 }
 
 static void heart_beat(){
+    string tip = this_object()->GetTeloptIp();
+    if(tip && tip != HostSite){
+        HostSite = tip;
+        save_player(GetKeyName());
+    }
+    if(!interactive() || !find_object(INSTANCES_D)) autosave::heart_beat();
+    if(!PlayerStatus) PlayerStatus = ([]);
+    if(!PlayerStatus["Idling"] && 
+            query_idle(this_object()) > 240){
+        PlayerStatus["Idling"] = 1;
+        if(find_object(INSTANCES_D)){
+            INSTANCES_D->SendWhoUpdate(GetKeyName());
+        }
+    }
+    if(this_object()->GetSleeping()){
+        if(!PlayerStatus["Sleeping"]){
+            PlayerStatus["Sleeping"] = 1;
+            INSTANCES_D->SendWhoUpdate(GetKeyName());
+        }
+    }    
+    else if(PlayerStatus["Sleeping"]){
+        PlayerStatus["Sleeping"] = 0;
+        INSTANCES_D->SendWhoUpdate(GetKeyName());
+    } 
+    if(this_object()->GetInCombat()){
+        if(!PlayerStatus["Combat"]){
+            PlayerStatus["Combat"] = 1;
+            INSTANCES_D->SendWhoUpdate(GetKeyName());
+        }
+    }
+    else if(PlayerStatus["Combat"]){
+        PlayerStatus["Combat"] = 0;
+        INSTANCES_D->SendWhoUpdate(GetKeyName());
+    }
+    if(in_edit(this_object()) || this_object()->GetCedmode()){
+        if(!PlayerStatus["Edit"]){
+            PlayerStatus["Edit"] = 1;
+            INSTANCES_D->SendWhoUpdate(GetKeyName());
+        }
+    }
+    else if(PlayerStatus["Edit"]){
+        PlayerStatus["Edit"] = 0;
+        INSTANCES_D->SendWhoUpdate(GetKeyName());
+    }
+    if(this_object()->GetTeloptIp() && !GetCharmode()){
+        int oldlock = GetProperty("screenlock");
+        SetCharmode(1);
+        SetProperty("reprompt",1);
+        SetProperty("keepalive", 5);
+        SetProperty("screenlock", 0);
+        SetScreen(80, 25);
+        SetProperty("screenlock", oldlock);
+    }
     autosave::heart_beat();
+}
+
+static string process_input(string str){
+    if(PlayerStatus["Idling"]){
+        PlayerStatus["Idling"] = 0;
+        if(find_object(INSTANCES_D)){
+            INSTANCES_D->SendWhoUpdate(GetKeyName());
+        }
+    }
+    if(GetProperty("afk") && strsrch(str, "afk")){
+        SetProperty("afk", 0);
+        tell_player(this_object(), "You are back from being afk.");
+        INSTANCES_D->SendWhoUpdate(GetKeyName());
+    }
+    return interface::process_input(str);
 }

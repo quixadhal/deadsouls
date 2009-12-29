@@ -69,7 +69,7 @@ int fix_languages() {
     }
     //LANG_D->init_languages(this_player());
     write("The sage says: You have been healed, my " + 
-            (((string)this_player()->query_gender() == "male") ? "son" :
+            ((this_player()->query_gender() == "male") ? "son" :
              "daughter") + ".");
     return 1;
 }
@@ -94,9 +94,9 @@ int able_to_study(int amount)
 {
     int exp;
 
-    exp = (int)this_player()->query_exp();
+    exp = this_player()->query_exp();
     if((exp - amount) < 
-            (int)ADVANCE_D->get_exp((int)this_player()->query_level()))
+            ADVANCE_D->get_exp(this_player()->query_level()))
         return 0;
     else
         return 1;
@@ -188,7 +188,7 @@ int study_lang(string str)
     if(queue[this_player()])
     {
         write("The sage says: I cannot teach you two languages at once, my " +
-                (((string)this_player()->query_gender() == "male") ? "son." : 
+                ((this_player()->query_gender() == "male") ? "son." : 
                  "daughter."));
         return 1;
     }
@@ -196,7 +196,7 @@ int study_lang(string str)
     if(!function_exists("learn_language", this_player()))
     {
         write("The sage says: I am sorry, my " + 
-                (((string)this_player()->query_gender() == "male") ? "son" : 
+                ((this_player()->query_gender() == "male") ? "son" : 
                  "daughter") + ", but I cannot teach you in your current body.");
         return 1;
     }
@@ -223,7 +223,7 @@ int study_lang(string str)
     if(!able_to_study(SEC_TO_EXP * nmtimespan))
     {
         write("The sage says: I am sorry, my " + 
-                (((string)this_player()->query_gender() == "male") ? "son" : 
+                ((this_player()->query_gender() == "male") ? "son" : 
                  "daughter") + ", but you are not experienced enough to study "
                 "for that long.");
         return 1;
@@ -234,11 +234,11 @@ int study_lang(string str)
     queue[this_player()] = ({ lang, (SEC_TO_EXP * nmtimespan) });
     call_out("advance_em", nmtimespan, this_player());
 
-    //if(member_array(lang, (string *)(LANG_D->all_languages())) == -1)
+    //if(member_array(lang, (LANG_D->all_languages())) == -1)
     //{
     // write("The sage says: " + capitalize(lang) + " is an uncommon language.  "
     //	  "If you did not mean to study it, then you should leave now, my " +
-    //	  (((string)this_player()->query_gender() == "male") ? "son." :
+    //	  ((this_player()->query_gender() == "male") ? "son." :
     //	   "daughter."));
     //   return 1;
     //}
@@ -274,8 +274,8 @@ void advance_em(mixed arg)
     if(!queue[ob])
         return;
 
-    lang = (string)queue[ob][0];
-    exp = (int)queue[ob][1];
+    lang = queue[ob][0];
+    exp = queue[ob][1];
     ob->add_exp(-exp);
     ob->learn_language(lang, exp);
     write("You are done studying " + capitalize(lang) + ".");

@@ -24,9 +24,24 @@ int direct_pour_out_obj(){ return 1;}
 int direct_empty_obj(){ return 1;}
 
 mixed indirect_drink_from_obj(){
-    if( environment() != this_player() ) return 0;
-    if( FlaskUses < 1 ) return "The flask is empty.";
-    return 1;
+    if( environment() != this_player() &&
+            base_name(this_object()) != LIB_FLOW &&
+            !inherits(LIB_FLOW, this_object()) &&
+            !inherits(LIB_BASE_DUMMY, this_object())){
+        return "#You don't have it.";
+    }
+    if( !EverFill && FlaskUses < 1 ){
+        return "The "+this_object()->GetKeyName()+" is empty.";
+    }
+    return this_object()->CanDrink();
+}
+
+mixed direct_drink_from_obj(){
+    return indirect_drink_from_obj();
+}
+
+mixed direct_drink_obj(){
+    return indirect_drink_from_obj();
 }
 
 static void create(){
@@ -69,7 +84,10 @@ int SetStrength(int x){ return (FlaskStrength = x); }
 
 mixed GetStrength(){ return FlaskStrength; }
 
-int SetFlaskUses(int x){ return (FlaskUses = x); }
+int SetFlaskUses(int x){ 
+    if(EverFill) return FlaskUses;
+    return (FlaskUses = x); 
+}
 
 int GetFlaskUses(){ return FlaskUses; }
 
@@ -123,14 +141,17 @@ mixed eventFill(object who, object from){
     int howmuch_me = CanFillMe();
     int howmuch_them = from->CanFillOther();
     if(!from->isDummy() && !from->GetTapped() &&
+            base_name(from) != LIB_FLOW &&
+            !inherits(LIB_FLOW, from) &&
+            !inherits(LIB_BASE_DUMMY, from) &&
             environment(from) != this_player()){
-        write("You aren't holding the "+from->GetKeyName()+".");
+        write("You are not holding the "+from->GetKeyName()+".");
         return 1;
     }
 
     if(from->isDummy() &&
             environment(this_object()) != this_player()){
-        write("You aren't holding the "+this_object()->GetKeyName()+".");
+        write("You don't have the "+this_object()->GetKeyName()+".");
         return 1;
     }
 
@@ -158,8 +179,10 @@ mixed eventFill(object who, object from){
         return 1;
     }
     if(howmuch_them < howmuch_me) howmuch_me = howmuch_them;
-    FlaskUses += howmuch_me;
-    if(!EverFill) from->SetFlaskUses(from->GetFlaskUses() - howmuch_me);
+    if(!EverFill){
+        FlaskUses += howmuch_me;
+        from->SetFlaskUses(from->GetFlaskUses() - howmuch_me);
+    }
     write("You pour from "+from->GetShort()+" into "+this_object()->GetShort()+".");
     say(who->GetName()+" pours from "+from->GetShort()+
             " into "+this_object()->GetShort()+".");
@@ -177,7 +200,8 @@ varargs mixed eventDrink(object who, object target, string foo){
     say(who->GetName()+" drinks from "+GetShort()+".");
     if(!EverFill) FlaskUses--;
     who->eventDrink(this_object());
-    if(!FlaskUses){
+    if(FlaskUses < 1){
+        FlaskUses = 0;
         SetId(GetId() - ({ FlaskContents }) );
         parse_refresh();
         FlaskContents = "empty";
@@ -186,12 +210,16 @@ varargs mixed eventDrink(object who, object target, string foo){
     return 1;
 }
 
-mixed CanDrink(object who, string what){
-    if(!FlaskUses){
+varargs mixed CanDrink(object who, string what){
+    mixed ret;
+    if(!who) who = this_player();
+    if(FlaskUses < 1){
+        FlaskUses = 0;
         say(who->GetName()+" sadly looks at "+GetShort()+".");
-        return "The "+GetKeyName()+" is empty.";
+        return "The "+this_object()->GetKeyName()+" is empty.";
     }
-    return who->CanDrink(this_object());
+    ret = who->CanDrink(this_object());
+    return ret;
 }
 
 mixed eventPour(object who, object from){

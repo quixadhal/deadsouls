@@ -11,8 +11,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string str) {
-    return ("Syntax: removeclasses\n"
+string GetHelp(){
+    return ("Syntax: removeclasses\n\n"
             "Gets rid of ALL classes known by the classes daemon. "
             "Unless you want to be very sad later, you should "
             "add your classes with the addclasses command immediately. ");

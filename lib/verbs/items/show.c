@@ -35,14 +35,14 @@ mixed do_show_obj_liv(object what, object target) {
 }
 
 mixed do_show_obj_to_liv(object what, object target) {
-    this_player()->eventPrint("You show " + (string)target->GetName() + " " +
-            (string)what->GetShort() + ".");
-    target->eventPrint((string)this_player()->GetName() + " shows you " +
-            (string)what->GetShort() + ".");
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    this_player()->eventPrint("You show " + target->GetName() + " " +
+            what->GetShort() + ".");
+    target->eventPrint(this_player()->GetName() + " shows you " +
+            what->GetShort() + ".");
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " shows " +
-            (string)target->GetName() +
-            " " + (string)what->GetShort() +".",
+            target->GetName() +
+            " " + what->GetShort() +".",
             ({ this_player(), target }));
     what->eventShow(target);
     return 1;

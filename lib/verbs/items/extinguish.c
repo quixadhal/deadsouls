@@ -38,11 +38,11 @@ mixed do_extinguish_obs(mixed *targs) {
         foreach(string *list in ua) this_player()->eventPrint(list[0]);
         return 1;
     }
-    obs = filter(obs, (: (int)$1->eventExtinguish(this_player()) :));
+    obs = filter(obs, (: $1->eventExtinguish(this_player()) :));
     if( !sizeof(obs) ) return 1;
     tmp = item_list(obs);
     this_player()->eventPrint("You extinguish " + tmp + ".");
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " extinguishes " + tmp + ".",
             this_player());
     return 1;

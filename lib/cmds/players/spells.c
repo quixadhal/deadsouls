@@ -37,9 +37,9 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp() {
-    return ("Syntax: <spells>\n\n"
+string GetHelp(){
+    return ("Syntax: spells\n\n"
             "Lists all of your spells in your spell book with your "
-            "proficiency in each spell.\n\n"
+            "proficiency in each spell.\n"
             "See also: skills, stats, status");
 }

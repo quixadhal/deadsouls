@@ -49,13 +49,13 @@ mixed cmd(string args) {
     }
 
     if(!LOG_REMOTE_CHANS && 
-      member_array(args, CHAT_D->GetRemoteChannels(1)) != -1){
+            member_array(args, CHAT_D->GetRemoteChannels(1)) != -1){
         ret = CHAT_D->cmdLast(args);
         if(sizeof(ret)) return ret;
     }
 
     if(!LOG_LOCAL_CHANS && 
-      member_array(args, CHAT_D->GetRemoteChannels()) == -1){
+            member_array(args, CHAT_D->GetRemoteChannels()) == -1){
         ret = CHAT_D->cmdLast(args);
         if(sizeof(ret)) return ret;
     }
@@ -109,8 +109,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string topic) {
-    string ret = "Syntax: hist CHANNEL [number]\n"
+string GetHelp(){
+    string ret = "Syntax: hist <CHANNEL> [number]\n"
         "        hist [ say | whisper | tell | yell | shout ]\n\n"
         "Gives you the backscroll of the specified communication.\n";
     if(!LOG_REMOTE_CHANS){

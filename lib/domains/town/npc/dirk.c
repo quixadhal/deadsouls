@@ -142,7 +142,7 @@ int AdvanceDude(mixed arg){
         this_player()->AddTitle(advancement[desired_level]["title"]);
         this_player()->RemoveTitle(advancement[desired_level-1]["title"]);
 
-        this_player()->save_player((string)this_player()->GetKeyName());
+        this_player()->save_player(this_player()->GetKeyName());
 
         if(level == MAX_NEWBIE_LEVEL){
             write("\nDirk raises his hand and sternly points to you.\n");

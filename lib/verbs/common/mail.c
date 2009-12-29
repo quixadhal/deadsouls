@@ -27,7 +27,7 @@ mixed can_mail_str(string str) {
     if( !creatorp(this_player()) ) {
         mixed tmp;
 
-        tmp = (mixed)environment(this_player())->CanMail(this_player(), str);
+        tmp = environment(this_player())->CanMail(this_player(), str);
         if( !tmp ) return "Does this place look like a post office?";
         else return tmp;
     }
@@ -40,12 +40,12 @@ mixed do_mail_str(string str) {
     object ob;
 
     if( !creatorp(this_player()) )
-        return (mixed)environment(this_player())->eventMail(this_player(), str);
+        return environment(this_player())->eventMail(this_player(), str);
     if( !(ob = new(OBJ_POST)) ) {
         this_player()->eventPrint("Failed to load postal object!");
         return 1;
     }
-    if( !((int)ob->eventMove(this_player())) ) {
+    if( !(ob->eventMove(this_player())) ) {
         this_player()->eventPrint("You can't seem to carry the postal "
                 "object.");
         return 1;
@@ -56,15 +56,15 @@ mixed do_mail_str(string str) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <mail>\n"
-            "        <mail PLAYER>\n"
-            "        <mail GROUP>\n\n"
-            "        <mail PLAYER@MUD>\n\n"
+    return ("Syntax: mail\n"
+            "        mail <PLAYER>\n"
+            "        mail <GROUP>\n"
+            "        mail <PLAYER@MUD>\n\n"
             "Allows you to send mail to another player on this game. "
             "Without arguments, you are simply set to read your "
             "mail.  With arguments, you are creating mail to be sent.  "
             "You may only read mail in your home town.  The mailer will "
             "properly route any mail you send to the proper home town "
-            "for the player or players you intend it to go to.\n\n"
+            "for the player or players you intend it to go to.\n"
             "See also: mudlist");
 }

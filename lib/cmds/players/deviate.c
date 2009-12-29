@@ -9,9 +9,9 @@ mixed cmd(string args) {
     int amt;
 
     if( !args || args == "" ) {
-        amt = (int)this_player()->GetCustomDeviations();
+        amt = this_player()->GetCustomDeviations();
         this_player()->eventPrint("You have " + amt + 
-        " deviation points left to use.", MSG_SYSTEM);
+                " deviation points left to use.", MSG_SYSTEM);
         return 1;
     }
     if(args == "enable"){
@@ -34,17 +34,17 @@ mixed cmd(string args) {
     amt = to_int((tmp = explode(args, " "))[<1]);
     if( sizeof(tmp) == 1 ) return "Deviate which stat how much?";
     stat = implode(tmp[0..<2], " ");
-    tmp = (mixed)this_player()->eventDeviateStat(stat, amt);
+    tmp = this_player()->eventDeviateStat(stat, amt);
     if( stringp(tmp) ) return tmp;
     if( !tmp ) return "Failed to deviate.";
     this_player()->eventPrint("Your " + stat + " class is now " + tmp +
             ", and you have " +
-            (int)this_player()->GetCustomDeviations() +
+            this_player()->GetCustomDeviations() +
             " deviation points left.", MSG_SYSTEM);
     return 1;
 }
 
-string GetHelp(string str) {
+string GetHelp(){
     return ("Syntax: deviate\n"
             "        deviate enable\n"
             "        deviate STAT AMOUNT\n\n"
@@ -55,6 +55,6 @@ string GetHelp(string str) {
             "deviation nor its penalty. Before proceeding, read the "
             "helpfile for deviation:\nhelp deviation\n\n"
             "If you decide to deviate, first enable it by typing:\n"
-            "deviate enable\n\nSee also: deviation, customize, "
+            "deviate enable\nSee also: deviation, customize, "
             "stat, stats, score");
 }

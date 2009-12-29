@@ -40,8 +40,7 @@ varargs int cmd(string str){
     return 1;
 }
 
-void help()
-{
-    write("Syntax: godmode [ on | off ]\n"+
+string GetHelp(){
+    return ("Syntax: godmode [ on | off ]\n\n"
             "Enables or disables immunity to most forms of lethal damage."); 
 }

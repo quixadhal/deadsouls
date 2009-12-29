@@ -15,7 +15,7 @@ object ssocket = find_object(SSOCKET_D);
 static void validate(){
     if( previous_object() != cmd && previous_object() != rsocket &&
             previous_object() != this_object() && previous_object() != ssocket &&
-            !((int)master()->valid_apply(({ "ASSIST" }))) ){
+            !(master()->valid_apply(({ "ASSIST" }))) ){
         trr("SECURITY ALERT: validation failure in IMC2_SERVER_D.","red");
         error("Illegal attempt to access IMC2 server daemon: "+get_stack()+
                 " "+identify(previous_object(-1)));

@@ -7,7 +7,7 @@ varargs string get_stack(int x) {
     string *stack3 = call_stack(3);
     for(i = 0, s = sizeof(stack1); i < s; i++){
         list +="\n"+i+":"+
-            "%^RED%^" + stack1[i] + 
+            "%^RED%^" + identify(stack1[i]) + 
             "%^RESET%^, %^GREEN%^file: "+stack0[i]+
             "%^RESET%^, %^BLUE%^fun: "+stack2[i]+
             "%^RESET%^, %^MAGENTA%^origin: "+stack3[i]+

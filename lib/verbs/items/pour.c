@@ -28,15 +28,15 @@ mixed can_pour_out_obj(string verb) { return this_player()->CanManipulate(); }
 mixed can_pour_from_obj_into_obj(string verb) { return this_player()->CanManipulate(); }
 
 mixed do_pour_from_obj_into_obj(object from, object to) {
-    return (mixed)to->eventPour(this_player(), from);
+    return to->eventPour(this_player(), from);
 }
 
 mixed do_pour_from_obj_in_obj(object from, object to) {
-    return (mixed)to->eventPour(this_player(), from);
+    return to->eventPour(this_player(), from);
 }
 
 mixed do_pour_obj_onto_obj(object from, object to) {
-    return (mixed)to->eventPour(this_player(), from);
+    return to->eventPour(this_player(), from);
 }
 
 mixed do_pour_obj_on_obj(object from, object to) {
@@ -52,11 +52,11 @@ mixed do_pour_obj_into_obj(object from, object to) {
 }
 
 mixed do_pour_obj_out(object from) {
-    return (mixed)from->eventEmpty(this_player());
+    return from->eventEmpty(this_player());
 }
 
 mixed do_pour_out_obj(object from) {
-    return (mixed)from->eventEmpty(this_player());
+    return from->eventEmpty(this_player());
 }
 
 

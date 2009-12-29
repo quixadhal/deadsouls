@@ -19,8 +19,8 @@ int cmd(string str) {
     string name;
 
     if(!str && archp(previous_object())) {
-        mp = (mapping)EVENTS_D->GetEvents();
-        i = sizeof(obs = keys(mp));
+        mp = EVENTS_D->GetEvents();
+        i = sizeof(obs = sort_array(keys(mp),-1));
         message("info", "The following events are pending:", this_player());
         while(i--) {
             l=atoi(""+obs[i]);
@@ -29,13 +29,14 @@ int cmd(string str) {
                     local_ctime(l)+" "+query_tz(), this_player());
         }
         return 1;
-    } else if((archp(previous_object()) && str) || creatorp(previous_object())) {
+    } 
+    else if((archp(previous_object()) && str) || creatorp(previous_object())) {
         if (archp(previous_object()))
             name = str;
         else
             name = this_player()->GetKeyName();
         j = 0;
-        mp = (mapping)EVENTS_D->GetEvents();
+        mp = EVENTS_D->GetEvents();
         i = sizeof(obs = keys(mp));
         if (i) {
             while(i--)
@@ -67,15 +68,11 @@ int cmd(string str) {
     return 0;
 }
 
-    void help() {
+    string GetHelp() {
         if(archp(this_player())) 
-            message("help", "Syntax: <events> [wizard]\n\n"
-                    "Gives a list of all pending mud events or all events pending for [wizard].",
-                    this_player()
-                   );
+            return ("Syntax: events [creator]\n\n"
+                    "Gives a list of all pending mud events or all events pending for the specified creator.");
         else
-            message("help", "Syntax: <events>\n\n"
-                    "Gives a list of your pending events.",
-                    this_player()
-                   );
+            return ("Syntax: events\n\n"
+                    "Gives a list of your pending events.");
     }

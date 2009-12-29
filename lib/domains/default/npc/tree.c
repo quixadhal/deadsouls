@@ -17,11 +17,14 @@ static void create(){
     SetRace("tree");
     SetHealthPoints(99999);
     SetMaxHealthPoints(99999);
+    SetPreventGet(1);
 }
+
 void init(){
     ::init();
     add_action("make_money","get");
 }
+
 int make_money(string str){
     int d1;
     string s1,s2;
@@ -41,7 +44,7 @@ int make_money(string str){
         }
         if(s2=="tree" || s2=="the tree" ||
                 s2=="the money tree" || s2=="arborus argentum"){
-            if(d1 > 1000){
+            if(d1 > 1000000){
                 write("That is too much money to get from the tree at once.\n");
                 return 1;
             }

@@ -9,7 +9,6 @@ mixed cmd(string args) {
     if( !args || args == "" ) return "Expel whom?";
     ob = present(args,environment(this_player()));
     if(args != "all" && (!ob || !living(ob))){
-
         return "Expel only works for living things in your environment.";
     }
     if(archp(ob) && !archp(this_player())){
@@ -42,12 +41,11 @@ mixed cmd(string args) {
             else nuisance->eventMoveLiving(ROOM_START);
         }
     }
-
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: expel <living> \n\n"
-            "Forces the specified living thing to leave your environment.\n\n"
-            "See also: return, goto, move, trans", this_player());
+string GetHelp() {
+    return ("Syntax: expel <living> \n\n"
+            "Forces the specified living thing to leave your environment.\n"
+            "See also: return, goto, move, trans");
 }

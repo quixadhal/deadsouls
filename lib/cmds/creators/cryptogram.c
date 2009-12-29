@@ -1,3 +1,5 @@
+/* blame OotS */
+
 #include <daemons.h>
 #include <lib.h>
 
@@ -55,8 +57,6 @@ string doRotate(int code, string str){
     return ret;
 }    
 
-
-
 int cmd(string str){
     int code;
     string tmp, tmp2;
@@ -85,10 +85,8 @@ int cmd(string str){
     return 1;
 }
 
-
-
-string GetHelp(string str) {
-    return "Syntax: anagram -q FIRSTLETTER SECONDLETTER\n"
-        "        anagram NUMBER STRING\n"
-        "";
+string GetHelp() {
+    return "Syntax: cryptogram -q FIRSTLETTER SECONDLETTER\n"
+        "        cryptogram NUMBER STRING\n\n"
+        "Tool for decoding cryptograms";
 }

@@ -65,6 +65,8 @@ mixed gmake(string str) {
         return 1;
     }
 
+    filename = replace_string(filename, " ", "_");
+
     if(last(filename,2) != ".c") filename += ".c";
 
     if(!this_player()->query_cwd()){
@@ -228,11 +230,9 @@ int eventGeneralStuff(string str){
     globalstr = str;
     unguarded( (: globalstr2 = read_file(globalstr) :) );
     unguarded( (: this_object()->eventAddInit(globalstr) :) );
-    if(player && player = player->GetKeyName()){ /* tee hee */
-        if(globalstr == "/realms/"+player+"/workroom.c" ){
-            globalstr2 = replace_string(globalstr2, "./area/customdefs.h",
-                    "/realms/"+player+"/area/customdefs.h");
-        }
+    if(sscanf(globalstr, "/realms/%s/workroom.c", player)){
+        globalstr2 = replace_string(globalstr2, "./area/customdefs.h",
+                "/realms/"+player+"/area/customdefs.h");
     }
     if(query_verb() != "copy"){
         if(grepp(globalstr2,"./customdefs.h")){

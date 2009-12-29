@@ -54,23 +54,23 @@ int pick(string str) {
     }
     str = lower_case(str);
     if(str == "satyr" &&
-            (string)this_player()->query_gender() != "male") {
+            this_player()->query_gender() != "male") {
         write("You must be a male to be a satyr!\nPick again.");
         return 1;
     }
-    else if(str == "nymph" && (string)this_player()->query_gender()
+    else if(str == "nymph" && this_player()->query_gender()
             != "female") {
         write("You must be a female to be a nymph!\nPick again.");
         return 1;
     }
-    if(member_array(str, (string *)RACES_D->query_races()) == -1) {
+    if(member_array(str, RACES_D->query_races()) == -1) {
         write("You must pick a race from the list!\nType <read list>\n");
         return 1;
     }
     this_player()->SetRace(str);
     this_player()->new_body();
     this_player()->SetClass(Class);
-    if( (string)this_player()->query_gender() == "male") this_player()->setenv("TITLE", "Newbie $N the boy");
+    if( this_player()->query_gender() == "male") this_player()->setenv("TITLE", "Newbie $N the boy");
     else this_player()->setenv("TITLE", "Newbie $N the girl");
     this_player()->init_skills(Class);
     write("You can roll your stats up to three times.");
@@ -86,12 +86,12 @@ void do_rolls() {
     mapping borg;
     int i, tmp;
 
-    if((int)this_player()->query_rolls() >3) {
+    if(this_player()->query_rolls() >3) {
         write("You can roll your stats no more.");
         return;
     }
     write("You roll your stats.");
-    for(i=0, tmp=sizeof(which=keys(borg=(mapping)RACES_D->do_rolls((string)this_player()->query_race()))); i<tmp; i++) 
+    for(i=0, tmp=sizeof(which=keys(borg=RACES_D->do_rolls(this_player()->query_race()))); i<tmp; i++) 
         this_player()->SetStat(which[i], borg[which[i]]);
     this_player()->set_rolls(this_player()->query_rolls()+1);
     return;
@@ -110,7 +110,7 @@ int read(string str) {
     }
     write("These are the following races available in our reality:");
     write("-----------------------------------------------------------");
-    message("Ninfo", format_page((string *)RACES_D->query_races(), 4),
+    message("Ninfo", format_page(RACES_D->query_races(), 4),
             this_player());
     write("----------------------------------------------------------");
     write("Only males may be satyrs, and only females may be nymphs.");

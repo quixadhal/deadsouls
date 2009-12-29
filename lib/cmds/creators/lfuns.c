@@ -14,9 +14,9 @@ int cmd(string str){
     return 1;
 }
 
-string GetHelp(string str) {
+string GetHelp() {
     return "Syntax: lfuns [COLUMNS]\n"
         "Displays lfuns known to the FUNCTION_D. If a number is given, the "
         "output is broken up into the number of columns specified."
-        "\n\nSee also efun, efuns, sefun, lfun, showfuns, findfun\n";
+        "\nSee also efun, efuns, sefun, lfun, showfuns, findfun";
 }

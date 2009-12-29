@@ -13,17 +13,18 @@ static void create() {
     SetVerb("resurrect");
     SetRules("OBJ", "here");
     SetErrorMessage("resurrect what?");
-    SetHelp("Syntax: <resurrect OBJ>\n\n"
+    SetHelp("Syntax: resurrect <OBJ>\n\n"
             "Bring back to life something that died. When used on the corpse\n"
             "of a player, it brings them back from death without skill or\n"
             "experience penalties.\n"
-            "\nSee also: zap");
+            "See also: zap, dest");
 }
 
-mixed can_resurrect_obj(string str) { 
-    if(!creatorp(this_player())) return "This command is only available to builders and creators.";
-    else return 1;
-}
+    mixed can_resurrect_obj(string str) { 
+        if(!creatorp(this_player())) 
+            return "This command is only available to creators.";
+        else return 1;
+    }
 
 mixed do_resurrect_obj(object ob) {
     int corpse;
@@ -57,7 +58,8 @@ mixed do_resurrect_obj(object ob) {
             " hand, and with a flash of light, you come back from the dead!");
     tell_room(environment(this_player()),this_player()->GetCapName()+" waves "+
             possessive(this_player())+
-            " hand, and with a flash of light, "+ob->GetCapName()+" comes back to life!",
+            " hand, and with a flash of light, "+ob->GetCapName()+
+            " comes back to life!",
             ({ob, this_player()}) );
     if(playerob){
         object *inv;

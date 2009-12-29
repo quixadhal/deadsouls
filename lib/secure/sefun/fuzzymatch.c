@@ -3,6 +3,7 @@ int levenshtein_distance(string a, string b) {
     int blen = sizeof(b);
     mixed foo, baz = alen+1;
     mixed array dist = ({});
+#ifdef __FLUFFOS__
     while(baz){
         dist += ({ allocate(blen +1) });
         baz--;
@@ -22,6 +23,9 @@ int levenshtein_distance(string a, string b) {
         }
     }
     return dist[alen][blen];
+#else
+    return 1;
+#endif
 }
 
 int damerau_levenshtein_distance(string a, string b) {
@@ -29,6 +33,7 @@ int damerau_levenshtein_distance(string a, string b) {
     int blen = sizeof(b);
     mixed foo, baz = alen+1;
     mixed array dist = ({});
+#ifdef __FLUFFOS__
     while(baz){
         dist += ({ allocate(blen +1) });
         baz--;
@@ -49,4 +54,7 @@ int damerau_levenshtein_distance(string a, string b) {
             else
                 dist[i + 1][j + 1] = min( ({ dist[i][j + 1] + 1, dist[i + 1][j] + 1, dist[i][j] + (a[i] != b[j]) }) );
     return dist[alen][blen];
+#else
+    return 1;
+#endif
 }

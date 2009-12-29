@@ -10,8 +10,9 @@ mapping Workrooms = ([]);
 
 mapping WorldMap = ([]);
 mapping WorldGrid = ([]);
+static mapping DroneCache = ([]);
 static string last_exit;
-static int global_manual;
+static int global_manual, cache_timer = time();
 int debugging;
 static string *cards = ({ "north", "south", "east", "west",
         "northeast", "northwest", "southeast", "southwest",
@@ -22,7 +23,7 @@ static string *unsafes = ({ "/realms/", "/open/", "/estates/" });
 void create(){
     int err;
     object vvoid;
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     SaveFile = save_file(SAVE_ROOMS);
     if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
         cp(old_savename(SaveFile), SaveFile);
@@ -64,7 +65,7 @@ string GetRoomZero(){
 }
 
 mixed GenerateNames(int x){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     int first, second, third;
     third = (x & 32767);
     second = (x & 536870911) - third;;
@@ -88,7 +89,7 @@ int SetDebugging(int i){
 }
 
 mixed validate_last_room(string room, object player){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     string location_str, current_room_name;
     object location_ob, current_room;
     mapping origin_room = ([]);
@@ -134,7 +135,7 @@ void zero(){
 }
 
 varargs mapping GetGridMap(string str){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     mapping ret;
     string prefix, room, coords;
     object ob;
@@ -176,12 +177,11 @@ string StrCoord(mapping TmpMap){
 }
 
 varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     string room; 
     mixed a, b, c, d, e, f, g, h, i, j, k, l, m, n;
     int p, q, x, y, z;
     mixed xarr, yarr, zarr;
-    //string hashed_coord = crypt(coord, "xyz");
 
     if(this_player() && adminp(this_player())){
         room = arg_room;
@@ -190,7 +190,13 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
         room = base_name(previous_object());
     }
 
-    if(!player->GetProperty("LastLocation")) return 0;
+    if(!player) player = previous_object();
+
+    if(!player->GetProperty("LastLocation") && 
+            base_name(player) != room) return 0;
+
+    if(inherits(LIB_ROOM, previous_object())) global_manual = 1;
+
     sscanf(coord,"%d,%d,%d",x,y,z);
     xarr = GenerateNames(x);
     yarr = GenerateNames(y);
@@ -236,7 +242,7 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
 }
 
 mixed GetGrid(string str){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     mixed room, a, b, c, d, e, f, g, h, i, j, k, l, m, n;
     string coord=str;
     int p, q,x,y,z;
@@ -272,7 +278,7 @@ mixed GetGrid(string str){
 }
 
 varargs int UnSetRoom(mixed arg_ob, int auto){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     string creator, name, prefix, room_name;
     string grid;
     mixed ob;
@@ -311,7 +317,7 @@ varargs int UnSetRoom(mixed arg_ob, int auto){
 }
 
 varargs mixed SetRoom(object arg_ob, object player, string manual){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     string last_str, creator, name, prefix, room_name, coord;
     mapping tmpexits, backup_direction, TmpMap = ([]);
     object ob;
@@ -322,17 +328,21 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
     else{
         ob = previous_object();
     }
-
     if(clonep(ob)){
         return 0;
     }
-
-    if(!(last_str = player->GetProperty("LastLocation"))){
+    if(!(last_str = player->GetProperty("LastLocation")) &&
+            player != ob){
         return 0;
     }
+    if(!(last_str)) last_str = "";
     name = base_name(ob);
     prefix = path_prefix(name);
-
+    if(manual && (!strsrch(name, "/open/") || !strsrch(name, "/realms/"))){
+        if(!this_player() || !archp(this_player())){
+            return 0;
+        }
+    }
     /* Still need to figure out exclusions for
      * an island or continent perimeter :(
      */
@@ -340,7 +350,6 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
             prefix == "/domains/town/virtual/sub"){
         return 0;
     }
-
     room_name = last_string_element(name, "/");
     if(!sizeof(WorldMap)){
         if(name == ROOM_FURNACE){
@@ -599,7 +608,7 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
 }
 
 string GetCoordinates(mixed ob){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     string name, prefix, room_name, ret;
     int err;
     if(objectp(ob)){
@@ -632,7 +641,7 @@ string GetCoordinates(mixed ob){
 } 
 
 mapping GetCoordinateMap(mixed ob){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     string name = base_name(ob);
     string prefix = path_prefix(name);
     string room_name = last_string_element(name, "/");
@@ -648,7 +657,7 @@ mapping GetCoordinateMap(mixed ob){
 }
 
 mixed GetRoom(mixed ob){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     string name, prefix, room_name;
     if(objectp(ob)){
         if(clonep(ob)) return 0;
@@ -667,7 +676,7 @@ mixed GetRoom(mixed ob){
 }
 
 varargs mixed GetDirectionRoom(mixed origin, string direction, int noclip){
-#if GRID
+#ifdef __FLUFFOS__ && GRID
     int x, y, z;
     string dir_coords;
     mixed ret, room = GetRoom(origin);
@@ -699,4 +708,19 @@ varargs mixed GetDirectionRoom(mixed origin, string direction, int noclip){
 #else 
     return 0;
 #endif
+}
+
+mixed DroneCache(mixed foo){
+    string path;
+    object prev, env;
+    prev = previous_object();
+    if(!prev) return 0;
+    env = environment(prev);
+    if(!env) return 0;
+    path = path_prefix(base_name(env));
+    if(time() - cache_timer > 60 || !DroneCache) DroneCache = ([]);
+    cache_timer = time();
+    if(!DroneCache[path]) DroneCache[path] = ({});
+    if(foo) DroneCache[path] = distinct_array(DroneCache[path] + foo );
+    else return copy(DroneCache[path]);
 }

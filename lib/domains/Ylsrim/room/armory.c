@@ -21,7 +21,7 @@ static void create() {
     SetItems( ([ ({ "case", "cases" }) : (: CheckItem :),
                 "bazaar" : "People from all about are wandering around, looking "
                 "for a bargain." ]) );
-    SetObviousExits("w");
+    SetObviousExits("west");
     SetExits( ([ "west" : "/domains/Ylsrim/room/"+ "bazaar" ]) );
     SetInventory( ([ "/domains/Ylsrim"+ "/npc/max" : 1 ]) );
 }

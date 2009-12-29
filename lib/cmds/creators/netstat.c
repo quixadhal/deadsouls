@@ -23,9 +23,9 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <netstat>\n\n"
+string GetHelp() {
+    return ("Syntax: netstat\n\n"
             "Gives you information about sockets being used by the LPC "
-            "server through the MudOS socket efuns.\n\n"
-            "See also: callouts, dumpallobj, mstatus", this_player());
+            "server through the MudOS socket efuns.\n"
+            "See also: callouts, dumpallobj, mstatus");
 }

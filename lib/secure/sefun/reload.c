@@ -33,8 +33,9 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
         ob = find_object(filename);
         if(!ob) ob = load_object(filename);
     }
-    if((!ob || !objectp(ob)) && !quiet) {
-        write("No such object.");      
+
+    if(!ob || !objectp(ob)){
+        if(!quiet) write("No such object.");      
         return 0;
     }
 
@@ -53,7 +54,7 @@ varargs mixed reload(mixed ob, int recursive, int quiet){
             if(!strsrch(filename,"/lib/") || ob->isDummy() || inherits(LIB_DAEMON,ob)) true(); 
             else if(!quiet)
                 write("This object lacks a working init function. "
-                "Please run initfix on it as soon as possible.");
+                        "Please run initfix on it as soon as possible.");
         }
     }
     if(inherits(LIB_ROOM,ob)){

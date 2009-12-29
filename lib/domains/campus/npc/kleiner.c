@@ -59,26 +59,29 @@ int EncounterCheck(mixed who){
     if(sizeof(inv)){
         call_out("EncounterResponse",0,1);
     }
-    else call_out("EncounterResponse",4,random(4)+2);
+    else {
+        call_out("EncounterResponse",4,random(4)+2);
+    }
     return 0;
 } 
 
 static void create() {
-    sentient::create();
+    ::create();
     SetKeyName("kleiner");
     SetId(({"npc","mob","character","scientist","genius"}));
     SetAdjectives(({"old", "white haired","beloved"}));
     SetShort("Dr. Kleiner");
     SetLong("An old, white-haired scientist, Dr. Isaac Kleiner is a beloved campus personality with his affable, kind nature and genius for exotechnology.");
     SetPacifist(1);
-    SetInventory(([
-                "/domains/campus/obj/omni" : 1,
-                "/domains/campus/armor/badge2" : "wear badge",
-                ]));
     SetLevel(10);
     SetWimpy(95);
     SetRace("human");
     SetGender("male");
+    SetEncounter( (: EncounterCheck :) );
+    SetInventory(([
+                "/domains/campus/obj/omni" : 1,
+                "/domains/campus/armor/badge2" : "wear badge",
+                ]));
     SetLanguage("common",100);
     SetDefaultLanguage("common");
     SetConsultResponses( ([ 
@@ -102,7 +105,6 @@ static void create() {
                 "I'm terribly, terribly busy analyzing this fascinating "+
                 "alien teleportation technology.",
                 ]) );
-    SetEncounter( (: EncounterCheck :) );
 }
 
 void init(){

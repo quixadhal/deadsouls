@@ -16,10 +16,10 @@ mixed can_fill_obj_with_obj(string verb) { return this_player()->CanManipulate()
 mixed can_fill_obj_from_obj(string verb) { return this_player()->CanManipulate(); }
 
 mixed do_fill_obj_with_obj(object to, object from) {
-    return (mixed)to->eventFill(this_player(), from);
+    return to->eventFill(this_player(), from);
 }
 
 mixed do_fill_obj_from_obj(object to, object from) {
-    return (mixed)to->eventFill(this_player(), from);
+    return to->eventFill(this_player(), from);
 }
 

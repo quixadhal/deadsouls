@@ -41,7 +41,7 @@ varargs mixed can_lock_obj_with_str(mixed ob1, mixed ob2, mixed words...) {
 varargs mixed do_lock_obj_with_obj(object target, object key, mixed words...) {
     string id;
     id = remove_article(lower_case(words[0]));
-    return (mixed)target->eventLock(this_player(), id, key);
+    return target->eventLock(this_player(), id, key);
 }
 
 varargs mixed do_lock_obj_with_str(mixed ob1, mixed ob2, mixed words...) {

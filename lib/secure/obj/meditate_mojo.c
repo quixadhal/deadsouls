@@ -7,7 +7,7 @@ int damage2();
 int damage3();
 int damage4();
 object victim;
-int counter;
+int counter, duration;
 
 void create(){
     ::create();
@@ -61,8 +61,8 @@ int damage4(){
 
 void heart_beat(){
     if(environment() && !living(environment())) this_object()->eventDestruct();
-    if(counter == 50){
-        if(environment()) tell_object(environment(),"You feel the effects of your meditation wear off.");
+    if(counter == (30 + duration)){
+        if(environment()) tell_object(environment(),"%^CYAN%^You feel the effects of your meditation wear off.%^RESET%^");
         this_object()->eventMove("/domains/town/room/furnace");
     }
 
@@ -70,7 +70,9 @@ void heart_beat(){
     eventMojofy();
 }
 
-
+int AddDuration(int x){
+    return duration += x;
+}
 
 mixed CanGet(object ob) { return " ";}
 mixed CanDrop(object ob) { return " ";}

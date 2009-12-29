@@ -11,7 +11,6 @@ static void create() {
             "floor of the Virtual Campus administrative building. "
             "North is the campus bookstore, and there is a conference "+
             "room south of here.");
-    //"room south of here. It seems the bookstore is closed today."); 
     SetItems( (["corridor" : "This is a carpeted corridor, running east-west.",
                 "floor" : "The carpet is purple, and somewhat institutional.",
                 "carpet" : "The carpet is purple, and somewhat institutional."]) );

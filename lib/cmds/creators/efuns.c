@@ -13,9 +13,9 @@ int cmd(string str){
     return 1;
 }
 
-string GetHelp(string str) {
+string GetHelp() {
     return "Syntax: efuns [COLUMNS]\n"
         "Displays all available driver efuns. If a number is given, the "
         "output is broken up into the number of columns specified."
-        "\n\nSee also efun, sefun, sefuns, lfun, lfuns, showfuns, findfun\n";
+        "\nSee also efun, sefun, sefuns, lfun, lfuns, showfuns, findfun";
 }

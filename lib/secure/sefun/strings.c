@@ -664,6 +664,7 @@ varargs string *chunk_string(string str, int width){
         ret += ({ tmp1 });
         str = replace_string(str,tmp1,"");
     }
+    rm(tmpfile);
     return ret;
 }
 
@@ -684,7 +685,7 @@ varargs mixed print_long_string(object who, string str, int catted){
     foreach(string thing in tmp){
     }
     if(!catted){
-        (mixed)who->eventPage(explode(read_file(global_temp_file),"\n"),MSG_SYSTEM);
+        who->eventPage(explode(read_file(global_temp_file),"\n"),MSG_SYSTEM);
         return unguarded( (: rm(global_temp_file) :) );
     }
     else {
@@ -769,7 +770,7 @@ string web_translate(string str){
 string dbz_colors(string str, int annoying){
     string ret = "";
     string *colors = ({ "RED", "BLUE", "CYAN", "MAGENTA", "ORANGE",
-            "YELLOW", "GREEN", "WHITE%^B_BLACK", "BLACK%^B_WHITE" });
+            "YELLOW", "GREEN", "WHITE%^%^B_BLACK", "BLACK%^%^B_WHITE" });
     string *b_colors = ({ "B_RED", "B_BLUE", "B_CYAN", "B_MAGENTA", "B_ORANGE",
             "B_YELLOW", "B_GREEN" });
 
@@ -828,5 +829,4 @@ string cleaned_end(string str){
     str = cleaned_name(str);
     return str;
 }
-
 

@@ -10,7 +10,7 @@ static void create(){
     SetAdjectives( ({"magic","magical","glowing","light","glowing"}) );
     SetShort("a brilliant, glowing ring");
     SetLong("This magical ring radiates very bright light that "+
-      "can illuminate a room.");
+            "can illuminate a room.");
     SetRadiantLight(30);
     SetMass(1);
     SetBaseCost("silver",5000);

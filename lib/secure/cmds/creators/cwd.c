@@ -6,10 +6,9 @@
 
 inherit LIB_DAEMON;
 
-void help() {
-    message("help", "Syntax: cwd\n\n"
+string GetHelp(){
+    return ("Syntax: cwd\n\n"
             "Defined internal to the user object.\n"
-            "Prints your current working directory."
-            "\n\n"
-            "See also: cd", this_player());
+            "Prints your current working directory.\n"
+            "See also: cd, mkdir, rmdir");
 }

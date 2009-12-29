@@ -23,9 +23,10 @@ static string SetSaveFile(string str){
 
 mixed do_thing(string str){
     mixed ret;
-    string msg = "%^YELLOW%^"+GetName()+" decides to "+response+".%^RESET%^";
+    string msg = "%^B_BLACK%^%^YELLOW%^"+GetName()+" decides to "+response+".%^RESET%^";
     tell_room(environment(this_object()),msg);
-    ret = eventForce(str);
+    //ret = unguarded( (: command(response) :) );
+    command(response);
     playing = 0;
     return ret;
 }

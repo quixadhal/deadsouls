@@ -12,9 +12,9 @@ static void create() {
     SetVerb("pulsecheck");
     SetRules("LVS");
     SetErrorMessage("pulsecheck what?");
-    SetHelp("Syntax: <pulsecheck CREATURE>\n\n"
+    SetHelp("Syntax: pulsecheck <CREATURE>\n\n"
             "Check a creature's heartbeat.\n"
-            "\nSee also: zap");
+            "See also: zap");
 }
 
 mixed can_pulsecheck_liv(string str) { 

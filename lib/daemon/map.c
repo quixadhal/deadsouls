@@ -2,11 +2,15 @@
 #include <daemons.h>
 #include <save.h>
 #define FLOW_DEBUGGING 0
+#ifndef MAP_CACHE
+#define MAP_CACHE 1
+#endif
 
 inherit LIB_DAEMON;
 mapping MapMap, MapCache;
-static int caching = 0;
+static int heart_count = 1, sweepflag, roomcount, caching = 0;
 static string SaveFile;
+static string *sweeprooms = ({});
 
 void create(){
 #if WIZMAP
@@ -17,7 +21,7 @@ void create(){
     if(file_exists(SaveFile)){
         RestoreObject(SaveFile, 1);
     }
-    set_heart_beat(300);
+    set_heart_beat(1);
 #endif
 }
 
@@ -28,7 +32,31 @@ void zero(){
 }
 
 void heart_beat(){
-    SaveObject(SaveFile, 1);
+    if(!(heart_count % 900)){ //Every 15 minutes save the cache
+        SaveObject(SaveFile, 1);
+    }
+    if(!(heart_count % 64800)){ //Every 18 hours refresh the cache
+        if(!sweepflag){
+            sweepflag = 1;
+            sweeprooms = keys(MapMap);
+        }
+    }
+    if(sweepflag){
+        if(sizeof(sweeprooms) <= roomcount){
+            sweepflag = 0;
+            roomcount = 0;
+            return;
+        }
+        if(MapMap[sweeprooms[roomcount]]["name"]){
+            this_object()->GetMap(MapMap[sweeprooms[roomcount]]["name"], 8, 1);
+        }
+        else {
+            map_delete(MapMap, sweeprooms[roomcount]);
+            map_delete(MapCache, sweeprooms[roomcount]);
+        }
+        roomcount++;
+    }
+    heart_count++;
 }
 
 int eventDestruct(){
@@ -54,7 +82,7 @@ int GetCaching(){
     return caching;
 }
 
-varargs mixed GetMap(mixed args, int size){
+varargs mixed GetMap(mixed args, int size, int forced){
 #if WIZMAP
     string ret = "";
     int i,x,line,tempy,tmpres, res = size;
@@ -66,10 +94,11 @@ varargs mixed GetMap(mixed args, int size){
         return ret;
     }
     if(!size) size = 4;
-    if(size > 15) size = 6;
+    if(size > 15 && !creatorp(this_player())) size = 6;
     if(!args) args = base_name(environment(this_player()));
     if(objectp(args)) args = base_name(args);
     myspot=ROOMS_D->GetGridMap(args);
+    if(!myspot) return 0;
     mycoords = myspot["coord"];
     res = size;
     if(!MapCache) MapCache = ([]);
@@ -78,7 +107,7 @@ varargs mixed GetMap(mixed args, int size){
         ret = "%^RED%^Map unavailable.%^RESET%^";
         return ret;
     }
-    if(caching && MapCache[mycoords]){
+    if(!forced && caching && MapCache[mycoords]){
         return MapCache[mycoords];
     }
     start = ([ "x" : myspot["coords"]["x"] - (res/2),
@@ -230,4 +259,3 @@ varargs mixed GetMap(mixed args, int size){
     return "";
 #endif
 }
-

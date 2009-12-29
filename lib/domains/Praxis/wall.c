@@ -38,11 +38,11 @@ int scribble(string str) {
         return 0;
     }
     text_scan += ({ str });
-    personal_log("graffitti: "+ (string)this_player()->query_name()+" "+ctime(time())+"\n"+str+"\n");
+    personal_log("graffitti: "+ this_player()->query_name()+" "+ctime(time())+"\n"+str+"\n");
     SaveObject("/domains/Praxis/data/wall");
     message("my_action", sprintf("You scribble: %s", str), this_player());
     message("other_action", sprintf("%s scribbles some graffitti on the wall.",
-                (string)this_player()->query_cap_name()), this_object(),
+                this_player()->query_cap_name()), this_object(),
             ({ this_player() }));
     return 1;
 }
@@ -62,7 +62,7 @@ int read(string str) {
         message("info", text_scan[i], this_player());
     }
     message("other_action", sprintf("%s reads the graffitti on the wall.",
-                (string)this_player()->query_cap_name()), this_object(),
+                this_player()->query_cap_name()), this_object(),
             ({ this_player() }));
     return 1;
 }

@@ -19,10 +19,11 @@ void create(){
 
 varargs mixed eventInstall(object what, object where, int auto){
     int ret = this_object()->eventMove(where);
+    string wat = remove_article(where->GetShort());
     if(ret){
-        write("You install "+GetShort()+" into "+where->GetShort()+".");
+        write("You install "+GetShort()+" into the "+wat+".");
         say(this_player()->GetName()+" installs "+GetShort()+" into "+
-                possessive(this_player())+" "+where->GetShort()+".");
+                where->GetShort()+".");
         return 1;
     }
     else {

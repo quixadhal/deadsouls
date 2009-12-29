@@ -11,6 +11,7 @@
 #include ROOMS_H
 #include <cfg.h>
 #include <lib.h>
+#include <logs.h>
 #include <objects.h>
 #include <privs.h>
 #include <dirs.h>
@@ -103,6 +104,7 @@ static void heart_beat(){
     heart_count++;
     if(!(heart_count % 60)){
         CostErr = ([]);
+        this_object()->GetPerformanceScore(1);
         if(in_reset){
             eventReset();
         }
@@ -615,7 +617,7 @@ string error_handler(mapping mp, int caught) {
     else if(undefinedp(CostErr[now])) CostErr[now] = 0;
 
     if(CONSOLE_TRACE){
-        dbg = "\n----\n";
+        dbg = "\n----\n"+mud_name()+"\n----\n";
         foreach(mixed key, mixed val in mp){
             dbg += identify(key) + " : "+identify(val)+"\n";
         }
@@ -646,7 +648,7 @@ string error_handler(mapping mp, int caught) {
             shutdown(-9);
         }
     }
-    ret = "---\n"+timestamp()+"\n"+ standard_trace(mp);
+    ret = "\n--- "+mud_name()+"\n"+timestamp()+"\n"+ standard_trace(mp);
     if( caught ) write_file(file = "/log/catch", ret);
     else write_file(file = "/log/runtime", ret);
     if( this_player(1) && find_object(SEFUN) ) {
@@ -1023,7 +1025,7 @@ static void eventReset(){
         reset_handle = call_out( (: eventReset :), TIME_TO_RESET );
     }
     x = reclaim_objects();
-    write_file(DIR_LOGS "/reset", "Reset " + ResetNumber + " occurred at: " +
+    write_file(LOG_RESET, "Reset " + ResetNumber + " occurred at: " +
             ctime(time()) + "\n");
     if(!RESET_ALL) obs = objects( (: !environment($1) && (random(100) < 26) :) );
     else obs = objects( (: !environment($1) :) );
@@ -1050,7 +1052,7 @@ static void eventReset(){
         if( f ) catch(evaluate(f));
     }
     in_reset = 0;
-    write_file(DIR_LOGS "/reset", "\t" + x + " objects reclaimed, " +
+    write_file(LOG_RESET, "\t" + x + " objects reclaimed, " +
             (sizeof(obs) - y) + " objects reset, " + y + " objects "
             "cleaned.\n");
 }
@@ -1078,8 +1080,8 @@ int GetBootScore(){
     return BootScore;
 }
 
-int GetPerformanceScore(){
-    if(!PerformanceScore){
+varargs int GetPerformanceScore(int force){
+    if(force || !PerformanceScore){
         int ret, count = 1000;
         ret = time_expression {
             while(count){
@@ -1128,8 +1130,7 @@ int ReadName(){
     string *line_array;
     int port = query_host_port();
     MudName = "DeadSoulsNew";
-    if(!find_object(INSTANCES_D) || !ENABLE_INSTANCES ||
-            INSTANCES_D->GetMyInstanceName() == "global"){
+    if(!ENABLE_INSTANCES){
         mconfig = "/secure/cfg/mudos.cfg";
     }
     else {

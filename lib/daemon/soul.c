@@ -29,7 +29,7 @@ private string array Adverbs = ({});
 
 static private void validate() {
     if(!this_player()) return 0;
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) && 
+    if( !(master()->valid_apply(({ "ASSIST" }))) && 
             !member_group(this_player(), "EMOTES") )
         error("Illegal attempt to access SOUL_D: "+get_stack()+" "+identify(previous_object(-1)));
 }

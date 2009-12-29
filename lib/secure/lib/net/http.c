@@ -57,7 +57,7 @@ int ok_to_send, boundary_count;
 int logging = 1;
 
 void validate(){
-    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
+    if(!master()->valid_apply(({ "SECURE", "ASSIST" })) &&
             strsrch(base_name(previous_object()), DIR_WWW_GATEWAYS)){
         string offender = identify(previous_object(-1));
         debug("HTTPD SECURITY VIOLATION: "+offender+" ",get_stack(),"red");

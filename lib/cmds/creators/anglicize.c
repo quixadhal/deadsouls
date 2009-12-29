@@ -34,8 +34,7 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: anglicize <target>\n\n"
-            "Make the target's native language English.\n\n",
-            this_player());
+string GetHelp() {
+    return ("Syntax: anglicize <target>\n\n"
+            "Make the target's native language English.");
 }                                                    

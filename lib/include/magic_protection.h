@@ -4,7 +4,7 @@
    created by Blitz@Dead Souls
 
 passed class to AddMagicProtection()
-  int type                      Define what damage bits this magic
+  int bits                      Define what damage bits this magic
                                 protection supports.
  
  
@@ -36,6 +36,15 @@ passed class to AddMagicProtection()
   mixed args                    Used with the above hit function.
                                 This is passed as the last argument
                                 to the hit function
+ 
+  object ob                     Pointer to the object that defined
+                                the protection.
+
+  string obname                 The file_name() of the object that
+                                defined the protection.
+  
+  string name                   Some user-ready name of the protection,
+                                such as "magical buffer"
 }
  
 *********************************************************/
@@ -50,4 +59,7 @@ class MagicProtection {
       function hit;
       mixed args;
       object caster;
+      object ob;
+      string obname;
+      string name;
 }

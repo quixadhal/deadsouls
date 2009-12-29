@@ -28,7 +28,7 @@ mixed cmd(string str) {
         mapping tmp;
         string opt, tmpstr;
 
-        tmp = (mapping)INTERMUD_D->GetMudList();
+        tmp = INTERMUD_D->GetMudList();
         if( str[0] != '-' ) str = "-n " + str;
         opt = str[1..1];
         str = str[3..];
@@ -67,7 +67,7 @@ mixed cmd(string str) {
     }
     else {
         borg = ([ ]);
-        foreach( mud, info in (mapping)INTERMUD_D->GetMudList() )
+        foreach( mud, info in INTERMUD_D->GetMudList() )
             if( all == 1 || info[0] == -1 ) borg[mud] = info;
     }
     if( !sizeof(borg) ) {
@@ -125,9 +125,8 @@ int alphabet(string a, string b) {
     else return -1;
 }
 
-void help() {
-    message("help", "Syntax: <mudlist>\n"
-            "        <mudlist -dmn [arg]>\n\n"
+string GetHelp() {
+    return ("Syntax: mudlist [-d] [-m] [-n] [arg]\n"
             "        <mudlist imc2>\n\n"
             "Without any arguments, it gives a full listing of all muds "
             "with which this mud is capable of communication through "
@@ -140,6 +139,6 @@ void help() {
             "Note that the argument need not be complete, for example:\n"
             "\t mudlist -n idea\n"
             "will list IdeaExchange as well as any other mud whose name "
-            "begins with the string \"idea\".\n\n"
-            "See also: finger, mail, rwho, tell", this_player());
+            "begins with the string \"idea\".\n"
+            "See also: finger, mail, rwho, tell");
 }

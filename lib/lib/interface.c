@@ -39,12 +39,14 @@ static void create(){
 
 static string process_input(string str){
     command::SetCommandFail(0);
-    command::process_input(str);
+    str = command::process_input(str);
     if( Client ){
         int cl;
         sscanf(str, "%d %s", cl, str);
     }
-    if( (str = editor::process_input(str)) == "" ) return "";
+    if( (str = editor::process_input(str)) == "" ){
+        return "";
+    }
     else {
         str = nmsh::process_input(str);
         if( str != "" ){
@@ -61,16 +63,20 @@ static void terminal_type(string str){
     else SetTerminal(lower_case(str));
 }
 
-static void window_size(int width, int height){ SetScreen(width, height); }
+static void window_size(int width, int height){ 
+    if(query_verb() == "screen" || 
+            !this_object()->GetProperty("screenlock")){
+        SetScreen(width, height); 
+    }
+}
 
-varargs int eventReceive(string message, int noprompt, int noerase){
+varargs void eventReceive(string message, int noprompt, int noerase){
     int max_length = __LARGEST_PRINTABLE_STRING__ - 192;
-    string prompt = this_object()->GetPrompt(1);
+    string prompt = this_object()->GetPrompt(!(in_edit(this_object())));
     string *stack = call_stack(2);
     if(stack[1] == "write2" && message != "\n"){
         noerase = 1;
     }
-    if(in_edit(this_object())) prompt = this_object()->GetPrompt();
     if(sizeof(message) > max_length){
         while(sizeof(message)){
             string tmp = message[0..max_length];
@@ -160,7 +166,7 @@ static void receive_snoop(string str){ receive_message("snoop", "%"+str); }
 int Setup(){
     command::Setup();
     nmsh::Setup();
-    TermInfo = (mapping)TERMINAL_D->query_term_info(Terminal);
+    TermInfo = TERMINAL_D->query_term_info(Terminal);
 }
 
 int eventFlushQueuedMessages(){
@@ -229,10 +235,11 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     int msg_class;
     string prompt = "";
     object *passengers = filter(all_inventory(this_object()), (: living :) );
+    if( !msg ) return 0;
     if(this_object()->GetProperty("reprompt")){
         prompt = this_object()->GetPrompt(1);
+        if(!this_object()->GetCharmode()) msg = "\n" + msg;
     } 
-    if( !msg ) return 0;
     if( !arg2 && !arg3 ) msg_class = MSG_ENV;
     else if( !arg2 ){
         if( !intp(arg3) ) msg_class = MSG_ENV;
@@ -255,16 +262,20 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     if( GetLogHarass() )
         log_file("harass/" + GetKeyName(), strip_colours(msg) + "\n");
     if( !TermInfo )
-        TermInfo = (mapping)TERMINAL_D->query_term_info(GetTerminal());
+        TermInfo = TERMINAL_D->query_term_info(GetTerminal());
+
+    if(this_object()->GetParanoia("cursefilter")){
+        msg = FILTER_D->eventFilter(msg, "curse");
+    }
     if( !(msg_class & MSG_NOCOLOUR) ){
         int indent;
-
-        if( msg_class & MSG_CONV ) indent = 4;
-        else indent = 0;
+        //Uncomment below to enable indentation of "conversation"
+        //if( msg_class & MSG_CONV ) indent = 4;
+        //else indent = 0;
         if( msg_class & MSG_NOWRAP )
             msg = terminal_colour(msg + "%^RESET%^", TermInfo);
         else
-            msg = terminal_colour(msg + "%^RESET%^\n"+prompt, TermInfo,
+            msg = terminal_colour(msg + "%^RESET%^\n" + prompt, TermInfo,
                     GetScreen()[0], indent);
     }
     else if( !(msg_class & MSG_NOWRAP) ) msg = wrap(msg, GetScreen()[0]-1);
@@ -276,8 +287,12 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
             receive(msg);
             return 1;
         }
-        if( Client ) eventReceive("<" + msg_class + " " + msg + " " + msg_class +">\n");
-        else eventReceive(msg);
+        if( Client ){
+            eventReceive("<"+msg_class+" "+msg+" "+msg_class+">\n");
+        }
+        else {
+            eventReceive(msg);
+        }
     }
     return 1;
 }
@@ -326,12 +341,17 @@ int SetLogHarass(int x){
 int GetLogHarass(){ return LogHarass; }
 
 int *SetScreen(int width, int height){ 
-    if( !width || !height ) return Screen;
+    if(!width) width = (__LARGEST_PRINTABLE_STRING__-1)/50;
+    if(!height) height = __LARGEST_PRINTABLE_STRING__/width;
+
     width--;
     if( width * height > __LARGEST_PRINTABLE_STRING__ ){
         if( width > height ) width = __LARGEST_PRINTABLE_STRING__/height;
         else if( height > width ) height = __LARGEST_PRINTABLE_STRING__/width;
-        else width = height = (__LARGEST_PRINTABLE_STRING__-1)/2;
+        else {
+            width = (__LARGEST_PRINTABLE_STRING__-1)/50;
+            height = 50;
+        }
     }
     return (Screen = ({ width, height })); 
 }
@@ -357,7 +377,7 @@ string SetTerminal(string terminal){
         break;
     }
     if( terminal != Terminal ) 
-        TermInfo = (mapping)TERMINAL_D->query_term_info(terminal);
+        TermInfo = TERMINAL_D->query_term_info(terminal);
     return Terminal = terminal;
 }
 
@@ -440,4 +460,3 @@ static int rAnsi(string str){
     }
     return ret;
 }
-

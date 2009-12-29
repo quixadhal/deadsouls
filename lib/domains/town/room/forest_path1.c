@@ -32,7 +32,11 @@ void init(){
 }
 
 int CanReceive(object ob){
-    if(!interactive(ob) && starts_with(base_name(environment(ob)),"/domains/town/virtual") &&
+    object env = environment(ob);
+    if(!env || base_name(env) != "/domains/town/virtual/forest/24,1"){
+        return ::CanReceive();
+    }
+    if(living(ob) && !interactive(ob) &&
             (!ob->GetRiders() || !sizeof(ob->GetRiders()))){
         ob->eventPrint("You find yourself unable to leave the forest.");
         return 0;

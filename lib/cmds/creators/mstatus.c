@@ -8,19 +8,17 @@ mixed cmd(string arg) {
     return 1;
 }
 
-string GetHelp(string str) {
-    return (@EndText
-Syntax: mstatus [<arg>]
-Effect: Give you statistics on the driver and mudlib
-If the optional argument is given, you also get:
-add_message statistics
-Hash table of living objects
-Function cache information
-Heart beat information
-Shared string hash table
-Call out information
-Object name hash table status
-See man: mud_status
-See also: netstat, fdinfo, cache, callouts, dumpallobj, opcprof
-EndText);
+string GetHelp() {
+    return "Syntax: mstatus <arg>\n\n"
+        "Gives you statistics on the driver and mudlib. "
+        "If the optional argument is given, you also get:"
+        "\nadd_message statistics"
+        "\nHash table of living objects"
+        "\nFunction cache information"
+        "\nHeart beat information"
+        "\nShared string hash table"
+        "\nCall out information"
+        "\nObject name hash table status"
+        "\nSee man: mud_status"
+        "\nSee also: netstat, fdinfo, cache, callouts, dumpallobj, opcprof";
 }

@@ -42,24 +42,23 @@ mixed cmd(string str) {
         else return GetHelp(0);
     }
     x = time() - (OneDay * x);
-    if( !(int)NOTIFY_D->eventPrintNotices(this_player(), x) )
+    if( !NOTIFY_D->eventPrintNotices(this_player(), x) )
         return "No recent notices found.";
     else return 1;
 }
 
 string GetHelp(string foo) {
     string str;
-    str =   "Syntax: notices\n"
-        "        notices <number of days back>\n\n"
+    str = "Syntax: notices [number of days back]\n\n"
         "Without arguments, this command displays all notices "
         "posted within the last 24 hours.  You may also "
         "specify how many days back to search.  For example, "
         "\"notices 7\" will display all notices posted within "
-        "the last week.\n\n";
+        "the last week.";
     if( archp(this_player()) )
-        str += "Arch Commands: notices -d <id number>\n"
+        str += "\nArch Commands: notices -d <id number>\n"
             "               notices -p <file name> <number of days back>\n\n"
             "The d option deletes the specified notice id number.\n"
-            "the p option will dump the output into <file name>\n";
+            "the p option will dump the output into <file name>";
     return str;
 }

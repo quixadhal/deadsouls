@@ -37,7 +37,7 @@ void eventReceiveLocateRequest(mixed array packet) {
     if( !(ob = find_player(packet[6])) || ob->GetInvis()) return;
     if( interactive(ob) ) {
         string array tmp = ({ });
-        if( in_input(ob) || in_edit(ob) )
+        if( in_edit(ob) || ob->GetCedmode() )
             tmp += ({ "editing" });
         if( (idl = query_idle(ob)) > 60 )
             tmp += ({ "inactive" });
@@ -47,7 +47,7 @@ void eventReceiveLocateRequest(mixed array packet) {
     else status = "link-dead";
     INTERMUD_D->eventWrite( ({ "locate-reply", 5, mud_name(), 0, packet[2], 
                 packet[3], mud_name(),
-                (string)ob->GetName(), idl, status }) );
+                ob->GetName(), idl, status }) );
 }
 
 void eventReceiveLocateReply(mixed array packet) {
@@ -61,7 +61,7 @@ void eventReceiveLocateReply(mixed array packet) {
     }
     tn("Locate reply received: "+identify(packet),"white");
     m = packet[7] + " was just located on " + packet[6] + ".";
-    if( (idl = (int)packet[8]) > 60 )
+    if( (idl = packet[8]) > 60 )
         m += sprintf(" (idle %02d:%02d:%02d)", idl/3600, (idl/60)%60, idl%60);
     if( stringp(packet[9]) )
         m += " [status: " + packet[9] + "]";
@@ -72,7 +72,7 @@ void eventSendLocateRequest(string target) {
     string who, crypt_who;
     mixed *locate_request;
 
-    who = (string)this_player(1)->GetKeyName();
+    who = this_player(1)->GetKeyName();
 
     if(this_player(1)->GetInvis()){
         foreach(string key, string val in locate_user_table){

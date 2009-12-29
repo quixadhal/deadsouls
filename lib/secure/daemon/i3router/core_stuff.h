@@ -79,6 +79,7 @@ void heart_beat(){
     this_object()->check_graylist();
     if(!(heart_count % 60)) {
         this_object()->check_discs();
+        this_object()->check_desync();
         SaveObject(SAVE_ROUTER);
     }
     if(!(heart_count % 3600)){

@@ -68,7 +68,7 @@ mixed eventDrink(object who){
     int x;
     object ob;
 
-    if( (tmp = (mixed)who->eventDrink(this_object())) != 1 ) return tmp;
+    if( (tmp = who->eventDrink(this_object())) != 1 ) return tmp;
     if( (x = functionp(MyMessage)) && !(x & FP_OWNER_DESTED) ){
         evaluate(MyMessage, who);
     }
@@ -78,7 +78,7 @@ mixed eventDrink(object who){
         mymsg = replace_string(MyMessage, "$P", "your");
         othermsg = replace_string(OtherMessage, "$P", possessive(who));
         mymsg = replace_string(mymsg, "$N", "you");
-        othermsg = replace_string(othermsg, "$N", (string)who->GetName());
+        othermsg = replace_string(othermsg, "$N", who->GetName());
         who->eventPrint( capitalize(mymsg) );
         environment(who)->eventPrint( capitalize(othermsg), who );
     }
@@ -94,15 +94,15 @@ mixed eventDrink(object who){
         ob->SetMass(10);
         ob->SetDestroyOnSell();
     }
-    if( !((int)ob->eventMove(who)) ){
-        who->eventPrint("You drop " + (string)ob->GetShort() + ".");
-        environment(who)->eventPrint((string)who->GetName() +
-                " drops " + (string)ob->GetShort() + ".", who);
+    if( !(ob->eventMove(who)) ){
+        who->eventPrint("You drop " + ob->GetShort() + ".");
+        environment(who)->eventPrint(who->GetName() +
+                " drops " + ob->GetShort() + ".", who);
         ob->eventMove(environment(who));
     }
 
     if( x = GetPoison() ){
-        if( random((int)who->GetStatLevel("luck")) > 35 )
+        if( random(who->GetStatLevel("luck")) > 35 )
             who->eventPrint("That didn't seem to taste quite right.");
         who->AddPoison(x);
     }
@@ -113,7 +113,7 @@ mixed eventDrink(object who){
 mixed eventEat(object who){
     mixed tmp;
     int x;
-    if( (tmp = (mixed)who->eventEat(this_object())) != 1 ) return tmp;
+    if( (tmp = who->eventEat(this_object())) != 1 ) return tmp;
     if( (x = functionp(MyMessage)) && !(x & FP_OWNER_DESTED) ){
         evaluate(MyMessage, who);
     }
@@ -123,12 +123,12 @@ mixed eventEat(object who){
         othermsg = replace_string(OtherMessage, "$P",
                 possessive(who));
         mymsg = replace_string(mymsg, "$N", "you");
-        othermsg = replace_string(othermsg, "$N", (string)who->GetName());
+        othermsg = replace_string(othermsg, "$N", who->GetName());
         who->eventPrint( capitalize(mymsg) );
         environment(who)->eventPrint( capitalize(othermsg), who );
     }
     if( x = GetPoison() ){
-        if( random((int)who->GetStatLevel("luck")) > 35 )
+        if( random(who->GetStatLevel("luck")) > 35 )
             who->eventPrint("You notice a strange aftertaste.");
         who->AddPoison(x);
     }
@@ -142,7 +142,7 @@ mixed eventEat(object who){
 int eventPoison(object who, object agent, int x){
     who->eventPrint("You put some poison "
             "in " + add_article(GetShort()) + ".");
-    environment(who)->eventPrint( (string)who->GetName()+" puts something "
+    environment(who)->eventPrint( who->GetName()+" puts something "
             "in " + add_article(GetShort()) + ".", who);
     AddPoison(x);
     return 1;

@@ -15,15 +15,12 @@ inherit LIB_DAEMON;
         return 1;
     }
 
-void help() {
-    message("help",
-            "Syntax: reprompt on\n"
-            "        reprompt off\n\n"
+string GetHelp() {
+    return ("Syntax: reprompt [on | off]\n\n"
             "Enables or disables the redrawing of your prompt after "
             "receiving messages. Not all clients support this. Note "
             "that half-issued commands may wind up looking strange "
             "unless charmode is also enabled.\n"
-            "See also: charmode, prompt, env",
-            this_player() );
+            "See also: charmode, prompt, env");
 }
 

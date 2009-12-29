@@ -16,7 +16,7 @@ mixed cmd(mixed args) {
     int reload_player, action = 0;
     mapping GroupsMap = ([]);
 
-    if( !this_player() || !((int)master()->valid_apply(({ "ASSIST" }))) )
+    if( !this_player() || !(master()->valid_apply(({ "ASSIST" }))) )
         error("Illegal attempt to access groupmod: "+get_stack()+" "+identify(previous_object(-1)));
 
 
@@ -161,18 +161,18 @@ mixed cmd(mixed args) {
             tell_player(player, "You've had your group membership changed "+
                     "in an important way.\n\nYour user object will be reloaded in "+
                     "a few moments.\n\n");
-             RELOAD_D->eventReload(player, 3);
+            RELOAD_D->eventReload(player, 3);
         }
     }
     dudename = "";
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: groupmod [-a|-r] GROUP NAME \n"
-            "        groupmod [-c|-d] GROUP\n\n"
+string GetHelp() {
+    return ("Syntax: groupmod [-a|-r] <GROUP> <NAME> \n"
+            "        groupmod [-c|-d] <GROUP>\n\n"
             "Modifies /secure/cfg/groups.cfg with the desired information.\n"
             "To create a group called MUDKIPZ: groupmod -c mudkipz\n"
-            "To add Yotsuba as member of that group: groupmod -a mudkipz yotsuba"
-            "", this_player());
+            "To add Yotsuba as member of that group: "
+            "groupmod -a mudkipz yotsuba");
 }

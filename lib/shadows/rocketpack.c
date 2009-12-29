@@ -21,7 +21,9 @@ int eventShadow(object whom){
 }
 
 varargs int eventFall(mixed args...){
-    if(!packob || !packob->GetRunning()) return person->eventFall(args);
+    if(!packob || !packob->GetRunning()){
+        //return person->eventFall(args);
+    }
     packob->eventDecrementCharge();
     return 1;
 }

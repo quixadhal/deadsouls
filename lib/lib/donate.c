@@ -15,8 +15,8 @@ static void create(){
 }
 
 static void init(){
-    if( (string)this_player()->ClassMember((string)GetOwner()) ||
-            (string)this_player()->GetClan() == (string)GetOwner() ){
+    if( this_player()->ClassMember(GetOwner()) ||
+            this_player()->GetClan() == GetOwner() ){
         add_action( (: eventDonate :) , "donate" );
     }
 }
@@ -67,7 +67,7 @@ int eventDonate(string amt, string type){
         tp->eventPrint("Nice try!\n");
         return 0;
     }
-    if((int)tp->GetCurrency(type) < amount){
+    if(tp->GetCurrency(type) < amount){
         tp->eventPrint("You don't have that much " + type + "!\n");
         return 0;
     }

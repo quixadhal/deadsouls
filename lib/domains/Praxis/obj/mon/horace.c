@@ -28,6 +28,6 @@ create() {
 int is_invincible() {
     SetStaminaPoints(GetMaxStaminaPoints());
     this_object()->eventForce("shout in eltherian Help!! I am being attacked by "+
-            (string)previous_object()->query_cap_name());
+            previous_object()->query_cap_name());
     return 0;
 }

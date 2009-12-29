@@ -40,13 +40,13 @@ int cmd(string str) {
     }
 
     if(sscanf(str, "%s > %s", tmp, output) == 2) {
-        if(output[0] != '/') output = (string)previous_object()->get_path()+"/"+output;
+        if(output[0] != '/') output = previous_object()->get_path()+"/"+output;
         str = tmp;
     }
     else output = 0;
     if(sscanf(str, "'%s' %s", exp, file) != 2 &&
             sscanf(str, "%s %s", exp, file) != 2) return 0;
-    if(!(max = sizeof(files = (string *)wild_card(file)))) {         
+    if(!(max = sizeof(files = wild_card(file)))) {         
         message("system", "File not found.", this_player());
         return 1;
     }
@@ -54,7 +54,7 @@ int cmd(string str) {
     if(flags&GREP_NUMBERED_LINES){
         for(i=0, borg = ([]); i<max; i++) {
             if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
-                r_files = (string *)wild_card(files[i]+"/*");
+                r_files = wild_card(files[i]+"/*");
                 if(max + sizeof(r_files) > max_files){
                     write("Too many files in the recurse. Aborting grep.");
                     return 1;
@@ -97,7 +97,7 @@ int cmd(string str) {
     else {
         for(i=0, borg = ([]); i<max; i++) {
             if((file_size(files[i]) == -2)&&(flags&GREP_RECURSE_DIRECTORIES)){
-                r_files = (string *)wild_card(files[i]+"/*");
+                r_files = wild_card(files[i]+"/*");
                 if(max + sizeof(r_files) > max_files){
                     write("Too many files in the recurse. Aborting grep.");
                     return 1;
@@ -139,9 +139,8 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: <grep [-nr] '[pattern]' [file] (> [redirect])>\n\n"
+string GetHelp() {
+    return ("Syntax: grep [-nr] '[pattern]' [file] (> [redirect])\n\n"
             "Searches a file or group of files for a specific pattern.  "
             "If the pattern is a single word, then no '' is needed.  Patterns "
             "of more than one word or beginning with a '-' however, need to be enclosed in ''.  "
@@ -149,6 +148,5 @@ void help() {
             "\n  Options:\n"
             "    -r  recursive search, search extends to child directories.\n"
             "    -n  numbered lines, includes line numbers of successful hits."
-            "\n\nSee also: cd, ls, mv, pwd, rm", this_player()
-           );
+            "\nSee also: cd, ls, mv, pwd, rm");
 } 

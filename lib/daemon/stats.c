@@ -49,7 +49,7 @@ static void SetStats(){
         foreach(mixed key, mixed val in stats){
             SetStat(key, race, val["Class"]);
         }
-     }
+    }
 }
 
 mapping GetStats(){

@@ -3,11 +3,11 @@
 
 inherit LIB_DAEMON;
 
-void help();
+string GetHelp();
 object ob;
 string ele;
 
-int cmd(string str) {
+mixed cmd(string str) {
     int i;
     mixed justvars, tmp;
     string cmd, what, ret = "";;
@@ -18,8 +18,7 @@ int cmd(string str) {
     }
 
     if(!str || str == ""){
-        help();
-        return 1;
+        return GetHelp();
     }
 
     tmp = DEFINES_D->GetDefine(str);
@@ -49,11 +48,11 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: vars <object or file>\n"
+string GetHelp(){
+    return ("Syntax: vars <object or file>\n\n"
             "Dumps the variables of an object as well as their values.\n"
             "Examples:\n"
             "vars kim\n"
-            "vars /daemon/classes\n\n"
+            "vars /daemon/classes\n"
             "See also: var, variables");
 }

@@ -21,7 +21,7 @@ mixed can_uninstall_obj(mixed foo) {
     return this_player()->CanManipulate();
 }
 
-mixed can_uninstall_obj_word_obj(mixed foo) {
+mixed can_uninstall_obj_word_obj(mixed foo...) {
     return this_player()->CanManipulate();
 }
 

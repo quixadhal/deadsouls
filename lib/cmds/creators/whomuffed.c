@@ -31,12 +31,9 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: whomuffed\n"
-            "        whomuffed <name>\n\n"
+string GetHelp() {
+    return ("Syntax: whomuffed [name]\n\n"
             "This command lists who is ignored by the player specified.\n"
-            "See also: earmuff, unmuff\n\n",
-            this_player() );
+            "See also: earmuff, unmuff");
 }
 

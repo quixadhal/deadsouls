@@ -12,15 +12,13 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
+string GetHelp() {
     string cre = "$P shows current working directory\n"+
         "To have your creator character's name "+
         "and current dir show up:\nprompt $N $P >\nIn yellow:\n"+
         "prompt %%^^YELLOW%%^^$N $P >%%^^RESET%%^^";
     if(!creatorp(this_player())) cre = "";
-    message("help",
-            "Syntax: prompt <options>"
-            "        \n\n"
+    return ("Syntax: prompt [options]\n\n"
             "This command allows you to customize your prompt. You may use a static prompt:\n"
             "prompt >\n"
             "Or you may choose special tokens for an active prompt. The tokens available are:\n"
@@ -43,6 +41,5 @@ void help() {
             "You can colorize elements of the prompt with the "
             "appropriate color tags, for example:\n"
             "prompt %%^^RED%%^^$M %%^^RESET%%^^ >\n"
-            "\nSee also: reprompt, env, colors",
-        this_player() );
+            "\nSee also: reprompt, env, colors");
 }

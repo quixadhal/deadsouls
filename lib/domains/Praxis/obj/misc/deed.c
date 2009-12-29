@@ -42,13 +42,13 @@ static int cmd_build(string str) {
     if(str != "estate") return 0;
     if(!high_mortalp(this_player())) 
         return notify_fail("Only high mortals may build!\n");
-    if((int)environment(this_player())->GetProperty("indoors")) {
+    if(environment(this_player())->GetProperty("indoors")) {
         message("system", "You cannot build an estate indoors!", this_player());
         return 1;
     }
     if(sizeof(filter_array(all_inventory(environment(this_player())),
                     "estates", this_object())) >=
-            (int)environment(this_player())->GetProperty("allow estate")) {
+            environment(this_player())->GetProperty("allow estate")) {
         message("system", "This area cannot support an estate.",this_player());
         return 1;
     }
@@ -72,7 +72,7 @@ static void input_long(string str) {
     __EstateLong = str;
     message("system", "Please give a short description for the room "
             "people will enter from here.  This is the description like "
-            "\"the entrance to "+(string)this_player()->query_CapName()+"'s"
+            "\"the entrance to "+this_player()->query_CapName()+"'s"
             " estate\" that is seen when in brief mode.", this_player());
     message("prompt", "Enter in a short description: ", this_player());
     input_to("input_short");
@@ -141,7 +141,7 @@ void done_edit(mixed *unused) {
     write_file(__NewRoom, "SetShort: $"+__Short+"\n");
     write_file(__NewRoom, "SetLong: $"+__Long+"\n");
     write_file(__NewRoom, "AddExit: "+__Exit+"\n");
-    ESTATES_D->add_estate((string)this_player()->query_CapName(), __NewRoom,
+    ESTATES_D->add_estate(this_player()->query_CapName(), __NewRoom,
             file_name(environment(this_player())), __EstateLong);
     //seteuid(getuid());
     message("system", "Room begun.  You will see your addition "
@@ -159,5 +159,5 @@ static private string create_file() {
 }
 
 static int estates(object ob) {
-    return (int)ob->id("estate");
+    return ob->id("estate");
 }

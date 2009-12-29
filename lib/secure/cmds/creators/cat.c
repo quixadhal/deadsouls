@@ -14,7 +14,7 @@ mixed cmd(string str) {
     string tmp;
 
     if( !str ) return "You must specify a file to cat.";
-    else str = absolute_path((string)this_player()->query_cwd(), str);
+    else str = absolute_path(this_player()->query_cwd(), str);
     if( !file_exists(str) ) return "File " + str + " not found.";
     else if( !(tmp = read_file(str)) )
         return "Unable to read file " + str + ".";
@@ -24,8 +24,9 @@ mixed cmd(string str) {
     return 1;
 }
 
-int help() {
-    message("help", "Syntax: <cat [file]>\n\n"
-            "Displays the contents of the file mentioned all at once.",
-            this_player());
+string GetHelp(){
+    return ("Syntax: cat <file>\n\n"
+            "Displays the contents of the file mentioned all at once. "
+            "May truncate output if it is a long file.\n"
+            "See also: longcat");
 }

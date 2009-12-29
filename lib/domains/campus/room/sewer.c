@@ -48,6 +48,10 @@ static void create() {
     SetFlyRoom("/domains/campus/room/access0");
 }
 
+void init(){
+    ::init();
+}
+
 int SteamBlast(){
     object *temparr,*stuff,*lstuff;
     int i;

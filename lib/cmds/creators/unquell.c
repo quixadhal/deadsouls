@@ -1,10 +1,7 @@
-// By Magnafix 10-14-96
-// required addition of list_new_posts() in bboard daemon
 #include <daemons.h>
 #include <lib.h>
 
 inherit LIB_COMMAND;
-
 
 int cmd(string str){
     write("You snap your fingers, and permit hostilities to resume.");
@@ -18,10 +15,8 @@ int cmd(string str){
     return 1;
 }
 
-
-
-string GetHelp(string str) {
-    return "Syntax: <unquell>\n"
+string GetHelp(){
+    return "Syntax: unquell\n\n"
         "Allows quelled combat to resume.\n"
-        "See also: quell\n";
+        "See also: quell";
 }

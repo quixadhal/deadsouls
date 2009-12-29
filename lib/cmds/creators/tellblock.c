@@ -17,7 +17,7 @@ int cmd() {
     return 1;
 }
 
-void help() {
-    write("Syntax: <tellblock>\n\n"+
+string GetHelp() {
+    return ("Syntax: tellblock\n\n"+
             "Toggles the blocking of tells on and off.");
 }

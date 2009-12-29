@@ -16,8 +16,8 @@ mixed cmd() {
     return 1;
 }
 
-string GetHelp() {
-    return ("Syntax: addraces\n"
+string GetHelp(){
+    return ("Syntax: addraces\n\n"
             "Imports all the race files in CFG_RACES into  "
             "RACES_D. It may fail if all races have not been "
             "removed prior to its use.");

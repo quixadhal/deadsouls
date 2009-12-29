@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <logs.h>
 #include <news.h>
 #include <save.h>
 #include <daemons.h>
@@ -22,8 +23,8 @@ varargs static void yenta(string arg, string clr){
     if(verbose){
         debug_message(arg);
     }
-    unguarded( (: log_file("/secure/log/icp", timestamp() +
-      " " + strip_colours($(arg)) + "\n") :) );
+    unguarded( (: log_file(LOG_ICP, timestamp() +
+                    " " + strip_colours($(arg)) + "\n") :) );
 }
 
 varargs static int validate(int i, int soft){
@@ -36,7 +37,7 @@ varargs static int validate(int i, int soft){
             return 0;
         }
     }
-    if(previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
+    if(previous_object() != this_object() && !(master()->valid_apply(({ "ASSIST" }))) ){
         yenta("SECURITY ALERT: validation failure in INSTANCES_D.\n","red");
         if(soft) return 0;
         error("Illegal attempt to access router socket daemon: "+get_stack()+
@@ -52,14 +53,12 @@ static void create() {
     if(!sizeof(sockets)) sockets = ([]);
     SaveFile = save_file(SAVE_INSTANCES);
     SetSaveFile(SaveFile);
-    if(!file_exists(SaveFile) && file_exists(old_savename(SaveFile))){
-        cp(old_savename(SaveFile), SaveFile);
-    }
     SetNoClean(1);
-    if(file_exists(SaveFile)){
+    if(unguarded( (: file_exists(SaveFile) :) )){
         RestoreObject(SaveFile);
     }
     if(ENABLE_INSTANCES){
+        debug_message("\nNOTE: This mud is a non-global instance.\n");
     }
     call_out("Setup", 0);
     set_heart_beat(10);
@@ -92,6 +91,9 @@ mixed InstCreate(string name, string addy, int port){
     catch( cp(SAVE_ROOMS+".o", SAVE_ROOMS + "." + port + ".o") );
     catch( cp(SAVE_RACES+".o", SAVE_RACES + "." + port + ".o") );
     catch( cp(SAVE_CLASSES+".o", SAVE_CLASSES + "." + port + ".o") );
+    catch( cp(SAVE_SOUL+".o", SAVE_SOUL + "." + port + ".o") );
+    catch( cp(SAVE_ECONOMY+".o", SAVE_ECONOMY + "." + port + ".o") );
+    catch( cp(SAVE_EVENTS+".o", SAVE_EVENTS + "." + port + ".o") );
     catch( cp(NEWS_WELCOME, NEWS_WELCOME + "." +port) );
     catch( cp(pfile+".o", pfile+"."+port+".o") );
     newglobal = read_file("/secure/cfg/global_template.cfg");
@@ -126,6 +128,9 @@ mixed InstCreate(string name, string addy, int port){
             if(!strsrch(line, "#define LOG_LOCAL_CHANS")){
                 line = "#define LOG_LOCAL_CHANS          0";
             }
+            if(!strsrch(line, "#define AUTO_WIZ")){
+                line = "#define AUTO_WIZ                 0";
+            }
             newconf +=  line + "\n";
         }
         write_file("/secure/include/config."+port+".h", newconf, 1);
@@ -151,7 +156,7 @@ mixed InstCreate(string name, string addy, int port){
         newcfg = read_file("/secure/cfg/runmud_template.bat");
         if(newcfg && query_windows()){
             newcfg = replace_string(newcfg, "TEMPLATE_MUDOS",
-              "mudos."+port+".win32");
+                    "mudos."+port+".win32");
             write_file("/secure/cfg/runmud_"+port+".bat", newcfg, 1);
         }
     }
@@ -217,13 +222,14 @@ static void SendData(mixed fd, mixed data){
         }
     }
     else targets = ({ fd });
+    targets = distinct_array(targets);
     foreach(int target in targets){
         this_object()->write_data(target, data);
     }
 }
 
 varargs void SendWhoUpdate(string name, int status){
-    mapping data = ([ "status" : status ]);
+    mapping data = ([ "status" : status, "state" : 0 ]);
     object ob = find_player(name);
     if(ob && !ob->GetInvis()){
         string title = ob->GetShort();
@@ -235,8 +241,25 @@ varargs void SendWhoUpdate(string name, int status){
         data["arch"] = archp(ob);
         data["creator"] = creatorp(ob);
         data["builder"] = builderp(ob);
-        if(interactive(ob)) data["status"] = 1;
-        else data["status"] = -1;
+        if(!interactive(ob)) data["status"] = -1;
+        else {
+            data["status"] = 1;
+            if(query_idle(ob)>240){
+                data["state"] = "(%^YELLOW%^idle%^RESET%^)";
+            }
+            if(ob->GetSleeping() > 0){
+                data["state"] = "(%^BLUE%^sleeping%^RESET%^)"; 
+            }
+            if(ob->GetProperty("afk")){
+                data["state"] = "(%^MAGENTA%^afk%^RESET%^)";
+            }
+            if(ob->GetInCombat()){
+                data["state"] = "(%^RED%^combat%^RESET%^)";
+            }
+            if(in_edit(ob) || ob->GetCedmode()){
+                data["state"] = "(%^CYAN%^edit%^RESET%^)";
+            }
+        }
     }
     else data["status"] = 0;
     SendData(-1, ({ "who-update", 5, Myname, name, 0, 0, data }) );
@@ -256,7 +279,7 @@ varargs void SendTell(string who, string msg, string interwho){
     string sender, vname;
     if(interwho){
         ob = previous_object();
-        if(base_name(ob) != SERVICES_D) return;
+        if(base_name(ob) != SERVICES_D && base_name(ob) != IMC2_D) return;
         sender = interwho;
         vname = interwho;
     }
@@ -274,6 +297,7 @@ static void ProcessStartup(mixed data, string addy, int port, int fd){
     InstData[name]["fd"] = fd;
     InstData[name]["online"] = 1;
     InstData[name]["users"] = ([]);
+    if(sizeof(data) > 8) InstData[name]["mudname"] = data[8];
     if(sizeof(data[7])){
         foreach(mixed foo in data[7]){
             if(stringp(foo)) InstData[name]["users"][foo] = 1;
@@ -326,15 +350,25 @@ string GetName(){
 
 static void ReceiveICPData(mixed data, string addy, int port, int fd){
     string name;
-    if(!arrayp(data)) return;
-    if(sizeof(data) < 7) return;
+    if(!arrayp(data)){
+        return;
+    }
+    if(sizeof(data) < 7){
+        return;
+    }
     name = data[2];
     if(data[0] != "startup-req"){
         if( InstData[name] && InstData[name]["online"]){
-            if(InstData[name]["addy"] != addy) return;
-            if(InstData[name]["port"] != port ) return;
+            if(InstData[name]["addy"] != addy){
+                return;
+            }
+            if(InstData[name]["port"] != port ){
+                return;
+            }
             if(!undefinedp(InstData[name]["fd"]) && 
-                    InstData[name]["fd"] != fd) return;
+                    InstData[name]["fd"] != fd){
+                return;
+            }
         }
         else{
             return;
@@ -380,6 +414,7 @@ void eventSendChannel(string name, string ch, string msg, int emote,
         string target, string targmsg){
     mixed packet = ({ name, ch, msg, emote, target, targmsg });
     if(base_name(previous_object()) != CHAT_D) return;
+    if(ch == "muds") return;
     SendData(-1, ({ "channel-p", 5, Myname, 0, 0, 0, packet }) );
 }
 
@@ -519,20 +554,20 @@ static int write_data(int fd, mixed data){
 static void Setup(){
     //yenta("icp setup got called");
     if ((icp_socket = socket_create(MUD, "read_callback", "close_callback")) < 0){
-        log_file("/secure/log/icp","setup: Failed to create socket.\n");
+        log_file(LOG_ICP, "setup: Failed to create socket.\n");
         return;
     }
     if (socket_bind(icp_socket, PORT_ICP) < 0) {
         socket_close(icp_socket);
-        log_file("/secure/log/icp","setup: Failed to bind socket to port.\n");
+        log_file(LOG_ICP, "setup: Failed to bind socket to port.\n");
         return;
     }
     if (socket_listen(icp_socket, "listen_callback") < 0) {
         socket_close(icp_socket);
-        log_file("/secure/log/icp","setup: Failed to listen to socket.\n");
+        log_file(LOG_ICP, "setup: Failed to listen to socket.\n");
         return;
     }
-    log_file("/secure/log/icp","icp setup ended\n");
+    log_file(LOG_ICP, "icp setup ended\n");
 }
 
 int eventCreateSocket(string host, int port){
@@ -547,7 +582,7 @@ int eventCreateSocket(string host, int port){
     x = socket_bind(x, 0);
     if( x != EESUCCESS ) {
         socket_close(ret);
-        log_file("/secure/log/icp", "Error in socket_bind(): "+x);
+        log_file(LOG_ICP, "Error in socket_bind(): "+x);
         return 0;
     }
     x = socket_connect(ret, host + " " + (port + OFFSET_ICP), 
@@ -591,7 +626,8 @@ static void SendStartup(int fd){
         }
     }
     SendData(fd, 
-            ({"startup-req", 5, Myname, 0, name, 0, INSTANCE_PW, local_users()}));
+            ({"startup-req", 5, Myname, 0, name, 0, INSTANCE_PW, 
+             local_users(), mud_name()}));
     foreach(string user in local_users()){
         call_out("SendWhoUpdate", 0, user, 1);
     }
@@ -614,12 +650,13 @@ static void CheckConnections(){
             i = sscanf(arr[4],"%s.%s.%s.%s.%d",a,b,c,d,p);
             if(i < 5) continue;
             foreach(mixed key, mixed val in InstData){
-                if(key && mapp(val)){
+                if(key && mapp(val) && val["port"] == (p - OFFSET_ICP)){
                     InstData[key]["fd"] = -2;
-                    if(val["port"] == (p - OFFSET_ICP) &&
-                            val["addy"] == a+"."+b+"."+c+"."+d){
+                    if(val["addy"] == a+"."+b+"."+c+"."+d){
                         InstData[key]["fd"] = arr[0];
                         conns[key] = copy(InstData[key]);
+                    }
+                    else {
                     }
                 }
             }
@@ -629,7 +666,7 @@ static void CheckConnections(){
         if(!foo || !InstData[foo]) continue;
         InstData[foo]["online"] = 0;
         if(member_array(foo, keys(conns)) == -1 
-          || InstData[foo]["fd"] == -1){
+                || InstData[foo]["fd"] == -1){
             InstConnect(foo);
         }
         else InstData[foo]["online"] = 1;

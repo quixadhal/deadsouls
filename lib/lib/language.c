@@ -8,14 +8,7 @@
 
 int Polyglot = 0;
 
-class comprehension {
-    function check;
-    int time;
-    function end;
-}
-
 private mapping                    Languages      = ([]);
-private static class comprehension Comprehension  = 0;
 private string                     DefaultLanguage = "";
 
 // abstract methods
@@ -50,18 +43,6 @@ mapping SetNativeLanguage(string lang){
     return copy(Languages);
 }
 
-varargs void SetLanguageComprehension(function check, int time, function end){
-    if( !check ){
-        Comprehension = 0;
-    }
-    else {
-        Comprehension = new(class comprehension);
-        Comprehension->check = check;
-        Comprehension->time = time;
-        Comprehension->end = end;
-    }
-}
-
 mixed SetDefaultLanguage(string str){
     if(!str || str == "") return DefaultLanguage = GetNativeLanguage();
     if(member_array(lower_case(str),keys(Languages)) != -1 ||
@@ -76,13 +57,6 @@ string GetDefaultLanguage(){
 }
 
 int GetLanguageLevel(string lang){
-    if( Comprehension ){
-        int fp = functionp(Comprehension->check);
-
-        if( fp && !(fp & FP_OWNER_DESTED) ){
-            return evaluate(Comprehension->check, this_object(), lang);
-        }
-    }
     lang = convert_name(lang);
     if( !Languages[lang] ) return 0;
     else return Languages[lang]["level"];
@@ -143,18 +117,4 @@ int SetPolyglot(int i){
 
 int GetPolyglot(){
     return Polyglot;
-}
-
-static void heart_beat(){
-    if( Comprehension ){
-        Comprehension->time -= GetHeartRate();
-        if( Comprehension->time < 1 ){
-            function tmp = Comprehension->end;
-
-            Comprehension = 0;
-            if( functionp(tmp) && !(functionp(tmp) & FP_OWNER_DESTED) ){
-                evaluate(tmp, this_object());
-            }
-        }
-    }
 }

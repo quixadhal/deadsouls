@@ -59,7 +59,7 @@ mixed can_give_wrd_wrd_to_liv(string num, string curr, object targ) {
         else return "That isn't a valid currency.";
     }
     if( amt < 1 ) return "What sort of amount is that?";
-    if( amt > (int)this_player()->GetCurrency(lower_case(curr)) )
+    if( amt > this_player()->GetCurrency(lower_case(curr)) )
         return "You don't have that much " + curr + "."; 
     if(newbiep(this_player())) return "Newbies can't give money.";
     return this_player()->CanManipulate();
@@ -92,18 +92,18 @@ mixed do_give_obj_to_liv(mixed args...) {
                 "of holding that.");
         return 1;
     }
-    if( !((int)what->eventMove(target)) ) {
+    if( !(what->eventMove(target)) ) {
         this_player()->eventPrint("They cannot accept that right now.");
         return 1;
     }
-    this_player()->eventPrint("You give " + (string)target->GetName() + " " +
-            (string)what->GetShort() + ".");
-    target->eventPrint((string)this_player()->GetName() + " gives you " +
-            (string)what->GetShort() + ".");
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    this_player()->eventPrint("You give " + target->GetName() + " " +
+            what->GetShort() + ".");
+    target->eventPrint(this_player()->GetName() + " gives you " +
+            what->GetShort() + ".");
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " gives " +
-            (string)target->GetName() +
-            " " + (string)what->GetShort() +".",
+            target->GetName() +
+            " " + what->GetShort() +".",
             ({ this_player(), target }));
     return 1;
 }
@@ -116,22 +116,22 @@ mixed do_give_wrd_wrd_to_liv(string num, string curr, object target) {
     int amt;
     if(curr2) curr = curr2;
     amt = to_int(num);
-    if( (int)target->AddCurrency(curr, amt) == -1 ) {
+    if( target->AddCurrency(curr, amt) == -1 ) {
         this_player()->eventPrint("You just can't give that money away.");
         return 1;
     }
-    if( (int)this_player()->AddCurrency(curr, -amt) == -1 ) {
+    if( this_player()->AddCurrency(curr, -amt) == -1 ) {
         target->AddCurrency(curr, -amt);
         this_player()->eventPrint("The amount of money you have is boggled.");
         return 1;
     }
-    this_player()->eventPrint("You give " + (string)target->GetName() + " " +
+    this_player()->eventPrint("You give " + target->GetName() + " " +
             amt + " " + curr + ".");
-    target->eventPrint((string)this_player()->GetName() + " gives you " +
+    target->eventPrint(this_player()->GetName() + " gives you " +
             amt + " " + curr + ".");
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " gives " + amt + " " + curr +
-            " to " + (string)target->GetName() +
+            " to " + target->GetName() +
             ".", ({ target, this_player() }));
     return 1;
 }

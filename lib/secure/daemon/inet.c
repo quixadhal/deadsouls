@@ -25,7 +25,7 @@ int eventStartServer(string svc);
 int eventStopServer(string svc);
 
 void validate(){
-    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" }))){
+    if(!master()->valid_apply(({ "SECURE", "ASSIST" }))){
         string offender = identify(previous_object(-1));
         debug("INET_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" INET_D breach: "+offender+" "+get_stack());

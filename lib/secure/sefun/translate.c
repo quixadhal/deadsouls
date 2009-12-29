@@ -30,8 +30,8 @@
     "tangata","koa","kora","hupane","upane","krankor",\
     "baardaap","droogkloot","reetketelsteenbeeldhouwer","asbak","haka",\
     "zaadje","verkloten","teef","moffie","shele",\
-    "anasi","atouche","ayir","boos","teezee",\
-    "durka","haista","vittu","kyrpä","räkä",\
+    "anasi","atouche","ayir","boos","teezee","shawty",\
+    "durka","haista","vittu","kyrpä","räkä","shawtay",\
     "suoro","voi","debil","kunel","shinel","sampo",\
     "sasikumea","zakila","txakurra","soustat","irrumator",\
     "mentula","koproskilo","malakas","la'a'za'zel","zayin",\
@@ -72,6 +72,10 @@
     "mccain","biden","palin","chitonw","wachovia","wamu",\
     "dogoodi","idoogod","yamaglonchi","hotchka","tacgnol",\
     "zangano","zafacon","doushnou","yanaglonchi","rowsdower",\
+    "gleepy","gloop","gloopy","neeby","nabba","nooby","la","la","la",\
+    "lo","lo","sabba","sibby","sabba","nooby","abba","nabba",\
+    "le","le","le","lo","lo","tooby","ooby","walla","dede","scozzafava",\
+    "AUSCANZUKUS",\
 })
 
 string translate(string str, int prof) {

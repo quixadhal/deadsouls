@@ -6,25 +6,18 @@
 
 inherit LIB_DAEMON;
 
-varargs int cmd(string str)
-{
-    if(!this_player()->GetInvis()) {
+varargs int cmd(string str){
+    if(!this_player()->GetInvis()){
         notify_fail("You are already visible.\n");
         return 0;
     }
     this_player()->SetInvis(0);
-    message("my_action", "You step out of the shadows.", this_player());
+    message ("my_action", "You step out of the shadows.", this_player());
     return 1;
 }
 
-
-int help()
-{
-    write( @EndText
-Syntax: vis
-Effect: Makes you visible if you wern't already.
-See also: invis
-EndText
-    );
-    return 1;
+string GetHelp(){
+    return "Syntax: vis\n\n"
+        "Makes you visible if you weren't already."
+        "\nSee also: invis";
 }

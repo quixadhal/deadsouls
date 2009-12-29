@@ -26,7 +26,7 @@ static void create() {
                 "west":"/domains/campus/room/tunnel2",
                 "east":"/domains/campus/room/u_lab"]));
     SetDoor("east","/domains/campus/doors/u_door");
-    SetObviousExits("e,w");
+    SetObviousExits("east, west");
 }
 void init(){
     AddListen(({"pipe","pipes","wall","cables","cable"}) , "The pipes and "+

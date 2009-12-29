@@ -44,12 +44,12 @@ int go_north(string str) {
     if(str !="north") return notify_fail("What?\n");
     if(!creatorp(this_player())) {
         message("my_action", "The magic of Horace stops you.", this_player());
-        message("other_action", (string)this_player()->query_cap_name()+
+        message("other_action", this_player()->query_cap_name()+
                 " is stopped by the magic of Horace.", this_object(),
                 ({ this_player() }));
         return 1;
     }
-    message("other_action", (string)this_player()->query_cap_name()+
+    message("other_action", this_player()->query_cap_name()+
             " cannot be stopped by Horace's magic.", this_object(),
             ({ this_player() }));
     this_player()->eventMoveLiving("/domains/Praxis/storage", "north");

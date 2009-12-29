@@ -10,7 +10,7 @@ static void create() {
     SetVerb("modify");
     SetRules("OBJ STR", "here STR", "room STR");
     SetErrorMessage("Modify what how?");
-    SetHelp("Syntax: <modify OBJ SETTING VALUE>\n\n"
+    SetHelp("Syntax: modify <OBJ | here> <SETTING> <VALUE>\n\n"
             "If you have write permissions to the file of the object "
             "specified, this command initiates changes to that file "
             "based on the arguments you supply. For example, to change "

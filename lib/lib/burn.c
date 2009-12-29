@@ -176,7 +176,7 @@ varargs mixed eventBurn(object who, object what, int magic){
         if( Heat ) return 0;
         else y = MinHeat;
     }
-    else y = (Heat + (int)what->GetHeat())/2;
+    else y = (Heat + what->GetHeat())/2;
     if( y < Heat ) y = Heat;
     if( !GetBurning() && y >= MinHeat ){
         if( FuelRequired ) set_heart_beat(BurnRate);

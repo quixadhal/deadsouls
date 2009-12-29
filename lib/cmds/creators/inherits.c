@@ -25,7 +25,7 @@ varargs int cmd(string str){
     if(tmp) file = tmp;
 
     write("Checking " + identify(ob) + " for inheritance of " +
-      file + " , just a moment...");
+            file + " , just a moment...");
     if(file){
         if(inherits(file, ob)){
             write(thing+" inherits "+file+".");
@@ -46,9 +46,8 @@ varargs int cmd(string str){
     return 1;
 }
 
-void help()
-{
-    write("Syntax: inherits FILE THING\n\n"+
-    "Tries to match FILE with the list of inherited files "+
-    "for THING.\n\nSee also: showtree, findobj, findfun, showfuns");
+string GetHelp(){
+    return ("Syntax: inherits <FILE> <THING>\n\n"+
+            "Tries to match FILE with the list of inherited files "+
+            "for THING.\nSee also: showtree, findobj, findfun, showfuns");
 }

@@ -67,7 +67,7 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string str) {
+string GetHelp(){
     int cre = creatorp(this_player());
     string ret = "Syntax: chan block <channel>\n";
     ret += "        chan unblock <channel>\n";

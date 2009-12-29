@@ -63,7 +63,7 @@ int view(string str)
     object ob, env, *inv;
 
     write("You gaze into the crystal ball. ");
-    if((int)this_player()->query_mp() < 5) {
+    if(this_player()->query_mp() < 5) {
         write("Your magic powers are just too weak to help you. ");
         return 1;
     }
@@ -82,11 +82,11 @@ int view(string str)
     }
     write("You find "+ob->query_cap_name()+" in the crystal ball: "); 
     ob=environment(ob);
-    desc = (string)ob->GetLong()+"\n";
+    desc = ob->GetLong()+"\n";
     inv = all_inventory(ob);
     for(i=0; i<sizeof(inv); i++) {
         if(inv[i]->query_invis()) continue;
-        desc += "\n"+(string)inv[i]->GetShort()+" "; }
+        desc += "\n"+inv[i]->GetShort()+" "; }
         write(desc);
         return 1;
 }

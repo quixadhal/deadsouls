@@ -40,20 +40,20 @@ mixed cmd(string args) {
     if(ob != this_player()){
         if(result){
             message("system", "You have been returned to your previous location by " +
-                    (string)this_player()->GetName() + ".", ob);
-            message("system", "You return " + (string)ob->GetCapName() +
+                    this_player()->GetName() + ".", ob);
+            message("system", "You return " + ob->GetCapName() +
                     " to their previous location.", this_player());
         }
         else {
-            return "Failed to move " + (string)ob->GetCapName() + ".";
+            return "Failed to move " + ob->GetCapName() + ".";
         }
     }
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <return [living]>\n\n"
+string GetHelp() {
+    return ("Syntax: return [living]\n\n"
             "Sends someone back, after a trans.\n"
-            "With no arguments, sends you to your last location.\n\n"
-            "See also: goto", this_player());
+            "With no arguments, sends you to your last location.\n"
+            "See also: goto");
 }

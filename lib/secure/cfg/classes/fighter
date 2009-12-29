@@ -1,4 +1,5 @@
 fighter
+PLAYER_CLASS 1
 blade attack:1:4
 multi-hand:1:4
 multi-weapon:1:4

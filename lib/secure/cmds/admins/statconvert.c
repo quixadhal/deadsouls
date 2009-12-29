@@ -39,7 +39,7 @@ void Convert(string s, int change) {
     if(!archp(previous_object())) return 0;
     if( !sizeof(s) ) args = "*.c";
     else args = s;
-    files = (string *)wild_card(args);
+    files = wild_card(args);
     if( !i = sizeof(files) ) {
         message("info", "No file(s) found: "+implode(files, " "),
                 this_player() );
@@ -77,21 +77,20 @@ mixed cmd(string str) {
         GetHelp(0);
         return 1;
     }
-    files = absolute_path((string)this_player()->query_cwd(), files);
+    files = absolute_path(this_player()->query_cwd(), files);
     Convert(files, change);
     return 1;
 }
 
 
-void GetHelp(string str) {
-    message("info",
-            "Syntax: statconvert <filename | wild card> <percentage>\n\n"
+string GetHelp(){
+    return ("Syntax: statconvert <filename | wild card> <percentage>\n\n"
             "This command searches through the specified file(s) and lowers "
             "all occurrences of SetSkill and SetStat by a <percentage> "
             "amount.\n\n"
             "Example: statconvert *.c 10\n"
             "  - Searches all .c files in your currenct path, and reduces\n"
             "    all skill and stat settings by 10%\n\n"
-            "Note: It is possible to raise settings by passing a negative number.",
-            this_player() );
+            "Note: It is possible to raise settings by passing "
+            "a negative number.");
 }

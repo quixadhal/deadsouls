@@ -34,8 +34,8 @@ string file_privs(string file) {
 int member_group(mixed who, string grp) {
     string *ppl;
 
-    if(objectp(who)) who = (string)who->GetKeyName();
-    if(!(ppl = (string *)master()->query_group(grp))) return 0;
+    if(objectp(who)) who = who->GetKeyName();
+    if(!(ppl = master()->query_group(grp))) return 0;
     return (member_array(who, ppl) != -1);
 }
 
@@ -101,4 +101,4 @@ int check_read(string file){
     return 1;
 }
 
-mixed unguarded(function f) { return (mixed)master()->apply_unguarded(f); }
+mixed unguarded(function f) { return master()->apply_unguarded(f); }

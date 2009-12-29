@@ -14,8 +14,8 @@ int cmd(string str){
 }
 
 string GetHelp(string str) {
-    return "Syntax: sefuns [COLUMNS]\n"
+    return "Syntax: sefuns [COLUMNS]\n\n"
         "Displays all available simulated efuns. If a number is given, the "
         "output is broken up into the number of columns specified."
-        "\n\nSee also efun, efuns, sefun, lfun, lfuns, showfuns, findfun\n";
+        "\nSee also efun, efuns, sefun, lfun, lfuns, showfuns, findfun";
 }

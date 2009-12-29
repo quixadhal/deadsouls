@@ -13,8 +13,9 @@ mixed cmd(string args) {
 
 }
 
-void help() {
-    write("This command makes it look like you're doing something "
+string GetHelp() {
+    return ("Syntax: mem\n\n"
+            "This command makes it look like you're doing something "
             "important and technical that has to do with memory, but really "
             "it's just wiping your screen of game text.");
 }

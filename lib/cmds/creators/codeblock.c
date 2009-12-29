@@ -24,8 +24,8 @@ mixed cmd(string args) {
 }
 
 string GetHelp() {
-    return ("Syntax: <codeblock>\n\n"
+    return ("Syntax: codeblock\n\n"
             "Allows you to toggle on and off the blocking of all mud "
-            "channels.\n\n"
+            "channels.\n"
             "See also: classblock");
 }

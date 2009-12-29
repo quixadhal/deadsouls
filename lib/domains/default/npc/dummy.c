@@ -29,7 +29,7 @@ varargs int eventReceiveDamage(object agent, int type, int x, int internal, mixe
     string evidence, limb_string;
     evidence = "";
     if(objectp(agent)) evidence += "I receive damage from "+agent->GetKeyName();
-    else evidence += "I receive damage from "+(string)agent;
+    else evidence += "I receive damage from "+agent;
     evidence += ".";
     if(type) {
         string *damtypes = TYPES_D->eventCalculateTypes("damage", type);

@@ -72,13 +72,13 @@ varargs void SetLongAndItems(int x, int y, int z) {
                         if( !(ob = new("/domains/Ylsrim"+ "/etc/pole")) )
                         return 0;
                         who->eventPrint("You find a fishing pole!");
-                        eventPrint((string)who->GetName() + " finds a fishing pole "
+                        eventPrint(who->GetName() + " finds a fishing pole "
                             "among the abandoned campsite.", who);
                         foreach(thing2 in ({ "twigs", "sticks", "kindling", "wood"}))
                         RemoveSearch(thing2);
-                        if( !((int)ob->eventMove(this_player())) ) {
+                        if( !(ob->eventMove(this_player())) ) {
                         who->eventPrint("You drop the pole!");
-                        eventPrint((string)who->GetName() + " drops the pole.",
+                        eventPrint(who->GetName() + " drops the pole.",
                             who);
                         ob->eventMove(this_object());
                         }

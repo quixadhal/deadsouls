@@ -28,10 +28,8 @@ int cmd(string str){
     return 1;
 }
 
-
-
 string GetHelp(string str) {
-    return "Syntax: ascii [CODE]\n"
+    return "Syntax: ascii <CODE>\n"
         "Provided an integer that corresponds to an ASCII code known to "
         "the mud, that character will be displayed. Note that the mud's "
         "understanding of these characters is imperfect, and your client's "

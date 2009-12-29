@@ -13,7 +13,6 @@ inherit LIB_VERB;
 static void create() {
     verb::create();
     SetVerb("balance");
-    SetSynonyms("weigh");
     SetRules("OBJ to OBJ");
     SetErrorMessage("What two things would you like to balance?");
     SetHelp("Syntax: balance OBJ to OBJ\n\n"
@@ -29,8 +28,8 @@ mixed can_balance_obj_to_obj() {
 mixed do_balance_obj_to_obj(object obj1, object obj2) {
     string name1, name2;
     object caster = this_player();
-    if (!obj1 || !obj2) return "You must judge one thing vs another.";
-    if (obj1 == obj2) return "That would do a lot of good!";
+    if(!obj1 || !obj2) return "You must judge one thing vs another.";
+    if(obj1 == obj2) return "That would do a lot of good!";
     /* Check for presence of objects */
     name1 = obj1->GetShort();
     name2 = obj2->GetShort();
@@ -46,9 +45,9 @@ mixed do_balance_obj_to_obj(object obj1, object obj2) {
     }
 
     caster->eventPrint("You stare intently at "+name1+" and "+name2+".");
-    environment(caster)->eventPrint( (string)caster->GetName() +
+    environment(caster)->eventPrint( caster->GetName() +
             " concentrates on " + name1 + " and " + name2 + ".", caster);
-    if( (int)this_player()->GetInCombat() )
+    if( this_player()->GetInCombat() )
         this_player()->SetAttack(0,
                 (: eventBalance, this_player(), obj1, obj2 :),
                 ROUND_OTHER);
@@ -66,20 +65,20 @@ int eventBalance(object caster, object obj1, object obj2) {
 
     if( !(obj1 && obj2) ) return 0;
     if( (environment(obj1) != caster) || (environment(obj2) != caster) ) {
-        caster->eventPrint("You must have both items in your possesion "
+        caster->eventPrint("You must have both items in your possession "
                 "to compare them.");
         return 0;
     }
-    if( cost > (int)caster->GetStaminaPoints() ) {
+    if( cost > caster->GetStaminaPoints() ) {
         caster->eventPrint("You are too weary to balance right now.");
         environment(caster)->eventPrint(
-                (string)caster->GetName() + " looks tired.", caster);
+                caster->GetName() + " looks tired.", caster);
         return 0;
 
     }
     caster->AddStaminaPoints(-cost);
-    obj1lvl = (int)obj1->GetMass();
-    obj2lvl = (int)obj2->GetMass();
+    obj1lvl = obj1->GetMass();
+    obj2lvl = obj2->GetMass();
 
     /* Return the right answer */
     if(obj1lvl == obj2lvl) {

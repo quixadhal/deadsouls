@@ -17,8 +17,8 @@ mixed cmd(string args) {
     int x;
 
     if( args == "" || !args ) 
-        args = user_path((string)this_player()->GetKeyName()) + "tmp.edit";
-    if( (int)this_player()->GetForced() ) {
+        args = user_path(this_player()->GetKeyName()) + "tmp.edit";
+    if( this_player()->GetForced() ) {
         message("system", "Someone tried to force you to edit "+ args +"\n" +
                 identify(previous_object(-1)), this_player());
         return 0;
@@ -31,7 +31,7 @@ mixed cmd(string args) {
                 "using the ed editor: http://dead-souls.net/editor.html");
         this_player()->SetProperty("EdWarned", 1);
     }
-    args = absolute_path( (string)this_player()->query_cwd(), args );
+    args = absolute_path( this_player()->query_cwd(), args );
     if( (x = file_size(args)) == -2 ) 
         return "You cannot edit a directory!";
     else if( x == -1 )
@@ -42,9 +42,16 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <ed ([filename])>\n\n", this_player());
-    tell_player(this_player(),"For a briefer walkthrough, quit this help doc by typing: %^GREEN%^q%^RESET%^");
-    tell_player(this_player(),"Then type: %^GREEN%^faq ed%^RESET%^\n\n");
-    this_player()->eventPage(explode(read_file("/doc/help/creators/editor"), "\n"), "help");
+string GetHelp() {
+    return ("Syntax: ed [filename]\n\n"
+            "Ye olde LP mud in-game text editor. It is a line-mode editor, "
+            "meaning it is archaic, hard to use, and complimicated. "
+            "But it's the "
+            "one way to edit stuff in-game that works for sure. "
+            "For a brief walkthrough:\n"
+            "%^GREEN%^faq ed%^RESET%^\n"
+            "For a lengthy doc:\n"
+            "%^GREEN%^help editor%^RESET%^\n"    
+            "For a web page FAQ, use your web browser to go to; http://dead-souls.net/editor.html\n\n"
+            "See also: ced, creweb, qcs");
 }

@@ -17,9 +17,9 @@ static void create() {
     SetRules("", "up");
     SetErrorMessage("Stand up?");
     SetSynonyms("get up");
-    SetHelp("Syntax: <stand up>\n"
+    SetHelp("Syntax: stand [up]\n"
             "When sitting down or lying down, you can get up in this "
-            "most intuitive manner.\n\n"
+            "most intuitive manner.\n"
             "See also: lie, sit");
 }
 
@@ -46,10 +46,9 @@ mixed can_stand(){
 }
 
 mixed do_stand_up() {
-    return (mixed)this_player()->eventStand();
+    return this_player()->eventStand();
 }
 
 mixed do_stand() {
-    return (mixed)this_player()->eventStand();
+    return this_player()->eventStand();
 }
-

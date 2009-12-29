@@ -1,5 +1,3 @@
-
-
 #include <lib.h>
 #include <daemons.h>
 #include <damage_types.h>
@@ -14,15 +12,16 @@ static void create() {
     SetVerb("zap");
     SetRules("LVS");
     SetErrorMessage("zap what?");
-    SetHelp("Syntax: <zap CREATURE>\n\n"
+    SetHelp("Syntax: zap <CREATURE>\n\n"
             "Deal massive damage to a living thing.\n"
-            "\nSee also: dest");
+            "See also: dest, resurrect");
 }
 
-mixed can_zap_liv(string str) { 
-    if(!creatorp(this_player())) return "This command is only available to builders and creators.";
-    else return 1;
-}
+    mixed can_zap_liv(string str) { 
+        if(!creatorp(this_player()))
+            return "This command is only available to creators.";
+        else return 1;
+    }
 
 mixed do_zap_liv(object ob){
     string name;
@@ -36,12 +35,13 @@ mixed do_zap_liv(object ob){
     else name = ob->GetName();
     mhp = ob->GetMaxHealthPoints();
     if(!mhp) mhp = 99999;
+    mhp *= 5;
     write("You zap "+name+".");
     say(this_player()->GetName()+" raises a hand and %^RED%^ZAPS%^RESET%^"+
             " "+name+"!",({ob}));
-    tell_object(ob,this_player()->GetName()+" raises a hand and %^RED%^ZAPS%^RESET%^ you!");
-    ob->eventReceiveDamage(this_player(),BLUNT,(mhp * 5),0,({ob->GetTorso()}));
-
+    tell_object(ob,this_player()->GetName()+" raises a hand and "+
+            "%^RED%^ZAPS%^RESET%^ you!");
+    ob->eventReceiveDamage(this_player(),DEATHRAY,mhp,0,({ob->GetTorso()}));
     return 1;
 }
 
@@ -51,4 +51,3 @@ mixed do_zap_lvs(object *obs) {
     }
     return 1;
 }
-

@@ -2,8 +2,6 @@
  *  created by Rush@Dead Souls
  */
 
-
-
 #include <lib.h>
 #include "include/follow.h"
 
@@ -14,9 +12,7 @@ static void create() {
     SetVerb("follow");
     SetRules("", "LIV");
     SetErrorMessage("Whom would you like to follow?");
-    SetHelp("Syntax: follow\n"
-            "        follow LIV\n"
-            "\n"
+    SetHelp("Syntax: follow [LIVING]\n\n"
             "If a living object is specified, this command allows "
             "you to begin trailing the living being as it moves "
             "through Dead Souls.\n"
@@ -24,7 +20,6 @@ static void create() {
             "If the living being is interested in having you "
             "follow them, they can issue the \"lead\" command "
             "in order to avoid accidentally evading you.\n"
-            "\n"
             "See also: evade, lead, tracking, stealth\n");
 }
 
@@ -91,5 +86,3 @@ mixed do_follow_liv(object ob) {
 
     return 1;
 }
-
-

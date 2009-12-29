@@ -129,24 +129,24 @@ static private void eventProcess(int fd, string str) {
     }
     else switch( cmd ) {
         case "edit":
-            file = (string)Connections[fd]["object"]->eventReadFile(arg);
+            file = Connections[fd]["object"]->eventReadFile(arg);
         if( file[<1] != '\n' ) file += "\n";
         tmp = sprintf( "%-14s\n", "100 " + strlen(file));
         eventWrite(tmp[0..15]);
         eventWrite(file);
         break;
         case "ls":
-            val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
+            val = Connections[fd]["object"]->eventCommand(cmd, arg);
         if( val ) eventWrite("500 " + val + "\n");
         else eventWrite("50 " +cmd+ " " +arg+ ": Permission denied.\n");
         break;
         case "update":
-            val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
+            val = Connections[fd]["object"]->eventCommand(cmd, arg);
         if( val ) eventWrite("510 " + val + "\n");
         else eventWrite("50 Update attempt went off into nowhere.\n");
         break;
         default:
-        val = (string)Connections[fd]["object"]->eventCommand(cmd, arg);
+        val = Connections[fd]["object"]->eventCommand(cmd, arg);
         if( val ) eventWrite("400 " + val + "\n");
         else eventWrite("50 "+cmd+" "+arg+": Command not supported.\n");
         break;

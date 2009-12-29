@@ -175,7 +175,7 @@ void eventRemoveBlessing(){
     SetProperty("blessed", 0);
     if( living(environment()) ){
         environment()->eventPrint("%^YELLOW%^"
-                + capitalize((string)GetDefiniteShort()) +
+                + capitalize(GetDefiniteShort()) +
                 " returns to its normal state.");
     }
 }
@@ -351,7 +351,7 @@ int direct_sacrifice_obj_to_str(string deus){
     if( !sizeof(deus) ) return 0;
     deus = lower_case(remove_article(deus));
     if( !env = environment(this_player()) ) return 0;
-    tmp = (mixed)env->CanSacrifice(this_player(), this_object(), deus);
+    tmp = env->CanSacrifice(this_player(), this_object(), deus);
     if( !tmp ){
         this_player()->eventPrint("This is not the place for sacrifices.");
         return 0;

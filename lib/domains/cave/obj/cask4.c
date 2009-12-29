@@ -18,6 +18,7 @@ void create(){
     SetStrength(5);
     SetMaxFlask(50); 
     SetMealType(MEAL_DRINK);
+    SetTapped(1);
 }
 
 void init(){

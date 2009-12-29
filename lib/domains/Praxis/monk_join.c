@@ -32,7 +32,7 @@ void create() {
 }
 
 int preview() {
-    if((string)this_player()->query_class() != "explorer") {
+    if(this_player()->query_class() != "explorer") {
         message("info", "This is not for you.", this_player());
         return 1;
     }
@@ -56,7 +56,7 @@ int become(string str) {
         notify_fail("You cannot become that here.\n");
         return 0;
     }
-    if((string)this_player()->query_class() != "explorer") {
+    if(this_player()->query_class() != "explorer") {
         message("my_action", "You are much too old to start learning our ways now!", this_player());
         return 1;
     }
@@ -75,7 +75,7 @@ int go_east() {
         write("Mighty immortals are always welcome into the humble monastary.");
         return 1;
     } else 
-        if((string)this_player()->query_class() != "monk") {
+        if(this_player()->query_class() != "monk") {
             write("You cannot penetrate the force field that blocks the passage.");
             say(this_player()->query_cap_name()+" tries to get into the monk's sanctuary, but fails.", this_player());
             return 0;

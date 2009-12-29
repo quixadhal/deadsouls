@@ -16,6 +16,7 @@ static void create() {
     SetRace("bear");
     SetGender("male");
 }
+
 void init(){
     ::init();
 }

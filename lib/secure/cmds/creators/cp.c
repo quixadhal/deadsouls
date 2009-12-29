@@ -12,7 +12,7 @@
 #include <lib.h>
 inherit LIB_DAEMON;
 
-int help();
+string GetHelp();
 
 string rmSlash(string str) { return replace_string(str,"//","/"); }
 
@@ -39,7 +39,7 @@ int cmd(string str) {
             file2 = "";     // Check to see if it's a one arg
             localdest = 1;  // cp function.  Assume localdest.
         } else {
-            help();
+            write(GetHelp());
             return 1;
         }
     }
@@ -104,9 +104,8 @@ int cmd(string str) {
 }
 
 
-int 
-help() {
-    message("help", "Command: cp\nSyntax: cp <oldfile> [pathname]<newfile>\n"
+string GetHelp(){
+    return ("Command: cp\nSyntax: cp <oldfile> [pathname]<newfile>\n"
             "This command makes a copy of the file using the new name "
             "and location passed.  If a new pathname is not specified "
             "then the copy is put into the present working directory. "
@@ -114,11 +113,5 @@ help() {
             "The -f flag forces overwriting of an existing file.\n\n" 
             "Examples:\n"
             "cp -f workroom.bak workroom.c\n"
-            "cp workroom.bak /tmp/",
-            this_player());
-    return 1;
+            "cp workroom.bak /tmp/");
 }
-
-/* EOF */
-
-

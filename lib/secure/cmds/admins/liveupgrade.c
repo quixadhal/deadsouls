@@ -194,7 +194,7 @@ mixed cmd(string str) {
     allnames = ({});
     if(!player) return 0;
 
-    if( !((int)master()->valid_apply(({ "SECURE" }))) )
+    if( !(master()->valid_apply(({ "SECURE" }))) )
         error("Illegal attempt to access liveupgrade: "+get_stack()+" "+identify(previous_object(-1)));
 
     if(!directory_exists("/secure/upgrades/bak")){
@@ -222,9 +222,11 @@ mixed cmd(string str) {
         string *files = ({});
         string nlu, secs = upgrades_files+"/0^0secure0^0include0^0secrets.h";
         object nlob;
-        if(file_exists(secs) && file_exists(SECRETS_H)){
-            rm(secs);
+        if(file_exists(SECRETS_H)){
+            catch( cp(SECRETS_H, "/secure/save/backup/secrets_" + 
+                        imc2_mud_name() + "." + time() + ".bak") );
         }
+        if(file_exists(secs)) catch( rm(secs) );
         nlu = upgrades_files+"/0^0secure0^0cmds0^0admins0^0liveupgrade.c";
         if(file_exists(nlu)){
             catch( nlob = load_object(nlu) );
@@ -271,15 +273,11 @@ mixed cmd(string str) {
             if(!contents) contents = "";
             if(last(contents,1) != "\n") contents += "\n";
             write_file(element, contents, 1);
-            //eventBackup(NewFiles[element]);
             reset_eval_cost();
             call_out( (: eventBackup :), 0, NewFiles[element]);
             if(directory_exists(NewFiles[element])) true();
             else {
                 call_out( (: eventCopy :), 0, element);
-                //string path = path_prefix(NewFiles[element]);
-                //if(!directory_exists(path)) mkdir_recurse(path);
-                //rename(element, NewFiles[element]);
             }
         }
         if(member_array(INET_D,preload_file) == -1 && inet) inet->eventDestruct();
@@ -423,9 +421,13 @@ void eventReceiveReport(string str){
 }
 
 int GetDeferment(){
-    string secs = upgrades_files+"/0^0secure0^0include0^0secrets.h";
-    if(file_exists(secs) && file_exists(SECRETS_H)){
-        rm(secs);
+    string *defers = ({ "secrets.h", "network.h", "mssp.h" });
+    string secs = upgrades_files+"/0^0secure0^0include0^0";
+    foreach(string deferment in defers){
+        if(file_exists(secs+deferment) && 
+                file_exists("/secure/include/"+deferment)){
+            rm(secs+deferment);
+        }
     }
     return 0;
 }
@@ -435,10 +437,7 @@ string GetHelp() {
             "        liveupgrade apply\n"
             "        liveupgrade cancel\n"
             "        liveupgrade revert\n"
-            "        liveupgrade alpha\n"
-            //"To use oob updates (not recommended), use the -o flag. The default "
-            //"is currently an http connection to dead-souls.net, which is vastly "
-            //"faster and more secure than oob.\n"
+            "        liveupgrade alpha\n\n"
             "To upgrade all files to the next appropriate level for your lib version:\n"
             "liveupgrade all\n"
             "Wait until you receive the completion message before finalizing the upgrade. "
@@ -453,5 +452,5 @@ string GetHelp() {
             "liveupgrade revert\n"
             "To enable liveupgrading between alpha and stable versions:\n"
             "liveupgrade alpha\n\n"
-            "Web proxies are *NOT* supported. OOB is no longer supported.\n");
+            "Web proxies are *NOT* supported. OOB is no longer supported.");
 }

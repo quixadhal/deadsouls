@@ -68,7 +68,7 @@ mixed do_remove_obs(mixed *res) {
 }
 
 mixed do_remove_obj_out_of_obj(object targ, object container) {
-    return (mixed)container->eventGetFrom(this_player(), ({ targ }));
+    return container->eventGetFrom(this_player(), ({ targ }));
 }  
 
 mixed do_remove_obj_from_obj(object targ, object container) {
@@ -76,7 +76,7 @@ mixed do_remove_obj_from_obj(object targ, object container) {
 }
 
 mixed do_remove_obs_out_of_obj(mixed *res, object container) {
-    return (mixed)container->eventGetFrom(this_player(), res);
+    return container->eventGetFrom(this_player(), res);
 }
 
 mixed do_remove_obs_from_obj(mixed *res, object container) {

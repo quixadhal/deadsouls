@@ -18,7 +18,7 @@ mixed cmd(string args) {
     filep = player_save_file(args);
     filec = replace_string(filep, "players", "creators");
 
-    if( !((int)master()->valid_apply(({ PRIV_ASSIST, PRIV_SECURE, LIB_CONNECT }))) )
+    if( !(master()->valid_apply(({ PRIV_ASSIST, PRIV_SECURE, LIB_CONNECT }))) )
         error("Illegal encre attempt: "+get_stack()+" "+identify(previous_object(-1)));
 
     if( args == "" || !stringp(args) ) 
@@ -57,14 +57,26 @@ mixed cmd(string args) {
         exec(cre_ob, ob);
         cre_ob->SetProperty("brand_spanking_new",0);
         cre_ob->Setup();
+        if(cre_ob->GetTeloptIp() && !cre_ob->GetCharmode()){
+            int oldlock = cre_ob->GetProperty("screenlock");
+            cre_ob->SetCharmode(1);
+            cre_ob->SetProperty("reprompt",1);
+            cre_ob->SetProperty("keepalive", 5);
+            cre_ob->SetProperty("screenlock", 0);
+            cre_ob->SetScreen(80, 25);
+            cre_ob->SetProperty("screenlock", oldlock);
+        }
         ob->eventDestruct();
         message("system", "You are now a creator.", cre_ob);
-        message("shout", (string)cre_ob->GetName() + " is now a creator!",
+        message("shout", cre_ob->GetName() + " is now a creator!",
                 users(), ({ this_player(), cre_ob }));
         if(file_exists(filep)) rm(filep);
         make_workroom(cre_ob, 1);
         if(directory_exists(home_dir)){
-            rename(home_dir, homedir(cre_ob,1)+"/estate");
+            string new_dir = homedir(cre_ob,1)+"/estate";
+            if(strsrch(new_dir, home_dir)){
+                rename(home_dir, new_dir);
+            }
         }
         cre_ob->eventForce("home");
         cre_ob->eventForce("cd");
@@ -90,20 +102,17 @@ mixed cmd(string args) {
         else if(book) book->eventMove(ROOM_FURNACE);
         cre_ob->AddChannel(({"cre", "newbie", "gossip", "ds", "ds_test", "lpuni", "death", "connections","intercre","dchat" }));
         cre_ob->SetPolyglot(1);
-        cre_ob->save_player((string)cre_ob->GetKeyName());
+        cre_ob->save_player(cre_ob->GetKeyName());
     }
     return 1;
 }
 
 string GetKeyName() { return PlayerName; }
 
-void help() {
-    message("help",
-            "Syntax: encre <person>\n\n"
+string GetHelp() {
+    return ("Syntax: encre <person>\n\n"
             "Makes the target a creator. If the target is not "
             "logged in, they will be made a creator when "
-            "they next log in."
-            "\n\n"
-            "See also: decre, rid", this_player()
-           );
+            "they next log in.\n"
+            "See also: decre, rid");
 }

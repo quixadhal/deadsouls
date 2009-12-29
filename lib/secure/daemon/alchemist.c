@@ -96,13 +96,13 @@ void setup_object( object ob, object pobj )
         props = MATERIAL_PROPS;
         num_props = sizeof( props );
     }
-    type = (string)ob-> query( "material_type" );
+    type = ob-> query( "material_type" );
     if( !type || -1 == member_array( type, MATERIAL_TYPES ) )
     {
         // Log the event here for QC
         return;
     }
-    if( !( name = (string)ob-> query( "material_name" ) ) )
+    if( !( name = ob-> query( "material_name" ) ) )
     {
         // Log the event here for QC
         return;
@@ -110,14 +110,14 @@ void setup_object( object ob, object pobj )
     material = "/"+type+"/"+name;
     for( loop = 0 ; loop < num_props ; loop++ )
         ob-> set( props[loop], query( props[loop] + material ) );
-    if( !( mass = (int)ob-> query( "mass" ) ) )
+    if( !( mass = ob-> query( "mass" ) ) )
     {
         // Log the event here for QC
         return;
     }
     // Until set_weight() is removed.
     ob-> set_weight( mass );
-    ob-> set( "volume", 1000 * mass / ( (int)ob-> query( "density" ) ) );
+    ob-> set( "volume", 1000 * mass / ( ob-> query( "density" ) ) );
     if( !pobj ) return;
     if( !function_exists( "query", pobj ) ||
             undefinedp( temperature = pobj-> query( "temperature" ) ) )

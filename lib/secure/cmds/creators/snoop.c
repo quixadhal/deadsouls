@@ -27,14 +27,9 @@ int cmd(string str) {
     return 1;
 }
 
-int help()
-{
-    write( @EndText
-Syntax: snoop <user>
-Effect: Echoes to your screen everything <user> sees or types.
-To stop snooping, type just "unsnoop <user>"
-See also: unsnoop, monitor, unmonitor
-EndText
-    );
-    return 1;
+string GetHelp(){
+    return "Syntax: snoop <user>\n\n"
+        "Echoes to your screen everything <user> sees or types. "
+        "To stop snooping, type just \"unsnoop <user>\"\n"
+        "See also: unsnoop, monitor, unmonitor";
 }

@@ -1,6 +1,7 @@
 #include <lib.h>
 #include <vendor_types.h>
 inherit "/lib/pistol";
+
 int AddClip();
 void create(){
     pistol::create();
@@ -21,10 +22,12 @@ void create(){
     SetAmmo(15);
     SetMag(1);
 }
-
 int AddClip(){
     if(!present("clip",this_object())){
         new("/domains/campus/obj/9mmclip")->eventMove(this_object());
     }
     return 1;
+}
+void init(){
+    ::init();
 }

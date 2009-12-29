@@ -69,11 +69,11 @@ void init() {
         this_object()->eventDestruct();    
         return;    
     }    
-    __Options = (mapping)OPTIONS_D->query_options(__Owner =
-            (string)this_player()->GetKeyName());
-    if(!(__Lines = to_int((string)this_player()->GetEnvVar("LINES"))))   
+    __Options = OPTIONS_D->query_options(__Owner =
+            this_player()->GetKeyName());
+    if(!(__Lines = to_int(this_player()->GetEnvVar("LINES"))))   
         __Lines = 24;   
-    if(!(__Screen = to_int((string)this_player()->GetEnvVar("SCREEN"))))   
+    if(!(__Screen = to_int(this_player()->GetEnvVar("SCREEN"))))   
         __Screen = 80;    
     if((__NumLetters = __Lines - 10) < 0) __NumLetters = 5;   
 }    
@@ -81,7 +81,7 @@ void init() {
 static private void restore_box(string folder) {    
     int x;    
 
-    if(!pointerp(__BoxInfo=(mapping *)FOLDERS_D->query_box_info(__Owner, folder)))    
+    if(!pointerp(__BoxInfo=FOLDERS_D->query_box_info(__Owner, folder)))    
         __BoxInfo = ({});    
     __Folder = folder;    
     __TmpPost = ([]);    
@@ -237,8 +237,8 @@ varargs static void aliases(string str) {
     message("mail", sprintf("\n%%^CYAN%%^%s", center(sprintf("%s and "
                         "Personal Alias Menu", mud_name()))), this_player());
     message("mail", sprintf("\n%s\n",    
-                format_page(keys((mapping)OPTIONS_D->query_groups(__Owner) +    
-                        (mapping)LOCALPOST_D->query_mud_groups()),__Screen/20)),this_player());
+                format_page(keys(OPTIONS_D->query_groups(__Owner) +    
+                        LOCALPOST_D->query_mud_groups()),__Screen/20)),this_player());
     alias_menu();    
 }    
 
@@ -778,14 +778,14 @@ static private void save_letter(string cmd, string args) {
         __Delete[__Current] = 1;   
     }   
     else if(cmd == "S") {   
-        folder = absolute_path((string)this_player()->get_path(), folder);   
+        folder = absolute_path(this_player()->get_path(), folder);   
         if(!creatorp(this_player()) ||  
-                !((int)master()->valid_write(folder, this_player()))) {   
+                !(master()->valid_write(folder, this_player()))) {   
             postal_error("Access denied.");  
             return;   
         }   
         write_file(folder,   
-                (string)LETTERS_D->query_letter(__BoxInfo[letter]["id"]));   
+                LETTERS_D->query_letter(__BoxInfo[letter]["id"]));   
         message("mail", sprintf("Letter saved to %s.\n", folder),    
                 this_player());   
         set_current(letter);
@@ -823,7 +823,7 @@ static private void read_letter(int x) {
     else message("Nmail", "\n%^INITTERM%^\n", this_player());
     if(__Options["content"]) tmp = header(__BoxInfo[x])+"\n";
     else tmp = "";
-    tmp+=sprintf("\n%s\n",(string)LETTERS_D->query_letter(__BoxInfo[x]["id"]));   
+    tmp+=sprintf("\n%s\n",LETTERS_D->query_letter(__BoxInfo[x]["id"]));   
     if(!__BoxInfo[x]["read"]) FOLDERS_D->mark_read(__Owner, __Folder, x);
     __BoxInfo[x]["read"] = 1;   
     this_player()->eventPage(explode(tmp, "\n"), "mail", (: end_read :));   
@@ -857,12 +857,12 @@ static private void alias_members(string cmd, string args) {
         return;   
     }   
     if(user_exists(grp = lower_case(grp)) ||    
-            (string *)LOCALPOST_D->query_mud_group(grp)) {   
+            LOCALPOST_D->query_mud_group(grp)) {   
         if(__CommandLine) destruct_box("Invalid alias.");
         else postal_error("Invalid alias.");  
         return;   
     }   
-    if(!(old_members = (string *)OPTIONS_D->query_group(__Owner, grp))) {   
+    if(!(old_members = OPTIONS_D->query_group(__Owner, grp))) {   
         if(__CommandLine) destruct_box("No such alias.");
         else postal_error(sprintf("No such alias %s.", grp));  
         return;   
@@ -919,12 +919,12 @@ static private void alias_creation(string cmd, string args) {
     }  
     else if(cmd == "m") members = members - ({ args = members[0] });  
     else members = 0;  
-    if(cmd == "m" && (user_exists(args) || (mapping)LOCALPOST_D->query_mud_group(args))) {  
+    if(cmd == "m" && (user_exists(args) || LOCALPOST_D->query_mud_group(args))) {  
         if(__CommandLine) destruct_box("Invalid alias name.");
         else postal_error("Invalid alias name.");  
         return;  
     }  
-    if(!((string *)OPTIONS_D->query_group(__Owner, args))) {  
+    if(!(OPTIONS_D->query_group(__Owner, args))) {  
         if(cmd == "r") { 
             if(__CommandLine) destruct_box("No such alias to remove.");
             else postal_error("No such alias to remove.");  
@@ -969,8 +969,8 @@ static private void list_alias(string str) {
         else postal_error("Invalid alias name.");  
         return;  
     }  
-    if(!(who = (string *)LOCALPOST_D->query_mud_group(str=lower_case(str)))) {  
-        who = (string *)OPTIONS_D->query_group(__Owner, str);  
+    if(!(who = LOCALPOST_D->query_mud_group(str=lower_case(str)))) {  
+        who = OPTIONS_D->query_group(__Owner, str);  
     }  
     if(!who) {
         if(__CommandLine) destruct_box("No such alias exists.");
@@ -998,7 +998,7 @@ static private void save_options() {
     i = sizeof(cles = keys(__ChangedOptions));
     while(i--) 
         OPTIONS_D->set_option(__Owner, cles[i], __ChangedOptions[cles[i]]);
-    __Options = (mapping)OPTIONS_D->query_options(__Owner);  
+    __Options = OPTIONS_D->query_options(__Owner);  
     postal_success("New options now saved.");  
 }  
 
@@ -1039,7 +1039,7 @@ static private void reply(string str) {
         return;
     }
     set_current(x);
-    __TmpPost = ([ "date":time(), "from": (string)this_player()->GetKeyName()]);
+    __TmpPost = ([ "date":time(), "from": this_player()->GetKeyName()]);
     if((__TmpPost["subject"] = __BoxInfo[x]["subject"])[0..2] != "Re:") 
         __TmpPost["subject"] = sprintf("Re: %s", __TmpPost["subject"]);
     message("prompt", "Include original text (default 'n'): \n", this_player());
@@ -1094,7 +1094,7 @@ static void get_reply_list(string str) {
 static private string query_reply_text() {
     string tmp;
 
-    tmp = (string)LETTERS_D->query_letter(__BoxInfo[__Current]["id"]);
+    tmp = LETTERS_D->query_letter(__BoxInfo[__Current]["id"]);
     return sprintf("\n>%s\n", replace_string(tmp, "\n", "\n>"));
 }
 
@@ -1137,7 +1137,7 @@ static private void forward_letter(string str, int flag) {
     __TmpPost["to"] = args;
     if((__TmpPost["subject"]=__BoxInfo[__Current]["subject"])[0..4] !=
             "(fwd)") __TmpPost["subject"] = sprintf("(fwd) %s",__TmpPost["subject"]);
-    __TmpPost["from"] = (string)this_player()->GetKeyName();
+    __TmpPost["from"] = this_player()->GetKeyName();
     __TmpPost["date"] = time();
     message("prompt", "Comment on original letter (default 'n')? \n", 
             this_player());
@@ -1177,7 +1177,7 @@ static void confirm_comments(string str) {
 static private string query_forward_text() {
     string tmp;
 
-    tmp = (string)LETTERS_D->query_letter(__BoxInfo[__Current]["id"]);
+    tmp = LETTERS_D->query_letter(__BoxInfo[__Current]["id"]);
     tmp = ">"+replace_string(tmp, "\n", "\n>");
     return sprintf("Original letter sent by %s %s:\n%s\n%s\n", 
             capitalize(__BoxInfo[__Current]["from"]), 
@@ -1211,7 +1211,7 @@ static private void send_letter(string *args) {
         return; 
     } 
     __FwdRply = 0;
-    __TmpPost = ([ "from": (string)this_player()->GetKeyName(),"date":time()]);
+    __TmpPost = ([ "from": this_player()->GetKeyName(),"date":time()]);
     for(i=0, maxi = sizeof(args); i<maxi; i++) { 
         if(args[i] == "" || !args[i]) continue; 
         if(!flag && i < maxi-1 && args[i][0] == '-' && strlen(args[i]) > 1) { 
@@ -1238,9 +1238,9 @@ static private void send_letter(string *args) {
                 break; 
                 case "s": __TmpPost["subject"] = tmp; break; 
                 case "i":  
-                    tmp=absolute_path((string)this_player()->get_path(),tmp); 
+                    tmp=absolute_path(this_player()->get_path(),tmp); 
                 if(sscanf(tmp,user_path(this_player())+"%s", flag) != 1 || 
-                        !((int)master()->valid_read(tmp,this_player()))) { 
+                        !(master()->valid_read(tmp,this_player()))) { 
                     if(__CommandLine) { 
                         this_object()->eventDestruct(); 
                         return; 
@@ -1403,7 +1403,7 @@ static private string query_signature() {
         return sprintf("\n%s", __Options["sig file"]);     
     tmp = absolute_path(homedir(this_player()), 
             __Options["sig file"]); 
-    if(!((int)master()->valid_read(tmp, this_player())) || !file_exists(tmp)) {
+    if(!(master()->valid_read(tmp, this_player())) || !file_exists(tmp)) {
         return sprintf("\n%s", __Options["sig file"]); 
     } 
     return read_file(tmp); 
@@ -1422,7 +1422,7 @@ static void handle_send_choice(string str) {
     else str = lower_case(str)[0..0];
     switch(str) {
         case "s":
-            notify_send((string *)LOCALPOST_D->send_post(copy(__TmpPost)));
+            notify_send(LOCALPOST_D->send_post(copy(__TmpPost)));
         break;
         case "f":
             __TmpPost = ([]);
@@ -1455,7 +1455,7 @@ static private void notify_send(string *failures) {
                     __TmpPost["message"]);
         } 
         else write_file(tmp = sprintf("%s/%s.letter", homedir()+"/tmp", 
-                    (string)this_player()->GetKeyName()), __TmpPost["message"]); 
+                    this_player()->GetKeyName()), __TmpPost["message"]); 
         message("mail", sprintf("A copy of the letter was saved to %s", tmp), 
                 this_player()); 
     } 
@@ -1478,7 +1478,7 @@ void incoming_post() {
     if(__Folder != "new") return;
     if(file_name(previous_object()) != FOLDERS_D) return;
     id = (__Current < 0 ? 0 : __BoxInfo[__Current]["id"]);
-    delete =map_array(tmp=(mapping)FOLDERS_D->query_box_info(__Owner,"new"), 
+    delete =map_array(tmp=FOLDERS_D->query_box_info(__Owner,"new"), 
             "order_box", this_object());
     __BoxInfo = copy(tmp);
     set_current(id);

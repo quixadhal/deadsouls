@@ -18,6 +18,7 @@ void create() {
     SetInventory( ([
                 "/domains/default/obj/9mmclip": ({ 60, 2 }),
                 "/domains/default/obj/223clip": ({ 60, 2 }),
+                "/domains/default/weap/grenade": 3,
                 ]) );
     SetPreventGet("The metal ammunition box does not budge.");
 }

@@ -92,7 +92,7 @@ int pray_func(string str) {
     inv = all_inventory(ob);
     for (i=0; i<sizeof(inv); i++) {
         if ((!str || strlen(str) == 0) && inv[i]->id("hammer of tempos") && is_hammer == 0) {
-            tell_room(this_object(),(string)ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
+            tell_room(this_object(),ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
                     nominative(ob)+" does so, the shape of a demigod appears on the altar. "
                     "You feel the might of the shadow and take part in his pleasure with the prayer as you notice that "
                     "the shadow is an incarnation of Tempos himself! "
@@ -109,7 +109,7 @@ int pray_func(string str) {
             inv[i]->destruct();
             return 1;
         } else if ((!str || strlen(str) == 0) && inv[i]->id("hammer of tempos") && is_hammer == 1) {
-            tell_room(this_object(),(string)ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
+            tell_room(this_object(),ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
                     nominative(ob)+" does so, the shape of a demigod appears on the altar. "
                     "You feel the might of the shadow and take part in his pleasure with the prayer as you notice that "
                     "the shadow is an incarnation of Tempos himself! "
@@ -123,7 +123,7 @@ int pray_func(string str) {
             return 1;
         }
         if ((!str || strlen(str) == 0) && inv[i]->id("phylactery") && is_phyl == 0) {
-            tell_room(this_object(),(string)ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
+            tell_room(this_object(),ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
                     nominative(ob)+" does so, the shape of a demigod appears on the altar. "
                     "You feel the might of the shadow and take part in his pleasure with the prayer as you notice that "
                     "the shadow is an incarnation of Tempos himself! "
@@ -140,7 +140,7 @@ int pray_func(string str) {
             inv[i]->destruct();
             return 1;
         } else if ((!str || strlen(str) == 0) && inv[i]->id("phylactery") && is_phyl == 1) {
-            tell_room(this_object(),(string)ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
+            tell_room(this_object(),ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
                     nominative(ob)+" does so, the shape of a demigod appears on the altar. "
                     "You feel the might of the shadow and take part in his pleasure with the prayer as you notice that "
                     "the shadow is an incarnation of Tempos himself! "
@@ -164,7 +164,7 @@ int pray_func(string str) {
         if (str == "for warhammer" && j == 0 && ob->query_alignment() >= 1000 && ob->query_level() > 5) {
             ob2 = new(WHAMMER);
             if (ob2) {
-                tell_room(this_object(),(string)ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
+                tell_room(this_object(),ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
                         nominative(ob)+" does so, the shape of a demigod appears on the altar. "
                         "You feel the might of the shadow and take part in his pleasure with the prayer as you notice that "
                         "the shadow is an incarnation of Tempos himself! "
@@ -192,7 +192,7 @@ int pray_func(string str) {
         if (str == "for phylactery" && j==0 && ob->query_alignment()>=800 && ob->query_level()>5 && ob->query_skill("faith")>50) {
             ob2 = new(PHYL);
             if (ob2) {
-                tell_room(this_object(),(string)ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
+                tell_room(this_object(),ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
                         nominative(ob)+" does so, the shape of a demigod appears on the altar. "
                         "You feel the might of the shadow and take part in his pleasure with the prayer as you notice that "
                         "the shadow is an incarnation of Tempos himself! "
@@ -211,7 +211,7 @@ int pray_func(string str) {
         }
     }
     if (prayers < 7) {
-        tell_room(this_object(),(string)ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
+        tell_room(this_object(),ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
                 nominative(ob)+" does so, the shape of a demigod appears on the altar. "
                 "You feel the might of the shadow and take part in his pleasure with the prayer as you notice that "
                 "the shadow is an incarnation of Tempos himself!",ob);
@@ -223,11 +223,11 @@ int pray_func(string str) {
         if (random(100) <(15+ob->query_base_stats("charisma"))) ob->add_alignment(random(3)+10-prayers);
     } else {
         limb = ob->return_limb();
-        tell_room(this_object(),(string)ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
+        tell_room(this_object(),ob->query_cap_name()+" mutters a prayer in front of the altar. As "+
                 nominative(ob)+" does so, the shape of a demigod appears on the altar. "
                 "You feel the might of the shadow and the fear he installs in your heart! "
                 "The shadow again is an incarnation of Tempos himself, but this time he is annoyed of being "
-                "disturbed that often! With a swing of his hammer he attacks "+(string)ob->query_cap_name()+
+                "disturbed that often! With a swing of his hammer he attacks "+ob->query_cap_name()+
                 "! "+ ( is_hammer ?
                     " This time the hammer turns out to be real!\nTempos destroys "+ob->query_cap_name()+" utterly in the "+limb+
                     " with his %^CYAN%^warhammer%^RESET%^!"

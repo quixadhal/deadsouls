@@ -66,7 +66,7 @@ mixed can_put_wrd_wrd_word_obj(mixed args...) {
 
     if( !num || !curr ) return 0;
     if( (amt = to_int(num)) < 1 ) return "You cannot do that!";
-    if( (int)this_player()->GetCurrency(curr) < amt )
+    if( this_player()->GetCurrency(curr) < amt )
         return "You don't have that much " + curr + ".";
     if(newbiep(this_player())){
         return "Newbies can't drop money.";
@@ -86,8 +86,8 @@ mixed do_put_obj_word_obj(object what, string wrd, object storage) {
         write(capitalize(storage->GetShort())+" is closed.");
         return 1;
     }
-    if(wrd == "in" || wrd == "into") return (mixed)storage->eventPutInto(this_player(), what);
-    if(wrd == "on" || wrd == "onto") return (mixed)storage->eventPutOnto(this_player(), what);
+    if(wrd == "in" || wrd == "into") return storage->eventPutInto(this_player(), what);
+    if(wrd == "on" || wrd == "onto") return storage->eventPutOnto(this_player(), what);
 }
 
 mixed do_put_obj_obj(object what, object storage){
@@ -187,8 +187,8 @@ mixed do_put_wrd_wrd_word_obj(mixed args...) {
     env = environment(this_player());
     pile = new(LIB_PILE);
     pile->SetPile(curr, amt);
-    if( !((int)pile->eventMove(ob)) ||
-            (int)this_player()->AddCurrency(curr, -amt) == -1 ) {
+    if( !(pile->eventMove(ob)) ||
+            this_player()->AddCurrency(curr, -amt) == -1 ) {
         this_player()->eventPrint("Something prevents your action.");
         pile->eventDestruct();
         return 1;
@@ -196,7 +196,7 @@ mixed do_put_wrd_wrd_word_obj(mixed args...) {
     this_player()->eventPrint("You put " + amt + " " + curr + 
             " "+wort+" "+ob->GetShort()+".");
 
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " puts some " + curr + " "+wort+" "+ob->GetShort()+".",
             this_player());
     return 1;

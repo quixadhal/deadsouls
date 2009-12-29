@@ -53,7 +53,7 @@ mixed cmd(string args) {
 }
 
 string GetHelp() {
-    return ("Syntax: <domains>\n\n"
-            "Prints out domain statistics for the mud's domains.\n\n"
+    return ("Syntax: domains\n\n"
+            "Prints out domain statistics for the mud's domains.\n"
             "See also: realms");
 }

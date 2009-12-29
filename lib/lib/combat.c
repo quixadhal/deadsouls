@@ -32,7 +32,7 @@ private int Wimpy, Dead;
 private string WimpyCommand;
 private static int cParalyzed, tNextRound, AttacksPerHB;
 private static string TargetLimb, Party;
-private static object CurrentEnemy;
+private static object CurrentEnemy, genv;
 private static function fParalyzed, fNextRound;
 private static object *Hostiles, *Enemies, *SpecialTargets, *NonTargets;
 private static object *PriorEnemies;
@@ -438,20 +438,20 @@ int CanWeapon(object target, string type, int hands, int num){
     if(hands > 1){  
         if(GetSkillLevel("multi-hand")){
             chance = (chance/2) + 
-                (GetSkillLevel("multi-hand")/75)*(chance/2);
+                (GetSkillLevel("multi-hand")/25)*(chance/2);
         }
         else { /* If you are really strong you can use multihand a bit */
-            chance *= GetStatLevel("strength")/300;
+            chance *= GetStatLevel("strength")/100;
             div += (hands-1);
         }
     }
     if(num > 1){
         if(GetSkillLevel("multi-weapon")){
             chance = (chance/2) + 
-                (GetSkillLevel("multi-weapon")/75)*(chance/2);
+                (GetSkillLevel("multi-weapon")/25)*(chance/2);
         }    
         else { /* If you are really coordinated you can use multiweap a bit */
-            chance *= GetStatLevel("coordination")/300;
+            chance *= GetStatLevel("coordination")/100;
             div += (num-1);
         }
     }
@@ -533,7 +533,6 @@ static int Destruct(){
 varargs int eventDie(mixed agent){
     object ob, env = room_environment();
     int x;
-
     if(this_object()->GetGodMode()) return 0;
 
     if(Dead) return 1;
@@ -1020,7 +1019,7 @@ void eventKillEnemy(object ob){
         int x;
 
         if(!estatep(ob)) eventTrainSkill("murder", GetLevel(), level, 1,GetCombatBonus(level)); 
-        x = (int)ob->GetMorality();
+        x = ob->GetMorality();
         if( x > 0 ) x = -x;
         else if( GetMorality() > 200 ) x = 100;
         else x = 0;
@@ -1116,22 +1115,22 @@ mixed eventTurn(object who){
 }
 
 int eventWimpy(int i){
-    object env = room_environment();
     string dir, cmd;
+    genv = room_environment();
 
-    if( !env || !GetInCombat() ){
+    if( !genv || !GetInCombat() ){
         if(!i) return 0;
     }
     cmd = WimpyCommand || "go out";
-    if( (sscanf(cmd, "go %s", dir) && !((string)env->GetExit(dir))) ||
-            (sscanf(cmd, "enter %s", dir) && !((string)env->GetEnter(dir))) ){
+    if( (sscanf(cmd, "go %s", dir) && !(genv->GetExit(dir))) ||
+            (sscanf(cmd, "enter %s", dir) && !(genv->GetEnter(dir))) ){
         string *tmp;
 
-        tmp = filter((string *)environment()->GetExits(),
-                (: !((string)environment()->GetDoor($1)) :));
+        tmp = filter((genv->GetExits() || ({})),
+                (: !(genv->GetDoor($1)) :));
         if( !sizeof(tmp) ){
-            tmp = filter((string *)environment()->GetEnters(),
-                    (: !((string)environment()->GetDoor($1)) :));
+            tmp = filter(genv->GetEnters(),
+                    (: !(genv->GetDoor($1)) :));
             if( !sizeof(tmp) ){
                 this_object()->eventPrint("You need to escape, but you have nowhere to go!");
                 return 0;

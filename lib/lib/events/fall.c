@@ -13,8 +13,12 @@ mixed eventFall(){
 
     if(!living(this_object())) name = this_object()->GetShort();
 
-    if(!env || !(rumbo = env->GetExit("down"))) return 0;
-    if(env == rumbo) return 0;
+    if(!env || !(rumbo = env->GetExit("down"))){
+        return 0;
+    }
+    if(env == rumbo){
+        return 0;
+    }
     if(env->GetMedium() != MEDIUM_AIR){
         send_messages("crash", "$agent_name $agent_verb down!",
                 this_object(), 0, env);
@@ -22,8 +26,10 @@ mixed eventFall(){
         return 1;
     }
     else {
-        int err;
-        if(!rumbo) return 0;
+        mixed err;
+        if(!rumbo){
+            return 0;
+        }
         tmprumbo = rumbo;
         if(stringp(rumbo)) err = catch(rumbo = load_object(rumbo));
         if(err || !rumbo){
@@ -35,7 +41,7 @@ mixed eventFall(){
             return 0;
         }
         tell_object(this_object(),"You plummet downward!");
-        if(this_object()->eventMove(rumbo)){
+        if(err = this_object()->eventMove(rumbo)){
             tell_room(rumbo,capitalize(name)+" plummets in from above.",
                     ({ this_object() }));
             tell_room(env,capitalize(name)+" continues "+

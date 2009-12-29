@@ -31,7 +31,7 @@ static void create() {
             "here when they have medical problems, and "
             "for a price, they are helped. "
             "It seems that the doctor's work area is "
-            "west of here. Tavern Road is east."
+            "west of here. Saquivor Road is east."
             "\n%^GREEN%^There is a list here you can read.%^RESET%^");
     SetItems( ([
                 ({"list","list on the wall"}) : "A list of available procedures",

@@ -15,7 +15,7 @@ mixed cmd(string args){
     string array rules = ({ "", "STR" });
     string array adverbs;
     string emote, xtra, prep;
-    if( !((int)master()->valid_apply(({ "ASSIST" }))) &&
+    if( !(master()->valid_apply(({ "ASSIST" }))) &&
             !member_group(this_player(), "EMOTES") ){
         write("You are not admin, nor a member of the EMOTES group.");
         return 1;
@@ -97,10 +97,10 @@ mixed cmd(string args){
     return 1;
 }
 
-string GetHelp(string args) {
-    return ("Syntax: <stupidemote EMOTE>\n"
-            "        <stupidemote EMOTE RULE>\n"
-            "You must be admin or member of the EMOTES group to use this command.\n\n"
+string GetHelp(){
+    return ("Syntax: stupidemote <EMOTE> [RULE]\n\n"
+            "You must be admin or member of the EMOTES group to "
+            "use this command.\n"
             "This command allows you to add the most common kinds of "
             "emote straight from the command line.  Using the first syntax, "
             "You can add a simple, untargetted emote.  For example, "

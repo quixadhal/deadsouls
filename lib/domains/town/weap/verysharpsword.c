@@ -11,10 +11,10 @@ static void create() {
     SetAdjectives( ({ "short","sharp","fine", "very fine"}));
     SetShort("a very sharp sword");
     SetLong("A very fine, sharp sword. It is solidly crafted and well balanced.");
-    SetMass(300);
+    SetMass(400);
     SetBaseCost("silver", 2500);
     SetVendorType(VT_WEAPON);
-    SetClass(45);
+    SetClass(35);
     SetDamageType(BLADE);
     SetWeaponType("blade");
 }

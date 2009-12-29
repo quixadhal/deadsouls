@@ -71,15 +71,15 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: findfun FUNCTION_NAME\n"
-            "        findfun -s SUBSTRING\n\n"
+string GetHelp(){
+    return ("Syntax: findfun <FUNCTION_NAME>\n"
+            "        findfun -s <SUBSTRING>\n\n"
             "Tells you where a function is defined. With the "
             "substring flag (-s) it lists possible matching lfuns, "
             "efuns, and sefuns known to the command.\n"
             "\nExamples: \nfindfun AddHP\nfindfun -s class\n\n"
             "Note: When not doing a substring search, "
-            "this command is case-sensitive.\n\n"
+            "this command is case-sensitive.\n"
             "See also: showfuns, efun, efuns, sefun, sefuns, "
-            "lfun, lfuns", this_player());
+            "lfun, lfuns");
 }

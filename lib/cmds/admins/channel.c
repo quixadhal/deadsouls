@@ -66,12 +66,10 @@ int cmd(string str) {
     else return 0;
 }
 
-void help() {
-    message("help",
-            "Syntax: channel add|remove <player> <channel>\n"
-            "        channel <player>\n"
-            "\n"
-            "Used to restrict a player from using a line, or to allow them back "
-            "onto that line. You can also request a listing of a players currently "
-            "restricted lines with this command.", this_player());
+string GetHelp() {
+    return "Syntax: channel <add|remove> <player> <channel>\n"
+        "        channel <player>\n\n"
+        "Used to restrict a player from using a line, or to allow them back "
+        "onto that line. You can also request a listing of a players currently "
+        "restricted lines with this command.";
 }

@@ -2,18 +2,16 @@
 
 inherit LIB_DAEMON;
 
-mixed cmd(string str) {
-    return @EndText
-        |---------------------------------------------------------------|-------------|
-EndText;
+string GetHelp() {
+    return ("Syntax: margins\n\n"
+            "This simple command prints a line to help creators when writing "
+            "descriptions.  It gives a visual indicator of when to stop on "
+            "one line and continue on the next.");
 }
 
-void help() {
-    write("Syntax: margins\n");
-    write(@EndText
-This simple command prints a line to help creators when writing
-descriptions.  It gives a visual indicator of when to stop on
-one line and continue on the next.
-EndText
-    );
+mixed cmd(string str) {
+    return (
+            "|---------------------------------------------------------------|-------------|"
+           );
+
 }

@@ -17,11 +17,9 @@ static void create() {
     SetRules("down", "in OBJ", "down in OBJ", "on OBJ", "down on OBJ");
     SetErrorMessage("Lie down?");
     SetSynonyms("lay");
-    SetHelp("Syntax: <lie down>\n"
-            "        <lie down in OBJECT>\n\n"
-            "Allows you to lie down on the ground or in a bed.  "
-            "It can be really exciting.\n\n"
-            "Synonyms: lay (bad english)\n\n"
+    SetHelp("Syntax: lie [down]\n"
+            "        lie down in <OBJECT>\n\n"
+            "Allows you to lie down on the ground or in a bed.\n"
             "See also: sit, stand");
 }
 

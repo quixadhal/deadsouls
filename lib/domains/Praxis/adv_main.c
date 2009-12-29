@@ -91,17 +91,17 @@ int train_player(object tp, string which, int amount) {
         notify_fail("You cannot train that amount.\n");
         return 0;
     }
-    exp = (int)tp->query_exp();
-    if(exp-amount < get_exp((int)tp->query_level())) {
+    exp = tp->query_exp();
+    if(exp-amount < get_exp(tp->query_level())) {
         notify_fail("You do not have the experience to train that much.\n");
         return 0;
     }
-    if((int)tp->query_max_skill(which) <= (int)tp->query_skill(which)) {
+    if(tp->query_max_skill(which) <= tp->query_skill(which)) {
         notify_fail("You can train no more in that skill.\n");
         return 0;
     }
-    amt = ( (int)tp->query_level() * 4 ) + 20;
-    if(amt <= (int)tp->query_skill(which) )
+    amt = ( tp->query_level() * 4 ) + 20;
+    if(amt <= tp->query_skill(which) )
     {
         notify_fail("You must advance your level to train more in that skill"+
                 ".\n");

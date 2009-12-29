@@ -59,11 +59,11 @@ static void SetSkills(){
         foreach(mixed key, mixed val in skills){
             SetSkill(key, cls, val["SkillClass"]);
         }
-     }
+    }
     foreach(string race in RACES_D->GetRaces()){
         mapping skills = RACES_D->GetRace(race)["Skills"];
         foreach(mixed key, mixed val in skills){
             SetSkill(key, race, val[1], 1);
         }
-     }
+    }
 }

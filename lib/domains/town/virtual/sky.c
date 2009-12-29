@@ -102,6 +102,9 @@ varargs static void create(int x, int y, int z) {
         else if(y==99999 && x==26) dexit = "/domains/town/room/gate";
         else if(y==99998 && x==26) dexit = "/domains/town/room/mansion_ext";
         else if(y==99998 && x==25) dexit = "/domains/town/room/garden";
+        else if(y==99999 && x==21) dexit = "/domains/town/room/narrow_path";
+        else if(y==99998 && x==21) dexit = "/domains/town/room/narrow_path2";
+        else if(y==99997 && x==21) dexit = "/domains/town/room/cratshack";
 
         if(dexit){
             RemoveExit("down");

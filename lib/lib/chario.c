@@ -19,6 +19,9 @@
  * processed or discarded, and accumulation into CharStuff["charbuffer"]
  * resumes. 
  * -Crat 08FEB2009
+ *
+ *  Wow what's that even mean?
+ * -Crat 22SEP2009
  */
 
 #include <daemons.h>
@@ -135,8 +138,6 @@ static int ReceiveChars(string str){
         case 31 : this_object()->rCtrl("31"); break;
     }
 
-    //debug_message("esc char: "+c);
-
     if(!this_object()){
         // Probably a warmboot or userload
         return 0;
@@ -151,8 +152,11 @@ static int ReceiveChars(string str){
     return CharStuff["charmode"];
 }
 
-int CancelCharmode(){
+varargs int CancelCharmode(int extra){
     int ret = 1;
+#if CHAR_DEBUG
+    debug("cancelling! stack: "+get_stack());
+#endif
     if(!CharStuff) CharStuff = ([]);
     flush_messages();
     CharStuff["charbuffer"] = "";
@@ -164,6 +168,8 @@ int CancelCharmode(){
 #else
     ReceiveChars(sprintf("%c",13));
 #endif
+    if(extra) ReceiveChars(sprintf("%c",13));
+    this_object()->SetProperty("was_charmode", 0);
     return ret;
 }
 
@@ -206,13 +212,13 @@ static string SetTempbuffer(string str){
 }
 
 void CheckCharmode(){
-    if(!in_edit() && this_object()->GetProperty("was_charmode")){
-        this_object()->SetProperty("was_charmode", 0);
+    if(!in_edit() && !in_input() && this_object()->GetProperty("was_charmode")){
         CharStuff["charmode"] = 1;
     }
     if(CharStuff["charmode"] && !query_charmode(this_object())){
-        SetCharmode(CharStuff["charmode"]);
+        if(!in_edit() && !in_input()) SetCharmode(CharStuff["charmode"]);
         if(!this_player() || this_player() != this_object()){
+            SetCharmode(1);
             this_object()->RedrawPrompt();
         }
     }
@@ -241,4 +247,3 @@ int SetNoEcho(int x){
 int GetNoEcho(){
     return CharStuff["noecho"];
 }
-

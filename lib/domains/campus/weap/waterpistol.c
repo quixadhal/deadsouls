@@ -27,9 +27,16 @@ static void create() {
     SetFirearmType("auto");
     SetWeaponType("blunt");
 }
-mixed eventShoot(object shooter, object target){
+
+varargs mixed eventShoot(object shooter, mixed target, string direction){
     string name,patsy;
     object killer, env;
+
+    if(!target || direction){
+        write("You can't do that.");
+        return 1;
+    }
+
     killer = this_player();
     name = killer->GetName();
     env = environment(killer);

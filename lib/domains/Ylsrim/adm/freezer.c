@@ -17,7 +17,7 @@ void create() {
     SetProperties(([ "login" : ROOM_START, "no teleport" : 1 ]));
     SetShort( "The freezer");
     SetLong( "The local freezer.  Go down to leave.");
-    SetObviousExits("d");
+    SetObviousExits("down");
     SetExits( ([ "down" : ROOM_START ]) );
     Old = ({});
     call_out("clean_room", MAX_NET_DEAD_TIME);

@@ -4,7 +4,6 @@
 // specified, limited amount of time.
 // 01July1994 by Gregon@Dead Souls
 
-
 #include <lib.h>
 #include <daemons.h>
 
@@ -35,8 +34,9 @@ int cmd(string str) {
     return 1;
 }
 
-void help() {
-    write("Syntax: tempban [site] [time]\n\nThis will make new players from "
+string GetHelp(){
+    return ("Syntax: tempban [site] [time]\n\n"
+            "This will make new players from "
             "[site] unable to log in for a period of time [time] "
             "(given in minutes).  This will last across reboots and site ip "
             "numbers should be entered in the same manner as the \"register\" "

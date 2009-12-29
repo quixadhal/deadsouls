@@ -33,16 +33,15 @@ mixed CanGet(object who){
         who->eventPrint("You are unable to get it.", MSG_SYSTEM);
         return 0;
     }
-
-    if( !((int)who->CanCarry(GetMass())) ) return "It is too heavy for you!";
+    if( !(who->CanCarry(GetMass())) ) return "It is too heavy for you!";
     if( !PreventGet && !GetProperty("keep") ) return 1;
     if( stringp(GetProperty("keep")) ){
-        if( (string)who->GetKeyName() == GetProperty("keep") ){
+        if( who->GetKeyName() == GetProperty("keep") ){
             if( !PreventGet ) return 1;
         }
         else return "Mystical forces prevent you from getting " + this_object()->GetShort() + ".";
     }
-    if( intp(PreventGet) ) return 0;
+    if( PreventGet && intp(PreventGet) ) return 0;
     if( stringp(PreventGet) ) return PreventGet;
     if( objectp(PreventGet) ){
         if( PreventGet == who )

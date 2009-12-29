@@ -45,25 +45,27 @@ varargs mixed eventRead(object reader, mixed str){
             nominative(ob)+" reanimates as you hear a thunderous roar!",
             ({ob, this_player()}) );
 
-    basefile = lpc_file(ob->GetBaseFile());
+    basefile = ob->GetBaseFile();
     if(file_exists(basefile)){
         err = catch( npc = new(basefile) );
     }
     if(!npc){
         npc = new(LIB_SENTIENT);
-        npc->SetRace(ob->GetRace());
-        npc->SetClass(ob->GetClass());
-        npc->SetLevel(ob->GetLevel());
-        npc->SetGender(ob->GetGender());
-        npc->SetId( ({ ob->GetGender(), ob->GetRace(),
-                    ob->GetClass(), "zombie" }) );
-        npc->SetAdjectives( ({ ob->GetGender(), ob->GetRace(),
-                    ob->GetClass(), "zombie", "undead" }) );
-        npc->SetUndead(1);
-        npc->SetKeyName(lower_case((ob->GetOwner()|| ob->GetRace())));
-        npc->SetShort("A zombie "+ob->GetRace());
+        npc->SetShort("a zombie "+ob->GetRace());
         npc->SetLong("A zombie "+ob->GetRace());
     }
+
+    npc->SetRace(ob->GetRace());
+    npc->SetClass(ob->GetClass());
+    npc->SetLevel(ob->GetLevel());
+    npc->SetGender(ob->GetGender());
+    npc->SetId( ({ ob->GetGender(), ob->GetRace(),
+                ob->GetClass(), "zombie" }) );
+    npc->SetAdjectives( ({ ob->GetGender(), ob->GetRace(),
+                ob->GetClass(), "zombie", "undead" }) );
+    npc->SetUndead(1);
+    npc->SetKeyName(lower_case((ob->GetOwner()|| ob->GetRace())));
+
     foreach(mixed key, mixed val in ob->GetSkills()){
         npc->SetSkill(key, val["level"], val["class"]);
     }
@@ -71,6 +73,8 @@ varargs mixed eventRead(object reader, mixed str){
         npc->SetStat(key, val["level"], val["class"]);
     }
     npc->eventMove(ROOM_POD);
+    npc->SetProperty("basefile", basefile);
+    npc->init();
     npc->ResetCurrency();
     if(sizeof(all_inventory(npc))){
         all_inventory(npc)->eventMove(ROOM_FURNACE);
@@ -101,6 +105,8 @@ varargs mixed eventRead(object reader, mixed str){
     npc->eventMove(environment(this_player()));
     npc->DisableActions(1);
     npc->SetUndead(1);
+    npc->SetEncounter(0);
+    npc->eventQuell();
     npc->SetUndeadType("zombie");
     ob->eventMove(ROOM_FURNACE);
     tell_room(environment(this_player()),"The scroll disintegrates into dust.");

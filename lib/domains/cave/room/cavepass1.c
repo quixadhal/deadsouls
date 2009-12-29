@@ -14,6 +14,9 @@ void create() {
                 ({ "ground", "rock", "rocks", "earth", "dirt", "stone", "stones" }) : "Rough and dirty, as one would expect from a simple underground area.",
                 ({ "wall", "walls", "rough walls", "rough and bare walls", "bare walls", "bare and rough walls" }) : "Carved roughly into the earth, this passageway has walls that expose underground rock. Clearly this area was architected with utility and expediency in mind.",
                 ]));
+    SetInventory(([
+                "/domains/cave/npc/orc_guard5" : 1,
+                ]));
     SetClimate("indoors");
     SetExits( ([
                 "east" : "/domains/cave/room/cavepass2",
@@ -21,8 +24,6 @@ void create() {
                 "northeast" : "/domains/cave/room/cavepass3.c",
                 ]) );
 
-    SetInventory(([
-                ]));
 }
 void init(){
     ::init();

@@ -45,10 +45,8 @@ mixed cmd(string args) {
 }
 
 string GetHelp() {
-    return ("Syntax: <clean>\n"
-            "        <clean OBJECT>\n\n"
+    return ("Syntax: clean [OBJECT]\n\n"
             "This command destroys all objects in the inventory of a "
             "specified object.  It skips any item that has a user somewhere "
             "in its deep inventory.");
-
 }

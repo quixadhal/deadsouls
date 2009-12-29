@@ -97,8 +97,6 @@ int cmd(string str){
     return 1;
 }
 
-
-
 string GetHelp(string str) {
     return "Syntax: rot -q <FIRSTLETTER> <SECONDLETTER>\n"
         "        rot <NUMBER> <STRING>\n"

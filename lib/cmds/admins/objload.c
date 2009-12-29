@@ -43,10 +43,8 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string unused) {
-    return ("Syntax: <objload>\n\n"
-            "Provides you with information about how many objects "
-            "each creator has in the game.");
+string GetHelp() {
+    return "Syntax: objload\n\n"
+        "Provides you with information about how many objects "
+        "each creator has in the game.";
 }
-
-

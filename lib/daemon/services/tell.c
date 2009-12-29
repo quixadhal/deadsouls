@@ -19,7 +19,7 @@ void eventReceiveTell(mixed *packet) {
     if( file_name(previous_object()) != INTERMUD_D ) return;
     who = convert_name(packet[5]);
     INSTANCES_D->SendTell(who, packet[7], packet[6] + "@" + packet[2]);
-    if( !(ob = find_player(who)) || (int)ob->GetInvis() ) {
+    if( !(ob = find_player(who)) || ob->GetInvis() ) {
         INTERMUD_D->eventWrite(({ "error", 5, mud_name(), 0, packet[2],
                     packet[3], "unk-user", 
                     capitalize(packet[5]) + " is nowhere to "
@@ -61,9 +61,9 @@ void eventReceiveTell(mixed *packet) {
 void eventSendTell(string who, string where, string msg) {
     string pl, plc, ret;
 
-    pl = (string)this_player(1)->GetName();
-    plc = (string)this_player(1)->GetCapName();
-    where = (string)INTERMUD_D->GetMudName(where);
+    pl = this_player(1)->GetName();
+    plc = this_player(1)->GetCapName();
+    where = INTERMUD_D->GetMudName(where);
     INTERMUD_D->eventWrite(({ "tell", 5, mud_name(), pl, where, 
                 convert_name(who), plc, msg }));
     ret = "%^BOLD%^RED%^You tell " + capitalize(who) +

@@ -31,20 +31,22 @@ mixed cmd(string str) {
     int i, maxi, insttell;
     string who, msg, tmp, tmp2, machine_message, retname, me;
 
-    if(!str) return notify_fail("Syntax: <tell [who] [message]>\n");
+    if(!str) return notify_fail("Syntax: tell <who> <message>\n");
     if(str == "hist" || str == "history"){
         string ret = "Your tell history: \n\n"; 
         ret += implode(this_player()->GetTellHistory(),"\n");
         print_long_string(this_player(), ret);
         return 1;
     }
-
     if(!creatorp(this_player()) && this_player()->GetMagicPoints() < 15) {
         write("You lack sufficient magic to tell to anyone right now.");
         return 1;
     }
     mud = 0;
-    if((maxi=sizeof(words = explode(str, "@"))) > 1){
+    words = explode(str, " ");
+    if(sizeof(words)) who = convert_name(words[0]);
+    maxi = sizeof(words = explode(str, "@"));
+    if(maxi > 1 && !find_player(who)){
         string tmpmsg, tmpmud;
         who = convert_name(words[0]);
         if(maxi > 2) words[1] = implode(words[1..maxi-1], "@");
@@ -57,18 +59,23 @@ mixed cmd(string str) {
             tmp = lower_case(implode(words[0..i], " "));
             tmp2 = lower_case(implode(words[0..i+1], " "));
 
+            mud = tmp;
+
             if( CheckMud(tmp) && !CheckMud(tmp2) ){ 
-                mud = tmp;
                 if(i+1 < maxi) msg = implode(words[i+1..maxi-1], " ");
                 else msg = "";
                 break;
             }
+            if( IMC2_D->GetMudName(tmp) && !(IMC2_D->GetMudName(tmp2)) ){
+                msg = tmpmsg;
+                break;
+            }
         }
-        if(!mud && tmpmud){
-            mud = IMC2_D->GetMudName(tmpmud);
-            msg = tmpmsg;
+        if(!CheckMud(mud) && !(IMC2_D->GetMudName(mud))){
+            write("No such mud found.");
+            return 1;
         }
-        if(msg == "") return notify_fail("Syntax: <tell [who] [message]>\n");
+        if(!sizeof(msg)) return notify_fail("Syntax: tell <who> <message>\n");
         if(!mud) mud = -1;
     }
     if(!mud || mud == -1){
@@ -90,7 +97,7 @@ mixed cmd(string str) {
                 break;
             }
         }
-        if(!who) {
+        if(!who){
             if(!mud){
                 words -= ({ retname });
                 msg = implode(words," ");
@@ -102,7 +109,12 @@ mixed cmd(string str) {
                 return 1;
             }
             else {
-                write(mud_name()+" is not aware of that mud.\n");
+                if(grepp(who, "@")){
+                    write("Malformed message.");
+                }
+                else {
+                    write(mud_name()+" is offline or doesn't exist.\n");
+                }
                 return 1;
             }
         }
@@ -139,7 +151,7 @@ mixed cmd(string str) {
                 machine_message=machine->send_message();
             }
         }
-        if( (err = (mixed)this_player()->CanSpeak(ob, "tell", msg)) != 1){
+        if( (err = this_player()->CanSpeak(ob, "tell", msg)) != 1){
             if(ob && !creatorp(ob)) this_player()->AddMagicPoints(15);
             this_player()->eventTellHist("You tried to tell "+retname+": "+
                     "%^BLUE%^%^BOLD%^"+ msg + "%^RESET%^");
@@ -168,7 +180,7 @@ mixed cmd(string str) {
         if(machine_message) message("info", machine_message, this_player());
 #ifdef BLOCK_TELLS_TO_AFK
         if(ob->GetProperty("afk")) {
-            message("my_action", (string)ob->GetName()+
+            message("my_action", ob->GetName()+
                     " is afk and cannot receive your message.", this_player()); 
         }
 #endif
@@ -176,17 +188,17 @@ mixed cmd(string str) {
         ob->SetProperty("reply", lower_case(me));
         ob->SetProperty("reply_time", time());
         if(!archp(ob) && userp(ob) && (query_idle(ob) > 60))
-            message("my_action", (string)ob->GetName()+
+            message("my_action", ob->GetName()+
                     " is idle and may not have been paying attention.", this_player());
         else if((in_edit(ob) || in_input(ob))
 #ifdef __DSLIB__
                 && !query_charmode(ob)
 #endif
                )
-            message("my_action", (string)ob->GetCapName()+" is in input "+
+            message("my_action", ob->GetCapName()+" is in input "+
                     "and may not be able to respond.", this_player());
         else if(ob->GetSleeping())
-            message("my_action", (string)ob->GetCapName()+" is sleeping "+
+            message("my_action", ob->GetCapName()+" is sleeping "+
                     "and is unable to respond.", this_player());
     }
     else {
@@ -200,14 +212,12 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help(string str) {
-    message("help",
-            "Syntax: <tell [player] [message]>\n"
-            "        <tell [player]@[mud] [message]>\n\n"
+string GetHelp(){
+    return ("Syntax: tell <player> <message>\n"
+            "        tell <player>@<mud> <message>\n\n"
             "Sends the message to the player named either on this mud if no "
             "mud is specified, or to the player named on another mud when "
             "another mud is specified. If the other mud is on an IMC2 network "
             "rather than an Intermud-3 network, use \"imc2 tell\""
-            "\n\n"
-            "See also: imc2, say, shout, yell, emote",this_player());
+            "\nSee also: imc2, say, shout, yell, emote");
 }

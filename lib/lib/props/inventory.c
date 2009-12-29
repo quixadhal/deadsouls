@@ -103,6 +103,7 @@ mapping SetInventory(mapping mp){
 }
 
 varargs void reset(){
+    if(origin() == "driver") return;
     counter = 0;
     eventLoadInventory();
 }

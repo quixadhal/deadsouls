@@ -41,18 +41,19 @@ int query_ambient_light(object ob){
     else return 0;
 }
 
-string opposite_dir(string str){
+varargs string opposite_dir(string str, int article){
+    int classic;
     switch(str){
-        case "north" : ret = "south";break;
-        case "south" : ret = "north";break;
-        case "east" : ret = "west";break;
-        case "west" : ret = "east";break;
-        case "northeast" : ret = "southwest";break;
-        case "northwest" : ret = "southeast";break;
-        case "southeast" : ret = "northwest";break;
-        case "southwest" : ret = "northeast";break;
-        case "up" : ret = "down";break;
-        case "down" : ret = "up";break;
+        case "north" : ret = "south";classic = 1;break;
+        case "south" : ret = "north";classic = 1;break;
+        case "east" : ret = "west";classic = 1;break;
+        case "west" : ret = "east";classic = 1;break;
+        case "northeast" : ret = "southwest";classic = 1;break;
+        case "northwest" : ret = "southeast";classic = 1;break;
+        case "southeast" : ret = "northwest";classic = 1;break;
+        case "southwest" : ret = "northeast";classic = 1;break;
+        case "up" : ret = (article ? "below" : "down");break;
+        case "down" : ret = (article ? "above" : "up");break;
 
         case "fore" : ret = "aft";break;
         case "aft" : ret = "fore";break;
@@ -65,7 +66,6 @@ string opposite_dir(string str){
         case "-x" : ret = "+x";break;
         case "+z" : ret = "-z";break;
         case "-z" : ret = "+z";break;
-
 
         case "+x+y" : ret = "-x-y";break;
         case "-x-y" : ret = "+x+y";break;
@@ -93,6 +93,9 @@ string opposite_dir(string str){
         case "-x+y+z" : ret = "+x-y-z";break;
 
         default : ret = "";break;
+    }
+    if(article){
+        if(classic) return "the "+ret;
     }
     return ret;
 }
@@ -132,50 +135,22 @@ mixed calculate_coordinates(string str, int x, int y, int z, string type){
 }
 
 object room_environment(object ob){
-#if 1
     foreach(object element in containers(ob)){
         if(inherits(LIB_ROOM, element)){
             return element;
         }
     }
     return 0;
-#else
-    object ret;
-    object *envs = containers(ob);
-    int i = sizeof(envs);
-    for(i--; i > 0; i--){
-        if(inherits(LIB_ROOM, envs[i])){
-            return envs[i];
-        }
-    }
-    return 0;
-#endif
 }
 
-float calculate_slope(int x1, int y1, int x2, int y2){
-    float x3 = x1 - x2;
-    float y3 = y1 - y2;
-    float ret = y3/x3;
+varargs int bearing(int x1, int y1, int x2, int y2, int reverse){
+    float inter = (reverse ? (y1 - y2) : (y2 - y1));
+    float mark = (reverse ? (x1 - x2) : (x2 - x1));
+    float range = sqrt(pow(mark, 2) + pow(inter, 2));
+    int corr, ret;
+    if(x1 == x2 && y1 == y2) return -1;
+    corr = ((mark >= 0) ? 0 : 180);
+    ret = (acos(to_float(corr ? -inter : inter)/range) * (180/3.141592)) + corr;
     return ret;
 }
 
-int bearing(int x1, int y1, int x2, int y2){
-    float ret;
-    int y = y2 + ( 0 - y1 );
-    int x = x2 + ( 0 - x1 );
-    ret = atan(calculate_slope(0,0,x,y));
-    ret = abs(ret * (180/3.141592));
-    if(x1 < x2 && y1 < y2){
-        ret = 90 - ret;
-    }
-    if(x1 < x2 && y1 > y2){
-        ret = ret + 90;
-    }
-    if(x1 > x2 && y1 > y2){
-        ret = 270 - ret;
-    }
-    if(x1 > x2 && y1 < y2){
-        ret += 270;
-    }
-    return ret;
-}

@@ -12,10 +12,10 @@ static int stage2, stilldirty, roomscleaned, warm_boot_in_progress = 0;
 string savefile = save_file(SAVE_RELOAD);
 static string *exceptions = ({ RELOAD_D, RSOCKET_D });
 object *grooms = ({}), *occupied_rooms = ({});
-int last_deep_player_load, virtual_void;
+static int last_deep_player_load, virtual_void;
 
 varargs void validate(){
-    if((!(int)master()->valid_apply(({ "SECURE", "ASSIST" })))){
+    if((!master()->valid_apply(({ "SECURE", "ASSIST" })))){
         string offender = identify(previous_object(-1));
         debug("RELOAD_D SECURITY VIOLATION: "+offender+" ",get_stack(),"red");
         log_file("security", "\n"+timestamp()+" RELOAD_D breach: "+offender+" "+get_stack());
@@ -115,6 +115,7 @@ void eventResetEmptyRooms(){
 int ReloadBaseSystem(){
     string *tmp = get_dir("/secure/sefun/");
     string *sefun_files = ({});
+    int loop = 2;
     catch( update(MASTER_D) );
     foreach(string file in tmp){
         if(!strsrch(file,"sefun.")) continue;
@@ -126,12 +127,28 @@ int ReloadBaseSystem(){
         int err;
         err = catch(update(file));
         if(err){ 
-            debug("file: "+file);
+            debug("error loading file: "+file);
         }
+    }
+    tmp = get_dir("/lib/");
+    while(loop){
+        foreach(string file in tmp){
+            object ob;
+            int err;
+            if(last(2, file) != ".c") continue;
+            reset_eval_cost();
+            err = catch(ob = load_object("/lib/"+file));
+            if(err || !ob){ 
+                debug("error loading file: /lib/"+file);
+            }
+            else reload(ob, 1, 1);
+        }
+        loop--;
     }
     reset_eval_cost();
     RELOAD_D->eventReload(load_object(SEFUN), 1, 1);
-    catch( update(MASTER_D) );
+    MASTER_D->eventDestruct();
+    load_object(MASTER_D);
     reset_eval_cost();
     catch( reload(load_object(LIB_CREATOR), 1, 1) );
     reset_eval_cost();
@@ -159,12 +176,16 @@ int ReloadBaseSystem(){
 varargs mixed ReloadPlayer(mixed who, int deep){
     mixed mx;
     string name, pwb_room;
-    object tmp_bod, new_bod;
+    object tmp_bod, new_bod, env;
     int err;
     validate();
 
     if(stringp(who)) who = find_player(who);
     if(!who) return 0;
+    env = environment(who);
+    if(!env) who->eventMove(ROOM_START);
+    env = environment(who);
+    if(!env) return 0;
     pwb_room = file_name(room_environment(who));
 
     if(deep){
@@ -260,7 +281,7 @@ varargs int eventReload(mixed what, int when, int nodelay){
     if(!objectp(what)) return 0;
     if(Reloadees[what]) return 0;
     if( (previous_object() != what) && 
-            !((int)master()->valid_apply(({ "ASSIST" }))) ){
+            !(master()->valid_apply(({ "ASSIST" }))) ){
         log_file("adm/reload_d",get_stack()+" "+identify(previous_object(-1))+
                 " attempted to use RELOAD_D: "+timestamp()+"\n");
         tell_creators(get_stack()+" "+identify(previous_object(-1))+
@@ -312,6 +333,7 @@ void heart_beat(){
         if(time() >= val){
             map_delete(Reloadees,key);
             key = find_object(key);
+            if(!key) continue;
             if(!interactive(key)){
                 reload(key);
             }
@@ -327,7 +349,7 @@ mapping GetReloads(){
 }
 
 mapping ClearReloads(){
-    if(!((int)master()->valid_apply(({ "ASSIST" }))) ){
+    if(!(master()->valid_apply(({ "ASSIST" }))) ){
         log_file("adm/reload_d",get_stack()+" "+identify(previous_object(-1))+
                 " attempted to clear RELOAD_D: "+timestamp()+"\n");
         tell_creators(get_stack()+" "+identify(previous_object(-1))+
@@ -381,8 +403,20 @@ int ReloadUsers(){
 
     foreach(object player in users()){
         int invis = player->GetInvis();
+        string *bases = ({});
         string pstr = base_name(player);
-        reset_eval_cost();
+        foreach(object ob in deep_inventory(player)){
+            object parent;
+            string base;
+            if(!ob) continue;
+            base = base_name(ob);
+            if(member_array(base, bases) != -1) continue;
+            bases += ({ base });
+            err = catch(parent = load_object(base));
+            if(err || !parent) continue;
+            reload(parent, 1, 1);
+            reset_eval_cost();
+        }
         player->SetInvis(0);
         err = catch(RELOAD_D->ReloadPlayer(player));
         if(err){

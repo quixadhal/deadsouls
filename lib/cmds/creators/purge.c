@@ -42,8 +42,7 @@ mixed cmd(string args) {
 }
 
 string GetHelp() {
-    return ("Syntax: purge\n"
-            "        purge <OBJECT>\n\n"
+    return ("Syntax: purge [OBJECT]\n\n"
             "This command destroys non-dummy, non-user objects in the inventory "
             "of the specified object.");
 }

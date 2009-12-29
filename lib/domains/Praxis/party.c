@@ -60,7 +60,7 @@ void start_party(string msg) {
     if(base_name(previous_object()) != "/cmds/mortal/_mudparty") return;
     if(query_party_time()) return;
     message("shout", sprintf("Party announcement from %s: A %s party is now "
-                "being held to celebrate %s!", (string)this_player()->query_cap_name(),
+                "being held to celebrate %s!", this_player()->query_cap_name(),
                 mud_name(), msg), users());
     message("shout", "You have 2 minutes to type \"mudparty join\" in "
             "order to join the party!", users());
@@ -153,7 +153,7 @@ string look_lights(string unused)
 int look_treat()
 {
     message("other_action",
-            (string)this_player()->query_cap_name()+" eats and drinks "
+            this_player()->query_cap_name()+" eats and drinks "
             "refreshments from the table after looking them over. ",
             environment(this_player()), this_player());
     message("my_action",
@@ -168,7 +168,7 @@ int cmd_pour(string str) {
     string *words;
 
     //    if(!str) return notify_fail("Pour what?\n");
-    //    if((int)this_player()->query_mp() < 10)
+    //    if(this_player()->query_mp() < 10)
     //      return notify_fail("You are too weak for that!\n");
     //    words = explode(str, " ");
     //    if(words[0] == "A" || words[0] == "An") words[0] = lower_case(words[0]);
@@ -180,10 +180,10 @@ int cmd_pour(string str) {
     //      SetAdjectives(words[0..sizeof(words)-2]);
     //    ob->SetShort(implode(words, " "));
     //    ob->SetLong("A nice drink created by "+
-    //      (string)this_player()->query_cap_name()+".");
+    //      this_player()->query_cap_name()+".");
     //    ob->SetStrength(random(30)+2);
     //    ob->set_drink("$N drink $O.", 
-    //      "$N drinks $O poured by "+(string)this_player()->query_cap_name()+".");
+    //      "$N drinks $O poured by "+this_player()->query_cap_name()+".");
     //    this_player()->add_hp(-2);
     //    if(ob->move(this_player())) {
     //        message("my_action", "You cannot carry that!", this_player());
@@ -192,7 +192,7 @@ int cmd_pour(string str) {
     //    }
     //    message("my_action", "You pour "+implode(words, " ")+".", this_player());
     //    message("other_action", sprintf("%s pours %s.",
-    //      (string)this_player()->query_cap_name(), implode(words, " ")),
+    //      this_player()->query_cap_name(), implode(words, " ")),
     //      this_object(), ({ this_player() }));
     return 1;
 }

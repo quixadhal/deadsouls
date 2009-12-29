@@ -1,0 +1,4 @@
+#/secure/daemon/bboard.c
+__Owner "CMDS"
+__Posts ({(["author":"Cratylus","time":1259341215,"post":"This is more or less an \"instrument panel\" room for the mud,for admins only. Most of the stuff here is legacy from earlierversions of the lib, so looking at the panel and stuff probablywon't do or mean much anymore. However, you can still get asnapshot of what the mud is up to with: exa screenBelow here is a network room you can hang out in to monitornetwork activity.","subject":"this room","read":({"cratylus",}),]),})
+Location "/secure/room/arch"

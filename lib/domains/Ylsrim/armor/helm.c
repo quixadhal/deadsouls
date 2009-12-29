@@ -10,7 +10,7 @@
 
 inherit LIB_ARMOR;
 
-int WearHelm(object who);
+varargs int WearHelm(object who, mixed where);
 
 static void create() {
     armor::create();
@@ -33,12 +33,14 @@ static void create() {
     SetProtection(HEAT, 30);
 }
 
-int WearHelm(object who) {
-    if( (int)who->GetMorality() < 300 ) {
+varargs int WearHelm(object who, mixed where) {
+    object env = environment(who);
+    if( who->GetMorality() < 300 ) {
         who->eventPrint("The helm burns your head!");
         who->eventReceiveDamage(0, HEAT, random(10) + 10, 0, "head");
         return 0;
     }
     who->eventPrint("You wear the desert helm.");
+    if(env) tell_room(env, who->GetName()+" wears the desert helm.", ({who}));
     return 1;
 }

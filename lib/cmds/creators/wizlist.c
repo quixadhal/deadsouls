@@ -23,7 +23,6 @@ int cmd(string str){
 }
 
 string GetHelp(string str) {
-    return "Syntax: wizlist\n"
-        "Displays a list of known active (non-ridded) creators.\n "
-        "";
+    return "Syntax: wizlist\n\n"
+        "Displays a list of known active (non-ridded) creators.";
 }

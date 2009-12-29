@@ -11,7 +11,7 @@ int n, active;
 
 static private void validate() {
     if(!this_player()) return 0;
-    if( !((int)master()->valid_apply(({ "SECURE" }))) || !securep(this_player()))
+    if( !(master()->valid_apply(({ "SECURE" }))) || !securep(this_player()))
         error("Illegal attempt to use replacer: "+get_stack()+" "+identify(previous_object(-1)));
 }
 

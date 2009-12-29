@@ -17,10 +17,8 @@ int cmd(string str){
     return 1;
 }
 
-
-
-string GetHelp(string str) {
-    return "Syntax: unmorse <string>\n"
+string GetHelp(){
+    return "Syntax: unmorse <string>\n\n"
         "Decodes a morse string into its alphanumeric representation.\n"
-        "";
+        "See also: morse";
 }

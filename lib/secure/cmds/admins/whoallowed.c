@@ -13,7 +13,7 @@ int cmd(string str) {
     string *noms;
 
     if(!archp(previous_object())) return 0;
-    if(!sizeof(noms = (string *)BANISH_D->query_allowed())) {
+    if(!sizeof(noms = BANISH_D->query_allowed())) {
         write("No one is currently allowed to login from a restricted site.\n");
         return 1;
     }
@@ -28,9 +28,9 @@ int cmd(string str) {
     }
     return 1;
 }
-void help() {
-    write("Syntax: <whoallowed ([name])>\n\n"
-            "Lists the names of players who may be allowed into the game\n"
-            "from sites which must register characters in order to play.\n"
-         );
+
+string GetHelp() {
+    return ("Syntax: whoallowed [name]\n\n"
+            "Lists the names of players who may be allowed into the game "
+            "from sites which must register characters in order to play.");
 }

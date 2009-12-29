@@ -23,6 +23,7 @@ string *Muffed = ({});
 private mapping *Deaths;
 private int TrainingPoints, TitleLength;
 private static int heartcount;
+private mixed telopt_ip;
 
 /* *****************  /lib/player.c driver applies  ***************** */
 
@@ -35,7 +36,13 @@ static void create(){
 }
 
 static void heart_beat(){
-    mixed heartping = GetProperty("keepalive");
+    mixed heartping;
+    int idle;
+
+    if(!interactive(this_object())) return;
+
+    heartping = GetProperty("keepalive");
+    idle = query_idle(this_object());
     heartcount++;
 
     if(!interactive(this_object())){
@@ -44,13 +51,14 @@ static void heart_beat(){
     }
     if(GetProperty("reply")){
         int t = GetProperty("reply_time");
-        if(t > 1 && (time() - t) > 900){
+        if(t > 1 && (time() - t) > 90000){
             RemoveProperty("reply");
             RemoveProperty("reply_time");
         }
     }
     interactive::heart_beat();
-    if( IDLE_TIMEOUT && query_idle(this_object()) >= IDLE_TIMEOUT 
+
+    if( IDLE_TIMEOUT && idle >= IDLE_TIMEOUT 
             && !builderp(this_object()) 
             && !present("testchar badge",this_object()) 
             && !present("idler_amulet",this_object()) 
@@ -101,7 +109,7 @@ void eventReconnect(){
 varargs int eventShow(object who, string str){
     if( !living::eventShow(who, str) ) return 0;
     if( this_player() != this_object() )
-        eventPrint((string)this_player()->GetName() + " looks you over.");
+        eventPrint(this_player()->GetName() + " looks you over.");
     return 1;
 }
 
@@ -161,7 +169,7 @@ varargs int eventDie(mixed agent){
     if( !GetUndead() ){
         eventDestroyUndead(agent);
     }
-    else {
+    else  {
         message("my_action", "Consciousness passes from you after one last "
                 "gasp for air.", this_object());
         message("my_action", "You awake, but you find your body feels "
@@ -182,7 +190,7 @@ varargs int eventDie(mixed agent){
         eventCompleteHeal(GetMaxHealthPoints()/2);
         AddMagicPoints(-(random(GetMagicPoints())));
         this_object()->eventMove(ROOM_DEATH);
-        this_object()->save_player((string)this_object()->GetKeyName());
+        this_object()->save_player(this_object()->GetKeyName());
         this_object()->eventDescribeEnvironment();
     }
     flush_messages();
@@ -285,30 +293,9 @@ int eventReleaseObject(object foo){
 
 void eventLoadObject(mixed *value, int recurse){ }
 
-static mixed eventUse(object used, string cmd){
-    object old_agent;
-    mixed tmp;
-    string mess = "";
-
-    mess += "------\n";
-    mess += timestamp()+":\n";
-    mess += "/lib/player.c: eventUse() hit.\n";
-    mess += "stack: "+get_stack()+"\n";
-    mess += "previous: "+identify(previous_object(-1))+"\n"; 
-    mess += "------\n";
-    log_file("player_errors",mess);
-    return 0;
-    old_agent = this_agent(used);
-    tmp = parse_sentence(cmd);
-    this_agent(old_agent);
-    message("info", tmp, this_object());
-    if( stringp(tmp) ) message("error", tmp, this_object());
-    else return tmp;
-}
-
 /* *****************  /lib/player.c modal functions  ***************** */
 
-int CanReceive(object ob){ return CanCarry((int)ob->GetMass()); }
+int CanReceive(object ob){ return CanCarry(ob->GetMass()); }
 
 mixed CanUse(){ return 1; }
 
@@ -319,7 +306,7 @@ int Setup(){
     if( !interactive::Setup() ) return 0;
     if( !GetClass() ) SetClass("explorer");
     if( GetClass() ){
-        foreach(classes in (string array)CLASSES_D->GetClasses())
+        foreach(classes in CLASSES_D->GetClasses())
             if( ClassMember(classes) && classes != GetClass() )
                 AddChannel(classes);
     }
@@ -338,7 +325,7 @@ int Setup(){
         if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
         PLAYERS_D->AddPlayerInfo(this_object());
 
-        foreach(classes in (string array)CLASSES_D->GetClasses())
+        foreach(classes in CLASSES_D->GetClasses())
             if( ClassMember(classes) && classes != GetClass() )
                 AddChannel(classes);
         if( avatarp() ) AddChannel(({ "avatar" }));
@@ -461,7 +448,11 @@ string *SetTitles(string *titles){
     SetShort("whatever");
 }
 
-string *AddTitle(string title){
+string *AddTitle(mixed title){
+    if(arrayp(title)){
+        if(this_object()->GetGender() == "female") title = title[1];
+        else title = title[0];
+    }
     if( !stringp(title) ) return Titles;
     else if( member_array(title, Titles) != -1 ) return Titles;
     else {
@@ -471,14 +462,13 @@ string *AddTitle(string title){
     }
 }
 
-string *RemoveTitle(string title){
-    if( !stringp(title) ) return Titles;
-    if( member_array(title, Titles) == -1 ) return Titles;
-    else {
-        Titles -= ({ title });
+string *RemoveTitle(mixed title){
+    if( stringp(title) ) title = ({ title });
+    foreach(string sub in title){
+        Titles -= ({ sub });
         SetShort("whatever");
-        return Titles;
     }
+    return Titles;
 }
 
 string *GetTitles(){ return Titles; }
@@ -535,15 +525,15 @@ varargs string GetLong(string str){
     str += interactive::GetLong() + "\n";
     str += living::GetLong(nominative(this_object()));
     foreach(item in map(all_inventory(),
-                (: (string)$1->GetAffectLong(this_object()) :))){
+                (: $1->GetAffectLong(this_object()) :))){
         if(item && member_array(item,affects) == -1) affects += ({ item });
     }
     if(sizeof(affects)) str += implode(affects,"\n")+"\n";
     if(this_object()->GetAffectLong()) str += this_object()->GetAffectLong();
     counts = ([]);
     foreach(item in map(
-                filter(all_inventory(), (: !((int)$1->GetInvis(this_object())) :)),
-                (: (string)$1->GetEquippedShort() :)))
+                filter(all_inventory(), (: !($1->GetInvis(this_object())) :)),
+                (: $1->GetEquippedShort() :)))
         if( item ) counts[item]++;
     if( sizeof(counts) ) str += GetCapName() + " is carrying:\n";
     foreach(item in keys(counts))
@@ -585,7 +575,7 @@ string SetClass(string str){
         ResetLevel();
         TrainingPoints = points;   /* leave points alone */
         AddChannel(GetClass());
-        foreach(classes in (string array)CLASSES_D->GetClasses())
+        foreach(classes in CLASSES_D->GetClasses())
             if( ClassMember(classes) && classes != GetClass() )
                 AddChannel(classes);
     }
@@ -601,7 +591,6 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score){
 
 varargs static int AddHealthPoints(int x, string limb, object agent){
     int hp, ret, undead;
-
     hp = GetHealthPoints();
     undead = GetUndead();
     ret = living::AddHealthPoints(x, limb, agent);
@@ -653,4 +642,16 @@ varargs int eventTrain(string skill, int points){
         AddSkillPoints(skill, to_int( (max * x) / 100 ));
     }
     return 1;
+}
+
+mixed GetTeloptIp(){
+    if(previous_object() && base_name(previous_object()) != SEFUN &&
+            !(archp(this_player())) && previous_object() != this_object()) return 0;
+    return telopt_ip;
+}
+
+mixed SetTeloptIp(mixed str){
+    if(base_name(previous_object()) != LIB_CONNECT &&
+            !(archp(this_player()))) return 0;
+    return telopt_ip = str;
 }

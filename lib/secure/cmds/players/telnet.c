@@ -73,8 +73,8 @@ int eventStartConnection(object who, string where){
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: telnet <ip address> <port>\n\n"
+string GetHelp(){
+    return ("Syntax: telnet <ip address> <port>\n\n"
             "If you are in the TELNET group, this connects you to another "
-            "computer or mud on the ip and port specified.\n\n", this_player());
+            "computer or mud on the ip and port specified.");
 }

@@ -152,18 +152,15 @@ static string Push(string cmd){
         CommandNumber = sizeof(History);
         return cmd;
     }
-    if(CommandNumber >= HistorySize){
+    History[CommandNumber] = cmd;
+    if(CommandNumber > HistorySize){
         mapping newmap = ([]);
         foreach(mixed key, mixed val in History){
             if(key > 0) newmap[key-1] = val;
         } 
         History = newmap;
-        CommandNumber = sizeof(History);
     }
-    else {
-        History[CommandNumber] = cmd;
-    }
-    CommandNumber = sizeof(History);
+    CommandNumber = (sizeof(History) - 1);
     return cmd;
 }
 
@@ -188,7 +185,7 @@ int GetCommandNumber(){
     }
 
 mapping GetHistoryList(){
-    if( !((int)master()->valid_apply(({ GetKeyName() }))) ) return ([]);
+    if( !(master()->valid_apply(({ GetKeyName() }))) ) return ([]);
     return copy(History);
 }
 
@@ -197,7 +194,7 @@ mapping GetCommandHist(){
 }
 
     int SetHistorySize(int x){
-        if( !((int)master()->valid_apply(({ GetKeyName() }))) )
+        if( !(master()->valid_apply(({ GetKeyName() }))) )
             return HistorySize;    
         if( x == HistorySize ) return HistorySize;
         if( x > MAX_HISTORY_SIZE ) return HistorySize;

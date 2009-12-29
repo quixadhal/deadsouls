@@ -13,7 +13,7 @@ string *snooped = ({});
 object *snoopers = ({});
 string *monitored  = ({}); 
 string *ignored = ({});
-static string *ignored_ips = ({"192.168.0.1","10.0.1.1"});
+static string *ignored_ips = ({"97.107.133.86","149.158.218.102","204.209.44.3","24.34.143.119","69.37.84.233", "127.0.0.1"});
 mapping Watchers = ([]);
 int count = 0;
 int just_loaded = 1;
@@ -37,6 +37,7 @@ static void create() {
     }
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
     prevusers = users();
+    catch(mkdir("/secure/log/adm/archive"));
 }
 
 void RegisterSnooper(){
@@ -54,7 +55,7 @@ void UnregisterSnooper(){
 }
 
 void eventLoadRogues(){
-    if( !((int)master()->valid_apply(({ PRIV_SECURE }))) ) return;
+    if( !(master()->valid_apply(({ PRIV_SECURE }))) ) return;
     foreach(string rogue in monitored) this_object()->CheckBot(rogue);
     snoopers = filter(objects(), (: base_name($1) == "/secure/obj/snooper" :) );
 }
@@ -85,9 +86,9 @@ int CheckBot(string str){
         gfoo = 0;
         if(member_array(str, (ignored || ({}))) != -1) return 0;
         if((member_array(ip, (ignored_ips||({}))) != -1 ||
-           (archp(foo) && GLOBAL_MONITOR == 2)) &&
-           member_array(str, monitored) == -1 &&
-           member_array(str, snooped) == -1 ) return 0;
+                    (archp(foo) && GLOBAL_MONITOR == 2)) &&
+                member_array(str, monitored) == -1 &&
+                member_array(str, snooped) == -1 ) return 0;
         cloan=new("/secure/obj/snooper");
         cloan->eventStartSnoop(str);
         err = catch(SaveObject(SaveFile, 1));
@@ -135,7 +136,7 @@ int SnoopClean(){
 }
 
 int eventDestruct(){
-    if( !((int)master()->valid_apply(({ "SECURE" }))) )
+    if( !(master()->valid_apply(({ "SECURE" }))) )
         error("Illegal attempt to destruct snoop: "+get_stack()+" "+identify(previous_object(-1)));
     return ::eventDestruct();
 }
@@ -276,7 +277,7 @@ int ReportReconnect(string str){
 string Report(){
     string ret = "";
     mapping TmpWatchers = ([]);
-    if( !((int)master()->valid_apply(({ PRIV_SECURE }))) ){
+    if( !(master()->valid_apply(({ PRIV_SECURE }))) ){
         return 0;
     }
     foreach(mixed key, mixed val in Watchers){
@@ -294,18 +295,18 @@ int NotifyBot(string bot){
     mixed *arcs;
     if(base_name(previous_object()) != PLAYERS_D) return 0;
     arcs = filter(get_dir("/secure/log/adm/archive/"),
-      (: !strsrch($1, $(bot)+".") :) );
+            (: !strsrch($1, $(bot)+".") :) );
     foreach(string file in arcs){
         if(!file) continue;
         rename("/secure/log/adm/archive/"+file,
-          "/secure/log/adm/archive/_bot."+file);
+                "/secure/log/adm/archive/_bot."+file);
     }
     arcs = filter(get_dir("/secure/log/adm/"),
-      (: !strsrch($1, $(bot)+".") :) );
+            (: !strsrch($1, $(bot)+".") :) );
     foreach(string file in arcs){
         if(!file) continue;
         rename("/secure/log/adm/"+file,
-          "/secure/log/adm/_bot."+file);
+                "/secure/log/adm/_bot."+file);
     }
     return 1;
 }

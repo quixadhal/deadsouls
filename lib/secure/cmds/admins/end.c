@@ -21,10 +21,10 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <end [delay]>\n\n"
+string GetHelp() {
+    return ("Syntax: end [delay]\n\n"
             "Initiates a reboot sequence which will end in a reboot after "
             "the specified delay period.  The delay must be specified in "
-            "minutes and it must be of at least two minutes.\n\n"
-            "See also: nextreboot, setreboot, shutdown", this_player());
+            "minutes and it must be of at least two minutes.\n"
+            "See also: nextreboot, setreboot, shutdown");
 }

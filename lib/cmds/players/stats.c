@@ -53,18 +53,18 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
+string GetHelp() {
     if(creatorp(this_player())){
-        message("help", "Syntax: stats [player]\n\n"
+        return ("Syntax: stats [player]\n\n"
                 "Lists the stats of the specified player as well as "
                 "the stat level. With no argument, it defaults to your "
                 "own stats.\n"
-                "See also: stat, status, score", this_player());
+                "See also: stat, status, score");
     }
     else {
-        message("help", "Syntax: stats\n\n"
+        return ("Syntax: stats\n\n"
                 "Lists all of your stats as well as how skilled you are "
                 "at the stat in question.\n"
-                "See also: stat, status, score", this_player());
+                "See also: stat, status, score");
     }
 }

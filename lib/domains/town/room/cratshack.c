@@ -14,6 +14,7 @@ static void create() {
                 ({ "clearing", "woods" }) : "As if by powerful magic, the woods clear here, where the house stands.",
                 ({ "house", "white house", "old house" }) : "The house looks weatherbeaten, ill maintained, and rather old. Its construction is of an archaic design no longer used. Despite its abused appearance, the house seems to have a quiet dignity about it, as if many people had been its friends over the years, and it simply waited for their return.",
                 ]));
+    SetFlyRoom("/domains/town/virtual/sky/21,99997,1");
     SetExits( ([
                 "north" : "/domains/town/room/narrow_path2",
                 "south" : "/domains/town/room/porch.c",

@@ -14,7 +14,7 @@ inherit LIB_DAEMON;
 mixed cmd(string args) {
     object ob;
 
-    if( (int)previous_object()->GetForced() )
+    if( previous_object()->GetForced() )
         return "You cannot be forced to change your password.";
     if( args && args != "" ) {
         if( !archp(previous_object()) )
@@ -25,7 +25,7 @@ mixed cmd(string args) {
     }
     else ob = previous_object();
     previous_object()->eventPrint("Changing password for " +
-            (ob ? (string)ob->GetCapName() :
+            (ob ? ob->GetCapName() :
              capitalize(args)) + " on " +
             mud_name() + ".", MSG_SYSTEM);
     if( previous_object() == ob ) {
@@ -47,7 +47,7 @@ static void OldPass(string pass, object who) {
         who->eventPrint("\nPassword change failed.", MSG_SYSTEM);
         return;
     }
-    oldpass = (string)this_player()->GetPassword();
+    oldpass = this_player()->GetPassword();
     if( oldpass != crypt(pass, oldpass) ) {
         who->eventPrint("\nPassword change failed.", MSG_SYSTEM);
         return;
@@ -90,11 +90,12 @@ static void ConfirmPass(string str, mixed who, string newpass) {
     this_player()->eventPrint("\nPassword changed.", MSG_SYSTEM);
 }
 
-string GetHelp(string str) {
-    return ("Syntax: <passwd>\n"
-            "        <passwd PLAYER>\n\n"
-            "If you are not an arch, then the second syntax is not available "
-            "to you.  This command allows you to change your password.\n\n"
-            "See also: chfn");
+string GetHelp(){
+    int i;
+    string ret = "Syntax: passwd\n";
+    if(i = (archp(this_player()))) ret += "        passwd <PLAYER>\n";
+    ret += "\nThis command allows you to change your password";
+    if(i) ret += " or that of the specified player";
+    ret += ".\n See also: chfn";
+    return ret;
 }
-

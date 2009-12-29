@@ -10,10 +10,9 @@ static void create() {
     SetVerb("dismount");
     SetRules("","LIV", "from LIV");
     SetErrorMessage("Dismount something?");
-    SetHelp("Syntax: <dismount CREATURE>\n"
-            "\n"
+    SetHelp("Syntax: dismount <CREATURE>\n\n"
             "This command allows you to get off a  "
-            "creature you are riding.\n\n"
+            "creature you are riding.\n"
             "See also: mount, befriend, abandon");
 }
 
@@ -54,6 +53,3 @@ mixed do_dismount() {
     else return write("You don't seem to have a mount.");
 
 }
-
-
-

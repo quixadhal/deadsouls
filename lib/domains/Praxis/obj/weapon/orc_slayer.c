@@ -20,9 +20,9 @@ create() {
 int eventStrike(object ob) {
     int x, y;
 
-    if((string)ob->query_race() != "orc") return 0;
+    if(ob->query_race() != "orc") return 0;
     y = random(10);
-    x = (int)this_player()->query_alignment();
+    x = this_player()->query_alignment();
     if(x> 0) x = (x/100);
     else x = 0;
     y += x;

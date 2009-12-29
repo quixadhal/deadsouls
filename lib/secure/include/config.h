@@ -33,7 +33,7 @@
 #define HOUR_LENGTH              1200
 #define DAY_LENGTH               20
 #define MAX_NEWBIE_LEVEL         0
-#define AUTOSAVE_TIME            290
+#define AUTOSAVE_TIME            200
 #define MORTAL_POSITIONS         ({ "player", "high mortal", "ambassador" })
 #define DEFAULT_GRAVITY          1.0
 #define DEFAULT_ITEM_MESSAGE     "You do not see that here."
@@ -53,7 +53,7 @@
 #define RETAIN_ON_QUIT           1
 #define FAST_COMBAT              1
 #define MAX_COMMANDS_PER_SECOND  10
-#define DEFAULT_PARSING          1
+#define DEFAULT_PARSING          0
 #define CALL_OUT_LOGGING         0
 #define EVENTS_LOGGING           0
 #define DISABLE_REBOOTS          0

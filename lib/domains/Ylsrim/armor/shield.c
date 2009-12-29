@@ -11,7 +11,7 @@
 
 inherit LIB_ARMOR;
 
-int eventWearShield(object who);
+varargs int eventWearShield(object who, mixed where);
 
 static void create() {
     armor::create();
@@ -31,11 +31,14 @@ static void create() {
     SetProtection(SHOCK, 30);
 }
 
-int eventWearShield(object who) {
-    if( (string)who->GetRace() != "hobbit" ) {
+varargs int eventWearShield(object who, mixed where) {
+    object env = environment(who);
+    if( who->GetRace() != "hobbit" ) {
         who->eventPrint("The shield's handle simply does not fit your hand "
                 "right.");
         return 0;
     }
-    else return 1;
+    who->eventPrint("You wear "+GetShort()+".");
+    if(env) tell_room(env, who->GetName()+" wears "+GetShort()+".", ({who}));
+    return 1;
 }

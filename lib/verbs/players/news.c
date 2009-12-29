@@ -2,8 +2,6 @@
  *  created by Rush@Dead Souls & Kalinash@Dead Souls
  */
 
-
-
 #include <lib.h>
 #include "include/news.h"
 
@@ -14,8 +12,7 @@ static void create() {
     SetVerb("news");
     SetRules("", "STR");
     SetErrorMessage("See \"help news\" for more info on this command.");
-    SetHelp("Syntax: news [<classname>|general]\n"    
-            "\n"
+    SetHelp("Syntax: news [<classname>|general]\n\n"    
             "This command allows you to replay the login news.");
 }
 
@@ -37,5 +34,3 @@ mixed do_news_str(string str) {
     this_player()->eventPage(DIR_NEWS + "/" + str);
     return 1;
 }
-
-

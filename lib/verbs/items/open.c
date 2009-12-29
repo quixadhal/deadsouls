@@ -41,12 +41,12 @@ varargs mixed do_open_obj(object ob, mixed *args...) {
     string what;
 
     what = remove_article(lower_case(args[0]));
-    return (mixed)ob->eventOpen(this_player(), what);
+    return ob->eventOpen(this_player(), what);
 }
 
 varargs mixed do_open_obj_with_obj(object ob, object with, mixed *args...) {
     string what;
 
     what = remove_article(lower_case(args[0]));
-    return (mixed)ob->eventOpen(this_player(), what, with);
+    return ob->eventOpen(this_player(), what, with);
 }

@@ -32,8 +32,6 @@ int cmd() {
 }
 
 string GetHelp() {
-    return("Syntax: colors\n\n"
-            "Lists all available colors in the corresponding color."
-            "\n\n");
+    return ("Syntax: colors\n\n"
+            "Lists all available colors in the corresponding color.");
 }
-

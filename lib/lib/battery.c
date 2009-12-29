@@ -79,6 +79,10 @@ int eventCharge(int i){
 }
 
 int eventUse(int i){
+    if(query_verb() == "use"){
+        write("That's not how it works.");
+        return 1;
+    }
     if(i == 0){
         set_heart_beat(0);
         return 1;

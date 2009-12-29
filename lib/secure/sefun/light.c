@@ -11,9 +11,9 @@ varargs int effective_light(object ob) {
     int i, x;
 
     if( !ob ) ob = previous_object();
-    x = total_light(ob) + (int)ob->GetSightBonus();
+    x = total_light(ob) + ob->GetSightBonus();
     i = sizeof(inv = all_inventory(ob));
-    while(i--) x += (int)inv[i]->GetRadiantLight();
+    while(i--) x += inv[i]->GetRadiantLight();
     return x;
 }
 
@@ -25,14 +25,14 @@ varargs int total_light(object ob) {
     if( !ob ) ob = previous_object();
     if( !(env = environment(ob)) ) return 0;
     i = sizeof(inv = all_inventory(env));
-    x = (int)env->GetAmbientLight();
+    x = env->GetAmbientLight();
     x += ob->GetRadiantLight();
-    while(i--) x += (int)inv[i]->GetRadiantLight();
+    while(i--) x += inv[i]->GetRadiantLight();
     if( env->GetClimate() == "indoors" ) return x;
-    switch((string)SEASONS_D->query_time_of_day()) {
+    switch(SEASONS_D->query_time_of_day()) {
         case "day": return x;
         case "night":
-            x += (int)SEASONS_D->GetMoonLight();
+            x += SEASONS_D->GetMoonLight();
         return x;
         case "dawn": case "twilight": return (x-1);
         default: return x;

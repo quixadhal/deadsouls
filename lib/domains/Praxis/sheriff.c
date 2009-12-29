@@ -50,8 +50,8 @@ void create() {
     SetSmell("default", "You can smell the residue of sweaty outlaws.");
     SetExits( ([ "south":"/"+__DIR__+"yard",
                 "west":"/"+__DIR__+"court_room" ]) );
-    x = (int)POLITICS_D->query_personnel("police");
-    y = (int)POLITICS_D->query_spending("police");
+    x = POLITICS_D->query_personnel("police");
+    y = POLITICS_D->query_spending("police");
     //if(!(tot = (y/x)/currency_rate("gold"))) return;
     for(i=0, obs = allocate(x); i<x; i++)
         obs[i] = new("/"+__DIR__+"obj/mon/police");
@@ -93,12 +93,12 @@ void rescue_me(object victim, object outlaw) {
     int x, i;
 
     if(!present("deputy")) return;
-    x = (int)outlaw->query_level() - (int)victim->query_level();
+    x = outlaw->query_level() - victim->query_level();
     if(x < 5) x = 1;
     else x = x/5;
     i = sizeof(obs = all_inventory(this_object()));
     while(i-- && x) {
-        if((int)obs[i]->id("deputy")) {
+        if(obs[i]->id("deputy")) {
             obs[i]->set_target(outlaw);
             x--;
         }
@@ -122,7 +122,7 @@ string la_jail(string arg) {
     if(!sizeof(__Prisoners)) return "There are no prisoners right now.";
     str = "The following prisoners are in the cell: ";
     i = sizeof(__Prisoners);
-    while(i--) str += (string)__Prisoners[i]->query_cap_name()+"    ";
+    while(i--) str += __Prisoners[i]->query_cap_name()+"    ";
     return str;
 }
 
@@ -130,8 +130,8 @@ object *clone_guards(int num) {
     object *obs;
     int y, x, i, tot;
 
-    y = (int)POLITICS_D->query_spending("police");
-    x = (int)POLITICS_D->query_personnel("police");
+    y = POLITICS_D->query_spending("police");
+    x = POLITICS_D->query_personnel("police");
     for(i=0, obs = allocate(num); i<num; i++)
         obs[i] = new("/"+__DIR__+"obj/mon/guard");
     tot = (y/x)/currency_rate("gold");
@@ -155,7 +155,7 @@ object *clone_guards(int num) {
 
     string death_by_hanging(object who) {
         if(member_array(who, __Prisoners) == -1) 
-            return (string)who->query_cap_name()+" is not a prisoner.";
+            return who->query_cap_name()+" is not a prisoner.";
         message("say", "%^RED%^You hear the rythmic pounding of "
                 "the city guard approaching the door.  Two large, burly "
                 "men in blue step through the door and, without emotion, "
@@ -364,7 +364,7 @@ void squad_part_six(object who) {
             "the entire squad releases their arrows into the helpless body "
             "of "+who->query_cap_name()+".  The body instantly falls limp.",
             environment(who), who);
-    dam= ((int)who->query_max_hp())/5;
+    dam= (who->query_max_hp())/5;
     present("hood", who)->destruct();
     present("handcuffs", who)->destruct();
     for(x=0; x<6; ++x) 

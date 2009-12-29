@@ -7,7 +7,7 @@ mixed cmd(string str) {
     int status = this_player()->GetProperty("debug");
     if(!str && !status) str = "on";
     else if(!str && status) str = "off";
-    if(str != "on" && str != "off") return 0;
+    if(str != "on" && str != "off") return "Try: help debug";
     if(str == "on"){
         write("You enable debugging.");
         this_player()->SetProperty("debug", 1);
@@ -18,8 +18,7 @@ mixed cmd(string str) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: debug [on | off]\n\n"
-            "Allows you to receive debugging information\n\n",
-            this_player());
+string GetHelp() {
+    return ("Syntax: debug [on | off]\n\n"
+            "Allows you to receive debugging information.");
 }                                                    

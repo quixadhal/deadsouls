@@ -11,6 +11,7 @@ static void create() {
                 ({ "path", "trail" }) : "A very narrow path that seems threatened all around by the looming woods. It's hard to imagine what force might have cut this thin trail into the vegetation here.",
                 ({ "forest", "wood", "vegetation" }) : "All around is vegetation growing so incredibly dense that it is impossible to wander off the path.",
                 ]));
+    SetFlyRoom("/domains/town/virtual/sky/21,99999,1");
     SetExits( ([
                 "northeast" : "/domains/town/room/valley",
                 "south" : "/domains/town/room/narrow_path2.c",

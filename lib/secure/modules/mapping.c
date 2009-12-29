@@ -110,6 +110,8 @@ varargs mapping GetTheValue(string str, object targ, string tempy, string k1, st
     if(sscanf(str,"%d",i) == 1) newval = i;
     else newval = str;
 
+    if(sizeof(replace_string(str, itoa(i), ""))) newval = str;
+
     mapkeys = keys(NewMap);
     foreach(mixed llave in mapkeys){
         foreach(string nueva_llave in key_arr){

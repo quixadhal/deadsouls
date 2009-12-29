@@ -23,10 +23,10 @@ mixed cmd(string args) {
     return 1;
 }
 
-string GetHelp(string args) {
-    return ("Syntax: <removeadverb ADVERB>\n\n"
+string GetHelp(){
+    return ("Syntax: removeadverb <ADVERB>\n\n"
             "Allows you to remove an adverb from the list of"
             "system adverbs that can be used as adverbs in most soul "
-            "commands.\n\n"
+            "commands.\n"
             "See also: addadverb, addemote, removeemote");
 }

@@ -45,7 +45,7 @@ static void eventSkin(object who, object tool, object target, object check) {
 
 varargs static void eventPrepareSkin(object who, object tool, object what) {
     function f = (: eventSkin($(who), $(tool), $(what), environment($(who))) :);
-    if( (int)this_player()->GetInCombat() ) {
+    if( this_player()->GetInCombat() ) {
         send_messages("start", "$agent_name $agent_verb to skin with " +
                 tool->GetShort() + ".", who, 0, environment(who));
         who->SetAttack(0, f, ROUND_OTHER);

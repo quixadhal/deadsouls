@@ -30,7 +30,7 @@ mixed can_unwield_obj(string verb) {
 }
 
 mixed do_unwield_obj(object ob) {
-    return (mixed)ob->eventUnequip(this_player());
+    return ob->eventUnequip(this_player());
 }
 
 mixed do_unwield_obs(mixed array targs) {

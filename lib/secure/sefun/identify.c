@@ -49,7 +49,7 @@ varargs string identify( mixed a )
     if( mapp( a ) )
     {
         ret = "([ ";
-        RealMap = (mapping)(a);
+        RealMap = (a);
         a = keys( RealMap );
         s = sizeof( a );
         for( i = 0 ; i < s ; i++ )

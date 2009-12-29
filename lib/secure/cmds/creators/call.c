@@ -64,14 +64,14 @@ mixed cmd(string args) {
             return 1;
 }
 
-void help() {
-    message("help", "Syntax: <call [object]->[function](([args]))>\n\n"
+string GetHelp(){
+    return ("Syntax: call object->function(args)\n\n"
             "Examples:\n\tcall me->GetName()\n"
             "\tcall \"/realms/descartes/workroom\"->GetProperty(\"light\")\n\n"
             "Allows you to call any function in any object with any set of "
             "arguments from the command line.  The syntax is identical to "
             "that you would use inside LPC code, except that you can refer "
             "to objects by their names or by pronouns in addition to the "
-            "usual manners.\n\n"
-            "See also: eval, gauge", this_player());
+            "usual manners.\n"
+            "See also: eval, gauge");
 }

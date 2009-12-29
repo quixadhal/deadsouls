@@ -9,7 +9,7 @@ void create() {
     SetProperties(([ "login" : ROOM_START ]));
     SetShort( "The freezer");
     SetLong( "The local freezer.  Go down to leave.");
-    SetObviousExits("d");
+    SetObviousExits("down");
     SetExits( ([ "down" : ROOM_START ]) );
     call_out("clean_room", MAX_NET_DEAD_TIME);
     SetNoModify(1);

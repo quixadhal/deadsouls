@@ -28,22 +28,15 @@ varargs mixed eventReceiveWebData(string content, string file){
     return 1;
 }
 
-int help()
-{
-    write( @EndText
-Syntax: wget <url>
-Effect: Attempts to download internet content to your home directory.
-Examples:
-wget http://dead-souls.net/RELEASE_NOTES
-wget http://149.152.218.102/RELEASE_NOTES -n dead-souls.net
-
-The second syntax may be necessary if your mud does not use name
-resolution and the target wbesite uses virtual hosts.
-NOTE 1: This command is for text files only!
-NOTE 2: You may have to manually remove some header information.
-
-See also: resolve
-EndText
-    );
-    return 1;
+string GetHelp(){
+    return "Syntax: wget <url>\n\n"
+        "Attempts to download internet content to your home directory. "
+        "Examples:\n"
+        "wget http://dead-souls.net/RELEASE_NOTES\n"
+        "wget http://149.152.218.102/RELEASE_NOTES -n dead-souls.net\n"
+        "The second syntax may be necessary if your mud does not use name "
+        "resolution and the target wbesite uses virtual hosts.\n"
+        "NOTE 1: This command is for text files only!\n"
+        "NOTE 2: You may have to manually remove some header information.\n"
+        "See also: resolve, rowsdower";
 }

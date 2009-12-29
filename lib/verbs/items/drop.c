@@ -45,14 +45,14 @@ mixed can_drop_wrd_wrd(mixed args...) {
 
     if( !num || !curr ) return 0;
     if( (amt = to_int(num)) < 1 ) return "You cannot do that!";
-    if( (int)this_player()->GetCurrency(curr) < amt )
+    if( this_player()->GetCurrency(curr) < amt )
         return "You don't have that much " + curr + ".";
     if(newbiep(this_player())) return "Newbies can't drop money.";
     return this_player()->CanManipulate();
 }
 
 mixed do_drop_obj(object ob) {
-    return (mixed)ob->eventDrop(this_player());
+    return ob->eventDrop(this_player());
 }
 
 mixed do_drop_obs(mixed *res) {
@@ -78,10 +78,10 @@ mixed do_drop_obs(mixed *res) {
         return 1;
     }
     foreach(object ob in eligible) 
-        if( (tmp = (mixed)ob->eventDrop(this_player())) != 1 ) {
+        if( (tmp = ob->eventDrop(this_player())) != 1 ) {
             if( stringp(tmp) ) this_player()->eventPrint(tmp);
             else this_player()->eventPrint("You cannot drop " +
-                    (string)ob->GetShort() + ".");
+                    ob->GetShort() + ".");
         }
     return 1;
 }
@@ -101,14 +101,14 @@ mixed do_drop_wrd_wrd(mixed args...) {
     env = environment(this_player());
     pile = new(LIB_PILE);
     pile->SetPile(curr, amt);
-    if( !((int)pile->eventMove(env)) ||
-            (int)this_player()->AddCurrency(curr, -amt) == -1 ) {
+    if( !(pile->eventMove(env)) ||
+            this_player()->AddCurrency(curr, -amt) == -1 ) {
         this_player()->eventPrint("Something prevents your action.");
         pile->eventDestruct();
         return 1;
     }
     this_player()->eventPrint("You drop " + amt + " " + curr + ".");
-    environment(this_player())->eventPrint((string)this_player()->GetName() +
+    environment(this_player())->eventPrint(this_player()->GetName() +
             " drops some " + curr + ".",
             this_player());
     return 1;

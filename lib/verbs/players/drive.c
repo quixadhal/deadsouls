@@ -7,11 +7,11 @@ static void create() {
     SetVerb("drive");
     SetRules("STR", "into STR" );
     SetErrorMessage("Drive in which direction?");
-    SetHelp("Syntax: <drive DIRECTION>\n"
-            "        <drive into PLACE>\n\n"
+    SetHelp("Syntax: drive <DIRECTION>\n"
+            "        drive into <PLACE>\n\n"
             "Moves your vehicle towards the direction you specify, or into the place "
             "you specify.  The command \"drive into\" is synonymous with the "
-            "\"enter\" command.\n\n"
+            "\"enter\" command.\n"
             "See also: mount, dismount");
 }
 

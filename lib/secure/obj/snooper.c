@@ -83,6 +83,6 @@ int eventDestruct(){
 }
 
 string GetSnooped(){
-    if( !((int)master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE", "SNOOP_D" }))) ) return "";
+    if( !(master()->valid_apply(({ "PRIV_ASSIST", "PRIV_SECURE", "SNOOP_D" }))) ) return "";
     else return guy;
 }

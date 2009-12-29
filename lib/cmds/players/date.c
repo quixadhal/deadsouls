@@ -16,7 +16,7 @@ mixed cmd(string timezone) {
     }
     if(!timezone || !valid_timezone(timezone)) timezone = local_time()[9];
 
-    offset = (int)TIME_D->GetOffset(timezone);
+    offset = TIME_D->GetOffset(timezone);
     offset += EXTRA_TIME_OFFSET;
     if(query_os_type() != "windows" ) 
         x = offset * 3600;
@@ -37,9 +37,7 @@ mixed cmd(string timezone) {
     return 1;
 }
 
-void help() {
-    message("help",
-            "Syntax: date\n\n"
-            "Displays current time and date in local time.",
-            this_player() );
+string GetHelp() {
+    return ("Syntax: date\n\n"
+            "Displays current time and date in local time.");
 }

@@ -5,15 +5,15 @@
 inherit LIB_ROOM;
 
 string LoadIP(){
-    if(INTERMUD_D->GetMudList()["Dead Souls"]){
-        return INTERMUD_D->GetMudList()["Dead Souls"][1];
+    if(INTERMUD_D->GetMudList()["Dead Souls Prime"]){
+        return INTERMUD_D->GetMudList()["Dead Souls Prime"][1];
     }
     else return "127.0.0.1";
 }
 
 string LoadPort(){
-    if(INTERMUD_D->GetMudList()["Dead Souls"]){
-        return INTERMUD_D->GetMudList()["Dead Souls"][2];
+    if(INTERMUD_D->GetMudList()["Dead Souls Prime"]){
+        return INTERMUD_D->GetMudList()["Dead Souls Prime"][2];
     }
     else return ""+query_host_port();
 }
@@ -24,15 +24,12 @@ void create() {
     SetAmbientLight(30);
     SetShort("the telnet room");
     SetLong("From this room, you can attempt "+
-            "to connect to Dead Souls MUD. This is useful if you "+
-            "need to ask questions but the intermud connection is "+
-            "down. It is also a way to get a sneak peek at what's "+
-            "coming in the next release of Dead Souls, because "+
-            "Dead Souls MUD is where all new fixes and features "+
-            "are tested before release."+
+            "to connect to Dead Souls Prime. This is useful if you "+
+            "need to ask questions but the intermud connection is down. "+
+            "Note that being in charmode interferes with input. "+
             "\n\tIf the connection "+
             "fails, email cratylus@comcast.net to ask for help. "+
-            "Once you connect to Dead Souls, type \"dcon\" to "+
+            "Once you connect to Dead Souls Prime, type \"dcon\" to "+
             "return to your own mud. \n\n"+
             "To connect type \"connect\" \n"+
             "The Creators' Hall annex is west of here.");

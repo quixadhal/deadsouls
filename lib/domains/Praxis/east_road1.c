@@ -45,10 +45,10 @@ int climb(string str) {
         notify_fail("That's not here for climbing.\n");
         return 0;
     }
-    if((int)this_player()->query_stats("dexterity") < random(30)) {
+    if(this_player()->query_stats("dexterity") < random(30)) {
         write("Ack! You slip and hurt yourself in trying!");
         say(this_player()->query_cap_name()+" slips and hurts "+
-                (string)this_player()->query_objective()+"self in trying "
+                this_player()->query_objective()+"self in trying "
                 "to climb the walls.");
         this_player()->add_hp(-(random(7)));
     }

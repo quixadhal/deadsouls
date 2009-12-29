@@ -12,7 +12,7 @@ static void create() {
     SetExits( ([
                 "up" : "/domains/town/room/mansion_room9"
                 ]) );
-    SetObviousExits("u");
+    SetObviousExits("up");
     SetInventory( ([
                 "/domains/town/obj/chest2" : 1,
                 ]) );

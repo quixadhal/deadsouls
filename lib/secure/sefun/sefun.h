@@ -111,7 +111,7 @@ string trim(string str);
 mixed unguarded(function f);
 object unique(string fn, int rare);
 int user_exists(string str);
-string user_path(string name);
+varargs string user_path(string name, int legacy);
 string version();
 varargs int visibility(object ob);
 varargs int visible(object detectee_obj, object detector_obj);
@@ -191,7 +191,7 @@ int answers_to(string name, object what);
 varargs void add_event(string source, string ob, string fun, mixed *args, int when, int repeat);
 varargs void remove_event(int i);
 int update(string str);
-mixed local_ctime(int i);
+varargs mixed local_ctime(int i, string tzone);
 int numericp(mixed arg);
 int basic_punctuationp(mixed arg);
 mixed mapping_member(mapping Map, string sub);
@@ -300,5 +300,6 @@ string cleaned_name(string str);
 string cleaned_end(string str);
 string new_savename(string name);
 string old_savename(string name);
+string comma(mixed x);
 
 #endif /* l_sefun_h */

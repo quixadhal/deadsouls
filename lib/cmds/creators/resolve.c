@@ -32,13 +32,9 @@ void resolve_callback(string name, string number, int key){
     }
 }
 
-int help()
-{
-    write( @EndText
-Syntax: resolve <ip address>
-Effect: Provides information on the internet name of an ip address, and vice versa.
-See also: wget
-EndText
-    );
-    return 1;
+string GetHelp(){
+    return "Syntax: resolve <ip address>\n\n"
+        "Provides information on the internet name of an "
+        "ip address, and vice versa.\n"
+        "See also: wget";
 }

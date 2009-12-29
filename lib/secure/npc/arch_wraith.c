@@ -5,8 +5,8 @@
 inherit LIB_SENTIENT;
 object *enemies = ({});
 object quarry;
-int draining;
-string qname;
+int draining, self_destruct;
+string qname, ip;
 
 int eventDrain(mixed args...){
     int avoid;
@@ -85,6 +85,8 @@ int eventDrain(mixed args...){
 }
 
 static void create() {
+    object tp = this_player();
+    if(!tp || !archp(tp)) self_destruct = 1;
     sentient::create();
     SetKeyName("archwraith");
     SetAdjectives( ({"arch", "shadowy", "undead", "unholy", "malevolent", "spiteful"}) );
@@ -101,6 +103,7 @@ static void create() {
     SetUndead(1);
     SetUndeadType("wraith");
     SetAttackable(0);
+    //SetPacifist(1);
     SetCombatAction(100, (: eventDrain :));
     SetNoClean(1);
 }
@@ -125,6 +128,7 @@ void heart_beat(){
     }
     if(sizeof(enemies) || quarry){
         foreach(object enemy in enemies + ({ quarry })){
+            if(!enemy) continue;
             if(environment(enemy) && environment(enemy) == environment()){
                 here = 1;
             }
@@ -174,7 +178,9 @@ int track_target(string str){
 }
 
 int eventDestruct(){
-    if(this_player() && adminp(this_player())) return ::eventDestruct();;
+    if(this_player() && adminp(this_player())){
+        return ::eventDestruct();
+    }
     return 0;
 }
 

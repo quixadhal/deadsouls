@@ -10,32 +10,32 @@
 
 inherit LIB_VERB;
 
-static void create() {
+static void create(){
     verb::create();
     SetVerb("enter");
     SetRules("into OBJ", "OBJ");
     SetErrorMessage("Enter what?");
-    SetHelp("Syntax: <enter PLACE>\n"
-            "        <enter into PLACE>\n\n"
+    SetHelp("Syntax: enter <PLACE>\n"
+            "        enter into <PLACE>\n\n"
             "Moves you into the place you specify.  Whereas the \"go\" "
             "command is designed for motion towards something, the "
-            "\"enter\" command is designed for motion into something.\n\n"
+            "\"enter\" command is designed for motion into something.\n"
             "See also: go");
 }
 
-mixed can_enter_obj() {
-    if( this_player()->GetParalyzed() ) {
+mixed can_enter_obj(){
+    if( this_player()->GetParalyzed() ){
         return "You cannot do anything.";
     }
     if(!stringp(hobbled(this_player()))) return "Your injuries prevent easy movement. Perhaps you should try crawling.";
     return 1;
 }
 
-mixed can_enter_into_obj() {
+mixed can_enter_into_obj(){
     return can_enter_obj();
 }
 
-mixed do_enter_obj(object targ, string what) {
+mixed do_enter_obj(object targ, string what){
     return targ->eventEnter(this_player(), remove_article(lower_case(what)));
 }
 

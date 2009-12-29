@@ -9,6 +9,7 @@ int push_it(string str){
         return 1;
     }
 }
+
 static void create() {
     room::create();
     SetClimate("indoors");
@@ -39,6 +40,7 @@ static void create() {
                 ]), "malkierien" ); 
     SetProperty("no attack", 1);
 }
+
 void init(){
     ::init();
     add_action("push_it","push");

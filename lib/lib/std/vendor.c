@@ -5,7 +5,7 @@
 #include "/lib/include/vendor.h"
 
 inherit LIB_SENTIENT;
-inherit "/lib/manycoins";
+inherit LIB_MANYCOINS;
 
 private static int MaxItems, VendorType, bargain;
 private static string StorageRoom, LocalCurrency;
@@ -61,10 +61,10 @@ mixed eventBuy(object who, object *obs){
     foreach(ob in obs){
         int value;
 
-        if( !((string)ob->GetShort()) ) continue;
-        if( !((int)ob->GetVendorType() & GetVendorType()) ){
+        if( !(ob->GetShort()) ) continue;
+        if( !(ob->GetVendorType() & GetVendorType()) ){
             eventForce("say I do not buy things like " +
-                    (string)ob->GetShort());
+                    ob->GetShort());
             continue;
         }
         cost = to_int(ob->GetBaseCost(GetLocalCurrency()));
@@ -74,42 +74,42 @@ mixed eventBuy(object who, object *obs){
         if(!bargain) value = cost;
 
         if( !cost || cost < 1 || !value || value < 1){
-            eventForce("say " + (string)ob->GetShort() + " is worthless!");
+            eventForce("say " + ob->GetShort() + " is worthless!");
             continue;
         }
-        if( !((int)ob->CanSell(who)) ){
-            eventForce("say You cannot sell " + (string)ob->GetShort() +".");
+        if( !(ob->CanSell(who)) ){
+            eventForce("say You cannot sell " + ob->GetShort() +".");
             continue;
         }
         if( sizeof(filter(all_inventory(sroom),
-                        (: $1->GetShort() == (string)$(ob)->GetShort() :)))
+                        (: $1->GetShort() == $(ob)->GetShort() :)))
                 > 3 ){
-            if( (int)this_player()->AddCurrency(GetLocalCurrency(),value) == -1 ){
+            if( this_player()->AddCurrency(GetLocalCurrency(),value) == -1 ){
                 eventForce("say you cannot carry "+value+" "+
                         GetLocalCurrency()+"!");
                 ob->eventMove(environment());
                 continue;
             }
-            eventForce("say " + (string)ob->GetShort() + "! Great!");
+            eventForce("say " + ob->GetShort() + "! Great!");
             tell_player(this_player(),GetShort()+" gives you "+value+
                     " "+GetLocalCurrency()+".");
             if(bargain) who->AddSkillPoints("bargaining", value*5);
-            message("my_action", "You sell " + (string)ob->GetShort() + ".", who);
-            message("other_action", capitalize((string)who->GetKeyName()) + " sells " +
-                    (string)ob->GetShort() + ".", environment(),
+            message("my_action", "You sell " + ob->GetShort() + ".", who);
+            message("other_action", capitalize(who->GetKeyName()) + " sells " +
+                    ob->GetShort() + ".", environment(),
                     ({ who, this_object() }));
             ob->eventDestruct();
             return 1;
         }
-        eventForce("say " + (string)ob->GetShort() + "! Excellent!");
+        eventForce("say " + ob->GetShort() + "! Excellent!");
         tell_player(this_player(),GetShort()+" pays you "+value+
                 " "+GetLocalCurrency()+".");
 
-        if( !((int)ob->eventMove(sroom)) ){
+        if( !(ob->eventMove(sroom)) ){
             eventForce("say I cannot seem to carry that");
             return 1;
         }
-        if( (int)this_player()->AddCurrency(GetLocalCurrency(), value) == -1 ){
+        if( this_player()->AddCurrency(GetLocalCurrency(), value) == -1 ){
             eventForce("say you cannot carry "+value+" "+
                     GetLocalCurrency()+"!");
             ob->eventMove(environment());
@@ -117,16 +117,16 @@ mixed eventBuy(object who, object *obs){
         }
         if(bargain) who->AddSkillPoints("bargaining", value*5);
         tmp += ({ ob });
-        message("my_action", "You sell " + (string)ob->GetShort() + ".", who);
-        message("other_action", capitalize((string)who->GetKeyName()) + " sells " +
-                (string)ob->GetShort() + ".", environment(),
+        message("my_action", "You sell " + ob->GetShort() + ".", who);
+        message("other_action", capitalize(who->GetKeyName()) + " sells " +
+                ob->GetShort() + ".", environment(),
                 ({ who, this_object() }));
     }
     if( !sizeof(tmp) )
-        eventForce("say I am sorry, " + capitalize((string)who->GetKeyName()) + ", "
+        eventForce("say I am sorry, " + capitalize(who->GetKeyName()) + ", "
                 "that we could not come to a better agreement.");
     else map(tmp, function(object ob){
-            if( (int)ob->GetDestroyOnSell() )
+            if( ob->GetDestroyOnSell() )
             ob->eventDestruct();
             });
     return 1;
@@ -174,15 +174,14 @@ int cmdShow(object who, string args){
         return 1;
     }
     message("other_action", capitalize(GetKeyName())+" shows you "+
-            (string)ob->GetShort()+".", who);
-    message("system", (string)ob->GetLong(), who);
+            ob->GetShort()+".", who);
+    message("system", ob->GetLong(), who);
     return 1;
 }
 
 int cmdBrowse(object who, string args){
     object *obs;
     object *obs2;
-    string *list2;
     string *list;
     object sroom;
     int i, ii, maxi, number;
@@ -192,32 +191,32 @@ int cmdBrowse(object who, string args){
         eventForce("say I am having terrific difficulties today");
         return 1;
     }
-    if( !(maxi = sizeof(obs = filter(all_inventory(sroom), (: !userp($1) :) ))) ){
+    if(!(maxi = sizeof(obs = filter(all_inventory(sroom), (: !userp($1) :))))){
         eventForce("say I have nothing to sell right now.");
         return 1;
     }
     list = ({ "item #  Description                         Price", "" });
-    list2 = ({(obs[0]->GetKeyName())});
-    for(int counter = 1;counter < maxi;++counter){
-        if(member_array((obs[counter]->GetKeyName()),list2) < 0){
-            list2 += ({ ( obs[counter]->GetKeyName()) });
-        }
-    }
     obs2 = ({});
     foreach(object tempob in obs){
         string *base_names = ({});
-        foreach( object tempob2 in obs2 ) base_names += ({ base_name(tempob2) });
-        if(!sizeof(obs2)){
-            obs2 = ({tempob});
+        foreach( object tempob2 in obs2 ){
+            base_names += ({ base_name(tempob2) });
         }
-        else if(member_array(base_name(tempob), base_names) == -1) obs2 += ({ tempob });
+        if(member_array(base_name(tempob), base_names) == -1){
+            obs2 += ({ tempob });
+        }
     }
     maxi = sizeof(obs2); 
-    i = (int)this_player()->GetScreen()[0];
+    i = this_player()->GetScreen()[0];
     if(number = to_int(args)){
         if((number > 0) && (number <= maxi)){
+            int tmp;
             while( i-- ) list[1] += "_";
-            list += ({ sprintf("%d      %:-35s %d", number, (string)obs2[(number - 1)]->GetShort(), GetCost(obs2[(number - 1)],who)) });
+            if(intp(number) && 
+                    (tmp = to_int(ceil(GetCost(obs2[(number - 1)],who))))){
+                list += ({ sprintf("%d      %:-35s %d", number, 
+                            obs2[(number - 1)]->GetShort(), tmp) });
+            }
             this_player()->eventPage(list);
             return 1;
         }
@@ -229,7 +228,7 @@ int cmdBrowse(object who, string args){
         int gat;
 
         ok = 0;
-        gat = (int)(obs2[ii]->GetArmorType());
+        gat = (obs2[ii]->GetArmorType());
         switch(args){
             case "all": ok = 1; break;
             case "weapon": case "weapons":
@@ -240,7 +239,7 @@ int cmdBrowse(object who, string args){
                 }
             break;
             case "bag": case "bags":
-                ok = (int)obs2[ii]->GetProperty("bag");
+                ok = obs2[ii]->GetProperty("bag");
             break;
             case "ring": case "rings":
                 ok = gat & A_RING;
@@ -283,17 +282,17 @@ int cmdBrowse(object who, string args){
             break;
             case "blunt": case "knife": case "blade": case "projectile":
                 case "blunts": case "knives": case "blades": case "projectiles":
-                ok = ((string)obs2[ii]->GetWeaponType() == args) ||
-                (pluralize(((string)obs2[ii]->GetWeaponType() || "")) == args);
+                ok = (obs2[ii]->GetWeaponType() == args) ||
+                (pluralize((obs2[ii]->GetWeaponType() || "")) == args);
             break;
             default:
-            ok = (int)obs2[ii]->id(args);
+            ok = obs2[ii]->id(args);
             break;
         }
         if( !ok ) continue;
         ok = GetCost(obs2[ii], who);
         if(!ii) ii = 0;
-        list += ({ sprintf("%d      %:-35s %d", (ii+1), (string)obs2[ii]->GetShort(), to_int(ok)) });
+        list += ({ sprintf("%d      %:-35s %d", (ii+1), obs2[ii]->GetShort(), to_int(ok)) });
     }
     if( !sizeof(list) ){
         eventForce("frown");
@@ -316,8 +315,8 @@ int cmdAppraise(object who, string args){
         eventForce("say You have no such thing!");
         return 1;
     }
-    if( !((int)ob->GetVendorType() & GetVendorType()) ){
-        eventForce("say I have no use for " + (string)ob->GetShort());
+    if( !(ob->GetVendorType() & GetVendorType()) ){
+        eventForce("say I have no use for " + ob->GetShort());
         return 1;
     }
     if( LocalCurrency != query_base_currency() ){
@@ -325,14 +324,14 @@ int cmdAppraise(object who, string args){
     }
     else cost = ob->GetBaseCost();
     if(!cost || cost < 1){
-        eventForce("say " + capitalize((string)who->GetKeyName()) + ", I will not buy "
+        eventForce("say " + capitalize(who->GetKeyName()) + ", I will not buy "
                 "that worthless thing from you.");
         return 1;
     }
     else x=cost;
-    eventForce("say " + capitalize((string)who->GetKeyName()) + ", I will offer "
+    eventForce("say " + capitalize(who->GetKeyName()) + ", I will offer "
             "you " + x + " " + GetLocalCurrency() + " for " +
-            (string)ob->GetShort());
+            ob->GetShort());
     return 1;
 }
 
@@ -384,9 +383,9 @@ int cmdPrice(object who, string args){
         eventForce("say that thing has no value!");
         return 1;
     }
-    eventForce("say " + capitalize((string)who->GetKeyName()) + ", I will take " +
+    eventForce("say " + capitalize(who->GetKeyName()) + ", I will take " +
             x + " " + GetLocalCurrency() + " for " +
-            (string)ob->GetShort());
+            ob->GetShort());
     return 1;
 }
 
@@ -419,11 +418,11 @@ mixed eventAsk(object who, string str){
 
         case "buy":
             if( str == "all" )
-                obs = filter(all_inventory(who), (: (int)$1->CanSell() :));
+                obs = filter(all_inventory(who), (: $1->CanSell() :));
             else {
                 if( !(ob = present(args, who)) ){
                     eventForce("say Get out of here you cheat!");
-                    eventForce("bump " + (string)this_player()->GetKeyName());
+                    eventForce("bump " + this_player()->GetKeyName());
                     return 1;
                 }
                 obs = ({ ob });
@@ -503,17 +502,17 @@ mixed eventSell(object who, mixed what){
                 " to buy that.");
         return 1;
     }
-    if( !((int)ob->eventMove(this_object())) ){
+    if( !(ob->eventMove(this_object())) ){
         message("error", "An error occurred moving the object, use bug -r.",
                 who);
         return 1;
     }
-    eventForce("say here is " + (string)ob->GetShort() + " for " + to_int(cost) +
+    eventForce("say here is " + ob->GetShort() + " for " + to_int(cost) +
             " " + GetLocalCurrency() + "!");
-    eventForce("give " + ob->GetUniqueId() + " to " + (string)who->GetKeyName());
+    eventForce("give " + ob->GetUniqueId() + " to " + who->GetKeyName());
     if( environment(ob) == this_object() ){
         eventForce("say you cannot carry that!");
-        eventForce("drop " + (string)ob->GetKeyName());
+        eventForce("drop " + ob->GetKeyName());
     }
     if(bargain) who->AddSkillPoints("bargaining", random(to_int(floor(cost))));
     who->AddCurrency(GetLocalCurrency(), -cost);
@@ -528,7 +527,7 @@ int GetCost(object ob, object who){
 
     if( Costs[who] && Costs[who][ob] ) return Costs[who][ob];    
     x = ob->GetValue(GetLocalCurrency());
-    mod = (int)who->GetSkillLevel("bargaining") - GetSkillLevel("bargaining");
+    mod = who->GetSkillLevel("bargaining") - GetSkillLevel("bargaining");
     if( mod < -90 ) mod = -90;
     if( mod > 90 ) mod = 90;
     x = (x * (100 - mod))/100;
@@ -543,7 +542,7 @@ int GetValue(object ob, object who){
 
     if( Values[who] && Values[who][ob] ) return Values[who][ob];
     x = ob->GetValue(GetLocalCurrency());
-    mod = (int)who->GetSkillLevel("bargaining") - GetSkillLevel("bargaining");
+    mod = who->GetSkillLevel("bargaining") - GetSkillLevel("bargaining");
     if( mod < -90 ) mod = -90;
     if( mod > 90 ) mod = 90;
     x = (x * (100 - -mod)) / 100;

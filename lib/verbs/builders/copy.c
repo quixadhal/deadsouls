@@ -16,8 +16,8 @@ static void create() {
     SetVerb("copy");
     SetRules("STR", "OBJ STR");
     SetErrorMessage("Copy what?");
-    SetHelp("Syntax: <copy [OBJ] [NAME]>\n"
-            "        <copy [FILENAME]\n\n"
+    SetHelp("Syntax: copy <OBJ> <NAME>\n"
+            "        copy <FILENAME>\n\n"
             "With a room's filename as an argument, this command "
             "copies everything about that room (except exits) into "
             "your current room.\n\n"
@@ -47,7 +47,7 @@ mixed do_copy_obj_str(object ob, string str) {
     sourcefile = "";
     targetfile = "";
     if(last(str,2) != ".c") str += ".c";
-    str = absolute_path((string)this_player()->query_cwd(), str);
+    str = absolute_path(this_player()->query_cwd(), str);
     if( !directory_exists(path_prefix(str)) ) {
         write("Directory not found.");
         return 1;
@@ -86,7 +86,7 @@ mixed do_copy_str(string str) {
         return 1;
     }
     str2 = str;
-    str = absolute_path((string)this_player()->query_cwd(), str);
+    str = absolute_path(this_player()->query_cwd(), str);
 
     if(last(str,2) != ".c") str += ".c";
 

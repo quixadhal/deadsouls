@@ -24,7 +24,7 @@ void create() {
                 "'enter' and you will be added to the list.  A list of candidates "
                 "is posted on the wall.  Type 'list candidates' to read it.";
         else return "This is the voting chamber of the Hall of Fighters.  "
-            "Fighters will gather here for the next election: "+(string)VOTING_D->query_vote_date()+".";
+            "Fighters will gather here for the next election: "+VOTING_D->query_vote_date()+".";
     }
 void init(){
     ::init();

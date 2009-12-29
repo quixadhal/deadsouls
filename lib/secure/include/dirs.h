@@ -130,6 +130,8 @@
 
 #define DIR_SHADOWS             "/shadows"
 
+#define DIR_SECURE_TMP          DIR_SECURE "/tmp"
+#define DIR_TMP_SECURE          DIR_SECURE "/tmp"
 #define DIR_TMP                 "/tmp"
 #define TMP_DIR                 "/tmp"
 

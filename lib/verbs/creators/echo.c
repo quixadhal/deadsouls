@@ -6,8 +6,6 @@
  *    created by Descartes of Borg 951114
  */
 
-
-
 #include <lib.h>
 #include <message_class.h>
 #include "include/echo.h"
@@ -63,7 +61,7 @@ void eventEcho(object *targs, string str) {
 
     foreach(ob in targs) {
         if( archp(ob) )
-            ob->eventPrint((string)this_player()->GetCapName() +
+            ob->eventPrint(this_player()->GetCapName() +
                     " echoes: " + str, MSG_CONV);
         else ob->eventPrint(str, MSG_CONV);
     }
@@ -71,14 +69,12 @@ void eventEcho(object *targs, string str) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <echo MESSAGE>\n"
-            "        <echo to LIVING MESSAGE>\n"
-            "        <echo to all MESSAGE>\n\n"
+    return ("Syntax: echo <MESSAGE>\n"
+            "        echo to <LIVING> <MESSAGE>\n"
+            "        echo to all <MESSAGE>\n\n"
             "Sends a message without prefixing around to everyone in the "
             "room if you fail to specify to whom you are echoing.  You "
             "may echo to everyone in the game as well.  Abuse of this "
-            "command is a severe violation of MUD ethics.\n\n"
+            "command is a severe violation of MUD ethics.\n"
             "See also: say, tell");
 }
-
-

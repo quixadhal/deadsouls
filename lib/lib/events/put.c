@@ -22,9 +22,14 @@ mixed GetPreventPut(){
     return PreventPut;
 }
 
-mixed CanPut(object who){
+varargs mixed CanPut(object who, object what){
     mixed tmp;
+    object env;
 
+    if(what) env = environment(what);
+    if(!env || env != this_player()){
+        return "#You don't have that.";
+    }
     if( (tmp = CanDrop(who)) != 1 ) return tmp;
     if( !environment() ){ destruct(this_object()); return 1; }
     if( environment() != this_player() &&
@@ -69,13 +74,13 @@ varargs mixed eventPut(object who, object storage, string prep){
         return 0;
     }
     who->eventPrint("You put " + GetShort() + prep +
-            (string)storage->GetShort() + ".");
-    environment(who)->eventPrint((string)who->GetName() + " puts " +
+            storage->GetShort() + ".");
+    environment(who)->eventPrint(who->GetName() + " puts " +
             GetShort() + prep +
-            (string)storage->GetShort() + ".", who);
-    if(inherits("/lib/std/storage",this_object())){
+            storage->GetShort() + ".", who);
+    if(inherits(LIB_STORAGE, this_object())){
         depth = this_object()->GetRecurseDepth();
-        if(depth && inherits("/lib/std/storage",storage)) storage->AddRecurseDepth(depth); 
+        if(depth && inherits(LIB_STORAGE, storage)) storage->AddRecurseDepth(depth); 
     }
 
     return 1;
@@ -86,11 +91,11 @@ static void create(){
 }
 
 mixed direct_put_obj_word_obj(){
-    return CanPut(this_player());
+    return CanPut(this_player(), this_object());
 }
 
 mixed direct_put_wrd_wrd_word_obj(){
-    return CanPut(this_player());
+    return CanPut(this_player(), this_object());
 }
 
 mixed direct_put_obj_obj(){

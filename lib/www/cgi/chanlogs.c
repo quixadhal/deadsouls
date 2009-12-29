@@ -7,7 +7,7 @@ inherit LIB_DAEMON;
 inherit LIB_CGI;
 
 void validate(){
-    if(!(int)master()->valid_apply(({ "SECURE", "ASSIST" })) &&
+    if(!master()->valid_apply(({ "SECURE", "ASSIST" })) &&
             strsrch(base_name(previous_object()), SOCKET_HTTP)){
         string offender = identify(previous_object(-1));
         debug("chanlogs.c SECURITY VIOLATION: "+offender+" ",get_stack(),"red");

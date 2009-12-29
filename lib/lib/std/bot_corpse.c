@@ -49,8 +49,8 @@ int eventDecay(){
 }
 
 void SetCorpse(object who){
-    string tmpshort = (string)who->GetShort();
-    if(sizeof(who->GetRiders())) tmpshort = (string)who->GetPlainShort();
+    string tmpshort = who->GetShort();
+    if(sizeof(who->GetRiders())) tmpshort = who->GetPlainShort();
     SetKeyName(who->GetKeyName());
     SetId(({ "remains","wreckage",who->GetId()... }) );
     Owner = who->GetCapName();

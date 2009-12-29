@@ -6,7 +6,7 @@ inherit LIB_DAEMON;
 void eventInventory();
 
     mixed cmd(string args) {
-        if( (int)this_player()->GetInCombat() )
+        if( this_player()->GetInCombat() )
             this_player()->SetAttack(0, (: eventInventory :), ROUND_OTHER);
         else eventInventory();
         return 1;
@@ -47,9 +47,10 @@ void eventInventory() {
     write(ret);
 }
 
-void help() {
-    message("help", "Syntax: <equipment>\n\n"
-            "Lists all items you are currently wearing or wielding.  This command "
+string GetHelp(){
+    return ("Syntax: equipment\n\n"
+            "Lists all items you are currently wearing or wielding. "
+            "This command "
             "will take up one round of combat if you happen to be in "
-            "combat.", this_player());
+            "combat.");
 }

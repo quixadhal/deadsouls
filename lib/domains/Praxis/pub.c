@@ -67,9 +67,9 @@ int read(string str) {
     }
     message("Ninfo", "The following classic drinks are served at the Lars Pub!\n", this_player());
     message("Ninfo", "-----------------------------------------------------------\n", this_player());
-    message("Ninfo", "A firebreather\t\t\t"+ (int)ob->get_price("firebreather")+" gold\n", this_player());
-    message("Ninfo", "A special of the house\t\t"+(int)ob->get_price("special")+" gold\n", this_player());
-    message("Ninfo", "A pale ale\t\t\t"+(int)ob->get_price("ale")+" gold\n", this_player());
+    message("Ninfo", "A firebreather\t\t\t"+ ob->get_price("firebreather")+" gold\n", this_player());
+    message("Ninfo", "A special of the house\t\t"+ob->get_price("special")+" gold\n", this_player());
+    message("Ninfo", "A pale ale\t\t\t"+ob->get_price("ale")+" gold\n", this_player());
     message("Ninfo", "-----------------------------------------------------------\n", this_player());
     message("Ninfo", "<buy drink_name> gets you a drink.\n", this_player());
     return 1;

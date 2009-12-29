@@ -80,10 +80,10 @@ int bait_it(string str) {
         return 1;
     }
     if(!bait) {
-        bait = (100-(int)present(the_bait, this_player())->query_strength())/7;
+        bait = (100-present(the_bait, this_player())->query_strength())/7;
         write("You bait your hook with "+the_bait+".\n");
 
-        say(this_player()->query_cap_name()+" baits "+(string)this_player()->query_possessive()+" stick.\n");
+        say(this_player()->query_cap_name()+" baits "+this_player()->query_possessive()+" stick.\n");
         find_object(the_bait)->remove();
         return 1;
     }

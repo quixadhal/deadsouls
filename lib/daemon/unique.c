@@ -24,7 +24,7 @@ static void create() {
 void eventTouchObject() {
     string fn;
 
-    if( !((int)previous_object()->GetUnique()) ) return;
+    if( !(previous_object()->GetUnique()) ) return;
     fn = base_name(previous_object());
     Objects[fn] = time();
     SaveObject(SaveFile);
@@ -36,7 +36,7 @@ object GetUniqueCopy(string fn, int rare) {
 
     if( !Objects[fn] ) {
         ob = new(fn);
-        if( !((int)ob->GetUnique()) ) return ob;
+        if( !(ob->GetUnique()) ) return ob;
         else Objects[fn] = time();
         SaveObject(SaveFile);
         return ob;

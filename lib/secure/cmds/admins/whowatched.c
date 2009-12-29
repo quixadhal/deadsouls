@@ -11,8 +11,8 @@ int cmd(string str) {
         return 0;
     }
     if(!archp(previous_object())) return 0;
-    if(str == "name") who = (string *)BANISH_D->query_watched_names();
-    else if(str == "site") who = (string *)BANISH_D->query_watched_sites();
+    if(str == "name") who = BANISH_D->query_watched_names();
+    else if(str == "site") who = BANISH_D->query_watched_sites();
     else {
         notify_fail("Whowatched what?\n");
         return 0;
@@ -20,4 +20,10 @@ int cmd(string str) {
     message("info", sprintf("These %ss are being watched:", str),this_player());
     this_player()->more(explode(format_page(who, 5), "\n"));
     return 1;
+}
+
+string GetHelp(){
+    return ("Syntax: whowatched name\n"
+            "        whowatched site\n\n"
+            "Lists the sites or names watched.");
 }

@@ -19,8 +19,8 @@ mixed cmd(string args) {
     int x;
 
     if( args == "" || !args ) 
-        args = user_path((string)this_player()->GetKeyName()) + "tmp.edit";
-    if( (int)this_player()->GetForced() ) {
+        args = user_path(this_player()->GetKeyName()) + "tmp.edit";
+    if( this_player()->GetForced() ) {
         message("system", "Someone tried to force you to edit "+ args +"\n" +
                 identify(previous_object(-1)), this_player());
         return 0;
@@ -33,7 +33,7 @@ mixed cmd(string args) {
                 "using the ed editor: http://dead-souls.net/editor.html");
         this_player()->SetProperty("EdWarned", 1);
     }
-    args = absolute_path( (string)this_player()->query_cwd(), args );
+    args = absolute_path( this_player()->query_cwd(), args );
     if( (x = file_size(args)) == -2 ) 
         return "You cannot edit a directory!";
     else if( x == -1 )
@@ -45,13 +45,13 @@ mixed cmd(string args) {
     return 1;
 }
 
-void help() {
-    message("help", "Syntax: <qed ([filename])>\n\n", this_player());
-    message("help", "This is the quiet version of ed. While editing, "
+string GetHelp() {
+    return ("Syntax: qed [filename]\n\n"
+            "This is the quiet version of ed. While editing, "
             "you will receive only editing data and some other limited "
             "messages. "
             "Once done editing, the game messages you missed will be "
             "displayed to you. Be careful where you use this command, for you "
             "may engage in combat and be killed without knowing about it "
-            "until you complete your editing.\n\nSee also: ed", this_player());
+            "until you complete your editing.\nSee also: ed, ced, qcs, creweb");
 }
