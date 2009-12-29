@@ -24,7 +24,6 @@ mixed findit(string str){
     }
     if(file_exists(file)) return file;
     err = catch(room = load_object(tmpfile));
-    tc("room: "+identify(room)); 
     if(room) return room;
     return 0;
 }
@@ -88,9 +87,6 @@ mixed cmd(string args) {
         }
         coord = coord + (s3 ? "" : ",0");
         ROOMS_D->SetRoom(room, this_player(), coord);
-        tc("room: "+identify(room), "red");
-        tc("file: "+identify(file), "green");
-        tc("coord: "+identify(coord), "blue");
         write("Coordinates for "+file+" are: "+
                 ROOMS_D->GetCoordinates(room));
         return 1;

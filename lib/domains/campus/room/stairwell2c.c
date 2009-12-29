@@ -10,11 +10,11 @@ void create() {
     SetLong("This is the stairwell of the University Science Building.");
     SetClimate("indoors");
     SetItems( ([ 
-      ]) );
+                ]) );
     SetExits( ([
-        "up" : "/domains/campus/room/stairwell2a",
-        "down" : "/domains/campus/room/stairwell2d.c",
-      ]) );
+                "up" : "/domains/campus/room/stairwell2a",
+                "down" : "/domains/campus/room/stairwell2d.c",
+                ]) );
 }
 
 void init(){

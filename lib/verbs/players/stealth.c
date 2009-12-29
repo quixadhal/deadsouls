@@ -12,6 +12,9 @@ static void create() {
     verb::create();
     SetVerb("stealth");
     SetRules("","WRD");
+    SetHelp("Syntax: stealth [on | off]\n\n"
+            "A way to enable or disable sneakiness, if stealth is a "
+            "skill available to you.");
 }
 
 mixed can_stealth() {

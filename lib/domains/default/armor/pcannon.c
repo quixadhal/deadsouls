@@ -16,7 +16,7 @@ varargs mixed DoWear(object who, mixed where);
 
 string LongDesc(){
     string ret = "A highly advanced weapon of Poleepkwa design, "+
-      "meant to be worn.";
+        "meant to be worn.";
     if(!active) return ret;
     if(cache < percent_of(10, maxcache)) ret += " A %^RED%^red%^RESET%^ light is illuminated on it.";
     else if(cache < percent_of(50, maxcache)) ret += " A %^YELLOW%^yellow%^RESET%^ light is illuminated on it.";
@@ -52,7 +52,7 @@ varargs int OperateThing(object who, mixed what){
     this = remove_article(GetShort());
     tell_player(who, "You operate your "+this+".");
     tell_object(env, who->GetName() + " operates " + possessive(who) +
-      " " + this + ".", ({who}));
+            " " + this + ".", ({who}));
     if(what && stringp(what) && !active){
         tell_player(who, "The "+this+" is not activated.");
         return 0;
@@ -89,7 +89,7 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
         write("The cannon clicks.");
         say(name+"'s cannon emits a click.");
         if(room) room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-            "Power cache too low.", "poleepkwa");
+                "Power cache too low.", "poleepkwa");
         return 1;
     }
 
@@ -98,7 +98,7 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
         write("The cannon emits a harsh buzzing noise.");
         say(name+"'s cannon emits a harsh buzzing noise.");
         if(room) room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-            "Operator essence too low.", "poleepkwa");
+                "Operator essence too low.", "poleepkwa");
         return 1;
     }
 
@@ -118,7 +118,7 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
         }
         write("You fire your plasma cannon "+dir+"!");
         tell_room(env, name+" fires "+possessive(killer)+
-        " plasma cannon "+dir+"!", ({killer}));
+                " plasma cannon "+dir+"!", ({killer}));
 
         if(debugging) bolt->SetDebugging(1);
         bolt->SetOwner(who);
@@ -131,12 +131,12 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
         cache = 0;
         return 1;
     }
-        
+
     write("You blast "+patsy+" with your plasma cannon!");
     tell_room(env, name+" blasts "+patsy+" with "+possessive(killer)+
-      " plasma cannon!", ({killer, target}));
+            " plasma cannon!", ({killer, target}));
     target->eventPrint(name+" blasts you with "+possessive(killer)+
-      " plasma cannon!");
+            " plasma cannon!");
 
     dam = cache + random(maxcache);
     cache = 0;
@@ -144,14 +144,14 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
     target->eventReceiveDamage(killer, HEAT, dam);
     killer->AddMagicPoints(-maxcache);
     target->AddEnemy(killer);
-    
+
     if(tracking){
         if(room && (!Prey["ob"] || Prey["ob"] != target)){
             room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-              "New prey being tracked.", "poleepkwa");
+                    "New prey being tracked.", "poleepkwa");
         }
         Prey = ([ "ob" : target, "name" : patsy, "room" : environment(target),
-          "player" : userp(target) ]);
+                "player" : userp(target) ]);
     }
 
     return 1;
@@ -166,7 +166,7 @@ int ReportHit(object target){
     here = environment(environment());
     if(Prey["ob"] && target == Prey["ob"]){
         here->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-          "Hit scored on target.", "poleepkwa");
+                "Hit scored on target.", "poleepkwa");
         return 1;
     }
     room = environment(target);
@@ -174,7 +174,7 @@ int ReportHit(object target){
     player = userp(target);
     Prey = (["ob" : target, "name" : name, "room" : room, "player" : player]); 
     here->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-          "New prey being tracked.", "poleepkwa");
+            "New prey being tracked.", "poleepkwa");
     return 1;
 }
 
@@ -184,8 +184,8 @@ void heart_beat(){
     object env = environment();
     object room = room_environment();
     if(active && !GetWorn()){
-         if(env) tell_room(env, "The "+remove_article(GetShort())+
-            " whines and clicks off.");
+        if(env) tell_room(env, "The "+remove_article(GetShort())+
+                " whines and clicks off.");
         active = 0;
     }
     else if(active){
@@ -194,7 +194,7 @@ void heart_beat(){
             active = 0;
             if(environment(env)){
                 tell_room(environment(env), env->GetName()+"'s "+
-                "plasma cannon whines and clicks off.", ({env}));
+                        "plasma cannon whines and clicks off.", ({env}));
                 env->eventPrint("Your plasma cannon whines and clicks off.");
             }
         }
@@ -213,7 +213,7 @@ void heart_beat(){
                 Prey["lost"] = 0;
                 if(tracking && room){
                     room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-                      "Contact with prey re-established.", "poleepkwa");
+                            "Contact with prey re-established.", "poleepkwa");
                 }
                 return;
             }
@@ -221,17 +221,17 @@ void heart_beat(){
             if(room && !Prey["lost"]){
                 if(tracking){
                     room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-                        "Contact with prey lost.", "poleepkwa");
+                            "Contact with prey lost.", "poleepkwa");
                 }
                 Prey["lost"] = 1;
             }
-        return;
+            return;
         }
         penv = room_environment(Prey["ob"]);
         menv = room_environment(this_object());
         if(Prey["ob"] && (!Prey["room"] || penv != Prey["room"])){
             if(room) room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-              "Prey on the move.", "poleepkwa");
+                    "Prey on the move.", "poleepkwa");
             Prey["room"] = penv;
             notify = 1;
         }
@@ -252,7 +252,7 @@ void heart_beat(){
             if(bearing != -1) str = "Prey's bearing currently: "+bearing;
             else str = "Prey is in the immediate environment.";
             room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-              str, "poleepkwa");
+                    str, "poleepkwa");
         }
     }
 }
@@ -262,7 +262,7 @@ void init(){
     ::init();
     if(active && !GetWorn()){
         if(env) tell_room(env, "The "+remove_article(GetShort())+
-            " whines and clicks off.");
+                " whines and clicks off.");
         active = 0;
     }
 }
@@ -278,7 +278,7 @@ varargs mixed DoWear(object who, mixed where){
     else extra = ".";
     who->eventPrint("You wear "+GetShort()+extra);
     if(env) tell_room(env, who->GetName()+" wears "+
-       GetShort()+extra, ({who}));
+            GetShort()+extra, ({who}));
     return 1;
 }
 
@@ -288,7 +288,7 @@ mixed eventUnequip(object who){
     if(ret && active){
         who->eventPrint("The cannon whines and clicks off.");
         if(env) tell_room(env, who->GetName()+"'s cannon "+
-            "whines and clicks off.", ({who}));
+                "whines and clicks off.", ({who}));
         active = 0;
     }
     return ret;
@@ -313,7 +313,7 @@ int eventTurnOn(mixed str){
         }
         else {
             write("The "+remove_article(GetShort())+" has "+
-              "no such feature.");
+                    "no such feature.");
             return 1;
         }
     }
@@ -352,7 +352,7 @@ int eventTurnOff(mixed str){
         }
         else {
             write("The "+remove_article(GetShort())+" has "+
-              "no such feature.");
+                    "no such feature.");
             return 1;
         }
     }

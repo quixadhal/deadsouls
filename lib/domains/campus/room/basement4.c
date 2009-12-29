@@ -10,10 +10,10 @@ void create() {
     SetLong("This room seems to be used for secret experiments.");
     SetClimate("indoors");
     SetItems( ([ 
-      ]) );
+                ]) );
     SetExits(([
-        "west" : "/domains/campus/room/basement3",
-      ]));
+                "west" : "/domains/campus/room/basement3",
+                ]));
 }
 
 void init(){

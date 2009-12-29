@@ -24,7 +24,6 @@ nomask void restore_inventory();
 nomask void save_player(string nom);
 
 int Setup(){
-
     master()->create_save();
     call_out( (: save_player, GetKeyName() :), 2 );
     restore_inventory();
@@ -57,7 +56,6 @@ nomask void restore_inventory(){
 nomask int restore_player(string nom){
     string file;
     int ret;
-
     if( previous_object(0) != master() ){
         return 0;
     }

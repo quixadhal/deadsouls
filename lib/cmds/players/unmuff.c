@@ -16,7 +16,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: unmuff <name>\n\n"
+    return ("Syntax: unmuff <name>\n\n"
             "This command allows you to stop ignoring channel messages from the name specified.\n"
             "See also: earmuff, whomuffed");
 }

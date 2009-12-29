@@ -1,8 +1,5 @@
-
-
 #include <lib.h>
 #include <position.h>
-//#include "include/crawl.h"
 
 inherit LIB_VERB;
 
@@ -11,13 +8,12 @@ static void create() {
     SetVerb("crawl");
     SetRules("STR", "into STR");
     SetErrorMessage("Crawl in which direction?");
-    SetHelp("Syntax: <crawl DIRECTION>\n"
-            "        <crawl into PLACE>\n\n"
+    SetHelp("Syntax: crawl <DIRECTION>\n"
+            "        crawl into <PLACE>\n\n"
             "Moves you towards the direction you specify, or into the place "
             "you specify.  The command \"crawl into\" is synonymous with the "
             "\"enter\" command.");
 }
-
 
 mixed can_crawl_str(string str) {
     if( !environment(this_player()) ) return "You are nowhere.";
@@ -56,4 +52,3 @@ mixed do_crawl_into_str(string str) {
     this_player()->AddStaminaPoints(-5);
     return targ->eventEnter(this_player(), str,"crawl");
 }
-//

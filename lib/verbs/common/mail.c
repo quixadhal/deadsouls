@@ -56,15 +56,15 @@ mixed do_mail_str(string str) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <mail>\n"
-            "        <mail PLAYER>\n"
-            "        <mail GROUP>\n\n"
-            "        <mail PLAYER@MUD>\n\n"
+    return ("Syntax: mail\n"
+            "        mail <PLAYER>\n"
+            "        mail <GROUP>\n"
+            "        mail <PLAYER@MUD>\n\n"
             "Allows you to send mail to another player on this game. "
             "Without arguments, you are simply set to read your "
             "mail.  With arguments, you are creating mail to be sent.  "
             "You may only read mail in your home town.  The mailer will "
             "properly route any mail you send to the proper home town "
-            "for the player or players you intend it to go to.\n\n"
+            "for the player or players you intend it to go to.\n"
             "See also: mudlist");
 }

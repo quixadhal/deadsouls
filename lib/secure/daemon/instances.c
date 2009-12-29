@@ -214,7 +214,6 @@ mapping GetInstData(){
 
 static void SendData(mixed fd, mixed data){
     int array targets = ({});
-    //tc("instd trying to send: "+identify(data), "white");
     if(stringp(fd) && !undefinedp(InstData[fd])) fd = InstData[fd]["fd"];
     if(fd == -2) return;
     if(fd == -1){
@@ -225,7 +224,6 @@ static void SendData(mixed fd, mixed data){
     else targets = ({ fd });
     targets = distinct_array(targets);
     foreach(int target in targets){
-        //tc("sending data", "black");
         this_object()->write_data(target, data);
     }
 }
@@ -382,7 +380,6 @@ static void ReceiveICPData(mixed data, string addy, int port, int fd){
             else ProcessStartup(data, addy, port, fd);
         break;
         case "channel-p" :
-            //tc("received "+identify(data), "red");
             CHAT_D->eventSendChannel(data[6]...);
         break;
         case "who-update":
@@ -417,7 +414,7 @@ void eventSendChannel(string name, string ch, string msg, int emote,
         string target, string targmsg){
     mixed packet = ({ name, ch, msg, emote, target, targmsg });
     if(base_name(previous_object()) != CHAT_D) return;
-    //tc("channel. name: "+name+", ch: "+ch+", msg: "+msg);
+    if(ch == "muds") return;
     SendData(-1, ({ "channel-p", 5, Myname, 0, 0, 0, packet }) );
 }
 

@@ -48,7 +48,6 @@ void heart_beat(){
             return;
         }
         if(MapMap[sweeprooms[roomcount]]["name"]){
-            //tc("sweeping: "+roomcount+", "+sweeprooms[roomcount]+", "+identify(MapMap[sweeprooms[roomcount]]["name"]));
             this_object()->GetMap(MapMap[sweeprooms[roomcount]]["name"], 8, 1);
         }
         else {
@@ -59,7 +58,7 @@ void heart_beat(){
     }
     heart_count++;
 }
-        
+
 int eventDestruct(){
     SaveObject(SaveFile, 1);
     return daemon::eventDestruct();

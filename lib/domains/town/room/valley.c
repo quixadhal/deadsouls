@@ -26,10 +26,8 @@ void init(){
 }
 
 int clean_up(int ref_exists){
-    //debug("ref_exists: "+ref_exists);
     return ::clean_up();
 }
 
 void reset(){
-    //debug("origin: "+origin());
 }

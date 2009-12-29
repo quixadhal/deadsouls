@@ -22,9 +22,14 @@ mixed GetPreventPut(){
     return PreventPut;
 }
 
-mixed CanPut(object who){
+varargs mixed CanPut(object who, object what){
     mixed tmp;
+    object env;
 
+    if(what) env = environment(what);
+    if(!env || env != this_player()){
+        return "#You don't have that.";
+    }
     if( (tmp = CanDrop(who)) != 1 ) return tmp;
     if( !environment() ){ destruct(this_object()); return 1; }
     if( environment() != this_player() &&
@@ -86,11 +91,11 @@ static void create(){
 }
 
 mixed direct_put_obj_word_obj(){
-    return CanPut(this_player());
+    return CanPut(this_player(), this_object());
 }
 
 mixed direct_put_wrd_wrd_word_obj(){
-    return CanPut(this_player());
+    return CanPut(this_player(), this_object());
 }
 
 mixed direct_put_obj_obj(){

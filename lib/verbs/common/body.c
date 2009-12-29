@@ -40,7 +40,7 @@ mixed can_body() {
 
     mixed can_body_liv() {
         if( !creatorp(this_player()) )
-            return "Body does not require any arguments.";
+            return "Try: help body";
         return 1;
     }
 
@@ -122,7 +122,7 @@ varargs void eventCheckBody(object ob, object receiver) {
 
     string GetHelp(string str) {
         if( creatorp(this_player()) )
-            return "Syntax: body LIVING\n\n"
+            return "Syntax: body [LIVING]\n\n"
                 "This command will display the current limb damage "
                 "statistics of the living object named.";
         else

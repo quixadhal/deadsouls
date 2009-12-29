@@ -388,7 +388,9 @@ varargs nomask string write_prompt(string str){
     string ret, uncolor;
     int diff, tmp, bottom = GetScreen()[1];
     int side = GetScreen()[0];
-    if(!this_object()) return "";
+
+    if(!this_object() || origin() == "driver") return "";
+
     if(!Termstuff) Termstuff = ([]);
     if(!Termstuff["Terminal"]){
         Termstuff["Terminal"] = this_object()->GetTerminal();
@@ -1019,4 +1021,3 @@ static int rAscii(string str){
 static int rAnsi(string str){
     return 1;
 }
-

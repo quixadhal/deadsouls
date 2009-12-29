@@ -38,27 +38,21 @@ static void create(){
 }
 
 static string process_input(string str){
-    //tc("interface process_input: "+str, "red");
-
     command::SetCommandFail(0);
     str = command::process_input(str);
     if( Client ){
         int cl;
-        //tc("%^B_BLACK%^b1", "red");
         sscanf(str, "%d %s", cl, str);
     }
     if( (str = editor::process_input(str)) == "" ){
-        //tc("%^B_BLACK%^b2", "red");
         return "";
     }
     else {
         str = nmsh::process_input(str);
         if( str != "" ){
-            //tc("%^B_BLACK%^b3", "red");
             return chat_command(str);
         }
         else {
-            //tc("%^B_BLACK%^b4", "red");
             return "";
         }
     }
@@ -76,14 +70,13 @@ static void window_size(int width, int height){
     }
 }
 
-varargs int eventReceive(string message, int noprompt, int noerase){
+varargs void eventReceive(string message, int noprompt, int noerase){
     int max_length = __LARGEST_PRINTABLE_STRING__ - 192;
-    string prompt = this_object()->GetPrompt(1);
+    string prompt = this_object()->GetPrompt(!(in_edit(this_object())));
     string *stack = call_stack(2);
     if(stack[1] == "write2" && message != "\n"){
         noerase = 1;
     }
-    if(in_edit(this_object())) prompt = this_object()->GetPrompt();
     if(sizeof(message) > max_length){
         while(sizeof(message)){
             string tmp = message[0..max_length];
@@ -242,10 +235,11 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     int msg_class;
     string prompt = "";
     object *passengers = filter(all_inventory(this_object()), (: living :) );
+    if( !msg ) return 0;
     if(this_object()->GetProperty("reprompt")){
         prompt = this_object()->GetPrompt(1);
+        if(!this_object()->GetCharmode()) msg = "\n" + msg;
     } 
-    if( !msg ) return 0;
     if( !arg2 && !arg3 ) msg_class = MSG_ENV;
     else if( !arg2 ){
         if( !intp(arg3) ) msg_class = MSG_ENV;
@@ -275,13 +269,13 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     }
     if( !(msg_class & MSG_NOCOLOUR) ){
         int indent;
-
-        if( msg_class & MSG_CONV ) indent = 4;
-        else indent = 0;
+        //Uncomment below to enable indentation of "conversation"
+        //if( msg_class & MSG_CONV ) indent = 4;
+        //else indent = 0;
         if( msg_class & MSG_NOWRAP )
             msg = terminal_colour(msg + "%^RESET%^", TermInfo);
         else
-            msg = terminal_colour(msg + "%^RESET%^\n"+prompt, TermInfo,
+            msg = terminal_colour(msg + "%^RESET%^\n" + prompt, TermInfo,
                     GetScreen()[0], indent);
     }
     else if( !(msg_class & MSG_NOWRAP) ) msg = wrap(msg, GetScreen()[0]-1);
@@ -293,8 +287,12 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
             receive(msg);
             return 1;
         }
-        if( Client ) eventReceive("<" + msg_class + " " + msg + " " + msg_class +">\n");
-        else eventReceive(msg);
+        if( Client ){
+            eventReceive("<"+msg_class+" "+msg+" "+msg_class+">\n");
+        }
+        else {
+            eventReceive(msg);
+        }
     }
     return 1;
 }
@@ -462,4 +460,3 @@ static int rAnsi(string str){
     }
     return ret;
 }
-

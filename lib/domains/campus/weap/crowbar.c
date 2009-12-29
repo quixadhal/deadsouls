@@ -11,7 +11,7 @@ static void create(){
     SetAdjectives( ({ "heavy", "iron"}) );
     SetShort("a crowbar");
     SetLong("This is heavy iron rod with specialized ends for prying "
-      "things open.");
+            "things open.");
     SetVendorType(VT_WEAPON);
     SetClass(20);
     SetBaseCost("silver",150);

@@ -3,8 +3,6 @@
  *  created by Blitz@Dead Souls
  */
 
-
-
 #include <lib.h>
 #include <damage_types.h>
 #include "include/bump.h"
@@ -16,7 +14,7 @@ static void create() {
     SetVerb("bump");
     SetRules("LIV");
     SetErrorMessage("Whom would you like to bump?");
-    SetHelp( "Syntax: bump LIV\n\n"        
+    SetHelp( "Syntax: bump <LIVING>\n\n"        
             "This command allows you bump the living object named "
             "into an adjacent room.  It is quite possible that "
             "bumping may cause you bodily injury.");
@@ -24,7 +22,6 @@ static void create() {
 
 mixed can_bump_liv() {
     object env = environment(this_player());
-
     if( !env ) return "You are nowhere!";
     if( env->GetProperty("no bump") )
         return "Mystical forces prevent your pushy actions.";

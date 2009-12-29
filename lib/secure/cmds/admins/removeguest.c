@@ -24,7 +24,7 @@ int cmd(string str) {
 }
 
 string GetHelp(){
-            return ("Syntax: removeguest [player list]\n\n"
+    return ("Syntax: removeguest [player list]\n\n"
             "Removes a single player or a list of players from the guests "
             "allowed onto the mud when it is locked.  This function is "
             "generally used to "

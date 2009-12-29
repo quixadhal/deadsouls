@@ -169,19 +169,19 @@ string CurseFilter(string str){
 
     if(!sizeof(str)) return "";
     curses = ({"bullshit", "motherfucking", "motherfuck",
-      "shitty", "fucking", "fucken", "mother fucking", "mother fuck",
-      "damned", "god damned", "goddamned", "christing", "cunting",
-      "assfuck", "buttfuck", "butt fuck", "shitlick", "shit lick",
-      "cocklick", "cock lick", "dicklick", "dick lick", "cuntlick",
-      "cunt lick", "shithead", "fuckhead", "shit head", "fuck head", 
-      "shit", "fuck", "cunt", "slut", "bastard", "asshole",
-      "cocksuck", "cock suck", "dicksuck", "dick suck", "suck dick",
-      "suck cock", "pussy", "twat", "jizz", "piss", "blowjob",
-      "buttsex", "butt sex", "anal sex", "faggot", "nigger", "kike",
-      "jap", "rimjob", "nafe", "handjob", "god damn", "goddamn", "damn",
-      "goddam", "whore", "son of a bitch", "bitch", "felch", "feltch",
-      "bukkake", "rape", "incest", "sodomy", "dildo", "christ", "jesus",
-      "heterosexual intercourse in the missionary position" });
+            "shitty", "fucking", "fucken", "mother fucking", "mother fuck",
+            "damned", "god damned", "goddamned", "christing", "cunting",
+            "assfuck", "buttfuck", "butt fuck", "shitlick", "shit lick",
+            "cocklick", "cock lick", "dicklick", "dick lick", "cuntlick",
+            "cunt lick", "shithead", "fuckhead", "shit head", "fuck head", 
+            "shit", "fuck", "cunt", "slut", "bastard", "asshole",
+            "cocksuck", "cock suck", "dicksuck", "dick suck", "suck dick",
+            "suck cock", "pussy", "twat", "jizz", "piss", "blowjob",
+            "buttsex", "butt sex", "anal sex", "faggot", "nigger", "kike",
+            "jap", "rimjob", "nafe", "handjob", "god damn", "goddamn", "damn",
+            "goddam", "whore", "son of a bitch", "bitch", "felch", "feltch",
+            "bukkake", "rape", "incest", "sodomy", "dildo", "christ", "jesus",
+            "heterosexual intercourse in the missionary position" });
 
     lowered = lower_case(str);
     orig = str;

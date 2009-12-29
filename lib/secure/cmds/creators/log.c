@@ -21,6 +21,6 @@ int cmd(string str) {
 string GetHelp(){
     return ("Syntax: log [log file]\n\n"
             "Tails the log file named (i.e. a file "
-            "in the mud log directory).\n"
+        "in the mud log directory).\n"
             "See also:\nelog, replog\n");
 }

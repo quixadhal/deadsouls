@@ -177,9 +177,9 @@ varargs void AddItem(mixed item, mixed val, mixed adjectives){
 
     if( objectp(item) ){
         same_dummy = filter(dummies,(: ($1->GetId())[0] == (global_item->GetId())[0] :));
-    if(sizeof(same_dummy) && base_name(item) != LIB_ELEVATOR_BUTTON){
-        return;
-    }
+        if(sizeof(same_dummy) && base_name(item) != LIB_ELEVATOR_BUTTON){
+            return;
+        }
         ob = item;
     }
     else {

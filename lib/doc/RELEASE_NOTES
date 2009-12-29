@@ -1,5 +1,7 @@
----- 2.11a23 (unreleased) ---
+---- 2.12 ---
+- Released 2009-12-31
 - Driver: added Kalinash's fix for Solaris on 64 bit SPARC.
+- Driver: added Kalinash's fix for BSD math.
 - Added commands: anchor, unanchor
 - Note on anchoring: it is intentional that admins can move around
   if they wish while anchored, but creators cannot.
@@ -12,13 +14,29 @@
   a write() or a message() or whatever crazy thing occurs to people
   in the middle of the night in 1994.
 - The "boards" command now indicates the location of the boards listed.
+- Admins can now use the gag command to prevent a user from using channels.
+- Fixed a password retrieval problem in ftp and hftp. 
+  NOTE: Some newer ftp clients default to epsv when negotiating passive
+  ftp mode. This breaks hftp. If you're having weird problems using
+  passive mode and hftp, then right after logging into hftp, type:
+  epsv off
+  passive on
+  bin
+- Fixed a double-prompt problem and some cosmetic issues when reprompting.
+- Made the harmony of best balance in tell.c for justice.
+- The <muds> channel no longer double-pumps on instances.
+- Fixed CheckEncounter double-pump in LIB_NPC.
+- Tidied up slightly confusing events reporting.
+- Fixed a problem with "EverFill" things like rivers running out.
+- Fixed a problem with undrinkable floods and floods that couldn't
+  be used to fill flasks.
 
 ---- 2.11a22 ---
-- Released 2009-11-1
+- Released 2009-11-01
 - Removed unnecessary casts.
 - It's possible to peer into virtual rooms now.
 - Added a sample ranged weapon: /domains/default/armor/pcannon.c
-- Added Tricky's A* implementation.
+- Added Tricky's A* implementation (doesn't really do anything yet).
 - Improved the thoroughness of warmboots.
 - Improved back-compatibility with MudOS v22.2b14-ds.
 

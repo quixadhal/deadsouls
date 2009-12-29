@@ -26,8 +26,8 @@ int GetAnchored(){
 int SetAnchored(int x){
     object prev = this_player();
     if(!prev || (prev != this_object() && !adminp(prev))) return anchored;
-    if(x > 0) anchored = ((anchored != 2) ? (archp(prev) ? 2 : 1) : 2);
-    else anchored = ((anchored == 2) ? (archp(prev) ? 0 : 2) : 0);
+    if(x > 0) anchored = ((anchored != 2) ? (adminp(prev) ? 2 : 1) : 2);
+    else anchored = ((anchored == 2) ? (adminp(prev) ? 0 : 2) : 0);
     return anchored;
 }
 
@@ -47,7 +47,7 @@ int eventMove(mixed dest){
             else tmpdest = dest;
             if(member_array(tmpdest, dests) != -1) ok = 1;
             else if(member_array(base_name(env), envs) != -1) ok = 1;
-            if(this_player() && archp(this_player())) ok = 1;
+            if(this_player() && adminp(this_player())) ok = 1;
             if(!ok){
                 if(this_player()){ 
                     if(this_player() == this_object()){
@@ -55,13 +55,13 @@ int eventMove(mixed dest){
                     }
                     else {
                         tell_object(this_object(), this_player()->GetName()+
-                          " tried to move you but you are anchored here.");
+                                " tried to move you but you are anchored here.");
                     }
                 }
                 return 0;
             }
             else tell_object(this_object(), "You are about to be moved "+
-              "to "+identify(dest));
+                    "to "+identify(dest));
         }
     }
 
@@ -74,7 +74,7 @@ int eventMove(mixed dest){
         int x;
 
         x = environment()->CanRelease(me);
-        if( !x && !archp() ){
+        if( !x && !adminp() ){
             return 0;
         }
     }
@@ -124,11 +124,13 @@ int eventMove(mixed dest){
     }
     if(prev) prev->eventPostRelease(me);
     if( environment() ){
+#if 0
         foreach(object peer in all_inventory(environment())){
             if( peer != me ){
                 catch(peer->eventEncounter(me));
             }
         }
+#endif
         if(OBJECT_MATCHING){ 
             object *prev_inv = ({});
             eventAnnounceCanonicalId();

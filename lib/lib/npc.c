@@ -71,7 +71,7 @@ void CheckEncounter(){
 
     if(!env) return;
 
-    dudes = get_livings(env) + ({ this_player() });
+    dudes = singular_array(get_livings(env) + ({ this_player() }));
 
     if( !query_heart_beat() ){
         eventCheckHealing();
@@ -119,7 +119,6 @@ static void init(){
 
 static void heart_beat(){
     int position;
-
     living::heart_beat();
     guard::heart_beat();
     if( !ContinueHeart() ){

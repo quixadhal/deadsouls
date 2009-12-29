@@ -122,13 +122,13 @@ mixed do_party_wrd_liv(string cmd, object targ) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <party create PARTY>\n"
-            "        <party disband>\n"
-            "        <party invite PLAYER>\n"
-            "        <party join PARTY>\n"
-            "        <party leader PLAYER>\n"
-            "        <party leave>\n"
-            "        <party remove PLAYER>\n\n"
+    return ("Syntax: party create <PARTY>\n"
+            "        party disband\n"
+            "        party invite <PLAYER>\n"
+            "        party join <PARTY>\n"
+            "        party leader <PLAYER>\n"
+            "        party leave\n"
+            "        party remove <PLAYER>\n\n"
             "This command is the interface to the Dead Souls party system.  "
             "A party is simply a group of players who are adventuring "
             "together.  The advantage of a party is that it allows people "
@@ -143,5 +143,3 @@ string GetHelp(string str) {
             "leader. To do that, you must use the \"lead\" and \"follow\" "
             "commands.");
 }
-
-

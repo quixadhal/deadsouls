@@ -19,7 +19,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: chancolors [on | off]\n\n"
+    return ("Syntax: chancolors [on | off]\n\n"
             "This command allows you to toggle whether you see colors in channel messages. \nNote: This doesn't apply to the normal colors of the channel name.");
 }
 

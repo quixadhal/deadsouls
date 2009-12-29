@@ -27,14 +27,12 @@ void create() {
 
 static private void save_board() {
     if(!__CurrentID){
-        //tc("tong");
         return;
     }
     if(!unguarded((: file_exists,save_file(DIR_BOARDS+"/"+__CurrentID) :))){
         int i;
 
         if(!sizeof(__Posts)){
-            //tc("tlong!");
             __Owner = query_privs(previous_object(0));
             __Posts = ({});
         }
@@ -48,17 +46,14 @@ static private void save_board() {
 
 static private int restore_board() {
     if(!__CurrentID){
-        //tc("ting");
         return 0;
     }
     if(!unguarded((: file_exists, save_file(DIR_BOARDS+"/"+__CurrentID) :))){
         __Owner = query_privs(previous_object(0));
         __Posts = ({});
-        //tc("glinb");
         return 0;
     }
     else {
-        //tc("bling");
         RestoreObject(save_file(DIR_BOARDS+"/"+__CurrentID));
     }
     return 1;
@@ -89,23 +84,16 @@ void add_post(string id, string who, string subj, string msg) {
 }
 
 void RegisterLocation(string id, string location){
-    //tc("0", "red");
     if(__CurrentID != id) {
         __CurrentID = id;
-        //tc("1", "red");
         restore_board();
     }
-    //tc("2", "red");
     if(!valid_access()){
-        //tc("3", "red");
         return;
     }
-    //tc("4", "red");
     if(!location || !stringp(location)){
-        //tc("5", "red");
         return;
     }
-    //tc("6", "red");
     Location = location;
     save_board();
 }

@@ -22,7 +22,6 @@ mixed GoHome(string str) {
     else who = lower_case(str);
     if(!user_exists(who)) return "There's no such user.";
     room = PLAYERS_D->GetHomeRoom(who);
-    //tc("room: "+identify(room));
     if(!room || !strsrch(room, "/tmp/")){
         str = user_path(who, 1);
         if(!directory_exists(str)) return "That person has no home dir.";
@@ -32,7 +31,6 @@ mixed GoHome(string str) {
             return capitalize(who)+" has no active workroom.";
     }
     else str = room;
-    //tc("str: "+str);
     catch(ob = load_object(str));
     if(!ob){
         if(who != this_player()->GetKeyName())

@@ -5,7 +5,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string str) {
     object target;
-    int arch = archp(this_player());
+    int arch = adminp(this_player());
     int ret, curr;
 
     if(!sizeof(str)) str = "me";

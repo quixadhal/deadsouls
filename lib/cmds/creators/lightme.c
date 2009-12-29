@@ -23,5 +23,5 @@ int cmd(string str){
 
 string GetHelp(){
     return "Syntax: lightme [NUMBER]\n\n"+
-    "Reports or changes the amount of light your body radiates.";
+        "Reports or changes the amount of light your body radiates.";
 }

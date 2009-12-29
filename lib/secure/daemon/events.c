@@ -5,6 +5,7 @@
  */
 
 #include <lib.h>
+#include <logs.h>
 #include <save.h>
 #include <daemons.h>
 #include <privs.h>
@@ -15,8 +16,9 @@ inherit LIB_DAEMON;
 private int RebootInterval;
 private mapping Events;
 private static int InReboot = 0;
-private static int callout = -1;
+private static int i, callout = -1;
 static string SaveFile;
+static int *events;
 
 static void create() {
     daemon::create();
@@ -25,8 +27,9 @@ static void create() {
         cp(old_savename(SaveFile), SaveFile);
     }
     SetNoClean(1);
-    if( file_exists(SaveFile) )
+    if( file_exists(SaveFile) ){
         RestoreObject(SaveFile);
+    }
     if( !RebootInterval ) RebootInterval = 170;
     if( !Events ) Events = ([]);
     eventSave();
@@ -59,23 +62,28 @@ int GetRebooting(){
     return InReboot;
 }
 
-    void eventReboot(int x) {
-        if( previous_object() && !(master()->valid_apply(({ PRIV_ASSIST }))) )
-            return;
-        InReboot = 1;
-        if( x < 1 ) x = 1;
-        x *= 60;
-        message("broadcast", mud_name() + " will reboot in " +
-                consolidate(x/60, "a minute") + ".", users());
-        if( x < 61 ) callout = call_out( (: eventAnnounceReboot, 10 :), x - 10);
-        else {
-            int y;
-
-            y = x/60;
-            y = ((2*y)/3) * 60;
-            callout = call_out( (: eventAnnounceReboot($(y)) :), x - y);
-        }
+void eventReboot(int x){
+    if( previous_object() && !(master()->valid_apply(({ PRIV_ASSIST })))){
+        return;
     }
+    InReboot = 1;
+    if( x < 1 ){
+        x = 1;
+    }
+    x *= 60;
+    message("broadcast", mud_name() + " will reboot in " +
+            consolidate(x/60, "a minute") + ".", users());
+    if( x < 61 ){
+        callout = call_out( (: eventAnnounceReboot, 10 :), x - 10);
+    }
+    else {
+        int y;
+
+        y = x/60;
+        y = ((2*y)/3) * 60;
+        callout = call_out( (: eventAnnounceReboot($(y)) :), x - y);
+    }
+}
 
 static void eventAnnounceReboot(int x) {
     if( x == 10 ) {
@@ -110,9 +118,7 @@ static void Shutdown() {
 }
 
 static void eventPollEvents() {
-    int *events;
-    int i, x;
-
+    int x;
     call_out((: eventPollEvents :), 60);
     x = time();
     i = sizeof(events = keys(Events));
@@ -120,7 +126,13 @@ static void eventPollEvents() {
         if( events[i] <= x ) {
             object ob;
             function f;
-
+            if(EVENTS_LOGGING){
+                unguarded( (: write_file(LOG_EVENTS,timestamp()+" "+
+                                Events[events[i]]["object"]+"->"+
+                                Events[events[i]]["function"]+
+                                "("+implode(Events[events[i]]["args"], ",")+
+                    ")\n") :) );
+            }
             if( !(ob = find_object(Events[events[i]]["creator"]) )
                     && !(ob = load_object(Events[events[i]]["creator"])) ) {
                 map_delete(Events, events[i]);
@@ -155,31 +167,31 @@ int GetRebootInterval() { return RebootInterval; }
 
 void AddEvent(string c, string s, string f, mixed *a, int w, int r) {
     mapping NewEvent;
-    if( file_name(previous_object()) != SEFUN && file_name(previous_object()) != UPDATE_D) {
+    if( file_name(previous_object()) != SEFUN && 
+            file_name(previous_object()) != UPDATE_D) {
         if(EVENTS_LOGGING){
-            unguarded( (: write_file("/log/secure/events",timestamp()+" "+
-                            identify(previous_object(-1))+" ILLEGALLY tried to add an event.\n") :) );
+            unguarded( (: write_file(LOG_EVENTS,timestamp()+" "+
+                            identify(previous_object(-1))+
+                            " ILLEGALLY tried to add an event.\n") :) );
         }
         return;
     }
     NewEvent = ([ "object" : s, "function" : f, "args" : a,
             "creator" : c,  "regular" : (r ? w : 0), "interval" : w ]);
     if(EVENTS_LOGGING)
-        unguarded( (: write_file("/log/secure/events",timestamp()+
+        unguarded( (: write_file(LOG_EVENTS,timestamp()+
                         identify(previous_object(-1))+" added this event: "+
                         identify($(NewEvent))+"\n") :) );		
     Events[time() + w] = NewEvent;
     eventSave(1);
 }
 
-void RemoveEvent(int i){
+void RemoveEvent(int x){
     if( file_name(previous_object()) != SEFUN ) return;
-    if(sizeof(Events[i])){
-        map_delete(Events, i);
+    if(sizeof(Events[x])){
+        map_delete(Events, x);
         eventSave(1);
     }
 }
 
 mapping GetEvents() { return copy(Events); }
-
-

@@ -19,12 +19,12 @@ string GetHelp() {
     string ret = "";
 #ifdef __TRACE__
     ret = "Syntax: trace [level]\n\n"
-            "Displays function call tracing to you. See \"man trace\""
-            " for details on tracing levels.";
+        "Displays function call tracing to you. See \"man trace\""
+        " for details on tracing levels.";
 #else
     ret = "This command is disabled.\n"
-            "See \"man trace\""
-            " for details.";
+        "See \"man trace\""
+        " for details.";
 #endif
 
     return ret;

@@ -108,7 +108,7 @@ void end_post(string subj, string mail){
                 this_player()->GetCapName(), subj, msg);
     message("system", "Message posted!", this_player());
     tell_room(env, this_player()->GetName()+" posts on the board.",
-      ({ this_player() }));
+            ({ this_player() }));
 }
 
 int cmd_read(string str){
@@ -145,7 +145,7 @@ int cmd_read(string str){
         str += posts[x]["post"];
 
         tell_room(env, this_player()->GetName()+" reads the board.",
-          ({ this_player() }));
+                ({ this_player() }));
         BBOARD_D->mark_read(query_board_id(),x,this_player()->GetKeyName());
         this_player()->eventPage(explode(str, "\n"), "system");
         return 1;
@@ -222,7 +222,7 @@ int cmd_remove(string str){
     BBOARD_D->remove_post(query_board_id(), x-1);
     message("system", "Post "+x+" removed.", this_player());
     tell_room(env, this_player()->GetName()+" removes a post from the board.",
-      ({ this_player() }));
+            ({ this_player() }));
     return 1;
 }
 

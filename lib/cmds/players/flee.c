@@ -12,7 +12,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: flee\n\n"
+    return ("Syntax: flee\n\n"
             "If you need to leave combat in a hurry, and don't care which way you go.\n"
             "This command doesn't work for creators.");
 }

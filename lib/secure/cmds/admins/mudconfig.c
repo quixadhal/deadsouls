@@ -946,7 +946,7 @@ varargs static int ModCfg(string which, string arg){
 }
 
 string GetHelp(){
-            return ("Syntax: mudconfig PARAMETER VALUE \n\n"
+    return ("Syntax: mudconfig PARAMETER VALUE \n\n"
             "Modifies various system settings.\n"
             "Examples: \n"
             "\nmudconfig autowiz [ yes | no ]"

@@ -11,11 +11,12 @@
 private string *RestrictedChannels;
 private static mapping Channels;
 private int NoChanColors = 0;
-private int local_mute, remote_mute, local_gag, remote_gag;
+private mapping GagMutes = ([]);
 
 static void create(){
     RestrictedChannels = ({ });
     Channels = ([ ]);
+    GagMutes = (["local_mute":0,"remote_mute":0,"local_gag":0,"remote_gag":0]);
 }
 
 mapping returnChannels(){
@@ -25,7 +26,6 @@ mapping returnChannels(){
 static string chat_command(string str){
     string cmd, arg, tmp;
     int x;
-    //tc("chat: chat_command: "+str);
     if( (x = strsrch(str, " ")) == -1){
         cmd = str;
         arg = "";
@@ -81,8 +81,12 @@ string *AddChannel(mixed val){
 string *RemoveChannel(mixed val){
     string *tmp;
     int i, maxi;
+    object prev = this_player();
 
     if( stringp(val) ) val = ({ val });
+    if(!prev ||(prev != this_object() && !adminp(prev))){
+        return keys(Channels);
+    }
     else if( !pointerp(val) ) error("Bad argument 1 to RemoveChannel().\n");
     if(arrayp(val)){
         foreach(string channel in val){
@@ -133,21 +137,21 @@ string *UnrestrictChannel(mixed val){
 string *GetRestrictedChannels(){ return (RestrictedChannels + ({})); }
 
 int GetMutedType(string type){
-    if(type == "local" && local_mute) return 1;
-    if(type == "remote" && remote_mute) return 1;
-    if(type == "all" && remote_mute && local_mute) return 1;
+    if(type == "local" && GagMutes["local_mute"]) return 1;
+    if(type == "remote" && GagMutes["remote_mute"]) return 1;
+    if(type == "all" && GagMutes["remote_mute"] && 
+            GagMutes["local_mute"]) return 1;
     return 0;
 }
 
 int GetMuted(string channel){
     channel = CHAT_D->GetRemoteChannel(channel);
-    //channel = CHAT_D->GetLocalChannel(channel);
-    if(remote_mute 
+    if(GagMutes["remote_mute"]
             && member_array(channel, CHAT_D->GetRemoteChannels()) != -1
             && member_array(channel, CHAT_D->GetLocalChannels()) == -1){
         return 1;
     }
-    if(local_mute
+    if(GagMutes["local_mute"]
             && ( member_array(channel, CHAT_D->GetRemoteChannels()) == -1
                 || member_array(channel, CHAT_D->GetLocalChannels()) != -1)){
         return 1;
@@ -155,40 +159,22 @@ int GetMuted(string channel){
     return 0;
 }
 
-int SetMuted(string type, mixed whether){
-    if(undefinedp(whether) || !intp(whether)) whether = 1;
-    if(!type) type = "all";
-    switch(type){
-        case "local" :
-            local_mute = whether;
-        break;
-        case "remote" :
-            remote_mute = whether;
-        break;
-        case "all" :
-            local_mute = whether;
-        remote_mute = whether;
-        break;
-    }
-    return whether;
-}
-
 int GetGaggedType(string type){
-    if(type == "local" && local_gag) return 1;
-    if(type == "remote" && remote_gag) return 1;
-    if(type == "all" && remote_gag && local_gag) return 1;
+    if(type == "local" && GagMutes["local_gag"]) return 1;
+    if(type == "remote" && GagMutes["remote_gag"]) return 1;
+    if(type == "all" && GagMutes["remote_gag"] && 
+            GagMutes["local_gag"]) return 1;
     return 0;
 }
 
 int GetGagged(string channel){
     channel = CHAT_D->GetRemoteChannel(channel);
-    //channel = CHAT_D->GetLocalChannel(channel);
-    if(remote_gag
+    if(GagMutes["remote_gag"]
             && member_array(channel, CHAT_D->GetRemoteChannels()) != -1
             && member_array(channel, CHAT_D->GetLocalChannels()) == -1){
         return 1;
     }
-    if(local_gag
+    if(GagMutes["local_gag"]
             && ( member_array(channel, CHAT_D->GetRemoteChannels()) == -1
                 || member_array(channel, CHAT_D->GetLocalChannels()) != -1)){
         return 1;
@@ -196,20 +182,64 @@ int GetGagged(string channel){
     return 0;
 }
 
-int SetGagged(string type, mixed whether){
-    if(undefinedp(whether) || !intp(whether)) whether = 1;
+int SetGagged(string type, mixed x){
+    object prev = this_player();
+    int ret;
+    if(!prev || (prev != this_object() && !adminp(prev))) return 0;
+    if(undefinedp(x) || !intp(x)) x = 1;
     if(!type) type = "all";
     switch(type){
         case "local" :
-            local_gag = whether;
+            ret = GagMutes["local_gag"];
+        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+        GagMutes["local_gag"] = ret;
         break;
         case "remote" :
-            remote_gag = whether;
+            ret = GagMutes["remote_gag"];
+        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+        GagMutes["remote_gag"] = ret;
         break;
         case "all" :
-            local_gag = whether;
-        remote_gag = whether;
+            ret = GagMutes["local_gag"];
+        ret = (ret > GagMutes["remote_gag"] ? ret : GagMutes["remote_gag"]);
+        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+        GagMutes["local_gag"] = ret;
+        GagMutes["remote_gag"] = ret;
         break;
     }
-    return whether;
+    return ret;
+}
+
+int SetMuted(string type, mixed x){
+    object prev = this_player();
+    int ret;
+    if(!prev || (prev != this_object() && !adminp(prev))) return 0;
+    if(undefinedp(x) || !intp(x)) x = 1;
+    if(!type) type = "all";
+    switch(type){
+        case "local" :
+            ret = GagMutes["local_mute"];
+        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+        GagMutes["local_mute"] = ret;
+        break;
+        case "remote" :
+            ret = GagMutes["remote_mute"];
+        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+        GagMutes["remote_mute"] = ret;
+        break;
+        case "all" :
+            ret=GagMutes["local_mute"];
+        ret=(ret > GagMutes["remote_mute"] ? ret : GagMutes["remote_mute"]);
+        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+        GagMutes["local_mute"] = ret;
+        GagMutes["remote_mute"] = ret;
+        break;
+    }
+    return ret;
 }

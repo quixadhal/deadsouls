@@ -49,6 +49,9 @@ mkdir $OLDLIB/lib/secure/cmds/builders
 mkdir $OLDLIB/lib/secure/daemon/imc2server
 mkdir $OLDLIB/lib/lib/daemon
 mkdir $OLDLIB/lib/lib/daemon/include
+mkdir $OLDLIB/lib/domains/campus/chamber
+mkdir $OLDLIB/lib/domains/town/chamber
+mkdir $OLDLIB/lib/domains/default/chamber
 mkdir $OLDLIB/lib/domains/cave
 mkdir $OLDLIB/lib/domains/cave/adm
 mkdir $OLDLIB/lib/domains/cave/armor

@@ -26,7 +26,7 @@ int cmd(string str) {
 }
 
 string GetHelp(){
-            return ("Syntax: unwatch <[site|name] | "
+    return ("Syntax: unwatch <[site|name] | "
             "[ip or site to be unwatched]>\n\n"
             "Sets it up so that whenever a player of a certain name, or "
             "a player from a certain site logs in it will get logged.\n"

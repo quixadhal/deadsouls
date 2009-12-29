@@ -28,12 +28,6 @@ private string array    ImmuneRaces   = ({ "android", "tree",
 
 mixed eventMultiply();
 
-void init(){
-    ::init();
-    set_heart_beat(1);
-
-}
-
 /* ***************  /lib/germ.c data functions  *************** */
 int isGerm(){
     return 1;
@@ -211,6 +205,22 @@ mixed eventEncounter(object who){
     }
     if(this_object() && environment(this_object())) eventMultiply();
     return 1;
+}
+
+void init(){
+    object env = environment();
+    object *livs;
+    if(!env) return;
+    ::init();
+    livs = (get_livings(env) || ({}));
+    if(living(env)) env = environment(env);
+    livs += get_livings(env);
+    set_heart_beat(1);
+    if(sizeof(livs)){
+        foreach(object liv in livs){
+            eventEncounter(liv);
+        }
+    }
 }
 
 mixed eventInfect(object ob){

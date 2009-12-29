@@ -10,31 +10,31 @@ inherit LIB_DAEMON;
 
 string GetHelp();
 
-mixed cmd(string str){
-    if( !str )
-    {
-        return GetHelp();
+    mixed cmd(string str){
+        if( !str )
+        {
+            return GetHelp();
+        }
+        str = absolute_path(this_player()->query_cwd(), str);
+        switch( file_size(str) )
+        {
+            case -1:
+                notify_fail("rmdir: "+str+": No such file.\n");
+                return 0; break;
+            case -2:
+                break;
+            default:
+                notify_fail("rmdir: "+str+": not a directory.\n");
+                return 0; break;
+        }
+        if( master()->valid_write(str, this_object(), "rmdir") == 0 )
+        {
+            notify_fail(str+": Permission denied.\n");
+            return 0;
+        }
+        write(rmdir(str) ? "Ok.\n" : str+": couldn't remove directory.\n");
+        return 1;
     }
-    str = absolute_path(this_player()->query_cwd(), str);
-    switch( file_size(str) )
-    {
-        case -1:
-            notify_fail("rmdir: "+str+": No such file.\n");
-            return 0; break;
-        case -2:
-            break;
-        default:
-            notify_fail("rmdir: "+str+": not a directory.\n");
-            return 0; break;
-    }
-    if( master()->valid_write(str, this_object(), "rmdir") == 0 )
-    {
-        notify_fail(str+": Permission denied.\n");
-        return 0;
-    }
-    write(rmdir(str) ? "Ok.\n" : str+": couldn't remove directory.\n");
-    return 1;
-}
 
 string GetHelp(){
     return ("Syntax: rmdir <directory>\n\n"+

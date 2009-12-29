@@ -174,7 +174,6 @@ static void eventNoon() {
     int i;
     call_out( (: eventTwilight :), Twilight - GetCurrentTime());
     TimeOfDay = "day";
-    /* debug("Noon Time!"); */
     i = sizeof(NoonCalls);
     while(i--) catch(evaluate(NoonCalls[i]));
 }
@@ -234,7 +233,6 @@ static void eventMidnight() {
     }
     call_out( (: eventDawn :), Dawn);
     TimeOfDay = "night";
-    /* debug("midnight!"); */
     i = sizeof(MidnightCalls);
     while(i--) catch(evaluate(MidnightCalls[i]));
 }

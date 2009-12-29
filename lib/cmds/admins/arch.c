@@ -33,5 +33,5 @@ mixed cmd(){
 
 string GetHelp(){
     return "Syntax: arch\n\n"
-            "Transports you to the arch room. \nSee also: wiz\n";
+        "Transports you to the arch room. \nSee also: wiz\n";
 }

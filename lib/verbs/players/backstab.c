@@ -16,7 +16,7 @@ static void create() {
     SetVerb("backstab");
     SetRules("LIV");
     SetErrorMessage("Who do you want to backstab?");
-    SetHelp("Syntax: backstab LIVING\n\n"
+    SetHelp("Syntax: backstab <LIVING>\n\n"
             "This sneaky attack allows more devious players to "
             "backstab a specified target.");
 }
@@ -193,6 +193,3 @@ int eventPrintDamage(object backstabber, object target, object weapon, int perce
 
     return 1;
 }
-
-
-

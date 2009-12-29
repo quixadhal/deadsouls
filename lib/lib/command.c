@@ -45,12 +45,13 @@ static string process_input(string args){
     string verb, real_verb, tmpalias, orig;
     object env = environment(this_object());
     string *talks = ({ "emote", "tell", "reply", "say", "whisper",
-      "yell", "shout", "speak" });
+            "yell", "shout", "speak" });
     string *filecmds = ({ "ced", "clone", "goto", "rehash", "reset",
-      "showtree", "bk", "cat", "cp", "diff", "ed", "grep", "head", "indent",
-      "longcat", "more", "mv", "rm", "sed", "showfuns", "source",
-      "tail", "update", "cd", "ls", "mkdir", "rmdir" });
-    string *exempts = talks + filecmds;
+            "showtree", "bk", "cat", "cp", "diff", "ed", "grep", "head", "indent",
+            "longcat", "more", "mv", "rm", "sed", "showfuns", "source",
+            "tail", "update", "cd", "ls", "mkdir", "rmdir" });
+    string *specialcmds = ({ "modify", "mudconfig", "describe" });
+    string *exempts = talks + filecmds + specialcmds;
     exempts += this_object()->GetChannels();
     exempts += SOUL_D->GetEmotes();
 
@@ -59,7 +60,6 @@ static string process_input(string args){
     localcmds = ({});
     filter(commands(), (: localcmds += ({ $1[0] }) :));
 
-    //tc("verb: "+verb+", args: "+args);
     if(sizeof(args)){
         string *tmpargs = explode(args, " ");
         if(sizeof(tmpargs)) verb = tmpargs[0];
@@ -72,7 +72,6 @@ static string process_input(string args){
         real_verb = explode(tmpalias, " ")[0];
     }
     if(!real_verb) real_verb = verb;
-    //tc("verb: "+verb+", args: "+args, "blue");
     if(Paused && (member_array(real_verb, exempts) == -1)){
         this_object()->eventPrint("You are paused.");
         return "";
@@ -105,16 +104,11 @@ static string process_input(string args){
             if(!line[i]) error("String handling error in old style plural parser.");
             element = line[i];
             exempts = sort_array(exempts, 1);
-            //tc("verb: "+verb, "blue");
-            //tc("real_verb: "+real_verb, "blue");
-            //tc("exempts: "+identify(exempts), "blue");
-            //tc("member: "+member_array(real_verb, exempts));
             if(sscanf(element,"%d.%d",numba,tmp_num) != 2 &&
                     sscanf(element,"%d.%s",numba,tmp_ret) == 2 &&
                     (member_array(real_verb, exempts) == -1)){
                 args = replace_string(args, numba + ".", 
                         numba + ordinal(numba) + " ");
-                //tc("args: "+args, "green");
                 continue;
             }
             if(numba = atoi(element)){
@@ -136,21 +130,17 @@ static string process_input(string args){
                         if(o1){
                             tmp_ret = e1 + " " + old_tmp;
                             args=replace_string(args,old_tmp+" "+numba,tmp_ret);
-                            //tc("args: "+args, "blue");
                         }
                     }
                 }
             }//end single number check
         }
     }
-    //tc("args: "+args, "white");
     parsed_command = args;
     if(member_array(verb, localcmds) != -1){
-        //tc("ping");
         current_command = orig;
     }
     else {
-        //tc("pong");
         current_command = parsed_command;
         parsed_command = "";
     }
@@ -164,16 +154,12 @@ static int cmdAll(string args){
     mixed err;
     string verb, file;
 
-    //tc("cmdAll: "+args, "red");
-
     if(grepp(parsed_command," ")){
         sscanf(parsed_command,"%s %s", verb, args);
         parsed_command = "";
     }
 
     if(!verb) verb = query_verb();
-
-    //tc("verb: "+verb+", args: "+args, "red");
 
     if(!this_object()->GetCharmode()){
         if(!args) this_object()->Push(verb);

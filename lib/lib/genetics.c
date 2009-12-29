@@ -280,7 +280,7 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score){
         raw_score = 0;
     }
 
-//fixme
+    //fixme
     if(!location && sizeof(get_livings(this_object())) && 
             rider = get_random_living(this_object())){
         if(rider->GetProperty("mount") == this_object() && env){
@@ -302,8 +302,6 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score){
     if( !where && !location ){
         where = env;
     }
-    //tc("env: "+identify(env));
-    //tc("where: "+identify(where));
     if(!where) return 0;
     x = (env == where ? GetRadiantLight(0) : 0);
     a = where->GetAmbientLight();
@@ -319,9 +317,6 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score){
     if(raw_score && !location){
         return "Low: "+l[0]+", High: "+l[1];
     } 
-    //tc("Low: "+l[0]+", High: "+l[1]);
-    //tc("a: "+a);
-    //tc("x: "+x);
     if( x >= l[0] && x <= l[1] ) return VISION_CLEAR;
     y = l[0]/3;
     if( x < y ) return VISION_TOO_DARK;

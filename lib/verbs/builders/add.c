@@ -13,8 +13,8 @@ static void create() {
     SetVerb("add");
     SetRules("OBJ", "OBJ to OBJ", "OBJ to here", "OBJ to room");
     SetErrorMessage("Add what?");
-    SetHelp("Syntax: <add [OBJ] to [OBJ]>\n"
-            "        <add [OBJ]>\n"
+    SetHelp("Syntax: add <OBJ> to <OBJ>\n"
+            "        add <OBJ>\n"
             "This command adds the first object to the permanent "
             "inventory of the second object, if you have access "
             "privileges to both files. You will be prompted for input. "

@@ -5,7 +5,7 @@ varargs mixed CanInstall(object who, object where, object what){
         if(thingy){
             env = environment(thingy);
             if((env != who && env != environment(who)) ||
-              (thingy == what && env != who)){ 
+                    (thingy == what && env != who)){ 
                 string thingname = remove_article(thingy->GetShort());
                 return "#You don't have the "+thingname+".";
             }

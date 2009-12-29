@@ -408,10 +408,6 @@ mixed eventWander(){
 }
 
 /********************** sentient.c driver applies ************************/
-static void create(){
-    npc::create();
-}
-
 static void heart_beat(){
     if( !this_object() || !environment() ){
         return;

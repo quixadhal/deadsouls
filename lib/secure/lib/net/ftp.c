@@ -56,9 +56,9 @@
 
 inherit LIB_SOCKET;
 
-private class  ftp_session Session;
+private static class  ftp_session Session;
 private        string      Password  = 0;
-private        mixed       outfile   = ([]);
+private static mixed       outfile   = ([]);
 private static int         MaxBuffer = get_config(__MAX_BYTE_TRANSFER__);
 private static int         MaxFile   = get_config(__MAX_READ_FILE_SIZE__);
 private static mapping     dispatch  = ([
@@ -72,7 +72,6 @@ private static mapping     dispatch  = ([
         "rnto" : (: eventCmdRnto :), "stou" : (: eventCmdStou :),
         "cwd"  : (: eventCmdCwd  :), "mkd"  : (: eventCmdMkd  :),
         "pwd"  : (: eventCmdPwd  :), "rmd"  : (: eventCmdRmd  :),
-
         ]);
 
 static void create(int fd, object owner){
@@ -153,7 +152,6 @@ string FindPrevDir( string path ) {
     parts = parts [0..<2];
     return "/" + implode(parts, "/");   
 }
-
 
 private void idle_time_out(){
     if(Session->dataPipe){ /* Data connections are still active. */
@@ -249,7 +247,7 @@ private void eventCmdUser(string arg){
 }
 
 private void eventCmdPswd(string arg){
-
+    string path;
     if(!arg){ 
         eventWrite("500 command not understood.\n",0); 
         return; 
@@ -270,6 +268,7 @@ private void eventCmdPswd(string arg){
         return;
     }
 #endif
+    path = DIR_CRES "/" + Session->user[0..0] + "/" + Session->user;
     RestoreObject(DIR_CRES "/" + Session->user[0..0] + "/" +
             Session->user, 1 );
     if(!Password || Password != crypt(arg, Password) ) {
@@ -860,6 +859,7 @@ private void eventCmdRmd(string arg) {
     }
     eventWrite("250 RMD command successful.\n",0);
 }
+
 void eventRead(string data){
     string cmd, arg;
     function dispatchTo;

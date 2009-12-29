@@ -29,7 +29,7 @@ void shb(int i){
 
 void create(){
     ::create();
-    SetKeyName("flow object");
+    SetKeyName("water");
     SetId( ({"flow","flood","object","water","overflow"}) );
     SetAdjectives( ({"flow","flood"}) );
     SetShort("some water");

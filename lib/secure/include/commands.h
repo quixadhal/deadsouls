@@ -24,6 +24,7 @@
 #define CMD_LIVEUPGRADE       (DIR_SECURE_ADMIN_CMDS "/liveupgrade")
 #define CMD_MUDCONFIG         (DIR_SECURE_ADMIN_CMDS "/mudconfig")
 #define CMD_LS                (DIR_CREATOR_CMDS "/ls")
+#define CMD_LSED              (DIR_SECURE_CREATOR_CMDS "/lsed")
 #define CMD_REMOVECLASS       (DIR_SECURE_ADMIN_CMDS "/removeclass")
 #define CMD_REMOVECLASSES     (DIR_SECURE_ADMIN_CMDS "/removeclasses")
 #define CMD_REMOVERACE        (DIR_SECURE_ADMIN_CMDS "/removerace")

@@ -620,9 +620,9 @@ varargs int in_input(object ob){
     if(ob) globalob = ob;
     else globalob = previous_object();
     if(!(efun::query_charmode(globalob)) &&
-      !(globalob->GetProperty("was_charmode")) &&
-      !(globalob->GetCharmode())){
-         if(efun::in_input(globalob)) ret = 2;
+            !(globalob->GetProperty("was_charmode")) &&
+            !(globalob->GetCharmode())){
+        if(efun::in_input(globalob)) ret = 2;
     }
     return (ret ? 1 : 0);
 }
@@ -669,7 +669,7 @@ varargs void input_to(mixed fun, int flag, mixed args...){
         remove_charmode(player);
         was = 1;
 #endif
-    player->SetProperty("was_charmode", 1);
+        player->SetProperty("was_charmode", 1);
     }
     if(sizeof(gargs)){
         efun::input_to(gfun, gdelay, gargs...);

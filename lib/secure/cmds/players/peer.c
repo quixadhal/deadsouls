@@ -123,7 +123,7 @@ string DescribeLiving(mixed var) {
 }
 
 string GetHelp(){
-            return ("Syntax: peer <direction>\n\n"
+    return ("Syntax: peer <direction>\n\n"
             "Allows you to look into an adjacent room without actually "
             "entering it.  Note that light and doorways affect what you "
             "see.");

@@ -5,8 +5,6 @@
  *    Version: @(#) nominate.c 1.1@(#) Last modified: 96/10/21
  */
 
-
-
 #include <lib.h>
 #include "include/nominate.h"
 
@@ -17,14 +15,13 @@ static void create() {
     SetVerb("nominate");
     SetRules("STR");
     SetErrorMessage("Who would you like to nominate?");
-    SetHelp("Syntax: <nominate STR>\n"
-            "Nominates a candidate");
+    SetHelp("Syntax: nominate <STR>\n"
+            "Nominates a candidate for class voting.");
 }
 
 mixed can_nominate_str() {
     object env;
     mixed  err;
-
     if( !(env = environment(this_player())) ) return 0;
     err = env->CanNominate( this_player() );
     if( !err ) return "This doesn't seem the proper place for it.";

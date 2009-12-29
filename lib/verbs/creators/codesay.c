@@ -4,10 +4,9 @@
  *    codesay STR
  */
 
-
-
 #include <lib.h>
 #include <talk_type.h>
+#include <commands.h>
 #include "include/codesay.h"
 
 inherit LIB_VERB;
@@ -46,7 +45,7 @@ varargs mixed do_codesay_str(string str) {
         str = replace_string(str, "}", "}\n");
         write_file(filename,str,1);
         write_file(filename+"_rule","I",1);
-        load_object("/secure/cmds/creators/lsed")->cmd(filename+"_rule "+filename);
+        load_object(CMD_LSED)->cmd(filename+"_rule "+filename);
         write("You codesay: ");
         say(this_player()->GetCapName()+" codesays: ");
         tell_room(environment(this_player()),"\n"+
@@ -57,16 +56,14 @@ varargs mixed do_codesay_str(string str) {
 
 mixed do_codesay() { return do_codesay_str(); }
 
-string GetHelp(string str) {
-    return ("Syntax: <codesay MESSAGE>\n\n"
+string GetHelp() {
+    return ("Syntax: codesay <MESSAGE>\n\n"
             "Sends out a message that everyone in the room can see. "
             "This message will be stripped of normal punctuation so "
-            "that text that needs to be seen literally does not cause confusion. "
+            "that text that needs to be seen literally does not "
+            "cause confusion. "
             "If the message contains a semicolon, this command will attempt "
             "to format it in indented LPC style. "
-            "\n\n"
+            "\n"
             "See also: shout, speak, reply, tell, whisper");
 }
-
-
-

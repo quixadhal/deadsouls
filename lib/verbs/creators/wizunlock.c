@@ -1,5 +1,3 @@
-
-
 #include <lib.h>
 #include <daemons.h>
 #include <damage_types.h>
@@ -14,15 +12,16 @@ static void create() {
     SetVerb("wizunlock");
     SetRules("OBJ");
     SetErrorMessage("wizunlock what?");
-    SetHelp("Syntax: <wizunlock object>\n\n"
+    SetHelp("Syntax: wizunlock <object>\n\n"
             "Magically unlock a lockable thing without needing a key.\n"
-            "\nSee also: wizunlock");
+            "See also: wizunlock");
 }
 
-mixed can_wizunlock_obj(string str) { 
-    if(!creatorp(this_player())) return "This command is only available to builders and creators.";
-    else return 1;
-}
+    mixed can_wizunlock_obj(string str) { 
+        if(!creatorp(this_player()))
+            return "This command is only available to creators.";
+        else return 1;
+    }
 
 mixed do_wizunlock_obj(object ob){
     string name;

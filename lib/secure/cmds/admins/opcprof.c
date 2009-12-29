@@ -15,7 +15,7 @@ int cmd(string arg)
 
 string GetHelp(){
     return ("Syntax: opcprof\n\n"
-        "Puts a list of efuns and eoperators in /log/opcprof.out.*\n "
-        "See man: opcprof\n"
-        "See also: fdinfo, netstat, mstatus, cache, callouts, dumpallobj,");
+            "Puts a list of efuns and eoperators in /log/opcprof.out.*\n "
+            "See man: opcprof\n"
+            "See also: fdinfo, netstat, mstatus, cache, callouts, dumpallobj,");
 }

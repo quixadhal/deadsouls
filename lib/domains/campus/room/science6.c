@@ -25,8 +25,8 @@ void create() {
     SetLong("This is the secondary hallway in the LPC University Science Building. The hallway runs east from here. To the north is a sliding door. To the west is an elevator door.");
     SetClimate("indoors");
     SetItems( ([
-        ({ "door","sliding door" }) : "A strange, metallic sliding door.",
-    ]) );
+                ({ "door","sliding door" }) : "A strange, metallic sliding door.",
+                ]) );
     SetExits( ([
                 "south" : "/domains/campus/room/stairwell2a",
                 "east" : "/domains/campus/room/science5",

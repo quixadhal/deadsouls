@@ -16,7 +16,7 @@ inherit LIB_DAEMON;
     }
 
 string GetHelp(){
-            return ("Syntax: screenlock [on | off]\n\n"
+    return ("Syntax: screenlock [on | off]\n\n"
             "This command allows you to toggle whether your client is "
             "allowed to automatically change your screen size settings "
             "after the initial login negotiation.\n"

@@ -36,7 +36,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: language [LANGUAGE]\n\n"
+    return ("Syntax: language [LANGUAGE]\n\n"
             "This command reports which languages you speak and understand.\n"
             "If a language is specified and you know the language, it is "
             "set as your default speaking language.\n"

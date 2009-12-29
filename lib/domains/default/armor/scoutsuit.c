@@ -72,7 +72,7 @@ varargs mixed GetSuitHelp(mixed who, string where){
                 "situations for referral to the Negotiations Corps.%^RESET%^";
             who->eventPrint("You wear "+GetShort()+".");
             if(env) tell_room(env, who->GetName()+" wears "+
-              GetShort()+".", ({who}));
+                    GetShort()+".", ({who}));
             return 1;
         }
     }

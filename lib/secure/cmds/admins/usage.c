@@ -25,7 +25,7 @@ mixed cmd(string str) {
 
 string GetHelp() {
     return ("Syntax: usage [command [args]]\n\n"
-      "Quantifies the thinking the mud had to do and how "
-      "long it took to complete the command specified.\n"
-      "See also: man rusage");
+            "Quantifies the thinking the mud had to do and how "
+            "long it took to complete the command specified.\n"
+            "See also: man rusage");
 }

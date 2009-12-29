@@ -78,7 +78,7 @@ static mapping LevelTitles = ([
         18:({"the Praetor","the Praetrix"}),
         19:({"the Quaestor","the Quaestrix"}),
         20:({"the Caesar","the Caesara"}),
-]);
+        ]);
 
 static mapping QuestLevels = ([
         10:5,
@@ -710,24 +710,20 @@ string GetHomeRoom(string name){
     object dude;
     mapping tmpmap;
 
-    //tc("1", "red");
     if(!user_exists(name)) return 0;
-    //tc("2", "green");
-    
+
     dude = unguarded( (: find_player($(name)) :) );
     if(dude){
         ret = dude->GetParanoia("homeroom");
-        //tc("3", "blue");
     }
     else {
         override = 1;
         tmpmap = GetPlayerData(name, "Paranoia");
         ret = tmpmap["homeroom"];
     }
-    //tc("4", "white");
     return ret;
 }
-    
+
 static void UserUpdate(string name, int status){
     object ob = find_player(name);
     if(member_array(name, local_users()) != -1) status = 1;
@@ -786,7 +782,7 @@ int SelektUsers(int gather){
 
         //bot always get purged, and snoop logs tagged
         if((cands[user]["RealName"] == "John Smith" && 
-                cands[user]["Email"] == "me@here") ||
+                    cands[user]["Email"] == "me@here") ||
                 cands[user]["Email"] == "bot@delete.me"){
             reset_eval_cost();
             SNOOP_D->NotifyBot(user);

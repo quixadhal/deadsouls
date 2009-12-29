@@ -10,11 +10,11 @@ void create() {
     SetLong("Elevator shaft, basement");
     SetClimate("indoors");
     SetItems( ([ 
-      ]) );
+                ]) );
     SetExits( ([
-        "up" : "/domains/campus/room/shaft0",
-        "east" : "/domains/campus/room/sub_basement2.c",
-      ]) );
+                "up" : "/domains/campus/room/shaft0",
+                "east" : "/domains/campus/room/sub_basement2.c",
+                ]) );
     SetDoor("east", "/domains/campus/doors/eledoor3");
 }
 void init(){

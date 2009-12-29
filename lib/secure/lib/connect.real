@@ -153,14 +153,10 @@ static void InputName(string namen, string kill_me) {
     int toomany;
     name = namen;
 
-    //tc("anyterm 0");
     if(member_array(client_ip, anyterms) != -1){
-        //tc("anyterm 1", "green");
         if(telopt_user){
             int bar = sscanf(telopt_user, "%*d.%*d.%*d.%*d");
-            //tc("anyterm 2 "+telopt_user, "blue");
             if(bar == 4){
-                //tc("anyterm 3 "+telopt_user, "black");
                 client_ip = telopt_user;
                 anyterm = 1;
                 extra = " ["+my_ip+"]";
@@ -331,9 +327,7 @@ static void eventCreatePlayer(string cap) {
     if(directory_exists(tmpdir)){
         tmpfiles += get_dir(tmpdir);
     }
-    //tc("lcname: "+lcname);
     foreach(string tmpfile in tmpfiles){
-        //tc("tmpfile: "+tmpfile);
         if(!strsrch(tmpfile, lcname+".")){
             receive("\nThat name is taken. Please choose a new one.\n");
             input_to( (: InputName :), I_NOESC );
@@ -398,7 +392,6 @@ static void eventReEnterGame(string cap) {
             Player->SetTeloptIp(0);
         }
         else {
-            //tc("telopt_ip: "+telopt_user, "cyan");
             Player->SetTeloptIp(telopt_user);
         }
         if(creatorp(Player)) 
@@ -625,7 +618,6 @@ static void InputRace(string str) {
         return;
 
         case "pick":
-            //tc("pick: "+args);
             cmdPick(args);
         return;
 
@@ -682,7 +674,6 @@ static void cmdPick(string args) {
         return;
     }
     raza = args;
-    //tc("raza: "+args);
     if(!AUTO_WIZ){
         if(CLASS_SELECTION){
             eventSelectClass();

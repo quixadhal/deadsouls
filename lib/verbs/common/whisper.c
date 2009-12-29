@@ -17,16 +17,15 @@ static void create() {
     SetRules("to LIV", "in WRD", "in WRD to LIV", "to LIV STR",
             "to LIV in WRD STR", "in WRD to LIV STR");
     SetErrorMessage("Whisper to whom what?");
-    SetHelp("Syntax: <whisper to LIVING MESSAGE>\n"
-            "        <whisper to LIVING in LANGUAGE MESSAGE>\n"
-            "        <whisper in LANGUAGE to LIVING MESSAGE>\n\n"
+    SetHelp("Syntax: whisper to <LIVING> <MESSAGE>\n"
+            "        whisper to <LIVING> in <LANGUAGE> <MESSAGE>\n"
+            "        whisper in <LANGUAGE> to <LIVING> <MESSAGE>\n\n"
             "Privately sends a message to the targetted person in the "
             "language you specify with a small chance of being overheard.  "
             "If you fail to specify a language, your native language is "
-            "used.\n\n"
+            "used.\n"
             "See also: say, shout, speak, tell, yell");
 }
-
 
 mixed can_whisper_to_liv(object target) {
     return "What is it you are trying to whisper?";

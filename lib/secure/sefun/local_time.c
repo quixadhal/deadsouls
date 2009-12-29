@@ -40,8 +40,14 @@ string query_tz(){
     return tz;
 }
 
-mixed local_ctime(int i){
-    return ctime(i + ((TIME_D->GetOffset(query_tz()) ) * 3600));
+varargs mixed local_ctime(int i, string tzone){
+    int x, offset;
+    if(!tzone || !valid_timezone(tzone)) tzone = query_tz();
+    offset = TIME_D->GetOffset(tzone);
+    offset += EXTRA_TIME_OFFSET;
+    if(query_os_type() != "windows" ) x = offset * 3600;
+    else x = 0;
+    return ctime(i + x);
 }
 
 varargs mixed local_time(mixed val){

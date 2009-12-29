@@ -25,7 +25,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: charmode [on | off]\n\n"
+    return ("Syntax: charmode [on | off]\n\n"
             "Enables or disables 'character mode' for your terminal. "
             "Unless you are using a very basic mud client (such as "
         "a Linux telnet command) you should not enable this, since "

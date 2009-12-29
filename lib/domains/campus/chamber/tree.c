@@ -6,7 +6,6 @@ inherit LIB_CHAMBER;
 inherit LIB_CLIMB;
 
 varargs mixed ClimbMe(mixed args...){
-    //tc("args: "+identify(args));
     return 1;
 }
 
@@ -20,7 +19,7 @@ static void create() {
             "before the Virtual Campus, and looks like it will be around long "+
             "after, as well.");
     SetChamberInterior("You are among the sturdy branches of "+
-       "the large tree in University Square.");
+            "the large tree in University Square.");
     SetRace("tree");
     SetPacifist(1);
     SetPosition(POSITION_NULL);
@@ -47,17 +46,16 @@ void init(){
 
 varargs mixed eventClimb(object who, int type, string where){
     mixed ret;
-    //tc("type: "+type);
     switch(type){
-            case CLIMB_DOWN:
-                ret = eventDismount(who);
-                break;
-            case CLIMB_OUT:
-                ret = eventDismount(who);
-                break;
-            default :
-                ret = eventMount(who);
-                break;
+        case CLIMB_DOWN:
+            ret = eventDismount(who);
+            break;
+        case CLIMB_OUT:
+            ret = eventDismount(who);
+            break;
+        default :
+            ret = eventMount(who);
+            break;
     }
     return ret;
 }

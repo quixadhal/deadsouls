@@ -37,14 +37,12 @@ mixed eventTalkRespond(mixed args...){
     string cmd = "";
     string *punct = ({".",",","!","?",";"});
     if(sizeof(args) > 3) cmd = args[3];
-    //debug("args: "+identify(args));
     cmd = lower_case(cmd);
     if(sizeof(cmd) && member_array(last(cmd, 1), punct) != -1){
         cmd = truncate(cmd, 1);
     }
     //No commanding players plz
     if(interactive(GetShadowedObject())) return 0;
-    //debug("command: "+cmd);
     call_out( (: eventForce :), 1, cmd);
     return 1;
 }

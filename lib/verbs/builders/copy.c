@@ -16,8 +16,8 @@ static void create() {
     SetVerb("copy");
     SetRules("STR", "OBJ STR");
     SetErrorMessage("Copy what?");
-    SetHelp("Syntax: <copy [OBJ] [NAME]>\n"
-            "        <copy [FILENAME]\n\n"
+    SetHelp("Syntax: copy <OBJ> <NAME>\n"
+            "        copy <FILENAME>\n\n"
             "With a room's filename as an argument, this command "
             "copies everything about that room (except exits) into "
             "your current room.\n\n"

@@ -24,9 +24,6 @@ int eventCast(object who, int level) {
     int duration = intel + who->GetSkillLevel("conjuring");
     object mojo = new("/obj/light");
 
-    //debug("duration: "+duration);
-    //tc("duration: "+duration);
-
     duration += (who->GetLevel());
     duration *= 5;
     mojo->SetDuration(duration);

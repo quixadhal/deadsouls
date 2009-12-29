@@ -30,7 +30,7 @@ varargs int DoWear(object who, string where){
     who->AddSkillBonus("blade attack", (: CheckRing :) );
     who->AddSkillBonus("blade defense", (: CheckRing :) );
     who->eventPrint("You wear the ring and feel oddly dextrous..."+
-      "and somehow fancy.");
+            "and somehow fancy.");
     if(env) tell_room(env, who->GetName()+" wears "+GetShort()+".", ({who}));
     return 1;
 }

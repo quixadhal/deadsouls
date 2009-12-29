@@ -88,7 +88,7 @@ int cmd( string a )
 }
 
 string GetHelp(){
-            return ("Syntax: diff <file1> <file2>\n\n"
+    return ("Syntax: diff <file1> <file2>\n\n"
             "Reports the differences between two files.");
 }
 

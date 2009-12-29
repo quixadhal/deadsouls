@@ -27,8 +27,8 @@ mixed cmd(string chan) {
 
 string GetHelp(){
     return ("Syntax: chanremove <channel>\n\n"
-      "Submits to the intermud router a request to remove the "
-      "channel specified. If you do not own the channel, the "
-      "request will not be honored.\nSee also: "
-      "chanban, chanunban, chancreate");
+            "Submits to the intermud router a request to remove the "
+            "channel specified. If you do not own the channel, the "
+            "request will not be honored.\nSee also: "
+            "chanban, chanunban, chancreate");
 }

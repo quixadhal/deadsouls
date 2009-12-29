@@ -193,7 +193,7 @@ varargs mixed SetGrid(string arg_room, string coord, object player, int unset){
     if(!player) player = previous_object();
 
     if(!player->GetProperty("LastLocation") && 
-      base_name(player) != room) return 0;
+            base_name(player) != room) return 0;
 
     if(inherits(LIB_ROOM, previous_object())) global_manual = 1;
 
@@ -332,7 +332,7 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
         return 0;
     }
     if(!(last_str = player->GetProperty("LastLocation")) &&
-        player != ob){
+            player != ob){
         return 0;
     }
     if(!(last_str)) last_str = "";

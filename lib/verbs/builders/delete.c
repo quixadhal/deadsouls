@@ -14,9 +14,9 @@ static void create() {
     SetVerb("delete");
     SetRules("enter STR", "room STR", "enter STR", "exit STR", "OBJ", "OBJ from OBJ", "OBJ from here", "OBJ from room");
     SetErrorMessage("Delete what?");
-    SetHelp("Syntax: <delete exit DIRECTION>\n"
-            "        <delete OBJECT>\n"
-            "        <delete OBJECT from OBJECT>\n"
+    SetHelp("Syntax: delete exit <DIRECTION>\n"
+            "        delete <OBJECT>\n"
+            "        delete <OBJECT> from <OBJECT>\n"
             "  This command removes an object from the permanent "
             "inventory of another object. When only one object is specified, "
             "this command assumes you mean to remove an object from the "

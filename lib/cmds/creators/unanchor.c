@@ -5,7 +5,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(string str) {
     object target;
-    int arch = archp(this_player());
+    int arch = adminp(this_player());
     int ret, curr;
 
     if(!sizeof(str)) str = "me";
@@ -36,7 +36,7 @@ mixed cmd(string str) {
     }
     if(target != this_player()){ 
         tell_object(target, capitalize(this_player()->GetName())+
-        " unanchors you.");
+                " unanchors you.");
     }
     else str = "yourself";
     write("You unanchor "+str+".");

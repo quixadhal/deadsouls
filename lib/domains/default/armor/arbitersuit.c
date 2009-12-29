@@ -70,7 +70,7 @@ varargs mixed GetSuitHelp(mixed who, string where){
                 "become unavailable.%^RESET%^";
             who->eventPrint("You wear "+GetShort()+".");
             if(env) tell_room(env, who->GetName()+" wears "+
-              GetShort()+".", ({who}));
+                    GetShort()+".", ({who}));
             return 1;
         }
     }

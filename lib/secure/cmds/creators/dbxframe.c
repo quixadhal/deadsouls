@@ -40,5 +40,5 @@ int cmd(string str) {
 
 string GetHelp(){
     return "Syntax: dbxframe [who] <frame>\n\n"
-    "Some kind of thing.";
+        "Some kind of thing.";
 }

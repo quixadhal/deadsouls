@@ -23,5 +23,5 @@ mixed cmd(string str) {
 
 string GetHelp(){
     return "Syntax: dbxwhere [person]\n\n"
-    "Debugging thingy.\nSee also: dbxframe";
+        "Debugging thingy.\nSee also: dbxframe";
 }

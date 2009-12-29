@@ -2,8 +2,6 @@
  *  created by Rush@Dead Souls
  */
 
-
-
 #include <lib.h>
 #include "include/describe.h"
 
@@ -14,13 +12,12 @@ static void create() {
     SetVerb("describe");
     SetRules("LIV","STR");
     SetErrorMessage("Describe syntax: describe <message>");
-    SetHelp("Syntax: describe MESSAGE\n"
-            "\n"
+    SetHelp("Syntax: describe <MESSAGE>\n\n"
             "Provides a player with a description. You must include "
             "an instance of $N at least once in your description to "
             "denote your name. Example: If I typed 'describe $N is "
             "nondescript.', my description would be 'Rush is "
-            "nondescript.'\n");
+            "nondescript.'");
 }
 
 mixed can_describe_str(string str) {
@@ -35,6 +32,3 @@ mixed do_describe_str(string str) {
     write("Ok.");
     return 1;
 }
-
-
-

@@ -1,8 +1,8 @@
 /*    /verbs/common/shout.c
  *    from the Dead Souls  Object Library
  *    shout
- *    shout in WRD STR
- *    shout STR
+ *    shout 
+ *    let it all out
  *    created by Descartes of Borg 951119
  */
 
@@ -22,8 +22,8 @@ mixed can_shout() { return "Shout what?"; }
 
 mixed can_shout_str(string str) {
     string lang;
-
     if( !str ) return 0;
+    if(this_player()->GetGaggedType("local")) return 0;
     lang = this_player()->GetDefaultLanguage() || 
         this_player()->GetNativeLanguage();
     return can_shout_in_wrd_str(lang, str);
@@ -41,7 +41,6 @@ mixed do_shout() { return 1; }
 
 mixed do_shout_str(string str) {
     string lang;
-
     lang = this_player()->GetDefaultLanguage() || 
         this_player()->GetNativeLanguage();
     return do_shout_in_wrd_str(lang, str);
@@ -58,10 +57,10 @@ mixed do_shout_in_wrd_str(string lang, string str) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <shout MESSAGE>\n"
-            "        <shout in LANGUAGE MESSAGE>\n\n"
+    return ("Syntax: shout <MESSAGE>\n"
+            "        shout in <LANGUAGE> <MESSAGE>\n\n"
             "Sends a message to all players on " + mud_name() + ".  If you "
             "fail to specify a language, your native language is used.  "
-            "Abuse of shouting is a violation of " + mud_name() + " laws.\n\n"
+            "Abuse of shouting is a violation of " + mud_name() + " laws.\n"
             "See also: reply, say, speak, tell, whisper, yell");
 }

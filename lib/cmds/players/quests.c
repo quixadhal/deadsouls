@@ -37,6 +37,6 @@ mixed cmd(string str) {
 }
 
 string GetHelp(){
-            return ("Syntax: quests\n\n"
+    return ("Syntax: quests\n\n"
             "This command lists the quests you have completed.");
 }

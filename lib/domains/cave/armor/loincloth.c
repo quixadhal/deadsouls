@@ -24,9 +24,9 @@ static void create() {
                 "platinum" : random(5)+1,
                 ]) );
     SetInventory(([
-            "/domains/default/obj/vial_orange" : 1,
-            "/domains/town/obj/cavetroll_key" : 1,
-            ]));
+                "/domains/default/obj/vial_orange" : 1,
+                "/domains/town/obj/cavetroll_key" : 1,
+                ]));
     SetSize(S_LARGE);
 }
 

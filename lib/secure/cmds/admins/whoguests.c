@@ -25,7 +25,7 @@ int cmd(string str) {
 }
 
 string GetHelp(){
-            return ("Syntax: whoguests\n\n"
+    return ("Syntax: whoguests\n\n"
             "Lists all the guests allowed into the game when it is locked.\n"
             "See also: addguest, removeguest");
 }

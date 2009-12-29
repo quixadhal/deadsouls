@@ -969,7 +969,7 @@ int CanReceive(object ob){
 
 varargs void reset(int count){
     mixed *inv;
-    
+
     if(origin() == "driver") return;
 
     inv = deep_inventory(this_object());

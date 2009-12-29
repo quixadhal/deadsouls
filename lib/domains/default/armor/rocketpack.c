@@ -81,7 +81,6 @@ void heart_beat(){
             }
         }
     }
-
 }
 
 int boost(string str, int coasting){

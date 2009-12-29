@@ -197,7 +197,10 @@ varargs mixed GetInstances(string str, string where){
         string funex;
         object cle;
         if(grepp(val, str) && !strsrch(key,where)){
-            if(!sizeof(key) || catch(cle = load_object(key)) || !cle) continue;
+            if(!sizeof(key) || !unguarded( (: file_exists($(key)) :)) ||
+                    catch(cle = load_object(key)) || !cle){
+                continue;
+            }
             funex = function_exists(str, cle,1);
             if(funex && !grepp(cooked_list,funex+"\n")){
                 cooked_list += funex+"\n";

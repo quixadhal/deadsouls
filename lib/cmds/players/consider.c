@@ -116,7 +116,7 @@ string GetHelp() {
             "in combat. Gauges relative strengths, skills, weapons, "
             "armor, levels, health, and so on. The resulting comparison "
             "may not be very useful, because a change during combat (such "
-            "as the opponent changing weapons) or items of unusual class "
+        "as the opponent changing weapons) or items of unusual class "
             "or protection (such as magical armor) may not be taken into "
             "account.");
 }

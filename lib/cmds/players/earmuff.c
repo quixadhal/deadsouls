@@ -17,7 +17,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: earmuff\n"
+    return ("Syntax: earmuff\n"
             "        earmuff <name>\n"
             "        earmuff @<mud>\n\n"
             "This command allows you to ignore channel messages from the name specified.\n"

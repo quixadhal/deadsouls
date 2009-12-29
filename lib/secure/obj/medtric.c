@@ -320,7 +320,7 @@ int infect(string str){
     if(!str){
         write("Please indicate whom to infect, and with what. Example:");
         write("infect doofus cold");
-        write("Current valid diseases: cold, flu, fleas, lice");
+        write("Current valid diseases: cold, flu, fleas, lice, h1n1");
         return 1;
     }
     if(sscanf(str,"%s %s",whom,what)) { 
@@ -348,6 +348,7 @@ int infect(string str){
     else if(what == "fleas") disease  = "/domains/town/obj/fleas";
     else if(what == "lice") disease  = "/domains/town/obj/lice";
     else if(what == "rage") disease  = "/domains/town/obj/rage";
+    else if(what == "h1n1") disease  = "/domains/town/obj/h1n1";
     else if(what != "") {
         write("That isn't a valid disease.");
         return 1;

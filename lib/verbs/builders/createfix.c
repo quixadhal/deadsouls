@@ -10,7 +10,7 @@ static void create() {
     SetVerb("createfix");
     SetRules("OBJ", "here");
     SetErrorMessage("createfix what?");
-    SetHelp("Syntax: <createfix OBJ>\n\n"
+    SetHelp("Syntax: createfix <OBJ>\n\n"
             "If you have write permissions to the file of the object "
             "specified, this command adds a ::create call. Lacking "
             "this call makes many objects break or behave unpredictably."

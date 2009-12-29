@@ -28,14 +28,14 @@ varargs int CheckOrc(object who, mixed where){
     object env = environment(who);
     if( race == "orc"  || race == "half-orc"){
         who->eventPrint("You can almost feel the power of the bear as you "+
-          "wear its skull.");
+                "wear its skull.");
         if(env) tell_room(env, who->GetName()+" wears "+
-          GetShort()+".", ({who}));
+                GetShort()+".", ({who}));
         return 1;
     }
     else {
         who->eventPrint("The helmet appears designed for orcish anatomy. "+
-          "It does not fit you.");
+                "It does not fit you.");
         return 0;
     }
 }

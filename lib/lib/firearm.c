@@ -133,10 +133,16 @@ int CanRelease(object ob){
     return 1;
 }
 
-mixed eventShoot(object ob, mixed target){
+varargs mixed eventShoot(object ob, mixed target, string dir, string whom){
     object cible;
     object shell;
     object *obs;
+
+    if(!target || dir){
+        write("You can't shoot that way with this weapon.");
+        return 1;
+    }
+
     if(objectp(target)){
         cible = target;
     }

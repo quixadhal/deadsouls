@@ -7,7 +7,6 @@ object car, shaft;
 string button_id;
 
 int openDoor(object who) {
-    tc("woo "+identify(this_object()));
     if(!car) return 0;
     if(!who) who = this_player();
     send_messages("press", "$agent_name $agent_verb the button.",

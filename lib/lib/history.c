@@ -127,10 +127,8 @@ static string eventHistory(string str){
 
 static string Push(string cmd){
     int j, crunch;
-    //tc("Push: "+cmd);
     CommandNumber = sizeof(History);
     if(CommandNumber && History[CommandNumber-1] == cmd){
-        //tc(CommandNumber+": "+cmd, "red");
         return cmd;
     }
     if(member_array(cmd, values(History)) != -1){
@@ -143,7 +141,6 @@ static string Push(string cmd){
     }
     if(crunch){
         mapping newmap = ([]);
-        //tc("crunch");
         j = 0;
         for(int i = 0; i < CommandNumber; i++){
             if(History[i]){
@@ -153,7 +150,6 @@ static string Push(string cmd){
         }
         History = newmap;
         CommandNumber = sizeof(History);
-        //tc(CommandNumber+": "+cmd, "green");
         return cmd;
     }
     History[CommandNumber] = cmd;
@@ -165,7 +161,6 @@ static string Push(string cmd){
         History = newmap;
     }
     CommandNumber = (sizeof(History) - 1);
-    //tc(CommandNumber+": "+cmd, "blue");
     return cmd;
 }
 

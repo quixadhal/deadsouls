@@ -138,8 +138,6 @@ static int ReceiveChars(string str){
         case 31 : this_object()->rCtrl("31"); break;
     }
 
-    //debug_message("esc char: "+c);
-
     if(!this_object()){
         // Probably a warmboot or userload
         return 0;

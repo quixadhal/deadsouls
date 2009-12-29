@@ -25,7 +25,7 @@ int eventDematerialize(){
     tell_room(env,what+" fades away.", ({ owner }));
     if(owner){
         tell_object(owner,"%^BOLD%^%^CYAN%^Your magical glow fades away."+
-          "%^RESET%^");
+                "%^RESET%^");
     }
     ::eventDestruct();
     return 1;
@@ -50,7 +50,6 @@ int eventDeteriorate(int type){
 }
 
 int SetDuration(int i){
-    //tc("i: "+i);
     Duration = abs(i);
     return Duration;
 }

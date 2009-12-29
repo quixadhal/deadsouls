@@ -4,18 +4,17 @@
 
 inherit LIB_VERB;
 
-static void create()
-{
+static void create(){
     verb::create();
     SetVerb("learn");
     SetRules("","STR from LIV","to STR from LIV");
-    SetErrorMessage("Syntax: learn <%^BOLD%^%^CYAN%^ability%^RESET%^> to (%^BOLD%^%^ORANGE%^player%^RESET%^)");
-    SetHelp("Syntax: learn <%^BOLD%^%^CYAN%^ability%^RESET%^> to (%^BOLD%^%^ORANGE%^player%^RESET%^)\n"
-            "This command allows you to learn from another player an ability, spell, or skill.\n\n");
+    SetErrorMessage("Syntax: learn <ability> from <person>");
+    SetHelp("Syntax: learn <ability> from <person>\n\n"
+            "This command allows you to learn from another person "
+            "an ability, spell, or skill.\nSee also: teach");
 }
 
-mixed can_learn_str_from_liv(string str, object ob)
-{
+mixed can_learn_str_from_liv(string str, object ob){
     int pos = this_player()->GetPosition();
     if( this_player()->GetParalyzed() ) {
         return "You cannot move!";
@@ -31,9 +30,8 @@ mixed can_learn_to_str_from_liv(string str, object ob){
     return can_learn_str_from_liv(str, ob);
 }
 
-mixed can_learn()
-{
-    return "Syntax: learn <%^BOLD%^%^CYAN%^ability%^RESET%^> from (%^BOLD%^%^ORANGE%^player%^RESET%^)\n";
+mixed can_learn(){
+    return "Syntax: learn <%^BOLD%^%^CYAN%^ability%^RESET%^> from <%^BOLD%^%^ORANGE%^person%^RESET%^>\n";
 }
 
 mixed do_learn_str_from_liv(string spell, object target){

@@ -191,7 +191,7 @@ int answers_to(string name, object what);
 varargs void add_event(string source, string ob, string fun, mixed *args, int when, int repeat);
 varargs void remove_event(int i);
 int update(string str);
-mixed local_ctime(int i);
+varargs mixed local_ctime(int i, string tzone);
 int numericp(mixed arg);
 int basic_punctuationp(mixed arg);
 mixed mapping_member(mapping Map, string sub);

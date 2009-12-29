@@ -110,7 +110,7 @@ mixed cmd(string args) {
 string GetKeyName() { return PlayerName; }
 
 string GetHelp() {
-            return ("Syntax: encre <person>\n\n"
+    return ("Syntax: encre <person>\n\n"
             "Makes the target a creator. If the target is not "
             "logged in, they will be made a creator when "
             "they next log in.\n"

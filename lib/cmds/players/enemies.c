@@ -29,7 +29,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: enemies\n\n"
+    return ("Syntax: enemies\n\n"
             "This command reports with whom you're not getting along.");
 }
 

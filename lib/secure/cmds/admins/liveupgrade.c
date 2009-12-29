@@ -224,7 +224,7 @@ mixed cmd(string str) {
         object nlob;
         if(file_exists(SECRETS_H)){
             catch( cp(SECRETS_H, "/secure/save/backup/secrets_" + 
-              imc2_mud_name() + "." + time() + ".bak") );
+                        imc2_mud_name() + "." + time() + ".bak") );
         }
         if(file_exists(secs)) catch( rm(secs) );
         nlu = upgrades_files+"/0^0secure0^0cmds0^0admins0^0liveupgrade.c";

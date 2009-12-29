@@ -14,7 +14,7 @@ static void create() {
     SetVerb("reload");
     SetRules("OBJ", "STR OBJ", "STR here", "here", "every STR");
     SetErrorMessage("reload what?");
-    SetHelp("Syntax: <reload OBJ>, <reload every OBJ>\n\n"
+    SetHelp("Syntax: reload [every] <OBJ>\n\n"
             "This command loads into memory the file of the object "
             "you specify, and replaces the current copy with a new "
             "copy. If you change something about a sword you are "

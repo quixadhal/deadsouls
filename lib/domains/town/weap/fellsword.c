@@ -12,7 +12,7 @@ static void create() {
     SetShort("The Fell Sword");
     SetLong("An elvish sword of great antiquity and tremendous power.");
     SetUnique(1);
-    SetMass(300);
+    SetMass(100);
     SetBaseCost("silver", 5000);
     SetVendorType(VT_WEAPON);
     SetClass(40);

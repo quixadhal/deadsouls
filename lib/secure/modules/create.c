@@ -557,7 +557,7 @@ mixed eventModify(object ob, string str){
     else if(grepp(inheritance,"item") && member_array(out,item_arr) != -1) invalid = 0;
 
     if(invalid) {
-        write("Invalid Property.");
+        write("Invalid property.");
         return 1;
     }
     if(out == "SetProtection"){

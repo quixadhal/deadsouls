@@ -14,17 +14,17 @@
 
 inherit LIB_VERB;
 
-static void create() {
+static void create(){
     verb::create();
     SetVerb("fly");
     SetRules("", "STR", "into STR");
     SetErrorMessage("Fly in which direction?");
-    SetHelp("Syntax: <fly DIRECTION>\n"
-            "        <fly into PLACE>\n\n"
+    SetHelp("Syntax: fly [DIRECTION]\n"
+            "        fly into <PLACE>\n\n"
             "Moves you towards the direction you specify, or into the place "
             "you specify.  The command \"fly into\" is synonymous with the "
-            "\"enter\" command.\n\n"  
-            "See also: climb, enter, go, jump");
+            "\"enter\" command.\n"  
+            "See also: climb, enter, go, jump, swim");
 }
 
 int StaminaCost(){
@@ -38,25 +38,21 @@ int StaminaCost(){
     return cost;
 }
 
-mixed can_fly() {
+mixed can_fly(){
     object env = environment(this_player());
-
-    if( !env ) {
+    if( !env ){
         return "You are nowhere to begin with!";
     }
-
     if(this_player()->GetPosition() == POSITION_FLYING) 
         return "You are already flying.";
-
     if(env->CanFly(this_player())) return this_player()->CanFly();
-
     return "You can't fly here.";
 }
 
-mixed can_fly_str(string str) {
+mixed can_fly_str(string str){
     object env = environment(this_player());
     int envpos = env->GetPosition();
-    if( !env ) {
+    if( !env ){
         return "You are nowhere.";
     }
     if( this_player()->GetStaminaPoints() < 15 ){
@@ -73,10 +69,10 @@ mixed can_fly_str(string str) {
     return 0;
 }
 
-mixed can_fly_into_str(string str) {
+mixed can_fly_into_str(string str){
     object env = environment(this_player());
     int envpos = env->GetPosition();
-    if( !env ) {
+    if( !env ){
         return "You are nowhere.";
     }
     if( this_player()->GetStaminaPoints() < 3 )
@@ -89,20 +85,19 @@ mixed can_fly_into_str(string str) {
             envpos != POSITION_FLYING){
         return "You are not flying.";
     }
-
     else return 0;
 }
 
-mixed do_fly() {
+mixed do_fly(){
     return this_player()->eventFly();
 }
 
-mixed do_fly_str(string str) {
+mixed do_fly_str(string str){
     this_player()->AddStaminaPoints(-StaminaCost());
     return environment(this_player())->eventGo(this_player(), str);
 }
 
-mixed do_fly_into_str(string str) {
+mixed do_fly_into_str(string str){
     this_player()->AddStaminaPoints(-StaminaCost());
     return environment(this_player())->eventEnter(this_player(), str);
 }

@@ -24,6 +24,6 @@ int cmd(string str) {
 
 string GetHelp(){
     return ("Syntax: whowatched name\n"
-      "        whowatched site\n\n"
-      "Lists the sites or names watched.");
+            "        whowatched site\n\n"
+            "Lists the sites or names watched.");
 }

@@ -20,7 +20,7 @@ int cmd(string str) {
 
     if(!str && archp(previous_object())) {
         mp = EVENTS_D->GetEvents();
-        i = sizeof(obs = keys(mp));
+        i = sizeof(obs = sort_array(keys(mp),-1));
         message("info", "The following events are pending:", this_player());
         while(i--) {
             l=atoi(""+obs[i]);

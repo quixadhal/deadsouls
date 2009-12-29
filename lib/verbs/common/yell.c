@@ -6,8 +6,6 @@
  *    created by Descartes of Borg 951119
  */
 
-
-
 #include <lib.h>
 #include <talk_type.h>
 #include "include/yell.h"
@@ -54,9 +52,9 @@ mixed do_yell_in_wrd_str(string lang, string str) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <yell MESSAGE>\n"
-            "        <yell in LANGUAGE MESSAGE>\n\n"
-            "Sends a message to the area around you.  If you fail to "
-            "specify a language, your native language is used.\n\n"
+    return ("Syntax: yell <MESSAGE>\n"
+            "        yell in <LANGUAGE> <MESSAGE>\n\n"
+            "Sends a message to the area around you. If you fail to "
+            "specify a language, your native language is used.\n"
             "See also: reply, say, shout, speak, tell, whisper");
 }

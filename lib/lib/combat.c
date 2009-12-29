@@ -438,20 +438,20 @@ int CanWeapon(object target, string type, int hands, int num){
     if(hands > 1){  
         if(GetSkillLevel("multi-hand")){
             chance = (chance/2) + 
-                (GetSkillLevel("multi-hand")/75)*(chance/2);
+                (GetSkillLevel("multi-hand")/25)*(chance/2);
         }
         else { /* If you are really strong you can use multihand a bit */
-            chance *= GetStatLevel("strength")/300;
+            chance *= GetStatLevel("strength")/100;
             div += (hands-1);
         }
     }
     if(num > 1){
         if(GetSkillLevel("multi-weapon")){
             chance = (chance/2) + 
-                (GetSkillLevel("multi-weapon")/75)*(chance/2);
+                (GetSkillLevel("multi-weapon")/25)*(chance/2);
         }    
         else { /* If you are really coordinated you can use multiweap a bit */
-            chance *= GetStatLevel("coordination")/300;
+            chance *= GetStatLevel("coordination")/100;
             div += (num-1);
         }
     }

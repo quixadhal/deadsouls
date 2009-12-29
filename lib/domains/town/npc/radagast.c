@@ -37,7 +37,7 @@ void init() {
 int eventHelp(object who, string unused){
     ::eventHelp(who);
     this_object()->eventForce("speak Please note I only understand "+
-      "English. If you're speaking to me in another language, I will "+
-      "not understand!");
+            "English. If you're speaking to me in another language, I will "+
+            "not understand!");
     return 1;
 }

@@ -12,9 +12,9 @@ static void create() {
     SetVerb("dest");
     SetRules("OBS");
     SetErrorMessage("dest what?");
-    SetHelp("Syntax: <dest OBJ>\n\n"
+    SetHelp("Syntax: dest <OBJ>\n\n"
             "Destroy an object.\n"
-            "\nSee also: zap");
+            "See also: zap");
 }
 
 mixed can_dest_obj(string str){ 
@@ -30,7 +30,7 @@ mixed can_dest_str(string str){
 }
 
 mixed do_dest_obj(object ob){
-    string name;
+    string name, kn, msg;
     if(base_name(ob) == LIB_DUMMY) {
         write(capitalize(ob->GetShort())+" isn't a normal destable item. It remains in place.");
         return 1;
@@ -45,11 +45,23 @@ mixed do_dest_obj(object ob){
         return 1;
     }
     if(!living(ob)) name = ob->GetShort();
-    else name = ob->GetName();
-    write("You dest "+name+".");
-    say( this_player()->GetMessage( "dest", ob ) );
+    else {
+        name = ob->GetName();
+        if(interactive(ob)) kn = ob->GetKeyName();
+    }
+    if(kn){
+        catch( ob->save_player(kn) );
+    }
+    msg = this_player()->GetMessage( "dest", ob );
     ob->eventDestruct();
     if(ob) destruct(ob);
+    if(!ob){
+        write("You dest "+name+".");
+        say(msg);
+    }
+    else {
+        write("The dest fails.");
+    }
     return 1;
 }
 

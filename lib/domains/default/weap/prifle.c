@@ -53,8 +53,6 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
     env = environment(killer);
     if(target) patsy = target->GetName();
 
-    //tc("who: "+identify(who));
-
     if(creatorp(who)){
         cache = 50;
         fuel = 800;
@@ -74,7 +72,7 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
         write("The rifle clicks.");
         say(name+"'s rifle emits a click.");
         if(room) room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-            "Power cache too low.", "poleepkwa");
+                "Power cache too low.", "poleepkwa");
         return 1;
     }
 
@@ -83,7 +81,7 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
         write("The rifle emits a harsh buzzing noise.");
         say(name+"'s rifle emits a harsh buzzing noise.");
         if(room) room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-            "Operator essence too low.", "poleepkwa");
+                "Operator essence too low.", "poleepkwa");
         return 1;
     }
 
@@ -103,7 +101,7 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
         }
         write("You fire your plasma rifle "+dir+"!");
         tell_room(env, name+" fires "+possessive(killer)+
-        " plasma rifle "+dir+"!", ({killer}));
+                " plasma rifle "+dir+"!", ({killer}));
         bolt->SetOwner(who);
         bolt->SetDamage(dam);
         bolt->eventMove(env);
@@ -113,12 +111,12 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
         cache = 0;
         return 1;
     }
-        
+
     write("You blast "+patsy+" with your plasma rifle!");
     tell_room(env, name+" blasts "+patsy+" with "+possessive(killer)+
-      " plasma rifle!", ({killer, target}));
+            " plasma rifle!", ({killer, target}));
     target->eventPrint(name+" blasts you with "+possessive(killer)+
-      " plasma rifle!");
+            " plasma rifle!");
 
     dam = cache + random(50);
     cache = 0;
@@ -127,12 +125,12 @@ varargs mixed eventShoot(object who, mixed target, string dir, string whom){
     target->eventReceiveDamage(killer, HEAT, dam);
     killer->AddMagicPoints(-50);
     target->AddEnemy(killer);
-    
+
     Prey = ([ "ob" : target, "name" : patsy, "room" : environment(target),
-      "player" : userp(target) ]);
+            "player" : userp(target) ]);
 
     if(room) room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-        "New prey being tracked.", "poleepkwa");
+            "New prey being tracked.", "poleepkwa");
 
     return 1;
 }
@@ -143,8 +141,8 @@ void heart_beat(){
     object env = environment();
     object room = room_environment();
     if(active && !GetWorn()){
-         if(env) tell_room(env, "The "+remove_article(GetShort())+
-            " whines and clicks off.");
+        if(env) tell_room(env, "The "+remove_article(GetShort())+
+                " whines and clicks off.");
         active = 0;
     }
     else if(active){
@@ -153,7 +151,7 @@ void heart_beat(){
             active = 0;
             if(environment(env)){
                 tell_room(environment(env), env->GetName()+"'s "+
-                "plasma rifle whines and clicks off.", ({env}));
+                        "plasma rifle whines and clicks off.", ({env}));
                 env->eventPrint("Your plasma rifle whines and clicks off.");
             }
         }
@@ -172,23 +170,23 @@ void heart_beat(){
                 Prey["lost"] = 0;
                 if(room){
                     room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-                      "Contact with prey re-established.", "poleepkwa");
+                            "Contact with prey re-established.", "poleepkwa");
                 }
                 return;
             }
             else if(!Prey["player"]) Prey = ([]);
             if(room && !Prey["lost"]){
                 room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-                    "Contact with prey lost.", "poleepkwa");
+                        "Contact with prey lost.", "poleepkwa");
                 Prey["lost"] = 1;
             }
-        return;
+            return;
         }
         penv = room_environment(Prey["ob"]);
         menv = room_environment(this_object());
         if(Prey["ob"] && (!Prey["room"] || penv != Prey["room"])){
             if(room) room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-              "Prey on the move.", "poleepkwa");
+                    "Prey on the move.", "poleepkwa");
             Prey["room"] = penv;
             notify = 1;
         }
@@ -203,14 +201,13 @@ void heart_beat(){
             i = sscanf(mycords, "%d,%d,%*s", x1, y1);
             j = sscanf(theircords, "%d,%d,%*s", x2, y2);
             if(i < 2 || j < 2){
-                //tc("lol");
                 return; 
             }
             bearing = bearing(x2, y2, x1, y1, 1);
             if(bearing != -1) str = "Prey's bearing currently: "+bearing;
             else str = "Prey is in the immediate environment.";
             room->eventHearTalk(this_object(),0,TALK_LOCAL,"say",
-              str, "poleepkwa");
+                    str, "poleepkwa");
         }
     }
 }
@@ -220,7 +217,7 @@ void init(){
     ::init();
     if(active && !GetWorn()){
         if(env) tell_room(env, "The "+remove_article(GetShort())+
-            " whines and clicks off.");
+                " whines and clicks off.");
         active = 0;
     }
 }
@@ -236,7 +233,7 @@ varargs mixed DoWield(object who, mixed where){
     else extra = ".";
     who->eventPrint("You wield "+GetShort()+extra);
     if(env) tell_room(env, who->GetName()+" wields "+
-       GetShort()+extra, ({who}));
+            GetShort()+extra, ({who}));
     return 1;
 }
 
@@ -246,7 +243,7 @@ mixed eventUnequip(object who){
     if(ret && active){
         who->eventPrint("The rifle whines and clicks off.");
         if(env) tell_room(env, who->GetName()+"'s rifle "+
-            "whines and clicks off.", ({who}));
+                "whines and clicks off.", ({who}));
         active = 0;
     }
     return ret;

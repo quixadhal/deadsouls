@@ -21,8 +21,8 @@ void create(){
     SetAdjectives( ({"military","pineapple"}) );
     SetShort("a hand grenade");
     SetLong("This is an olive-green military issue hand grenade. It is about the "+
-      "size of an apple, and its round exterior is made of smooth metal. The "+
-      "grenade's fuse consists of a short metal lever and a round pull-pin. ");
+            "size of an apple, and its round exterior is made of smooth metal. The "+
+            "grenade's fuse consists of a short metal lever and a round pull-pin. ");
     SetMass(20);
     SetDollarCost(10);
     SetVendorType(VT_WEAPON);
@@ -69,9 +69,9 @@ mixed eventPull(object who, string target) {
         new("/domains/"+domain+"/obj/lever")->eventMove(this_player());
         SetShort("a live hand grenade");
         SetLong("This is an olive-green military issue hand grenade. It is about the "+
-          "size of an apple, and its round exterior is made of smooth metal. The pin and "+
-          "spoon are missing from the fuse mechanism, indicating the grenade is live "+
-          "and will detonate very soon.");
+                "size of an apple, and its round exterior is made of smooth metal. The pin and "+
+                "spoon are missing from the fuse mechanism, indicating the grenade is live "+
+                "and will detonate very soon.");
         AddItem(({"lever","metal lever"}),"The grenade is armed. The fuse lever is no longer on the grenade.");
         AddItem(({"pull pin","pull-pin","pin"}),"The grenade is armed. There is no pin in the fuse.");
         armed = 1;
@@ -105,7 +105,7 @@ int detonate(){
         stuffs=ob->GetLimbs();
         tell_object(ob, "\nKABOOM! You are torn to pieces by your hand grenade!\n");
         tell_room(environment(ob), "\nKABOOM! "+ob->GetName()+" is torn to pieces by "+
-          possessive(ob)+" hand grenade!\n",ob);
+                possessive(ob)+" hand grenade!\n",ob);
         detonated=2;
         foreach(string limb in stuffs){
             if(limb != "head" && limb != "torso" && limb != "neck") ob->RemoveLimb(limb,this_object());

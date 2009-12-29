@@ -43,7 +43,10 @@ mixed cmd(string str) {
         return 1;
     }
     mud = 0;
-    if((maxi=sizeof(words = explode(str, "@"))) > 1){
+    words = explode(str, " ");
+    if(sizeof(words)) who = convert_name(words[0]);
+    maxi = sizeof(words = explode(str, "@"));
+    if(maxi > 1 && !find_player(who)){
         string tmpmsg, tmpmud;
         who = convert_name(words[0]);
         if(maxi > 2) words[1] = implode(words[1..maxi-1], "@");
@@ -210,7 +213,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp(){
-            return ("Syntax: tell <player> <message>\n"
+    return ("Syntax: tell <player> <message>\n"
             "        tell <player>@<mud> <message>\n\n"
             "Sends the message to the player named either on this mud if no "
             "mud is specified, or to the player named on another mud when "

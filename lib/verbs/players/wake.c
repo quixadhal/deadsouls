@@ -2,30 +2,27 @@
 
 inherit LIB_VERB;
 
-static void create() {
+static void create(){
     verb::create();
     SetVerb("wake");
     SetRules("");
     SetErrorMessage("Wake?");
-    SetSynonyms(({"wake up","awaken"}));
+    SetSynonyms(({"wake up","awaken","unsleep"}));
     SetHelp("Syntax: wake\n"
             "If asleep, you become less so.");
 }
 
-mixed can_wake() {
-
+mixed can_wake(){
     if( this_player()->GetAlcohol() > 70 ) {
         return "You are too drunk to wake right now.";
     }
-
     if(this_player()->GetSleeping() < 1) {
         return "You are already awake.";
     }
-
     return 1;
 }
 
-mixed do_wake() {
+mixed do_wake(){
     if(creatorp(this_player())){
         this_player()->SetSleeping(0);
         tell_player(this_player(),"You rouse from your slumber.");

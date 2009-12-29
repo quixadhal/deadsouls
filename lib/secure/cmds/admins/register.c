@@ -62,13 +62,13 @@ void abort() {
 
 string GetHelp(){
     return "Syntax: register <site>\n\n"
-    "Makes a given site needs to register their characters with "
-    "law before being able to play the mud.  A reason must be given "
-    "and it must be good.  In general, only law should be using "
-    "this command.  And if you are not law, you better mail law. "
-    "This command only works with numeric addresses, ie:\n"
-    "    register 134.181.*                ok\n"
-    "    register 134.181.1.12             ok\n"
-    "    register orlith.bates.edu         BAD\n"
-    "See also: unbanish, whobanished, whoregistered, whowatched";
+        "Makes a given site needs to register their characters with "
+        "law before being able to play the mud.  A reason must be given "
+        "and it must be good.  In general, only law should be using "
+        "this command.  And if you are not law, you better mail law. "
+        "This command only works with numeric addresses, ie:\n"
+        "    register 134.181.*                ok\n"
+        "    register 134.181.1.12             ok\n"
+        "    register orlith.bates.edu         BAD\n"
+        "See also: unbanish, whobanished, whoregistered, whowatched";
 }

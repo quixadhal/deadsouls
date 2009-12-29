@@ -9,15 +9,15 @@ static void create() {
     SetVerb("target");
     SetRules("LVS", "only LVS","LVS only");
     SetErrorMessage("Target whom?");
-    SetHelp("Syntax: <target LIVING>\n"
-            "        <target all of LIVING>\n"
-            "        <target all>\n\n"
+    SetHelp("Syntax: target <LIVING>\n"
+            "        target all of <LIVING>\n"
+            "        target <all>\n\n"
             "This command initiates exclusive combat with a living "
             "being or group of living beings using any wielded weapons "
             "or your bare hands.  Anyone else in the room at the time "
             "you issue this command will be ignored by you, even if "
-            "they attack you. \n\n"
-            "See also: attack, wimpy, ignore");
+            "they attack you. \n"
+            "See also: attack, wimpy, ignore, attack");
 }
 
 mixed can_target_liv(object target) {

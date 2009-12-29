@@ -115,7 +115,7 @@ int eventMoveFollowers(object dest){
         int pos = ob->GetPosition();
         follower = Followers[ob];
         if(ob->GetSleeping() || ob->GetParalyzed() || pos & badpos
-          || this_object()->GetInvis() ){
+                || this_object()->GetInvis() ){
             eventEvade(ob);
             RemoveFollower(ob);
             continue;

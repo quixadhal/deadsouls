@@ -1,15 +1,16 @@
 HTTP/1.1 200 OK
-Date: Thu, 26 Nov 2009 20:30:58 GMT
+Date: Mon, 28 Dec 2009 19:36:17 GMT
 Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.3 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
-Last-Modified: Tue, 24 Nov 2009 03:46:42 GMT
-ETag: "37a35c-1cd43-47915ca4a8c80"
+Last-Modified: Mon, 30 Nov 2009 16:11:00 GMT
+ETag: "351665-1cede-47998e329cd00"
 Accept-Ranges: bytes
-Content-Length: 118083
+Content-Length: 118494
 Connection: close
 Content-Type: text/plain
 
----- 2.11a23 (unreleased) ---
+---- 2.12 (unreleased) ---
 - Driver: added Kalinash's fix for Solaris on 64 bit SPARC.
+- Driver: added Kalinash's fix for BSD math.
 - Added commands: anchor, unanchor
 - Note on anchoring: it is intentional that admins can move around
   if they wish while anchored, but creators cannot.
@@ -22,9 +23,17 @@ Content-Type: text/plain
   a write() or a message() or whatever crazy thing occurs to people
   in the middle of the night in 1994.
 - The "boards" command now indicates the location of the boards listed.
+- Admins can now use the gag command to prevent a user from using channels.
+- Fixed a password retrieval problem in ftp and hftp. 
+  NOTE: Some newer ftp clients default to epsv when negotiating passive
+  ftp mode. This breaks hftp. If you're having weird problems using
+  passive mode and hftp, then right after logging into hftp, type:
+  epsv off
+  passive on
+  bin
 
 ---- 2.11a22 ---
-- Released 2009-11-1
+- Released 2009-11-01
 - Removed unnecessary casts.
 - It's possible to peer into virtual rooms now.
 - Added a sample ranged weapon: /domains/default/armor/pcannon.c

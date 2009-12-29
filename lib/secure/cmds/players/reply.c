@@ -31,7 +31,7 @@ int cmd(string str) {
 }
 
 string GetHelp(){
-            return ("Syntax: reply [message]\n\n"
+    return ("Syntax: reply [message]\n\n"
             "With a message, it replies to the person who last told or replied "
             "to you.  Without a message, it shows who the current object of "
             "your reply would be.\nSee also: "

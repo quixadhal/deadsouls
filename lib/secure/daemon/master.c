@@ -1100,7 +1100,6 @@ int GetPerfOK(){
 }
 
 string GetMudName(){
-    //debug_message("MudName: "+MudName);
     return MudName;
 }
 
@@ -1108,7 +1107,6 @@ int SetMudName(string name){
     if(!valid_apply(({ "SECURE" }))){
         return 0;
     }
-    //debug_message("setting MudName to: "+name);
     MudName = name;
     return 1;
 }
@@ -1133,17 +1131,12 @@ int ReadName(){
     int port = query_host_port();
     MudName = "DeadSoulsNew";
     if(!ENABLE_INSTANCES){
-          //  || (find_object(INSTANCES_D) &&
-          //  INSTANCES_D->GetMyInstanceName() == "global")){
-        //debug("The mud believes it is a global instance.");
         mconfig = "/secure/cfg/mudos.cfg";
     }
     else {
         mconfig = "/secure/cfg/mudos."+port+".cfg";
-        //debug("The mud is operating as a non-global instance: "+mconfig);
     }
     line_string = read_file(mconfig);
-    //debug("sizeof line_string: "+sizeof(line_string));
     if(!sizeof(line_string)){
         return 0;
     }
@@ -1157,10 +1150,8 @@ int ReadName(){
                 return 0;
             }
             MudName = tmp;
-            //debug("The mud thinks its name is: "+MudName);
             return 1;
         }
     }
-    //debug("The mud thinks its name is: "+MudName);
     return 0;
 }

@@ -267,15 +267,9 @@ static string map_info(object ob, string formatString) {
 
 static private string query_people_time() {
     string tzone;
-    int x, offset;
-
     if(this_player()) tzone = this_player()->GetProperty("timezone");
     if(!tzone || !valid_timezone(tzone)) tzone = query_tz();
-    offset = TIME_D->GetOffset(tzone);
-    offset += EXTRA_TIME_OFFSET;
-    if(query_os_type() != "windows" ) x = offset * 3600;
-    else x = 0;
-    return tzone + " time is: " + ctime(time() + x);
+    return tzone + " time is: " + local_ctime(time(), tzone);
 }
 
 string GetHelp() {

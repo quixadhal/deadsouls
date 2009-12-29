@@ -140,7 +140,7 @@ int cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: grep [-nr] '[pattern]' [file] (> [redirect])\n\n"
+    return ("Syntax: grep [-nr] '[pattern]' [file] (> [redirect])\n\n"
             "Searches a file or group of files for a specific pattern.  "
             "If the pattern is a single word, then no '' is needed.  Patterns "
             "of more than one word or beginning with a '-' however, need to be enclosed in ''.  "

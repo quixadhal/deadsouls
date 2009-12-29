@@ -49,5 +49,5 @@ string GetHelp(){
             "so that:\n"
             "banish -s top\n"
             "would make it impossible to create a character named Carrottop."
-         );
+           );
 }

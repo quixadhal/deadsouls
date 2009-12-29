@@ -8,7 +8,7 @@ void create() {
     SetAmbientLight(30);
     SetShort("Keliner storage");
     SetLong("This is where Dr. Kleiner apparently keeps large "+
-      "pieces of research equipment.");
+            "pieces of research equipment.");
     SetClimate("indoors");
     SetItems( ([ 
                 ]) );

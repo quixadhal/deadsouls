@@ -5,34 +5,30 @@
  *    Version: @(#) withdraw.c 1.1@(#) Last modified: 96/10/21
  */
 
-
-
 #include <lib.h>
 #include "include/withdraw.h"
 
 inherit LIB_VERB;
 
-static void create() {
+static void create(){
     verb::create();
     SetVerb("withdraw");
     SetRules("");
-    SetHelp("Syntax: <withdraw>\n"
-            "Allows you to withdraw from the elections");
+    SetHelp("Syntax: withdraw\n\n"
+            "Allows you to withdraw from the elections.");
 }
 
-mixed can_withdraw() {
+mixed can_withdraw(){
     object env;
     mixed  err;
-
     if( !(env = environment(this_player())) ) return 0;
     err = env->CanWithdraw( this_player() );
     if( !err ) return "This doesn't seem the proper place for it.";
     else return err;
 }
 
-mixed do_withdraw() {
+mixed do_withdraw(){
     object env;
-
     if( !(env = environment(this_player())) ) return 0;
     return env->eventWithdraw( this_player() );
 }

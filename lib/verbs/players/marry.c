@@ -16,18 +16,18 @@ static void create() {
     SetVerb("marry");
     SetRules("LIV to LIV");
     SetErrorMessage("Marry whom to whom?");
-    SetHelp("Syntax: <marry PLAYER to PLAYER>\n\n"
+    SetHelp("Syntax: marry <PLAYER> to <PLAYER>\n\n"
             "Allows people of proper divine or legal authority to join two "
             "souls in marriage. In order to marry people, you must be in an "
-            "appropriate location for it.\n\n"
+            "appropriate location for it.\n"
             "See also: divorce");
 }
 
 mixed can_marry_liv_to_liv() {
-
-    if( this_player()->GetSkillLevel("faith") < 5 )
+    if( this_player()->GetSkillLevel("faith") < 5 ){
         return "You do not have enough faith to join to people.";
-    return 1;;
+    }
+    return 1;
 }
 
 mixed do_marry_liv_to_liv(object spouse1, object spouse2) {
@@ -48,7 +48,6 @@ mixed do_marry_liv_to_liv(object spouse1, object spouse2) {
             spouse1, spouse2);
     if( tmp == 1 ) {
         object ring;
-
         ring = new(OBJ_WED_RING);
         ring->SetSpouse(spouse2->GetCapName());
         ring->eventMove(spouse1);

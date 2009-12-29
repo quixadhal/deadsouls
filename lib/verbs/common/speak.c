@@ -68,8 +68,8 @@ mixed do_speak_in_wrd_str(string lang, string str) {
 }
 
 string GetHelp(string str) {
-    return ("Syntax: <speak MESSAGE>\n"
-            "        <speak in LANGUAGE MESSAGE>\n\n"
+    return ("Syntax: speak <MESSAGE>\n"
+            "        speak in <LANGUAGE> [MESSAGE]\n\n"
             "Sends the message you specify to all people in the same room "
             "as you.  If you are an avatar, you have the ability to customize "
             "the way these messages come out through the \"message\" "
@@ -77,7 +77,7 @@ string GetHelp(string str) {
             "language will be used.\n"
             "To switch your default language to something other than your "
             "native language:\n"
-            "speak in FOO\n\n"
+            "speak in FOO\n"
             "See also: message, say, shout, speak, tell");
 }
 

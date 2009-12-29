@@ -13,7 +13,7 @@ static void create() {
     SetAdjectives(({"simple"}));
     SetShort("a elevator");
     SetLong("This is a large, boxlike conveyance for transporting "
-      "things and people along a defined vertical axis.");
+            "things and people along a defined vertical axis.");
     SetRace("vehicle");
     SetPosition(POSITION_NULL);
     SetMelee(0);
@@ -43,7 +43,7 @@ mapping GetFloors(){
 mapping SetFloors(mapping floors){
     object *buttons = ({});
     buttons = filter(all_inventory(), 
-      (: base_name($1) == LIB_ELEVATOR_BUTTON :));
+            (: base_name($1) == LIB_ELEVATOR_BUTTON :));
     if(sizeof(buttons)) buttons->eventDestruct();
     Floors = floors;
     foreach(mixed key, mixed val in Floors){
@@ -51,7 +51,6 @@ mapping SetFloors(mapping floors){
         string tmpname = cardinal(atoi(key));
         string *tmpid = ({ key, "button" });
         if(!undefinedp(tmpname)) tmpid += ({ tmpname });
-        tc("key: "+identify(key)+", val: "+identify(val)+", tmpid: "+identify(tmpid));
         button->SetAdjectives( ({ key, "elevator" }) ); 
         button->SetId( tmpid );
         button->SetKeyName( "button" );

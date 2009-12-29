@@ -9,8 +9,9 @@ static void create() {
     SetVerb("sink");
     SetRules("", "down");
     SetErrorMessage("Sink down?");
-    SetHelp("Syntax: <sink down>\n"
-            "Allows you to stop swimming, or otherwise attempt to sink in your current medium.\n"
+    SetHelp("Syntax: sink [down]\n"
+            "Allows you to stop swimming, or otherwise attempt to "
+            "sink in your current medium.\n"
             "See also: sit, lie, stand, swim, fly");
 }
 
@@ -39,4 +40,3 @@ mixed do_sink_down(){
 mixed do_sink() {
     return do_sink_down();
 }
-

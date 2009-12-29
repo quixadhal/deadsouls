@@ -36,8 +36,13 @@ static void create(){
 }
 
 static void heart_beat(){
-    mixed heartping = GetProperty("keepalive");
-    int idle = query_idle(this_object());
+    mixed heartping;
+    int idle;
+
+    if(!interactive(this_object())) return;
+
+    heartping = GetProperty("keepalive");
+    idle = query_idle(this_object());
     heartcount++;
 
     if(!interactive(this_object())){
@@ -164,7 +169,7 @@ varargs int eventDie(mixed agent){
     if( !GetUndead() ){
         eventDestroyUndead(agent);
     }
-    else {
+    else  {
         message("my_action", "Consciousness passes from you after one last "
                 "gasp for air.", this_object());
         message("my_action", "You awake, but you find your body feels "
@@ -586,7 +591,6 @@ varargs mixed GetEffectiveVision(mixed location, int raw_score){
 
 varargs static int AddHealthPoints(int x, string limb, object agent){
     int hp, ret, undead;
-
     hp = GetHealthPoints();
     undead = GetUndead();
     ret = living::AddHealthPoints(x, limb, agent);

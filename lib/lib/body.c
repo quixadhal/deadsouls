@@ -200,6 +200,10 @@ string *SetExtraChannels(string *chans){
     return ExtraChannels;
 }
 
+mixed direct_body_liv(){
+    return 1;
+}
+
 mixed direct_turn_liv(){
     if( GetUndead() ){
         return 1;

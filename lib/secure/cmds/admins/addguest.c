@@ -34,7 +34,7 @@ int cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: addguest [player list]\n\n"
+    return ("Syntax: addguest [player list]\n\n"
             "Adds a single player or group of players to the database of guests "
             "allowed onto the mud when it is locked.  This is generally used to "
             "allow people in who are not in any of the groups defined in "

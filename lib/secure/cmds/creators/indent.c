@@ -49,7 +49,7 @@ string cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: indent [file | * | */*]\n\n"
+    return ("Syntax: indent [file | * | */*]\n\n"
             "Indents a specified file, or all files in a directory."
             "\nSee also: cd, ls, mv, pwd, rm, lsed, grep");
 }

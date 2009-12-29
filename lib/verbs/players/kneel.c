@@ -8,11 +8,10 @@ static void create() {
     verb::create();
     SetVerb("kneel");
     SetRules("down","");
-    //SetRules("down", "in OBJ", "down in OBJ", "on OBJ", "down on OBJ");
     SetErrorMessage("Kneel down?");
     SetSynonyms("genuflect");
-    SetHelp("Syntax: <kneel down>\n"
-            "Allows you to kneel down on the ground.  "
+    SetHelp("Syntax: kneel <down>\n\n"
+            "Allows you to kneel.\n"
             "See also: sit, stand, lie");
 }
 

@@ -38,6 +38,6 @@ mixed cmd(string timezone) {
 }
 
 string GetHelp() {
-            return ("Syntax: date\n\n"
+    return ("Syntax: date\n\n"
             "Displays current time and date in local time.");
 }

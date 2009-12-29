@@ -55,7 +55,6 @@ int eventMove(mixed dest){
     else location = base_name(env);
 
     if(location) this_object()->SetProperty("LastLocation", location); 
-    //tc(identify(this_object())+" moving to "+identify(dest));
     ret = ::eventMove(dest);
     AddStaminaPoints(GetMaxStaminaPoints());
     if(env){
@@ -87,16 +86,14 @@ void eventSpawn(){
     exits += values(env->GetEnterMap());
     exits = distinct_array(exits);
 
-    //tc("DroneCache: "+identify(ROOMS_D->DroneCache()), "white");
-
     foreach(string exit in exits){
         if(member_array(exit, ROOMS_D->DroneCache()) != -1) continue;
         newdrone = new("/domains/default/npc/drone3");
         newdrone->eventMove(env);
 #if 0
         drones = objects( (: base_name($1) == base_name() &&
-          environment($1) && !strsrch(base_name(environment($1)),
-          path_prefix(base_name(environment()))) && $1 != this_object() :) );
+                    environment($1) && !strsrch(base_name(environment($1)),
+                        path_prefix(base_name(environment()))) && $1 != this_object() :) );
         if(drones) drones->ReceiveNoGo(nogo + no_go + ({ base_name(env) })); 
 #endif
         ROOMS_D->DroneCache( ({ exit }) );

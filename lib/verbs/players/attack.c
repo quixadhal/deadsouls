@@ -17,17 +17,17 @@ static void create() {
     verb::create();
     SetVerb("attack");
     SetRules("LVS", "only LVS","LVS only");
-    SetSynonyms("kill", "smite", "waste", "hit");
+    SetSynonyms("kill", "smite", "waste", "hit", "gank");
     SetErrorMessage("Attack whom?");
-    SetHelp("Syntax: <attack LIVING>\n"
-            "        <attack all of LIVING>\n"
-            "        <attack all>\n\n"
+    SetHelp("Syntax: attack <LIVING>\n"
+            "        attack all of <LIVING>\n"
+            "        attack all\n\n"
             "This command initiates combat with a living being or group "
             "of living beings using any wielded weapons or your bare hands.  "
             "Be very careful not to issue the \"attack all\" with other "
             "players in the room or you will be guilty of attempted player "
-            "killing.\n\n"
-            "See also: wimpy, ignore");
+            "killing.\n"
+            "See also: wimpy, ignore, target");
 }
 
 varargs mixed can_attack_liv(object target) {

@@ -150,7 +150,7 @@ int Setup(){
         PLAYERS_D->PlayerUpdate(GetKeyName(), 1);
         log_file("enter", GetCapName()+" (enter): "+ctime(time())+"\n");
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
-          GetCapName() + " logs into "+mud_name()+"]",0);
+                GetCapName() + " logs into "+mud_name()+"]",0);
     }
 
     if(!catch(mp = FOLDERS_D->mail_status(GetKeyName()))){
@@ -178,7 +178,7 @@ static void net_dead(){
         if(env) env->eventPrint(GetName() + " suddenly disappears into "
                 "a sea of irreality.", MSG_ENV, this_object());
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
-          GetCapName() + " goes net-dead on "+mud_name()+"]",0);
+                GetCapName() + " goes net-dead on "+mud_name()+"]",0);
     }
     SNOOP_D->ReportLinkDeath(this_object()->GetKeyName());
     eventMove(ROOM_FREEZER);
@@ -195,7 +195,7 @@ void eventReconnect(){
     PLAYERS_D->PlayerUpdate(GetKeyName(), 1);
     if(!(archp(this_object()) && this_object()->GetInvis())){
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
-          GetCapName() + " has rejoined " + mud_name() + "]",0);
+                GetCapName() + " has rejoined " + mud_name() + "]",0);
         environment()->eventPrint(GetCapName() + " has rejoined this reality.",
                 MSG_ENV, this_object());
     }
@@ -299,7 +299,7 @@ int cmdQuit(){
         log_file("enter", GetCapName()+" (quit): "+timestamp()+"\n");
         if(env) message("environment", tmp, env, ({this_object()}));
         CHAT_D->eventSendChannel("SYSTEM","connections","[" + 
-          GetCapName() + " quits "+mud_name()+"]",0);
+                GetCapName() + " quits "+mud_name()+"]",0);
     }
     if(in_edit()){
         ed_cmd(".");
@@ -567,7 +567,6 @@ nomask int eventReceiveObject(object ob){
 
 static void heart_beat(){
     string tip = this_object()->GetTeloptIp();
-    //debug("tip: "+tip+", HostSite: "+HostSite);
     if(tip && tip != HostSite){
         HostSite = tip;
         save_player(GetKeyName());

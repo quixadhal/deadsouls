@@ -4,18 +4,17 @@
 
 inherit LIB_VERB;
 
-static void create()
-{
+static void create(){
     verb::create();
     SetVerb("teach");
     SetRules("","STR to LIV","LIV to STR");
-    SetErrorMessage("Syntax: teach <%^BOLD%^%^CYAN%^ability%^RESET%^> to (%^BOLD%^%^ORANGE%^player%^RESET%^)");
-    SetHelp("Syntax: teach <%^BOLD%^%^CYAN%^ability%^RESET%^> to (%^BOLD%^%^ORANGE%^player%^RESET%^)\n"
-            "This command allows you to teach another player an ability, spell, or skill.\n\n");
+    SetErrorMessage("Syntax: teach <ability> to <person>");
+    SetHelp("Syntax: teach <ability> to <person>\n\n"
+            "This command allows you to teach another person "
+            "an ability, spell, or skill.\nSee also: learn");
 }
 
-mixed can_teach_str_to_liv(string str, object ob)
-{
+mixed can_teach_str_to_liv(string str, object ob){
     int pos = this_player()->GetPosition();
     if( this_player()->GetParalyzed() ) {
         return "You cannot move!";
@@ -31,15 +30,13 @@ mixed can_teach_liv_to_str(object ob, string str){
     return can_teach_str_to_liv(str, ob);
 }
 
-mixed can_teach()
-{
-    return "Syntax: teach <%^BOLD%^%^CYAN%^ability%^RESET%^> to (%^BOLD%^%^ORANGE%^player%^RESET%^)\n";
+mixed can_teach(){
+    return "Syntax: teach <%^BOLD%^%^CYAN%^ability%^RESET%^> to "
+        "<%^BOLD%^%^ORANGE%^person%^RESET%^>";
 }
 
 mixed do_teach_str_to_liv(string spell, object target){
     this_player()->eventOfferTeaching(target,spell);
-    //write("You offer to teach "+spell+" to "+target->GetName()+".");
-    //tell_player(target,this_player()->GetName()+" offers to teach you "+spell+".");
     return 1;
 }
 

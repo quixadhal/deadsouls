@@ -14,13 +14,13 @@ static void create() {
     SetVerb("ask");
     SetRules("LIV STR", "STR", "LIV to STR", "LIV for STR", "LIV about STR");
     SetErrorMessage("Ask what?  Or ask whom to do what?");
-    SetHelp("Syntax: <ask LIVING SOMETHING>\n"
-            "        <ask SOMETHING>\n"
-            "        <ask LIVING about SOMETHING>\n"
-            "        <ask LIVING to DO SOMETHING>\n"
-            "        <ask LIVING for SOMETHING>\n\n"
+    SetHelp("Syntax: ask <LIVING> <SOMETHING>\n"
+            "        ask <SOMETHING>\n"
+            "        ask <LIVING> about <SOMETHING>\n"
+            "        ask <LIVING> to <DO SOMETHING>\n"
+            "        ask <LIVING> for <SOMETHING>\n\n"
             "Some npcs and perhaps some inanimate objects will respond "
-            "when you query the target with a specific question.\n\n"
+            "when you query the target with a specific question.\n"
             "See also: reply, say, shout, speak, tell, whisper, yell");
 }
 

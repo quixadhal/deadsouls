@@ -7,11 +7,12 @@ static void create() {
     SetVerb("ride");
     SetRules("STR", "into STR" );
     SetErrorMessage("Ride in which direction?");
-    SetHelp("Syntax: <ride DIRECTION>\n"
-            "        <ride into PLACE>\n\n"
-            "Moves your mount towards the direction you specify, or into the place "
+    SetHelp("Syntax: ride <DIRECTION>\n"
+            "        ride into <PLACE>\n\n"
+            "Moves your mount towards the direction you specify, or "
+            "into the place "
             "you specify.  The command \"ride into\" is synonymous with the "
-            "\"enter\" command.\n\n"
+            "\"enter\" command.\n"
             "See also: mount, dismount");
 }
 

@@ -12,11 +12,11 @@ static void create() {
     SetVerb("request");
     SetRules("STR from LIV");
     SetErrorMessage("Request what from whom?");
-    SetHelp("Syntax: <request SOMETHING from LIVING>\n\n"
+    SetHelp("Syntax: request <SOMETHING> from <LIVING>\n\n"
             "This allows you to ask livings things for particular things.  "
             "For example, in Newbieland, you might 'request clothes from "
             "man'.  This command behaves identically to 'ask LIVING for "
-            "SOMETHING'.\n\n"
+            "SOMETHING'.\n"
             "See also: ask");
 }
 

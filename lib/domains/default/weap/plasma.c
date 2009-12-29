@@ -77,7 +77,7 @@ int detonate(){
         if(ownerob) ownerob->ReportHit(ob);
     }
     else tell_room(room_environment(this_object()), "A plasma bolt "+
-      "detonates harmlessly.");
+            "detonates harmlessly.");
     this_object()->eventDestruct();
     return 1;
 }
@@ -135,12 +135,10 @@ int SetArmed(int x){
 }
 
 int eventCruise(string str){
-    //tc("env: "+identify(environment()));
     return ::eventCruise(str);
 }
 
 
 int eventDestruct(){
-   //tc(get_stack(1));
-   return ::eventDestruct();
+    return ::eventDestruct();
 }

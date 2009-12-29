@@ -23,7 +23,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: mute on [ remote | local ]\n"
+    return ("Syntax: mute on [ remote | local ]\n"
             "        mute off [ remote | local ]\n\n"
             "This command allows you to avoid or listen to channel messages.\n"
             "You can mute all channels with: mute on\n"

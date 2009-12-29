@@ -16,5 +16,5 @@ int cmd() {
 
 string GetHelp(){
     return ("Syntax: rotatelogs\n\n"
-      "Archives old logs if they are too large.");
+            "Archives old logs if they are too large.");
 }

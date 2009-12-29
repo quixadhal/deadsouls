@@ -8,7 +8,7 @@ void create() {
     SetAmbientLight(30);
     SetShort("Dr. Kleiner's Office");
     SetLong("The place where Dr. Kleiner conducts administrative "+
-      "business.");
+            "business.");
     SetClimate("indoors");
     SetItems( ([ 
                 ]) );

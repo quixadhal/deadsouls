@@ -12,15 +12,16 @@ static void create() {
     SetVerb("zap");
     SetRules("LVS");
     SetErrorMessage("zap what?");
-    SetHelp("Syntax: <zap CREATURE>\n\n"
+    SetHelp("Syntax: zap <CREATURE>\n\n"
             "Deal massive damage to a living thing.\n"
-            "\nSee also: dest");
+            "See also: dest, resurrect");
 }
 
-mixed can_zap_liv(string str) { 
-    if(!creatorp(this_player())) return "This command is only available to builders and creators.";
-    else return 1;
-}
+    mixed can_zap_liv(string str) { 
+        if(!creatorp(this_player()))
+            return "This command is only available to creators.";
+        else return 1;
+    }
 
 mixed do_zap_liv(object ob){
     string name;

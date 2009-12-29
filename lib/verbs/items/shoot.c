@@ -11,7 +11,7 @@ static void create() {
     verb::create();
     SetVerb("shoot");
     SetRules("OBJ at LIV", "LIV with OBJ","OBJ at OBJ", "OBJ with OBJ",
-       "OBJ WRD", "OBJ WRD at WRD");
+            "OBJ WRD", "OBJ WRD at WRD");
     SetSynonyms("fire", "gat", "gank");
     SetErrorMessage("Shoot what?");
     SetHelp("Syntax: shoot OBJECT at ENEMY\n\n"
@@ -21,7 +21,7 @@ static void create() {
 varargs mixed eventShoot(mixed device, mixed target, string dir, string whom){
     mixed attackable;
     object tmpob, who = this_player();
-  
+
     if(!device || !objectp(device) || target == device ){
         write("You can't shoot that with that.");
         return 0;
@@ -39,7 +39,7 @@ varargs mixed eventShoot(mixed device, mixed target, string dir, string whom){
         return 0;
     }
     if(target && !present(target,environment(who)) && 
-      !present(target,environment(device))){
+            !present(target,environment(device))){
         write("That target is not here.");
         return 1;
     }

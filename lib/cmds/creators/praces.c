@@ -19,7 +19,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: praces\n\n"
+    return ("Syntax: praces\n\n"
             "A simple tool for creators which will list "
             "available player races.");
 }

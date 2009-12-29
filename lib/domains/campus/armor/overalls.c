@@ -19,8 +19,8 @@ static void create(){
     SetProtection(KNIFE,1);
     SetArmorType(A_CUSTOM);
     SetInventory( ([ 
-      "/domains/campus/weap/knife" : 1,
-    ]) );
+                "/domains/campus/weap/knife" : 1,
+                ]) );
     SetRestrictLimbs( ({ "right leg","left leg","torso" }) );
 }
 

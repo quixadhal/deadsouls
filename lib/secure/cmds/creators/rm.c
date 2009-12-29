@@ -44,10 +44,10 @@ int cmd(string str) {
 
 string GetHelp(){
     string ret = "Syntax: rm [file]\n\n"
-            "The command deletes the file named.  Once deleted, the file "
-            "cannot be recovered. Seriously.";
+        "The command deletes the file named.  Once deleted, the file "
+        "cannot be recovered. Seriously.";
     if(archp(this_player()))
         ret += "Note for arches: wild cards work with this command, "
-                "but there is no prompt, so be VERY CAREFULL!!!!"; 
+            "but there is no prompt, so be VERY CAREFULL!!!!"; 
     return ret;
 }

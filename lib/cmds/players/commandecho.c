@@ -19,7 +19,7 @@ mixed cmd(string str) {
 }
 
 string GetHelp() {
-            return ("Syntax: commandecho <on | off | COLOR>\n\n"
+    return ("Syntax: commandecho <on | off | COLOR>\n\n"
             "Enables or disables the display of your last command "
             "line after you type it. This is useful only "
             "if you have reprompt and/or charmode enabled. "

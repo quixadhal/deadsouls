@@ -689,9 +689,6 @@ int cmdChannel(string verb, string str){
             }
         }
     }
-    else {
-        //INSTANCES_D->eventSendChannel(name, rc, str, emote, convert_name(targetkey), target_msg);
-    }
     return 1;
 }
 
@@ -701,26 +698,22 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
     int terminal;
     string prev = base_name(previous_object());
     string pchan,pmsg;
-    string chatlayout = "%s %s<%s>%s %s"; //Default: "%s %s<%s>%s %s" -> "Name COLOR<channel>RESET talks."
-    string emotelayout = "%s<%s>%s %s"; //Default: "%s<%s>%s %s" -> "COLOR<channel>RESET Name emotes."
+    string chatlayout = "%s %s<%s>%s %s";
+    string emotelayout = "%s<%s>%s %s";
+    //string chatlayout = "%s says, %s(%s)%s '%s'";
+    //string emotelayout = "%s(%s)%s %s";
 
     if(prev == INSTANCES_D){
         terminal = 1;
-        //tc("chatd. who: "+who+", ch: "+ch+", msg: "+msg);
     }
     if(prev == SERVICES_D) terminal = 1;
     if(prev == IMC2_D) terminal = 1;
     if(!terminal){
         string rch = GetRemoteChannel(ch);
         if(member_array(rch, remote_chans) == -1){
-            //tc("should be sending to instances now...", "blue");
             INSTANCES_D->eventSendChannel(who,ch,msg,emote,target,targmsg);
         }
     }
-
-    //Uncomment these next two lines instead of the two above for another channel chat format
-    //string chatlayout = "%s says, %s(%s)%s '%s'"; //Default: "%s %s<%s>%s %s" -> "Name COLOR<channel>RESET talks."
-    //string emotelayout = "%s(%s)%s %s"; //Default: "%s<%s>%s %s" -> "COLOR<channel>RESET Name emotes."
 
     pchan=ch;
     if(!channeler) channeler = this_player();
@@ -743,7 +736,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
             return;
         }
     }
-    if( file_name(previous_object()) == SERVICES_D || file_name(previous_object()) == IMC2_D) {
+    if( file_name(previous_object()) == SERVICES_D || 
+            file_name(previous_object()) == IMC2_D) {
         ch = GetLocalChannel(ch);
         if( emote && sizeof(who)) msg = replace_string(msg, "$N", who);
     }
@@ -768,16 +762,15 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         }
 
         //Colorize emote channels
-        if (member_array(lower_case(ch),keys(tags)) >= 0) { //If there's an entry for the channel
-            this_msg = tags[lower_case(ch)]; //Use it
-        } else { //Otherwise
+        if (member_array(lower_case(ch),keys(tags)) >= 0){
+            this_msg = tags[lower_case(ch)];
+        } else { 
             if(member_array(ch, local_chans) < 0 && (prev == IMC2_D ||
                         member_array(ch, (keys(INTERMUD_D->GetChannelList()) 
                                 || ({}))) < 0)){
                 this_msg = tags["default-IMC2"]; //Use the default IMC2 entry
             }
             else {
-                //debug("1");
                 this_msg = tags["default"]; //Use the default entry
             }
         }
@@ -788,10 +781,8 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
             targmsg = replace_string(targmsg, "$N", who);
             targmsg = capitalize(replace_string(targmsg, "$O", "you"));
         }
-        //tmp = this_msg + msg;
 
         //Put together the channel emote message
-        //tmp = sprintf(emotelayout, this_msg, upper_case(ch), "%^RESET%^", msg);
         tmp = sprintf(emotelayout, this_msg, ch, "%^RESET%^", msg);
 
         //Store message in the history list
@@ -809,19 +800,23 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
                 if( listener == ob ) continue;
                 if(sizeof(listener->GetMuffed()))
                     foreach(string jerk in listener->GetMuffed()){
-                        if(jerk && lower_case(suspect) == lower_case(jerk)) ignore = 1;
-                        if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
+                        if(jerk && lower_case(suspect) == lower_case(jerk)){ 
+                            ignore = 1;
+                        }
+                        if(jerk && lower_case(site) == lower_case(jerk)){
+                            ignore = 1;
+                        }
                     }
                 if(listener->GetNoChanColors()) tmp = decolor(tmp);
-                if(!ignore && CanListen(listener,ch) && !(listener->GetMuted(ch)))
+                if(!ignore && CanListen(listener,ch) && 
+                        !(listener->GetMuted(ch))){
                     listener->eventPrint(tmp, MSG_CHAN);
+                }
                 ignore = 0;
             }
             if( member_array(ob, obs) != -1 ) {
                 if( ob && !(ob->GetBlocked(ch)) ) {
                     int ignore;
-                    //tmp = this_msg + targmsg;
-                    //tmp = sprintf(emotelayout, this_msg, upper_case(ch), "%^RESET%^", targmsg);
                     tmp = sprintf(emotelayout, this_msg, ch, "%^RESET%^", targmsg);
                     if(sizeof(ob->GetMuffed()))
                         foreach(string jerk in ob->GetMuffed()){
@@ -852,7 +847,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
                 chancolor = tags["default-IMC2"]; //Use the default IMC2 entry
             }
             else {
-                //debug("2");
                 chancolor = tags["default"]; //Use the default entry
             }
         }
@@ -860,7 +854,6 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
         pmsg = msg;
 
         //Put together the channel emote message
-        //msg = sprintf(chatlayout, who, chancolor, upper_case(ch), "%^RESET%^", pmsg);
         msg = sprintf(chatlayout, who, chancolor, ch, "%^RESET%^", pmsg);
         eventAddLast(ch, msg, pchan, pmsg, who);
 

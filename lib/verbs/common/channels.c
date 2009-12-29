@@ -8,9 +8,7 @@ static void create() {
     verb::create();
     SetVerb("channels");
     SetRules("", "STR");
-    SetHelp("Syntax: channels\n"
-            "        channels on\n"
-            "        channels off\n"
+    SetHelp("Syntax: channels [on | off]\n\n"
             "With no argument this command will display the status "
             "of the lines to which you have access.  With the argument on|off "
             "it will turn all of the lines on or off.\n"

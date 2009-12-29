@@ -621,7 +621,6 @@ void remove(){
     // This object is getting destructed.
     tn("removing imc2. stack: "+get_stack(1));
     mode=2;
-    //tc("SaveFile: "+SaveFile, "green");
     SaveObject(SaveFile, 1);
     socket_close(socket_num);
 #ifdef IMC2_LOGGING
@@ -965,7 +964,7 @@ void start_logon(){
     string imc2_to_pinkfish(string str){
         string output="";
         int sz;
-        str = replace_string(str, "/~", "/~~");
+        str = replace_string(str+"", "/~", "/~~");
         /*
            For colors explanation, refer to IMC Packet Documentation by Xorith.
            Thanks very much for putting that out, by the way. :)
@@ -1613,15 +1612,12 @@ EndText, NETWORK_ID,COMMAND_NAME);
     int UnSetAutoDisabled(int x){
         //This is just for taking away automatic disablement.
         //For enabling/disabling, see the mudconfig command.
-        //tc("AD stack: "+get_stack(1));
         if(!autodisabled) return 0;
         autodisabled = 0;
         if(x){
             eventChangeIMC2Passwords();
         }
-        //if(!sizeof(SaveFile)) return autodisabled;
         if(unguarded((:directory_exists(path_prefix(SaveFile)):))){
-            //tc("SaveFile: "+SaveFile, "red");
             SaveObject(SaveFile,1);
             RELOAD_D->eventReload(this_object(), 2, 1);
         }

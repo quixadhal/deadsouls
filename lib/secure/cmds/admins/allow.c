@@ -38,9 +38,9 @@ int cmd(string str) {
 
 string GetHelp(){
     return "Syntax: allow <who> <email>\n\n"
-    "Members of law may allow people from sites on register to create "
-    "new characters with this command.  <who> is the character name, "
-    "<email> is the player's real life email address. "
-    "See also: whobanished, whoregistered, whowatched";
+        "Members of law may allow people from sites on register to create "
+        "new characters with this command.  <who> is the character name, "
+        "<email> is the player's real life email address. "
+        "See also: whobanished, whoregistered, whowatched";
 }
 

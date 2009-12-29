@@ -108,6 +108,8 @@ void deletes(){
     catch( rm("/cmds/players/language.c") );
     catch( rm("/secure/lib/include/bboard.h") );
     catch( rm("/lib/inventory.c") );
+    catch( rm("/verbs/rooms/cast.c") );
+    catch( rm("/cmds/creators/goto.c") );
 }
 
 varargs static void eventUpdate(object whom){
