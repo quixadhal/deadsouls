@@ -1,5 +1,5 @@
----- 2.12 ---
-- Released 2009-12-31
+---- 3.0 ---
+- Released 2009-12-30
 - Driver: added Kalinash's fix for Solaris on 64 bit SPARC.
 - Driver: added Kalinash's fix for BSD math.
 - Added commands: anchor, unanchor
@@ -30,6 +30,9 @@
 - Fixed a problem with "EverFill" things like rivers running out.
 - Fixed a problem with undrinkable floods and floods that couldn't
   be used to fill flasks.
+- Vendors now buy items at half value, if they can.
+- The Windows version now automatically disables IMC2 if the
+  server IP becomes invalid.
 
 ---- 2.11a22 ---
 - Released 2009-11-01

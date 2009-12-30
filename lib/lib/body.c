@@ -679,7 +679,7 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
                 }
             }
             y = z;
-            if( y ){
+            if( y > 0 ){
                 if(!AddHealthPoints(-y, 0, (agent || agentname))){
                     call_out("RemoveLimb",0,limbs[i], (agent || agentname));
                 }
@@ -1172,6 +1172,9 @@ mixed CanWear(object ob, string *limbs){
             break;
         case A_CUSTOM: 
             bad_types = A_CUSTOM;
+            break;
+        case A_EXO:
+            bad_types = A_EXO;
             break;
 
         default: return 0; /* not any illegal stuff */

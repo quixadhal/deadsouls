@@ -38,7 +38,9 @@ mixed do_backstab_liv(object ob) {
         this_player()->eventPrint("Your hapless victim is no longer present.");
         return 1;
     }
-    this_player()->eventPrint("%^RED%^You sneak up behind " + ob->GetName() + "...%^RESET%^");
+    this_player()->RemoveNonTargets(({ob}));
+    this_player()->eventPrint("%^RED%^You sneak up behind " + 
+            ob->GetName() + "...%^RESET%^");
     this_player()->SetAttack(ob, (:eventBackstab, this_player(), ob:));
     return 1;
 }

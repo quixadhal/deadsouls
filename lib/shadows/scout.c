@@ -258,8 +258,11 @@ void eventDescribeEnvironment(int verbose) {
     extra += "Power remaining: "+to_int(percent(suit->GetRemainingCharge(),
                 suit->GetMaxCharge()))+"%\n";
 
-    if(!ob) return 0;
-    if(!CheckSuit() || !suit->GetActive()) return ob->eventDescribeEnvironment(verbose);
+    if(!ob) return;
+    if(!CheckSuit() || !suit->GetActive()){
+        ob->eventDescribeEnvironment(verbose);
+        return;
+    }
 
     if( !(env = room_environment(ob)) ) {
         message("room_description", "No environment.", this_object());

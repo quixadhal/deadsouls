@@ -19,7 +19,6 @@
 
 // Connection data for Kayle and Samson's server
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
-//#define HOSTNAME "server02.mudbytes.net"
 //#define HOSTPORT 9000
 //#define HOSTIP "66.218.49.113"
 
@@ -668,6 +667,11 @@ void resolve_callback( string address, string resolved, int key ) {
         write_to_log(DATA_LOG,"socket_connect: " + socket_error(error) + "\n");
 #endif
         socket_close(socket_num);
+        //Timeouts on windows lag the whole mud. This disables the daemon
+        //to prevent that.
+        if(query_os_type() == "windows" && grepp(socket_error(error), "Problem with connect")){
+            load_object("/secure/cmds/admins/mudconfig")->cmd("imc2 disable");
+        }
         return;
     }
 #ifdef IMC2_LOGGING

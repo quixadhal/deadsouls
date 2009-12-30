@@ -8,9 +8,10 @@ static void create() {
     item::create();
     SetKeyName("sharp sword");
     SetId( ({"sword"}) );
-    SetAdjectives( ({ "short","sharp","fine", "very fine"}));
+    SetAdjectives( ({ "very", "short","sharp","fine"}));
     SetShort("a very sharp sword");
-    SetLong("A very fine, sharp sword. It is solidly crafted and well balanced.");
+    SetLong("A very fine, sharp sword. It is solidly crafted "+
+            "and well balanced.");
     SetMass(400);
     SetBaseCost("silver", 2500);
     SetVendorType(VT_WEAPON);
@@ -18,6 +19,7 @@ static void create() {
     SetDamageType(BLADE);
     SetWeaponType("blade");
 }
+
 void init(){
     ::init();
 }

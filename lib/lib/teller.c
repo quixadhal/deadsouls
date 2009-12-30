@@ -275,7 +275,7 @@ int eventOpenAccount(object who){
     return 1;
 }
 
-int cmdParse(object who, string cmd, string str){
+int cmdParse(object who, string cmd, string str, mixed args...){
     int x;
     string s1, s2, honorific;
     mixed err;

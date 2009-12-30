@@ -138,7 +138,6 @@ int eventCruise(string str){
     return ::eventCruise(str);
 }
 
-
 int eventDestruct(){
     return ::eventDestruct();
 }

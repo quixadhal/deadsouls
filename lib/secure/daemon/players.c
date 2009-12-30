@@ -308,6 +308,7 @@ int CheckAdvance(object ob){
     if(!ob || !playerp(ob)) return 0;
     if(!sizeof(Levels)) CompileLevelList();
     dlev = (ob->GetLevel())+1;
+    if(!Levels[dlev]) return 0;
     xp = ob->GetExperiencePoints();
     qp = ob->GetQuestPoints();
     if(xp >= Levels[dlev]["xp"] && qp >= Levels[dlev]["qp"]){

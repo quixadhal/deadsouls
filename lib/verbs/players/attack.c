@@ -100,7 +100,7 @@ varargs mixed do_attack_lvs(mixed *targets, int exclusive) {
     foreach(object subobj in obs){
         if(subobj == this_player()) continue;
         if(member_array(this_player(),subobj->GetEnemies()) != -1 &&
-                member_array(subobj,this_player()->GetNonTargets()) == -1){
+                member_array(subobj,this_player()->GetNonTargets()) != -1){
             write("You are already fighting "+subobj->GetName()+"!");
         }
         else {

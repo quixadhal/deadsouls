@@ -1,14 +1,15 @@
 HTTP/1.1 200 OK
-Date: Mon, 28 Dec 2009 19:36:17 GMT
+Date: Tue, 29 Dec 2009 23:09:12 GMT
 Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.3 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
-Last-Modified: Mon, 30 Nov 2009 16:11:00 GMT
-ETag: "351665-1cede-47998e329cd00"
+Last-Modified: Mon, 28 Dec 2009 21:55:20 GMT
+ETag: "351665-1d0c6-47bd0f626e200"
 Accept-Ranges: bytes
-Content-Length: 118494
+Content-Length: 118982
 Connection: close
 Content-Type: text/plain
 
----- 2.12 (unreleased) ---
+---- 2.12 ---
+- Released 2009-12-31
 - Driver: added Kalinash's fix for Solaris on 64 bit SPARC.
 - Driver: added Kalinash's fix for BSD math.
 - Added commands: anchor, unanchor
@@ -31,13 +32,21 @@ Content-Type: text/plain
   epsv off
   passive on
   bin
+- Fixed a double-prompt problem and some cosmetic issues when reprompting.
+- Made the harmony of best balance in tell.c for justice.
+- The <muds> channel no longer double-pumps on instances.
+- Fixed CheckEncounter double-pump in LIB_NPC.
+- Tidied up slightly confusing events reporting.
+- Fixed a problem with "EverFill" things like rivers running out.
+- Fixed a problem with undrinkable floods and floods that couldn't
+  be used to fill flasks.
 
 ---- 2.11a22 ---
 - Released 2009-11-01
 - Removed unnecessary casts.
 - It's possible to peer into virtual rooms now.
 - Added a sample ranged weapon: /domains/default/armor/pcannon.c
-- Added Tricky's A* implementation.
+- Added Tricky's A* implementation (doesn't really do anything yet).
 - Improved the thoroughness of warmboots.
 - Improved back-compatibility with MudOS v22.2b14-ds.
 

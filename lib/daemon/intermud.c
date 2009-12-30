@@ -38,32 +38,32 @@ void ConvertLists();
 
 static void create(){
     client::create();
-    Password = SECRETS_D->GetSecret("I3_SERVER_PW");
-    SaveFile = save_file(SAVE_INTERMUD);
-    tn("INTERMUD_D: prev: "+identify(previous_object(-1)),"red");
-    Tries = 0;
-    Banned = ([]);
-    MudList = ([]);
-    ChannelList = ([]);
-    MudList["ID"] = -1;
-    MudList["List"] = ([]);
-    ChannelList["ID"] = -1;
-    ChannelList["List"] = ([]);
-    if(file_exists(SaveFile)){
-        RestoreObject(SaveFile, 1);
-    }
+        Password = SECRETS_D->GetSecret("I3_SERVER_PW");
+        SaveFile = save_file(SAVE_INTERMUD);
+        tn("INTERMUD_D: prev: "+identify(previous_object(-1)),"red");
+        Tries = 0;
+        Banned = ([]);
+        MudList = ([]);
+        ChannelList = ([]);
+        MudList["ID"] = -1;
+        MudList["List"] = ([]);
+        ChannelList["ID"] = -1;
+        ChannelList["List"] = ([]);
+        if(file_exists(SaveFile)){
+            RestoreObject(SaveFile, 1);
+        }
     ConvertLists();
-    Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
-    SetNoClean(1);
-    tn("INTERMUD_D reloaded.");
-    tn("Loading object stack: "+get_stack(),"red");
-    tn("Loading object trail: "+identify(previous_object(-1)),"red");
-    SetDestructOnClose(1);
-    SetSocketType(MUD);
-    if(DISABLE_INTERMUD == 1){
-        call_out( (: eventDestruct :), 2);
-    }
-    else call_out( (: Setup :), 2);
+        Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
+        SetNoClean(1);
+        tn("INTERMUD_D reloaded.");
+        tn("Loading object stack: "+get_stack(),"red");
+        tn("Loading object trail: "+identify(previous_object(-1)),"red");
+        SetDestructOnClose(1);
+        SetSocketType(MUD);
+        if(DISABLE_INTERMUD == 1){
+            call_out( (: eventDestruct :), 2);
+        }
+        else call_out( (: Setup :), 2);
 }
 
 void FirstPing(){
@@ -72,98 +72,98 @@ void FirstPing(){
 
 static void Setup(){
     string ip;
-    int port;
-
-    if( !Nameservers || !sizeof(Nameservers) ) return;
-    sscanf(Nameservers[0][1], "%s %d", ip, port);
-    SocketStat = eventCreateSocket(ip, port);
-    if( SocketStat < 0 ) return;
-    tn("INTERMUD_D: SocketStat: "+SocketStat);
-    eventWrite( ({ "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
-                Password, MudList["ID"], ChannelList["ID"], query_host_port(),
-                PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(), 
-                mudlib() + " " + mudlib_version(), version(), "LPMud",
-                MUD_STATUS, ADMIN_EMAIL,
-                SERVICES_D->GetServices(), ExtraInfo() }) );
-    tn("INTERMUD_D setup: "+identify( ({
-                    "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
-                    Password, MudList["ID"], ChannelList["ID"], query_host_port(),
-                    PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(),
-                    mudlib() + " " + mudlib_version(), version(), "LPMud",
-                    MUD_STATUS, ADMIN_EMAIL,
-                    SERVICES_D->GetServices(), ([]) }) ), "red");;
-    call_out( (: FirstPing :), 5);
-    call_out( (: load_object :), 5, IMC2_D);
+        int port;
+        
+        if( !Nameservers || !sizeof(Nameservers) ) return;
+            sscanf(Nameservers[0][1], "%s %d", ip, port);
+                SocketStat = eventCreateSocket(ip, port);
+                if( SocketStat < 0 ) return;
+                    tn("INTERMUD_D: SocketStat: "+SocketStat);
+                        eventWrite( ({ "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
+                                    Password, MudList["ID"], ChannelList["ID"], query_host_port(),
+                                    PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(), 
+                                    mudlib() + " " + mudlib_version(), version(), "LPMud",
+                                    MUD_STATUS, ADMIN_EMAIL,
+                                    SERVICES_D->GetServices(), ExtraInfo() }) );
+                        tn("INTERMUD_D setup: "+identify( ({
+                                        "startup-req-3", 5, mud_name(), 0, Nameservers[0][0], 0,
+                                        Password, MudList["ID"], ChannelList["ID"], query_host_port(),
+                                        PORT_OOB, PORT_UDP, mudlib() + " " + mudlib_version(),
+                                        mudlib() + " " + mudlib_version(), version(), "LPMud",
+                                        MUD_STATUS, ADMIN_EMAIL,
+                                        SERVICES_D->GetServices(), ([]) }) ), "red");;
+                        call_out( (: FirstPing :), 5);
+                        call_out( (: load_object :), 5, IMC2_D);
 }
 
 int GetConnectedStatus(){
     return Online;
 }
 
-    void eventClearVars(){
-        if( !(master()->valid_apply(({ PRIV_ASSIST, INTERMUD_D }))) )
-            error("Illegal attempt to reset intermud: "+get_stack()+" "+identify(previous_object(-1)));
-        Tries = 0;
-        MudList = ([]);
-        ChannelList = ([]);
-        MudList["ID"] = -1;
-        MudList["List"] = ([]);
-        ChannelList["ID"] = -1;
-        ChannelList["List"] = ([]);
-        SaveObject(SaveFile);
-    }
+void eventClearVars(){
+    if( !(master()->valid_apply(({ PRIV_ASSIST, INTERMUD_D }))) )
+        error("Illegal attempt to reset intermud: "+get_stack()+" "+identify(previous_object(-1)));
+            Tries = 0;
+            MudList = ([]);
+            ChannelList = ([]);
+            MudList["ID"] = -1;
+            MudList["List"] = ([]);
+            ChannelList["ID"] = -1;
+            ChannelList["List"] = ([]);
+            SaveObject(SaveFile);
+}
 
 static void eventRead(mixed *packet){
     mixed val;
-    string cle;
-    Online = 1;
-
-    if( !packet || sizeof(packet) < 6 ) return; /* should send error */
-    if( Banned[packet[2]] ){
-
-        eventWrite(({ "error", 5, mud_name(), 0, packet[2],
-                    packet[3], "unk-user", 
-                    "Your mud is not allowed to send to "+mud_name()+".",
-                    packet }));
-
-        return;
-    }
+        string cle;
+        Online = 1;
+        
+        if( !packet || sizeof(packet) < 6 ) return; /* should send error */
+            if( Banned[packet[2]] ){
+                
+                    eventWrite(({ "error", 5, mud_name(), 0, packet[2],
+                                packet[3], "unk-user", 
+                                "Your mud is not allowed to send to "+mud_name()+".",
+                                packet }));
+                    
+                    return;
+            }
     switch(packet[0]){
         case "startup-reply":
-            LOG_D->LogSpecial(LOG_I3,timestamp()+" "+identify(packet)+"\n");
-        tn("INTERMUD_D: "+identify(packet),"red");
-        if( sizeof(packet) != 8 ){
-            //tn("We don't like the mudlist packet size.","red");
-            return;  
-        }
+            LOG_D->LogSpecial(LOG_I3,timestamp()+" "+identify(packet)+"/n");
+            tn("INTERMUD_D: "+identify(packet),"red");
+            if( sizeof(packet) != 8 ){
+                //tn("We don't like the mudlist packet size.","red");
+                return;  
+            }
         if( !sizeof(packet[6]) ){
             //tn("We don't like an absence of packet element 6.","red");
             return;
         }
         /* Start of Tricky's patch */
-        if( packet[2] != Nameservers[0][0] ){
-            tn("Illegal startup-reply from mud " + packet[2], "red");
-            return;
-        }
+            if( packet[2] != Nameservers[0][0] ){
+                tn("Illegal startup-reply from mud " + packet[2], "red");
+                    return;
+            }
         /* End of Tricky's patch */ 
-        if( packet[6][0][0] == Nameservers[0][0] ){
-            Nameservers = packet[6];
-            Password = packet[7];
-            SECRETS_D->SetSecret("I3_SERVER_PW", Password);
-            SaveObject(SaveFile);
-        }
-        else {
-            Nameservers = packet[6];
-            Setup();
-        }
+            if( packet[6][0][0] == Nameservers[0][0] ){
+                Nameservers = packet[6];
+                    Password = packet[7];
+                    SECRETS_D->SetSecret("I3_SERVER_PW", Password);
+                    SaveObject(SaveFile);
+            }
+            else {
+                Nameservers = packet[6];
+                    Setup();
+            }
         return;
-        case "mudlist":
+            case "mudlist":
             tn("INTERMUD_D mudlist received.","red");
-        //log_file(LOG_I3,identify(packet),1);
-        if( sizeof(packet) != 8 ){
-            //tn("We don't like the mudlist packet size.","red");
-            return;  
-        }
+            //log_file(LOG_I3,identify(packet),1);
+            if( sizeof(packet) != 8 ){
+                //tn("We don't like the mudlist packet size.","red");
+                return;  
+            }
         if( packet[6] == MudList["ID"] )  {
             //tn("We don't like packet element 6. It is: "+identify(packet[6]),"red");
             //tn("We will continue anyway.","red");
@@ -172,131 +172,131 @@ static void eventRead(mixed *packet){
             //tn("We don't like packet element 2. It is: "+identify(packet[2]),"red");
             return;
         }
-
-        MudList["ID"] = packet[6];
-        foreach(cle, val in packet[7]){
-            string tmp = "";
-            if(cle){
-                string lib = "unknown";
-                if(val && sizeof(val) > 5 && arrayp(val)){
-                    if(!my_ip && cle == mud_name()) my_ip = val[1];
-                    lib = val[5];
-                }
-                MUDINFO_D->ReceiveMudInfo(cle, val);
-                tmp += "%^BOLD%^CYAN%^Processing mud: "+identify(cle)+
-                    ", lib: "+lib;
-                if(val){
-                    if(!val[0]) tmp += " %^RED%^BOLD%^offline%^RESET%^";
-                    else tmp += " %^GREEN%^BOLD%^ONLINE%^RESET%^";
-                }
-                else tmp += " removed from mudlist";
-                tn(tmp);
-                //tn(tmp,"cyan",ROOM_ARCH);
-                if(val && sizeof(val) > 5 && arrayp(val))
-                    tmp = (val[0] ? "%^BLUE%^online" : "%^RED%^offline")+ 
-                        "%^RESET%^, lib: "+lib+", driver: "+val[7];
-                else tmp = "removed from mudlist.";
-                CHAT_D->eventSendChannel(cle+"@i3","muds",tmp,0);
+        
+            MudList["ID"] = packet[6];
+            foreach(cle, val in packet[7]){
+                string tmp = "";
+                    if(cle){
+                        string lib = "unknown";
+                            if(val && sizeof(val) > 5 && arrayp(val)){
+                                if(!my_ip && cle == mud_name()) my_ip = val[1];
+                                    lib = val[5];
+                            }
+                        MUDINFO_D->ReceiveMudInfo(cle, val);
+                            tmp += "%^BOLD%^CYAN%^Processing mud: "+identify(cle)+
+                            ", lib: "+lib;
+                            if(val){
+                                if(!val[0]) tmp += " %^RED%^BOLD%^offline%^RESET%^";
+                                else tmp += " %^GREEN%^BOLD%^ONLINE%^RESET%^";
+                            }
+                            else tmp += " removed from mudlist";
+                                tn(tmp);
+                                    //tn(tmp,"cyan",ROOM_ARCH);
+                                    if(val && sizeof(val) > 5 && arrayp(val))
+                                        tmp = (val[0] ? "%^BLUE%^online" : "%^RED%^offline")+ 
+                                            "%^RESET%^, lib: "+lib+", driver: "+val[7];
+                                    else tmp = "removed from mudlist.";
+                                        CHAT_D->eventSendChannel(cle+"@i3","muds",tmp,0);
+                    }
+                if( !val && MudList["List"][cle] != 0 ) 
+                    map_delete(MudList["List"], cle);
+                else if( val ) MudList["List"][cle] = val;
             }
-            if( !val && MudList["List"][cle] != 0 ) 
-                map_delete(MudList["List"], cle);
-            else if( val ) MudList["List"][cle] = val;
-        }
         SaveObject(SaveFile);
-        return;
-        case "ping-req":
+            return;
+            case "ping-req":
             SERVICES_D->eventReceiveAuthRequest(packet);
-        break;
-        case "ping-reply":
+            break;
+            case "ping-reply":
             SERVICES_D->eventReceiveAuthReply(packet);
-        break;
-        case "auth-mud-req":
+            break;
+            case "auth-mud-req":
             SERVICES_D->eventReceiveAuthRequest(packet);
-        break;
-        case "auth-mud-reply":
+            break;
+            case "auth-mud-reply":
             SERVICES_D->eventReceiveAuthReply(packet);
-        break;
-        case "channel-t":
+            break;
+            case "channel-t":
             SERVICES_D->eventReceiveChannelTargettedEmote(packet);
-        break;
-        case "channel-e":
+            break;
+            case "channel-e":
             SERVICES_D->eventReceiveChannelEmote(packet);
-        break;
-        case "channel-m":
+            break;
+            case "channel-m":
             SERVICES_D->eventReceiveChannelMessage(packet);
-        break;
-        case "chan-who-reply":
+            break;
+            case "chan-who-reply":
             SERVICES_D->eventReceiveChannelWhoReply(packet);
-        break;
-        case "chan-who-req":
+            break;
+            case "chan-who-req":
             SERVICES_D->eventReceiveChannelWhoRequest(packet);
-        break;
-        case "chan-user-req":
+            break;
+            case "chan-user-req":
             SERVICES_D->eventReceiveChannelUserRequest(packet);
-        break;
-        case "chanlist-reply":
+            break;
+            case "chanlist-reply":
             tn("chanlist reply: "+identify(packet), "blue");
-        if( packet[2] != Nameservers[0][0] ) return;
-        ChannelList["ID"] = packet[6];
-        foreach(cle, val in packet[7]){ 
-            if( !val && ChannelList["List"] != 0 ){ 
-                map_delete(ChannelList["List"], cle);
-                CHAT_D->RemoveRemoteChannel(cle);
-            }
-            else if( val ){
-                ChannelList["List"][cle] = val;
-                CHAT_D->AddRemoteChannel(cle);
-            }
-        } 
+            if( packet[2] != Nameservers[0][0] ) return;
+                ChannelList["ID"] = packet[6];
+                    foreach(cle, val in packet[7]){ 
+                        if( !val && ChannelList["List"] != 0 ){ 
+                            map_delete(ChannelList["List"], cle);
+                                CHAT_D->RemoveRemoteChannel(cle);
+                        }
+                        else if( val ){
+                            ChannelList["List"][cle] = val;
+                                CHAT_D->AddRemoteChannel(cle);
+                        }
+                    } 
         SaveObject(SaveFile);
-        SERVICES_D->eventRegisterChannels(packet[7]);
-        return;
-        case "emoteto":
+            SERVICES_D->eventRegisterChannels(packet[7]);
+            return;
+            case "emoteto":
             SERVICES_D->eventReceiveEmote(packet);
-        break;
-        case "finger-req":
+            break;
+            case "finger-req":
             SERVICES_D->eventReceiveFingerRequest(packet);
-        break;
-        case "finger-reply":
+            break;
+            case "finger-reply":
             SERVICES_D->eventReceiveFingerReply(packet);
-        break;
-        case "locate-req":
+            break;
+            case "locate-req":
             SERVICES_D->eventReceiveLocateRequest(packet);
-        break;
-        case "locate-reply":
+            break;
+            case "locate-reply":
             SERVICES_D->eventReceiveLocateReply(packet);
-        break;
-        case "tell":
+            break;
+            case "tell":
             SERVICES_D->eventReceiveTell(packet);
-        break;
-        case "chan-user-reply":
+            break;
+            case "chan-user-reply":
             tn("INTERMUD_D: chan-user-reply received.","red");
-        case "ucache-update":
+            case "ucache-update":
             SERVICES_D->eventReceiveUcacheUpdate(packet);
-        break;
-        case "who-req":
+            break;
+            case "who-req":
             SERVICES_D->eventReceiveWhoRequest(packet);
-        break;
-        case "who-reply":
+            break;
+            case "who-reply":
             SERVICES_D->eventReceiveWhoReply(packet);
-        break;
-        case "news":
+            break;
+            case "news":
             SERVICES_D->eventReceiveNews(packet);
-        break;
-        case "mail":
+            break;
+            case "mail":
             SERVICES_D->eventReceiveMail(packet);
-        break;
-        case "mail-ok":
+            break;
+            case "mail-ok":
             SERVICES_D->eventReceiveMailOk(packet);
-        break;
-        case "file":
+            break;
+            case "file":
             tn("INTERMUD_D: file packet received.","red");
-        break;
-        case "error":
+            break;
+            case "error":
             SERVICES_D->eventReceiveError(packet);
-        break;
+            break;
         default:
-        break;
+                break;
     }
 }
 
@@ -306,39 +306,39 @@ static void eventSocketClose(){
 
 static void eventConnectionFailure(){
     Online = 0;
-    tn("INTERMUD_D: CONNECTION FAILED","red");
-    error("Failed to find a useful name server.\n");
+        tn("INTERMUD_D: CONNECTION FAILED","red");
+        error("Failed to find a useful name server./n");
 }
 
 int SetDestructOnClose(int x){ return 0; }
 
 static void eventClose(mixed arg){
     SocketStat = -1;
-    Online = 0;
-    tn("INTERMUD_D: socket closing!");
-    ::eventClose(arg);
+        Online = 0;
+        tn("INTERMUD_D: socket closing!");
+        ::eventClose(arg);
 }
 
 int SetSocketType(int x){ return client::SetSocketType(MUD); }
 
 string GetMudName(string mud){
     string *lc, *uc;
-    mapping mudses = GetMudList();
-    int x;
-
-    if( MudList["List"][mud] ) return mud;
-    lc = map(uc = keys(MudList["List"]), function(string str){
-            if( !str ) return "";
-            else return lower_case(str);
-            });
+        mapping mudses = GetMudList();
+        int x;
+        
+        if( MudList["List"][mud] ) return mud;
+            lc = map(uc = keys(MudList["List"]), function(string str){
+                    if( !str ) return "";
+                    else return lower_case(str);
+                    });
     x = member_array(lower_case(mud), lc);
-    if( x < 0 ){
-        foreach(string name in GetMuds()){
-            if(mudses[name][1] +" "+mudses[name][2] == mud) return name;
+        if( x < 0 ){
+            foreach(string name in GetMuds()){
+                if(mudses[name][1] +" "+mudses[name][2] == mud) return name;
+            }
+            return 0;
         }
-        return 0;
-    }
-    else return uc[x];
+        else return uc[x];
 }
 
 mapping GetMudList(){ 
@@ -355,11 +355,11 @@ string *GetMuds(){
 
 string *GetLCMuds(){
     string *orig_arr, *new_arr;
-    orig_arr = GetMuds();
-    new_arr = ({});
-    foreach(string namen in orig_arr){
-        new_arr += ({ lower_case(namen) });
-    }
+        orig_arr = GetMuds();
+        new_arr = ({});
+        foreach(string namen in orig_arr){
+            new_arr += ({ lower_case(namen) });
+        }
     return new_arr;
 }
 
@@ -369,10 +369,10 @@ string *GetChannels(){ return keys(ChannelList["List"]); }
 
 string *GetMatch(string mud){
     string *uc, *lc;
-
-    mud = lower_case(mud);
-    lc = map(uc = keys(MudList["List"]), (: lower_case :));
-    return map(filter(regexp(lc, "^"+mud, 1), (: intp :)), (: $(uc)[$1] :));
+        
+        mud = lower_case(mud);
+        lc = map(uc = keys(MudList["List"]), (: lower_case :));
+        return map(filter(regexp(lc, "^"+mud, 1), (: intp :)), (: $(uc)[$1] :));
 }
 
 string GetNameserver(){ return Nameservers[0][0]; }
@@ -387,35 +387,35 @@ int AddBanned(string mud, string reason){
         return 0;
     }
     Banned[mud] = reason;
-    SaveObject(SaveFile);
-    return 1;
+        SaveObject(SaveFile);
+        return 1;
 }
 
 mapping GetBanned(){ return copy(Banned); }
 
 int RawSend(string *packet){
     if(!this_player() || !archp(this_player())) return 0;
-    eventWrite(packet);
-    return 1;
+        eventWrite(packet);
+            return 1;
 }
 
 string nextboot(){
     string str;
-    int x, offset;
-
-    if(DISABLE_REBOOTS){
-        return "never";
-    }
-
-    offset = TIME_D->GetOffset(local_time()[9]);
-    offset += EXTRA_TIME_OFFSET;
-
-    x = EVENTS_D->GetRebootInterval() * 3600;
-    x = (time() - uptime()) + x;
-    if(!LOCAL_TIME) 
-        x += offset * 3600;
-    str = query_tz()+ " " + ctime(x);
-    return str;
+        int x, offset;
+        
+        if(DISABLE_REBOOTS){
+            return "never";
+        }
+    
+        offset = TIME_D->GetOffset(local_time()[9]);
+        offset += EXTRA_TIME_OFFSET;
+        
+        x = EVENTS_D->GetRebootInterval() * 3600;
+        x = (time() - uptime()) + x;
+        if(!LOCAL_TIME) 
+            x += offset * 3600;
+                str = query_tz()+ " " + ctime(x);
+                return str;
 }
 
 //This new packet element data added to be able
@@ -435,17 +435,17 @@ mapping ExtraInfo(){
 void ConvertLists(){
     if(classp(MudList)){
         mapping TmpMap = ([]);
-        MudList = TmpMap;
-        MudList["ID"] = -1;
-        MudList["List"] = ([]);
-        SaveObject(SaveFile);
+            MudList = TmpMap;
+            MudList["ID"] = -1;
+            MudList["List"] = ([]);
+            SaveObject(SaveFile);
     }
     if(classp(ChannelList)){
         mapping TmpMap = ([]);
-        ChannelList = TmpMap;
-        ChannelList["ID"] = -1;
-        ChannelList["List"] = ([]);
-        SaveObject(SaveFile);
+            ChannelList = TmpMap;
+            ChannelList["ID"] = -1;
+            ChannelList["List"] = ([]);
+            SaveObject(SaveFile);
     }
 }
 
@@ -455,21 +455,27 @@ int GetEnabled(){
 
 string GetMyIp(){
     string ret = "127.0.0.1";
-    if(my_ip) ret = my_ip;
-    return ret;
+        if(my_ip) ret = my_ip;
+            return ret;
 }
 
 void eventWrite(mixed val){
     object prev = previous_object();
-    if(!prev || prev == this_object() 
-            || prev == find_object(PING_D)
-            || prev == find_object(SERVICES_D) 
-            || prev == find_object(CMD_CHANBAN)
-            || prev == find_object(CMD_CHANCREATE) 
-            || prev == find_object(CMD_CHANREMOVE) 
-            || prev == find_object(CMD_CHANUNBAN)){
-        ::eventWrite(val);
-    }
+        if(!prev || prev == this_object() 
+                || prev == find_object(PING_D)
+                || prev == find_object(SERVICES_D) 
+                || prev == find_object(CMD_CHANBAN)
+                || prev == find_object(CMD_CHANCREATE) 
+                || prev == find_object(CMD_CHANREMOVE) 
+                || prev == find_object(CMD_CHANUNBAN)){
+            ::eventWrite(val);
+        }
 }
 
+static void eventSocketError(string str, int x) {
+    //debug_message(timestamp()+" i3 "+socket_error(x) + "\n");
+    if(query_os_type() == "windows" && grepp(socket_error(x), "Problem with connect")){
+        load_object("/secure/cmds/admins/mudconfig")->cmd("intermud disable");
+    }
+}
 #endif /* __PACKAGE_SOCKETS__ */

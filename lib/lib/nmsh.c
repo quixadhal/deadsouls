@@ -389,7 +389,14 @@ varargs nomask string write_prompt(string str){
     int diff, tmp, bottom = GetScreen()[1];
     int side = GetScreen()[0];
 
-    if(!this_object() || origin() == "driver") return "";
+    if(!this_object()) return "";
+
+    if(origin() == "driver"){
+        if(this_object()->GetProperty("reprompt")){
+            //Avoids double pumped prompt when fancy stuff is on.
+            return "";
+        }
+    }
 
     if(!Termstuff) Termstuff = ([]);
     if(!Termstuff["Terminal"]){
