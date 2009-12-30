@@ -59,7 +59,7 @@ int answers_to(string name, object what){
     int i, j, arrsize;
     if(!name || !what) return 0;
     if(!stringp(name) || !objectp(what)) return 0;
-    adjs = filter((what->GetAdjectives() || ({})), (: lower_case($1) :));
+    adjs = filter((what->GetAdjectives() || ({})), (: lower_case(($1||"")) :));
     names = filter(query_names(what), (: lower_case($1) :));
     name = lower_case(name);
     if(member_array(name, names) != -1) return 1;

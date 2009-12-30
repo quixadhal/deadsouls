@@ -27,6 +27,7 @@ mixed indirect_drink_from_obj(){
     if( environment() != this_player() &&
             base_name(this_object()) != LIB_FLOW &&
             !inherits(LIB_FLOW, this_object()) &&
+            !this_object()->GetTapped() &&
             !inherits(LIB_BASE_DUMMY, this_object())){
         return "#You don't have it.";
     }
@@ -76,7 +77,10 @@ int CanFillOther(){
 //Tapped is for being able to fill from something
 //without havingt to hold the source 
 
-int SetTapped(int x){ return (Tapped = x); }
+int SetTapped(int x){ 
+    if(x) AddItem("tap", "The thing that lets you pour from it.");
+    return (Tapped = x); 
+}
 
 mixed GetTapped(){ return Tapped; }
 

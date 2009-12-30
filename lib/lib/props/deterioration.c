@@ -69,9 +69,9 @@ int eventReceiveDamage(mixed agent, int type, int amt, int i, mixed array l){
             }
         }
         x = x/2 + random(x/2);
-        DamagePoints -= ((amt * 5) - x);
+        DamagePoints -= (abs(amt - x));
     }
-    else DamagePoints -= (amt * 5);
+    else DamagePoints -= (abs(amt));
     if( DamagePoints < 1 ){
         Deterioration++;
         DamagePoints = MaxDamagePoints;

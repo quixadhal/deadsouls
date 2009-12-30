@@ -229,7 +229,8 @@ int GetPermitLoad(){
 
 /* ******************    /lib/sentient.c events      **************** */
 mixed eventAsk(object who, string str){
-    string cmd, args, lang, prof;
+    string cmd, args, lang;
+    int prof;
 
     if( !str || str == "" ) return 0;
     lang = who->GetDefaultLanguage();
@@ -237,6 +238,14 @@ mixed eventAsk(object who, string str){
     str = translate(str, prof);
     prof = this_object()->GetLanguageLevel(lang);
     str = translate(str, prof);
+    if(!prof){
+        eventForce("speak I don't even know what language that is.");
+        return 1;
+    }
+    if(prof < 100){
+        eventForce("speak I don't really understand "+capitalize(lang)+".");
+        return 1;
+    }
     if( sscanf(str, "%s %s", cmd, args) != 2 ){
         cmd = str;
         args = 0;
@@ -258,7 +267,6 @@ mixed eventAsk(object who, string str){
 
 varargs mixed eventReceiveEmote(object who, string verb, string info){
     mixed val = EmoteResponses[verb];
-
     if( !val ){
         return 0;
     }
@@ -270,14 +278,23 @@ varargs mixed eventReceiveEmote(object who, string verb, string info){
 }
 
 mixed eventConsult(object who, string str){
-    string lang, prof;
-
+    string lang;
+    int prof;
     if( !str || str == "" || !ConsultResponses) return 0;
     lang = who->GetDefaultLanguage();
     prof = who->GetLanguageLevel(lang);
     str = translate(str, prof);
     prof = this_object()->GetLanguageLevel(lang);
     str = translate(str, prof);
+
+    if(!prof){
+        eventForce("speak I don't even know what language that is.");
+        return 1;
+    }
+    if(prof < 100){
+        eventForce("speak I don't really understand "+capitalize(lang)+".");
+        return 1;
+    }
 
     if( !str || str == "" || !ConsultResponses) return 0;
     str = remove_article(str);
@@ -297,14 +314,24 @@ mixed eventConsult(object who, string str){
 }
 
 mixed eventRequest(object who, string str){
-    string lang, prof;
+    string lang;
+    int prof;
 
     if( !str || str == "" ) return 0;
-    lang = who->GetDefaultLanguage();
+    lang = (who->GetDefaultLanguage() || "that language");
     prof = who->GetLanguageLevel(lang);
     str = translate(str, prof);
     prof = this_object()->GetLanguageLevel(lang);
     str = translate(str, prof);
+
+    if(!prof){
+        eventForce("speak I don't even know what language that is.");
+        return 1;
+    }
+    if(prof < 100){
+        eventForce("speak I don't really understand "+capitalize(lang)+".");
+        return 1;
+    }
 
     if( !RequestResponses[str] ){
         if( !RequestResponses["default"] ) return 0;

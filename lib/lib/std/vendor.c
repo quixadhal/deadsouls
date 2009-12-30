@@ -77,6 +77,10 @@ mixed eventBuy(object who, object *obs){
             eventForce("say " + ob->GetShort() + " is worthless!");
             continue;
         }
+        cost = cost / 2;
+        value = value / 2;
+        if(!cost) cost = 1;
+        if(!value) value = 1;
         if( !(ob->CanSell(who)) ){
             eventForce("say You cannot sell " + ob->GetShort() +".");
             continue;
@@ -328,7 +332,8 @@ int cmdAppraise(object who, string args){
                 "that worthless thing from you.");
         return 1;
     }
-    else x=cost;
+    else x=cost/2;
+    if(!x) x = 1;
     eventForce("say " + capitalize(who->GetKeyName()) + ", I will offer "
             "you " + x + " " + GetLocalCurrency() + " for " +
             ob->GetShort());

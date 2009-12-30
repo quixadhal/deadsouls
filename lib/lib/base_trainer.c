@@ -126,17 +126,25 @@ int eventHelp(object who, string unused){
 }
 
 int eventTrain(object who, string verb, string skill){
+    mixed *langs;
+    int ok;
     if( !who || environment(who) != environment() ){
         return 0;
     }
-
-    if(who->GetLanguageLevel(me->GetDefaultLanguage()) < 100){
-        write("You must be fluent in "+me->GetDefaultLanguage()+
-                " in order to understand the training provided by "+
-                me->GetName()+".");
+    langs = this_object()->GetLanguages();
+    foreach(string lang in langs){
+        if(who->GetLanguageLevel(lang) >= 95){
+            ok = 1;
+            me->SetDefaultLanguage(lang);
+            break;
+        }
+    }
+    if(!ok){
+        write("You must be fluent in one of "+me->GetName()+ 
+                " languages in order to understand "+possessive(me)+
+                " training.");
         return 1;
     }
-
     if( !sizeof(skill) || !sizeof(verb) ) return eventHelp(who, 0);
     if(first(skill, 3) == "in ") skill = replace_string(skill,"in ","",1);
     if(first(skill, 6) == "me in ") skill = replace_string(skill,"me in ","",1);

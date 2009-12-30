@@ -17,13 +17,13 @@ static void create(){
     ::create();
     if(!Directions) Directions = ([]);
     SetKeyName("rocket pack");
-    SetId(({"pack","rocket"}));
+    SetId(({"pack","rocket","rocketpack"}));
     SetAdjectives(({"small","rocket"}));
     SetShort("a small rocket pack");
     SetLong( (: LongD :) );
     SetMass(500);
     SetBaseCost(8000);
-    SetArmorType(A_CUSTOM);
+    SetArmorType(A_ARMOR);
     AddSave( ({ "charge", "Directions" }) );
     SetRestrictLimbs( ({ "torso" }) );
     SetCharge(200);

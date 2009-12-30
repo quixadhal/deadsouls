@@ -17,7 +17,7 @@ void create(){
     SetAmmoType("magnum");
     SetMaxAmmo(6);
     SetMass(20);
-    SetValue(10);
+    SetBaseCost("silver", 1200);
     SetVendorType(VT_WEAPON);
     SetMagnum(30);
 }

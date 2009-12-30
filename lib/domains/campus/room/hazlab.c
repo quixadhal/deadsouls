@@ -11,6 +11,7 @@ void create() {
     SetInventory(([
                 "/domains/campus/npc/turret" : 1,
                 "/domains/campus/obj/workbench" : 1,
+                "/domains/default/armor/pscoutsuit" : 1,
                 ]));
     SetExits(([
                 "north" : "/domains/campus/room/science2",

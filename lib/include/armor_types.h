@@ -22,7 +22,8 @@
 #define A_AMULET            (1 << 18)
 #define A_COLLAR            (1 << 19)
 #define A_BODY_ARMOR        (1 << 20)
+#define A_EXO               (1 << 21)
 
-#define A_MAX_ARMOR_BIT    A_BODY_ARMOR
+#define A_MAX_ARMOR_BIT    A_EXO
 
 #endif /* __ARMOR_TYPES_H__ */

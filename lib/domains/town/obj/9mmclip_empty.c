@@ -12,6 +12,7 @@ void create(){
     SetMillimeter(9);
     SetMaxAmmo(15);
     SetMass(5);
+    SetBaseCost("silver", 15);
     SetAmmoType("acp");
     SetVendorType(VT_TREASURE);
 }

@@ -6,7 +6,6 @@
  *    Last modified: 96/12/21
  */
 
-
 #include <lib.h>
 #include NETWORK_H
 

@@ -186,8 +186,8 @@ varargs static void eventUpdate(object whom){
 static void create() {
     object whom;
     catch( load_object(CMD_REMOVERACES)->cmd());
-    catch( load_object(CMD_ADDRACES)->cmd());
     catch( load_object(CMD_REMOVECLASSES)->cmd());
+    catch( load_object(CMD_ADDRACES)->cmd());
     catch( load_object(CMD_ADDCLASSES)->cmd());
     if(this_player()) whom = this_player();
     call_out((: eventUpdate :), 1, whom);

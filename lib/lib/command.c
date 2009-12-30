@@ -313,7 +313,9 @@ int eventForce(string cmd){
     Forced = 1;
     err = catch(res = command(cmd));
     Forced = 0;
-    if(err) error(err);
+    if(err){
+        error(err);
+    }
     return res;
 }
 

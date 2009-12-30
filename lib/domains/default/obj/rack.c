@@ -17,7 +17,7 @@ void create() {
     SetBaseCost("silver",50);
     SetMaxCarry(5000);
     SetInventory(([
-                "/domains/default/weap/sharpsword" : ({ 10, 5 }),
+                "/domains/default/weap/sharpsword" : ({ 1800, 5 }),
                 ]));
     SetCanClose(0);
     SetPreventGet("The rack does not budge.");

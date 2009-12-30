@@ -453,7 +453,8 @@ private void resolve_callback( string address, string resolved, int key ) {
     error = socket_connect(socket_num, resolved+" "+HOSTPORT, "read_callback", "write_callback");
     if (error != EESUCCESS) {
 #ifdef DATA_LOG
-        log_file(DATA_LOG,"socket_connect: " + socket_error(error) + "\n");
+        log_file(DATA_LOG,"socket_connect: " + socket_error(error) + 
+            "\nGURU MEDITATION #DEADBEEF.FEEDFACE\n");
 #endif
         //Debug("socket_connect, error="+error+": " + socket_error(error) + "\n");
         socket_close(socket_num);

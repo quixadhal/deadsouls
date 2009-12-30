@@ -19,6 +19,7 @@ void create(){
     SetMaxFlask(100); 
     SetMealType(MEAL_ALCOHOL);
     SetUnique(1);
+    SetTapped(1);
 }
 
 void init(){

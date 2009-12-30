@@ -238,7 +238,8 @@ varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     if( !msg ) return 0;
     if(this_object()->GetProperty("reprompt")){
         prompt = this_object()->GetPrompt(1);
-        if(!this_object()->GetCharmode()) msg = "\n" + msg;
+        //I don't want to talk about this.
+        //if(this_object()->GetProperty("gmud")) msg = "\n" + msg;
     } 
     if( !arg2 && !arg3 ) msg_class = MSG_ENV;
     else if( !arg2 ){

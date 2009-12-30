@@ -18,6 +18,7 @@ void create(){
     SetInventory(([
                 "/domains/town/obj/223round" : 30,
                 ]));
+    SetBaseCost("silver", 75);
 }
 void init(){
     ::init();

@@ -1,5 +1,6 @@
 #include <lib.h>
 #include <armor_types.h>
+#include <size_types.h>
 #include <damage_types.h>
 inherit LIB_BANE;
 inherit LIB_WORN_STORAGE;
@@ -33,6 +34,7 @@ static void create(){
                 }) );
     AddSave( ({ "charge", "disguised" }) );
     SetMaxCarry(500);
+    SetSize(S_HUMAN_SIZED);
     SetWear((: GetSuitHelp :));
 }
 
@@ -42,7 +44,7 @@ void init(){
 }
 
 varargs mixed GetSuitHelp(mixed who, string where){
-    string ret, str;
+    string ret, ret2, str;
     object env;
     if(!who) return 0;
     if(stringp(who)){
@@ -54,7 +56,8 @@ varargs mixed GetSuitHelp(mixed who, string where){
     if(query_verb() == "wear" || (str && answers_to(str, this_object()))){
         if(environment() == who && charge){
             ret = "The suit's Heads Up Display crackles to life and reads:\n ";
-            ret += "%^GREEN%^This suit allows you, honorable Scout, to travel in hazardous terrain "+
+            ret += "%^GREEN%^";
+            ret2 = "This suit allows you, honorable Scout, to travel in hazardous terrain "+
                 "with a minimum of inconvenience. In the interest of fulfilling the exigencies "+
                 "of your duties to the Extant Authority, this suit provides the following "+
                 "improvements to your abilities:\n\n"+
@@ -70,9 +73,13 @@ varargs mixed GetSuitHelp(mixed who, string where){
                 "become unavailable. Please note that as a Scout, your Arbiter relies on your "+
                 "most excellent judgment in disengaging from disharmonies and reporting such "+
                 "situations for referral to the Negotiations Corps.%^RESET%^";
-            who->eventPrint("You wear "+GetShort()+".");
-            if(env) tell_room(env, who->GetName()+" wears "+
-                    GetShort()+".", ({who}));
+            if(query_verb() == "wear" && !GetWorn()){
+                who->eventPrint("You wear "+GetShort()+".");
+                if(env) tell_room(env, who->GetName()+" wears "+
+                        GetShort()+".", ({who}));
+            }
+            ret2 = translate(ret2, who->GetLanguageLevel("English"));
+            who->eventPrint(ret+ret2);
             return 1;
         }
     }

@@ -15,6 +15,7 @@ void create(){
     SetAmmoType("acp");
     SetVendorType(VT_TREASURE);
     SetMass(5);
+    SetBaseCost("silver", 45);
     SetInventory(([
                 "/domains/town/obj/9mmround" : 15
                 ]));

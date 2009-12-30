@@ -16,6 +16,7 @@ static void create() {
     SetClass(30);
     SetDamageType(PIERCE);
     SetWeaponType("projectile");
+    SetBaseCost("silver", 85);
 }
 
 void init(){

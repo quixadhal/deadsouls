@@ -18,6 +18,7 @@ static void create(){
     SetProtection(BLUNT, 25);
     SetProtection(BLADE, 25);
     SetProtection(KNIFE, 25);
+    SetProtection(PIERCE, 25);
 }
 
 void init(){
