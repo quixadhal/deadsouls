@@ -179,7 +179,7 @@ void check_desync(){
     if(sizeof(desynced)){
         desynced = singular_array(desynced);
         foreach(string rtr in desynced){
-            trr(rtr+" desynced", "red");
+            tc(rtr+" desynced");
             this_object()->SendListReq(rtr, "mudlist");
             desynced -= ({ rtr });
         }

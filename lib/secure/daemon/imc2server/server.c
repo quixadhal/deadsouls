@@ -15,7 +15,7 @@ object ssocket = find_object(SSOCKET_D);
 static void validate(){
     if( previous_object() != cmd && previous_object() != rsocket &&
             previous_object() != this_object() && previous_object() != ssocket &&
-            !(master()->valid_apply(({ "ASSIST" }))) ){
+            !((int)master()->valid_apply(({ "ASSIST" }))) ){
         trr("SECURITY ALERT: validation failure in IMC2_SERVER_D.","red");
         error("Illegal attempt to access IMC2 server daemon: "+get_stack()+
                 " "+identify(previous_object(-1)));
@@ -75,6 +75,7 @@ string unescape(string str){
     }
     output += b;
     output = replace_string(output,"\n\r","\n");
+    output = replace_string(output,"\r\n","\n");
     if((sizeof(explode(output," "))==1) && sscanf(output,"\\\"%*s\\\"") )
         output = "\""+output+"\"";
     return output;
@@ -206,7 +207,7 @@ mixed translate_packet(mixed data, int fd){
                         " sha256=0"+
                         " host=\""+tmpinfo[key]["host"]+"\" "+
                         "port="+tmpinfo[key]["port"]+
-                        "\n\r" });
+                        "\r\n" });
             }
         }
     }
@@ -219,6 +220,7 @@ mixed translate_packet(mixed data, int fd){
             foreach(string chan, mixed arr in chans){
                 string owner = replace_string(arr[0]," ","_");
                 int priv = arr[1];
+                if(!priv) ROUTER_D->AddIMC2Chan(fd, data[4], chan);
                 ret += ({
                         "ICE@"+hub+" "+time()+" "+hub+" ice-update *@"+
                         data[4]+" channel="+hub+":"+chan+" owner=admin@"+owner+
@@ -236,12 +238,15 @@ mixed translate_packet(mixed data, int fd){
     }
     if(data[0][0..7] == "channel-"){
         string tmp = replace_string(data[8],"\"","'");
+        string emt = "";
         if(data[0][8..8] == "e"){
-            tmp = replace_string(data[8],"$N",data[7]);
+            tmp = trim(replace_string(data[8],"$N",""));
+            emt = " emote=1";
         }
         ret = data[7]+"@"+imc2_name(data[2])+" "+time()+" "+
-            imc2_name(data[2])+ " ice-msg-b *@* channel="+router_name+
-            ":"+data[6]+" text=\""+unescape(tmp)+"\"";
+            imc2_name(data[2])+ "!"+router_name+
+            " ice-msg-b *@* channel="+router_name+
+            ":"+data[6]+" text=\""+unescape(tmp)+"\""+emt;
     }
     if(data[0] == "who-req"){
         ret = data[3]+"@"+imc2_name(data[2])+" "+time()+" "+
@@ -283,10 +288,33 @@ varargs void write_data(int fd, mixed data){
     if(!arrayp(data)) data = ({ data });
     if(!sstat || sstat[1] != "DATA_XFER" || !ssock || sstat[5] != ssock) return;
     if(member_array(fd, keys(ROUTER_D->query_irn_sockets())) == -1){ 
+        if(sizeof(data) < 20){
         foreach(mixed element in data){
-            if(sizeof(element) && last(element,2) != "\n\r") element += "\n\r";
+            if(sizeof(element) && last(element,2) != "\r\n") element += "\r\n";
             SSOCKET_D->write_data(fd, element);
         }
+        }
+        else {
+            int delay = 0;
+            ret = data[0..20];
+            data = data[21..];
+            while(sizeof(ret)){
+                mixed cargo = ret;
+                call_out("delayed_write", delay, cargo, fd, targetmud);
+                ret = data[0..20];
+                data = data[21..];
+                delay++;
+            }
+        }
+    }
+}
+
+static void delayed_write(mixed data, int fd, string targetmud){
+    string checkmud = ROUTER_D->query_connected_fds()[fd];
+    if(checkmud != targetmud) return;
+    foreach(mixed element in data){
+        if(sizeof(element) && last(element,2) != "\r\n") element += "\r\n";
+        SSOCKET_D->write_data(fd, element);
     }
 }
 
@@ -401,19 +429,33 @@ void read_callback(mixed fd, mixed info){
         construct_startup(fd, info);
         return;
     }
-    if(!mudinfo[packet[2]] || 
+    if(!packet || !mudinfo[packet[2]] || 
             ROUTER_D->query_connected_fds()[fd] != packet[2]){
-        write_data(fd, "Your connection isn't registered as "+packet[2]);
+        write_data(fd, "Your connection isn't registered as " +
+          (packet ? packet[2] : "anything at all"));
         close_connection(fd);
         return;
     }
     if(packet[0] == "ice-msg-b"){
         string tmp;
-        sscanf(packet[6],"%*shannel=%*s:%s %*s",tmp);
-        ret = ({ "channel-m" });
-        ret += packet[1..5];
         if(!stringp(datamap["text"])) datamap["text"] = itoa(datamap["text"]);
+        sscanf(packet[6],"%*shannel=%*s:%s %*s",tmp);
+        if(datamap["emote"]){
+            ret = ({ "channel-e" });
+            if(datamap["emote"] == 2){
+                string tmp2 = datamap["text"];
+                tmp2 = replace_string(tmp2, packet[3]+"@"+packet[2], "$N");
+                datamap["text"] = tmp2;
+            }
+            else {
+                string tmp2 = "$N " + datamap["text"];
+                datamap["text"] = tmp2;
+            }
+        }
+        else ret = ({ "channel-m" });
+        ret += packet[1..5];
         ret += ({ tmp, capitalize(packet[3]), datamap["text"] });
+        tc("ret: "+identify(ret));
         ROUTER_D->read_callback(fd, ret);
         return;
     }
@@ -480,4 +522,3 @@ void read_callback(mixed fd, mixed info){
         ROUTER_D->read_callback(fd, ret);
     }
 }
-

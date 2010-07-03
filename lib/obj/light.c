@@ -72,3 +72,6 @@ string GetAffectLong(object ob) {
     return "There is a magical glow around " + ob->GetName() + ".";
 }
 
+int CanSell(){
+    return 0;
+}

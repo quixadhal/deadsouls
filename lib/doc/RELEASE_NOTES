@@ -1,5 +1,12 @@
+---- 3.1a3 (unreleased) ---
+- Driver: Updated to Fluffos 2.20 plus minor tweaks.
+- Teachers and trainers now stop instructing you when you're
+  fighting them or if you've picked them up.
+- MB IMC2 channels renamed in CHAT_D.
+- IMC2 server: fixed line endings, emotes, minor runtimes and channel parsing.
+
 ---- 3.0 ---
-- Released 2009-12-30
+- Released 2009-12-31
 - Driver: added Kalinash's fix for Solaris on 64 bit SPARC.
 - Driver: added Kalinash's fix for BSD math.
 - Added commands: anchor, unanchor

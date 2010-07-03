@@ -28,7 +28,7 @@ object ssocket = find_object(SSOCKET_D);
 static void validate(){
     if( previous_object() != cmd && previous_object() != rsocket &&
             previous_object() != this_object() && previous_object() != ssocket &&
-            !(master()->valid_apply(({ "ASSIST" }))) ){
+            !((int)master()->valid_apply(({ "ASSIST" }))) ){
         trr("SECURITY ALERT: validation failure in ROUTER_D.","red");
         error("Illegal attempt to access router daemon: "+get_stack()+
                 " "+identify(previous_object(-1)));
@@ -517,7 +517,7 @@ void clean_chans(){
         mixed *tmp_chan = ({});
         if(sizeof(val) == 3){
             tmp_chan = ({ (intp(val[0]) ? val[0] : 0), 
-                    val[1], distinct_array(val[2]) });
+              val[1], distinct_array(val[2]) });
             channels[key] = tmp_chan;
         }
     }

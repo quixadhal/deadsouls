@@ -46,8 +46,20 @@ static private mapping localchans = ([
         "dead_souls": "ds",
 
         //IMC2 Channels
-        "Server02:igame": "i2game",
-        "Server02:inews": "i2news",
+        "Server02:igame": "i2game2",
+        "Server02:inews": "i2news2",
+        "Server01:ibuild": "ibuild2",
+        "Server01:ichat": "ichat2",
+        "Server01:pchat": "pchat2",
+        "Server01:i2game": "i2game2",
+        "Server01:i2chat": "i2chat2",
+        "Server01:i3chat": "i3chat2",
+        "Server01:i2code": "i2code2",
+        "Server01:i2news": "i2news2",
+        "Server01:imudnews": "imudnews2",
+        "Server01:irc": "irc2",
+        "Server01:ifree": "ifree2",
+
         ]);
 
 static private mapping remotechans = ([
@@ -60,8 +72,19 @@ static private mapping remotechans = ([
         "ds": "dead_souls",
 
         //IMC2 Channels
-        "i2game" : "Server02:igame",
-        "i2news" : "Server02:inews",
+        "i2game2": "Server02:igame",
+        "i2news2": "Server02:inews",
+        "ibuild2": "Server01:ibuild",
+        "ichat2": "Server01:ichat",
+        "pchat2": "Server01:pchat",
+        "i2game2": "Server01:i2game",
+        "i2chat2": "Server01:i2chat",
+        "i3chat2": "Server01:i3chat",
+        "i2code2": "Server01:i2code",
+        "i2news2": "Server01:i2news",
+        "imudnews2": "Server01:imudnews",
+        "irc2": "Server01:irc",
+        "ifree2": "Server01:ifree",
         ]);
 
 static private mapping tags = ([
@@ -79,17 +102,17 @@ static private mapping tags = ([
         "intergossip" : "%^GREEN%^",
         "intercre"    : "%^ORANGE%^",
 
-        "ibuild"      : "%^B_RED%^%^YELLOW%^",
-        "ichat"       : "%^B_RED%^%^GREEN%^",
-        "pchat"       : "%^B_RED%^%^BOLD%^GREEN%^",
-        "i2game"      : "%^B_BLUE%^",
-        "i2chat"      : "%^B_GREEN%^",
-        "i3chat"      : "%^B_RED%^",
-        "i2code"      : "%^B_YELLOW%^%^RED%^",
-        "i2news"      : "%^B_YELLOW%^%^BLUE%^",
-        "imudnews"    : "%^B_YELLOW%^%^CYAN%^",
-        "irc"         : "%^B_BLUE%^%^GREEN%^",
-        "ifree"         : "%^B_BLUE%^%^GREEN%^",
+        "ibuild2"      : "%^B_RED%^%^YELLOW%^",
+        "ichat2"       : "%^B_RED%^%^GREEN%^",
+        "pchat2"       : "%^B_RED%^%^BOLD%^GREEN%^",
+        "i2game2"      : "%^B_BLUE%^",
+        "i2chat2"      : "%^B_GREEN%^",
+        "i3chat2"      : "%^B_RED%^",
+        "i2code2"      : "%^B_YELLOW%^%^RED%^",
+        "i2news2"      : "%^B_YELLOW%^%^BLUE%^",
+        "imudnews2"    : "%^B_YELLOW%^%^CYAN%^",
+        "irc2"         : "%^B_BLUE%^%^GREEN%^",
+        "ifree2"         : "%^B_BLUE%^%^GREEN%^",
 
         "default"     : "%^BOLD%^BLUE%^",
         "default-IMC2" : "%^BOLD%^WHITE%^%^B_BLUE%^",

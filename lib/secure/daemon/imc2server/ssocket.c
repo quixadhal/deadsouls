@@ -26,7 +26,7 @@ varargs static void validate(int i){
         }
     }
     if( previous_object() != cmd && previous_object() != router &&
-            previous_object() != this_object() && !(master()->valid_apply(({ "ASSIST" }))) ){
+            previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
         server_log("%^RED%^SECURITY ALERT: validation failure in SSOCKET_D.","ssocket");
         error("Illegal attempt to access router socket daemon: "+get_stack()+
                 " "+identify(previous_object(-1)));
@@ -135,7 +135,7 @@ static void write_data_retry(int fd, mixed data, int counter){
 
     maxtry = IMC2_SERVER_D->GetMaxRetries();
     if (counter == maxtry) {
-        trr("Could not write data to "+IMC2_SERVER_D->query_connected_fds()[fd]+", fd"+fd+": "+identify(data[0]));
+        trr("Could not write data to "+ROUTER_D->query_connected_fds()[fd]+", fd"+fd+": "+identify(data[0]));
         return;
     }
     if(!grepp(data,"close-notify") && !grepp(data,"is-alive")){
@@ -166,7 +166,7 @@ static void write_data_retry(int fd, mixed data, int counter){
             if (counter < maxtry) {
                 if(counter < 2 || counter > maxtry-1)
                     trr("SSOCKET_D write_data_retry "+counter+" to "+
-                            IMC2_SERVER_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
+                            ROUTER_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
                 call_out( (: write_data_retry :), 2 , fd, data, counter + 1 ); 
                 return;
             }
