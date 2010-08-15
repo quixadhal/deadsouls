@@ -1351,7 +1351,7 @@ static void confirm_subject(string str) {
     } 
     else if(str == "y") get_subject("[No Subject]"); 
     else { 
-        message("prompt", "Answer 'y' or 'n': /n", this_player()); 
+        message("prompt", "Answer 'y' or 'n': \n", this_player()); 
         input_to("confirm_subject"); 
         return; 
     } 

@@ -644,7 +644,7 @@ string error_handler(mapping mp, int caught) {
              * the only effective countermeasure is a hard reboot
              * of the mud.
              */
-            debug_message("Eval cost error cascade!\n");
+            debug_message("Shut'er down, Clancy! She's a-pumpin' mud!!\n");
             shutdown(-9);
         }
     }

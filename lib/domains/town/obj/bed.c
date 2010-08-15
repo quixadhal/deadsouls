@@ -5,7 +5,6 @@ inherit LIB_BED;
 inherit LIB_PRESS;
 inherit LIB_MANIPULATE;
 
-
 int MoveBed();
 int PushBed();
 static void create() {
@@ -22,10 +21,11 @@ static void create() {
     SetBaseCost("silver",1500);
     SetMaxSitters(2);
     SetMaxLiers(1);
+    SetPreventGet(1);
     SetManipulate( ([ "default" : (: MoveBed :) ]) );
     SetPress( ([ "default" : (: PushBed :) ]) );
 }
-mixed CanGet(object ob) { return "The bed is too heavy to pick up.";}
+
 int MoveBed(){
     send_messages("move", "$agent_name $agent_verb the bed.",
             this_player(), 0, environment(this_player()));

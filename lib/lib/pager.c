@@ -119,7 +119,10 @@ static int Page(mixed tmpfile){
         int fp;
         file["CurrentLine"] = endline;
         fp = functionp(file["Callback"]);
-        if( !fp || (fp == FP_OWNER_DESTED) ) return 1;
+        if( !fp || (fp == FP_OWNER_DESTED) ){
+            this_object()->CheckCharmode();
+            return 1;
+        }
         if( file["Args"] ) evaluate(file["Callback"], file["Args"]...);
         else {
             evaluate(file["Callback"]);
@@ -300,6 +303,7 @@ static void cmdPage(string str, mapping file){
 
         case "q":
             fp = functionp(file["Callback"]);
+        this_object()->CheckCharmode();
         if( !fp || (fp == FP_OWNER_DESTED) ) return;
         if( file["Args"] ) evaluate(file["Callback"], file["Args"]...);
         else evaluate(file["Callback"]);
@@ -331,6 +335,7 @@ varargs static private void RazzleDazzle(mixed args...){
         if( args ) evaluate(f, args...);
         else evaluate(f);
     }
+    this_object()->CheckCharmode();
 }
 
 static private string GetPagerPrompt(mapping file){
@@ -370,4 +375,3 @@ string GetHelp(string str){
             "q\n"
             "Quit out of the pager.");
 }
-

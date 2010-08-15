@@ -1,14 +1,30 @@
 HTTP/1.1 200 OK
-Date: Tue, 29 Dec 2009 23:09:12 GMT
-Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.3 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
-Last-Modified: Mon, 28 Dec 2009 21:55:20 GMT
-ETag: "351665-1d0c6-47bd0f626e200"
+Date: Sun, 15 Aug 2010 01:17:17 GMT
+Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.6 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
+Last-Modified: Mon, 26 Jul 2010 00:17:29 GMT
+ETag: "d80ae-1d438-48c3f4f5a7840"
 Accept-Ranges: bytes
-Content-Length: 118982
+Content-Length: 119864
 Connection: close
 Content-Type: text/plain
 
----- 2.12 ---
+---- 3.1a9 ---
+- Released 2010-07-25
+- Driver: Updated to Fluffos 2.20 plus minor tweaks.
+- Teachers and trainers now stop instructing you when you're
+  fighting them or if you've picked them up.
+- MB IMC2 channels renamed in CHAT_D.
+- IMC2 server: fixed line endings, emotes, minor runtimes and channel parsing.
+- IMC2 client: uses CRLF now rather than LFCR if version 2.1 is specified.
+- "chan add all" now works.
+- Fixed a crasher when querying for binary save dir.
+- Receiving messages while in the pager while in charmode no longer
+  aborts the pager.
+- Receiving a message while typing a long line in charmode no longer obscures 
+  the message on next keypress.
+- Quitting the pager while in (suspended) charmode unsuspends charmode.
+
+---- 3.0 ---
 - Released 2009-12-31
 - Driver: added Kalinash's fix for Solaris on 64 bit SPARC.
 - Driver: added Kalinash's fix for BSD math.
@@ -40,6 +56,9 @@ Content-Type: text/plain
 - Fixed a problem with "EverFill" things like rivers running out.
 - Fixed a problem with undrinkable floods and floods that couldn't
   be used to fill flasks.
+- Vendors now buy items at half value, if they can.
+- The Windows version now automatically disables IMC2 if the
+  server IP becomes invalid.
 
 ---- 2.11a22 ---
 - Released 2009-11-01

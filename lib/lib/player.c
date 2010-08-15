@@ -303,8 +303,14 @@ mixed CanUse(){ return 1; }
 
 int Setup(){
     string classes;
+    string oldparties = PARTY_D->GetOldParties();
     if( !interactive::Setup() ) return 0;
     if( !GetClass() ) SetClass("explorer");
+    RemoveExtraChannels(oldparties);
+    foreach(string oldparty in oldparties){
+        RemoveChannel(oldparty);
+    }
+    RemoveExtraChannels(oldparties);
     if( GetClass() ){
         foreach(classes in CLASSES_D->GetClasses())
             if( ClassMember(classes) && classes != GetClass() )

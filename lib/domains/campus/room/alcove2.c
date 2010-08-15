@@ -10,10 +10,13 @@ void create() {
     SetLong("An alcove.");
     SetClimate("indoors");
     SetItems( ([ 
-                ]) );
+      ]) );
+    SetInventory(([
+        "/domains/campus/weap/board" : 1,
+      ]));
     SetExits(([
-                "east" : "/domains/campus/room/weaplab",
-                ]));
+        "east" : "/domains/campus/room/weaplab",
+      ]));
 }
 
 void init(){

@@ -2,6 +2,37 @@
 
 mapping Tries = ([]);
 
+mapping Specials = ([
+    "%21" : "\!",
+    "%40" : "\@",
+    "%23" : "\#",
+    "%24" : "\$",
+    "%25" : "\%",
+    "%5E" : "\^",
+    "%26" : "\&",
+    "%28" : "\(",
+    "%29" : "\)",
+    "%2B" : "\+",
+    "%60" : "\`",
+    "%7E" : "\~",
+    "%3D" : "\=",
+    "%7B" : "\{",
+    "%7D" : "\}",
+    "%7C" : "\|",
+    "%3A" : "\:",
+    "%22" : "\"",
+    "%3C" : "\<",
+    "%3E" : "\>",
+    "%3F" : "\?",
+    "%5B" : "\[",
+    "%5D" : "\]",
+    "%5C" : "\\",
+    "%3B" : "\;",
+    "%27" : "\'",
+    "%2C" : "\,",
+    "%2F" : "\/",
+]);
+
 varargs string gateway(mixed args){
     string pass_hash, who, password, ip;
     string ret = "";
@@ -20,8 +51,18 @@ varargs string gateway(mixed args){
         else {
             who = lower_case(who);
 
-            if(!strsrch(who,"username=")) who = replace_string(who,"username=","",1);
-            if(!strsrch(password,"password=")) password = replace_string(password,"password=","",1);
+            if(!strsrch(who,"username=")){
+                who = replace_string(who,"username=","",1);
+            }
+
+            if(!strsrch(password,"password=")){
+                password = replace_string(password,"password=","",1);
+                if(grepp(password, "%")){
+                    foreach(string key, string val in Specials){
+                        password = replace_string(password, key, val);
+                    }
+                }
+            }
 
             if(!ret && !user_exists(who)){
                 no_user = 1;

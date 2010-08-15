@@ -9,6 +9,7 @@ void create() {
     SetShort("Medical Research Lab");
     SetLong("Medical experiments occur here.");
     SetClimate("indoors");
+    SetProperty("nopeer",1);
     SetItems( ([ 
                 ({ "door","sliding door" }) : "A strange, metallic sliding door.",
                 ]) );

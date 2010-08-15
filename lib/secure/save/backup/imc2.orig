@@ -11,24 +11,29 @@
 #include <daemons.h>
 #include <message_class.h>
 
+//Which IMC version you wish to support.
+#define IMC_VERSION 2
+
 // Connection data for Davion's server
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
 //#define HOSTNAME "server01.mudbytes.net"
+#ifndef IMCTESTING
 #define HOSTPORT 5000
 #define HOSTIP "74.207.247.83"
+#endif
 
-// Connection data for Kayle and Samson's server
+// Connection data for Davion's other server
 // HostIP overrides HOSTNAME, in case the mud doesn't want to resolve addresses
-//#define HOSTNAME "server02.mudbytes.net"
 //#define HOSTPORT 9000
-//#define HOSTIP "66.218.49.113"
+//#define HOSTIP "74.207.247.83"
 
 //This is the LPMuds.net experimental IMC2 server. If you are
 //already connected to LPMuds.net intermud using Intermud-3, do
 //not use the LPMuds.net IMC2 server.
-//#define HOSTPORT 8888
-//#define HOSTIP "97.107.133.86"
-
+#ifdef IMCTESTING
+#define HOSTPORT 8888
+#define HOSTIP "97.107.133.86"
+#endif
 
 // What name the network knows your mud as. Replace MUD_NAME with "whatever" if you want it to be different.
 #define MUDNAME (imc2_mud_name())
@@ -75,9 +80,6 @@
 
 // Minimum permission number for channel to be viewable on the web.
 #define BACKLOG_WEB_LEVEL 0
-
-// WHO_STR is the code that you want a who request to display.
-//#define WHO_STR CGI_WHO->gateway(1)+URL+"\ntelnet://alcatraz.wolfpaw.com:8000\n"+"______________________________________________________________________________"
 
 // What's the file for the channel daemon?
 #ifndef CHANNEL_BOT
@@ -150,8 +152,10 @@ string buf=""; // Buffer for incoming packets (aren't always sent 1 at a time)
 // Variables
 static int xmit_to_network_room = 1; //enable this to make a lot of noise
 static string hub_name, network_name;
-string server_version;
-mapping chaninfo;
+float server_version;
+static string lterm;
+static float client_version = IMC_VERSION;
+static mapping chaninfo;
 mapping localchaninfo; // (["chan": ([ "perm":1, "name":"something", "users":({ }) ]) ])
 mapping mudinfo;
 mapping genders;
@@ -170,6 +174,7 @@ mapping string_to_mapping(string str);
 string main_help();
 void keepalive(string args, object who);
 
+string clean_str(string str);
 private void send_packet(string sender, string packet_type, string target, string destination, string data);
 private void send_text(string text);
 private void got_packet(string info);
@@ -259,11 +264,15 @@ void write_callback(int fd){
     start_logon();
 }
 
-
 void read_callback(int socket, mixed info){
-    string a,b;
+    string a,b,tmp;
     int done=0;
     counter = time();
+
+    //tc("read_callback","white");
+    //tmp = replace_string(info, "\n", "(LF)");
+    //tmp = replace_string(tmp, "\r", "(CR)");
+    //tc("read_callback: "+tmp+"\n");
 
 #ifdef IMC2_LOGGING
     write_to_log(DATA_LOG,"SERVER: "+info+"\n");
@@ -275,15 +284,17 @@ void read_callback(int socket, mixed info){
     // The hub groups packets, unfortunately.
     switch(mode){
     case MODE_WAITING_ACCEPT: // waiting for Hub to send autosetup
-        if(sscanf(info, "autosetup %s accept %s\n\r",
+        if(sscanf(info, "autosetup %s accept %s"+lterm,
             hub_name, network_name)==2){
             mode = MODE_CONNECTED;
+            if(network_name) network_name = clean_str(network_name);
             send_is_alive("*");
             send_keepalive_request();
             send_ice_refresh();
-        } else if(sscanf(info, "PW %s %s version=%d %s\n",
+        } else if(sscanf(info, "PW %s %s version=%f %s"+lterm[0..0],
             hub_name, serverpass, server_version, network_name)==4){
             mode = MODE_CONNECTED;
+            if(network_name) network_name = clean_str(network_name);
             send_is_alive("*");
             send_keepalive_request();
             send_ice_refresh();
@@ -298,9 +309,22 @@ void read_callback(int socket, mixed info){
     case MODE_CONNECTED:
         while(!done){
             if(sscanf(buf,"%s\n\r%s",a,b)==2){ // found a break...
+                //if(IMC_VERSION > 2) tc("LFCR: "+a,"red");
                 got_packet(a);
                 buf=b;
-            } else { // no break...
+            } 
+            else if(sscanf(buf,"%s\r\n%s",a,b)==2){ // found a break...
+                //if(IMC_VERSION < 2.1) tc("CRLF","green");
+                got_packet(a);
+                buf=b;
+            }
+            else { // no break...
+                if(sizeof(b)){
+                    tmp = replace_string(b, "\n", "(LF)");
+                    tmp = replace_string(tmp, "\r", "(CR)");
+                    //tc("remainder: "+identify(tmp));
+                    got_packet(b+lterm);
+                }
                 done = 1;
             }
         }
@@ -310,7 +334,7 @@ void read_callback(int socket, mixed info){
 }
 
 private void got_packet(string info){
-    string str;
+    string str, tmp;
     string a,b, my_ip;
     int i;
     string sender, origin, route, packet_type, target, destination, strdata;
@@ -322,7 +346,9 @@ private void got_packet(string info){
         return;
     }
 #ifdef IMC2_LOGGING
-    write_to_log(DATA_LOG,"GOT PACKET: "+info+"\n");
+    tmp = replace_string(info,"\n","(LF)");
+    tmp = replace_string(tmp,"\r","(CR)");
+    write_to_log(DATA_LOG,"GOT PACKET: "+tmp+"\n");
 #endif
 
     counter = time();
@@ -495,10 +521,16 @@ private int close_callback(object socket){
 }
 
 private void send_text(string text){
+    string tmp;
+    text = clean_str(text);
+    text += lterm;
+    tmp = replace_string(text, "\n", "(LF)");
+    tmp = replace_string(tmp, "\r", "(CR)");
     // Send a literal string.
     // Almost everything should use the send_packet function instead of this.
 #ifdef IMC2_LOGGING
-    write_to_log(DATA_LOG,"CLIENT: "+save_variable(text)+"\n");
+    write_to_log(DATA_LOG,"CLIENT: "+save_variable(tmp)+"\n");
+    //tc("send_text: "+tmp);
 #endif
     validate(socket_num);
     socket_write(socket_num,text);
@@ -523,6 +555,12 @@ void create(){
     counter = time();
     tn("IMC2: created "+ctime(time()));
 #endif
+    if(client_version > 2){
+        lterm = "\r\n";
+    }
+    else {
+        lterm = "\n\r";
+    }
     call_out( (: Setup :), 1);
 }
 
@@ -621,7 +659,6 @@ void remove(){
     // This object is getting destructed.
     tn("removing imc2. stack: "+get_stack(1));
     mode=2;
-    //tc("SaveFile: "+SaveFile, "green");
     SaveObject(SaveFile, 1);
     socket_close(socket_num);
 #ifdef IMC2_LOGGING
@@ -669,6 +706,11 @@ void resolve_callback( string address, string resolved, int key ) {
         write_to_log(DATA_LOG,"socket_connect: " + socket_error(error) + "\n");
 #endif
         socket_close(socket_num);
+        //Timeouts on windows lag the whole mud. This disables the daemon
+        //to prevent that.
+        if(query_os_type() == "windows" && grepp(socket_error(error), "Problem with connect")){
+            load_object("/secure/cmds/admins/mudconfig")->cmd("imc2 disable");
+        }
         return;
     }
 #ifdef IMC2_LOGGING
@@ -678,25 +720,34 @@ void resolve_callback( string address, string resolved, int key ) {
 
 void start_logon(){
 #if NOT_AUTO
-    send_text(sprintf("PW %s %s version=%d\n",
+    //tc("1, version: "+IMC_VERSION);
+    send_text(sprintf("PW %s %s version=%s"+lterm,
 #else
-        send_text(sprintf("PW %s %s version=%d autosetup %s\n",
+    //tc("2, version: "+IMC_VERSION);
+    send_text(sprintf("PW %s %s version=%s autosetup %s"+lterm,
 #endif
             MUDNAME,
-            clientpass, 2
+            clientpass, IMC_VERSION+""
 #ifndef NOT_AUTO
             , serverpass
 #endif
           ));
         buf="";
         /* For invitation-only networks.
-           send_text(sprintf("PW %s %s version=%d %s\n",
+           //tc("3, wtf");
+           send_text(sprintf("PW %s %s version=%s %s"+lterm,
            MUDNAME,
-           clientpass, 2, "hub03"
+           clientpass, IMC_VERSION+"", "hub03"
            ));
          */
         sequence=time();
     }
+      string clean_str(string str){
+          while(sizeof(str) && str[<1] < 32){
+             str = str[0..<2];
+          }
+          return str;
+      }
 
       string escape(string str){
           str=replace_string(str,"\\","\\\\");
@@ -775,9 +826,9 @@ void start_logon(){
       void send_packet(string sender, string packet_type, string target, string destination, string data){
           // Sends a packet in the format that IMC2 uses.
           sequence++;
-          send_text(sprintf("%s@%s %d %s %s %s@%s %s\n",
+          send_text(sprintf("%s@%s %d %s %s %s@%s %s",
               sender,	MUDNAME, sequence, MUDNAME, packet_type,
-              target, destination, data));
+              target, destination, clean_str(data)));
       }
 
       void send_keepalive_request(){
@@ -833,7 +884,7 @@ void start_logon(){
         // Send outgoing tell.
         if(!reply) reply=0;
         send_packet(capitalize(from->GetKeyName()),"tell",targname,targmud,
-          sprintf("level=%d text=%s reply=%d emote=%d", level(from),escape(msg),reply,emote));
+          "text="+escape(msg));
         from->eventPrint(ret, MSG_CONV);
         from->eventTellHist(ret);
     }
@@ -965,7 +1016,7 @@ void start_logon(){
     string imc2_to_pinkfish(string str){
         string output="";
         int sz;
-        str = replace_string(str, "/~", "/~~");
+        str = replace_string(str+"", "/~", "/~~");
         /*
            For colors explanation, refer to IMC Packet Documentation by Xorith.
            Thanks very much for putting that out, by the way. :)
@@ -1613,15 +1664,12 @@ EndText, NETWORK_ID,COMMAND_NAME);
     int UnSetAutoDisabled(int x){
         //This is just for taking away automatic disablement.
         //For enabling/disabling, see the mudconfig command.
-        //tc("AD stack: "+get_stack(1));
         if(!autodisabled) return 0;
         autodisabled = 0;
         if(x){
             eventChangeIMC2Passwords();
         }
-        //if(!sizeof(SaveFile)) return autodisabled;
         if(unguarded((:directory_exists(path_prefix(SaveFile)):))){
-            //tc("SaveFile: "+SaveFile, "red");
             SaveObject(SaveFile,1);
             RELOAD_D->eventReload(this_object(), 2, 1);
         }

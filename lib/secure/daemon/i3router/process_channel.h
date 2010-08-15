@@ -323,4 +323,3 @@ void AddIMC2Chan(mixed fd, string name, string chan){
     if(base_name(previous_object()) != IMC2_SERVER_D) return;
     process_channel(fd,({"channel-listen",5,name,0,router_name,0,chan,1}));
 }
-

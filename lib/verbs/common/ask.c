@@ -47,8 +47,15 @@ mixed can_ask_str(string str) {
 
 mixed do_ask_liv_to_str(object ob, string str) {
     string lang = this_player()->GetDefaultLanguage();
-    string pre = "In " + lang + ", ";
-    string msg = translate(str, this_player()->GetLanguageLevel(lang));
+    //string pre = "In " + lang + ", ";
+    string pre = "In ";
+    int lvl;
+    string msg = translate(str, lvl=(this_player()->GetLanguageLevel(lang)));
+    if(lvl < 50) pre += "execrable "+lang+", ";
+    else if(lvl < 60) pre += "very poor "+lang+", ";
+    else if(lvl < 75) pre += "broken "+lang+", ";
+    else if(lvl < 99) pre += "imperfect "+lang+", ";
+    else pre += lang + ", ";
     msg = translate(msg, ob->GetLanguageLevel(lang));
     message("my_action", pre + "you ask "+ob->GetName()+" to "+str+".",
             this_player() );

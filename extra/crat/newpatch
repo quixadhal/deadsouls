@@ -1,3 +1,5 @@
+#!/bin/bash -x
+
 export NEWLIB=$2
 export OLDLIB=$1
 
@@ -17,7 +19,6 @@ unzip -qd $NEWLIB $HOME/mud/$NEWLIB.zip
 mv $OLDLIB/*/* $OLDLIB/
 
 mv $NEWLIB/*/* $NEWLIB/
-
 
 #\rm -f $OLDLIB/lib/secure/include/config.h
 #\rm -f $NEWLIB/lib/secure/include/config.h
@@ -49,9 +50,6 @@ mkdir $OLDLIB/lib/secure/cmds/builders
 mkdir $OLDLIB/lib/secure/daemon/imc2server
 mkdir $OLDLIB/lib/lib/daemon
 mkdir $OLDLIB/lib/lib/daemon/include
-mkdir $OLDLIB/lib/domains/campus/chamber
-mkdir $OLDLIB/lib/domains/town/chamber
-mkdir $OLDLIB/lib/domains/default/chamber
 mkdir $OLDLIB/lib/domains/cave
 mkdir $OLDLIB/lib/domains/cave/adm
 mkdir $OLDLIB/lib/domains/cave/armor
@@ -66,6 +64,7 @@ mkdir $OLDLIB/lib/domains/cave/txt
 mkdir $OLDLIB/lib/domains/cave/virtual
 mkdir $OLDLIB/lib/domains/cave/weap
 mkdir $OLDLIB/lib/doc/phints
+mkdir $OLDLIB/lib/domains/campus/chamber
 
 if [ $3 ]
 then
@@ -86,7 +85,7 @@ perl -pi -e s/"\:\ "/"\/"/g diff.txt
 
 cd $NEWLIB/
 
-find ./lib -type f -exec /contrib/enters {} \;
+find ./lib -type f  -exec /contrib/enters {} \;
 rm lib/secure/include/config.h
 rm lib/secure/cfg/mudos.cfg
 rm lib/secure/cfg/groups.cfg
@@ -103,7 +102,7 @@ echo "Anything after this is an imperfection except for the connect.c"
 cat diff2.txt
 \mv -f lib lib.foo
 tar xfp patch.tar
-(find ./lib -type f)|sort -dr > lib.txt
+find ./lib -type f|sort -dr > lib.txt
 \mv -f patch patch.foo
 mkdir patch
 #\cp -f ~/updaterr$OLD\_r$NEW.c lib/secure/daemon/update.c
@@ -115,11 +114,8 @@ mv lib patch/
 date
 cat diff2.txt
 cd patch/lib
-echo "fart 1"
-(find ./ -type f)|grep -v "\.html"|grep -v "\.gif" |grep -v "\.o" |grep -v "/news/" > upgrades.txt
-echo "fart 2"
-(find ./ -type f)|grep  "\.orig" >> upgrades.txt
-echo "fart 3"
+find ./ -type f|grep -v "\.html"|grep -v "\.gif" |grep -v "\.o" |grep -v "/news/" > upgrades.txt
+find ./ -type f|grep  "\.orig" >> upgrades.txt
 perl -pi -e s/"\.\/lib"/"\/lib"/g upgrades.txt
 perl -pi -e s/"\.\/"/"\/"/g upgrades.txt
 mv upgrades.txt ../

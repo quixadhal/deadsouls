@@ -14,21 +14,53 @@ inherit LIB_DAEMON;
 
 mapping Parties;
 static string SaveFile;
+string *old_parties;
 
 static void create() {
     daemon::create();
     SaveFile = save_file(SAVE_PARTIES);
     Parties = ([]);
+    old_parties = ({});
     if( unguarded((: file_exists(SaveFile) :)) ){
         RestoreObject(SaveFile);
     }
     SetNoClean(1);
+    this_object()->eventCleanParties();
+    set_heart_beat(60);
+    SaveObject(SaveFile);
+}
+
+static void eventDestroyParty(string party){
+    if(!party || !Parties[party]) return;
+    foreach(mixed member in this_object()->GetPartyMembers(party)){
+        if(member){
+            member->SetParty(0); 
+        }
+    }
+    if(member_array(party, CHAT_D->GetLocalChannels()) != -1){
+        CHAT_D->eventSendChannel("System", party, "The party " + party + 
+          " has been disbanded.");
+        CHAT_D->RemoveLocalChannel(party);
+    }
+    map_delete(Parties, party);
+    old_parties = distinct_array( (old_parties || ({})) + ({ party }) );
+    SaveObject(SaveFile);
+}
+
+string *GetOldParties(){
+    return sort_array((copy(old_parties || ({})) - keys(Parties || ([]))),1);
+}
+
+static void eventCleanParties(){
     foreach(mixed key, mixed val in Parties){
         mixed array members = this_object()->GetPartyMembers(key);
         members -= ({ 0 });
-        if(!sizeof(members)) map_delete(Parties, key);
+        if(!sizeof(members)) eventDestroyParty(key);
     }
-    SaveObject(SaveFile);
+}
+
+void heart_beat(){
+    eventCleanParties();
 }
 
 mixed array GetParties(){
@@ -217,16 +249,8 @@ mixed eventRemoveMember(object who, object targ) {
 }
 
 mixed eventRemoveParty(object who) {
-    object ob;
-    string name;
-
-    name = who->GetParty();
-    CHAT_D->eventSendChannel("System", name, "The party " + name + " has been "
-            "disbanded.");
-    foreach(ob in ((class party)Parties[name])->Members)
-        ob->SetParty(0);
-    map_delete(Parties, name);
-    SaveObject(SaveFile);
+    string name = who->GetParty();
+    eventDestroyParty(name);
     return 1;
 }
 

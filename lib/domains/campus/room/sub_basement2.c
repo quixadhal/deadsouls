@@ -14,7 +14,6 @@ static void create() {
                 "west" : "/domains/campus/room/shaftb",
                 "south" : "/domains/campus/room/stairwell2d.c",
                 ]) );
-    SetDoor("west", "/domains/campus/doors/eledoor3");
     SetInventory(([
                 ]));
 

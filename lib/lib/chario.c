@@ -170,6 +170,7 @@ varargs int CancelCharmode(int extra){
 #endif
     if(extra) ReceiveChars(sprintf("%c",13));
     this_object()->SetProperty("was_charmode", 0);
+    this_object()->SetProperty("reprompt", 0);
     return ret;
 }
 

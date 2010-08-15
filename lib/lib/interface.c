@@ -89,7 +89,29 @@ varargs void eventReceive(string message, int noprompt, int noerase){
             this_object()->erase_prompt();
         }
         receive(message);
-        this_object()->CheckCharmode();
+        
+        //This check is so that players whose charmode is temporarily
+        //suspended (so that they can be in the pager) don't have their
+        //charmode prematurely re-enabled.
+        if(!in_pager()) this_object()->CheckCharmode();
+
+        //This check is so that players in charmode who currently are
+        //typing a big line don't have their last-received-message
+        //overwritten by the redraw of their screen on the next
+        //keypress. I'm intentionally not adding a was_charmode check
+        //because at the moment that seems like overkill and like it
+        //might be annoying.
+        if(query_charmode()){
+            int buff = sizeof(this_object()->GetCharbuffer());
+            if(buff){
+                int scrn = this_object()->GetScreen()[0];
+                int prmpt = sizeof(strip_colours(this_object()->GetPrompt()));
+                if((prmpt + buff) >= scrn){
+                    receive("\n");
+                    this_object()->RedrawPrompt();
+                }
+            }
+        }
     }
 }
 

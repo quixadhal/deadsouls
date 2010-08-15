@@ -53,7 +53,7 @@ static void create(){
             RestoreObject(SaveFile, 1);
         }
     ConvertLists();
-        Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
+    Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
         SetNoClean(1);
         tn("INTERMUD_D reloaded.");
         tn("Loading object stack: "+get_stack(),"red");
@@ -130,7 +130,7 @@ static void eventRead(mixed *packet){
             }
     switch(packet[0]){
         case "startup-reply":
-            LOG_D->LogSpecial(LOG_I3,timestamp()+" "+identify(packet)+"/n");
+            LOG_D->LogSpecial(LOG_I3,timestamp()+" "+identify(packet)+"\n");
             tn("INTERMUD_D: "+identify(packet),"red");
             if( sizeof(packet) != 8 ){
                 //tn("We don't like the mudlist packet size.","red");
@@ -307,7 +307,7 @@ static void eventSocketClose(){
 static void eventConnectionFailure(){
     Online = 0;
         tn("INTERMUD_D: CONNECTION FAILED","red");
-        error("Failed to find a useful name server./n");
+        error("Failed to find a useful name server.\n");
 }
 
 int SetDestructOnClose(int x){ return 0; }

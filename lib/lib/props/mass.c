@@ -7,6 +7,16 @@
  */
 
 int Mass = 0;
+static int zpg = 0;
+
+int SetZPG(int x){
+    if(x > 0) zpg = 1;
+    else zpg = 0;
+}
+
+int GetZPG(){
+    return zpg;
+}
 
 mixed direct_weigh_obj(){
     return 1;
@@ -23,7 +33,9 @@ int AddMass(int x){
 }
 
 int GetMass(){
-    int load = this_object()->GetCarriedMass();
+    int load;
+    if(GetZPG()) return 0;
+    load = this_object()->GetCarriedMass();
     return (Mass + load);
 }
 
@@ -50,4 +62,3 @@ int GetWeight(){
     }
     return to_int(GetMass() * h);
 }
-

@@ -83,10 +83,15 @@ void heart_beat(){
         SaveObject(SAVE_ROUTER);
     }
     if(!(heart_count % 3600)){
+        object imc2d = find_object(IMC2_SERVER_D);
         this_object()->clean_ghosts();
         this_object()->clean_chans();
         this_object()->clear_discs();
         this_object()->check_blacklist();
+        if(imc2d){
+            mapping imcmuds = (imc2d->query_mudinfo() || ([]) );
+            if(sizeof(imcmuds)) this_object()->clear_discs(keys(imcmuds));
+        }
     }
     if(heart_count > 90000){
         heart_count = 0;

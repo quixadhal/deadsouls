@@ -1,9 +1,33 @@
----- 3.1a3 (unreleased) ---
+---- 3.1a10 ---
+- Released 2010-08-15
+- Guest is now excluded from PLAYERS_D autopurging.
+- Fixed some errant /n's (thx Aleksy!)
+- i3router: IRN channel updates are less noisy now, excluding "listening". 
+  3 years late, but hey, I got to it eventually, Aidil.
+- IMC2 server: fixed odd problem with authentication reported by Aleksy,
+  Quixadhal, and Kline.
+- CreWeb now accepts passwords that contain the characters: ~ ! @ # $ % ^ & *
+  ( ) _ + { } | : " < > ? ` - = [ ] \ ; ' , . /
+- Fixed some channel confusion regarding parties.
+- Corrected some ambiguity in "nopeer" versus "no peer" for rooms.
+- Added LIB_AIM.
+- Added some gadgets to the science complex.
+
+---- 3.1a9 ---
+- Released 2010-07-25
 - Driver: Updated to Fluffos 2.20 plus minor tweaks.
 - Teachers and trainers now stop instructing you when you're
   fighting them or if you've picked them up.
 - MB IMC2 channels renamed in CHAT_D.
 - IMC2 server: fixed line endings, emotes, minor runtimes and channel parsing.
+- IMC2 client: uses CRLF now rather than LFCR if version 2.1 is specified.
+- "chan add all" now works.
+- Fixed a crasher when querying for binary save dir.
+- Receiving messages while in the pager while in charmode no longer
+  aborts the pager.
+- Receiving a message while typing a long line in charmode no longer obscures 
+  the message on next keypress.
+- Quitting the pager while in (suspended) charmode unsuspends charmode.
 
 ---- 3.0 ---
 - Released 2009-12-31

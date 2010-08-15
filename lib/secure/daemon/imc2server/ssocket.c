@@ -10,8 +10,9 @@ inherit LIB_DAEMON;
 static private int router_socket;
 static private mapping sockets = ([]);
 static private int incept_date;
-int verbose = 1;
+int verbose = 0;
 
+static void close_callback(int fd, int force);
 void write_data(int fd, mixed data);
 varargs void yenta(mixed arg1, mixed arg2);
 object cmd = load_object(CMD_ROUTER);
@@ -23,6 +24,7 @@ varargs static void validate(int i){
             server_log("%^RED%^BAD SOCKET ALERT. fd "+i+":  "+
                     identify(socket_status(i)),"ssocket");
             error("Bad socket, fd "+i);
+            close_callback(i, 1);
         }
     }
     if( previous_object() != cmd && previous_object() != router &&
@@ -61,11 +63,11 @@ void close_connection(int fd){
     yenta("%^WHITE%^---\n","ssocket");
 }
 
-static void close_callback(int fd){
+static void close_callback(int fd, int force){
     string mudname;
     mapping muds_on_this_fd = ([]);
 
-    validate(fd);
+    if(!force) validate(fd);
 
     if(!find_object(ROUTER_D)) return;
 
@@ -139,7 +141,7 @@ static void write_data_retry(int fd, mixed data, int counter){
         return;
     }
     if(!grepp(data,"close-notify") && !grepp(data,"is-alive")){
-        trr("SSOCKET: bout to try writing "+identify(data)+" to "+fd,"yellow");
+        yenta("%^YELLOW%^SSOCKET: bout to try writing "+identify(data)+" to "+fd,"ssocket");
     }
     rc = socket_write(fd, data);
     if(!sockets[fd]){
@@ -180,6 +182,7 @@ void write_data(int fd, mixed data){
 
 void broadcast_data(mapping targets, mixed data){
     validate();
+    yenta("SSOCK: broadcast_data("+identify(targets)+", "+identify(data));
     foreach(int *arr in unique_array(values(targets), (: $1 :))){
         write_data(arr[0], data);
     }

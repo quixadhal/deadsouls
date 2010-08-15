@@ -16,6 +16,7 @@ cd /tmp/foo
 unzip -qd $OLDLIB $HOME/mud/$OLDLIB.zip
 #unzip -qd $NEWLIB /misc/data/mud/deadsouls/$NEWLIB.zip
 cd /mud/
+chmod -R 755 $NEWLIB/lib
 tar cfp - $NEWLIB|(cd /tmp/foo;tar xfp -)
 cd /tmp/foo
 
@@ -27,23 +28,25 @@ mv $OLDLIB/*/* $OLDLIB/
 #\rm -f $OLDLIB/lib/secure/include/config.h
 #\rm -f $NEWLIB/lib/secure/include/config.h
 
-\rm -f $OLDLIB/lib/secure/cfg/groups.cfg
-\rm -f $OLDLIB/lib/secure/cfg/mudos.cfg
-\rm -f $OLDLIB/lib/secure/cfg/mudos.win32
+\rm -f $OLDLIB/lib/secure/cfg/groups*cfg
+\rm -f $OLDLIB/lib/secure/cfg/mudos*cfg
+\rm -f $OLDLIB/lib/secure/cfg/mudos*win32
 
-\rm -f $NEWLIB/lib/secure/cfg/groups.cfg
-\rm -f $NEWLIB/lib/secure/cfg/mudos.cfg
-\rm -f $NEWLIB/lib/secure/cfg/mudos.win32
+\rm -f $NEWLIB/lib/secure/cfg/groups*cfg
+\rm -f $NEWLIB/lib/secure/cfg/mudos*cfg
+\rm -f $NEWLIB/lib/secure/cfg/mudos*win32
 
 \rm -rf $OLDLIB/lib/secure/save
 \rm -rf $OLDLIB/lib/save
 \rm -rf $OLDLIB/lib/secure/log
 \rm -rf $OLDLIB/lib/secure/upgrades
 \rm -rf $OLDLIB/lib/tmp
+\rm -rf $OLDLIB/lib/daemon/tmp
 \rm -rf $OLDLIB/lib/open
 \rm -rf $OLDLIB/lib/log
 \rm -rf $NEWLIB/lib/log
 \rm -rf $NEWLIB/lib/tmp
+\rm -rf $NEWLIB/lib/daemon/tmp
 \rm -rf $NEWLIB/lib/open
 \rm -rf $NEWLIB/lib/secure/save
 \rm -rf $NEWLIB/lib/secure/log
@@ -78,6 +81,7 @@ mkdir $OLDLIB/lib/domains/cave/txt 1>/dev/null 2>/dev/null
 mkdir $OLDLIB/lib/domains/cave/virtual 1>/dev/null 2>/dev/null
 mkdir $OLDLIB/lib/domains/cave/weap 1>/dev/null 2>/dev/null
 mkdir $OLDLIB/lib/doc/phints 1>/dev/null 2>/dev/null
+mkdir $OLDLIB/lib/domains/campus/chamber 1>/dev/null 2>/dev/null
 
 if [ $3 ]
 then
@@ -92,7 +96,6 @@ echo "not indenting"
 fi
 
 mv $NEWLIB/lib/secure/lib/connect.c  $NEWLIB/lib/secure/lib/connect.real
-cp $NEWLIB/lib/secure/lib/connect.first.c  $NEWLIB/lib/secure/lib/connect.c
 
 diff -rq $OLDLIB/lib $NEWLIB/lib > diff.txt
 
@@ -154,8 +157,11 @@ find ./ -type f|grep -v "upgrades\.txt" |grep -v "\.html"|grep -v "\.gif" |grep 
 find ./ -type f|grep  "\.orig" >> upgrades.txt
 perl -pi -e s/"\.\/lib"/"\/lib"/g upgrades.txt
 perl -pi -e s/"\.\/"/"\/"/g upgrades.txt
+echo "/secure/lib/connect.c" >> upgrades.txt
+echo "/secure/daemon/master.h" >> upgrades.txt
 cp upgrades.txt /tmp/foo/
 \cp -f upgrades.txt /mud/$NEWLIB/lib/
 echo "-------"
 cat upgrades.txt
+chmod 755 upgrades.txt
 echo "-------"
