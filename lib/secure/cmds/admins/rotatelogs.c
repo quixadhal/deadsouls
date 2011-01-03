@@ -3,8 +3,11 @@
 
 inherit LIB_DAEMON;
 
-int cmd() {
-    int ret = LOG_D->RotateLogs();
+int cmd(string arg) {
+    int ret;
+    int force = 0;
+    if(arg) force = 1;
+    ret = LOG_D->RotateLogs(force);
     if(ret){
         write("Logs rotated.");
     }
@@ -15,6 +18,7 @@ int cmd() {
 }
 
 string GetHelp(){
-    return ("Syntax: rotatelogs\n\n"
-            "Archives old logs if they are too large.");
+    return ("Syntax: rotatelogs <force>\n\n"
+            "Archives old logs if they are too large. With an argument, "
+            "the archiving occurs regardless of size.");
 }

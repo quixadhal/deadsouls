@@ -44,6 +44,8 @@ static private mapping localchans = ([
         "ie_flibcode": "foundation",
         "dead_test4": "ds_test",
         "dead_souls": "ds",
+        "intergossip": "broken_gossip",
+        "intercre": "broken_cre",
 
         //IMC2 Channels
         "Server02:igame": "i2game2",
@@ -70,6 +72,8 @@ static private mapping localchans = ([
                 "dutch": "dutch",
                 "ds_test": "dead_test4",
                 "ds": "dead_souls",
+                "broken_gossip": "intergossip",
+                "broken_cre": "intercre",
 
                 //IMC2 Channels
                 "i2game2": "Server02:igame",
@@ -145,8 +149,8 @@ static void Setup(){
         }
     }
 
-    rchan3 = sort_array(rchan3, 1);
-    rchan2 = sort_array(rchan2, 1);
+    rchan3 = sort_array(filter(rchan3, (: stringp($1) :)), 1);
+    rchan2 = sort_array(filter(rchan2, (: stringp($1) :)), 1);
 
     foreach(mixed bar in ({ rchan3, rchan2 })){
         foreach(mixed foo in bar){

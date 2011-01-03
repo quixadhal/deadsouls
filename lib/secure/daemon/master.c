@@ -491,7 +491,7 @@ object compile_object(string str) {
 
 static void crash(mixed args...) {
     string err;
-    string guilty_stack = get_stack(1);
+    string guilty_stack = get_stack();
     string guilty_obs = identify(previous_object(-1));
     if(sizeof(args)) err = args[0];
     write_file(DIR_LOGS "/crashes",

@@ -1,3 +1,22 @@
+---- 3.1a11 ---
+- Released 2011-01-02
+- Crash trace no longer has Pinkfish codes.
+- Receiving a packet from a mud previously marked offline will mark it online.
+- Mapped router-side "intergossip" to "broken_gossip" to limit confusion.
+- Mapped router-side "intercre" to "broken_cre" to limit confusion.
+- NPC's with inventories no longer have their stuff duplicated when they are 
+  reloaded by a persistent room.
+- Added command: shadows
+- Driver: updated to 2.21 plus minor tweaks (Including nfa's GMCP fix)
+  Note: The Windows driver is still 2.20.
+- The command "rotatelogs" now takes an option to force the rotation.
+- Fixed a runtime error in player saves if a carried object has an
+  AddSave pointing to a nonexistent variable.
+- Fixed array element mismatch in CHAT_D remote chans.
+- SetItems() and AddItem() now work ok on NPC's (thx to HoriceGump for the
+  suggestion).
+- Dummy items in storerooms (like doors) are no longer browseable.
+
 ---- 3.1a10 ---
 - Released 2010-08-15
 - Guest is now excluded from PLAYERS_D autopurging.

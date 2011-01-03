@@ -8,6 +8,7 @@ inherit LIB_INSTALL;
 inherit LIB_WORN_STORAGE;
 
 static int active = 0;
+int lupus;
 mapping SpecialFuns = ([]);
 
 int CheckPanel(){
@@ -241,6 +242,10 @@ varargs mixed eventRead(mixed who, mixed str){
     }
     foreach(mixed ob in all_inventory()){
         if(ob->Report()) ret += ob->Report();
+    }
+    if(!lupus && random(99) > 95){
+        lupus = 1;
+        ret = "BAD WOLF";
     }
     SetRead( ([
                 ({ "panel", "default" }) :ret,

@@ -96,6 +96,7 @@ int make_empties(){
 void deletes(){
     catch( rm("/cmds/players/lines.c") );
     catch( rm("/domains/campus/room/spath.c") );
+    catch( rm("/domains/campus/room/science.c") );
     catch( rm("/domains/campus/room/store.c") );
     catch( rm("/domains/campus/room/square.c") );
     catch( rm("/domains/campus/room/u_lab.c") );

@@ -14,16 +14,18 @@ static void create() {
             ]);
 }
 
-int RotateLogs(){
+varargs int RotateLogs(int force){
     string *contents,*paths;
     string fooname,foopath,temppath;
+    int maxsize = 50000;
+    if(force) maxsize = 0;
     paths = ({"/log/chan/", "/log/","/log/errors/","/secure/log/adm/",
             "/secure/log/","/log/router/","/log/secure/","/log/adm/"});
     foreach(string path in paths){
         contents = get_dir(path);
         foreach(string substr in contents){
             temppath = path+substr;
-            if( file_size(temppath) > 50000) {
+            if( file_size(temppath) > maxsize) {
                 write_file(temppath,"\nEND-OF-LOG\n");
                 fooname=substr+"-"+timestamp();
                 foopath=path+fooname;

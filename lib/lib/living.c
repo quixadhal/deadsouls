@@ -520,7 +520,13 @@ mixed eventInfect(object germ){
 }
 
 varargs mixed eventShow(object who, string str){
-    who->eventPrint(this_object()->GetLong(str));
+    string desc = this_object()->GetItem(str);
+    if(!desc){
+        who->eventPrint(this_object()->GetLong(str));
+    }
+    else {
+        who->eventPrint(desc);
+    }
     environment(who)->eventPrint(this_player()->GetName() +
             " looks at " + this_object()->GetShort() + ".",
             ({ who, this_object() }));

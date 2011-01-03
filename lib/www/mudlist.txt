@@ -1,87 +1,98 @@
-2010.08.13-21.56,29
-Dead Souls Alpha recognizes eighty-four muds matching your query: 
+2011.01.02-20.22,48
+Dead Souls Alpha recognizes ninety-five muds matching your query: 
 
-7thplane_Dev                                              209.90.73.136 8889
-AF_Dev                                                    75.132.131.170 3000
+AF_Dev          n/a    IMC2 client     IMC2 Freedom CL-2. 75.132.141.16 3000
 AndroDGD        LPMud  DGD 1.4.2-r80   GurbaLib v0.42 dev 87.194.102.189 4000
 Antares Station LPMud  FluffOS v2.18-d Dead Souls 3.0     24.227.169.93 4444
-ApocalypticLega LPMud  FluffOS v2.18-d Dead Souls 3.0     173.28.12.230 6666
+Antikaria       TMD    TMD             antikaria          138.38.108.134 9000
 Archipelago     LPMud  MudOS v22.1b23- Discworld 15.0a    82.152.242.101 8000
+Archipelago Tes LPMud  MudOS v22.1b23  Discworld 15.0a    82.152.242.101 8010
 Arnica          LPMud  FluffOS v2.11-d Dead Souls 2.8.2   83.142.228.166 1331
-BlackHole       LPMud  FluffOS v2.12-d Dead Souls 3.0     91.209.244.38 2323
+BlackHole       LPMud  FluffOS v2.12-d Dead Souls 3.1a10  91.209.244.38 2323
 Blood Fire Deat LP     FluffOS v2.9-ds Skylib 1.8         83.142.228.166 7674
+Bloodlines      LPMud  FluffOS v2.18-d Dead Souls 3.0     97.83.21.66 5000
 BreakingLP      LPMud  FluffOS v2.18-d Dead Souls 3.0     69.164.194.158 8329
-BucketMUD                                                 76.10.214.36 1234
-Chaos Realm     LPMud  FluffOS v2.18-d Dead Souls 3.0     208.104.56.220 8332
-Consua          LPMud  FluffOS v2.9-ds Nightmare 3.3.1    218.215.62.42 6666
-Cookie Dough    LPMud  FluffOS v2.15-d Dead Souls 2.9a16  68.90.236.136 10101
+Buchheim        LPMud  FluffOS v2.15-d Discworld 17.0a    93.185.140.50 6677
+BucketMUD       n/a    IMC2 client     IMC2 Freedom CL-2. 76.10.214.36 1234
+Chaosstorm      LPMud  FluffOS v2.20-d Dead Souls 3.1a10  173.53.23.52 6868
+CodersMud       LPMud  FluffOS v2.20-d Dead Souls 3.1a10  69.163.130.16 4444
+Cookie Dough    LPMud  FluffOS v2.15-d Dead Souls 2.9a16  66.141.23.142 10101
 DGDhub          LPMud  DGD 1.4         GurbaLib v0.99 rc1 195.242.99.95 4000
-DOGL-Dev        WebMud DGD(DOGL)1.4.4  DOGL Development   60.240.146.233 0
 DS Alcatraz     LPMud  FluffOS v2.15-d Dead Souls 2.10    204.209.44.3 8000
 DS_Smog         n/a    IMC2 client     IMC2 Freedom CL-2. 97.107.133.86 0
-DW_Clone        LPMud  FluffOS v2.21-b Discworld 18.0a    82.47.41.230 4343
-DarkeDS         LPMud  FluffOS v2.18-d Dead Souls 3.0     96.225.244.22 5959
-Dead Souls      LPMud  FluffOS v2.20-d Dead Souls 3.1a9   97.107.133.86 8088
-Dead Souls Alph LPMud  FluffOS v2.20-d Dead Souls 3.1a9   97.107.133.86 1111
-Dead Souls Dev  LPMud  FluffOS v2.20-d Dead Souls 3.1a9   97.107.133.86 8000
-Dead Souls Prim LPMud  FluffOS v2.20-d Dead Souls 3.1a9   97.107.133.86 6666
-Dead_Souls_keeg LPMud  FluffOS v2.18-d Dead Souls 3.0     97.122.183.199 6666
-Dead_Souls_snap LPMud  FluffOS v2.18-d Dead Souls 3.0     193.227.196.194 6666
-Deaths_Sanctuar                                           216.15.192.235 3040
-Dionea          LPMud  FluffOS v2.16-d Dead Souls 3.0     64.149.40.194 6666
-Discworld       LPMud  FluffOS v2.20-v Discworld 18.0a    82.68.167.69 23
-Dreamverse      LPMud  MudOS v22.2b14  DV-Nightmare RELEN 76.9.100.131 9600
-Dreamverse TRUN LPMud  MudOS v22.2b14  DV-Nightmare RELEN 76.9.100.131 9500
-Elephant        LP     MudOS v22.1b19. Elephant Mudlib 2. 194.106.49.114 23
-Epitaph         LPMud  FluffOS v2.20   Discworld 18.0a    82.68.167.68 23
-Eriador         LPMud  FluffOS v2.12-d Dead Souls 2.8.4   192.87.65.104 6000
-FR:Anarchy      LPMud  MudOS v22.2b9 D FRlib IV           87.238.45.183 4003
-FR:Development  LPMud  MudOS v22.2b9 D FRlib IV           87.238.45.183 4002
-Final Realms    LPMud  MudOS v22.2b9 D FRlib IV           87.238.45.183 4001
+Daelstrom       Coffee CoffeeMud v5.5. CoffeeMud v5.5.5   66.45.154.222 5555
+DarkeDS         LPMud  FluffOS v2.18-d Dead Souls 3.1a10  96.225.244.22 5959
+Darkscapes      LPMud  FluffOS v2.18-d Dead Souls 3.0     82.197.193.247 6715
+Dead Souls      LPMud  FluffOS v2.20-d Dead Souls 3.1a11  97.107.133.86 8088
+Dead Souls Alph LPMud  FluffOS v2.21-d Dead Souls 3.1a11  97.107.133.86 1111
+Dead Souls Dev  LPMud  FluffOS v2.20-d Dead Souls 3.1a10  97.107.133.86 8000
+Dead Souls Prim LPMud  FluffOS v2.20-d Dead Souls 3.1a10  97.107.133.86 6666
+Desolation      LP     FluffOS v2.11   Lima 1.0a8         204.10.33.129 7878
+Dionea          LPMud  FluffOS v2.16-d Dead Souls 3.0     70.142.42.164 6666
+Distortions     LPMud  FluffOS v2.18-d Dead Souls 3.0     24.158.65.255 6666
+Dreamverse      LPMud  MudOS v22.2b14  DV-Nightmare RELEN 76.9.100.141 9600
+Dreamverse TRUN LPMud  MudOS v22.2b14  DV-Nightmare /hist 70.91.196.214 9500
+EotL            LPMud  Amylaar 3.2.14  LPMud EotL 98      66.111.111.66 2010
+Epitaph         LPMud  FluffOS v2.21   Discworld 18.0a    82.68.167.68 23
+Eriador         LPMud  FluffOS v2.18-d Dead Souls 2.8.4   192.87.65.104 6000
+Evermore        LDMud  LDMud 3.5.0-292 EverLIB 3.0.0      85.214.122.246 23
+FR:Anarchy      LPMud  FluffOS v2.21   FRlib IV           87.238.35.12 4003
+FR:Development  LPMud  FluffOS v2.21   FRlib IV           87.238.35.12 4002
+Fate Reborn     Coffee CoffeeMud v5.6. CoffeeMud v5.6.2   72.88.56.144 5555
+Final Realms    LPMud  FluffOS v2.21   FRlib IV           87.238.35.12 4001
 Fire and Ice    LPMud  FluffOS v2.20   FNIlib v0.4        71.113.38.122 4000
-Firefly Devmud  LP     FluffOS v2.16   Lima 1.0b5         129.241.168.214 7878
-FractureMUD     LPMud  FluffOS v2.18-d Dead Souls 3.0     24.199.8.246 4666
-Frontiers       LPMud  FluffOS v2.20-d Dead Souls 3.1a9   149.152.218.102 5050
+Firefly Devmud  LP     FluffOS v2.20   Lima 1.0b5         129.241.168.214 7878
+Gree MUD        LPMud  FluffOS v2.18-d Dead Souls 3.0     216.136.9.5 4721
 Haven           LPMud  MudOS v22.2b13  Haven 0.1          99.67.100.101 5000
+Heroes          LPMud  FluffOS v2.18-d Dead Souls 3.0     158.75.69.84 9090
+KittyLand       Coffee CoffeeMud v5.5. CoffeeMud v5.5.5   99.251.212.172 5555
 LP Heroes       LPMud  MudOS v22.2b14  Dead Souls 2.1     208.101.6.202 6666
-LambdaSpace     LPMud  FluffOS v2.18-d Dead Souls 3.0     64.62.190.201 6666
-Lost Legends    LP     MudOS v22.2b30E Elanathia 1.0      82.152.242.101 4243
-MEMud           LPMud  FluffOS v2.18-d Dead Souls 3.0     83.104.246.52 6666
-MistbornMUD     LPMud  FluffOS v2.18-d Dead Souls 3.0     208.104.56.220 8383
+Lear's RP Serve LPMud  FluffOS v2.18-d Dead Souls 3.0     66.212.25.125 2113
+Legacy of Souls LPMud  FluffOS v2.20-d Dead Souls 3.1a10  142.176.163.226 4550
+Lunvans         LPMud  FluffOS v2.16-d Dead Souls IIr10   98.225.40.87 7777
+Lythelian       LPMud  FluffOS v2.18-d Dead Souls 3.0     70.32.76.142 6666
+Magnum          LPMud  MudOS v22.2b14s SR v2.1            84.215.116.33 4321
+Middle-earth    LPMud  DGD 1.4.2       GurbaLib v0.42 dev 65.19.167.170 4000
+MultiMUD        Circle MultiMUD; ex-AF Multi '95-'08      87.118.98.170 4242
 Mystic          LPMud  MudOS v22.2b14  Realms of Mystic L 207.246.96.22 3000
-NegativeSpace   LPMud  FluffOS v2.18-d Dead Souls 3.0     76.10.214.36 6666
+Nanvaent        LP     NANVAENT 3 (Flu Nanvaent V.4ish    207.162.200.121 3000
+NegativeSpace   LPMud  DGD 1.4.5       GurbaLib v0.43 bet 76.10.214.36 6666
+NewGalaxy       n/a    IMC2 client     IMC2 Freedom CL-2. 97.107.132.7 4000
 Nuke 2 Dev      LPMud  FluffOS v2.18-d Dead Souls 3.0     99.113.130.179 4080
-Phobos          LPMud  FluffOS v2.18-d Dead Souls 3.0     70.243.117.23 2404
+Occulte         LPMud  FluffOS v2.15-d Discworld 17.0a    206.225.92.33 6677
 Planes of Peril LPMud  FluffOS v2.18-d Dead Souls 3.0     96.225.244.22 6666
 Porphyra        LPMud  FluffOS v2.16-d Dead Souls 2.10    150.101.162.24 9000
-Portal_of_Dream LPMud  FluffOS v2.12-d Dead Souls 2.9a16  173.31.26.54 6666
+Pris                                                      97.107.133.86 0
 Ptah_Acropolis  LPMud  FluffOS v2.18-d Dead Souls 3.0     60.234.164.45 4000
-Pyloros         LPMud  FluffOS v2.11-d Dead Souls 2.8.5   69.115.162.137 8888
+Pyloros         LPMud  FluffOS v2.18-d Dead Souls 2.8.5   168.144.92.139 8888
+QuantumScape    LPMud  FluffOS v2.20-d Dead Souls 3.1a10  69.196.155.29 5500
+Reality Bytes T Smaug  AFKMud I3 Drive ResortMUD 6.0      68.201.83.193 3001
 Rise of Praxis  LPMud  FluffOS v2.7-ds Dead Souls 2.4.2   75.151.154.121 6666
 RoD             LPMud  MudOS v22.1     RoD Lib            38.119.115.95 3000
 RoDDev          LPMud  MudOS v22.1     RoD Lib            38.119.115.95 3000
 SURVIVOR        LPMud  DGD 1.4.2-r80   GurbaLib v0.43 bet 69.164.199.169 23
-Second Contract LPMud  FluffOS v2.18-d Dead Souls 3.0     74.192.9.167 6666
-ShadowMUDii     LP     MudOS v22.2b14  Nightmare/ShadowLi 216.136.9.8 1030
+ShadowMUD       LP     MudOS v22.2b14  Nightmare/ShadowLi 216.136.9.8 1030
 ShadowMUDii Dev LP     MudOS v22.2b14  Nightmare/ShadowLi 216.136.9.8 1035
-SithWars                                                  97.107.132.7 2070
+Shattered Realm LPMud  MudOS v22.2b14s SR v2.1            84.215.116.33 4001
+SithWars        n/a    IMC2 client     IMC2 Freedom CL-2. 97.107.132.7 2070
 SoulRuins       Smaug  AFKMud I3 Drive ResortMUD 4.0b     24.96.134.83 5000
+SpiresofAster   n/a    IMC2 client     IMC2 Freedom CL-2. 65.60.224.13 0
 Split Infinity  LPMud  MudOS v22.2b14  Nightmare IVr4     131.155.141.70 4000
-StellarmassI    LPMud  FluffOS v2.18-d Dead Souls 3.0     69.162.91.18 27051
-SvenskMUD       LPMud  FluffOS v2.20-d Dead Souls 3.0     83.255.146.150 6666
-The Final Sacri LPMud  FluffOS v2.18-d Dead Souls 3.0     24.34.90.7 6666
+Stellarmass     LPMud  FluffOS v2.18-d Dead Souls 3.0     68.68.18.89 27051
+TempestIsles    LPMud  FluffOS v2.18-d Dead Souls 3.0     109.169.55.215 6666
+Tharsis Gate    LP     FluffOS v2.9-ds Skylib 1.8         66.36.242.217 8768
 The Pussy Cat F LPMud  FluffOS v2.18-d Dead Souls 3.0     98.143.145.42 6789
-The Vile Domini LPMud  FluffOS v2.20-d Dead Souls 3.0     85.10.204.167 6666
 The Zone        LPMud  DGD 1.4.1       WOTFlib 0.90       195.242.99.94 8888
+Tiefenrausch    LPMud  FluffOS v2.20-d Dead Souls 3.1a10  217.85.63.247 6666
 TimMUD          LPmud  MudOS v21.7a10  Tmi-2 1.4          207.210.217.204 4444
+Translucent Mir LPMud  FluffOS v2.20-d Dead Souls 3.1a10  193.13.92.223 6666
 TrekVerseDS     LPMud  FluffOS v2.12-d Dead Souls 2.8.4   67.18.240.146 5555
-Tribunal of Ori Coffee CoffeeMud v5.6. CoffeeMud v5.6.2   173.164.202.26 5555
 Tubmud          LDMud  LDMud 3.2.16    Tublib stable      85.214.44.4 7680
 UOSS-Dev        LP     MudOS v22.2b12  Lima 1.0a6         69.9.32.139 9010
 UOSSMUD         LP     MudOS v22.2b12  Lima 1.0a6         69.9.32.139 9000
-Umbra Limus     LPMud  FluffOS v2.18-d UmbraLIB (modified 70.185.168.97 3333
-Universes       LPMud  MudOS v22.1     UniLib 1.0a        68.126.45.147 3333
-WWC             LP     FluffOS v2.18   FRlib III          96.252.1.166 4000
+Universa        LPMud  FluffOS v2.18-d Dead Souls 3.0     109.169.62.15 9801
+Urth            LPMud  FluffOS v2.7-ds UrthLib 0.1        71.175.203.234 4000
+Vale            Coffee CoffeeMud v5.6. CoffeeMud v5.6.2   174.252.38.241 10900
 Way of the Forc LPMud  DGD 1.2.157-WOT WOTFlib 0.90       195.242.99.94 23
-metaverse       LPMud  FluffOS v2.18-d Dead Souls 3.0     99.58.86.62 6666
+WileyMUD        DikuMU I3 Driver 2.40b WileyMUD III 1.62b 97.83.21.66 -1
 shop            LPMud  FluffOS v2.7-ds Dead Souls 2.6.2   74.93.63.172 6666

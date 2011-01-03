@@ -289,6 +289,7 @@ varargs void write_data(int fd, mixed data, int startack, float vers){
     mixed ret;
     string targetmud;
     validate();
+    reset_eval_cost();
     targetmud = ROUTER_D->query_connected_fds()[fd];
     //tc("write_data to "+targetmud+": "+identify(data)[0..63]+"...","white");
     if(!startack){
@@ -477,6 +478,7 @@ varargs void construct_startup(mixed fd, mixed info, string client){
 #else
     ROUTER_D->read_callback(fd, packet);
     ROUTER_D->broadcast_mudlist(s1);
+    ROUTER_D->broadcast_chanlist("foo",0);
     mudinfo[s1]["password"] = ROUTER_D->query_mudinfo()[s1]["password"];
     trr(s1 + " i3 password: "+mudinfo[s1]["password"]);
 #endif

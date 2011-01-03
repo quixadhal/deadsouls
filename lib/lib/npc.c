@@ -41,6 +41,7 @@ private static mapping Inventory;
 private static string MountStyle = "ridden";
 private int VisibleRiders = 1;
 private int actions_enabled = 1;
+mapping Equipped = ([]);
 
 int eventExtraAction(){ return 1; }
 
@@ -212,7 +213,8 @@ int eventCompleteMove(mixed dest){
     else x = move::eventMove(dest);
     if( !x ) return x;
     foreach(file, val in Inventory){
-        object ob;
+        object ob = previous_object();
+        if(ob == dest && dest->GetPersistent()) break;
 
         if( intp(val) ){
             if( val < 0 ){
@@ -235,6 +237,19 @@ int eventCompleteMove(mixed dest){
 }
 
 int eventDestruct(){
+    mixed array worn = ({});
+    if(room_environment() && room_environment()->GetPersistent()){
+        if(!Equipped) Equipped = ([]);
+        worn = this_object()->GetWorn();
+        worn += this_object()->GetWielded();
+        foreach(mixed thing in worn){
+            if(arrayp(thing) && sizeof(thing)) thing = thing[0];
+            if(!thing || !objectp(thing)) continue;
+            if(Equipped[file_name(thing)]) continue;
+            Equipped[file_name(thing)] =
+              ([ "object" : thing, "where" : thing->GetWorn() ]);
+        }
+    }
     chat::eventDestruct();
     object::eventDestruct();
 }
