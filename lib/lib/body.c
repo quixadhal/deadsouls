@@ -175,7 +175,7 @@ int GetCanBite(){
 
 string *AddExtraChannels(string *chans){
     foreach(string chan in chans){
-        if(member_array(chan,this_player()->GetChannels()) == -1){
+        if(member_array(chan,this_player()->GetExtraChannels()) == -1){
             ExtraChannels += ({ chan });
         }
     }
@@ -184,7 +184,7 @@ string *AddExtraChannels(string *chans){
 
 string *RemoveExtraChannels(string *chans){
     foreach(string chan in chans){
-        if(member_array(chan,this_player()->GetChannels()) != -1){
+        if(member_array(chan,this_player()->GetExtraChannels()) != -1){
             ExtraChannels -= ({ chan });
         }
     }

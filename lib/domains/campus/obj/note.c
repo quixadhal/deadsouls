@@ -3,14 +3,18 @@
 inherit LIB_ITEM;
 inherit LIB_READ;
 
+int lupus;
 int TestFunc(){
+    if(lupus){
+        write("Bad wolf.");
+        return 1;
+    }
     this_player()->eventPage("/domains/campus/txt/note.txt","system");
     return 1;
 }
-
-
 void create(){
     ::create();
+    lupus = ( random(99) > 95 );
     SetKeyName("note");
     SetId(({"paper","slip"}));
     SetAdjectives(({"small"}));
@@ -21,4 +25,6 @@ void create(){
     SetVendorType(VT_TREASURE);
     SetRead((: TestFunc :));
 }
-
+void init(){
+::init();
+}

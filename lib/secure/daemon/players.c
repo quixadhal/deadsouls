@@ -777,6 +777,7 @@ int SelektUsers(int gather){
         if(member_group(user, "ASSIST")) continue;
         if(member_group(user, "ELDER")) continue;
         if(member_group(user, "TEST")) continue;
+        if(user == "guest") continue;
 
         count++;
         if(!(count % 5)) interval++;

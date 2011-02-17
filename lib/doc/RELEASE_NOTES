@@ -1,5 +1,67 @@
+---- 3.2 ---
+- Released 2011-02-17
+- Removed intergossip and intercre remappings to avoid log errors.
+- LIB_TELLER: you can now "exchange gold for silver" without specifying
+  amount, this will exchange all the gold you're carrying. You can also
+  "exchange all for dollars" to attempt to exchange all your various
+  carried currency into dollars.
+- ASSIST can now "hist admin"
+- Driver: now includes fix for more than 256 global vars.
+  Note: The Windows driver is still 2.20.
+- ASSIST can now write on the arch board.
+
+---- 3.1a11 ---
+- Released 2011-01-02
+- Crash trace no longer has Pinkfish codes.
+- Receiving a packet from a mud previously marked offline will mark it online.
+- Mapped router-side "intergossip" to "broken_gossip" to limit confusion.
+- Mapped router-side "intercre" to "broken_cre" to limit confusion.
+- NPC's with inventories no longer have their stuff duplicated when they are 
+  reloaded by a persistent room.
+- Added command: shadows
+- Driver: updated to 2.21 plus minor tweaks (Including nfa's GMCP fix)
+  Note: The Windows driver is still 2.20.
+- The command "rotatelogs" now takes an option to force the rotation.
+- Fixed a runtime error in player saves if a carried object has an
+  AddSave pointing to a nonexistent variable.
+- Fixed array element mismatch in CHAT_D remote chans.
+- SetItems() and AddItem() now work ok on NPC's (thx to HoriceGump for the
+  suggestion).
+- Dummy items in storerooms (like doors) are no longer browseable.
+
+---- 3.1a10 ---
+- Released 2010-08-15
+- Guest is now excluded from PLAYERS_D autopurging.
+- Fixed some errant /n's (thx Aleksy!)
+- i3router: IRN channel updates are less noisy now, excluding "listening". 
+  3 years late, but hey, I got to it eventually, Aidil.
+- IMC2 server: fixed odd problem with authentication reported by Aleksy,
+  Quixadhal, and Kline.
+- CreWeb now accepts passwords that contain the characters: ~ ! @ # $ % ^ & *
+  ( ) _ + { } | : " < > ? ` - = [ ] \ ; ' , . /
+- Fixed some channel confusion regarding parties.
+- Corrected some ambiguity in "nopeer" versus "no peer" for rooms.
+- Added LIB_AIM.
+- Added some gadgets to the science complex.
+
+---- 3.1a9 ---
+- Released 2010-07-25
+- Driver: Updated to Fluffos 2.20 plus minor tweaks.
+- Teachers and trainers now stop instructing you when you're
+  fighting them or if you've picked them up.
+- MB IMC2 channels renamed in CHAT_D.
+- IMC2 server: fixed line endings, emotes, minor runtimes and channel parsing.
+- IMC2 client: uses CRLF now rather than LFCR if version 2.1 is specified.
+- "chan add all" now works.
+- Fixed a crasher when querying for binary save dir.
+- Receiving messages while in the pager while in charmode no longer
+  aborts the pager.
+- Receiving a message while typing a long line in charmode no longer obscures 
+  the message on next keypress.
+- Quitting the pager while in (suspended) charmode unsuspends charmode.
+
 ---- 3.0 ---
-- Released 2009-12-30
+- Released 2009-12-31
 - Driver: added Kalinash's fix for Solaris on 64 bit SPARC.
 - Driver: added Kalinash's fix for BSD math.
 - Added commands: anchor, unanchor

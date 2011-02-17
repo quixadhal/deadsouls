@@ -10,8 +10,9 @@ inherit LIB_DAEMON;
 static private int router_socket;
 static private mapping sockets = ([]);
 static private int incept_date;
-int verbose = 1;
+int verbose = 0;
 
+static void close_callback(int fd, int force);
 void write_data(int fd, mixed data);
 varargs void yenta(mixed arg1, mixed arg2);
 object cmd = load_object(CMD_ROUTER);
@@ -23,10 +24,11 @@ varargs static void validate(int i){
             server_log("%^RED%^BAD SOCKET ALERT. fd "+i+":  "+
                     identify(socket_status(i)),"ssocket");
             error("Bad socket, fd "+i);
+            close_callback(i, 1);
         }
     }
     if( previous_object() != cmd && previous_object() != router &&
-            previous_object() != this_object() && !(master()->valid_apply(({ "ASSIST" }))) ){
+            previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
         server_log("%^RED%^SECURITY ALERT: validation failure in SSOCKET_D.","ssocket");
         error("Illegal attempt to access router socket daemon: "+get_stack()+
                 " "+identify(previous_object(-1)));
@@ -61,11 +63,11 @@ void close_connection(int fd){
     yenta("%^WHITE%^---\n","ssocket");
 }
 
-static void close_callback(int fd){
+static void close_callback(int fd, int force){
     string mudname;
     mapping muds_on_this_fd = ([]);
 
-    validate(fd);
+    if(!force) validate(fd);
 
     if(!find_object(ROUTER_D)) return;
 
@@ -135,11 +137,11 @@ static void write_data_retry(int fd, mixed data, int counter){
 
     maxtry = IMC2_SERVER_D->GetMaxRetries();
     if (counter == maxtry) {
-        trr("Could not write data to "+IMC2_SERVER_D->query_connected_fds()[fd]+", fd"+fd+": "+identify(data[0]));
+        trr("Could not write data to "+ROUTER_D->query_connected_fds()[fd]+", fd"+fd+": "+identify(data[0]));
         return;
     }
     if(!grepp(data,"close-notify") && !grepp(data,"is-alive")){
-        trr("SSOCKET: bout to try writing "+identify(data)+" to "+fd,"yellow");
+        yenta("%^YELLOW%^SSOCKET: bout to try writing "+identify(data)+" to "+fd,"ssocket");
     }
     rc = socket_write(fd, data);
     if(!sockets[fd]){
@@ -166,7 +168,7 @@ static void write_data_retry(int fd, mixed data, int counter){
             if (counter < maxtry) {
                 if(counter < 2 || counter > maxtry-1)
                     trr("SSOCKET_D write_data_retry "+counter+" to "+
-                            IMC2_SERVER_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
+                            ROUTER_D->query_connected_fds()[fd]+", fd"+fd+" error,  code "+rc+": " + socket_error(rc));
                 call_out( (: write_data_retry :), 2 , fd, data, counter + 1 ); 
                 return;
             }
@@ -180,6 +182,7 @@ void write_data(int fd, mixed data){
 
 void broadcast_data(mapping targets, mixed data){
     validate();
+    yenta("SSOCK: broadcast_data("+identify(targets)+", "+identify(data));
     foreach(int *arr in unique_array(values(targets), (: $1 :))){
         write_data(arr[0], data);
     }

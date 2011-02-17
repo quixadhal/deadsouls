@@ -83,6 +83,7 @@ void irn_checkstat(){
         sstat = socket_status(key);
         if(!sstat || sstat[1] != "DATA_XFER"){
             trr("IRN checkstat: removing socket record for: "+identify(key));
+            trr("it is: "+identify(sstat),"red");
             map_delete(irn_sockets, key);
         }
 
@@ -112,6 +113,7 @@ void irn_checkstat(){
                 irn_sockets[irn_connections[key]["fd"]]["name"] != key ||
                 (sstat && sstat[1] != "DATA_XFER")){
             trr("IRN checkstat: removing socket and connection record for: "+identify(key));
+            trr("it is: "+identify(sstat),"green");
             map_delete(irn_sockets, irn_connections[key]["fd"]);
             map_delete(irn_connections,key);
             return;
@@ -124,6 +126,7 @@ void irn_checkstat(){
         sstat = socket_status(key);
         if(!sstat || sstat[1] != "DATA_XFER"){
             trr("IRN checkstat: removing socket record for: "+identify(key));
+            trr("it is: "+identify(sstat),"blue");
             map_delete(irn_sockets, key);
             restart = 1;
         }
@@ -179,7 +182,7 @@ void check_desync(){
     if(sizeof(desynced)){
         desynced = singular_array(desynced);
         foreach(string rtr in desynced){
-            trr(rtr+" desynced", "red");
+            tc(rtr+" desynced");
             this_object()->SendListReq(rtr, "mudlist");
             desynced -= ({ rtr });
         }
@@ -674,6 +677,7 @@ varargs void SendWholeList(int fd, string type){
             call_out( (: SendList :), i, ([ key : val ]), fd, type );
         }
         if(type == "chanlist"){
+            if(key == "listening") continue;
             foreach(mixed key2, mixed val2 in val){
                 i++;
                 call_out( (: SendList :), i, ([ key : ([ key2 : val2 ]) ]), fd, type );
@@ -764,7 +768,7 @@ string Report(){
         string statmess = "DISCONNECTED";
         if(irn_connections[val["name"]]){
             sstat = irn_connections[val["name"]]["fd"];
-            if(sstat > 0 && socket_status(key)){
+            if(sstat > -1 && socket_status(key)){
                 string *netstat = socket_status(key);
                 statmess = netstat[1]+" ";
                 statmess += last_string_element(netstat[3],".");

@@ -15,21 +15,24 @@ inherit LIB_ROOM;
 int readMenu(object who, string str) {
     string array tmp2 = ({});
     string array tmp = ({ sprintf("%:-20s %:-7s", "Drink", "Cost") });
-    object ob = present("lars");
+    int langlevel = this_player()->GetLanguageLevel("Edhellen");
+    object ob = present_file("/domains/Ylsrim/npc/lars");
 
     if( !ob ) { // lars is dead!
-        this_player()->eventPrint("The menu is too bloodstained to read.");
-        return 1;
+        this_player()->eventPrint("The menu is bloodstained and hard to read.");
+        tmp = ({ translate("Bad wolf.", langlevel) });
     }
-    foreach(string *item in keys(ob->GetMenuItems())) {
-        tmp += ({ sprintf("%:-20s %d electrum", capitalize(item[0]),
-                    to_int(ob->GetCost(item))) });
+    else {
+        foreach(string *item in keys(ob->GetMenuItems())) {
+            tmp += ({ sprintf("%:-20s %d electrum", capitalize(item[0]),
+                        to_int(ob->GetCost(item))) });
+        }
+        foreach(string element in tmp){
+            element = translate(element, langlevel); 
+            tmp2 += ({ element });
+        }
+        tmp = tmp2;
     }
-    foreach(string element in tmp){
-        element = translate(element,  this_player()->GetLanguageLevel("Edhellen"));
-        tmp2 += ({ element });
-    }
-    tmp = tmp2;
     // show the menu a page at a time
     this_player()->eventPage(tmp, MSG_SYSTEM); // MSG_SYSTEM means ignore blocking
     return 1;

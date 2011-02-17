@@ -101,6 +101,9 @@ string *RemoveChannel(mixed val){
 }
 
 string *GetChannels(){ return keys(Channels); }
+int GetChannel(string chan){ 
+    return ( member_array(chan, keys(Channels)) != -1 ); 
+}
 
 int GetNoChanColors(){
     return NoChanColors;

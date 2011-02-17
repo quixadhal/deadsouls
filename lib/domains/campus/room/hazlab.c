@@ -18,7 +18,7 @@ void create() {
                 ]));
 
     SetClimate("indoors");
-
+    SetProperty("nopeer",1);
 }
 void init(){
     ::init();

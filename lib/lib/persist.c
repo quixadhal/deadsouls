@@ -111,6 +111,7 @@ static int SetSaveRecurse(int flag){ return (SaveRecurse = flag); }
 
 string GetSaveString(){
     mixed *tmp, *saved = this_object()->GetSave();
+    string *vv = variables(this_object());
     string *flat = ({});
     mapping mp = ([]);
 
@@ -122,7 +123,10 @@ string GetSaveString(){
     if(flat && sizeof(flat)){
         flat -= ({ 0 });
         foreach(mixed var in flat){
-            if(stringp(var)) mp[var] = fetch_variable(var);
+            if(stringp(var)){
+                if(member_array(var, vv) == -1) continue;
+                mp[var] = fetch_variable(var);
+            }
         }
     }
     mp["#base_name#"] = base_name(this_object());

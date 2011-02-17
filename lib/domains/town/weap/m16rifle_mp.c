@@ -33,8 +33,12 @@ void init() {
 }
 
 int AddClip(){
-    if(!present("clip",this_object()))
-        new("/domains/town/obj/223clip")->eventMove(this_object());
+    object env = environment();
+    object clip = present("clip",this_object());
+    if(!clip && env && !(clip = present("clip",env))){
+        clip = new("/domains/town/obj/223clip");
+    }
+    if(clip) clip->eventMove(this_object());
     return 1;
 }
 

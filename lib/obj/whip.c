@@ -70,3 +70,7 @@ void heart_beat(){
         } 
     }
 }
+
+int CanSell(){
+    return 0;
+}

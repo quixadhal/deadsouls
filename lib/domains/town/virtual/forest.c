@@ -6,6 +6,7 @@
 inherit LIB_VIRT_LAND;
 
 static private int XPosition, YPosition, found;
+static string lupus;
 
 varargs void SetLongAndItems(int x, int y, int z);
 
@@ -161,8 +162,10 @@ varargs void SetLongAndItems(int x, int y, int z) {
     }
 
     if(x == 24 && y == 1) {
+        if(random(99) > 95) lupus = "Bad Wolf!";
+        else lupus = "Beware th";
         AddItem("sign" , "This is a hastily-lettered sign planted on the ground.");
-        SetRead( ({"sign"}) , "Beware th");
+        SetRead( ({"sign"}) , lupus);
     }
     if( !random(50) ){
         str += "  Burnt wood, scattered rocks and twigs, and other signs "

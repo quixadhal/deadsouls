@@ -195,7 +195,7 @@ int cmdBrowse(object who, string args){
         eventForce("say I am having terrific difficulties today");
         return 1;
     }
-    if(!(maxi = sizeof(obs = filter(all_inventory(sroom), (: !userp($1) :))))){
+    if(!(maxi = sizeof(obs = filter(all_inventory(sroom), (: !userp($1) && !$1->isDummy() :))))){
         eventForce("say I have nothing to sell right now.");
         return 1;
     }
@@ -492,7 +492,7 @@ mixed eventSell(object who, mixed what){
         if( !(ob = present(what, sroom))) 
             foreach(object tempob in obs2) 
                 if(answers_to(what,tempob)) ob = tempob;
-        if(!ob || userp(ob)){
+        if(!ob || userp(ob) || ob->isDummy()){
             eventForce("say I have nothing like that to sell you.");
             return 1;
         }

@@ -11,7 +11,7 @@
 
 #define OFFSET_RCP                -10
 #define OFFSET_HFTP               -6
-#define OFFSET_HTTP               -5
+#define OFFSET_HTTP               1
 #define OFFSET_FTP                -1
 #define OFFSET_ECHO               2
 #define OFFSET_FLASH              3

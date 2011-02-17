@@ -4,18 +4,23 @@
 #include <save.h>
 #include "./server_log.h"
 
+#define CALL_OUT_COMPLETE_STARTUP 1
+
 inherit LIB_DAEMON;
 static string router_port = "8888";
 mapping mudinfo;
+static int lastel = 40;
 
 object cmd = find_object(CMD_IMC_SERVER_D);
 object rsocket = find_object(RSOCKET_D);
 object ssocket = find_object(SSOCKET_D);
+object router = find_object(ROUTER_D);
 
 static void validate(){
     if( previous_object() != cmd && previous_object() != rsocket &&
-            previous_object() != this_object() && previous_object() != ssocket &&
-            !(master()->valid_apply(({ "ASSIST" }))) ){
+            previous_object() != this_object()  &&
+            previous_object() != ssocket && previous_object() != router &&
+            !((int)master()->valid_apply(({ "ASSIST" }))) ){
         trr("SECURITY ALERT: validation failure in IMC2_SERVER_D.","red");
         error("Illegal attempt to access IMC2 server daemon: "+get_stack()+
                 " "+identify(previous_object(-1)));
@@ -27,6 +32,13 @@ void create(){
     if(object_file(SAVE_IMC2_SERVER)){
         RestoreObject(SAVE_IMC2_SERVER, 1);
     }
+}
+
+string clean_str(string str){ 
+    while(sizeof(str) && str[<1] < 32){
+        str = str[0..<2];           
+    }           
+    return str;       
 }
 
 mapping query_mudinfo(){
@@ -75,6 +87,7 @@ string unescape(string str){
     }
     output += b;
     output = replace_string(output,"\n\r","\n");
+    output = replace_string(output,"\r\n","\n");
     if((sizeof(explode(output," "))==1) && sscanf(output,"\\\"%*s\\\"") )
         output = "\""+output+"\"";
     return output;
@@ -92,13 +105,13 @@ mapping string_to_mapping(string str){
         sscanf(rest, "%s=%s", what, rest);
         /*
            write("what="+what+", rest="+rest+"\n");
-         */
+           */
         // At this point, what is the key, rest is value plus rest.
         if(rest[0]==34){ // value is in quotes, tons of fun!
             // find first quote without a backslash in front?
             /*
                write("rest begings with a quote\n");
-             */
+               */
             i = 1;
             while(((rest[i]!=34) || (rest[i-1]==92)) && (i<sizeof(rest))){ // 34 = ", 92 = \
                 // While this is not a quote, or if this is an escaped quote, keep looking.
@@ -205,12 +218,10 @@ mixed translate_packet(mixed data, int fd){
                         tmpinfo[key]["url"]+"\""+
                         " sha256=0"+
                         " host=\""+tmpinfo[key]["host"]+"\" "+
-                        "port="+tmpinfo[key]["port"]+
-                        "\n\r" });
+                        "port="+tmpinfo[key]["port"]});
             }
         }
     }
-    else trr("IMC2_SERVER_D data to translate: "+identify(data),"blue");
     if(data[0] == "chanlist-reply"){
         foreach(mixed foo in data){
             string hub = data[2];
@@ -219,6 +230,7 @@ mixed translate_packet(mixed data, int fd){
             foreach(string chan, mixed arr in chans){
                 string owner = replace_string(arr[0]," ","_");
                 int priv = arr[1];
+                if(!priv) ROUTER_D->AddIMC2Chan(fd, data[4], chan);
                 ret += ({
                         "ICE@"+hub+" "+time()+" "+hub+" ice-update *@"+
                         data[4]+" channel="+hub+":"+chan+" owner=admin@"+owner+
@@ -236,12 +248,15 @@ mixed translate_packet(mixed data, int fd){
     }
     if(data[0][0..7] == "channel-"){
         string tmp = replace_string(data[8],"\"","'");
+        string emt = "";
         if(data[0][8..8] == "e"){
-            tmp = replace_string(data[8],"$N",data[7]);
+            tmp = trim(replace_string(data[8],"$N",""));
+            emt = " emote=1";
         }
         ret = data[7]+"@"+imc2_name(data[2])+" "+time()+" "+
-            imc2_name(data[2])+ " ice-msg-b *@* channel="+router_name+
-            ":"+data[6]+" text=\""+unescape(tmp)+"\"";
+            imc2_name(data[2])+ "!"+router_name+
+            " ice-msg-b *@* channel="+router_name+
+            ":"+data[6]+" text=\""+unescape(tmp)+"\""+emt;
     }
     if(data[0] == "who-req"){
         ret = data[3]+"@"+imc2_name(data[2])+" "+time()+" "+
@@ -267,26 +282,98 @@ mixed translate_packet(mixed data, int fd){
     return 0;
 }
 
-varargs void write_data(int fd, mixed data){
+varargs void write_data(int fd, mixed data, int startack, float vers){
     mixed *sstat = socket_status(fd);
     object ssock = find_object(SSOCKET_D);
+    mapping minfo = ROUTER_D->query_mudinfo();
     mixed ret;
     string targetmud;
     validate();
+    reset_eval_cost();
     targetmud = ROUTER_D->query_connected_fds()[fd];
+    //tc("write_data to "+targetmud+": "+identify(data)[0..63]+"...","white");
+    if(!startack){
+        if(!sizeof(minfo) || !sizeof(targetmud)) return;
+        if(minfo[targetmud]["disconnect_time"]) return;
+    }
     if(arrayp(data)){
-        if(!(ret = translate_packet(data, fd))){
+        if(!sizeof(data)) return;
+        if(!strsrch(data[0],"PW ")) tc("good","green");
+        else if(!(ret = translate_packet(data, fd))){
+            if(data[0] == "mudlist") return;
+            tc("failed to translate: "+identify(data),"red");
             return;
         }
     }
+    if(startack) tc("writing to "+targetmud+": "+identify(ret), "yellow");
     if(ret) data = ret;
     if(!arrayp(data)) data = ({ data });
     if(!sstat || sstat[1] != "DATA_XFER" || !ssock || sstat[5] != ssock) return;
     if(member_array(fd, keys(ROUTER_D->query_irn_sockets())) == -1){ 
-        foreach(mixed element in data){
-            if(sizeof(element) && last(element,2) != "\n\r") element += "\n\r";
-            SSOCKET_D->write_data(fd, element);
+        int startup;
+        string lfcr = "";
+        if(sizeof(data) == 1){
+            if(!strsrch(data[0], "PW ")){
+                tc("startup: "+data[0],"green");
+                startup = 1;
+            }
         }
+        if(sizeof(data) < 6){
+            int spew;
+            if(sizeof(data) > 2){
+               //tc("data packet size: "+sizeof(data));
+               spew = 1;
+            }
+            foreach(mixed element in data){
+                float vv;
+                int proper = 0;
+                if(!sizeof(element)) continue;
+                if(vers && vers > 2) proper = 1;
+                else {
+                    if(minfo[targetmud] && minfo[targetmud]["other_data"] &&
+                      vv = minfo[targetmud]["other_data"]["imc_version"]){
+                        if(vv > 2) proper = 1;
+                    }
+                }
+                if(startup){
+                    if(proper) tc(fd+" "+(vv || vers),"white");
+                    else tc("%^B_WHITE%^"+fd+" "+(vv || vers),"black");
+                }
+                if(proper){
+                    element = clean_str(element)+"\r\n";
+                }
+                else{
+                    element = clean_str(element)+"\n\r";
+                }
+                if(spew){
+                lfcr = replace_string(element,"\n","(LF)");
+                lfcr = replace_string(lfcr,"\r","(CR)");
+                tc("writing to "+fd+": "+identify(lfcr)+"\n","yellow");
+                }
+                SSOCKET_D->write_data(fd, element);
+            }
+        }
+        else {
+            int delay = 1;
+            ret = data[0..lastel];
+            data = data[lastel+1..];
+            while(sizeof(ret)){
+                mixed cargo = ret;
+                //tc("cargo: "+identify(cargo)+"\n","red");
+                call_out("delayed_write", delay, cargo, fd, targetmud);
+                ret = data[0..lastel];
+                data = data[lastel+1..];
+                delay++;
+            }
+        }
+    }
+}
+
+static void delayed_write(mixed data, int fd, string targetmud){
+    string checkmud = ROUTER_D->query_connected_fds()[fd];
+    if(checkmud != targetmud) return;
+    foreach(mixed element in data){
+        write_data(fd, element);
     }
 }
 
@@ -323,15 +410,19 @@ varargs void construct_startup(mixed fd, mixed info, string client){
     string router = ROUTER_D->GetRouterName();
     string s1, s2, s3, s4, s5;
     mixed packet;
+    float vers;
     int passwd, pport, scan, newmud;
     mapping other = ([]);
     string *nix = ({ "clientpass", "serverpass", "password" });
     if(!mudinfo) mudinfo = ([]);
     trr("construct_startup hit");
+    //if(grepp(info,"\n")) tc("OH YEAH");
+    //else tc("bummer.");
+    //if(grepp(info,"\r")) tc("WOOT");
+    //else tc("lame.");
     scan = sscanf(info,"PW %s %s %s %s %s", s1, s2, s3, s4, s5);
     if(scan != 5) scan = sscanf(info,"PW %s %s %s %s", s1, s2, s3, s4);
     if(scan < 4) scan = sscanf(info,"PW %s %s %s", s1, s2, s3);
-    if(scan < 3 || (!mudinfo[s1] && scan != 5)){
         trr("info: "+identify(info));
         trr("client: "+identify(client));
         trr("s1: "+s1);
@@ -339,10 +430,18 @@ varargs void construct_startup(mixed fd, mixed info, string client){
         trr("s3: "+s3);
         trr("s4: "+s4);
         trr("s5: "+s5);
-        trr("wrong size packet");
+    if(scan < 3 || (!mudinfo[s1] && scan != 5)){
+        trr("\nwrong size packet\n");
         return;
     }
+    if(s3){
+        sscanf(s3,"version=%f",vers);
+    } 
+    if(undefinedp(vers)) vers = 2.0;
+    trr("vers: "+identify(vers));
     if(!s5 && mudinfo[s1]) s5 = mudinfo[s1]["serverpass"];
+    //if(grepp(s5,"\n")) tc("OH YEAH");
+    //else tc("bummer.");
     s5 = replace_string(s5,"\n","");
     s5 = replace_string(s5," SHA256","");
     if(!mudinfo[s1]){
@@ -358,7 +457,7 @@ varargs void construct_startup(mixed fd, mixed info, string client){
             mudinfo[s1]["password"] = random_numbers(10,1);
         }
         else trr("Good password for "+s1);
-        trr(s1 + " i3 password: "+mudinfo[s1]["password"]);
+        trr(s1 + " I3 password: "+mudinfo[s1]["password"]);
     }
     passwd = mudinfo[s1]["password"];
     if(mudinfo[s1]["port"]) pport = mudinfo[s1]["port"];
@@ -367,94 +466,145 @@ varargs void construct_startup(mixed fd, mixed info, string client){
             other[key] = val;
         }
     }
+    other["imc_version"] = vers;
     packet = ({ "startup-req-3", 5, s1, 0, router, 0, passwd, 1, 1,
             pport, 0, 0, " ", " ", " ", " ", " ", " ",
             (["channel" : 1, "who" : 1, "tell" : 1]), other });
-    this_object()->acknowledge_startup(fd, s1);
+    trr("%^WHITE%^constructed packet: "+identify(packet), "black");
+    ROUTER_D->update_imc2(s1, other);
+    this_object()->acknowledge_startup(fd, s1, vers);
+#if CALL_OUT_COMPLETE_STARTUP
+    call_out("complete_startup", 0, fd, packet, s1, other);
+#else
+    ROUTER_D->read_callback(fd, packet);
+    ROUTER_D->broadcast_mudlist(s1);
+    ROUTER_D->broadcast_chanlist("foo",0);
+    mudinfo[s1]["password"] = ROUTER_D->query_mudinfo()[s1]["password"];
+    trr(s1 + " i3 password: "+mudinfo[s1]["password"]);
+#endif
+}
+
+#if CALL_OUT_COMPLETE_STARTUP
+static complete_startup(int fd, mixed packet, string s1, mixed other){
+    string checkmud = ROUTER_D->query_connected_fds()[fd]; 
+    if(checkmud){
+        return;
+    }
     ROUTER_D->read_callback(fd, packet);
     ROUTER_D->update_imc2(s1, other);
+    ROUTER_D->broadcast_mudlist(s1);
     mudinfo[s1]["password"] = ROUTER_D->query_mudinfo()[s1]["password"];
     trr(s1 + " i3 password: "+mudinfo[s1]["password"]);
 }
+#endif
 
-void acknowledge_startup(int fd, string mud){
-    string passwd = "flan";
+varargs void acknowledge_startup(int fd, string mud, mixed vers){
+    string syn, ack, passwd, ver;
     string server = ROUTER_D->GetRouterName();
-    trr("ack");
+    ver = vers+"";
+    trr("ack for "+mud+" ver is: "+ver);
     if(mudinfo && mudinfo[mud] && mudinfo[mud]["serverpass"])
         passwd = mudinfo[mud]["serverpass"];
-    trr("PW "+server+" "+passwd+" version=2 LPMuds.net");
-    write_data(fd, "PW "+server+" "+passwd+" version=2 LPMuds.net");
+    ack = "PW "+server+" "+passwd+" version="+ver+" LPMuds.net";
+    syn = replace_string(ack, "\n","#");
+    syn = replace_string(syn, "\r","^");
+    ack = replace_string(ack, "\n","");
+    trr(mud+" ("+fd+") ack: "+ack);
+    write_data(fd, ({ack}), 1, vers);
 }
 
 void read_callback(mixed fd, mixed info){
+    mixed womble = info;
     mixed packet = packetize(info);
     mixed ret;
     mapping datamap = string_to_mapping(info);
-    trr("packet: "+identify(packet),"yellow");
+#if 1
+    womble = replace_string(womble, "\n", "(LF)");
+    womble = replace_string(womble, "\r", "(CR)");
+    //trr("packet: "+identify(womble),"yellow");
+    womble = packetize(womble);
+    //trr("packet: "+identify(womble),"yellow");
+#endif
+    //trr("whee! read_callback("+fd+", "+identify(womble)+")","cyan");
     if(stringp(info) && last(info,1) == "\n") info = truncate(info,1);
-    trr("whee! read_callback("+fd+", "+identify(info)+")","cyan");
-    trr("Mapping form: "+identify(datamap)+")","cyan");
+    //trr("Mapping form: "+identify(datamap)+")","cyan");
     if(stringp(info) && !strsrch(info,"PW ")){
-        info = replace_string(info,"\n","");
-        info = replace_string(info,"\n","");
+        mixed start;
+        info = replace_string(info,"\r","\n");
+        start = explode(info, "\n");
+        if(sizeof(start)) info = start[0];
         construct_startup(fd, info);
         return;
     }
-    if(!mudinfo[packet[2]] || 
+    if(!packet || !mudinfo[packet[2]] || 
             ROUTER_D->query_connected_fds()[fd] != packet[2]){
-        write_data(fd, "Your connection isn't registered as "+packet[2]);
+        write_data(fd, "Your connection isn't registered as " +
+                (packet ? packet[2] : "anything at all"));
+        trr("IMC2: BAD CONNECTION ON "+fd, "red");
         close_connection(fd);
         return;
     }
     if(packet[0] == "ice-msg-b"){
         string tmp;
-        sscanf(packet[6],"%*shannel=%*s:%s %*s",tmp);
-        ret = ({ "channel-m" });
-        ret += packet[1..5];
         if(!stringp(datamap["text"])) datamap["text"] = itoa(datamap["text"]);
+        sscanf(packet[6],"%*shannel=%*s:%s %*s",tmp);
+        if(datamap["emote"]){
+            ret = ({ "channel-e" });
+            if(datamap["emote"] == 2){
+                string tmp2 = datamap["text"];
+                tmp2 = replace_string(tmp2, packet[3]+"@"+packet[2], "$N");
+                datamap["text"] = tmp2;
+            }
+            else {
+                string tmp2 = "$N " + datamap["text"];
+                datamap["text"] = tmp2;
+            }
+        }
+        else ret = ({ "channel-m" });
+        ret += packet[1..5];
         ret += ({ tmp, capitalize(packet[3]), datamap["text"] });
+        //tc("ret: "+identify(ret));
         ROUTER_D->read_callback(fd, ret);
         return;
     }
     if(packet[0] == "is-alive" || packet[0] == "keepalive-request"){
         int update;
         mixed data;
-        trr(packet[0],"white");
+        //trr(packet[0],"white");
         if(sizeof(packet) < 6){
-            trr("Wrong packet size.","white");
+            //trr("Wrong packet size.","white");
             write_data(fd, "Wrong packet size.");
             return;
         }
         data = parse_info(packet[6]);
-        trr("data: "+identify(data));
+        //trr("data: "+identify(data));
         foreach(mixed key, mixed val in data){
-            trr("key: "+identify(key)+", val: "+identify(val),"green");
+            //trr("key: "+identify(key)+", val: "+identify(val),"green");
             if(!mudinfo[packet[2]][key] ||
                     mudinfo[packet[2]][key] != val){
-                trr("key: "+identify(key)+", val: "+identify(val),"red");
+                //trr("key: "+identify(key)+", val: "+identify(val),"red");
                 update = 1;
                 mudinfo[packet[2]][key] = val;
             }
         }
         if(update){
-            trr("trying to update","white");
+            //trr("trying to update","white");
             ROUTER_D->update_imc2(packet[2], data);
         }
     }
     if(packet[0] == "keepalive-request"){
-        trr("trying to send mudlist");
+        //trr("trying to send mudlist");
         ROUTER_D->send_full_mudlist(packet[2]);
         return;
     }
     if(packet[0] == "ice-refresh"){
-        trr("trying to send chanlist");
+        //trr("trying to send chanlist");
         ROUTER_D->broadcast_chanlist("foo",packet[2]);
         return;
     }
     if(packet[0] == "tell"){
         string msg;
-        trr("trying to send tell");
+        //trr("trying to send tell");
         msg = replace_string(packet[6],"text=","");
         ret = ({ "tell", 5, packet[2], packet[3], packet[4], 
                 packet[5], packet[3], msg });
@@ -481,3 +631,17 @@ void read_callback(mixed fd, mixed info){
     }
 }
 
+void broadcast_data(mapping targets, mixed data){
+    //ssocket = find_object(SSOCKET_D);
+    //tc("targets: "+identify(targets));
+    validate();
+    //tc("data: "+identify(data));
+    foreach(int *arr in unique_array(values(targets), (: $1 :))){
+        //tc("arr[0]: "+identify(arr[0]));
+        //if(!ssocket) tc("FUCK");
+        //else 
+        write_data(arr[0], data);
+    }
+    //if(ssocket) ssocket->broadcast_data(targets, data);
+    //tc("C");
+}

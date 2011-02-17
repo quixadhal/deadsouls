@@ -39,7 +39,7 @@ static void create(){
                 ({"script","words","inscription","writing"}) : "Words engraved on the ring in a highly "+
                 "stylized script."
                 ]) );
-    SetRead(({"script","words","inscription","writing"}), "\"etaoin shrdlu\""  );
+    SetRead(({"script","words","inscription","writing"}), "\"bad wolf\""  );
     boobytrap_me();
 }
 

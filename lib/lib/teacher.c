@@ -188,8 +188,12 @@ int eventTeachLanguage(object who, string verb, string language){
 
 static int ContinueTeaching(object who, string language, int x){
     language = capitalize(language);
-    if( !present(who, environment()) ) return 0;
-    if( !Students[who->GetKeyName()] ) return 0;
+    if( !who || !Students[who->GetKeyName()] ) return 0;
+    if( !present(who, environment()) ||
+      member_array(who, this_object()->GetEnemies()) != -1){
+        map_delete(Students, who->GetKeyName());
+        return 0;
+    }
     if( x > 4 ){
         map_delete(Students, who->GetKeyName());
         eventComplete(who, language);

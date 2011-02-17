@@ -4,6 +4,7 @@
 #include <dirs.h>
 
 #define LIB_ACTIVATE     DIR_EVENTS "/activate"
+#define LIB_AIM          DIR_EVENTS "/aim"
 #define LIB_APPLY        DIR_EVENTS "/apply"
 #define LIB_BAIT         DIR_EVENTS "/bait"
 #define LIB_BAIT_WITH    DIR_EVENTS "/bait_with"

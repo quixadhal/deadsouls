@@ -10,7 +10,7 @@ varargs mixed do_shoot_obj_with_obj(mixed args...);
 static void create() {
     verb::create();
     SetVerb("shoot");
-    SetRules("OBJ at LIV", "LIV with OBJ","OBJ at OBJ", "OBJ with OBJ",
+    SetRules("OBJ at OBJ", "OBJ with OBJ",
             "OBJ WRD", "OBJ WRD at WRD");
     SetSynonyms("fire", "gat", "gank");
     SetErrorMessage("Shoot what?");
@@ -44,13 +44,15 @@ varargs mixed eventShoot(mixed device, mixed target, string dir, string whom){
         return 1;
     }
 
-    if(target){
+#if 1
+    if(living(target) || target->isDummy()){
         attackable = target->GetAttackable();
         if(!attackable || !intp(attackable) || attackable != 1){
             write("You are unable to shoot "+target->GetShort()+".");
             return 1;
         }
     }
+#endif
     return device->eventShoot(who, target, dir, whom);
 }
 

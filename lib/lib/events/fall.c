@@ -31,7 +31,10 @@ mixed eventFall(){
             return 0;
         }
         tmprumbo = rumbo;
-        if(stringp(rumbo)) err = catch(rumbo = load_object(rumbo));
+        if(stringp(rumbo)){
+            if(grepp(rumbo, "#")) err = "Let's not load a clone.";
+            else err = catch(rumbo = load_object(rumbo));
+        }
         if(err || !rumbo){
             log_file("runtime","\n"+timestamp()+" "+identify(this_object())+
                     " could not load "+identify(rumbo)+" to fall into.\n");

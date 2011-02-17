@@ -29,7 +29,7 @@ varargs static void validate(int i){
         }
     }
     if( previous_object() != cmd && previous_object() != router &&
-            previous_object() != this_object() && !(master()->valid_apply(({ "ASSIST" }))) ){
+            previous_object() != this_object() && !((int)master()->valid_apply(({ "ASSIST" }))) ){
         server_log("%^RED%^SECURITY ALERT: validation failure in RSOCKET_D.","rsocket");
         error("Illegal attempt to access router socket daemon: "+get_stack()+
                 " "+identify(previous_object(-1)));

@@ -203,6 +203,9 @@ int eventExchange(object who, int amount, string str1, string str2){
     int i, x, charge;
     float val;
 
+    if( amount < 0 ){
+        amount = who->GetCurrency(str1);
+    }
     if( amount < 1 ){
         eventForce("speak " + who->GetName() + ", that "
                 "transaction cannot be completed.");
@@ -335,8 +338,19 @@ int cmdParse(object who, string cmd, string str, mixed args...){
                 eventForce("speak Exchange what for what?");
                 return 1;
             }
-        sscanf(str, "%d %s for %s", x, s1, s2);
-        return eventExchange(who, x, s1, s2);
+        if(sscanf(str, "%d %s for %s", x, s1, s2) < 3){
+            x = -1;
+            sscanf(str, "%s for %s", s1, s2);
+        }        
+        if(s1 == "all"){
+            int ret = 0;
+            foreach(string curr in (who->GetCurrencies() - ({ s2 }))){
+                if(who->GetCurrency(curr) < 1) continue;
+                ret += eventExchange(who, -1, curr, s2);
+            }
+        return ret;
+        }
+        else return eventExchange(who, x, s1, s2);
         break;
         case "account" :
             return eventOpenAccount(who);

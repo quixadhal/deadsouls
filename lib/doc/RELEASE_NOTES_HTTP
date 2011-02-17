@@ -1,14 +1,64 @@
 HTTP/1.1 200 OK
-Date: Tue, 29 Dec 2009 23:09:12 GMT
-Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.3 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
-Last-Modified: Mon, 28 Dec 2009 21:55:20 GMT
-ETag: "351665-1d0c6-47bd0f626e200"
+Date: Wed, 12 Jan 2011 18:05:44 GMT
+Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.6 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
+Last-Modified: Mon, 03 Jan 2011 02:10:39 GMT
+ETag: "3831f-1da84-498e7a88505c0"
 Accept-Ranges: bytes
-Content-Length: 118982
+Content-Length: 121476
 Connection: close
 Content-Type: text/plain
 
----- 2.12 ---
+---- 3.1a11 ---
+- Released 2011-01-02
+- Crash trace no longer has Pinkfish codes.
+- Receiving a packet from a mud previously marked offline will mark it online.
+- Mapped router-side "intergossip" to "broken_gossip" to limit confusion.
+- Mapped router-side "intercre" to "broken_cre" to limit confusion.
+- NPC's with inventories no longer have their stuff duplicated when they are 
+  reloaded by a persistent room.
+- Added command: shadows
+- Driver: updated to 2.21 plus minor tweaks (Including nfa's GMCP fix)
+  Note: The Windows driver is still 2.20.
+- The command "rotatelogs" now takes an option to force the rotation.
+- Fixed a runtime error in player saves if a carried object has an
+  AddSave pointing to a nonexistent variable.
+- Fixed array element mismatch in CHAT_D remote chans.
+- SetItems() and AddItem() now work ok on NPC's (thx to HoriceGump for the
+  suggestion).
+- Dummy items in storerooms (like doors) are no longer browseable.
+
+---- 3.1a10 ---
+- Released 2010-08-15
+- Guest is now excluded from PLAYERS_D autopurging.
+- Fixed some errant /n's (thx Aleksy!)
+- i3router: IRN channel updates are less noisy now, excluding "listening". 
+  3 years late, but hey, I got to it eventually, Aidil.
+- IMC2 server: fixed odd problem with authentication reported by Aleksy,
+  Quixadhal, and Kline.
+- CreWeb now accepts passwords that contain the characters: ~ ! @ # $ % ^ & *
+  ( ) _ + { } | : " < > ? ` - = [ ] \ ; ' , . /
+- Fixed some channel confusion regarding parties.
+- Corrected some ambiguity in "nopeer" versus "no peer" for rooms.
+- Added LIB_AIM.
+- Added some gadgets to the science complex.
+
+---- 3.1a9 ---
+- Released 2010-07-25
+- Driver: Updated to Fluffos 2.20 plus minor tweaks.
+- Teachers and trainers now stop instructing you when you're
+  fighting them or if you've picked them up.
+- MB IMC2 channels renamed in CHAT_D.
+- IMC2 server: fixed line endings, emotes, minor runtimes and channel parsing.
+- IMC2 client: uses CRLF now rather than LFCR if version 2.1 is specified.
+- "chan add all" now works.
+- Fixed a crasher when querying for binary save dir.
+- Receiving messages while in the pager while in charmode no longer
+  aborts the pager.
+- Receiving a message while typing a long line in charmode no longer obscures 
+  the message on next keypress.
+- Quitting the pager while in (suspended) charmode unsuspends charmode.
+
+---- 3.0 ---
 - Released 2009-12-31
 - Driver: added Kalinash's fix for Solaris on 64 bit SPARC.
 - Driver: added Kalinash's fix for BSD math.
@@ -40,6 +90,9 @@ Content-Type: text/plain
 - Fixed a problem with "EverFill" things like rivers running out.
 - Fixed a problem with undrinkable floods and floods that couldn't
   be used to fill flasks.
+- Vendors now buy items at half value, if they can.
+- The Windows version now automatically disables IMC2 if the
+  server IP becomes invalid.
 
 ---- 2.11a22 ---
 - Released 2009-11-01

@@ -1,3 +1,5 @@
+#include <daemons.h>
+
 mixed cmd(string args) {
     object ob = this_player();
     int i, cre = creatorp(ob);
@@ -34,6 +36,31 @@ mixed cmd(string args) {
         return 1;
     }
     if(command == "add"){
+        if(!creatorp(this_player())){
+            write("Try: help chan");
+            return 1;
+        }
+        if(channel == "all"){
+            string *allchans = CHAT_D->GetChannels();
+            allchans += CHAT_D->GetRemoteChannels();
+            foreach(string chan in allchans){
+                //tc("chan: "+identify(chan));
+            }
+            allchans = sort_array(singular_array(allchans), 1);
+            allchans -= ({ "muds" });
+            foreach(string chan in allchans){
+                string lchan;
+                if(sscanf(chan,"%*s:%s",lchan) != 2) lchan = chan;
+                if(!ob->GetChannel(lchan)){
+                    ob->AddChannel(lchan);
+                    if(ob->GetChannel(lchan)){
+                        write("Added: "+lchan);
+                    }
+                }
+            }
+            write("Done.");
+            return 1;
+        }
         if(member_array(channel, channels) != -1){
             write("You are already subscribed to that channel.");
             return 1;
@@ -49,6 +76,21 @@ mixed cmd(string args) {
         return 1;
     }
     if(command == "remove"){
+        if(!creatorp(this_player())){
+            write("Try: help chan");
+            return 1;
+        }
+        if(channel == "all"){
+            string *allchans = ob->GetChannels();
+            foreach(string chan in allchans){
+                ob->RemoveChannel(chan);
+                if(!(ob->GetChannel(chan))){
+                    write("Removed: "+chan);
+                }
+            }
+            write("Done.");
+            return 1;
+        }
         if(member_array(channel, channels) == -1){
             write("You are already unsubscribed to that channel.");
             return 1;

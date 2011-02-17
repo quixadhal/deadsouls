@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 export INDENT=$3
 export NEWLIB=$2
@@ -65,21 +65,35 @@ mkdir /tmp/foo/next/lib/domains/cave/save
 mkdir /tmp/foo/next/lib/domains/cave/txt
 mkdir /tmp/foo/next/lib/domains/cave/virtual
 mkdir /tmp/foo/next/doc/phints
+mkdir /tmp/foo/next/lib/domains/campus/chamber 
 
 cd /tmp/foo
+
+\rm -f new/lib/secure/cfg/*.????.cfg
+\rm -f new/lib/secure/cfg/*.????.win32
+\rm -f new/lib/secure/include/*.????.h
+\rm -f new/lib/secure/cfg/mudos.autobak.????
+\rm -f new/lib/news/*.????
+
+\rm -f new/lib/domains/campus/save/charl*
+\rm -f next/lib/domains/campus/save/charl*
 
 \cp -f new/lib/secure/daemon/update.patch next/lib/secure/daemon/update.patch
 \mv -f new/lib/secure/lib/connect.c new/lib/secure/lib/connect.real
 \cp -f new/lib/secure/lib/connect.first.c new/lib/secure/lib/connect.c
 \cp -f new/lib/secure/save/backup/config.orig new/lib/secure/include/config.h
+\cp -f new/lib/secure/save/backup/config.orig next/lib/secure/save/backup/config.orig
 \cp -f new/lib/secure/save/backup/secrets.orig new/lib/secure/include/secrets.h
+\cp -f new/lib/secure/save/backup/secrets.orig next/lib/secure/save/backup/secrets.orig
+\cp -f new/lib/secure/daemon/imc2.c next/lib/secure/save/backup/imc2.orig
 \rm -f next/lib/lib/remote.c
 \rm -f new/lib/lib/remote.c
 
 if [ $3 ]
 then
 echo "indenting"
-cd $NEWLIB/lib
+#cd $NEWLIB/lib
+cd new/lib
 /contrib/indentall
 cd ../../$OLDLIB/lib
 /contrib/indentall
@@ -104,13 +118,14 @@ perl -pi -e s/"Files\ "/"\\\\cp\ \-f\ "/g diff.txt
 perl -pi -e s/"Only\ in\ next"/"\\\\rm\ \-f\ "/g diff.txt
 perl -pi -e s/"Only\ in\ "/"\\\\cp\ \-rf\ "/g diff.txt
 
-perl -pi -e s/"Files\ "/"diff\ "/g diff.sh.1
+perl -pi -e s/"Files\ "/"diff\ -Nur\ "/g diff.sh.1
 
 
 cat diff.txt | grep -v "\.prime" | grep -v "lib/core" |grep -v "\.o"|grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff2.txt
 cat diff.sh.1 | grep -v CMD_EVAL_TMP_FILE|grep -v "lib/secure/tmp/"|grep -v "/lib/estates/"|grep -v "lib/secure/save"| grep -v "lib/save/"|grep -v "/mudos.cfg" |grep -v "/groups.cfg" |grep -v "\.bak"|grep -v "\.swp"> diff.sh
 
 chmod 755 diff.sh
+chmod 755 diff.sh.1
 
 #vim diff.txt
 #echo "#!/usr/bin/bash" > copyfiles3
@@ -130,12 +145,16 @@ done
 echo "mkdir next/lib/secure/log/intermud" >> copyfiles3
 echo "rm -f /tmp/foo/next/lib/upgrades.txt" >> copyfiles3
 echo "cp -f next/lib/log/open/foo.txt next/lib/secure/log/intermud/" >> copyfiles3
-#echo "cp -f new/lib/save/rooms.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/books.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/soul.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/rooms.o next/lib/save/" >> copyfiles3
 echo "cp -f new/lib/save/races.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/map.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/economy.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/save/classes.o next/lib/save/" >> copyfiles3
+echo "cp -f new/lib/secure/save/inet.o next/lib/secure/save/" >> copyfiles3
 echo "cp -f new/lib/secure/save/functions.o next/lib/secure/save/" >> copyfiles3
 echo "cp -f new/lib/secure/save/files.o next/lib/secure/save/" >> copyfiles3
-#echo "cp -f new/lib/save/map.o next/lib/save/" >> copyfiles3
-#echo "cp -f new/lib/save/portal.o next/lib/save/" >> copyfiles3
 echo "cp -f /contrib/newver next/extra/crat/" >> copyfiles3
 echo "cp -f /contrib/newpatch next/extra/crat/" >> copyfiles3
 echo "cp -f /contrib/livepatch next/extra/crat/" >> copyfiles3
@@ -151,4 +170,6 @@ echo "cp -f /contrib/indentall next/extra/crat/" >> copyfiles3
 #\cp -f $NEWLIB.zip /mnt/data/mud/deadsouls/
 #\cp -f $NEWLIB.zip /mnt/media/open/
 #\cp -f $NEWLIB.zip /export/home/$HOME/mud/
+
+./diff.sh.1 > /tmp/foo/diff.out
 

@@ -371,7 +371,7 @@ int check_access(object ob, string fun, mixed file, string *ok, string oper) {
                 continue;
             }
             else {
-                if(false()) debug_message("\nSPLAT 2\n");
+                debug_message("\nSPLAT 2\n");
                 return 0;
             }
         }
@@ -491,7 +491,7 @@ object compile_object(string str) {
 
 static void crash(mixed args...) {
     string err;
-    string guilty_stack = get_stack(1);
+    string guilty_stack = get_stack();
     string guilty_obs = identify(previous_object(-1));
     if(sizeof(args)) err = args[0];
     write_file(DIR_LOGS "/crashes",
@@ -644,7 +644,7 @@ string error_handler(mapping mp, int caught) {
              * the only effective countermeasure is a hard reboot
              * of the mud.
              */
-            debug_message("Eval cost error cascade!\n");
+            debug_message("Shut'er down, Clancy! She's a-pumpin' mud!!\n");
             shutdown(-9);
         }
     }

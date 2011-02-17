@@ -35,6 +35,8 @@ static string SaveFile;
 
 mapping ExtraInfo();
 void ConvertLists();
+int GetStatus(string mud);
+static mixed SetStatus(string mud, int status);
 
 static void create(){
     client::create();
@@ -53,7 +55,7 @@ static void create(){
             RestoreObject(SaveFile, 1);
         }
     ConvertLists();
-        Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
+    Nameservers = ({ ({ "*dalet", "97.107.133.86 8787" }) });
         SetNoClean(1);
         tn("INTERMUD_D reloaded.");
         tn("Loading object stack: "+get_stack(),"red");
@@ -116,6 +118,7 @@ void eventClearVars(){
 static void eventRead(mixed *packet){
     mixed val;
         string cle;
+        int mudpacket;
         Online = 1;
         
         if( !packet || sizeof(packet) < 6 ) return; /* should send error */
@@ -130,7 +133,7 @@ static void eventRead(mixed *packet){
             }
     switch(packet[0]){
         case "startup-reply":
-            LOG_D->LogSpecial(LOG_I3,timestamp()+" "+identify(packet)+"/n");
+            LOG_D->LogSpecial(LOG_I3,timestamp()+" "+identify(packet)+"\n");
             tn("INTERMUD_D: "+identify(packet),"red");
             if( sizeof(packet) != 8 ){
                 //tn("We don't like the mudlist packet size.","red");
@@ -202,44 +205,14 @@ static void eventRead(mixed *packet){
                     map_delete(MudList["List"], cle);
                 else if( val ) MudList["List"][cle] = val;
             }
-        SaveObject(SaveFile);
+            SaveObject(SaveFile);
             return;
-            case "ping-req":
-            SERVICES_D->eventReceiveAuthRequest(packet);
-            break;
-            case "ping-reply":
-            SERVICES_D->eventReceiveAuthReply(packet);
-            break;
-            case "auth-mud-req":
-            SERVICES_D->eventReceiveAuthRequest(packet);
-            break;
-            case "auth-mud-reply":
-            SERVICES_D->eventReceiveAuthReply(packet);
-            break;
-            case "channel-t":
-            SERVICES_D->eventReceiveChannelTargettedEmote(packet);
-            break;
-            case "channel-e":
-            SERVICES_D->eventReceiveChannelEmote(packet);
-            break;
-            case "channel-m":
-            SERVICES_D->eventReceiveChannelMessage(packet);
-            break;
-            case "chan-who-reply":
-            SERVICES_D->eventReceiveChannelWhoReply(packet);
-            break;
-            case "chan-who-req":
-            SERVICES_D->eventReceiveChannelWhoRequest(packet);
-            break;
-            case "chan-user-req":
-            SERVICES_D->eventReceiveChannelUserRequest(packet);
-            break;
             case "chanlist-reply":
             tn("chanlist reply: "+identify(packet), "blue");
             if( packet[2] != Nameservers[0][0] ) return;
                 ChannelList["ID"] = packet[6];
-                    foreach(cle, val in packet[7]){ 
-                        if( !val && ChannelList["List"] != 0 ){ 
+                    foreach(cle, val in packet[7]){
+                        if( !val && ChannelList["List"] != 0 ){
                             map_delete(ChannelList["List"], cle);
                                 CHAT_D->RemoveRemoteChannel(cle);
                         }
@@ -247,49 +220,103 @@ static void eventRead(mixed *packet){
                             ChannelList["List"][cle] = val;
                                 CHAT_D->AddRemoteChannel(cle);
                         }
-                    } 
-        SaveObject(SaveFile);
+                    }
+            SaveObject(SaveFile);
             SERVICES_D->eventRegisterChannels(packet[7]);
             return;
+            case "ping-req":
+            mudpacket = 1;
+            SERVICES_D->eventReceiveAuthRequest(packet);
+            break;
+            case "ping-reply":
+            mudpacket = 1;
+            SERVICES_D->eventReceiveAuthReply(packet);
+            break;
+            case "auth-mud-req":
+            mudpacket = 1;
+            SERVICES_D->eventReceiveAuthRequest(packet);
+            break;
+            case "auth-mud-reply":
+            mudpacket = 1;
+            SERVICES_D->eventReceiveAuthReply(packet);
+            break;
+            case "channel-t":
+            mudpacket = 1;
+            SERVICES_D->eventReceiveChannelTargettedEmote(packet);
+            break;
+            case "channel-e":
+            mudpacket = 1;
+            SERVICES_D->eventReceiveChannelEmote(packet);
+            break;
+            case "channel-m":
+            mudpacket = 1;
+            SERVICES_D->eventReceiveChannelMessage(packet);
+            break;
+            case "chan-who-reply":
+            mudpacket = 1;
+            SERVICES_D->eventReceiveChannelWhoReply(packet);
+            break;
+            case "chan-who-req":
+            mudpacket = 1;
+            SERVICES_D->eventReceiveChannelWhoRequest(packet);
+            break;
+            case "chan-user-req":
+            mudpacket = 1;
+            SERVICES_D->eventReceiveChannelUserRequest(packet);
+            break;
             case "emoteto":
+            mudpacket = 1;
             SERVICES_D->eventReceiveEmote(packet);
             break;
             case "finger-req":
+            mudpacket = 1;
             SERVICES_D->eventReceiveFingerRequest(packet);
             break;
             case "finger-reply":
+            mudpacket = 1;
             SERVICES_D->eventReceiveFingerReply(packet);
             break;
             case "locate-req":
+            mudpacket = 1;
             SERVICES_D->eventReceiveLocateRequest(packet);
             break;
             case "locate-reply":
+            mudpacket = 1;
             SERVICES_D->eventReceiveLocateReply(packet);
             break;
             case "tell":
+            mudpacket = 1;
             SERVICES_D->eventReceiveTell(packet);
             break;
             case "chan-user-reply":
+            mudpacket = 1;
             tn("INTERMUD_D: chan-user-reply received.","red");
             case "ucache-update":
+            mudpacket = 1;
             SERVICES_D->eventReceiveUcacheUpdate(packet);
             break;
             case "who-req":
+            mudpacket = 1;
             SERVICES_D->eventReceiveWhoRequest(packet);
             break;
             case "who-reply":
+            mudpacket = 1;
             SERVICES_D->eventReceiveWhoReply(packet);
             break;
             case "news":
+            mudpacket = 1;
             SERVICES_D->eventReceiveNews(packet);
             break;
             case "mail":
+            mudpacket = 1;
             SERVICES_D->eventReceiveMail(packet);
             break;
             case "mail-ok":
+            mudpacket = 1;
             SERVICES_D->eventReceiveMailOk(packet);
             break;
             case "file":
+            mudpacket = 1;
             tn("INTERMUD_D: file packet received.","red");
             break;
             case "error":
@@ -297,6 +324,12 @@ static void eventRead(mixed *packet){
             break;
         default:
                 break;
+    }
+    if(mudpacket){
+        if(!GetStatus(packet[2])){
+            tn("Setting status of "+packet[2]+" to online.");
+            SetStatus(packet[2], -1);
+        }
     }
 }
 
@@ -307,7 +340,7 @@ static void eventSocketClose(){
 static void eventConnectionFailure(){
     Online = 0;
         tn("INTERMUD_D: CONNECTION FAILED","red");
-        error("Failed to find a useful name server./n");
+        error("Failed to find a useful name server.\n");
 }
 
 int SetDestructOnClose(int x){ return 0; }
@@ -339,6 +372,22 @@ string GetMudName(string mud){
             return 0;
         }
         else return uc[x];
+}
+
+static mixed SetStatus(string mud, int status){
+    mapping mlist = copy(MudList["List"]);
+    mixed array newmud = ({});
+    if(!sizeof(newmud = mlist[mud])) return 0;
+    tn("old: "+identify(newmud));
+    newmud[0] = status;
+    MudList["List"][mud] = newmud;
+    tn("new: "+identify(MudList["List"][mud]),"blue");
+} 
+
+int GetStatus(string mud){
+    mixed array newmud = ({});
+    if(!sizeof(newmud = MudList["List"][mud])) return 0;
+    return (newmud[0] ? 1 : 0);
 }
 
 mapping GetMudList(){ 

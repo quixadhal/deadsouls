@@ -28,7 +28,7 @@ object ssocket = find_object(SSOCKET_D);
 static void validate(){
     if( previous_object() != cmd && previous_object() != rsocket &&
             previous_object() != this_object() && previous_object() != ssocket &&
-            !(master()->valid_apply(({ "ASSIST" }))) ){
+            !((int)master()->valid_apply(({ "ASSIST" }))) ){
         trr("SECURITY ALERT: validation failure in ROUTER_D.","red");
         error("Illegal attempt to access router daemon: "+get_stack()+
                 " "+identify(previous_object(-1)));
@@ -56,6 +56,9 @@ int mudinfo_update_counter; // Similar to channel_update_counter
 static int max_age = 604800;
 //static int max_age = 86400;
 mapping Blacklist = ([]);
+
+//Unsaved globals
+static mapping gtargets = ([]);
 
 // Prototypes
 static mapping muds_on_this_fd(int fd);
@@ -158,9 +161,9 @@ varargs void write_data(int fd, mixed data, int override){
 }
 
 static void broadcast_data(mapping targets, mixed data){
-    object ssock = find_object(SSOCKET_D);
+    object imc2d = find_object(IMC2_SERVER_D);
     RSOCKET_D->broadcast_data(targets, data);
-    if(ssock) IMC2_SERVER_D->broadcast_data(targets, data);
+    if(imc2d) imc2d->broadcast_data(targets, data);
 }
 
 // debugging stuff...
@@ -517,7 +520,7 @@ void clean_chans(){
         mixed *tmp_chan = ({});
         if(sizeof(val) == 3){
             tmp_chan = ({ (intp(val[0]) ? val[0] : 0), 
-                    val[1], distinct_array(val[2]) });
+              val[1], distinct_array(val[2]) });
             channels[key] = tmp_chan;
         }
     }
@@ -526,53 +529,83 @@ void clean_chans(){
     trr("channel cleanup: cleaned from listening: "+implode(cleaned,"\n"));
 }
 
-void clear_discs(){ 
+varargs void clear_discs(mixed arg){ 
     string mudname; 
+    string *disclist, *muds;
     int i = 1;
 
     validate();
+    //tc("arg: "+identify(arg));
+    if(arg){
+        //tc("WHAAA");
+        if(stringp(arg)) arg = ({ arg });
+        if(arrayp(arg)) disclist = arg;
+    }
+
+    if(!disclist) disclist = keys(mudinfo); 
+    muds = keys(mudinfo);
 
     trr("%^B_BLACK%^Discarding excessively old disconnects.","white");
     trr("%^B_BLACK%^Max age is "+time_elapsed(max_age)+".","white");
-    foreach(mudname in keys(mudinfo)) {
-        int deadsince = time() - mudinfo[mudname]["disconnect_time"];
-
-        if(undefinedp(connected_muds[mudname]) && mudinfo[mudname]["router"]){
-            if(mudinfo[mudname]["router"] != my_name && 
-                    member_array(mudinfo[mudname]["router"],keys(irn_connections)) == -1){
-                if(!mudinfo[mudname]["disconnect_time"])
-                    mudinfo[mudname]["disconnect_time"] = 0;
-                if(mudinfo[mudname]["connect_time"])
-                    mudinfo[mudname]["connect_time"] = 0;
+    foreach(mudname in disclist) {
+        int deadsince;
+        if(member_array(mudname, muds) == -1){
+            object ssock = find_object(SSOCKET_D);
+            object imc2d = find_object(IMC2_SERVER_D);
+            mixed data;
+            gtargets = ([]);
+            //tc("FWAAAHAHAHAH: "+mudname);
+            if(ssock && imc2d){
+                mixed tmparr = keys(ssock->query_socks());
+                //tc("baa");
+                filter(tmparr, (: gtargets[itoa($1)] = $1 :));
+                //tc("humbucket");
+                data = "*@" + my_name + " " + time() + " " + my_name +
+                  " close-notify *@* host=" + replace_string(mudname," ","_");
+                //tc("moo? "+identify(data));
+                imc2d->broadcast_data(gtargets, data);
             }
         }
+        else {
+            deadsince = time() - mudinfo[mudname]["disconnect_time"];
 
-        if(!mudinfo[mudname]["disconnect_time"]) continue;
-        trr("%^B_BLACK%^"+mudname+": "+ctime((mudinfo[mudname]["disconnect_time"]) || time()),"white");
-        trr("%^B_BLACK%^dead age: "+time_elapsed(deadsince),"white");
-        if(mudinfo[mudname]["disconnect_time"] && deadsince > max_age ){
-            trr(mudname+": "+time_elapsed(deadsince),"red");
-            server_log("I want to remove "+mudname+". Its disconnect time is "+ctime(query_mud(mudname)["disconnect_time"]));
-            server_log("Which was "+time_elapsed(time() - query_mud(mudname)["disconnect_time"])+" ago.");
-            i = i+1;
-            remove_mud(mudname,1);
-        }
+            if(undefinedp(connected_muds[mudname]) && mudinfo[mudname]["router"]){
+                if(mudinfo[mudname]["router"] != my_name && 
+                        member_array(mudinfo[mudname]["router"],keys(irn_connections)) == -1){
+                    if(!mudinfo[mudname]["disconnect_time"])
+                        mudinfo[mudname]["disconnect_time"] = 0;
+                    if(mudinfo[mudname]["connect_time"])
+                        mudinfo[mudname]["connect_time"] = 0;
+                }
+            }
+    
+            if(!mudinfo[mudname]["disconnect_time"]) continue;
+            trr("%^B_BLACK%^"+mudname+": "+ctime((mudinfo[mudname]["disconnect_time"]) || time()),"white");
+            trr("%^B_BLACK%^dead age: "+time_elapsed(deadsince),"white");
+            if(mudinfo[mudname]["disconnect_time"] && deadsince > max_age ){
+                trr(mudname+": "+time_elapsed(deadsince),"red");
+                server_log("I want to remove "+mudname+". Its disconnect time is "+ctime(query_mud(mudname)["disconnect_time"]));
+                server_log("Which was "+time_elapsed(time() - query_mud(mudname)["disconnect_time"])+" ago.");
+                i = i+1;
+                remove_mud(mudname,1);
+            }
 
-        if(mudinfo[mudname] && mudinfo[mudname]["disconnect_time"] > 0 &&
-                mudinfo[mudname]["connect_time"] > 0){
-            i = 1;
-            server_log("I want to remove "+mudname+". It is in a paradox state.");
-            if(member_array(mudname,keys(query_connected_muds())) != -1){
-                trr("%^B_BLACK%^Its fd is: "+query_connected_muds()[mudname],"white");
+            if(mudinfo[mudname] && mudinfo[mudname]["disconnect_time"] > 0 &&
+                    mudinfo[mudname]["connect_time"] > 0){
+                i = 1;
+                server_log("I want to remove "+mudname+". It is in a paradox state.");
+                if(member_array(mudname,keys(query_connected_muds())) != -1){
+                    trr("%^B_BLACK%^Its fd is: "+query_connected_muds()[mudname],"white");
+                }
+                else {
+                    trr("%^B_BLACK%^It is not listed as a connected mud.","white");
+                }
+                server_log("Removing disconnected mud: "+identify(mudname));
+                i = i+2;
+                remove_mud(mudname,1);
             }
-            else {
-                trr("%^B_BLACK%^It is not listed as a connected mud.","white");
-            }
-            server_log("Removing disconnected mud: "+identify(mudname));
-            i = i+2;
-            remove_mud(mudname,1);
         }
-    }
+    }//end foreach
 }
 
 int eventDestruct(){
@@ -712,5 +745,4 @@ void update_imc2(string mud, mapping foo){
             mudinfo[mud]["driver"] = "IMC2 client";
         }
     }
-    this_object()->broadcast_mudlist(mud);
 }

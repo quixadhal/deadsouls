@@ -205,8 +205,12 @@ int eventTrain(object who, string verb, string skill){
 }
 
 static int ContinueTraining(object who, string skill, int x){
-    if( !present(who, environment()) ) return 0;
-    if( !Students[who->GetKeyName()] ) return 0;
+    if( !who || !Students[who->GetKeyName()] ) return 0;
+    if( !present(who, environment()) ||
+      member_array(who, this_object()->GetEnemies()) != -1){
+        map_delete(Students, who->GetKeyName());
+        return 0;
+    }
     if( x > 4 ){
         map_delete(Students, who->GetKeyName());
         eventComplete(who, skill);

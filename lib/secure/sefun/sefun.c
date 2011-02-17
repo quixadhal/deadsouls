@@ -136,6 +136,13 @@ varargs object clone_object(string name, mixed args...){
     return efun::clone_object(name, args...);
 }
 
+//Wodan removed saving binaries from FluffOS, causing a crasher
+//if that config element is queried for in get_config().
+mixed get_config(int i){
+    if(i == 6) return 0;
+    return efun::get_config(i);
+}
+
 //For some reason, FluffOS read_file() will read
 //a zero-length file as a 65535 length T_INVALID variable.
 //This tends to screw things up for Dead Souls.
@@ -638,6 +645,20 @@ int query_charmode(object ob){
     return -1;
 }
 #endif
+
+int in_pager(object ob){
+    if(ob) globalob = ob;
+    else globalob = previous_object();
+    if(in_edit(globalob) || in_input(globalob)) return 1;
+    if(globalob->GetProperty("was_charmode") && 
+      !query_charmode(globalob)){
+    //Ok, a bit counterintuitive, but the deal is that if you WERE in
+    //charmode, and aren't anymore, the only reason for this is that
+    //charmode is temporarily suspended so you can navigate a pager.
+        return 1;
+    }
+    return 0;
+}
 
 varargs void input_to(mixed fun, int flag, mixed args...){
     object prev = previous_object();

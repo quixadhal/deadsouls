@@ -1,6 +1,8 @@
 #include <lib.h>
+#include <domains.h>
 
 inherit LIB_NPC;
+int lupus;
 
 int AllowPass(object who, object what){
     string *allowed_races = ({ "orc", "half-orc", "bear" });
@@ -13,6 +15,13 @@ int CheckOrc(mixed val){
     if(!val) return 0;
     if(!objectp(val)) return 0;
     if(member_array(val->GetRace(), allowed_races) != -1) return 0;
+    if(!strsrch(base_name(environment()), DOMAIN_EX)){
+        if(!lupus){
+            lupus = 1;
+            eventForce("say bad wolf!");
+        }
+        return 0;
+    }
     else eventForce("growl at "+val->GetKeyName());
     return 1;
 }

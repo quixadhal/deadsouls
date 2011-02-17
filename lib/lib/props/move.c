@@ -191,5 +191,8 @@ int eventMove(mixed dest){
             }
         }
     }
+    if(environment() && !(environment()->GetZPEM())){
+        this_object()->SetZPG(0);
+    }
     return ret;
 }

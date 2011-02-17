@@ -13,8 +13,8 @@ static void create() {
                 "short" : "a steel door leading west",
                 "long" : "This is a steel door.",
                 "lockable" : 1 ]) );
-    SetKeys("north", ({"shaft_door_key"}) );
-    SetKeys("north", ({"shaft_door_key"}) );
+    SetKeys("east", ({"labkey"}) );
+    SetKeys("west", ({"labkey"}) );
     SetClosed(1);
     SetLocked(1);
 }

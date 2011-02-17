@@ -1,3 +1,3 @@
 #/secure/daemon/inet.c
-Services (["oob":(/6,"/secure/lib/net/oob",0,/),"http":(/-5,"/secure/lib/net/http",3,/),])
+Services (["oob":(/6,"/secure/lib/net/oob",0,/),"hftp":(/-6,"/secure/lib/net/h_ftpd",1,/),"ftp":(/-1,"/secure/lib/net/ftp",1,/),"http":(/1,"/secure/lib/net/http",3,/),])
 BlockedIps ([])

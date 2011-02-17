@@ -15,7 +15,6 @@ void create() {
                 "up" : "/domains/campus/room/shaft0",
                 "east" : "/domains/campus/room/sub_basement2.c",
                 ]) );
-    SetDoor("east", "/domains/campus/doors/eledoor3");
 }
 void init(){
     ::init();

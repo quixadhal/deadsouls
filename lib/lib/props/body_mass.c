@@ -4,6 +4,16 @@
 string GetRace();
 
 int BodyMass = 0;
+static int zpg = 0;
+
+int SetZPG(int x){
+    if(x > 0) zpg = 1;
+    else zpg = 0;
+}
+
+int GetZPG(){
+    return zpg;
+}
 
 int AddBodyMass(int x){
     if( BodyMass + x > 0 ){
@@ -16,8 +26,10 @@ int AddBodyMass(int x){
 }
 
 int GetBodyMass(){
-    int base_mass = RACES_D->GetRaceMass(GetRace());
-    int load = this_object()->GetCarriedMass();
+    int base_mass, load;
+    if(GetZPG()) return 0;
+    base_mass = RACES_D->GetRaceMass(GetRace());
+    load = this_object()->GetCarriedMass();
     return (base_mass + load);
 }
 

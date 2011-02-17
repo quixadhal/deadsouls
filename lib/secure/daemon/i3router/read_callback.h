@@ -37,13 +37,11 @@ void read_callback(mixed fd, mixed info){
         return;
     }
 
-    if(stringp(fd) && member_array(info[0],logspam) == -1)
-
-        if(info[4] && !grepp(info[0],"startup-req") && 
-                member_array(info[4], keys(connected_muds)) == -1 &&
-                member_array(info[2], keys(connected_muds)) == -1){
-            return;
-        }
+    if(info[4] && !grepp(info[0],"startup-req") && 
+            member_array(info[4], keys(connected_muds)) == -1 &&
+            member_array(info[2], keys(connected_muds)) == -1){
+        return;
+    }
     validate();
     if(sizeof(blacklisted_muds)){
         if(member_array(info[2], blacklisted_muds) != -1) return;
