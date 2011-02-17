@@ -71,6 +71,7 @@ private int		Medium  	= MEDIUM_LAND;
 private mapping         ActionsMap      = ([]);
 private string          SinkRoom        = "";
 private string          FlyRoom         = "";
+private string          Elevator         = "";
 private int             FlowLimit       = 0;
 private int array       Coords          = ({});
 private string array    Neighbors       = ({});
@@ -1298,4 +1299,13 @@ static void init(){
     if(this_object()->GetVirtual() && !query_heart_beat()){
         set_heart_beat(1);
     }
+}
+
+string GetElevator(){
+    return Elevator;
+}
+
+string SetElevator(string str){
+    if(str) Elevator = str;
+    return Elevator;
 }

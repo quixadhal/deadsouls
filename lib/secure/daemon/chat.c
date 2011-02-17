@@ -44,8 +44,6 @@ static private mapping localchans = ([
         "ie_flibcode": "foundation",
         "dead_test4": "ds_test",
         "dead_souls": "ds",
-        "intergossip": "broken_gossip",
-        "intercre": "broken_cre",
 
         //IMC2 Channels
         "Server02:igame": "i2game2",
@@ -72,8 +70,6 @@ static private mapping localchans = ([
                 "dutch": "dutch",
                 "ds_test": "dead_test4",
                 "ds": "dead_souls",
-                "broken_gossip": "intergossip",
-                "broken_cre": "intercre",
 
                 //IMC2 Channels
                 "i2game2": "Server02:igame",

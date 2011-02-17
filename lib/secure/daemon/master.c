@@ -371,7 +371,7 @@ int check_access(object ob, string fun, mixed file, string *ok, string oper) {
                 continue;
             }
             else {
-                if(false()) debug_message("\nSPLAT 2\n");
+                debug_message("\nSPLAT 2\n");
                 return 0;
             }
         }

@@ -9,7 +9,7 @@ inherit LIB_ITEM;
 static int observing = 0;
 static int counter = 0, attempting, connected, socket ;
 static int dud_count = 0, spawning, last_action, loop_count = 0;
-static int maxbox = 32;
+static int maxbox = 64;
 static int newbot = 1;
 static object person, player;
 static string preset, name, passwd, gender;

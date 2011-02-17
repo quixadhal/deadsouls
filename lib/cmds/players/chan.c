@@ -44,7 +44,7 @@ mixed cmd(string args) {
             string *allchans = CHAT_D->GetChannels();
             allchans += CHAT_D->GetRemoteChannels();
             foreach(string chan in allchans){
-                tc("chan: "+identify(chan));
+                //tc("chan: "+identify(chan));
             }
             allchans = sort_array(singular_array(allchans), 1);
             allchans -= ({ "muds" });
