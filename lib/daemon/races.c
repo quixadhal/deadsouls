@@ -182,8 +182,8 @@ int GetRaceBodyType(string str){
 }
 
 int GetRaceRespirationType(string str){
-    int Btype = Races[str]["Btype"];
-    if(Btype) return Btype;
+    int Rtype = Races[str]["Rtype"];
+    if(Rtype) return Rtype;
     else return 0;
 }
 int GetRaceMouthType(string str){
@@ -329,8 +329,8 @@ void AddRace(string file, int player) {
             case "RESPIRATION_TYPE":
                 type = "";
             x = 0;
-            if(sscanf(line, "RESPIRATION_TYPE %s",type)) res["Btype"] = this_object()->GetRespirationType(type);
-            else res["Btype"] = x;
+            if(sscanf(line, "RESPIRATION_TYPE %s",type)) res["Rtype"] = this_object()->GetRespirationType(type);
+            else res["Rtype"] = x;
             break;
 
             case "STATS":

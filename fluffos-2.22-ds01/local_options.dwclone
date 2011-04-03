@@ -69,8 +69,8 @@
 #undef SMALLOC
 #undef BSDMALLOC
 #undef MMALLOC
-#define MALLOC64
-#undef MALLOC32
+#undef MALLOC64
+#define MALLOC32
 /* You may optionally choose one (or none) of these malloc wrappers.  These
  * can be used in conjunction with any of the above malloc packages.
  *
@@ -539,7 +539,7 @@
  *   resolution is 1/60 of a second, then any time less than approxmately 15k
  *   microseconds will resolve to zero (0).
  */
-#define PROFILE_FUNCTIONS
+#undef PROFILE_FUNCTIONS
 
 /* NO_BUFFER_TYPE: if this is #define'd then LPC code using the 'buffer'
  *   type won't be allowed to compile (since the 'buffer' type won't be
@@ -732,7 +732,7 @@
  *   comm.c's add_message(). Instead of blindly making this value larger,
  *   your mudlib should be coded to not send huge strings to users.
  */
-#define LARGEST_PRINTABLE_STRING 8192
+#define LARGEST_PRINTABLE_STRING 300000
 
 /* MESSAGE_BUFFER_SIZE: determines the size of the buffer for output that
  *   is sent to users.
@@ -753,7 +753,7 @@
  * 14      16384           256k
  * 16      65536             1M
  */
-#define APPLY_CACHE_BITS 14
+#define APPLY_CACHE_BITS 15
 
 /* CACHE_STATS: define this if you want call_other (apply_low) cache 
  * statistics.  Causes HAS_CACHE_STATS to be defined in all LPC objects.
@@ -763,7 +763,14 @@
 /* TRACE: define this to enable the trace() and traceprefix() efuns.
  *   (keeping this undefined will cause the driver to run faster).
  */
-#undef TRACE
+#define TRACE
+
+/* LPC_TO_C: define this to enable LPC->C compilation.
+ *
+ * [NOTE: BINARIES must also be defined for LPC->C to work.  Actually
+ *  using binaries is not required, though.]
+ */
+#undef LPC_TO_C
 
 /* RUNTIME_LOADING: On systems which support it, it allows LPC->C compilation
  * 'on the fly' without having to recompile the driver.
@@ -811,13 +818,13 @@
  * config file.
  */
 /* MAX_LOCAL: maximum number of local variables allowed per LPC function */
-#define CFG_MAX_LOCAL_VARIABLES		50
+#define CFG_MAX_LOCAL_VARIABLES		250
 /* Increasing max global vars beyond 256 is not recommended */
-#define CFG_MAX_GLOBAL_VARIABLES         256
+#define CFG_MAX_GLOBAL_VARIABLES        65530 
 
 #define CFG_EVALUATOR_STACK_SIZE 	3000000
 #define CFG_COMPILER_STACK_SIZE		600000
-#define CFG_MAX_CALL_DEPTH		150
+#define CFG_MAX_CALL_DEPTH		2500
 /* This must be one of 4, 16, 64, 256, 1024, 4096 */
 #define CFG_LIVING_HASH_SIZE		256
 
@@ -862,41 +869,20 @@
 #define HAVE_ZLIB
 #define PACKAGE_COMPRESS
 #define SAVE_GZ_EXTENSION ".o.gz"
-/* CALL_OTHER_TYPE_CHECK: enable type checking for call_other()
- * (-> operator on objects)
- */
 #undef CALL_OTHER_TYPE_CHECK 
-
-
-/* CALL_OTHER_WARN, make it warning instead of errors */
 #define CALL_OTHER_WARN
-
 #define PACKAGE_DWLIB
 #undef MMAP_SBRK
-/* WARN_TAB: Some versions of the editor built in indent function use
- *   tabs for indenting. This options turns on a warning message for
- *   files indented with tabs instead of spaces.
- */
 #define WARN_TAB
-
-/* USE_ICONV: Use iconv to translate input and output from/to the users char 
- * encoding
- */
 #define USE_ICONV
-
-/* WOMBLES: don't allow spaces between start/end of array/mapping/functional token chars so ({1,2,3}) still works, but ( { 1 , 2 , 3 } ) doesn't and ({ 1 , 2 , 3 }) does.*/
 #define WOMBLES
-
-/* ALLOW_INHERIT_AFTER_FUNCTION: allow inheriting after functions have been defined (this includes prototypes). This caused crashes in v22.2a but it may have been fixed since */
 #undef ALLOW_INHERIT_AFTER_FUNCTION
-
-/*PACKAGE_ASYNC: adds some efuns for asyncronous IO */
 #define PACKAGE_ASYNC
-
 #define PROG_REF_TYPE short
-#undef HAS_CONSOLE
+#define HAS_CONSOLE
 #define IPV6
 #undef PACKAGE_CRYPTO
-#undef PACKAGE_SHA1
+#define PACKAGE_SHA1
 #undef DTRACE
+#define PACKAGE_PCRE
 #endif
