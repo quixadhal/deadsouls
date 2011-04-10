@@ -449,6 +449,7 @@ int yeik2(string str){
 
 int vargon(string str){
     int waves, win;
+    validate();
     win = sscanf(str,"%d",waves);
     if(!win || !waves) waves = 5;
     for(win=waves;win > 0;win--){

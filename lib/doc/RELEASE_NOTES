@@ -1,3 +1,12 @@
+---- 3.3a2 ---
+- Released 2011-04-10
+- Updated a socket check.
+- Fixed mud-based earmuffs.
+- The timezone command can now take "none" as an argument.
+- Fixed ticktock.
+- Forest orcs should now be less noisy.
+- Driver: Added fix from Kalinash for debug_message().
+
 ---- 3.3a1 ---
 - Released 2011-04-02
 - Driver: FluffOS 2.22 with minor tweaks.

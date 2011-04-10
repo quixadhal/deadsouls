@@ -7,14 +7,14 @@ string *zones_cfg = explode((read_file(CFG_TIMEZONES)|| ""), "\n");
 
 mixed cmd(string args) {
     string tz = this_player()->GetProperty("timezone");
-    if(!tz) tz = "No timezone set.";
+    if(!tz || tz == "NONE") tz = "No timezone set.";
 
     if(!args){
         write("Your timezone is: "+tz);
         return 1;
     }
     args = upper_case(args);
-    if(member_array(args, zones_cfg) == -1){
+    if(member_array(args, (zones_cfg + ({"NONE"}))) == -1){
         write("That is an unknown timezone.");
         return 1;
     }
@@ -24,7 +24,7 @@ mixed cmd(string args) {
 }
 
 string GetHelp(){
-    return ("Syntax: timezone [zone]\n\n"
+    return ("Syntax: timezone [zone | none]\n\n"
             "Without an argument, timezone will display your current "
             "timezone. If provided a valid timezone known to the mud, "
             "it will attempt to set your personal timezone to that."

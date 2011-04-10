@@ -23,6 +23,7 @@ mixed *socket_names(){
     string *finalsocks, *sock_array = ({});
     int i, quant;
     i = catch( quant = sizeof(socket_status()) );
+    if(i) return ({});
     for(i = 0; i < quant; i++){
         mixed *tmp = socket_status(i);
         tmp[0] = i;

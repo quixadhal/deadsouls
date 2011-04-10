@@ -15,7 +15,7 @@ inherit LIB_DAEMON;
 
 private static int CurrentDay, CurrentYear; 
 private static int Dawn, Morning, Noon, Twilight, Night;
-private static int ticktock;
+private static int ticktock, pending;
 private static string CurrentSeason, TimeOfDay;
 private static mapping Moons;
 private static class month CurrentMonth;
@@ -25,31 +25,27 @@ private static function *TwilightCalls, *NightCalls, *MidnightCalls;
 private static class month *Months;
 
 int eventTickTock(int tick){
+    if(!this_player() || !archp(this_player())) return 0;
     if(!tick) tick = 0;
     ticktock = tick;
+    remove_call_out(pending);
     eventConfigure();
-    return GetCurrentTime()/1200;
+    //return GetCurrentTime()/1200;
+    return GetCurrentTime();
 }
 
 int GetTickTock(){ return ticktock; }
 
 int *GetMudTime(){
     //return ({ GetHour(GetCurrentTime()), GetMinutes(GetCurrentTime()) });
-    return ({ GetHour(time()), GetMinutes(time()) });
+    return ({ GetHour(time()+ticktock), GetMinutes(time()+ticktock) });
 }
-
 
 static void create() {
     string *lines;
     int i, maxi;
 
     daemon::create();
-    DawnCalls = ({});
-    MorningCalls = ({});
-    NoonCalls = ({});
-    TwilightCalls = ({});
-    NightCalls = ({});
-    MidnightCalls = ({});
     ticktock = 0;
     maxi = sizeof(lines = filter(explode(read_file(CFG_MONTHS), "\n"),
                 (: $1 && $1 != "" && $1[0] != '#' :)));
@@ -84,7 +80,14 @@ static void create() {
 static void eventConfigure() {
     int i, x, days, tot, maxi;
 
-    days = GetTime(time()) / (DAY_LENGTH * HOUR_LENGTH);
+    DawnCalls = ({});
+    MorningCalls = ({});
+    NoonCalls = ({});
+    TwilightCalls = ({});
+    NightCalls = ({});
+    MidnightCalls = ({});
+
+    days = GetTime(time()+ticktock) / (DAY_LENGTH * HOUR_LENGTH);
     for(tot=0, i=0, maxi = sizeof(Months); i<maxi; i++)
         tot += ((class month)Months[i])->Days;
     CurrentYear = days / tot + 1;
@@ -113,27 +116,27 @@ static void eventConfigure() {
     x = GetCurrentTime();
     if( x < Dawn ) {
         TimeOfDay = "night";
-        call_out( (: eventDawn :), Dawn - x);
+        pending = call_out( (: eventDawn :), Dawn - x);
     }
     else if( x < Morning ) {
         TimeOfDay = "dawn";
-        call_out( (: eventMorning :), Morning - x);
+        pending = call_out( (: eventMorning :), Morning - x);
     }
     else if( x < Noon ) {
         TimeOfDay = "day";
-        call_out( (: eventNoon :), Noon - x);
+        pending = call_out( (: eventNoon :), Noon - x);
     }
     else if( x < Twilight ) {
         TimeOfDay = "day";
-        call_out( (: eventTwilight :), Twilight - x);
+        pending = call_out( (: eventTwilight :), Twilight - x);
     }
     else if( x < Night ) {
         TimeOfDay = "twilight";
-        call_out( (: eventNight :), Night - x );
+        pending = call_out( (: eventNight :), Night - x );
     }
     else {
         TimeOfDay = "night";
-        call_out( (: eventMidnight :), (DAY_LENGTH * HOUR_LENGTH) - x);
+        pending = call_out( (: eventMidnight :), (DAY_LENGTH * HOUR_LENGTH) - x);
     }
 }
 
@@ -141,7 +144,7 @@ static void eventDawn() {
     object *obs;
     int i;
 
-    call_out( (: eventMorning :), Morning - GetCurrentTime() );
+    pending = call_out( (: eventMorning :), Morning - GetCurrentTime() );
     TimeOfDay = "dawn";
     obs = filter(users(), (: environment($1) &&
                 environment($1)->GetClimateExposed() &&
@@ -158,7 +161,7 @@ static void eventMorning() {
     object *obs;
     int i;
 
-    call_out( (: eventNoon :), Noon - GetCurrentTime());
+    pending = call_out( (: eventNoon :), Noon - GetCurrentTime());
     TimeOfDay = "day";
     obs = filter(users(), (: environment($1) &&
                 environment($1)->GetClimateExposed() &&
@@ -172,7 +175,7 @@ static void eventMorning() {
 
 static void eventNoon() {
     int i;
-    call_out( (: eventTwilight :), Twilight - GetCurrentTime());
+    pending = call_out( (: eventTwilight :), Twilight - GetCurrentTime());
     TimeOfDay = "day";
     i = sizeof(NoonCalls);
     while(i--) catch(evaluate(NoonCalls[i]));
@@ -182,7 +185,7 @@ static void eventTwilight() {
     object *obs;
     int i;
 
-    call_out( (: eventNight :), Night - GetCurrentTime() );
+    pending = call_out( (: eventNight :), Night - GetCurrentTime() );
     TimeOfDay = "twilight";
     obs = filter(users(), (: environment($1) &&
                 environment($1)->GetClimateExposed() &&
@@ -198,7 +201,7 @@ static void eventNight() {
     object *obs;
     int i,x;
 
-    call_out( (: eventMidnight :),
+    pending = call_out( (: eventMidnight :),
             (DAY_LENGTH * HOUR_LENGTH) - GetCurrentTime() );
     TimeOfDay = "night";
     obs = filter(users(), (: environment($1) &&
@@ -231,7 +234,7 @@ static void eventMidnight() {
                     GetYearString(CurrentYear) + "!!!!!", users());
         return;
     }
-    call_out( (: eventDawn :), Dawn);
+    pending = call_out( (: eventDawn :), Dawn);
     TimeOfDay = "night";
     i = sizeof(MidnightCalls);
     while(i--) catch(evaluate(MidnightCalls[i]));
@@ -239,21 +242,21 @@ static void eventMidnight() {
 
 int GetCurrentDay() { return CurrentDay; }
 
-string GetCurrentDayName() { return GetDayName(time()); }
+string GetCurrentDayName() { return GetDayName(time()+ticktock); }
 
 string GetCurrentMonth() { return CurrentMonth->Name; }
 
 string GetCurrentSeason() { return CurrentSeason; }
 
 // get seconds from the start of the day.
-int GetCurrentTime() { return GetTime(time()) % (DAY_LENGTH * HOUR_LENGTH) + ticktock; }
+int GetCurrentTime() { return GetTime(time()+ticktock) % (DAY_LENGTH * HOUR_LENGTH); }
 
 int GetCurrentYear() { return CurrentYear; }
 
 varargs int GetDay(int x) {
     int tot, days, i, maxi;
 
-    if(!x) x = time();
+    if(!x) x = time()+ticktock;
     days = absolute_value(GetTime(x) / (DAY_LENGTH * HOUR_LENGTH));
     for(tot=0, i=0, maxi = sizeof(Months); i<maxi; i++)
         tot += ((class month)Months[i])->Days;
@@ -277,7 +280,7 @@ varargs int GetDay(int x) {
 varargs string GetDayName(int x) {
     int days;
 
-    if(!x) x = time();
+    if(!x) x = time()+ticktock;
     days = absolute_value(GetTime(x) / (DAY_LENGTH * HOUR_LENGTH));
     return Days[days % sizeof(Days)];
 }
@@ -299,7 +302,7 @@ varargs int GetHour(int x) {
     int y;
 
     if(!x)
-        x = time();
+        x = time()+ticktock;
     y = absolute_value(GetTime(x));
     y = y % (DAY_LENGTH * HOUR_LENGTH);
     if( x < DAY_ONE ) y = (DAY_LENGTH * HOUR_LENGTH) - y;
@@ -310,7 +313,7 @@ varargs int GetMinutes(int x) {
     int y;
 
     if(!x)
-        x = time();
+        x = time()+ticktock;
     y = absolute_value(GetTime(x));
     y = y % (DAY_LENGTH * HOUR_LENGTH);
     if( x < DAY_ONE ) y = (DAY_LENGTH * HOUR_LENGTH) - y;
@@ -327,7 +330,7 @@ string GetMonth(int x) {
 private varargs int GetMonthIndex(int x) {
     int tot, days, i, maxi;
 
-    if(!x) x = time();
+    if(!x) x = time()+ticktock;
     if( x < DAY_ONE ) days = (DAY_ONE - x) / (DAY_LENGTH * HOUR_LENGTH);
     else days = GetTime(x) / (DAY_LENGTH * HOUR_LENGTH);
     for(tot=0, i=0, maxi = sizeof(Months); i<maxi; i++)
@@ -366,7 +369,7 @@ string GetSeason(int x) {
     return Months[monthIndex]->Season;
 }
 
-varargs int GetTime(int x) { if(!x) x = time(); return (x - DAY_ONE); }
+varargs int GetTime(int x) { if(!x) x = time()+ticktock; return (x - DAY_ONE); }
 
 string GetTimeOfDay() { return TimeOfDay; }
 
@@ -392,7 +395,7 @@ mapping GetTimeEvents() {
 varargs int GetYear(int x) {
     int i, tot;
 
-    if(!x) x = time();
+    if(!x) x = time()+ticktock;
     i = sizeof(Months);
     while(i--) tot += ((class month)Months[i])->Days;
     i = (GetTime(x) / (DAY_LENGTH * HOUR_LENGTH)) / tot;
@@ -431,7 +434,7 @@ int GetPhase(string m) {
 
     m = convert_name(m);
     x = ((class moon)Moons[m])->Phase;
-    y = GetTime(time()) % x;
+    y = GetTime(time()+ticktock) % x;
     z = x / 4;
     return y / z;
 }

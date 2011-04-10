@@ -7,7 +7,7 @@ int CheckOrc(mixed val){
     if(!objectp(val)) return 0;
     if(val->GetRace() == "orc") return 0;
     else eventForce("growl at "+val->GetKeyName());
-    if(val->GetRace() != "orc") return 1;
+    if(playerp(val) && val->GetRace() != "orc") return 1;
     else return 0;
 }
 

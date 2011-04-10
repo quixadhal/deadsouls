@@ -5,7 +5,7 @@ inherit LIB_DAEMON;
 
 mixed cmd(mixed args) {
     int *mudtime;
-    int integer, hours, minutes;
+    int integer, hours, minutes, ret;
     string meridiem = " am";
     string nulle = "";
 
@@ -15,8 +15,13 @@ mixed cmd(mixed args) {
         if(sscanf(args,"%d",integer) != 1) return "Failed.";
         args = integer;
     }
-
-    if(args != 0 || SEASONS_D->GetTickTock()) SEASONS_D->eventTickTock(args);
+    //tc("pre: "+SEASONS_D->GetCurrentTime());
+    //tc("pre: "+identify(SEASONS_D->GetMudTime()));
+    if(args != 0 || SEASONS_D->GetTickTock()){
+        ret = SEASONS_D->eventTickTock(args);
+    }
+    //tc("post: "+SEASONS_D->GetCurrentTime());
+    //tc("post: "+identify(SEASONS_D->GetMudTime()));
 
     mudtime = SEASONS_D->GetMudTime();
     hours = mudtime[0];
