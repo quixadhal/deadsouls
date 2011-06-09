@@ -174,7 +174,7 @@ string *CompileCreList(){
     creators = ({});
     if(!user_list) user_list = ({});
     foreach(string subdir in cre_dirs){
-        cres += unguarded( (: get_dir,DIR_CRES+"/"+subdir+"/" :) );
+        cres += unguarded( (: get_dir(DIR_CRES+"/"+$(subdir)+"/") :) );
     }
 #if ENABLE_INSTANCES
     cres = filter(cres, (: grepp($1, ""+__PORT__) :) );

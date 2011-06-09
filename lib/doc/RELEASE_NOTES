@@ -1,3 +1,10 @@
+---- 3.4 ---
+- Released 2011-06-08
+- Disabled instances.c by default to avoid a sockets based driver crasher.
+- Added Quix's socket_names() sanitization to avoid a sockets based 
+  driver crasher.
+- Fixed peculiar bug in PLAYERS_D (thx quix!)
+
 ---- 3.3a3 ---
 - Released 2011-04-11
 - Updated a socket check.
