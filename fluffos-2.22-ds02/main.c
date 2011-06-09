@@ -503,22 +503,40 @@ void debug_message (const char *fmt, ...)
     va_list args;
 
     if (!debug_message_fp) {
-  /*
-   * check whether config file specified this option
-   */
-  if (strlen(DEBUG_LOG_FILE))
-	  snprintf(deb, 1023, "%s/%s", LOG_DIR, DEBUG_LOG_FILE);
-  else
-	  snprintf(deb, 1023, "%s/debug.log", LOG_DIR);
-  deb[1023] = 0;
-  while (*deb == '/')
-      deb++;
-  debug_message_fp = fopen(deb, "w");
-  if (!debug_message_fp) {
-      /* darn.  We're in trouble */
-      perror(deb);
-      abort();
-  }
+      /*
+       * check whether config file specified this option
+       */
+
+      /*
+      if (strlen(DEBUG_LOG_FILE))
+        snprintf(deb, 1023, "%s/%s", LOG_DIR, DEBUG_LOG_FILE);
+      else
+        snprintf(deb, 1023, "%s/debug.log", LOG_DIR);
+  
+      deb[1023] = 0;
+  
+      while (*deb == '/')
+        deb++;
+      */
+      char *name = (strlen(DEBUG_LOG_FILE) ? DEBUG_LOG_FILE : "debug.log");
+
+      if (strlen(LOG_DIR) + strlen(name) + 2 > 1024) {
+        error("Log pathname too long\n");
+        abort();
+      }
+
+      sprintf(deb, "%s/%s", LOG_DIR, name);
+
+      while (*deb == '/')
+        deb++;
+
+      debug_message_fp = fopen(deb, "w");
+  
+      if (!debug_message_fp) {
+        /* darn.  We're in trouble */
+        perror(deb);
+        abort();
+      }
     }
 
     V_START(args, fmt);

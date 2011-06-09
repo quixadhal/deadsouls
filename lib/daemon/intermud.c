@@ -55,7 +55,7 @@ static void create(){
             RestoreObject(SaveFile, 1);
         }
     ConvertLists();
-    Nameservers = ({ ({ "*dalet", "97.107.133.86 8787" }) });
+    Nameservers = ({ ({ "*i4", "204.209.44.3 8080" }) });
         SetNoClean(1);
         tn("INTERMUD_D reloaded.");
         tn("Loading object stack: "+get_stack(),"red");

@@ -57,6 +57,7 @@ string GetDefaultLanguage(){
 }
 
 int GetLanguageLevel(string lang){
+    if(Polyglot) return 100;
     lang = convert_name(lang);
     if( !Languages[lang] ) return 0;
     else return Languages[lang]["level"];

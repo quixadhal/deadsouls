@@ -1,12 +1,24 @@
 HTTP/1.1 200 OK
-Date: Wed, 12 Jan 2011 18:05:44 GMT
+Date: Sun, 03 Apr 2011 02:46:54 GMT
 Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.6 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
-Last-Modified: Mon, 03 Jan 2011 02:10:39 GMT
-ETag: "3831f-1da84-498e7a88505c0"
+Last-Modified: Thu, 17 Feb 2011 21:01:26 GMT
+ETag: "3831f-1dc8d-49c80b35ff580"
 Accept-Ranges: bytes
-Content-Length: 121476
+Content-Length: 121997
 Connection: close
 Content-Type: text/plain
+
+---- 3.2 ---
+- Released 2011-02-17
+- Removed intergossip and intercre remappings to avoid log errors.
+- LIB_TELLER: you can now "exchange gold for silver" without specifying
+  amount, this will exchange all the gold you're carrying. You can also
+  "exchange all for dollars" to attempt to exchange all your various
+  carried currency into dollars.
+- ASSIST can now "hist admin"
+- Driver: now includes fix for more than 256 global vars.
+  Note: The Windows driver is still 2.20.
+- ASSIST can now write on the arch board.
 
 ---- 3.1a11 ---
 - Released 2011-01-02

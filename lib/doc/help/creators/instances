@@ -57,6 +57,7 @@ new port is 8888 and the instance name is "Foo":
 
 - Get the mud running the normal way. Create an admin char, etc.
 - Once it's up, login as an administrator.
+- Uncomment the instances line in /secure/cfg/preload.cfg
 - Type: instconfig create Foo 8888
 - Copy /secure/cfg/mudos.8888.cfg into bin/
 - Go into bin/ and type: ./driver ./mudos.8888.cfg
@@ -71,6 +72,7 @@ new port is 9999 and the instance name is "Bar":
 
 - Get the mud running the normal way. Create an admin char, etc.
 - Once it's up, login as an administrator.
+- Uncomment the instances line in /secure/cfg/preload.cfg
 - Type: instconfig create Bar 9999
 - Copy lib\secure\cfg\runmud_9999.bat into your mud's top-level
   install directory (the same place you'll find runmud.bat)

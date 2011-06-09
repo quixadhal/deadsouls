@@ -1,3 +1,27 @@
+---- 3.4 ---
+- Released 2011-06-08
+- Disabled instances.c by default to avoid a sockets based driver crasher.
+- Added Quix's socket_names() sanitization to avoid a sockets based 
+  driver crasher.
+- Fixed peculiar bug in PLAYERS_D (thx quix!)
+
+---- 3.3a3 ---
+- Released 2011-04-11
+- Updated a socket check.
+- Fixed mud-based earmuffs.
+- The timezone command can now take "none" as an argument.
+- Fixed ticktock.
+- Forest orcs should now be less noisy.
+- Fixed polyglottism for NPC's.
+
+---- 3.3a1 ---
+- Released 2011-04-02
+- Driver: FluffOS 2.22 with minor tweaks.
+- Driver: Included updated Windows driver.
+- Fixed peculiar respiration type issue (thx Nuku). 
+  NOTE: This will probably kill everything in your mud if you update
+  while it is up.
+
 ---- 3.2 ---
 - Released 2011-02-17
 - Removed intergossip and intercre remappings to avoid log errors.

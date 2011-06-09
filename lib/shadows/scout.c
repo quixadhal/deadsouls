@@ -69,9 +69,12 @@ string GetCapName(){
 
 string GetKeyName(){
     object ob = GetShadowedObject();
+    string name;
     if(!clonep()) return "";
     if(CheckDisguised()) return "scout";
-    else return ob->GetKeyName();
+    name = ob->GetKeyName();
+    if(!name) return "unnamed";
+    return name;
 }
 
 string GetShort(){
@@ -397,4 +400,3 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal, mixed
 int AddLead(string ammo,int number){
     return 0;
 }
-
