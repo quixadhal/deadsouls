@@ -175,10 +175,18 @@ varargs mixed eventPick(object who, string id, object tool){
         return 1;
     }
     if( strength > ( LockStrength / 10 + random(LockStrength) ) ){
+        string short;
+        object prev = previous_object();
+        if(prev->isDummy()) short = prev->GetShort();
         who->AddSkillPoints("stealth", 2*(LockStrength + strength));	
         SetLocked(0);
-        send_messages("pick", "$agent_name $agent_verb the lock on "
-                "$target_name!", who, this_object(), environment(who));
+        send_messages("pick", "$agent_name $agent_verb the lock on "+
+                (short ? short : "$target_name") +"!",
+                who, this_object(), environment(who));
+        //tell_room(environment(this_player()), who->GetName()+" picks "+
+        //  "the lock on "+this_object()->GetShort()+"!");
+        //tc("hmm..."+identify(previous_object(-1)));
+        //tc("hey "+identify(previous_object()));
         return 1;
     }
     send_messages("fail", "$agent_name $agent_verb in $agent_possessive "

@@ -1,3 +1,16 @@
+---- 3.6 ---
+- Released 2011-08-17
+- Driver: FluffOS 2.23 with very minor tweaks.
+- Driver: Odd sockets crash with instances should no longer happen.
+- Somewhat improved BOOKS_D efficiency and minimized likelihood of 
+  duplicated chapter names.
+- Fixed centaur body parts.
+- Exempted "read" and "title" from special parsing.
+- Fixed a problem when using the town virtual areas.
+- Fixed confusing message when picking a lock on a door in the same room as
+  another door.
+- Liveupgrade server updated to avoid asphyxia problem.
+
 ---- 3.4 ---
 - Released 2011-06-08
 - Disabled instances.c by default to avoid a sockets based driver crasher.

@@ -3,9 +3,6 @@
  *    created by Descartes of Borg 960302
  */
 
-//#define __DIR__ "/your/dir/here/"
-#define __DIR__ "/domains/Ylsrim/virtual/"
-
 mixed compile_object(string file) {
     string *path;
     object ob;

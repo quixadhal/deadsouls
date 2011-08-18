@@ -138,6 +138,8 @@ varargs static void eventUpdate(object whom){
     call_out( (: make_empties :),0);
     call_out( (: deletes :),0);
 
+    reset_eval_cost();
+
     catch( (: reload(LIB_DAEMON,1,1) :) );
     catch( (: reload(EVENTS_D,0,1) :) );
     catch( (: EventsMap = EVENTS_D->GetEvents() :) );
@@ -153,9 +155,16 @@ varargs static void eventUpdate(object whom){
             EVENTS_D->AddEvent(LOG_D,LOG_D,"RotateLogs",({ }),3600,1);
     }
 
+    reset_eval_cost();
+
     catch( reload("/secure/daemon/master",0,1) );
     catch( reload("/secure/sefun/arrays",0,1) );
     catch( reload("/secure/sefun/sefun",0,1) );
+    catch( reload("/daemon/races",0,1) );
+ 
+    catch( load_object("/secure/cmds/admins/removeraces")->cmd());
+    catch( load_object("/secure/cmds/admins/addraces")->cmd());
+    catch( reload("/daemon/races",0,1) );
 
     catch( reload("/domains/default/room/stargate_lab.c",0,1));
     catch( reload("/domains/town/virtual/space/1,1,1",0,1));

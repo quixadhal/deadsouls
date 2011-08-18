@@ -28,9 +28,6 @@ mixed *socket_names(){
     }
     for(i = 0; i < quant; i++){
         mixed *tmp = socket_status(i);
-        if( catch( tmp = socket_status(i)) == 0){
-            continue;
-        }
         tmp[0] = i;
         sock_array += ({ tmp });
     }

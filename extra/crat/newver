@@ -13,7 +13,7 @@ unzip -qd  $OLDLIB $HOME/mud/$OLDLIB.zip
 mv $OLDLIB/ds* next
 mkdir new
 
-cd /mud/alpha
+cd /mud/upsilon
 tar cfp - . |(cd /tmp/foo/new;tar xfp -)
 
 rm -rf /tmp/foo/new/lib/secure/daemon/i3router/bak
