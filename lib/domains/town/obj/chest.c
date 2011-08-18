@@ -10,7 +10,7 @@ void create() {
     SetLong("This is a sturdy wooden chest used to store valuable items.");
     SetMass(2000);
     SetBaseCost("silver",50);
-    SetMaxCarry(500);
+    SetMaxCarry(1500);
     SetInventory(([
                 "/secure/obj/memo" : 1,
                 "/secure/obj/medtric" : 1,

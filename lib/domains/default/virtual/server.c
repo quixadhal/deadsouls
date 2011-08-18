@@ -1,5 +1,3 @@
-#define __DIR__ "/domains/default/virtual/"
-
 mixed compile_object(string file) {
     string *path;
     object ob;

@@ -50,7 +50,7 @@ static string process_input(string args){
             "showtree", "bk", "cat", "cp", "diff", "ed", "grep", "head", "indent",
             "longcat", "more", "mv", "rm", "sed", "showfuns", "source",
             "tail", "update", "cd", "ls", "mkdir", "rmdir" });
-    string *specialcmds = ({ "modify", "mudconfig", "describe" });
+    string *specialcmds = ({ "modify", "mudconfig", "describe", "read", "title" });
     string *exempts = talks + filecmds + specialcmds;
     exempts += this_object()->GetChannels();
     exempts += SOUL_D->GetEmotes();

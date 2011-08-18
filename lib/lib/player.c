@@ -335,12 +335,8 @@ int Setup(){
             if( ClassMember(classes) && classes != GetClass() )
                 AddChannel(classes);
         if( avatarp() ) AddChannel(({ "avatar" }));
-        if( high_mortalp() ) AddChannel( ({ "newbie", "hm" }) );
-        if( GetLevel() < 5 ) AddChannel( ({ "newbie" }) );
-        else {
-            //RemoveChannel( ({ "newbie" }) );
-        }
-        AddChannel( ({ "gossip" }) );
+        if( high_mortalp() ) AddChannel( ({ "hm" }) );
+        AddChannel( ({ "gossip", "newbie" }) );
         if( councilp() ) AddChannel( ({ "council" }) );
         AddChannel(GetClass());
 

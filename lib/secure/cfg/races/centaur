@@ -15,9 +15,9 @@ STATS coordination:10:4
 LIMB torso:0:1:A_ARMOR,A_BODY_ARMOR,A_CLOAK,A_VEST,A_SHIRT,A_AMULET,A_BELT,A_CUSTOM
 LIMB neck:torso:1:A_COLLAR,A_AMULET,A_CUSTOM
 LIMB head:neck:1:A_HELMET,A_VISOR,A_AMULET,A_CUSTOM
-LIMB lower torso:head:1::
+LIMB lower torso:torso:1::
 LIMB right arm:torso:2::
-left arm::torso:2::
+LIMB left arm::torso:2::
 LIMB right fore leg:lower torso:3::
 LIMB left fore leg:lower torso:3::
 LIMB right back leg:lower torso:3::

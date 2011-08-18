@@ -109,6 +109,7 @@ string LoadBookIndex(string Source){
             if(member_array("chapter "+i, key) != -1){
                 chapter_index += "Chapter "+i+":\t";
                 chapter_index += val+"\n";
+                break;
             }
         }
     }
