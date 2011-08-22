@@ -183,10 +183,6 @@ varargs mixed eventPick(object who, string id, object tool){
         send_messages("pick", "$agent_name $agent_verb the lock on "+
                 (short ? short : "$target_name") +"!",
                 who, this_object(), environment(who));
-        //tell_room(environment(this_player()), who->GetName()+" picks "+
-        //  "the lock on "+this_object()->GetShort()+"!");
-        //tc("hmm..."+identify(previous_object(-1)));
-        //tc("hey "+identify(previous_object()));
         return 1;
     }
     send_messages("fail", "$agent_name $agent_verb in $agent_possessive "

@@ -15,7 +15,7 @@ mixed cmd(string args) {
     string *lines, *arr, *limbs;
     object ob, *candidates;
     string tmp1, tmp2, gold;
-    int i, x, y, cols;
+    int i, x, y, cols, dbt;
 
     if( args == "" || !args || args == "me" ) ob = this_player();
     else if(args && !creatorp(this_player())) {
@@ -66,13 +66,23 @@ mixed cmd(string args) {
                 "Caffeine: " + ob->GetCaffeine() + "    " +
                 "Poison: " + ob->GetPoison() + "    ", cols) });
     lines += ({ "\n" }) ;
-    lines += ({ center("Training Points: " + ob->GetTrainingPoints() +
-                "    " +
-                "Quest Points: "+ ob->GetQuestPoints() +
-                "    " +
-                //Fix below courtesy of Jonez
-                "Experience Points: "+ ob->GetExperiencePoints(),cols) 
-            });
+    if(dbt = ob->GetExperienceDebt()) {
+        lines += ({ center("Training Points: " + ob->GetTrainingPoints() +
+                    "    " +
+                    "Quest Points: "+ ob->GetQuestPoints(),cols)
+                 });
+        lines += ({ center("Experience Points: " + ob->GetExperiencePoints() +
+                    "    " +
+                    "Experience Debt: "+ dbt,cols)
+                 });
+    } else {
+        lines += ({ center("Training Points: " + ob->GetTrainingPoints() +
+                    "    " +
+                    "Quest Points: "+ ob->GetQuestPoints() +
+                    "    " +
+                    "Experience Points: "+ ob->GetExperiencePoints(),cols) 
+                });
+    }
     lines += ({ "", "Limbs:" });
     limbs = ob->GetWieldingLimbs();
     if(ob && !ob->GetGhost()) arr = map(sort_array(ob->GetLimbs(), 1),

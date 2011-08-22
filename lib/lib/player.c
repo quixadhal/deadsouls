@@ -15,6 +15,12 @@
 #include <position.h>
 #include "include/player.h"
 
+#undef LIB_PLAYER_SKILL_LOSS
+#define PERCENT_XP 0.20
+#define PERCENT_SP 0.70
+#define PERCENT_MP 0.95
+#define PERCENT_HP 0.70
+
 inherit LIB_INTERACTIVE;
 inherit LIB_LIVING;
 
@@ -217,8 +223,14 @@ varargs void eventRevive(int nopenalty){
     if(this_player()->GetPoison() > 0){
         this_player()->AddPoison(0 - this_player()->GetPoison());
     }
+    if(!nopenalty && newbiep(this_object())) {
+        nopenalty = 1;
+        write("As a newbie you don't incur an experience penalty"
+              " for this death.\n");
+    }
     if(!nopenalty){
         int expee, subexpee;
+#ifdef LIB_PLAYER_SKILL_LOSS
         foreach(skill in GetSkills()){
             int x;
 
@@ -240,16 +252,17 @@ varargs void eventRevive(int nopenalty){
                 }
             }
         }
+#endif
         expee = this_object()->GetExperiencePoints();
-        subexpee = to_int(expee * 0.25);
-        this_object()->AddExperiencePoints(-subexpee);
+        subexpee = to_int(expee * PERCENT_XP);
+        this_object()->AddExperienceDebt(subexpee);
     }
     NewBody(GetRace());
     eventCompleteHeal(GetMaxHealthPoints());
     SetSpecialTarget( ({}) );
-    AddMagicPoints(-(GetMaxMagicPoints()/2));
-    AddStaminaPoints(-(GetMaxStaminaPoints()/2));
-    AddHealthPoints(-(GetMaxHealthPoints()/2));
+    AddMagicPoints(-(GetMaxMagicPoints() * PERCENT_MP));
+    AddStaminaPoints(-(GetMaxStaminaPoints() * PERCENT_SP));
+    AddHealthPoints(-(GetMaxHealthPoints() * PERCENT_HP));
     if(this_object()->GetLead()){
         int shots = this_object()->GetLead("gunshot_wounds");
         if(shots) this_object()->AddLead("gunshot_wounds", -shots);
@@ -330,6 +343,7 @@ int Setup(){
         if(!(this_object()->GetProperty("screen reader"))){
             this_object()->SetProperty("minimapping", 1);
         }
+
         if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
         PLAYERS_D->AddPlayerInfo(this_object());
 
@@ -337,8 +351,12 @@ int Setup(){
             if( ClassMember(classes) && classes != GetClass() )
                 AddChannel(classes);
         if( avatarp() ) AddChannel(({ "avatar" }));
-        if( high_mortalp() ) AddChannel( ({ "hm" }) );
         AddChannel( ({ "gossip", "newbie" }) );
+        if( high_mortalp() ) AddChannel( ({ "hm" }) );
+        else {
+            //RemoveChannel( ({ "newbie" }) );
+        }
+        AddChannel( ({ "gossip" }) );
         if( councilp() ) AddChannel( ({ "council" }) );
         AddChannel(GetClass());
 
@@ -363,8 +381,9 @@ int Setup(){
 
         this_object()->SetTown("World");
         this_object()->SetProperty("minimapping", 0);
-        this_object()->SetProperty("wizmapping", 1);
-
+        if(!(this_object()->GetProperty("screen reader"))){
+            this_object()->SetProperty("wizmapping", 1);
+        }
         robe = new("/domains/default/armor/robe");
         hat = new("/domains/default/armor/wizard_hat");
         staff = new("/secure/obj/staff");

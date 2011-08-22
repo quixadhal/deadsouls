@@ -36,7 +36,7 @@ inherit LIB_PERSIST;
 #define SEVERABLE_LIMBS 1
 #endif
 
-private int HealthPoints, MagicPoints, ExperiencePoints;
+private int HealthPoints, MagicPoints, ExperiencePoints, ExperienceDebt;
 private int melee, godmode;
 private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping, DeathEvents;
 private float StaminaPoints;
@@ -69,6 +69,7 @@ static void create(){
     HealthPoints = MagicPoints = 50;
     StaminaPoints = 50.0;
     ExperiencePoints = 50;
+    ExperienceDebt = 0;
     Dying = 0;
     LastHeal = time();
     Protection = ({});
@@ -1783,15 +1784,40 @@ int GetStaminaPoints(){ return to_int(StaminaPoints); }
 float GetMaxStaminaPoints(){  return 0; }
 
 int AddExperiencePoints(mixed x){
-    int dev;
     if( !intp(x)) error("Bad argument 1 to AddExperiencePoints().\n");
-    dev = DEVIATION_D->GetDeviationCost(this_object(), x);
-    x -= dev;
-    if((ExperiencePoints += x) < 0) ExperiencePoints = 0;
+    x -= DEVIATION_D->GetDeviationCost(this_object(), x);
+    
+    if( ExperienceDebt > 0 ) {
+        if( (ExperienceDebt -= x) < 0 ) {
+            ExperiencePoints -= ExperienceDebt;
+            ExperienceDebt = 0;
+            write("The last of your experience debt has been paid.\n");
+        }
+    } else {
+        ExperiencePoints += x;
+    }
+
     return ExperiencePoints;
 }
 
 int GetExperiencePoints(){ return ExperiencePoints; }
+
+int AddExperienceDebt(mixed x) {
+    if( !intp(x) ) error("Bad argument 1 to AddExperienceDebt().\n");
+    if( x < 0 ) {
+        if( (x = ExperienceDebt + x) < 0) {
+            ExperienceDebt = 0;
+            AddExperiencePoints(ExperienceDebt);
+            write("The last of your experience debt has been paid.\n");
+        }
+    } else {
+        ExperienceDebt += x;
+    }
+
+    return ExperienceDebt;
+}
+
+int GetExperienceDebt() { return ExperienceDebt; }
 
 int AddMagicProtection(class MagicProtection cl){
     if( ( !cl->absorb && !(cl->protect && cl->time) ) ||

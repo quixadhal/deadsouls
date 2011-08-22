@@ -8,7 +8,7 @@ echo "Skipping $i"
 echo $i >> /tmp/thingy.txt
 else
 echo "Indenting "$i
-vim -c "set softtabstop=4 shiftwidth=4 expandtab" -esc "normal gg=G" -c "wq" $i
+vi -c "set softtabstop=4 shiftwidth=4 expandtab" -esc "normal gg=G" -c "wq" $i
 fi
 done
 

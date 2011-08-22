@@ -41,6 +41,7 @@ mixed eventFall(){
             err = catch(rumbo = load_object(rvoid));
         }
         if(err || !rumbo){
+            this_object()->eventMove(ROOM_START);
             return 0;
         }
         tell_object(this_object(),"You plummet downward!");

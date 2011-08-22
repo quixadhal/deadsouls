@@ -199,7 +199,7 @@ int cmdBrowse(object who, string args){
         eventForce("say I have nothing to sell right now.");
         return 1;
     }
-    list = ({ "item #  Description                         Price", "" });
+    list = ({ "item #  Description                         Price ("+GetLocalCurrency()+")", "" });
     obs2 = ({});
     foreach(object tempob in obs){
         string *base_names = ({});
@@ -572,7 +572,6 @@ int GetMaxItems(){ return MaxItems; }
 int SetVendorType(int x){ return (VendorType = x); }
 
 int GetVendorType(){ return VendorType; }
-
 
 
 
