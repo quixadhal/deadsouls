@@ -141,12 +141,12 @@ static void InputEmail(string str) {
     Admin->SetTerminal("ansi");
     Admin->SetLanguage("Common",100);
     Admin->SetDefaultLanguage("Common");
-    Admin->save_player(Name);
     if(blindmode){
         Admin->SetProperty("wizmapping", 0);
         Admin->SetProperty("minimapping", 0);
         Admin->SetProperty("screen reader", 1);
     }
+    Admin->save_player(Name);
     make_workroom(Name,1);
     PLAYERS_D->AddPlayerInfo(Name);
 

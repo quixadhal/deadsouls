@@ -27,6 +27,12 @@ static void create() {
                 "east" : "/domains/campus/room/basement2",
                 "west" : "/domains/campus/room/tunnel2"]));
     SetProperty("no attack", 1);
+    if(!strsrch(mud_name(),"Dead Souls")){
+        SetCoordinates("4003,4000,-1");
+    }
+    else {
+        SetCoordinates("0,-6,-1");
+    }
 }
 void init(){
     ::init();

@@ -339,11 +339,10 @@ int Setup(){
 
     if(GetProperty("brand_spanking_new")){
         object jeans, shirt, book;
-
         if(!(this_object()->GetProperty("screen reader"))){
             this_object()->SetProperty("minimapping", 1);
         }
-
+        else this_object()->SetProperty("minimapping", 0);
         if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
         PLAYERS_D->AddPlayerInfo(this_object());
 
@@ -384,6 +383,7 @@ int Setup(){
         if(!(this_object()->GetProperty("screen reader"))){
             this_object()->SetProperty("wizmapping", 1);
         }
+        else this_object()->SetProperty("wizmapping", 0);
         robe = new("/domains/default/armor/robe");
         hat = new("/domains/default/armor/wizard_hat");
         staff = new("/secure/obj/staff");
