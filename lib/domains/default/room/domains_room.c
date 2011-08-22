@@ -4,11 +4,10 @@
 inherit LIB_ROOM;
 
 string LongDesc(){
-    string desc = "Immortals come here to communicate with each other about "+
-        "the world they are building. The Adventurer's Guild "+
-        "is north. The Arch Room is south. To visit the Dead Souls "+
-        "test and development mud, go west. The test lab facilities are east.";
-    desc += "\nA sign reads: "+load_object(ROOM_ARCH)->SignRead();
+    string desc = "Immortals come here to visit parts of "+
+        "the world they are building. The Creators' Hall is above. "+
+        "To visit the Dead Souls "+
+        "test and development mud, go west.";
     return desc;
 }
 
@@ -23,18 +22,24 @@ static void create() {
                 "campus" : "This is the entry point for the campus domain.",
                 "examples" : "This is the entry point for the examples domain.",
                 "town" : "This is the entry point for the town domain.",
+                "cave" : "This is the entry point for the cave domain.",
+                "praxis" : "This is the entry point for the praxis domain.",
+                "learning" : "This is the entry point for the tutorial",
                 ({ "sign" }) : "A sign you can read.",
                 ]));
     SetEnters( ([
                 "campus" : "/domains/campus/room/start",
                 "ylsrim" : "/domains/Ylsrim/room/bazaar",
                 "examples" : "/domains/examples/room/start.c",
-                "town" : "/domains/town/room/vill_road1",
+                "cave" : "/domains/cave/room/start",
+                "town" : "/domains/town/room/start",
+                "learning" : "/domains/learning/room/start",
+                "praxis" : "/domains/Praxis/square",
                 ]) );
     SetProperty("no attack", 1);
     SetProperty("nopeer",1);
     SetExits(([
-                "north" : "/domains/default/room/wiz_hall2",
+                "west" : "/domains/default/room/wiz_hall2",
                 ]));
 
     SetInventory(([

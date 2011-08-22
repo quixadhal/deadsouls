@@ -1,3 +1,13 @@
+---- 3.7a1 (unreleased) ---
+- Updated gridconfig so that resets are more flexible.
+- Cleaned up some room locations across domains.
+- Corrected beggar's map.
+- Started tutorial area.
+- Tidied up some virtuals to be more portable across domains.
+- SetNoObviousExits() now works more intuitively in rooms.
+- The connection daemons now ask whether the player uses a screenreader
+  so that the mapping can be disabled for them if so.
+
 ---- 3.6 ---
 - Released 2011-08-17
 - Driver: FluffOS 2.23 with very minor tweaks.

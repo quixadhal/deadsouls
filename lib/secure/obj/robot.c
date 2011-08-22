@@ -9,7 +9,7 @@ inherit LIB_ITEM;
 static int observing = 0;
 static int counter = 0, attempting, connected, socket ;
 static int dud_count = 0, spawning, last_action, loop_count = 0;
-static int maxbox = 64;
+static int maxbox = 32;
 static int newbot = 1;
 static object person, player;
 static string preset, name, passwd, gender;
@@ -262,6 +262,7 @@ int think(string str){
         if(grepp(str, "Do you really wish to be known as ")) ret = "y";
         if(grepp(str, "Are you 13 years of age or older")) ret = "y";
         if(grepp(str, "Create a password of at least 5 letters")) ret = passwd;
+        if(grepp(str, "Do you use a screen reader for the visuall")) ret = "n";
         if(grepp(str, "Password:")) ret = passwd;
         if(grepp(str, "Invalid password.")) ret = "12345";
         if(grepp(str, "Please confirm your password")) ret = passwd;

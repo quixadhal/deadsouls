@@ -1,12 +1,25 @@
 HTTP/1.1 200 OK
-Date: Wed, 17 Aug 2011 06:53:12 GMT
+Date: Sun, 21 Aug 2011 20:31:30 GMT
 Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.6 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
-Last-Modified: Thu, 09 Jun 2011 02:39:15 GMT
-ETag: "d928d-1df79-4a53e5be2fac0"
+Last-Modified: Thu, 18 Aug 2011 04:11:26 GMT
+ETag: "d928d-1e189-4aabfce739780"
 Accept-Ranges: bytes
-Content-Length: 122745
+Content-Length: 123273
 Connection: close
 Content-Type: text/plain
+
+---- 3.6 ---
+- Released 2011-08-17
+- Driver: FluffOS 2.23 with very minor tweaks.
+- Driver: Odd sockets crash with instances should no longer happen.
+- Somewhat improved BOOKS_D efficiency and minimized likelihood of 
+  duplicated chapter names.
+- Fixed centaur body parts.
+- Exempted "read" and "title" from special parsing.
+- Fixed a problem when using the town virtual areas.
+- Fixed confusing message when picking a lock on a door in the same room as
+  another door.
+- Liveupgrade server updated to avoid asphyxia problem.
 
 ---- 3.4 ---
 - Released 2011-06-08

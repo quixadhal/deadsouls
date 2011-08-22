@@ -24,10 +24,12 @@ static void create() {
                 "cobblestone road running north and south."
                 ]) );
     SetExits( ([ 
-                "north" : "/domains/town/room/vill_road1",
-                "south" : "/domains/town/room/south_road2",
+                "north" : "/domains/town/room/start",
                 "west" : "/domains/town/room/magic_shop",
                 ]) );
+    if(strsrch(mud_name(), "Dead Souls")){
+        AddExit("south", "/domains/campus/room/south_road2");
+    }
     AddTerrainType(T_ROAD);
     SetNoModify(0);
     SetEnters( ([

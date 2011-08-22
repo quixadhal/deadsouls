@@ -26,7 +26,7 @@ static void create() {
                 ]));
     SetExits( ([
                 "north" : "/domains/town/room/road",
-                "south" : "/domains/town/room/vill_road1.c",
+                "south" : "/domains/town/room/start.c",
                 ]) );
 
     AddTerrainType(T_ROAD);

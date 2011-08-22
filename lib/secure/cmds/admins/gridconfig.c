@@ -30,20 +30,40 @@ mixed findit(string str){
 
 static mixed ResetGrid(){
     object drone;
+    object *drones = ({});
+    string *starts = ({});
+    string start;
     int err = 0;
+    drones = findobs("/domains/default/npc/drone3");
+    starts = ({ROOM_START+".c", "/domains/Ylsrim/room/tower.c",
+      "/domains/Praxis/square.c", "/domains/campus/room/tunnel"});
+    foreach(mixed arr in get_dir("/domains/", -1)){
+        if(arr[1] == -2) start = "/domains/"+arr[0]+"/room/start.c";
+        if(sizeof(start) && file_exists(start)) starts += ({ start });
+        start = "";
+    } 
+    drones->eventDestruct();
     MAP_D->zero();
     ROOMS_D->zero();
     ROOMS_D->eventDestruct();
     MAP_D->eventDestruct();
-    drone = new("/domains/default/npc/drone3");
-    err += catch( drone->eventMove(ROOM_START) );
-    drone = new("/domains/default/npc/drone3");
-    catch( reload("/domains/Ylsrim/room/tower") );
-    err += catch( drone->eventMove("/domains/Ylsrim/room/tower") );
-    drone = new("/domains/default/npc/drone3");
-    catch( reload("/domains/Praxis/square") );
-    err += catch( drone->eventMove("/domains/Praxis/square") );
-    write("Remapping in progress. "+err+" errors encountered.");
+    foreach(start in distinct_array(starts)){
+        mixed lerr = 0;
+        lerr = catch( reload(start, 0, 1));
+        if(lerr){ 
+            err++;
+            write("Error reloading "+start+": "+lerr);
+            continue;
+        }
+        drone = new("/domains/default/npc/drone3");
+        lerr = catch( drone->eventMove(start) );
+        if(lerr){ 
+            err++;
+            write("Error moving drone to "+start+": "+lerr);
+        }
+        else write("Assigning mapper drone to: "+start);
+    }
+    write("\nRemapping in progress. "+err+" errors encountered.");
     return 1;
 }
 

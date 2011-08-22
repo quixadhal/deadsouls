@@ -31,7 +31,7 @@ int CanReceive(object sneak) {
             return 0;
         }
     }
-    return 1;
+    return ::CanReceive(sneak);
 }
 void init(){
     ::init();

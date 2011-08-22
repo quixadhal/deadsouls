@@ -327,7 +327,9 @@ int Setup(){
     if(GetProperty("brand_spanking_new")){
         object jeans, shirt, book;
 
-        this_object()->SetProperty("minimapping", 1);
+        if(!(this_object()->GetProperty("screen reader"))){
+            this_object()->SetProperty("minimapping", 1);
+        }
         if(ENGLISH_ONLY) this_object()->SetNativeLanguage("English");
         PLAYERS_D->AddPlayerInfo(this_object());
 

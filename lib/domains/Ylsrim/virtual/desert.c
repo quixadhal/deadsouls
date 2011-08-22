@@ -6,7 +6,6 @@
 #include <lib.h>
 #include <dirs.h>
 #include <virtual.h>
-#define __DIR__ "/domains/Ylsrim/virtual/"
 
 inherit LIB_VIRT_LAND;
 

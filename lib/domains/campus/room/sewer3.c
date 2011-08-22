@@ -23,7 +23,7 @@ static void create() {
                 ]) );
     SetExits(([
                 "down" : "/domains/campus/room/sewer2",
-                "up" : "/domains/town/room/south_road2",
+                "up" : "/domains/campus/room/south_road2",
                 ]));
     SetSmell( ([ "default" : "The stench of sewage and waste hangs here."]) );
     SetListen("default","You hear faint echoes of dripping water.");

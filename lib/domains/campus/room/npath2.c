@@ -22,7 +22,7 @@ static void create() {
                 ]));
     SetRead( "sign", "Beware! You are now leaving the safety of the Virtual Campus.");
     SetExits( ([ "south" : "/domains/campus/room/npath",
-                "north" : "/domains/town/room/south_road2",
+                "north" : "/domains/campus/room/south_road2",
                 ]) );
     SetFlyRoom("/domains/town/virtual/sky/28,99997,1");
     AddItem(new("/domains/campus/obj/lamp"));

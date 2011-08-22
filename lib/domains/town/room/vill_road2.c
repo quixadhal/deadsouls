@@ -27,7 +27,7 @@ static void create() {
                 "north" : "/domains/town/room/shop",
                 "south" : "/domains/town/room/adv_guild",
                 "east" : "/domains/town/room/vill_road3",
-                "west" : "/domains/town/room/vill_road1",
+                "west" : "/domains/town/room/start",
                 ]) );
     SetFlyRoom("/domains/town/virtual/sky/29,100000,1");
     AddItem(new("/domains/town/obj/lamp"));

@@ -27,7 +27,7 @@ int CanReceive(object ob){
         if(!environment(ob) && interactive(ob)) ob->eventMove(ROOM_START);
         return 0;
     }
-    return 1;
+    return ::CanReceive(ob);
 }
 void init(){
     ::init();

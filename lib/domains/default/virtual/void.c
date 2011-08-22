@@ -3,7 +3,6 @@
 #include ROOMS_H
 #include <virtual.h>
 #include <position.h>
-#define __DIR__ "/domains/default/virtual/"
 
 inherit LIB_VIRT_LAND;
 

@@ -1,14 +1,14 @@
-			 /domains/campus/adm
-	       The Administrative Directory for campus
+	       The Administrative Directory 
 
-This directory contains all files necessary for domain
-administration.  The following files are required for any standard
-domain, but not for secondary domains or realms:
+This directory contains files necessary for domain administration.
 
-void.c - The place people go when their environment is destructed
-freezer.c - The place people go when they go net-dead
-cache.c - The place hidden items go to hide
+Specifically it is the default directory for the access object,
+which is used for providing nonstandard access to files with
+the "grant" command.
 
-The access object is used in any realm or domain which is giving out
-access which is nonstandard.  This is traditionally handled through
-the 'grant' command.
+This is also the location where domain-specific daemons can be
+expected to reside.
+
+In the case of archaic domains, such as Ylsrim, this is where 
+some mandatory rooms are expected to be, such as freezer.c and void.c
+

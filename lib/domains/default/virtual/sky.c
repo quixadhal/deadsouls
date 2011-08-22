@@ -1,7 +1,6 @@
 #include <lib.h>
 #include <dirs.h>
 #include <virtual.h>
-#define __DIR__ "/domains/default/virtual/"
 
 inherit LIB_VIRT_SKY;
 

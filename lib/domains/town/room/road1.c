@@ -10,7 +10,7 @@ static void create() {
     SetDayLong("This is a well-traveled road, leading east into town and west away from it. The town church is north.");
     SetExits( ([ 
                 "north" : "/domains/town/room/church",
-                "east" : "/domains/town/room/vill_road1",
+                "east" : "/domains/town/room/start",
                 "west" : "/domains/town/room/road2",
                 ]) );
     SetNightLong("This is a well-traveled road, illuminated by a lamp light. It leads east into town and west away from it. The town church is north.");

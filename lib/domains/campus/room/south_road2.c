@@ -22,12 +22,14 @@ static void create() {
                 ]) );
     AddTerrainType(T_ROAD);
     SetExits( ([
-                "north" : "/domains/town/room/south_road1",
                 "south" : "/domains/campus/room/npath2.c",
                 ]) );
     if(file_exists("/domains/campus/doors/grate.c")){
         AddExit("down", "/domains/campus/room/sewer3");
         SetDoor("down","/domains/campus/doors/grate");
+    }
+    if(strsrch(mud_name(), "Dead Souls")){
+        AddExit("north", "/domains/town/room/south_road1");
     }
     SetInventory(([
                 ]));

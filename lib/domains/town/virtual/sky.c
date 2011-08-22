@@ -3,7 +3,6 @@
 #include <terrain_types.h>
 #include <medium.h>
 #include <virtual.h>
-#define __DIR__ "/domains/town/virtual/"
 
 inherit LIB_VIRT_SKY;
 

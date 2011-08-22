@@ -1088,6 +1088,10 @@ int SetNoObviousExits(int i){
     return ObviousVisible;
 }
 
+int GetNoObviousExits(){
+    return bool_reverse(ObviousVisible);
+}
+
 int GenerateObviousExits(){
     string *normals;
     string *exits;

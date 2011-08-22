@@ -11,6 +11,7 @@
 
 string Name, CapName, Password;
 object Admin;
+int blindmode;
 
 static void InputName(string str);
 
@@ -25,6 +26,16 @@ static void logon() {
 
 static void InputPassword(string str);
 
+static void CheckBlind(string str){
+    if( !str || str == "" || lower_case(str)[0..0] == "y" ) {
+        receive("\nOk, disabling default overhead map.\n");
+        blindmode = 1;
+    }
+    else receive("\Ok, allowing default overhead map behavior.\n");
+    receive("\nCreate a password of at least 5 letters: \n");
+    input_to((: InputPassword :), I_NOECHO | I_NOESC);
+}
+
     static void InputName(string str) {
         if( !(BANISH_D->valid_name(Name = convert_name(CapName = str))) 
                 || lower_case(str) == "guest") {
@@ -36,8 +47,8 @@ static void InputPassword(string str);
         Admin = master()->player_object(Name);
         Admin->SetKeyName(Name);
         mkdir(DIR_PLAYERS "/" + Name[0..0]);
-        receive("\nPassword: ");
-        input_to((: InputPassword :), I_NOECHO | I_NOESC);
+        receive("\nDo you use a screen reader for the visually impaired? (y/n)\n");
+        input_to((: CheckBlind :), I_NOESC);
     }
 
 static void ConfirmPassword(string str);
@@ -131,6 +142,11 @@ static void InputEmail(string str) {
     Admin->SetLanguage("Common",100);
     Admin->SetDefaultLanguage("Common");
     Admin->save_player(Name);
+    if(blindmode){
+        Admin->SetProperty("wizmapping", 0);
+        Admin->SetProperty("minimapping", 0);
+        Admin->SetProperty("screen reader", 1);
+    }
     make_workroom(Name,1);
     PLAYERS_D->AddPlayerInfo(Name);
 

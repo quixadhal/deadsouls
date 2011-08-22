@@ -18,6 +18,12 @@ static void create() {
                 "/domains/campus/npc/jennybot" : ({60, 1}),
                 ]));
     SetProperty("no attack", 1);
+    if(!strsrch("Dead Souls", mud_name())){
+        SetCoordinates("4000,4000,0");
+    }
+    else {
+        SetCoordinates("3,-6,0");
+    }
 }
 
 void init(){
@@ -29,5 +35,5 @@ mixed CanReceive(object ob){
         message("info","You are repelled by rodenticide.",ob);
         return 0;
     }
-    return 1;
+    return ::CanReceive(ob);
 }

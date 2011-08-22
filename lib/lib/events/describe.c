@@ -49,13 +49,15 @@ void eventDescribeEnvironment(int brief){
     if( !brief ){
         if( i == VISION_CLEAR ){
             desc = env->GetObviousExits() || "";
-            if(desc && desc != "")
+            if(desc && desc != "" && !(env->GetNoObviousExits()))
                 desc = capitalize(env->GetShort() || "")
                     + " [" + desc + "]\n";
             else desc = capitalize(env->GetShort()+"\n" || "\n");
             if(!NM_STYLE_EXITS){
                 desc = capitalize(env->GetShort()+"\n" || "\n");
-                altern_obvious = "Obvious exit$Q: "+env->GetObviousExits() || "none";
+                if(!(env->GetNoObviousExits())){
+                    altern_obvious = "Obvious exit$Q: "+env->GetObviousExits() || "none";
+                }
             }
         }
         else desc = "\n";

@@ -32,14 +32,14 @@ static void create() {
                 "movement, but it's now gone, so any trip down is one-way.",
                 ]));
     AddExit("down","/domains/campus/room/sewer", (: eventHopDown :) );
-    AddExit("south","/domains/campus/room/access4");
+    AddExit("south","/domains/campus/room/access5");
 }
 int CanReceive(object ob){
     if(ob && ob->GetRace() == "rodent"){
         message("info","You are repelled by rodenticide.",ob);
         return 0;
     }
-    return 1;
+    return ::CanReceive(ob);
 }
 void init(){
     ::init();
