@@ -7,6 +7,12 @@
 inherit LIB_VIRT_LAND;
 
 static private int XPosition, YPosition;
+int max_north = 1000000;
+int max_south = -1000000;
+int max_east = 1000000;
+int max_west = -1000000;
+int max_up = 1000;
+int max_down = 0;
 
 varargs void SetLongAndItems(int x, int y, int z);
 
@@ -20,11 +26,6 @@ varargs int LimitTravel(int requested, int maximum, int lessthan){
 varargs static void create(int x, int y) {
     string n, s, e, w, u;
     string ne, nw, se, sw;
-
-    int max_north = 100000;
-    int max_south = 1;
-    int max_east = 100000;
-    int max_west = 1;
 
     SetNoReplace(1);
     virt_land::create();

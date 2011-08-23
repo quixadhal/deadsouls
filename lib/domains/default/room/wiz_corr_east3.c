@@ -27,7 +27,7 @@ static void create() {
     SetExits( ([
                 "west" : "/domains/default/room/wiz_corr_east2",
                 ]) );
-    AddExit("east", "/domains/default/virtual/arena/1,10", (: PreExit :));
+    AddExit("east", "/domains/default/virtual/arena/5005,4999", (: PreExit :));
     SetInventory(([
                 "/domains/default/vehicle/strider" : 1,
                 ]));

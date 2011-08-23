@@ -3,6 +3,7 @@
 
 #include <dirs.h>
 
+#define ROOM_ZERO        "/domains/town/room/start"
 #define ROOM_ARCH        "/secure/room/arch"
 #define ROOM_CATCH_TELL  DIR_STANDARD_DOMAIN "/room/catchtell"
 #define ROOM_DEATH       DIR_STANDARD_DOMAIN "/room/death"

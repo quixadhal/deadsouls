@@ -405,7 +405,7 @@ void eventCheckHealing(){
 
     if(HealthPoints < 1 && !this_object()->GetDying()){
         this_object()->SetDying(1);
-        this_object()->eventDie("misfortune");
+        call_out("eventDie", 0, "misfortune");
         return;
     }
 

@@ -14,16 +14,17 @@ static void create() {
     SetShort("South Saquivor Road");
     SetLong("This is a cobblestone road, leading north into town and south away from it. South of here appears to be some sort of University campus.");
     SetItems( ([
-                ({"road","cobblestone road"}) : "A "
-                "cobblestone road, running north and south.",
-                "sign":"A large sign on the road. To read it, 'read sign'.",
-                ({"grate","drainage grate","sewer","sewer grate"}) : "A grate that "+
-                "seems to lead into sewers. It can't be opened from here.",
-                ]) );
+        ({"road","cobblestone road"}) : "A "
+        "cobblestone road, running north and south.",
+        "sign":"A large sign on the road. To read it, 'read sign'.",
+        ({"grate","drainage grate","sewer","sewer grate"}) : "A grate that "+
+        "seems to lead into sewers. It can't be opened from here.",
+      ]) );
+    SetSkyDomain("town");
     AddTerrainType(T_ROAD);
     SetExits( ([
-                "south" : "/domains/campus/room/npath2.c",
-                ]) );
+        "south" : "/domains/campus/room/npath2.c",
+      ]) );
     if(file_exists("/domains/campus/doors/grate.c")){
         AddExit("down", "/domains/campus/room/sewer3");
         SetDoor("down","/domains/campus/doors/grate");
@@ -32,9 +33,8 @@ static void create() {
         AddExit("north", "/domains/town/room/south_road1");
     }
     SetInventory(([
-                ]));
+      ]));
     SetRead("sign", (: readSign :) );
-    SetFlyRoom("/domains/town/virtual/sky/28,99998,1");
     AddItem(new("/domains/town/obj/lamp"));
 }
 void init(){

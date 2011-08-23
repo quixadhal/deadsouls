@@ -14,8 +14,8 @@ void create() {
                 ]) );
     SetExits( ([
                 "east" : "/domains/campus/room/science7",
-                "down" : "/domains/campus/room/shaft1.c",
                 ]) );
+    SetSinkRoom("/domains/campus/room/shaft1");
     SetDoor("east", "/domains/campus/doors/eledoor2");
     SetMedium(MEDIUM_AIR);
 }

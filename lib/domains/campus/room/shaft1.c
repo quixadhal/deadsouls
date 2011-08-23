@@ -14,10 +14,10 @@ void create() {
                 ]) );
     SetExits( ([
                 "east" : "/domains/campus/room/science6",
-                "up" : "/domains/campus/room/shaft2",
-                "down" : "/domains/campus/room/shaft0.c",
                 ]) );
     SetDoor("east", "/domains/campus/doors/eledoor1");
+    SetFlyRoom("/domains/campus/room/shaft2");
+    SetSinkRoom("/domains/campus/room/shaft0");
     SetMedium(MEDIUM_AIR);
 }
 void init(){

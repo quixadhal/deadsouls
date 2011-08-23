@@ -6,6 +6,11 @@ inherit LIB_VIRT_LAND;
 
 static private int XPosition, YPosition, found;
 static string lupus;
+int max_north = 25;
+int max_south = 1;
+int max_east = -3;
+int max_west = -28;
+
 
 varargs void SetLongAndItems(int x, int y, int z);
 
@@ -32,11 +37,6 @@ varargs static void create(int x, int y) {
     string n, s, e, w;
     string ne, nw, se, sw;
     string fly;
-
-    int max_north = 25;
-    int max_south = 1;
-    int max_east = 25;
-    int max_west = 1;
 
     SetNoReplace(1);
     virt_land::create();
@@ -77,7 +77,7 @@ varargs static void create(int x, int y) {
     if( se ) AddExit("southeast", __DIR__ + se);
     if( sw ) AddExit("southwest", __DIR__ + sw);
 
-    if(x == 24 && y == 1){
+    if(x == -4 && y == 1){
         RemoveExit("south");
         RemoveExit("west");
         AddExit("south","/domains/town/room/forest_path1");
@@ -85,22 +85,22 @@ varargs static void create(int x, int y) {
         RemoveExit("southwest");
 
     }
-    else if(y == 1){
+    else if(y == max_south){
         RemoveExit("south");
         RemoveExit("southeast");
         RemoveExit("southwest");
     }
-    if(y == 25){
+    if(y == max_north){
         RemoveExit("north");
         RemoveExit("northeast");
         RemoveExit("northwest");
     }
-    if(x == 1){
+    if(x == max_west){
         RemoveExit("west");
         RemoveExit("northwest");
         RemoveExit("southwest");
     }
-    if(x == 25){
+    if(x == max_east){
         RemoveExit("east");
         RemoveExit("northeast");
         RemoveExit("southeast");
@@ -121,16 +121,16 @@ varargs void SetLongAndItems(int x, int y, int z) {
         "are barely visible through the heavy forest canopy overhead.";
     else str+= "Sunlight penetrates the tree cover with great "
         "difficulty, rendering the forest cool and dark.";
-    if(x == 25) str+= " Travel east is made impossible by a river "
+    if(x == max_east) str+= " Travel east is made impossible by a river "
         "rushing north to south here. On the other side of the river "
             "a great slope rises, and it appears that on top of it is "
             "a road that leads north to a high plateau.";
-    if(y == 25) str+= " A steep cliff rises north of here, making "
+    if(y == max_north) str+= " A steep cliff rises north of here, making "
         "travel north into the mountains impossible.";
-    if(x == 1) str += " The forest is impassably thick to the west.";
-    if(y == 1) str += " The forest is impassably thick southward.";
-    if(x == 24 && y == 1) str += "\n%^GREEN%^There is a sign here you can read.%^RESET%^";
-    if(x == 24 && y == 25) str += "\n%^GREEN%^There is a cave entrance in the cliff wall.%^RESET%^";
+    if(x == max_west) str += " The forest is impassably thick to the west.";
+    if(y == max_south) str += " The forest is impassably thick southward.";
+    if(x == -4 && y == 1) str += "\n%^GREEN%^There is a sign here you can read.%^RESET%^";
+    if(x == -4 && y == 25) str += "\n%^GREEN%^There is a cave entrance in the cliff wall.%^RESET%^";
     SetItems( ([ "forest" : "It is so vast.",
                 ({"woods","trees","vegetation","plants"}) : "Thick, foreboding and "
                 "oppressive, these seem to add to an air of danger and claustrophobia.", 
@@ -142,7 +142,7 @@ varargs void SetLongAndItems(int x, int y, int z) {
                 "branches and heavy leaves of the trees here form the forest "
                 "canopy, almost a ceiling through which little light can pass.",
                 ]) );
-    if(y == 25) {
+    if(y == max_north) {
         AddItem( ({ "river", "stream", "great river"}), 
                 "This narrow but powerful river presents an insurmountable "
                 "obstacle to further travel east." );
@@ -150,7 +150,7 @@ varargs void SetLongAndItems(int x, int y, int z) {
                 "Fort Road, high on a slope and running north to the Fortress "
                 "on the Frontiers.");
     }
-    if(x == 24 && y == 25) {
+    if(x == -4 && y == 25) {
         AddItem(({"cave","opening","entrance","cave entrance"}) , 
                 "This is a rather scary looking opening in the cliff wall, leading "
                 "north into the ground.");
@@ -160,7 +160,7 @@ varargs void SetLongAndItems(int x, int y, int z) {
         RemoveExit("northwest");
     }
 
-    if(x == 24 && y == 1) {
+    if(x == -4 && y == 1) {
         if(random(99) > 95) lupus = "Bad Wolf!";
         else lupus = "Beware th";
         AddItem("sign" , "This is a hastily-lettered sign planted on the ground.");
@@ -194,7 +194,6 @@ varargs void SetLongAndItems(int x, int y, int z) {
 
     else if( !random(14) ) 
         SetListen("default", "You hear voices in the distance.");
-    //if(x == 24 && y == 1) inv["/domains/town/obj/sign"] = 1;
     SetLong(str);
     SetDayLight(25);
     SetNightLight(0);

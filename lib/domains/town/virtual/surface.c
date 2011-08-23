@@ -7,6 +7,12 @@
 inherit LIB_VIRT_LAND;
 
 static private int XPosition, YPosition;
+int max_north = 1000000;
+int max_south = -1000000;
+int max_east = 1000000;
+int max_west = -1000000;
+int max_up = 1000;
+int max_down = 0;
 
 varargs void SetLongAndItems(int x, int y, int z);
 
@@ -21,11 +27,6 @@ varargs static void create(int x, int y) {
     string n, s, e, w;
     string ne, nw, se, sw;
     string sink, fly;
-
-    int max_north = 100000;
-    int max_south = 1;
-    int max_east = 100000;
-    int max_west = 1;
 
     SetNoReplace(1);
     virt_land::create();
@@ -63,9 +64,13 @@ varargs static void create(int x, int y) {
     if( se ) AddExit("southeast", __DIR__ + se);
     if( sw ) AddExit("southwest", __DIR__ + sw);
 
-    if(x == 33 && y == 100000){
+    if(x == 5 && (y < 50 && y > -50)){
         RemoveExit("west");
+        RemoveExit("northwest");
+        RemoveExit("southwest");
         AddExit("west", "/domains/town/room/shore");
+        AddExit("northwest", "/domains/town/room/shore");
+        AddExit("southwest", "/domains/town/room/shore");
     }
 }
 

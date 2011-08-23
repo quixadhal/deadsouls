@@ -96,8 +96,8 @@ static void create() {
     SetInventory( ([
                 "/domains/town/obj/seawater" : 1,
                 ]) );
-    SetFlyRoom("/domains/town/virtual/sky/32,100000,1");
     AddItem(new("/domains/town/obj/lamp"));
+    SetSkyDomain("town");
 }
 void init(){
     ::init();
@@ -110,4 +110,3 @@ mixed CanReceive(object ob){
     }
     return 1;
 }
-

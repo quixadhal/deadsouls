@@ -1,4 +1,4 @@
----- 3.7a3 (unreleased) ---
+---- 3.7a4 (unreleased) ---
 - Updated gridconfig so that resets are more flexible.
 - Cleaned up some room locations across domains.
 - Corrected beggar's map.
@@ -8,6 +8,11 @@
 - The connection daemons now ask whether the player uses a screenreader
   so that the mapping can be disabled for them if so.
 - Added Kalinash's XP debt system.
+- If you die really hard or in quick succession, your player will no longer
+  have their healing freeze.
+- Added SinkRoom functionality to LIB_FALL.
+- Cleaned up and reconciled most grid and virtuals functionality.
+- Harmonized outdoors areas and virtual skies with SetSkyDomain() for rooms.
 
 ---- 3.6 ---
 - Released 2011-08-17

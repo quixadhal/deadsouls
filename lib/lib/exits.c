@@ -242,7 +242,7 @@ varargs string array GetEnters(int i){
     ids = ({});
 
     foreach(object item in all_inventory(this_object())){
-        if(base_name(item) == LIB_DUMMY){
+        if(item->isDummy()){
             obs += ({ item });
         }
     }
@@ -261,7 +261,7 @@ mapping GetEnterMap(){
     mapping EnterMap = ([]);
     object *obs = ({});
     foreach(object item in all_inventory(this_object())){
-        if(base_name(item) == LIB_DUMMY){
+        if(item->isDummy()){
             obs += ({ item });
         }
     }

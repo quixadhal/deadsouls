@@ -111,6 +111,8 @@ void deletes(){
     catch( rm("/lib/inventory.c") );
     catch( rm("/verbs/rooms/cast.c") );
     catch( rm("/cmds/creators/goto.c") );
+    catch( rename("/domains/town/virtual/sky", "/domains/town/virtual/oldsky"+time()) );
+    mkdir("/domains/town/virtual/sky");
 }
 
 varargs static void eventUpdate(object whom){

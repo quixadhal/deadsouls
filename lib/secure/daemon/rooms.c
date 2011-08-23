@@ -2,7 +2,6 @@
 #include <daemons.h>
 #include ROOMS_H
 #include <save.h>
-#define ROOM_ZERO "/domains/town/room/start"
 
 inherit LIB_DAEMON;
 
@@ -338,6 +337,7 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
     if(!(last_str)) last_str = "";
     name = base_name(ob);
     prefix = path_prefix(name);
+    if(prefix == "/domains/default/virtual/void") return 0;
     if(manual && (!strsrch(name, "/open/") || !strsrch(name, "/realms/"))){
         if(!this_player() || !archp(this_player())){
             return 0;
@@ -346,11 +346,14 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
     /* Still need to figure out exclusions for
      * an island or continent perimeter :(
      */
-    if(prefix == "/domains/town/virtual/surface" ||
-            prefix == "/domains/town/virtual/sub"){
-        return 0;
-    }
+    //if(prefix == "/domains/town/virtual/surface" ||
+    //        prefix == "/domains/town/virtual/sub"){
+    //    return 0;
+    //}
     room_name = last_string_element(name, "/");
+    //tc("last_str: "+last_str);
+    //tc("room_name: "+room_name);
+    //tc("name: "+name);
     if(!sizeof(WorldMap)){
         if(name == ROOM_FURNACE){
             return 0;
@@ -360,8 +363,10 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
         if(StrCoord(WorldMap[prefix][room_name]["coords"]) == "0,0,0" &&
                 name != ROOM_ZERO){
             UnSetRoom(ob);
+            //tc("alpha");
         }
         else{
+            //tc("omega");
             return ({ WorldMap[prefix][room_name]["coords"]["x"],
                     WorldMap[prefix][room_name]["coords"]["y"],
                     WorldMap[prefix][room_name]["coords"]["z"] });
@@ -383,11 +388,14 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
                 "exits" : ob->GetExitMap(),
                 ]);
     }
+    WorldMap[prefix][room_name]["exits"]["sink"] = ob->GetSinkRoom();
+    WorldMap[prefix][room_name]["exits"]["fly"] = ob->GetFlyRoom();
     if(debugging){
     }
     if(creator){
         int x,y,z,next = sizeof(Workrooms);
         if(Workrooms[creator]){
+            //tc("beta");
             return ({ Workrooms[creator]["coords"]["x"],
                     Workrooms[creator]["coords"]["y"],
                     Workrooms[creator]["coords"]["z"] });
@@ -409,13 +417,14 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
                 ([ "x" : x, "y" :y, "z" : z ]);
             global_manual = 1;
             SetGrid(name, manual, player);
+            //tc("gamma");
             return ({ x, y, z });
         }
     }
 
-    if(ob->GetVirtual() && sizeof(WorldMap[prefix])){
-        TmpMap = WorldMap[prefix];
-    }
+    //if(ob->GetVirtual() && sizeof(WorldMap[prefix])){
+    //    TmpMap = WorldMap[prefix];
+    //}
 
     tmpexits = WorldMap[prefix][room_name]["exits"];
     if(!sizeof(tmpexits) || member_array(player->GetProperty("LastLocation"),
@@ -521,6 +530,22 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
                     WorldMap[sub_pre][sub_name]["coords"]["z"] + 1;
                 breakout = 1;
                 break;
+                case "fly" : WorldMap[prefix][room_name]["coords"]["x"] =
+                    WorldMap[sub_pre][sub_name]["coords"]["x"];
+                WorldMap[prefix][room_name]["coords"]["y"] =
+                    WorldMap[sub_pre][sub_name]["coords"]["y"];
+                WorldMap[prefix][room_name]["coords"]["z"] =
+                    WorldMap[sub_pre][sub_name]["coords"]["z"] - 1;
+                breakout = 1;
+                break;
+                case "sink" : WorldMap[prefix][room_name]["coords"]["x"] =
+                    WorldMap[sub_pre][sub_name]["coords"]["x"];
+                WorldMap[prefix][room_name]["coords"]["y"] =
+                    WorldMap[sub_pre][sub_name]["coords"]["y"];
+                WorldMap[prefix][room_name]["coords"]["z"] =
+                    WorldMap[sub_pre][sub_name]["coords"]["z"] + 1;
+                breakout = 1;
+                break;
             }
         }
         if(breakout) break;
@@ -538,7 +563,7 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
         int x,y,z;
         int x2,y2,z2;
         int xd,yd,zd;
-
+        //tc("hmm","red");
         foreach(mixed key, mixed val in TmpMap){
             if(val){
                 if(!val["date"]) continue;
@@ -583,6 +608,7 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
             global_manual = 1;
             manual = x2+","+y2+","+z2;
             SetGrid(name, manual, player);
+            //tc("delta");
             return ({ x2, y2, z2 });
         }
         else {
@@ -599,10 +625,12 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
         true();
     }
     else SetGrid(name, coord, player);
+    //tc("epsilon");
     return ({ WorldMap[prefix][room_name]["coords"]["x"],
             WorldMap[prefix][room_name]["coords"]["y"],
             WorldMap[prefix][room_name]["coords"]["z"] });
 #else
+    //tc("phi");
     return ({ 0, 0, 0 });
 #endif
 }

@@ -51,10 +51,6 @@ static void heart_beat(){
     idle = query_idle(this_object());
     heartcount++;
 
-    if(!interactive(this_object())){
-        set_heart_beat(0);
-        return;
-    }
     if(GetProperty("reply")){
         int t = GetProperty("reply_time");
         if(t > 1 && (time() - t) > 90000){
@@ -63,6 +59,7 @@ static void heart_beat(){
         }
     }
     interactive::heart_beat();
+    living::heart_beat();
 
     if( IDLE_TIMEOUT && idle >= IDLE_TIMEOUT 
             && !builderp(this_object()) 
@@ -73,13 +70,10 @@ static void heart_beat(){
         return;
     }
 #ifdef __DSLIB__
-    if(heartping && intp(heartping) && heartcount > heartping){
-        if(!(heartcount % heartping)){
-            send_nullbyte(this_object());
-        }
+    if(heartping){
+        send_nullbyte(this_object());
     }
 #endif
-    living::heart_beat();
 }
 
 static void net_dead(){
@@ -160,6 +154,8 @@ static void eventDestroyUndead(object agent){
 varargs int eventDie(mixed agent){
     int x;
     string agentname;
+
+    this_object()->SetDying(0);
 
     if(!agent) agent = previous_object();
     if(!agent) agent = this_object();

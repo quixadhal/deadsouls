@@ -14,7 +14,9 @@ mixed eventFall(){
     if(!living(this_object())) name = this_object()->GetShort();
 
     if(!env || !(rumbo = env->GetExit("down"))){
-        return 0;
+        if(!sizeof((rumbo = env->GetSinkRoom()))){
+            return 0;
+        }
     }
     if(env == rumbo){
         return 0;

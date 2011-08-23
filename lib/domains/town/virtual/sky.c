@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <daemons.h>
 #include <dirs.h>
 #include <terrain_types.h>
 #include <medium.h>
@@ -9,6 +10,13 @@ inherit LIB_VIRT_SKY;
 static private int XPosition, YPosition, ZPosition;
 int overland;
 string dexit;
+int max_north = 1000000;
+int max_south = -1000000;
+int max_east = 1000000;
+int max_west = -1000000;
+int max_up = 1000;
+int max_down = 0;
+
 
 varargs void SetLongAndItems(int x, int y, int z);
 
@@ -22,13 +30,6 @@ varargs int LimitTravel(int requested, int maximum, int lessthan, int minimum){
 varargs static void create(int x, int y, int z) {
     string n, s, e, w, u, d;
     string ne, nw, se, sw;
-
-    int max_north = 100000;
-    int max_south = 1;
-    int max_east = 100000;
-    int max_west = 1;
-    int max_up = 1000;
-    int max_down = 0;
 
     SetNoReplace(1);
     virt_sky::create();
@@ -79,31 +80,12 @@ varargs static void create(int x, int y, int z) {
     }
     if(z == 1){
         string wut;
+        mapping gloc = ROOMS_D->GetGrid(x+","+y+",0");
 
-        if(y==2 && x==28) dexit = "/domains/town/room/mountain_road";
-        else if(y==1 && x==28) dexit = "/domains/town/room/road";
-        else if(y==100000 && x==22) dexit = "/domains/town/room/valley";
-        else if(y==100000 && x==23) dexit = "/domains/town/room/clearing";
-        else if(y==100000 && x==24) dexit = "/domains/town/room/forest_path1";
-        else if(y==100000 && x==25) dexit = "/domains/town/room/bridge";
-        else if(y==100000 && x==26) dexit = "/domains/town/room/road2";
-        else if(y==100000 && x==27) dexit = "/domains/town/room/road1";
-        else if(y==100000 && x==28) dexit = "/domains/town/room/vill_road1";
-        else if(y==100000 && x==29) dexit = "/domains/town/room/vill_road2";
-        else if(y==100000 && x==30) dexit = "/domains/town/room/vill_road3";
-        else if(y==100000 && x==31) dexit = "/domains/town/room/vill_road4";
-        else if(y==100000 && x==32) dexit = "/domains/town/room/shore";
-        else if(y==99999 && x==28) dexit = "/domains/town/room/south_road1";
-        else if(y==99998 && x==28) dexit = "/domains/town/room/south_road2";
-        else if(y==99997 && x==28) dexit = "/domains/campus/room/npath2";
-        else if(y==99996 && x==28) dexit = "/domains/campus/room/npath";
-        else if(y==99995 && x==28) dexit = "/domains/campus/room/usquare";
-        else if(y==99999 && x==26) dexit = "/domains/town/room/gate";
-        else if(y==99998 && x==26) dexit = "/domains/town/room/mansion_ext";
-        else if(y==99998 && x==25) dexit = "/domains/town/room/garden";
-        else if(y==99999 && x==21) dexit = "/domains/town/room/narrow_path";
-        else if(y==99998 && x==21) dexit = "/domains/town/room/narrow_path2";
-        else if(y==99997 && x==21) dexit = "/domains/town/room/cratshack";
+        if(sizeof(gloc)){
+            dexit = gloc["room"];
+            SetSinkRoom(gloc["room"]);
+        }
 
         if(dexit){
             RemoveExit("down");
@@ -111,7 +93,7 @@ varargs static void create(int x, int y, int z) {
         }
 
         else {
-            if( (x < 26 && x > 0) && (y < 26 && y > 0) ){
+            if( (x < 10 && x > -26) && (y < 26 && y > -10) ){
                 wut = "forest";
             }
             else { 
@@ -141,4 +123,20 @@ varargs void SetLongAndItems(int x, int y, int z) {
     SetNightLight(30);
     SetTerrainType(T_MIDAIR);
     SetMedium(MEDIUM_AIR);
+}
+
+//int eventReceiveObject(object ob){
+//    if(this_object() && ob && (living(ob) || ob->GetMapper())){
+//       tc("1");
+//        if(MASTER_D->GetPerfOK()){
+//            int array Coords = ROOMS_D->SetRoom(this_object(), ob);
+//            tc("2: "+identify(Coords));
+//            CompileNeighbors(Coords);
+//        }
+//    }
+//    return ::eventReceiveObject(ob);
+//}
+
+void init(){
+    ::init();
 }

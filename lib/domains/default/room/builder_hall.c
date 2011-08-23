@@ -9,7 +9,7 @@ static void create() {
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("Builders' Lounge");
-    SetLong("This is the comfortable lounge where builders can congregate to chat about their work and leave messages for each other on the board. The Adventurers' Guild is north, and the Creators' Hall is south.");
+    SetLong("This is the comfortable lounge where builders can congregate to chat about their work and leave messages for each other on the board. The Adventurers' Guild is north.");
     SetProperty("no attack", 1);
     SetProperty("nopeer",1);
     ob = new("/lib/bboard");
@@ -20,15 +20,14 @@ static void create() {
     ob->SetShort("a dusty chalkboard");
     ob->eventMove(this_object());
     SetItems( ([
-                ({"sign"}) : "A sign you can read.",
-                ]) );
+        ({"sign"}) : "A sign you can read.",
+      ]) );
+    SetExits( ([ 
+        "north" : "/domains/town/room/adv_guild",
+      ]) );
     SetInventory(([
-                "/domains/default/obj/couch" : 1,
-                ]));
-    SetExits(([
-                "south" : "/domains/default/room/wiz_hall",
-                "north" : "/domains/town/room/adv_guild",
-                ]));
+        "/domains/default/obj/couch" : 1,
+      ]));
 }
 
 int CanReceive(object sneak) {
@@ -36,7 +35,7 @@ int CanReceive(object sneak) {
     if(!living_stack || !arrayp(living_stack)) living_stack = ({ sneak });
     foreach(object ob in living_stack){
         if(playerp(ob) && !builderp(ob) && !present("testchar badge",ob) &&
-                !member_group(ob,"TEST")) {
+          !member_group(ob,"TEST")) {
             message("info","Staff only, sorry.", ob);
             return 0;
         }

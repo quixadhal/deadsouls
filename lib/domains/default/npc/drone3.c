@@ -84,6 +84,8 @@ void eventSpawn(){
 
     exits = values(env->GetExitMap());
     exits += values(env->GetEnterMap());
+    exits += (({env->GetFlyRoom()}));
+    exits += (({env->GetSinkRoom()}));
     exits = distinct_array(exits);
 
     foreach(string exit in exits){

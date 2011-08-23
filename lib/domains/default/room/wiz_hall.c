@@ -6,8 +6,8 @@ int ds;
 
 string LongDesc(){
     string desc = "Immortals come here to communicate with each other about "+
-        "the world they are building. The Builder's hall and Adventurer's "+
-        "Guild are north. The Arch Room is south."+
+        "the world they are building. The default start room is "+
+        "north. The Arch Room is south."+
         (!(ds) ? " To visit the Dead Souls "+
          "test and development mud, visit the upstairs annex." : "")+
         " The test lab facilities are east.";
@@ -42,12 +42,11 @@ static void create() {
                 ]) );
     SetExits( ([
                 "south" : "/secure/room/arch",
-                "north" : "/domains/default/room/builder_hall",
+                "north" : "/domains/default/room/start",
                 "east" : "/domains/default/room/wiz_corr1",
                 "up" : "/domains/default/room/wiz_hall2.c",
                 ]) );
     SetRead("sign", (: load_object(ROOM_ARCH)->SignRead() :) );
-    SetCoordinates("-2,3,0");
 }
 
 int CanReceive(object sneak) {

@@ -71,7 +71,8 @@ private int		Medium  	= MEDIUM_LAND;
 private mapping         ActionsMap      = ([]);
 private string          SinkRoom        = "";
 private string          FlyRoom         = "";
-private string          Elevator         = "";
+private string          SkyDomain       = "";
+private string          Elevator        = "";
 private int             FlowLimit       = 0;
 private int array       Coords          = ({});
 private string array    Neighbors       = ({});
@@ -1139,6 +1140,15 @@ int GenerateObviousExits(){
 }
 
 int eventReceiveObject(object ob){
+    this_object()->SetSky();
+    if(this_object() && ob && (living(ob) || ob->GetMapper())){
+        //tc("1");
+        if(MASTER_D->GetPerfOK()){
+            int array Coords = ROOMS_D->SetRoom(this_object(), ob);
+            //tc("2: "+identify(Coords));
+            this_object()->CompileNeighbors(Coords);
+        }
+    }
     return container::eventReceiveObject(ob);
 }
 
@@ -1162,6 +1172,16 @@ string SetSinkRoom(string str){
 
 string GetSinkRoom(){
     return SinkRoom;
+}
+
+string SetSkyDomain(string str){
+    SkyDomain = str;
+    this_object()->SetSky();
+    return SkyDomain;
+}
+
+string GetSkyDomain(){
+    return SkyDomain;
 }
 
 int SetFlowLimit(int i){
@@ -1271,8 +1291,24 @@ string SetCoordinates(string str){
     return ret;
 }
 
+void SetSky(){
+    if(GetMedium() != MEDIUM_LAND && GetMedium() != MEDIUM_SURFACE){
+        return;
+    }
+    if(sizeof(SkyDomain) && !sizeof(FlyRoom)){
+        mixed coords = this_object()->GetCoords();
+        if(!sizeof(coords)) return;
+        SetFlyRoom("/domains/"+SkyDomain+"/virtual/sky/"+
+          coords[0]+","+coords[1]+","+(coords[2]+1));
+        if(sizeof(FlyRoom)){
+            catch(load_object(FlyRoom)->SetSinkRoom(base_name(this_object())));
+        }
+    }
+}
+
 static void init(){
     object prev = previous_object();
+    SetSky();
     if(undefinedp(RespirationType)){
         switch(GetMedium()){
             case MEDIUM_WATER : RespirationType = R_WATER; break;

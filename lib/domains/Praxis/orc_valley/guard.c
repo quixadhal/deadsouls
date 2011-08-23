@@ -8,25 +8,26 @@ void create() {
     SetProperty("no castle", 1);
     SetShort( "The entrance to the Valley of the Orcs");
     SetLong(
-            "In the shadow of the Daroq Mountains to the west, and just north "
-            "of the great highway is the valley of the orcs.  Here you find "
-            "the entrance to a huge stone orc fortress surrounded by dense "
-            "forest.  The great highway is south of here.");
+      "In the shadow of the Daroq Mountains to the west, and just north "
+      "of the great highway is the valley of the orcs.  Here you find "
+      "the entrance to a huge stone orc fortress surrounded by dense "
+      "forest.  The great highway is south of here.");
     SetItems(
-            (["mountains" : "They are a dark range of mountains to the "
-             "northwest. To the southwest, the mountains are go by "
-             "the name of Destiny Mountains.",
-             "highway" : "You cannot see it through the trees.",
-             "valley" : "It sits in the shadow of the Daroq Mountains.",
-             "entrance" : "A grand stone gateway into the orc fortress.",
-             "stone" : "It is an old grey stone that has stood here for ages.",
-             "fortress" : "It is the home of the orcs who live in Orc Valley.",
-             "forest" : "It is terribly dense here.",
-             "trees" : "They are huge and grow close together.",
-             "gateway" : "The entrance to the orc fortress."]) );
+      (["mountains" : "They are a dark range of mountains to the "
+        "northwest. To the southwest, the mountains are go by "
+        "the name of Destiny Mountains.",
+        "highway" : "You cannot see it through the trees.",
+        "valley" : "It sits in the shadow of the Daroq Mountains.",
+        "entrance" : "A grand stone gateway into the orc fortress.",
+        "stone" : "It is an old grey stone that has stood here for ages.",
+        "fortress" : "It is the home of the orcs who live in Orc Valley.",
+        "forest" : "It is terribly dense here.",
+        "trees" : "They are huge and grow close together.",
+        "gateway" : "The entrance to the orc fortress."]) );
+    SetSkyDomain("town");
     SetExits( 
-            (["north" : "/domains/Praxis/orc_valley/open",
-             "south" : "/domains/Praxis/highway3"]) );
+      (["north" : "/domains/Praxis/orc_valley/open",
+        "south" : "/domains/Praxis/highway3"]) );
     AddExit("north", "/domains/Praxis/orc_valley/open", (: "go_north" :) );
 }
 
@@ -77,4 +78,3 @@ int go_north() {
 void init(){
     ::init();
 }
-

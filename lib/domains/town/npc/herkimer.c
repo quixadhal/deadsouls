@@ -65,6 +65,7 @@ static void create() {
                 ]) );
     AvailableSpells = ( ([
                 "fireball" : 1000,
+                "greater fireball" : 3000,
                 "light" : 100,
                 "missile" : 500,
                 "buffer" : 200,

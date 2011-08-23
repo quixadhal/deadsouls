@@ -39,7 +39,7 @@ static void create() {
     SetProperty("no attack", 1);
     SetProperty("nopeer",1);
     SetExits(([
-                "west" : "/domains/default/room/wiz_hall2",
+                "north" : "/domains/default/room/wiz_hall2",
                 ]));
 
     SetInventory(([

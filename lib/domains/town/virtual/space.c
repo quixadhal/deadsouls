@@ -7,6 +7,12 @@
 inherit LIB_VIRT_SKY;
 
 static private int XPosition, YPosition, ZPosition;
+int max_north = 2100000000;
+int max_south = -2100000000;
+int max_east = 2100000000;
+int max_west = -2100000000;
+int max_up = 2100000000;
+int max_down = -2100000000;
 
 varargs void SetLongAndItems(int x, int y, int z);
 
@@ -24,13 +30,6 @@ varargs static void create(int x, int y, int z) {
     string ned, nwd, sed, swd;
     string nu, nd, su, sd;
     string eu, ed, wu, wd;
-
-    int max_north = 2100000000;
-    int max_south = 1;
-    int max_east = 2100000000;
-    int max_west = 1;
-    int max_up = 2100000000;
-    int max_down = 0;
 
     SetNoReplace(1);
     virt_sky::create();
