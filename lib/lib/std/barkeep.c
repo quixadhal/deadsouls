@@ -13,6 +13,7 @@ inherit LIB_BUY;
 
 private string  LocalCurrency = "gold";
 private mapping MenuItems     = ([]);
+private mapping SpecialMenuItems     = ([]);
 
 string GetLocalCurrency();
 mixed eventSell(object who, string args);
@@ -27,14 +28,18 @@ int indirect_sell_obj_to_liv(){
 /* ******************* barkeep.c attributes *********************** */
 int GetCost(string *item){
     float f = currency_rate(GetLocalCurrency());
-
-    if( !MenuItems[item] ){
+    object ob;
+    string obstr;
+    if( !obstr = MenuItems[item] ){
+        obstr = SpecialMenuItems[item];
+    }
+    if(!obstr || !(ob = load_object(obstr))){
         return 0;
     }
     if( f < 0.1 ){
         f = 1.0;
     }
-    return query_value(load_object(MenuItems[item])->GetBaseCost(),query_base_currency(),this_object()->GetLocalCurrency());
+    return query_value(ob->GetBaseCost(),query_base_currency(),this_object()->GetLocalCurrency());
 }
 
 string GetLocalCurrency(){
@@ -53,8 +58,24 @@ mapping AddMenuItem(mixed item, string file){
     return MenuItems;
 }
 
+mapping AddSpecialMenuItem(mixed item, string file){
+    string *item_arr;
+    if(stringp(item)) item_arr = ({ item });
+    else item_arr = item;
+    SpecialMenuItems[item_arr] = file;
+    return SpecialMenuItems;
+}
+
 mapping GetMenuItems(){
     return MenuItems;
+}
+
+mapping GetSpecialMenuItems(){
+    return SpecialMenuItems;
+}
+
+string array GetSpecials(){
+    return keys(SpecialMenuItems);
 }
 
 mapping RemoveMenuItem(string item){
@@ -65,6 +86,16 @@ mapping RemoveMenuItem(string item){
     }
     if(sizeof(item_arr)) map_delete(MenuItems, item_arr);
     return MenuItems;
+}
+
+mapping RemoveSpecialMenuItem(string item){
+    string *item_arr;
+    if(!sizeof(SpecialMenuItems)) return SpecialMenuItems;
+    foreach(string *key, string arr in SpecialMenuItems){
+        if(member_array(item,key) != -1) item_arr = key;
+    }
+    if(sizeof(item_arr)) map_delete(SpecialMenuItems, item_arr);
+    return SpecialMenuItems;
 }
 
 mapping SetMenuItems(mapping mp){
@@ -78,6 +109,17 @@ mapping SetMenuItems(mapping mp){
     return (MenuItems = copy(mp2));
 }
 
+mapping SetSpecialMenuItems(mapping mp){
+    mapping mp2 = ([]);
+    foreach(mixed key, mixed val in mp){
+        string *key2;
+        if(stringp(key)) key2 = ({ key });
+        else key2 = key;
+        mp2[key2] = val;
+    }
+    return (SpecialMenuItems = copy(mp2));
+}
+
 /* *********************** barkeep.c modals ************************ */
 int CanCarry(int cmt){
     return 1;
@@ -85,10 +127,11 @@ int CanCarry(int cmt){
 
 mixed CanSell(object who, string item){
     string *what = ({});
-    foreach(string *key, string val in MenuItems){
+    mapping FullMenu = add_maps(MenuItems, SpecialMenuItems);
+    foreach(string *key, string val in FullMenu){
         if(member_array(item,key) != -1) what = key;
     }
-    if( !MenuItems[what] ){
+    if( !FullMenu[what] ){
         return "There is no such thing for sale.";
     }
     return 1;
@@ -97,14 +140,9 @@ mixed CanSell(object who, string item){
 /* *********************** barkeep.c events *********************** */
 mixed eventBuyItem(object who, string cmd, string item){
     mixed tmp;
-    string *what = ({});
     if( !item || item == "" ){
         eventForce("speak err, what do you want me to sell?");
         return 1;
-    }
-    item = remove_article(lower_case(item));
-    foreach(string *key, string val in MenuItems){
-        if(member_array(item,key) != -1) what = key;
     }
     tmp = CanSell(who, item);
     if( tmp != 1 ){
@@ -123,10 +161,11 @@ mixed eventSell(object who, string args){
     object ob;
     int x;
     string *what;
-    foreach(string *key, string val in MenuItems){
+    mapping FullMenu = add_maps(MenuItems, SpecialMenuItems);
+    foreach(string *key, string val in FullMenu){
         if(member_array(args,key) != -1) what = key;
     }
-    if( !(ob = load_object(MenuItems[what])) ){
+    if( !(ob = load_object(FullMenu[what])) ){
         eventForce("speak I am having a problem with that item right now.");
         return 1;
     }
@@ -135,7 +174,7 @@ mixed eventSell(object who, string args){
         eventForce("speak You do not have that much in " + GetLocalCurrency());
         return 1;
     }
-    ob = new(MenuItems[what]);
+    ob = new(FullMenu[what]);
     if( !ob ){
         eventForce("speak I seem to be having some troubles.");
         return 1;
@@ -159,25 +198,30 @@ mixed eventSell(object who, string args){
     return 1;
 }
 
-int eventList(object who, string cmd, string args){
+int eventList(object who, string cmd, string args, int special){
     string array drinks = ({});
     string *drink;
-
-    if( !sizeof(keys(MenuItems)) ){
+    mapping Menu = (special ? SpecialMenuItems : MenuItems);
+    if( !sizeof(keys(Menu)) ){
         eventForce("speak I have nothing to serve right now.");
         return 1;
     }
-    foreach(drink in keys(MenuItems)){
-        string array adjectives = MenuItems[drink]->GetAdjectives();
+    foreach(drink in keys(Menu)){
+        string array adjectives = Menu[drink]->GetAdjectives();
         string adj = "";
         if( sizeof(adjectives) ){
             adj = adjectives[random(sizeof(adjectives))] + " ";
         }
-        drinks += ({ adj + drink[0] + " for " + GetCost(drink) });
+        //drinks += ({ adj + drink[0] + " for " + GetCost(drink) });
+        drinks += ({ drink[0] + " for " + GetCost(drink) });
     }
     eventForce("speak I currently supply " + item_list(drinks) + ".");
     eventForce("speak Prices are in " + GetLocalCurrency() + " of course.");
     return 1;
+}
+
+int eventSpecialList(object who, string cmd){
+    return eventList(who, cmd, "", 1);
 }
 
 /* ********************* barkeep.c driver applies *********************** */
@@ -189,5 +233,6 @@ static void create(){
                 ]) );
     SetRequestResponses( ([
                 ({ "menu" }) : (: eventList :),
+                ({ "special menu" }) : (: eventSpecialList :),
                 ]) );
 }

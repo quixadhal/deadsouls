@@ -16,9 +16,11 @@ string ReadList(){
         "it properly. All sales final.\n";
     string mageret = "AVAILABLE SPELLS:\n\n"
         "\tfireball:\tput the hurt on an opponent\n"
+        "\tgreater fireball:\tput the serious hurt on an opponent\n"
         "\tmissile:\tCheaper and easier to learn than fireball\n"
         "\tlight:\t\tMakes you glow brightly enough to see in the dark.\n"
         "\tbuffer:\t\tconjure an invisible shield around you\n"
+        "\tgreater buffer:\t\tconjure a powerful invisible shield around you\n"
         "\tmeditate:\tconjure an aura that speeds stamina recovery\n"
         "\twhip:\t\tconjure a powerful energy whip\n"
         "\n"

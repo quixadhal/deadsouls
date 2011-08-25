@@ -1,4 +1,4 @@
----- 3.7a4 (unreleased) ---
+---- 3.7a5 (unreleased) ---
 - Updated gridconfig so that resets are more flexible.
 - Cleaned up some room locations across domains.
 - Corrected beggar's map.
@@ -13,6 +13,9 @@
 - Added SinkRoom functionality to LIB_FALL.
 - Cleaned up and reconciled most grid and virtuals functionality.
 - Harmonized outdoors areas and virtual skies with SetSkyDomain() for rooms.
+- Fixed a bug in add_maps().
+- Added boardwalk and seaside bar to town.
+- Fixed barkeep menus and added special menu functionality.
 
 ---- 3.6 ---
 - Released 2011-08-17

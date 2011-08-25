@@ -18,12 +18,12 @@ static void create() {
     SetSpellType(SPELL_COMBAT);
     SetRequiredMagic(5);
     SetSkills(([ "conjuring" : 0, "magic attack" : 0 ]));
-    SetMagicCost(5, 3);
+    SetMagicCost(10, 3);
     SetStaminaCost(5, 3);
     SetDifficulty(0);
     SetMorality(-1);
     SetAutoDamage(3);
-    SetDamage(MAGIC|BLUNT, ({15, 15}) );
+    SetDamage(MAGIC|BLUNT, ({15, 6}) );
     SetMessages(({ ({ "are", "$target_name $target_verb "
                     "unharmed by $agent_possessive "
                     "missile." }),

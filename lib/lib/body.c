@@ -1906,7 +1906,15 @@ int AddPoison(int x){
     return Poison;
 }
 
-int GetPoison(){ return Poison; }
+int GetPoison(){
+    int caff = GetCaffeine();
+    int alc = GetAlcohol();
+    int bonus_ret;
+    if(alc > 100) bonus_ret += (alc - 100);
+    if(caff > 100) bonus_ret += (caff - 100);
+
+    return Poison + bonus_ret; 
+}
 
 string GetResistance(int type){ return "none"; }
 
@@ -1940,7 +1948,7 @@ int GetHealRate(){
     int lead = GetLead();
     object dude = this_object();
 
-    heal = 1 - (GetPoison() / 5);
+    heal = 1 - (GetPoison() / 2);
     heal += ( (GetDrink() + GetFood()) || 1 ) / 40;
     if(GetSleeping()) mod++;
     if(GetAlcohol() > 10) mod++;
@@ -1954,7 +1962,7 @@ int GetHealRate(){
         if(lead < 5) heal /= (lead + 1);
         else heal = 0;
     }
-    return heal;
+    return (heal < 0 ? 0 : heal);
 }
 
 string GetHealthShort(){

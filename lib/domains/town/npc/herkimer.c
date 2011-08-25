@@ -6,8 +6,7 @@ int JoinGuild(object ob, string verb, string what);
 int TeachSpell(object who, string verb, string spell);
 
 string *spells;
-mapping AvailableSpells;
-mapping RestrictedSpells = ([ "whip" : 0 ]);
+mapping AvailableSpells, RestrictedSpells;
 
 int WieldStaff(){
     if(!present("staff",this_object())){
@@ -69,7 +68,14 @@ static void create() {
                 "light" : 100,
                 "missile" : 500,
                 "buffer" : 200,
+                "greater buffer" : 2000,
                 "meditate" : 500,
+                "whip" : 10000,
+                ]) );
+    RestrictedSpells = ( ([
+                "greater fireball" : 3000,
+                "light" : 100,
+                "greater buffer" : 2000,
                 "whip" : 10000,
                 ]) );
     SetPolyglot(1);

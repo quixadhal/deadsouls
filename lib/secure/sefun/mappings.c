@@ -35,41 +35,14 @@ varargs mapping add_maps(mapping FirstMapping,mapping  SecondMapping, int prefer
     mapping OutMap = ([]);
     mapping FirstMap = copy(FirstMapping);
     mapping SecondMap = copy(SecondMapping);
-    mixed *schluessel1 = ({});
-    mixed *schluessel2 = ({});
 
-    if(!SecondMap) SecondMap = ([]);
-
-    schluessel1 = keys(FirstMap);
-    schluessel2 = keys(SecondMap);
-
-    if(!preference) preference = 0;
-
-    if(sizeof(schluessel1))
-        foreach(mixed element in schluessel1){
-            OutMap[element] = copy(FirstMap[element]);
-        }
-
-    if(preference = -1){
-        if(sizeof(schluessel2)){
-            foreach(mixed element in schluessel2){
-                if(member_array(element,schluessel1) != -1 &&
-                        SecondMap[element]){
-                    OutMap[element] = copy(SecondMap[element]);
-                }
-                else {
-                    OutMap[element] = copy(FirstMap[element]);
-                }
-            }
-        }
+    foreach(mixed key, mixed val in (FirstMap || ([]))){
+        OutMap[copy(key)] = copy(val);
     }
 
-    else if(sizeof(schluessel2))
-        foreach(mixed element in schluessel2){
-            if(member_array(element,schluessel1) != -1 && preference == 1)
-                OutMap[element] = copy(FirstMap[element]);
-            else OutMap[element] = copy(SecondMap[element]);
-        }
+    foreach(mixed key, mixed val in (SecondMap || ([]))){
+        OutMap[copy(key)] = copy(val);
+    } 
 
     return OutMap;
 }

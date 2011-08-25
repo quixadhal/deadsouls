@@ -2,6 +2,9 @@
 #include <daemons.h>
 #include ROOMS_H
 #include <save.h>
+#ifndef ROOM_ZERO
+#define ROOM_ZERO "/domains/town/room/start"
+#endif
 
 inherit LIB_DAEMON;
 

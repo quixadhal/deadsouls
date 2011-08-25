@@ -21,7 +21,7 @@ static void create() {
 
 int eventCast(object who, int level) {
     int intel = who->GetStatLevel("intelligence");
-    int duration = intel + who->GetSkillLevel("conjuring");
+    int duration = intel + who->GetSkillLevel("conjuring") + who->GetSpellLevel("light");
     object mojo = new("/obj/light");
 
     duration += (who->GetLevel());

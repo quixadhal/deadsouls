@@ -70,6 +70,7 @@ int GetDamage(){
     if(this_player()->GetSkill("magic attack")){
         tmp = (this_player()->GetSkill("magic attack")["level"]) * 2;
         tmp = tmp/this_player()->GetSkill("magic attack")["class"];
+        tmp += (this_player()->GetSpellLevel(SpellName) / 10);
     }
     damage += tmp;
     return damage;

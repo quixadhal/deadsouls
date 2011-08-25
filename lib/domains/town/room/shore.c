@@ -28,7 +28,7 @@ int ActionFunction(){
 
 varargs string readSign() {
     string ret = "WARNING! Orcs, dwarves, and some other races cannot "+
-        "swim! If you jump into the sea you will sink and drown!";
+    "swim! If you jump into the sea you will sink and drown!";
     return ret;
 }
 
@@ -56,16 +56,17 @@ static void create() {
     SetNightLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon. A lone lamp post lights this area. \n%^GREEN%^There is a sign here you can read.%^RESET%^");
     SetDayLong("You are on the shore, at the far eastern end of town. A road travels west into the heart of town. A great sea stretches out into the eastern horizon. \n%^GREEN%^There is a sign here you can read.%^RESET%^");
     SetItems( ([
-                "sign":"A sign on the ground. To read it, 'read sign'.",
-                "ground":"The local surface.",
-                "horizon":"Where the sky loves the sea.",
-                "town":"A population center to the west.",
-                "road":"Leads west, to the town.",
-                ]) );
-    SetRead("sign", (: readSign :) );
+        "sign":"A sign on the ground. To read it, 'read sign'.",
+        "ground":"The local surface.",
+        "horizon":"Where the sky loves the sea.",
+        "town":"A population center to the west.",
+        "road":"Leads west, to the town.",
+      ]) );
     SetExits( ([
-                "west" : "/domains/town/room/vill_road4.c",
-                ]) );
+        "west" : "/domains/town/room/vill_road4",
+        "south" : "/domains/town/room/docks.c",
+      ]) );
+    SetRead("sign", (: readSign :) );
     //SetFrequency determines how often the room checks 
     //whether it should perform an action. If it is set
     //at 1, it checks approximately every second. The
@@ -79,34 +80,26 @@ static void create() {
     //that string is displayed to the living things in the room.
     //If it is a function, that function is evaluated.
     SetAction(2, ({"A cool breeze flows in from the east, "
-                "bringing with it the bracing salty smells of the sea.",
-                (: ActionFunction :) }) );
+        "bringing with it the bracing salty smells of the sea.",
+        (: ActionFunction :) }) );
     SetChance(90);
     SetFish( ([
-                "/domains/town/meals/shark" : 1,
-                "/domains/town/meals/herring" : 10,
-                ]) );
+        "/domains/town/meals/shark" : 1,
+        "/domains/town/meals/herring" : 10,
+      ]) );
     //This is a function that allows for a set of actions
     //with different trigger frequencies.
     SetActionsMap( ([ 
-                "A soft breeze cools your brow." : 5,
-                "You briefly hear seagulls far in the distance." : 7,
-                (: ActionFunction2 :) : 2,
-                ]) );
+        "A soft breeze cools your brow." : 5,
+        "You briefly hear seagulls far in the distance." : 7,
+        (: ActionFunction2 :) : 2,
+      ]) );
     SetInventory( ([
-                "/domains/town/obj/seawater" : 1,
-                ]) );
+        "/domains/town/obj/seawater" : 1,
+      ]) );
     AddItem(new("/domains/town/obj/lamp"));
     SetSkyDomain("town");
 }
 void init(){
     ::init();
-}
-
-mixed CanReceive(object ob){
-    if(ob && ob->GetRace() == "drone"){
-        message("info","You are repelled by drone repellent.",ob);
-        return 0;
-    }
-    return 1;
 }
