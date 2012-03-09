@@ -1,14 +1,14 @@
 HTTP/1.1 200 OK
-Date: Tue, 23 Aug 2011 20:17:37 GMT
+Date: Thu, 08 Mar 2012 03:31:03 GMT
 Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.6 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
-Last-Modified: Mon, 22 Aug 2011 04:31:00 GMT
-ETag: "d928d-1e35b-4ab108bcae900"
+Last-Modified: Thu, 25 Aug 2011 05:32:30 GMT
+ETag: "d928d-1e503-4ab4dc141f780"
 Accept-Ranges: bytes
-Content-Length: 123739
+Content-Length: 124163
 Connection: close
 Content-Type: text/plain
 
----- 3.7a3 (unreleased) ---
+---- 3.7a5 (unreleased) ---
 - Updated gridconfig so that resets are more flexible.
 - Cleaned up some room locations across domains.
 - Corrected beggar's map.
@@ -18,6 +18,14 @@ Content-Type: text/plain
 - The connection daemons now ask whether the player uses a screenreader
   so that the mapping can be disabled for them if so.
 - Added Kalinash's XP debt system.
+- If you die really hard or in quick succession, your player will no longer
+  have their healing freeze.
+- Added SinkRoom functionality to LIB_FALL.
+- Cleaned up and reconciled most grid and virtuals functionality.
+- Harmonized outdoors areas and virtual skies with SetSkyDomain() for rooms.
+- Fixed a bug in add_maps().
+- Added boardwalk and seaside bar to town.
+- Fixed barkeep menus and added special menu functionality.
 
 ---- 3.6 ---
 - Released 2011-08-17

@@ -84,6 +84,7 @@ mixed cmd(string args) {
         ret += "Showgrid: \t\t"+ ( (this_player()->GetVisibleGrid()) ? "on" : "off" )+"\n";
         ret += "Wizmap mode: \t\t"+ ( this_player()->GetProperty("wizmapping") ? "on" : "off" )+"\n";
         ret += "Noclip mode: \t\t"+ ( this_player()->GetProperty("noclip") ? "on" : "off" )+"\n";
+        ret += "Anchor: \t\t"+ ( this_player()->GetAnchored() ? "on" : "off" )+"\n";
 #endif
     }
     if(replee){

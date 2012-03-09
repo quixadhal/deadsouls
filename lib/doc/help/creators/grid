@@ -1,0 +1,36 @@
+                      Dead Souls Grid System
+
+    The Dead Souls grid is a dynamically generated coordinate system
+that assigns x,y,z coordinates to each room, as possible. When a room
+is loaded, it checks ROOMS_D for its own coordinates. If it lacks
+coordinates, it checks for the coordinates of neighboring rooms and tries
+to calculate its own coordinates and reports them to ROOMS_D.
+
+    The idea of rooms with coordinates is to allow for game mechanics
+that work across rooms, such as directional teleports, cross-room combat,
+and the like. It is not necessary for every mud, and it can be disabled
+in config.h if you don't want it.
+
+    If you've created a new domain and it doesn't seem to be included
+in the grid, ensure your domain has a room named room/start.c , and
+set the coordinates for that room to be something that either makes
+sense for the coordinates of the rest of the mud, or that are certain
+not to conflict with existing coordinates by being very far away from 
+everything else. In the start.c room's create() function, ensure
+you have a directive that looks like this:
+
+SetCoordinates("9000,7000,0");
+
+    But, of course, with suitable x,y,z coordinates for your mud.
+
+    Once you've done this, erase the existing grid cache and begin the
+process of rebuilding it with mapper drones. The command to do this is:
+
+gridconfig reset
+
+    It will take some time for the grid to rebuild, depending on the size
+of your mud. You should be able to see the progress of that rebuild in
+the wizmap, if you have enabled that functionality.
+
+See also: gridconfig, wizmap, minimap
+

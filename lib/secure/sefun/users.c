@@ -27,3 +27,9 @@ string *local_users(){
             (: $1->GetKeyName():));
     return ret;
 }
+
+object *players(){
+    object *ret;
+    ret = filter(users(), (: !creatorp($1) :));
+    return ret;
+}

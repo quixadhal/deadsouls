@@ -863,7 +863,7 @@ varargs static int ModCfg(string which, string arg){
         string *line_array;
         string mconfig, nameline, portline, newline, newfile;
         string line_string, junk, name;
-        object ob;
+        object i3, imc2;
         
         justbooted = uptime() - 62;
         if(justbooted < -1){
@@ -922,16 +922,22 @@ varargs static int ModCfg(string which, string arg){
                         cp(mconfig,"/secure/cfg/mudos.win32");
                     }
                 }
+            imc2 = find_object(IMC2_D);
+            i3 = find_object(INTERMUD_D);
+            if(imc2) imc2->eventDestruct();
+            if(i3) i3->eventDestruct();
+            if(imc2) destruct(imc2);
+            if(i3) destruct(i3);
             ret = MASTER_D->SetMudName(arg);
                 write("\n");
                 write("\nMUD's name is now: "+mud_name());
-                if(ob = find_object(IMC2_D) && !DISABLE_IMC2){
+                if(!DISABLE_IMC2){
                     write("Reloading IMC2...");
-                        catch(reload(ob, 0, 1));
+                        catch(reload(IMC2_D, 0, 1));
                 }
-            if(ob = find_object(INTERMUD_D) && !DISABLE_INTERMUD){
+            if(!DISABLE_INTERMUD){
                 write("Reloading Intermud-3...");
-                    catch(reload(ob, 0, 1));
+                    catch(reload(INTERMUD_D, 0, 1));
             }
         }
     

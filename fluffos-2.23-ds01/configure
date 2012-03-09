@@ -38,9 +38,9 @@ sleep 1
 
 ./build.FluffOS $2
 
-if [ $ARG == "ds" ] || [ $ARG == "ds.debug" ]; then
-\cp -f ../extra/creremote/remote.c ../lib/lib/
-fi
+#if [ $ARG == "ds" ] || [ $ARG == "ds.debug" ]; then
+#\cp -f ../extra/creremote/remote.c ../lib/lib/
+#fi
 
 if uname -a | grep -i "cygwin" | grep -v grep ; then
 echo "Cygwin detected."

@@ -373,8 +373,10 @@ mapping SetItems(mixed items){
                 }
             }
             ob = new(LIB_DUMMY, key, val, adjs);
-            ob->eventMove(this_object());
-            DummyItems = ({ DummyItems..., ob });
+            if(ob){
+                ob->eventMove(this_object());
+                DummyItems = ({ DummyItems..., ob });
+            }
         }
     }
     else {

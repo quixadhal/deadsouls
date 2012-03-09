@@ -1,4 +1,9 @@
----- 3.7a5 (unreleased) ---
+---- 3.7a6 ---
+- Released 2012-03-08
+- Updated the IP address of MudBytes's IMC2 to reflect their Dallas move.
+- Windows muds should reconnect to i3 more sanely now after a rename.
+- Fixed confusing message when failing to pick a lock on a door.
+- h_ftpd now uses HOST_IP.
 - Updated gridconfig so that resets are more flexible.
 - Cleaned up some room locations across domains.
 - Corrected beggar's map.

@@ -35,7 +35,7 @@ static void create() {
     SetLevel(1);
     SetLong("With eyes that could steal a sailor from the sea, Brandy "
       "works in this harbor town laying whiskey down, fetching round "
-      "after round for her fiercely clientele. Word is she's receptive "
+      "after round for her fiercely loyal clientele. Word is she's receptive "
       "to flattery.");
     SetMenuItems(([
                 ({ "guinness","beer","stein" }) : "/domains/town/meals/stein",

@@ -139,6 +139,9 @@ varargs mixed eventPick(object who, string id, object tool){
     int strength;
     mixed *prehensiles = ({});
     string limb;
+    string short;
+    object prev = previous_object();
+    if(prev->isDummy()) short = (prev->GetShort() || prev->GetName());
 
     if(!who) return 0;
 
@@ -175,9 +178,6 @@ varargs mixed eventPick(object who, string id, object tool){
         return 1;
     }
     if( strength > ( LockStrength / 10 + random(LockStrength) ) ){
-        string short;
-        object prev = previous_object();
-        if(prev->isDummy()) short = prev->GetShort();
         who->AddSkillPoints("stealth", 2*(LockStrength + strength));	
         SetLocked(0);
         send_messages("pick", "$agent_name $agent_verb the lock on "+
@@ -186,7 +186,8 @@ varargs mixed eventPick(object who, string id, object tool){
         return 1;
     }
     send_messages("fail", "$agent_name $agent_verb in $agent_possessive "
-            "attempt to pick the lock on $target_name.",
+            "attempt to pick the lock on "+
+            (short ? short : "$target_name") +".",
             who, this_object(), environment(who));
     if( random(100) > strength ){
         send_messages("cut", "$agent_name $agent_verb $agent_reflexive "
