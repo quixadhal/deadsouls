@@ -1,3 +1,8 @@
+---- 3.7a7 ---
+- Released 2012-03-09
+- Fixed CreWeb issue when using recent versions of Firefox.
+- I3 keepalives now work more properly after a rename with mudconfig.
+
 ---- 3.7a6 ---
 - Released 2012-03-08
 - Updated the IP address of MudBytes's IMC2 to reflect their Dallas move.

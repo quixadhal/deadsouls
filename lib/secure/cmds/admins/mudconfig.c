@@ -929,16 +929,17 @@ varargs static int ModCfg(string which, string arg){
             if(imc2) destruct(imc2);
             if(i3) destruct(i3);
             ret = MASTER_D->SetMudName(arg);
-                write("\n");
-                write("\nMUD's name is now: "+mud_name());
-                if(!DISABLE_IMC2){
-                    write("Reloading IMC2...");
-                        catch(reload(IMC2_D, 0, 1));
-                }
+            write("\n");
+            write("\nMUD's name is now: "+mud_name());
+            if(!DISABLE_IMC2){
+                write("Reloading IMC2...");
+                    catch(reload(IMC2_D, 0, 1));
+            }
             if(!DISABLE_INTERMUD){
                 write("Reloading Intermud-3...");
                     catch(reload(INTERMUD_D, 0, 1));
             }
+            catch(reload(PING_D, 0, 1));
         }
     
         if(which == "port"){
