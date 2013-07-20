@@ -89,8 +89,7 @@ void heart_beat(){
         this_object()->clear_discs();
         this_object()->check_blacklist();
         if(imc2d){
-            mapping imcmuds = (imc2d->query_mudinfo() || ([]) );
-            if(sizeof(imcmuds)) this_object()->clear_discs(keys(imcmuds));
+            this_object()->clear_discs(keys(imc2d->query_mudinfo()));
         }
     }
     if(heart_count > 90000){

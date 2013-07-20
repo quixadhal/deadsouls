@@ -8,7 +8,7 @@ static void create() {
     SetAmbientLight(30);
     SetShort("Saquivor Road");
     SetLong("This is a cobblestone road, leading "+
-      "north into town and south away from it. "+
+      "north into town. "+
       "The magic "+
       "shop is to the west. "+
       "\n%^GREEN%^An old well stands by the "+
@@ -29,7 +29,7 @@ static void create() {
         "west" : "/domains/town/room/magic_shop",
       ]) );
     if(strsrch(mud_name(), "Dead Souls")){
-        AddExit("south", "/domains/campus/room/south_road2");
+        //AddExit("south", "/domains/campus/room/south_road2");
     }
     AddTerrainType(T_ROAD);
     SetNoModify(0);

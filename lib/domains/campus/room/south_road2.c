@@ -11,16 +11,16 @@ static void create() {
     SetClimate("outdoors");
     SetAmbientLight(30);
     SetObviousExits("north, south");
-    SetShort("South Saquivor Road");
-    SetLong("This is a cobblestone road, leading north into town and south away from it. South of here appears to be some sort of University campus.");
+    SetShort("South Old Saquivor Road");
+    SetLong("This is a cobblestone road, leading south to some sort of University campus.");
     SetItems( ([
         ({"road","cobblestone road"}) : "A "
-        "cobblestone road, running north and south.",
-        "sign":"A large sign on the road. To read it, 'read sign'.",
+        "cobblestone road, south.",
+        //"sign":"A large sign on the road. To read it, 'read sign'.",
         ({"grate","drainage grate","sewer","sewer grate"}) : "A grate that "+
         "seems to lead into sewers. It can't be opened from here.",
       ]) );
-    SetSkyDomain("town");
+    //SetSkyDomain("town");
     AddTerrainType(T_ROAD);
     SetExits( ([
         "south" : "/domains/campus/room/npath2.c",
@@ -30,12 +30,12 @@ static void create() {
         SetDoor("down","/domains/campus/doors/grate");
     }
     if(strsrch(mud_name(), "Dead Souls")){
-        AddExit("north", "/domains/town/room/south_road1");
+        //AddExit("north", "/domains/town/room/south_road1");
     }
     SetInventory(([
       ]));
-    SetRead("sign", (: readSign :) );
-    AddItem(new("/domains/town/obj/lamp"));
+    //SetRead("sign", (: readSign :) );
+    //AddItem(new("/domains/town/obj/lamp"));
 }
 void init(){
     ::init();

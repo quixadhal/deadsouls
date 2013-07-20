@@ -18,12 +18,7 @@ static void create() {
                 "/domains/campus/npc/jennybot" : ({60, 1}),
                 ]));
     SetProperty("no attack", 1);
-    if(!strsrch(mud_name(),"Dead Souls")){
-        SetCoordinates("4000,4000,0");
-    }
-    else {
-        SetCoordinates("3,-6,0");
-    }
+    SetCoordinates("4000,4000,0");
 }
 
 void init(){

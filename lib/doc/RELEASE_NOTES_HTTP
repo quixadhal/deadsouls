@@ -1,14 +1,24 @@
 HTTP/1.1 200 OK
-Date: Thu, 08 Mar 2012 03:31:03 GMT
+Date: Sat, 20 Jul 2013 19:48:33 GMT
 Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.6 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
-Last-Modified: Thu, 25 Aug 2011 05:32:30 GMT
-ETag: "d928d-1e503-4ab4dc141f780"
+Last-Modified: Sat, 10 Mar 2012 02:29:26 GMT
+ETag: "d928d-1e6a0-4bada4723ad80"
 Accept-Ranges: bytes
-Content-Length: 124163
+Content-Length: 124576
 Connection: close
 Content-Type: text/plain
 
----- 3.7a5 (unreleased) ---
+---- 3.7a7 ---
+- Released 2012-03-09
+- Fixed CreWeb issue when using recent versions of Firefox.
+- I3 keepalives now work more properly after a rename with mudconfig.
+
+---- 3.7a6 ---
+- Released 2012-03-08
+- Updated the IP address of MudBytes's IMC2 to reflect their Dallas move.
+- Windows muds should reconnect to i3 more sanely now after a rename.
+- Fixed confusing message when failing to pick a lock on a door.
+- h_ftpd now uses HOST_IP.
 - Updated gridconfig so that resets are more flexible.
 - Cleaned up some room locations across domains.
 - Corrected beggar's map.

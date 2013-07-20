@@ -14,7 +14,7 @@ static void create() {
         "clinic" : "This small clinic is where students in need of medical "+
         "attention go."
       ]) );
-    SetSkyDomain("town");
+    //SetSkyDomain("town");
     SetExits( ([
         "north" : "/domains/campus/room/npath",
         "east" : "/domains/campus/room/foyer",

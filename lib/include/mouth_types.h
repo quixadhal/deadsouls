@@ -14,6 +14,8 @@
 #define MOUTH_STATIC            (1 << 10)
 #define MOUTH_TUSKED            (1 << 11)
 
+#define MOUTH_HUMANOID (MOUTH_LIPPED | MOUTH_TOOTHED | MOUTH_TONGUED )
+
 #define MAX_MOUTH_BIT MOUTH_TUSKED
 
 #endif /* __MOUTH_TYPES_H__ */

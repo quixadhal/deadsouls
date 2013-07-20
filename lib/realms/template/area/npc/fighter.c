@@ -19,7 +19,7 @@ static void create(){
     npc::create();
     privs = query_privs();
     SetKeyName("fighter");
-    SetId( ({"human","npc","warrior","","fighter"}) );
+    SetId( ({"human","npc","warrior","fighter"}) );
     SetShort("a fighter");
     SetLong("This is a sample warrior NPC.");
     SetLevel(10);

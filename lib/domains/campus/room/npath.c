@@ -17,7 +17,7 @@ static void create() {
         "and south.",
         "town" : "You can't quite see much of it from here."
       ]) );
-    SetSkyDomain("town");
+    //SetSkyDomain("town");
 
     SetExits( ([ "south" : "/domains/campus/room/usquare",
         "north" : "/domains/campus/room/npath2",

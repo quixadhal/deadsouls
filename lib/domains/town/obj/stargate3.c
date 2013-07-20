@@ -9,9 +9,9 @@ int ReadScreen();
 void create() 
 {
     ::create();
-    SetOrigin("sea floor", "/domains/town/virtual/bottom/5,0");
-    SetRead(([ ({ "screen" }) : (: ReadScreen :) ]) );
-    SetItems(([ ({ "screen" }) : "a computer screen which shows the status of the gate network" ]) );
+    SetOrigin("cave", "/domains/town/room/cave_entrance");
+    SetRead(([ ({ "panel","writing" }) : (: ReadScreen :) ]) );
+    SetItems(([ ({ "panel","writing" }) : "a panel you can read" ]) );
 }
 
 void init()
@@ -21,7 +21,8 @@ void init()
 
 int ReadScreen()
 {
-    write("stargate network status\n");
+    write("-----------------------\n");
+    write("dial tower\n");
     write("-----------------------\n");
     write("\n");
 

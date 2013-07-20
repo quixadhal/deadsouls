@@ -1,3 +1,9 @@
+---- 3.8 ---
+- Released 2013-07-20
+- Added some checks to RACES_D for zeroed arrays/mappings.
+- Updated IMC2 with Davion/Kiasyn's latest MudBytes IP.
+- Disconnected the campus and town domains, applied new coordinates.
+
 ---- 3.7a7 ---
 - Released 2012-03-09
 - Fixed CreWeb issue when using recent versions of Firefox.

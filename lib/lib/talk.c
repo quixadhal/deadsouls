@@ -130,7 +130,7 @@ varargs mixed CanSpeak(object target, string verb, string msg, string lang){
     if(!this_player()->CanBreathe()){
         return "You can't even breathe.";
     }
-    if( lang && (!GetLanguageLevel(lang) || !GetLanguageName(lang)) )
+    if( lang && (!this_object()->GetPolyglot() && (!GetLanguageLevel(lang) || !GetLanguageName(lang)) ) )
         return "You don't speak that language!";
     if( target ){
         if( target == this_object() )

@@ -18,7 +18,7 @@ static void create() {
         "town" : "You can't quite see much of it from here.",
         "campus" : "You can't quite see much of it from here."
       ]) );
-    SetSkyDomain("town");
+    //SetSkyDomain("town");
     SetInventory(([
       ]));
     SetRead( "sign", "Beware! You are now leaving the safety of the Virtual Campus.");
