@@ -12,9 +12,9 @@ void create() {
     SetItems( ([ 
                 ]) );
     SetExits( ([
-                "up" : "/domains/campus/room/shaft0",
                 "east" : "/domains/campus/room/sub_basement2.c",
                 ]) );
+    SetFlyRoom("/domains/campus/room/shaft0");
 }
 void init(){
     ::init();

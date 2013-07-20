@@ -9,7 +9,7 @@ int ReadScreen();
 void create() 
 {
     ::create();
-    SetOrigin("sea floor", "/domains/town/virtual/bottom/33,100000");
+    SetOrigin("sea floor", "/domains/town/virtual/bottom/5,0");
     SetRead(([ ({ "screen" }) : (: ReadScreen :) ]) );
     SetItems(([ ({ "screen" }) : "a computer screen which shows the status of the gate network" ]) );
 }

@@ -1,4 +1,6 @@
 #/secure/daemon/portal.c
+PersistentInventory 0
+PersistentInventoryEnabled 0
 blue 
 orange 
 bportal 

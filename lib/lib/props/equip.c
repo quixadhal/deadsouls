@@ -57,10 +57,17 @@ mixed CanUnequip(object who){
 
 mixed eventEquip(object who, string array limbs){
     mixed tmp = who->eventWear(this_object(), limbs);
+    mixed adjs = this_object()->GetAdjectives();
     if( tmp != 1 ){
         return tmp;
     }
     SetWorn(limbs);
+    if(this_object()->GetWielded()){
+        this_object()->SetAdjectives(adjs + ({"wielded"}));
+    }
+    else {
+        this_object()->SetAdjectives(adjs + ({"worn"}));
+    }
     return 1;
 }
 
@@ -81,9 +88,15 @@ static void eventRestoreEquip(string array limbs){
 
 mixed eventUnequip(object who){
     mixed tmp = who->eventRemoveItem(this_object());
-
+    mixed adjs = this_object()->GetAdjectives();
     if( tmp != 1 ){
         return tmp;
+    }
+    if(this_object()->GetWielded()){
+        this_object()->SetAdjectives(adjs - ({"wielded"}));
+    }
+    else {
+        this_object()->SetAdjectives(adjs - ({"worn"}));
     }
     SetWorn(0);
     return 1;

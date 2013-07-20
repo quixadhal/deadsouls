@@ -27,6 +27,7 @@ static void create() {
                 "east" : "/domains/campus/room/basement2",
                 "west" : "/domains/campus/room/tunnel2"]));
     SetProperty("no attack", 1);
+    SetCoordinates("4003,4000,-1");
 }
 void init(){
     ::init();

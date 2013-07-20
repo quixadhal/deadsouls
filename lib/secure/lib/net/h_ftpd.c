@@ -61,7 +61,7 @@ private void eventCmdPasv(string arg);
 
 private        string      Password  = 0;
 private static class       ftp_session Session;
-private static string      host_ip  = "127.0.0.1";
+private static string      host_ip  = HOST_IP;
 private static mixed       outfile   = ([]);
 private static int         MaxBuffer = get_config(__MAX_BYTE_TRANSFER__);
 private static int         MaxFile   = get_config(__MAX_READ_FILE_SIZE__);

@@ -8,17 +8,17 @@ static void create() {
     SetShort("a narrow path");
     SetLong("This is a narrow path running north and south through a dense forest. The thick vegetation makes travel off the path impossible.");
     SetItems(([
-                ({ "path", "trail" }) : "A very narrow path that seems threatened all around by the looming woods. It's hard to imagine what force might have cut this thin trail into the vegetation here.",
-                ({ "forest", "wood", "vegetation" }) : "All around is vegetation growing so incredibly dense that it is impossible to wander off the path.",
-                ]));
-    SetFlyRoom("/domains/town/virtual/sky/21,99998,1");
+        ({ "path", "trail" }) : "A very narrow path that seems threatened all around by the looming woods. It's hard to imagine what force might have cut this thin trail into the vegetation here.",
+        ({ "forest", "wood", "vegetation" }) : "All around is vegetation growing so incredibly dense that it is impossible to wander off the path.",
+      ]));
+    SetSkyDomain("town");
     SetExits( ([
-                "north" : "/domains/town/room/narrow_path",
-                "south" : "/domains/town/room/cratshack.c",
-                ]) );
+        "north" : "/domains/town/room/narrow_path",
+        "south" : "/domains/town/room/cratshack.c",
+      ]) );
 
     SetInventory(([
-                ]));
+      ]));
 
 }
 void init(){

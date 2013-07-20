@@ -84,6 +84,8 @@ void eventSpawn(){
 
     exits = values(env->GetExitMap());
     exits += values(env->GetEnterMap());
+    exits += (({env->GetFlyRoom()}));
+    exits += (({env->GetSinkRoom()}));
     exits = distinct_array(exits);
 
     foreach(string exit in exits){
@@ -97,7 +99,9 @@ void eventSpawn(){
         if(drones) drones->ReceiveNoGo(nogo + no_go + ({ base_name(env) })); 
 #endif
         ROOMS_D->DroneCache( ({ exit }) );
-        catch( newdrone->eventMove(exit) );
+        if(strsrch(exit, "/virtual/") < 0){
+            catch( newdrone->eventMove(exit) );
+        }
     }
     ROOMS_D->DroneCache(({ base_name(env) }));
 } 

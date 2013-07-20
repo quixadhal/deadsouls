@@ -43,6 +43,7 @@ void create() {
                 ]));
     SetRead("sign", (: ReadSign :) );
     SetCoordinates("1000,-1000,0");
+    SetSkyDomain("town");
 }
 
 int CanReceive(object ob) { 

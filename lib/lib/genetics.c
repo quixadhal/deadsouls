@@ -158,7 +158,11 @@ int GetStatLevel(string stat){
     x = (GetBaseStatLevel(stat) + GetStatBonus(stat));
     switch(stat){
         case "coordination": case "wisdom":
-            x -= GetAlcohol();
+            x -= this_object()->GetAlcohol();break;
+        case "strength": case "durability" : case "agility":
+            x -= this_object()->GetPoison();break;
+        case "intelligence": case "speed": case "coordination":
+            x += (this_object()->GetCaffeine() / 10);break;
     }
     return x;
 }

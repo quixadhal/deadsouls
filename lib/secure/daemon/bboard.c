@@ -33,8 +33,10 @@ static private void save_board() {
         int i;
 
         if(!sizeof(__Posts)){
+            //tc("__Owner: "+__Owner);
             __Owner = query_privs(previous_object(0));
             __Posts = ({});
+            //tc("__Owner: "+__Owner);
         }
         i = strlen(__CurrentID);
         while(i--) 
@@ -49,7 +51,9 @@ static private int restore_board() {
         return 0;
     }
     if(!unguarded((: file_exists, save_file(DIR_BOARDS+"/"+__CurrentID) :))){
+        //tc("o: "+__Owner);
         __Owner = query_privs(previous_object(0));
+        //tc("o: "+__Owner);
         __Posts = ({});
         return 0;
     }
@@ -61,20 +65,27 @@ static private int restore_board() {
 
 static private int valid_access() {
     string str;
-    if(this_player() && archp(this_player())) true();
+    //tc("stack: "+get_stack(1));
+    if(this_player() && adminp(this_player())) true();
     else if(__Owner == PRIV_SECURE && !(master()->valid_apply(({}))))
         return 0;
     str = query_privs(previous_object(0));
-    if(member_array(PRIV_SECURE, explode(str, ":")) != -1) return 1;
+    if(member_array(PRIV_ASSIST, explode(str, ":")) != -1) return 1;
     return (__Owner == str);
 }
 
 void add_post(string id, string who, string subj, string msg) {
+    //tc("1");
     if(__CurrentID != id) {
         __CurrentID = id;
         restore_board();
     }
-    if(!valid_access()) return;
+    //tc("2");
+    if(!valid_access()){
+        //tc("x: "+valid_access());
+        return;
+    }
+    //tc("3");
     if(!stringp(who)) return;
     if(!subj || subj == "") subj = "[No Subject]";
     if(!msg || msg == "") return;

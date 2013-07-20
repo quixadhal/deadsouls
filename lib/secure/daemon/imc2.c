@@ -19,7 +19,7 @@
 //#define HOSTNAME "server01.mudbytes.net"
 #ifndef IMCTESTING
 #define HOSTPORT 5000
-#define HOSTIP "74.207.247.83"
+#define HOSTIP "50.116.16.90"
 #endif
 
 // Connection data for Davion's other server

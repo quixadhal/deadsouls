@@ -25,7 +25,7 @@
 inherit LIB_PAGER;
 #include <mssp.h>
 
-static private int CrackCount, NetDead, MaxPlayers; 
+static private int CrackCount, NetDead, MaxPlayers, blindmode; 
 static private string name, Name, Terminal, raza, TrueName, trabajo, extra; 
 static private string Passwort, Gendre, CapNamen, E_Mail, my_ip, client_ip; 
 static private object Player, pile; 
@@ -347,6 +347,17 @@ static void eventCreatePlayer(string cap) {
     input_to((: ConfirmName :), I_NOESC, cap);
 }
 
+static BlindCheck(string ans, string cap){
+    if( !ans || ans == "" || lower_case(ans)[0..0] == "y" ) {
+        receive("\nOk, disabling default overhead map.\n");
+        blindmode = 1;
+    }
+    else receive("\Ok, allowing default overhead map behavior.\n");
+    log_file("new_players", Name + " (" + ctime(time()) + ")\n");
+    receive("\nCreate a password of at least 5 letters: \n");
+    input_to((: CreatePassword :), I_NOECHO | I_NOESC, cap);
+}
+
 static void AgeCheck(string ans, string cap) {
     if( !ans || ans == "" || lower_case(ans)[0..0] != "y" ) {
         receive("\nSorry. You are not old enough to play here.\n");
@@ -356,8 +367,8 @@ static void AgeCheck(string ans, string cap) {
     log_file("new_players", Name + " (" + ctime(time()) + ")\n");
     unguarded( (: log_file("/secure/log/new_players", Name + " from " 
       + client_ip + extra + " (" + ctime(time()) + ")\n") :) );
-    receive("\nCreate a password of at least 5 letters: \n");
-    input_to((: CreatePassword :), I_NOECHO | I_NOESC, cap);
+    receive("\nDo you use a screen reader for the visually impaired? (y/n)\n");
+    input_to((: BlindCheck :), I_NOESC, cap);
 } 
 
 static void ConfirmName(string ans, string cap) {
@@ -867,6 +878,11 @@ void eventCompleteChar(){
     }
     else {
         Player->SetGender("neutral");
+    }
+    if(blindmode){
+        Player->SetProperty("wizmapping", 0);
+        Player->SetProperty("minimapping", 0);
+        Player->SetProperty("screen reader", 1);
     }
     if(yescre) Player->SetPrompt("cwd");
     else Player->SetPrompt("status");

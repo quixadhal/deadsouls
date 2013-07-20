@@ -42,8 +42,13 @@ mixed cmd(string str) {
     justvars = variables(ob);
 
     foreach(ele in justvars){
+        string thing = replace_string(str," ","_");
+        thing = replace_string(thing,"/","_");
         i = catch( tmp = evaluate(bind( (: fetch_variable($(ele)) :), ob)) );
-        if(!i) write(ele + " " + identify(tmp));
+        if(!i){
+            write(ele + " " + identify(tmp));
+            write_file("/secure/tmp/"+thing, ele + " " + identify(tmp)+"\n");
+        }
     }
     return 1;
 }

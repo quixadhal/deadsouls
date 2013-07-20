@@ -36,7 +36,7 @@ inherit LIB_PERSIST;
 #define SEVERABLE_LIMBS 1
 #endif
 
-private int HealthPoints, MagicPoints, ExperiencePoints;
+private int HealthPoints, MagicPoints, ExperiencePoints, ExperienceDebt;
 private int melee, godmode;
 private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping, DeathEvents;
 private float StaminaPoints;
@@ -69,6 +69,7 @@ static void create(){
     HealthPoints = MagicPoints = 50;
     StaminaPoints = 50.0;
     ExperiencePoints = 50;
+    ExperienceDebt = 0;
     Dying = 0;
     LastHeal = time();
     Protection = ({});
@@ -404,7 +405,7 @@ void eventCheckHealing(){
 
     if(HealthPoints < 1 && !this_object()->GetDying()){
         this_object()->SetDying(1);
-        this_object()->eventDie("misfortune");
+        call_out("eventDie", 0, "misfortune");
         return;
     }
 
@@ -1783,15 +1784,40 @@ int GetStaminaPoints(){ return to_int(StaminaPoints); }
 float GetMaxStaminaPoints(){  return 0; }
 
 int AddExperiencePoints(mixed x){
-    int dev;
     if( !intp(x)) error("Bad argument 1 to AddExperiencePoints().\n");
-    dev = DEVIATION_D->GetDeviationCost(this_object(), x);
-    x -= dev;
-    if((ExperiencePoints += x) < 0) ExperiencePoints = 0;
+    x -= DEVIATION_D->GetDeviationCost(this_object(), x);
+    
+    if( ExperienceDebt > 0 ) {
+        if( (ExperienceDebt -= x) < 0 ) {
+            ExperiencePoints -= ExperienceDebt;
+            ExperienceDebt = 0;
+            write("The last of your experience debt has been paid.\n");
+        }
+    } else {
+        ExperiencePoints += x;
+    }
+
     return ExperiencePoints;
 }
 
 int GetExperiencePoints(){ return ExperiencePoints; }
+
+int AddExperienceDebt(mixed x) {
+    if( !intp(x) ) error("Bad argument 1 to AddExperienceDebt().\n");
+    if( x < 0 ) {
+        if( (x = ExperienceDebt + x) < 0) {
+            ExperienceDebt = 0;
+            AddExperiencePoints(ExperienceDebt);
+            write("The last of your experience debt has been paid.\n");
+        }
+    } else {
+        ExperienceDebt += x;
+    }
+
+    return ExperienceDebt;
+}
+
+int GetExperienceDebt() { return ExperienceDebt; }
 
 int AddMagicProtection(class MagicProtection cl){
     if( ( !cl->absorb && !(cl->protect && cl->time) ) ||
@@ -1880,7 +1906,15 @@ int AddPoison(int x){
     return Poison;
 }
 
-int GetPoison(){ return Poison; }
+int GetPoison(){
+    int caff = GetCaffeine();
+    int alc = GetAlcohol();
+    int bonus_ret;
+    if(alc > 100) bonus_ret += (alc - 100);
+    if(caff > 100) bonus_ret += (caff - 100);
+
+    return Poison + bonus_ret; 
+}
 
 string GetResistance(int type){ return "none"; }
 
@@ -1914,7 +1948,7 @@ int GetHealRate(){
     int lead = GetLead();
     object dude = this_object();
 
-    heal = 1 - (GetPoison() / 5);
+    heal = 1 - (GetPoison() / 2);
     heal += ( (GetDrink() + GetFood()) || 1 ) / 40;
     if(GetSleeping()) mod++;
     if(GetAlcohol() > 10) mod++;
@@ -1928,7 +1962,7 @@ int GetHealRate(){
         if(lead < 5) heal /= (lead + 1);
         else heal = 0;
     }
-    return heal;
+    return (heal < 0 ? 0 : heal);
 }
 
 string GetHealthShort(){

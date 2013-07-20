@@ -31,7 +31,7 @@ int eventCast(object who, int level) {
     stamina_level += 10;
 
     who->AddStaminaPoints(stamina_level);
-    mojo->AddDuration(who->GetSkillLevel("conjuring"));
+    mojo->AddDuration(who->GetSkillLevel("conjuring") + who->GetSpellLevel("meditate"));
     mojo->eventMove(who);
 
     send_messages("", "A %^BOLD%^MAGENTA%^dark magical field%^RESET%^ "

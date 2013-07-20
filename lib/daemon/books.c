@@ -25,12 +25,13 @@ int eventDestruct(){
 }
 
 string SetBookTitle(string path, string title){
-    if(Books[path]) Books[path]["title"] = title;
+    if(!Books[path]) Books[path] = ([]);
+    Books[path]["title"] = title;
     return title;
 }
 
 string GetBookTitle(string path){
-    if(Books[path]["title"]) return Books[path]["title"];
+    if(Books[path] && Books[path]["title"]) return Books[path]["title"];
     return "Untitled";
 }
 
@@ -153,3 +154,6 @@ int zero(){
     }
     return 0;
 }
+
+mixed GetBooks() { return copy(Books); }
+

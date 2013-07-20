@@ -40,7 +40,7 @@ mixed cmd(string arg) {
 
 varargs mixed eventScore(string arg) {
     string *str;
-    int birth, age, x, y, z, qp, xp;
+    int birth, age, x, y, z, qp, xp, dbt;
     string *tmp;
     mapping lev;
     object who;
@@ -116,7 +116,13 @@ varargs mixed eventScore(string arg) {
     tmp = ({});
     qp = who->GetQuestPoints();
     xp = who->GetExperiencePoints();
+    dbt = who->GetExperienceDebt();
     lev = PLAYERS_D->GetLevelList()[(who->GetLevel()) + 1];
+
+    if(dbt){
+        str += ({ capitalize(prn)+" have "+dbt+" points of "+
+                  "experience debt." });
+    }
 
     if(lev){
         if(REQUIRE_QUESTING){

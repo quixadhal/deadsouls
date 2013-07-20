@@ -1017,7 +1017,7 @@ mapping query_groups() { return copy(Groups); }
 static void eventReset(){
     object *obs;
     object ob;
-    int x, y;
+    int x, y, z = 0;
     in_reset = 1;
 
     ResetNumber++;
@@ -1027,12 +1027,12 @@ static void eventReset(){
     x = reclaim_objects();
     write_file(LOG_RESET, "Reset " + ResetNumber + " occurred at: " +
             ctime(time()) + "\n");
-    if(!RESET_ALL) obs = objects( (: !environment($1) && (random(100) < 26) :) );
+    if(!RESET_ALL) obs = objects( (: !environment($1) && (random(100) < 34) :) );
     else obs = objects( (: !environment($1) :) );
     obs = filter(obs, (: !($1->GetNoClean()) :) );
     obs -= ({ this_object() });
-    if(sizeof(obs) > 500){
-        obs = scramble_array(obs)[0..500];
+    if(sizeof(obs) > 1024){
+        obs = scramble_array(obs)[0..1024];
     }
     y = 0;
     foreach(ob in obs) {
@@ -1043,7 +1043,7 @@ static void eventReset(){
         else {
             continue;
         }
-        if( f ) catch(evaluate(f));
+        if( f ) z += catch(evaluate(f));
         if( !ob ) {
             y++;
             continue;
@@ -1054,7 +1054,7 @@ static void eventReset(){
     in_reset = 0;
     write_file(LOG_RESET, "\t" + x + " objects reclaimed, " +
             (sizeof(obs) - y) + " objects reset, " + y + " objects "
-            "cleaned.\n");
+            "cleaned, " + z + " errors.\n");
 }
 
 int RequestReset(){

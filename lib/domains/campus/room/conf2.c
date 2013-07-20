@@ -75,7 +75,7 @@ int CanReceive(object ob) {
         }
 
     }
-    return 1;
+    return ::CanReceive(ob);
 }
 
 int set_privacy(int i){

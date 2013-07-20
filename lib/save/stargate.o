@@ -1,2 +1,4 @@
 #/daemon/stargate.c
-Stargates (["campus lab":(["endpoint":"","status":"idle","destination":"/domains/campus/room/slab",]),"tower":(["endpoint":"","status":"idle","destination":"/domains/Ylsrim/room/tower",]),"stargate lab":(["endpoint":"","status":"idle","destination":"/domains/default/room/stargate_lab",]),])
+PersistentInventory 0
+PersistentInventoryEnabled 0
+Stargates (["outer space":(["destination":"/domains/town/virtual/space/1,1,1","last_change":0,"endpoint":"","status":"idle",]),"praxis":(["destination":"/domains/Praxis/square","last_change":0,"endpoint":"","status":"idle",]),"sea floor":(["destination":"/domains/town/virtual/bottom/5,0","endpoint":"","status":"idle",]),"cave":(["destination":"/domains/town/room/cave_entrance","last_change":0,"endpoint":"","status":"idle",]),"stargate lab":(["destination":"/domains/default/room/stargate_lab","last_change":0,"endpoint":"","status":"idle",]),"tower":(["destination":"/domains/Ylsrim/room/tower","last_change":0,"endpoint":"","status":"idle",]),"campus lab":(["destination":"/domains/campus/room/slab","last_change":0,"endpoint":"","status":"idle",]),])

@@ -1,0 +1,12 @@
+#
+# WARNING
+# Do not use this script. It will screw up your mud.
+# You were warned.
+#
+eval return players()->eventForce("pk on")
+eval return players()->eventForce("pk on")
+eval return players()->SetProperty("wizmapping",1)
+eval return players()->SetClass("fighter")
+eval return players()->ChangeLevel(10)
+eval return players()->ChangeLevel(11)
+eval return players()->SetPolyglot(1)

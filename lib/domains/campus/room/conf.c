@@ -56,7 +56,7 @@ int CanReceive(object ob) {
         write("You have been ejected from the meeting room and may not return.");
         return 0;
     }
-    return 1;
+    return ::CanReceive(ob);
 }
 
 void init(){

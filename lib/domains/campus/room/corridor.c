@@ -23,7 +23,7 @@ int CanReceive(object ob) {
         message("info","You are repelled by rodenticide.",ob);
         return 0;
     }
-    return 1;
+    return ::CanReceive(ob);
 }
 void init(){
     ::init();

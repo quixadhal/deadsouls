@@ -94,6 +94,9 @@ int SetBonuses(){
                 case "SP" : env->AddStaminaPoints(val);break;
                 case "MP" : env->AddMagicPoints(val);break;
                 case "poison" : env->AddPoison(val);break;
+                case "caffeine" : tc("a");env->AddCaffeine(val);break;
+                case "food" : env->AddFood(val);break;
+                case "drink" : env->AddDrink(val);break;
                 default : break;
             }
         }

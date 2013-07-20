@@ -33,7 +33,7 @@ varargs int RotateLogs(int force){
                 if( file_size(path+"archive") != -2 ) mkdir(path+"archive");
                 cp(foopath,path+"archive/"+fooname);
                 rm(foopath);
-                write_file(temppath, "", 1); 
+                write_file(temppath, "NEW_LOG "+timestamp()+"\n", 1); 
             }
         }
     }

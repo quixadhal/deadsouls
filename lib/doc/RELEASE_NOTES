@@ -1,3 +1,38 @@
+---- 3.8 ---
+- Released 2013-07-20
+- Added some checks to RACES_D for zeroed arrays/mappings.
+- Updated IMC2 with Davion/Kiasyn's latest MudBytes IP.
+- Disconnected the campus and town domains, applied new coordinates.
+
+---- 3.7a7 ---
+- Released 2012-03-09
+- Fixed CreWeb issue when using recent versions of Firefox.
+- I3 keepalives now work more properly after a rename with mudconfig.
+
+---- 3.7a6 ---
+- Released 2012-03-08
+- Updated the IP address of MudBytes's IMC2 to reflect their Dallas move.
+- Windows muds should reconnect to i3 more sanely now after a rename.
+- Fixed confusing message when failing to pick a lock on a door.
+- h_ftpd now uses HOST_IP.
+- Updated gridconfig so that resets are more flexible.
+- Cleaned up some room locations across domains.
+- Corrected beggar's map.
+- Started tutorial area.
+- Tidied up some virtuals to be more portable across domains.
+- SetNoObviousExits() now works more intuitively in rooms.
+- The connection daemons now ask whether the player uses a screenreader
+  so that the mapping can be disabled for them if so.
+- Added Kalinash's XP debt system.
+- If you die really hard or in quick succession, your player will no longer
+  have their healing freeze.
+- Added SinkRoom functionality to LIB_FALL.
+- Cleaned up and reconciled most grid and virtuals functionality.
+- Harmonized outdoors areas and virtual skies with SetSkyDomain() for rooms.
+- Fixed a bug in add_maps().
+- Added boardwalk and seaside bar to town.
+- Fixed barkeep menus and added special menu functionality.
+
 ---- 3.6 ---
 - Released 2011-08-17
 - Driver: FluffOS 2.23 with very minor tweaks.

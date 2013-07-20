@@ -52,6 +52,11 @@ static void create() {
     if(!LimblessCombatRaces) LimblessCombatRaces = ({});
     if(!LimblessRaces) LimblessRaces = ({});
     if(!NonBitingRaces) NonBitingRaces = ({});
+    if(!Resistances) Resistances = ([]);
+    if(!Armors) Armors = ([]);
+    if(!Sizes) Sizes = ([]);
+    if(!Btypes) Btypes = ([]);
+    if(!SwimmingRaces) SwimmingRaces = ({});
     if(!NonMeatRaces) NonMeatRaces = ({});
     SaveObject(SaveFile);
 }

@@ -14,7 +14,9 @@ mixed eventFall(){
     if(!living(this_object())) name = this_object()->GetShort();
 
     if(!env || !(rumbo = env->GetExit("down"))){
-        return 0;
+        if(!sizeof((rumbo = env->GetSinkRoom()))){
+            return 0;
+        }
     }
     if(env == rumbo){
         return 0;
@@ -41,6 +43,7 @@ mixed eventFall(){
             err = catch(rumbo = load_object(rvoid));
         }
         if(err || !rumbo){
+            this_object()->eventMove(ROOM_START);
             return 0;
         }
         tell_object(this_object(),"You plummet downward!");

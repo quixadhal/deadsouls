@@ -23,7 +23,7 @@ static void create() {
                 ]));
     SetEnters( ([ 
                 ]) );
-    AddExit("north","/domains/campus/room/access4");
+    AddExit("north","/domains/campus/room/access0");
     AddExit("south","/domains/campus/room/access6");
     SetInventory(([
                 "/domains/campus/npc/rat" :1

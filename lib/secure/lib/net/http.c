@@ -66,15 +66,36 @@ void validate(){
     }
 }
 
-void eventSendData(string str){
-    buffer b;
+varargs buffer MakeHeader(int len){
     int i;
+    string h = "";
+    buffer ret;
+    h += "HTTP/1.0 200 OK\nContent-Type: text/html\r\n\r\n";
+    ret = allocate_buffer(strlen(h));
+    for(i=0; i<strlen(h); i++) {
+        ret[i] = h[i];
+    }
+    return ret;
+}
+
+varargs void eventSendData(mixed arg, int buff){
+    buffer b, h;
+    int i, len;
+    string str;
     validate();
-    if(!str || !sizeof(str)) return;
-    str = strip_colours(str);
+    if(!arg || !sizeof(arg)) return;
+    if(bufferp(arg)) {
+        b = arg;
+        eventWrite(MakeHeader(sizeof(b)));
+    }
+    else {
+    str = strip_colours(arg);
+    len = strlen(str);
+    str = "HTTP/1.0 200 OK\nContent-Type: text/html\r\n\r\n"+str;
     b = allocate_buffer(strlen(str));
     for(i=0; i<strlen(str); i++) {
         b[i] = str[i];
+    }
     }
     eventWrite(b, 1);
 }
@@ -218,12 +239,7 @@ varargs private static mixed eventGetFile(string name, string type, string paylo
             eventError(FILE_BAD_GATE);
             return 1;
         }
-        str = strip_colours(str);
-        b = allocate_buffer(strlen(str));
-        for(int i=0; i<strlen(str); i++) {
-            b[i] = str[i];
-        }
-        eventWrite(b, 1);
+        eventSendData(str);
         return 1;
     }
     else if( WWW_DIR_LIST && !file->isFile() ) {
@@ -232,7 +248,7 @@ varargs private static mixed eventGetFile(string name, string type, string paylo
         if(ret){
             write_file(tmpfile, ret,1);
             file = new(LIB_FILE, tmpfile);
-            eventWrite(file->GetBuffer(),1);
+            eventSendData(file->GetBuffer());
         }
         else { 
             eventError(FILE_NOT_FOUND);
@@ -244,7 +260,7 @@ varargs private static mixed eventGetFile(string name, string type, string paylo
         return 1;
     }
     else {
-        eventWrite(file->GetBuffer(), 1);
+        eventSendData(file->GetBuffer());
     }
 }
 
@@ -317,7 +333,6 @@ int eventRead(buffer data) {
             if(sscanf(element,"%sfilename=\"%s\"",junk1, filename) != 2)
                 sscanf(element,"%sfilename=\"%s\"%s",junk1, filename, junk2);
             if(filename && filename[1..2]==":\\"){
-                //lol mircosoft
                 filename=last_string_element(filename,"\\");
             }
         }
@@ -382,7 +397,7 @@ int eventRead(buffer data) {
             for(j=0; j<strlen(str); j++) {
                 b[j] = str[j];
             }
-            eventWrite(b, 1);
+            eventSendData(b);
 #endif
         }
         else if(login_data){
