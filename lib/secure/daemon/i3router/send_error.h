@@ -5,7 +5,9 @@ static void send_error(string mud, string user, string errcode, string errmsg, m
         //trr("Can't send error to "+mud+" because they're not connected.");
         return;
     }
-    server_log("Sending error to "+mud+": "+errmsg);
+    if(strsrch(errmsg, "Not in allow list")){
+        server_log("Sending error to "+mud+": "+errmsg);
+    }
     write_data(connected_muds[mud],({
                 "error",
                 5,

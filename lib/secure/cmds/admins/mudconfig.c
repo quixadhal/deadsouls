@@ -26,7 +26,7 @@ string array modals = antimodals + ({ "channelpipes", "fastcombat",
         "compat", "exitsbare", "nmexits", "grid", "minimap", "wizmap",
         "cgi", "dirlist", "creweb", "selectclass", "severable",
         "retain", "defaultparse", "disablereboot", "loglocal", "logremote",
-        "questrequired", "autoadvance" });
+        "questrequired", "autoadvance","guestallowed", "playerintertell" });
 string array inet_services = ({ "oob", "hftp", "ftp", "http", "rcp", "inet" });
 
 static int NotImplemented(string which);
@@ -131,6 +131,7 @@ varargs static int CompleteConfig(string file){
                 write_file(file,ret,1);
                 RELOAD_D->ReloadBaseSystem();
                 reload(LIB_CONNECT,0,1);
+                reload(BANISH_D,0,1);
                 reload(PLAYERS_D,0,1);
                 write("Command complete.");
                 return 1;
@@ -368,6 +369,9 @@ varargs static int ModIntermud(string which, string arg){
                 }
             CompleteConfig();
                 reload(INTERMUD_D,0,1);
+                reload(IMC2_D,0,1);
+                reload("/daemon/services/tell",0,1);
+                reload("/daemon/services",0,1);
                 return 1;
         }
     
@@ -400,6 +404,8 @@ varargs static int ModIntermud(string which, string arg){
                 }
             CompleteConfig();
                 reload(INTERMUD_D,0,1);
+                reload(IMC2_D,0,1);
+                reload("/daemon/services/tell",0,1);
                 return 1;
         }
     
@@ -573,6 +579,9 @@ static int ProcessModal(string which, string arg){
                 case "minimap" : which = "MINIMAP";break;
                 case "wizmap" : which = "WIZMAP";break;
                 case "grid" : which = "GRID";break;
+                case "guestallowed" : which = "GUEST_ALLOWED";break;
+                case "playerintertell" : which = "PLAYER_INTERTELL_ALLOWED";break;
+                case "guest" : which = "GUEST_ALLOWED";break;
             default : break;
         }
     foreach(string element in config){
@@ -1006,6 +1015,8 @@ string GetHelp(){
             "\nmudconfig maxidle <number of idle seconds before autoquit>"
             "\nmudconfig questrequired [ yes | no ]"
             "\nmudconfig autoadvance [ yes | no ]"
+            "\nmudconfig guestallowed [ yes | no ]"
+            "\nmudconfig playerintertell [ yes | no ]"
             "\nmudconfig ced [ yes | no ] (toggles the fullscreen editor)"
             "\nmudconfig maxip <max connections per IP>"
             "\nmudconfig pinginterval <i3 ping interval in seconds>"

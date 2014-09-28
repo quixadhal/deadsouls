@@ -881,6 +881,15 @@ void start_logon(){
     varargs static void tell_out(object from, string targname, string targmud, string msg, int reply, int emote){
         string ret = "%^BOLD%^RED%^You tell " + capitalize(targname) +
           "@" + targmud + ":%^RESET%^ " + msg;
+
+        //Check for privs to send imc tell
+        if(RESTRICTED_INTERMUD) {
+            if(!imud_privp(lower_case(from->GetKeyName()))) {
+                this_player(1)->eventPrint("You lack the power to send tells to other worlds.", MSG_CONV);
+                return;
+            }
+        }
+
         // Send outgoing tell.
         if(!reply) reply=0;
         send_packet(capitalize(from->GetKeyName()),"tell",targname,targmud,

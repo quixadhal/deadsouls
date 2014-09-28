@@ -30,7 +30,7 @@ mixed cmd(string args) {
     tmp += ({ sprintf("%:-"+(cols/2)+"s%"+(cols/2)+"s", "Level: " +
                 this_player()->GetLevel(), "Age: " +
                 ((time() - birth)/YEAR) + " years") });
-    tmp = ({ "You are " + this_player()->GetMoralityDescription()
+    tmp += ({ "You are " + this_player()->GetMoralityDescription()
             + "." });
     tmp += ({ sprintf("You were born on the %d%s day of %s, year %s.",
                 query_date(birth), ordinal(query_date(birth)),

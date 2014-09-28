@@ -7,6 +7,7 @@
 #include <function.h>
 #include <daemons.h>
 #include <message_class.h>
+#include <runtime_config.h>
 
 string global_temp_file = "";
 
@@ -828,5 +829,50 @@ string cleaned_end(string str){
     str = last_string_element(str, "/");
     str = cleaned_name(str);
     return str;
+}
+
+string *read_big_file(string str) {
+    string *arr, *ret = ({});
+    mixed tmp;
+    string stub;
+    int bigth, ender, bmax = (__LARGEST_PRINTABLE_STRING__ - 1024);
+    int chunks, rem, currchunk, smax = (get_config(__MAX_STRING_LENGTH__) - 10);
+
+    if( !str || !file_exists(str) ) return ret;
+    if((bigth = file_size(str)) < smax){
+        tmp = read_file(str);
+        ret = explode(tmp,"\n");
+        return ret;
+    }
+    chunks = bigth / bmax;
+    rem = bigth % bmax;
+    if(rem) chunks++;
+    while(chunks){
+        chunks--;
+        if(chunks){
+            tmp = read_bytes(str, currchunk, bmax);           
+            currchunk += bmax;
+        }
+        if(rem && !chunks){
+            tmp = read_bytes(str, currchunk, rem);
+            currchunk += rem;
+        }
+        if(tmp[<1..] == "\n") ender = 1;
+        else ender = 0;
+        arr = explode(tmp, "\n");
+        if(sizeof(stub)) {
+            arr[0] = stub+arr[0];
+            stub = "";
+        }
+        if(ender){
+            ret += arr;
+        }
+        else {
+            stub = arr[<1..][0];
+            ret += arr[0..<2];
+        }
+
+    }
+    return ret;
 }
 

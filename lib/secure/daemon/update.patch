@@ -129,11 +129,12 @@ varargs static void eventUpdate(object whom){
     }
 
     if(sizeof(config_file)){
-        if(!grepp(config_file, "MIN_PERF"))
-            config_file = append_line(config_file,"#define MAX_USERS",
-                    "#define MIN_PERF                 400");
-        else config_file = replace_line(read_file(CONFIG_H),
-            ({"#define MIN_PERF"}),"#define MIN_PERF                 400");
+        if(!grepp(config_file, "GUEST_ALLOWED"))
+            config_file = append_line(config_file,"#define CED_DISABLED",
+                    "#define GUEST_ALLOWED            1");
+        if(!grepp(config_file, "PLAYER_INTERTELL_ALLOWED"))
+            config_file = append_line(config_file,"#define CED_DISABLED",
+                    "#define PLAYER_INTERTELL_ALLOWED 1");
         write_file(CONFIG_H, config_file+"\n", 1);
     }
 

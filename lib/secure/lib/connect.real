@@ -22,6 +22,10 @@
 #define __ANSI_SUBSTITUTE__ 0x1e
 #endif
 
+#ifndef GUEST_ALLOWED
+#define GUEST_ALLOWED 1
+#endif
+
 inherit LIB_PAGER;
 #include <mssp.h>
 
@@ -176,6 +180,11 @@ static void InputName(string namen, string kill_me) {
         toomany = 1;
     }
 
+    if(lower_case(name) == "guest" && !GUEST_ALLOWED){
+        name = "";
+        receive("\nThe guest account is disabled.\n"); 
+    }
+
     if( !name || name == "" ) {
         if( kill_me ) {
             if(!Moved) receive("\nPerhaps try another time then?\n");
@@ -191,6 +200,7 @@ static void InputName(string namen, string kill_me) {
             return;
         }
     }
+
     if(grepp(name, "MSSP-REQUEST")){
         log_file("mssp",timestamp() + " " + my_ip + extra + "\n");
         receive(mssp_reply());

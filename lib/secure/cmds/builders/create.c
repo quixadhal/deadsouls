@@ -56,6 +56,7 @@ string GetHelp() {
             "        create table <FILE>\n"
             "        create book <FILE>\n"
             "        create door <DIRECTION> <FILE>\n"
+            "        create exit <DIRECTION> <FILE>\n"
             "\nThis command makes a generic copy of the type of thing "
             "you specify. In the case of a room, the room you are in is "
             "copied into the direction you specify. In the case of other "

@@ -1,12 +1,18 @@
 HTTP/1.1 200 OK
-Date: Sat, 20 Jul 2013 19:48:33 GMT
-Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.6 with Suhosin-Patch proxy_html/3.0.0 mod_ssl/2.2.9 OpenSSL/0.9.8g
-Last-Modified: Sat, 10 Mar 2012 02:29:26 GMT
-ETag: "d928d-1e6a0-4bada4723ad80"
+Date: Sun, 21 Sep 2014 19:48:28 GMT
+Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.6 with Suhosin-Patch proxy_html/3.0.0
+Last-Modified: Sun, 21 Jul 2013 14:55:40 GMT
+ETag: "d928d-1e77c-4e206c0d97300"
 Accept-Ranges: bytes
-Content-Length: 124576
+Content-Length: 124796
 Connection: close
 Content-Type: text/plain
+
+---- 3.8 ---
+- Released 2013-07-20
+- Added some checks to RACES_D for zeroed arrays/mappings.
+- Updated IMC2 with Davion/Kiasyn's latest MudBytes IP.
+- Disconnected the campus and town domains, applied new coordinates.
 
 ---- 3.7a7 ---
 - Released 2012-03-09

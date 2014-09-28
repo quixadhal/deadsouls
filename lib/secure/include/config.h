@@ -64,14 +64,9 @@
 #define CARRIAGE_RETURN          "\r"
 #define OLD_STYLE_PLURALS        1
 #define NM_STYLE_EXITS           0
-#define WEB_SOURCE_IP            "204.209.44.12"
-#define WEB_SOURCE_NAME          "lpmuds.net"
+#define WEB_SOURCE_IP            "97.107.133.86"
+#define WEB_SOURCE_NAME          "dead-souls.net"
 #define DESTRUCT_LOGGING         0
-#define ROUTER_NAME              "Alpha"
-#define IRN_PASSWORD             "Alpha"
-#define IRN_PASSWORD1            "Bravo"
-#define IRN_PASSWORD2            "Charlie"
-#define IRN_PASSWORD3            "Delta"
 #define ROUTER_TESTING           1
 #define SEFUN_PLURALIZE          0
 #define LOG_REMOTE_CHANS         0
@@ -94,5 +89,7 @@
 #define GRID                     1
 #define ENABLE_INSTANCES         0
 #define CED_DISABLED             1
+#define PLAYER_INTERTELL_ALLOWED 0
+#define GUEST_ALLOWED            1
 
 #endif /* s_config_h */

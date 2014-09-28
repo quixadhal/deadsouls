@@ -5,7 +5,10 @@ varargs void broadcast_chanlist(string channame, string thismud){
     string name; // channel name in first loop, then mud name in later loop
     string *mudses = keys(connected_muds);
     mapping out=([]); // only used if whole chanlist is sent
-    if(thismud && thismud != "") mudses = ({ thismud });
+    if(thismud && thismud != "" && connected_muds[thismud]) mudses = ({ thismud });
+    trr("<><><><><><><><><><>");
+    trr("broadcasting chanlist to "+identify(mudses));
+    trr("<><><><><><><><><><>");
 #ifdef SEND_WHOLE_CHANLIST
     //trr("broadcasting chanlist to let them know about "+channame);
     foreach(name in keys(channels)){

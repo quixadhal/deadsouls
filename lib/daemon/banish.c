@@ -9,6 +9,15 @@
 #include <objects.h>
 #include <daemons.h> 
 #include <save.h> 
+#include <dirs.h> 
+
+#ifndef GUEST_ALLOWED
+#define GUEST_ALLOWED 1
+#endif
+
+#ifndef CFG_IP_BLACKLIST
+#define CFG_IP_BLACKLIST DIR_SECURE_CFG "/ip_blacklist.cfg"
+#endif
 
 inherit LIB_DAEMON;
 
@@ -48,6 +57,7 @@ int GetGuest(string str);
 int valid_name(string str);
 int eventConnect(string nom, string ip);
 static private int match_ip(string ip, string *sites);
+void setup_blacklist();
 
 void create() { 
     daemon::create();
@@ -66,7 +76,17 @@ void create() {
     }
     if(!__TmpBanish) __TmpBanish = ([]);
     clean_temp_sites();
+    setup_blacklist();
 } 
+
+void setup_blacklist(){
+    if(file_exists(CFG_IP_BLACKLIST)){
+        __Sites += read_big_file(CFG_IP_BLACKLIST);
+        __Sites = distinct_array(__Sites);
+    }
+    //tc("Number of banished ip's: "+sizeof(__Sites));
+    save_banish();
+}
 
 static private int valid_access(object ob) { 
     return master()->valid_apply( ({ "ASSIST" }) );
@@ -275,6 +295,7 @@ int valid_name(string str) {
 
     if(base_name(previous_object()) != LIB_CONNECT ) return 0;
     if(member_array(str, __Names) != -1) return 0; 
+    if(!GUEST_ALLOWED && lower_case(str) == "guest") return 0;
     i = sizeof(__IllegalSubStrings);
     while(i--) if(strsrch(str, __IllegalSubStrings[i]) != -1) return 0;
     if((x = strlen(str)) > MAX_USER_NAME_LENGTH) return 0; 

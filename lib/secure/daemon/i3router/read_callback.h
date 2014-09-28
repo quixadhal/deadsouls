@@ -2,6 +2,14 @@ string *blacklisted_muds = ({});
 static string *graylisted_muds = ({});
 static mapping packet_counter = ([]); 
 
+void setup_blacklist(){
+    if(file_exists(ROUTER_BLACKLIST)){
+        blacklisted_muds += read_big_file(ROUTER_BLACKLIST);
+        blacklisted_muds = singular_array(blacklisted_muds);
+        //tc(identify(sizeof(blacklisted_muds)),"red");
+    }
+}
+
 void read_callback(mixed fd, mixed info){
     mixed tmp;
     // This is called when messages come in from a MUD.

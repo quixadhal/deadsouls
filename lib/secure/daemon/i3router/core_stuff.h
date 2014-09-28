@@ -1,6 +1,9 @@
 #ifndef IMC2_SERVER_ENABLED
 #define IMC2_SERVER_ENABLED 0
 #endif
+#ifndef ROUTER_NAME
+#define ROUTER_NAME              "Alpha"
+#endif
 
 #include NETWORK_H
 #include <daemons.h>
@@ -65,8 +68,9 @@ static void create(){
     this_object()->build_ok_ips();
     set_heart_beat(10);
     if(file_exists(ROUTER_BLACKLIST)){
-        blacklisted_muds += explode(read_file(ROUTER_BLACKLIST),"\n");
+        blacklisted_muds += read_big_file(ROUTER_BLACKLIST);
         blacklisted_muds = singular_array(blacklisted_muds);
+        //tc(identify(sizeof(blacklisted_muds)));
     }
     this_object()->check_blacklist();
     trr("Current info:\n"+this_object()->get_info(1));
@@ -89,7 +93,8 @@ void heart_beat(){
         this_object()->clear_discs();
         this_object()->check_blacklist();
         if(imc2d){
-            this_object()->clear_discs(keys(imc2d->query_mudinfo()));
+            mapping imcmuds = (imc2d->query_mudinfo() || ([]) );
+            if(sizeof(imcmuds)) this_object()->clear_discs(keys(imcmuds));
         }
     }
     if(heart_count > 90000){
