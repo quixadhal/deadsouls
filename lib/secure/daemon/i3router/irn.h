@@ -1,6 +1,7 @@
 #include NETWORK_H
 #include <save.h>
 #include <daemons.h>
+#include <secrets.h>
 
 static string my_name = ROUTER_NAME;
 static string my_password = IRN_PASSWORD;

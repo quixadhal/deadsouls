@@ -20,8 +20,7 @@ static void create() {
             "A bargaining ability which allows people to compare the "
             "relative worth of two items.  The more experienced you are "
             "at bartering, the better chance you have of correctly judging "
-            "the more valuable item.\n\n"
-            "See help: item commands");
+            "the more valuable item.\n\n");
 }
 
 mixed can_judge_obj_to_obj() {

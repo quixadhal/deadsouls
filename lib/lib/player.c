@@ -440,8 +440,8 @@ string *SetMuffed(string *muffed){
 string *AddMuffed(string muffed){
     string tmpstr;
     if(!muffed || muffed == "" || !sizeof(muffed)) return Muffed;
-    if(grepp(muffed,"@")){
-        tmpstr = INTERMUD_D->GetMudName(muffed[1..sizeof(muffed)-1]);
+    if(muffed[0..0] == "@"){
+        tmpstr = INTERMUD_D->GetMudName(muffed[1..]);
     }
     if(sizeof(tmpstr)) muffed = tmpstr;
     muffed = lower_case(muffed);

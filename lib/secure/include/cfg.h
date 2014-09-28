@@ -9,6 +9,7 @@
 #define CFG_FLASH_POLICY        DIR_SECURE_CFG "/flashpolicy.cfg"
 #define CFG_GROUPS		DIR_SECURE_CFG "/groups.cfg"
 #define CFG_IP_UNRESTRICT	DIR_SECURE_CFG "/ip_unrestrict.cfg"
+#define CFG_IP_BLACKLIST        DIR_SECURE_CFG "/ip_blacklist.cfg"
 #define CFG_MONTHS              DIR_CFG "/months.cfg"
 #define CFG_MOONS               DIR_CFG "/moons.cfg"
 #define CFG_PRELOAD		DIR_SECURE_CFG "/preload.cfg"

@@ -1,4 +1,4 @@
-#define PATCH_LEVEL_PREFIX "v2.23-ds02"
+#define PATCH_LEVEL_PREFIX "v2.23-ds03"
 #ifdef __CYGWIN__
 #define PATCH_LEVEL_SUFFIX "c"
 #else

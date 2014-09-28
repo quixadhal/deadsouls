@@ -29,7 +29,7 @@ static void create(){
     ::create();
     SetKeyName("scout suit");
     SetId(({"suit", "armor"}));
-    SetAdjectives(({"scout","suit of","powered","formidable", "formidable looking"}));
+    SetAdjectives(({"poleepkwa","scout","suit of","powered","formidable", "formidable looking"}));
     SetShort("a suit of poleepkwa scout armor");
     SetLong((:LongDesc:));
     SetMass(500);

@@ -87,7 +87,7 @@ else
 echo "No MinGW config needed."
 fi
 
-if uname -a | grep "204\.209\.44" | grep -v grep ; then
+if /sbin/ifconfig -a | grep "204\.209\.44" | grep -v grep ; then
 echo "Wolfpaw detected."
 echo "Running Wolfpaw-specific modification."
 echo "When this is done, please enter the following command line:"

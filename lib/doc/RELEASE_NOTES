@@ -1,3 +1,15 @@
+---- 3.8.2 ---
+- Released 2014-09-28
+- FluffOS driver now 2.23-ds03, improving Wolfpaw detection.
+- Added sefun: read_big_file()
+- Updated i3 router code.
+- Added GUEST_ALLOWED to config.h and "guestallowed" token to mudconfig.
+- Added PLAYER_INTERTELL_ALLOWED to config.h and "playerintertell"
+  token to mudconfig.
+- Added Quixadhal's fix to outgoing intermud tells.
+- Added a block of incoming intermud tells to players without intermud privs.
+- Miscellaneous minor and typo fixes.
+
 ---- 3.8.1 ---
 - Released 2013-08-07
 - FluffOS driver now 2.23-ds02, including fix for socket crasher.

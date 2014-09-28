@@ -320,6 +320,7 @@ varargs string *SetList(){
         router_list = ({ ({ tmp, tmp_ip+" "+tmp_port }) });
     }
     server_log("Setting router list to: "+identify(router_list));
+    this_object()->setup_blacklist();
     SaveObject(SAVE_ROUTER);
     return router_list;
 }
@@ -484,6 +485,8 @@ varargs void clean_ghosts(int force){
     mixed *legit_socks = keys(this_object()->query_socks());
     legit_socks += keys(this_object()->query_irn_sockets());
 
+    tc("clean_ghosts("+force+")");
+
     if(!rsockd && !ssockd) return;
 
     tmp=sizeof(socket_status())-1;
@@ -498,6 +501,7 @@ varargs void clean_ghosts(int force){
                 // they're the reconnecting kind.
                 if(member_array(ip, blacklisted_muds) != -1) continue;
             }                
+            tc("closing: "+i);
             this_object()->close_connection(i);
         }
     }
@@ -514,7 +518,7 @@ void clean_chans(){
                 }
             }
         }
-        else trr("huh? not an array?");
+        //else trr("huh? not an array?");
     }
     foreach(mixed key, mixed val in channels){
         mixed *tmp_chan = ({});
@@ -554,7 +558,7 @@ varargs void clear_discs(mixed arg){
             object imc2d = find_object(IMC2_SERVER_D);
             mixed data;
             gtargets = ([]);
-            //tc("FWAAAHAHAHAH: "+mudname);
+            tc("NOT CONNECTED?: "+mudname);
             if(ssock && imc2d){
                 mixed tmparr = keys(ssock->query_socks());
                 //tc("baa");
@@ -665,12 +669,13 @@ varargs void ReceiveList(mixed data, string type, string who){
     else if(type == "chanlist"){
         if(data["listening"] && sizeof(data["listening"]) && mapp(data["listening"])){
             foreach(mixed key, mixed val in data["listening"]){
-                trr("listening update: "+key+" is "+identify(val)+" val is a "+typeof(val),"yellow");
+                //trr("listening update: "+key+" is "+identify(val)+" val is a "+typeof(val),"yellow");
             }
         }
         if(data["channels"] && sizeof(data["channels"]) && mapp(data["channels"])){
             foreach(mixed key, mixed val in data["channels"]){
                 string ownermud = data["channels"][key][1];
+                string comp1, comp2;
                 if(!key || !val || !stringp(key)){
                     map_delete(channels, key);
                     map_delete(listening, key);
@@ -681,10 +686,18 @@ varargs void ReceiveList(mixed data, string type, string who){
                 if(val == -1) map_delete(listening, key);
                 else {
                     val[2] = distinct_array(val[2]);
+                    comp1 = identify( sort_array(val[2], 1));
+                    comp2 = identify( sort_array(distinct_array(channels[key]), 1));
+                    trr("*************");
+                    trr("comp1: "+comp1);
+                    trr("comp2: "+comp2);
+                    trr("*************");
                     channels[key] = val;
                 }
-                broadcast_chanlist(key);
+                if(comp1 != comp2) broadcast_chanlist(key);
+                trr("OOOOOOOOOOOOO");
                 trr("chan update: "+key+" is "+identify(val)+" val is a "+typeof(val),"green");
+                trr("OOOOOOOOOOOOO");
             }
         }
     }

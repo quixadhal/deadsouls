@@ -23,7 +23,9 @@ static void create() {
         "west" : "/domains/town/room/postoffice.c",
       ]) );
     if(!strsrch(mud_name(), "Dead Souls")){
-        AddExit("north", "/domains/fort/room/f_road4");
+        if(directory_exists("/domains/fort")){
+            AddExit("north", "/domains/fort/room/f_road4");
+        }
     }
     AddTerrainType(T_ROAD);
     AddItem(new("/domains/town/obj/lamp"));
