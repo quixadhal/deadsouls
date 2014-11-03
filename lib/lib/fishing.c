@@ -104,15 +104,15 @@ void heart_beat(){
     }
 }
 
-    mixed CanCast(object who, string where){
-        if( this_player()->GetInCombat() ) 
-            return "You are too busy to fish!";
-        if( Fishing[this_player()->GetKeyName()] )
-            return "You are already fishing!";
-        if( GetMaxFishing() <= sizeof(Fishing) ) 
-            return "It is too crowded here to fish.";
-        return 1;
-    }
+mixed CanCast(object who, string where){
+    if( this_player()->GetInCombat() ) 
+        return "You are too busy to fish!";
+    if( Fishing[this_player()->GetKeyName()] )
+        return "You are already fishing!";
+    if( GetMaxFishing() <= sizeof(Fishing) ) 
+        return "It is too crowded here to fish.";
+    return 1;
+}
 
 mixed CanStop(object who, string str){
     if( str != "fishing" ) return 0;

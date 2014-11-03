@@ -11,20 +11,20 @@ string get_female(int lev);
 string previous_title(object tp);
 int get_cost(string which, int lev);
 
-    int CanReceive(object ob) {
-        if(!VOTING_D->is_time_to_vote())
-            return ::CanReceive(ob);
-        if(creatorp(this_player()) || this_player()->query_level() < 2)
-            return ::CanReceive(ob);
-        if(VOTING_D->query_voted(this_player()->query_name(),
-                    this_player()->query_class()))
-            return ::CanReceive(ob);
-        else {
-            message("my_action", "You have not yet voted for your class leader.  Please do so now.", this_player());
-            call_out("move_me", 5, this_player());
-        }
+int CanReceive(object ob) {
+    if(!VOTING_D->is_time_to_vote())
         return ::CanReceive(ob);
+    if(creatorp(this_player()) || this_player()->query_level() < 2)
+        return ::CanReceive(ob);
+    if(VOTING_D->query_voted(this_player()->query_name(),
+                this_player()->query_class()))
+        return ::CanReceive(ob);
+    else {
+        message("my_action", "You have not yet voted for your class leader.  Please do so now.", this_player());
+        call_out("move_me", 5, this_player());
     }
+    return ::CanReceive(ob);
+}
 
 void move_me(object who) {
     who->eventMoveLiving("/domains/Praxis/"+who->query_class()+"_vote");

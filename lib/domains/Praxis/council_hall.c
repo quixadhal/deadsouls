@@ -62,10 +62,10 @@ int leave() {
             sizeof(this_player()->query_attackers()) ) {
         write("You can not exit while doing something else.");
         return 1; }
-        if (creatorp(this_player()))
-            this_player()->eventMoveLiving("/domains/Praxis/adv_inner", "leave");
-        else
-            this_player()->eventMoveLiving("/domains/Praxis/"+this_player()->query_class()+
-                    "_hall", "leave");
-        return 1;
+    if (creatorp(this_player()))
+        this_player()->eventMoveLiving("/domains/Praxis/adv_inner", "leave");
+    else
+        this_player()->eventMoveLiving("/domains/Praxis/"+this_player()->query_class()+
+                "_hall", "leave");
+    return 1;
 }

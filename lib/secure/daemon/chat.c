@@ -155,7 +155,7 @@ static void Setup(){
             }
             if(sscanf(foo, "%s:%s", svr, cnl) == 2){
                 if(member_array(cnl, local_chans) == -1 && !localchans[cnl] &&
-                  member_array(cnl, rchan3) == -1){
+                        member_array(cnl, rchan3) == -1){
                     localchans[foo] = cnl;
                     remotechans[cnl] = foo;
                 }
@@ -295,9 +295,9 @@ string *eventRegisterMember(string *chans) {
             case "cre": case "intercre": case "intergossip":
                 if( !creatorp(ob) ) break;
             default:
-            if( !Channels[channel]) Channels[channel] = ({});
-            Channels[channel] = distinct_array(Channels[channel] + ({ ob }));
-            tmp += ({ channel });
+                if( !Channels[channel]) Channels[channel] = ({});
+                Channels[channel] = distinct_array(Channels[channel] + ({ ob }));
+                tmp += ({ channel });
         }
     }
     return tmp;

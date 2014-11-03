@@ -17,11 +17,11 @@ static void create() {
             "See also: dest, resurrect");
 }
 
-    mixed can_zap_liv(string str) { 
-        if(!creatorp(this_player()))
-            return "This command is only available to creators.";
-        else return 1;
-    }
+mixed can_zap_liv(string str) { 
+    if(!creatorp(this_player()))
+        return "This command is only available to creators.";
+    else return 1;
+}
 
 mixed do_zap_liv(object ob){
     string name;

@@ -98,21 +98,21 @@ mixed direct_jump_word_obj(string prep, object target, string id){
     switch(prep){
         case "in": case "into":
             type = JUMP_INTO;
-        break;
+            break;
         case "from": case "out": case "off":
             type = JUMP_FROM;
-        break;
+            break;
         case "through": case "across":
             type = JUMP_THROUGH;
-        break;
+            break;
         case "over":
             type = JUMP_OVER;
-        break;
+            break;
         case "on": case "onto":
             type = JUMP_ON;
-        break;
+            break;
         default:
-        return 0;
+            return 0;
     }
     id = remove_article(lower_case(id));
     return CanJump(this_player(), id, type);    
@@ -127,7 +127,7 @@ varargs mixed direct_jump_word_word_obj(mixed args...){
         case "out of": case "off of":
             type = JUMP_FROM;
         default:
-        return 0;
+            return 0;
     }
     return CanJump(this_player(), id, type);
 }

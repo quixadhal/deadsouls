@@ -302,5 +302,6 @@ string new_savename(string name);
 string old_savename(string name);
 string comma(mixed x);
 string *read_big_file(string str);
+int valid_event(object dester, object dested);
 
 #endif /* l_sefun_h */

@@ -81,22 +81,22 @@ void write_callback( int fd ){
     sendHTTPGet();
 }
 
-    void close_callback( int fd ){
-        if( status == SOCK_CONNECTED )
-        {
-            // Process HTML here
+void close_callback( int fd ){
+    if( status == SOCK_CONNECTED )
+    {
+        // Process HTML here
 #ifdef _DEBUG
-            player->eventPrint("dsversion: Connection closed by host.");
+        player->eventPrint("dsversion: Connection closed by host.");
 #endif
-            ProcessHTTPResult();
-        }
-        if( status == SOCK_CONNECTING )
-        {       
-            player->eventPrint("dsversion: Connection attempt failed.");
-        }
-        socket_close( fd ) ;
-        status = SOCK_DISCONNECTED;
+        ProcessHTTPResult();
     }
+    if( status == SOCK_CONNECTING )
+    {       
+        player->eventPrint("dsversion: Connection attempt failed.");
+    }
+    socket_close( fd ) ;
+    status = SOCK_DISCONNECTED;
+}
 
 void sendHTTPGet()
 {

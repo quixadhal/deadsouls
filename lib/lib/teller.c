@@ -69,11 +69,11 @@ string GetBankName(){ return BankName; }
 
 string GetLocalCurrency(){ return LocalCurrency; }
 
-    mixed CanBank(object who){
-        if( !who->GetAccountInfo( GetBankName() ) )
-            return "You must create an account with "+GetBankName()+" first.";
-        return 1;
-    }
+mixed CanBank(object who){
+    if( !who->GetAccountInfo( GetBankName() ) )
+        return "You must create an account with "+GetBankName()+" first.";
+    return 1;
+}
 
 int AddSurcharge(object who, string currency, int amount){
     int charge;
@@ -290,76 +290,76 @@ int cmdParse(object who, string cmd, string str, mixed args...){
     switch(cmd){
         case "balance" :
             return eventBalance(who);
-        break;
+            break;
         case "deposit" : 
             if( !str ){
                 eventForce("speak How much of what?");
                 return 1;
             }
-        if(str == "all"){
-            if(!sizeof(this_player()->GetCurrencies())){
-                who->eventPrint("You have no money to deposit.");
+            if(str == "all"){
+                if(!sizeof(this_player()->GetCurrencies())){
+                    who->eventPrint("You have no money to deposit.");
+                    return 1;
+                }
+                foreach(string dinero in this_player()->GetCurrencies()){
+                    if(this_player()->GetCurrency(dinero) > 0)
+                        eventDeposit(who, dinero, this_player()->GetCurrency(dinero));
+                }
                 return 1;
             }
-            foreach(string dinero in this_player()->GetCurrencies()){
-                if(this_player()->GetCurrency(dinero) > 0)
-                    eventDeposit(who, dinero, this_player()->GetCurrency(dinero));
+            sscanf(str, "%d %s", x, s1);
+            if( member_array(s1, Currencies) < 0 ){
+                who->eventPrint("That's not a valid currency.");
+                return 1;
             }
-            return 1;
-        }
-        sscanf(str, "%d %s", x, s1);
-        if( member_array(s1, Currencies) < 0 ){
-            who->eventPrint("That's not a valid currency.");
-            return 1;
-        }
-        return eventDeposit(who, s1, x);
-        break;
+            return eventDeposit(who, s1, x);
+            break;
         case "withdraw" :
             if( !str ){
                 eventForce("speak How much of what?");
                 return 1;
             }
-        if(str == "all"){
-            if(this_player()->GetGender() == "female") honorific = "ma'am";
-            else honorific = "sir";
-            eventForce("speak I'm sorry, "+honorific+", but withdrawals must be specified explicitly in terms of currency type and amount.");
-            return 1;
-        }
-        sscanf(str, "%d %s", x, s1);
-        if( member_array(s1, Currencies) < 0 ){
-            if(!s1) who->eventPrint("Please specify a currency.");
-            else who->eventPrint(s1 + " is not supported here!");
-            return 1;
-        }
-        return eventWithdraw(who, s1, x);
-        break;
+            if(str == "all"){
+                if(this_player()->GetGender() == "female") honorific = "ma'am";
+                else honorific = "sir";
+                eventForce("speak I'm sorry, "+honorific+", but withdrawals must be specified explicitly in terms of currency type and amount.");
+                return 1;
+            }
+            sscanf(str, "%d %s", x, s1);
+            if( member_array(s1, Currencies) < 0 ){
+                if(!s1) who->eventPrint("Please specify a currency.");
+                else who->eventPrint(s1 + " is not supported here!");
+                return 1;
+            }
+            return eventWithdraw(who, s1, x);
+            break;
         case "exchange" :
             if( !str ){
                 eventForce("speak Exchange what for what?");
                 return 1;
             }
-        if(sscanf(str, "%d %s for %s", x, s1, s2) < 3){
-            x = -1;
-            sscanf(str, "%s for %s", s1, s2);
-        }        
-        if(s1 == "all"){
-            int ret = 0;
-            foreach(string curr in (who->GetCurrencies() - ({ s2 }))){
-                if(who->GetCurrency(curr) < 1) continue;
-                ret += eventExchange(who, -1, curr, s2);
+            if(sscanf(str, "%d %s for %s", x, s1, s2) < 3){
+                x = -1;
+                sscanf(str, "%s for %s", s1, s2);
+            }        
+            if(s1 == "all"){
+                int ret = 0;
+                foreach(string curr in (who->GetCurrencies() - ({ s2 }))){
+                    if(who->GetCurrency(curr) < 1) continue;
+                    ret += eventExchange(who, -1, curr, s2);
+                }
+                return ret;
             }
-        return ret;
-        }
-        else return eventExchange(who, x, s1, s2);
-        break;
+            else return eventExchange(who, x, s1, s2);
+            break;
         case "account" :
             return eventOpenAccount(who);
-        break;
+            break;
         default:
-        eventForce("speak " + who->GetName() + ", I do not "
-                "understand what you want.");
-        eventForce("whisper to " + who->GetKeyName() + " Try "
-                "\"help banking\" if you are confused.");
+            eventForce("speak " + who->GetName() + ", I do not "
+                    "understand what you want.");
+            eventForce("whisper to " + who->GetKeyName() + " Try "
+                    "\"help banking\" if you are confused.");
 
     }
     return 1;

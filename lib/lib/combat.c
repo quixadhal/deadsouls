@@ -312,12 +312,12 @@ int GetLevel(){
     return classes::GetLevel();
 }
 
-    int GetInCombat(){
-        return sizeof(filter(GetEnemies(),
-                    (: $1 && ( (environment($1) == environment()) 
-                               || environment() == $1 || environment($1) ==
-                               this_object()) :)));
-    }
+int GetInCombat(){
+    return sizeof(filter(GetEnemies(),
+                (: $1 && ( (environment($1) == environment()) 
+                           || environment() == $1 || environment($1) ==
+                           this_object()) :)));
+}
 
 int GetBaseStatLevel(string stat){
     return race::GetBaseStatLevel(stat);
@@ -609,7 +609,9 @@ int eventExecuteAttack(mixed target){
     else if( !target->eventPreAttack(this_object()) ){
         return 0;
     }
-    this_object()->AddStaminaPoints(-1);
+    if(this_object()->GetClass() != "fighter"){
+        this_object()->AddStaminaPoints(-1);
+    }  
     switch(type){
         case ROUND_UNDEFINED: case ROUND_EXTERNAL:
             if( functionp(f) && !(functionp(f) & FP_OWNER_DESTED) ){

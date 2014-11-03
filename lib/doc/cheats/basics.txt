@@ -1,0 +1,113 @@
+The first thing to do is to pick a decent character. The best
+all-around choice for a beginner is a human mage, so for the
+purposes of these cheat sheets, pick human when you create your character.
+
+Once your character is created, begin the game by typing: enter town
+
+You should now be in the main village of the game, where you can find
+shops, pubs, a bank, and most everything you'll need. Get familiar here
+with the basic commands:
+
+look
+look at tower
+go north
+go south
+smile
+
+You can also type them in a shortened way:
+
+l
+l tower
+n
+s
+smile
+
+
+Now, learn a little about yourself. Type: 
+
+score
+stat
+
+(Note that you will have to hit <enter> to get to the second page of the 
+stat command.)
+
+These commands tell you some things about yourself, like how much food you've
+eaten, what skills you have and how good you are at them, and other 
+attributes, like how strong you are how smart you are, etc.
+
+
+In the game you will need to do some fighting against monsters, and these
+pieces of information will help you decide the best way to fight which 
+enemies. For now, since you've chosen human, you are probably smart but
+not very strong. Let's try to fix that, because fights usually go
+better if you are strong.
+
+Every new player has 15 customization points when they join (this only
+happens once), so make yourself stronger by adding customization
+points to your strength, for example:
+
+customize strength 5
+
+If your intelligence is below 50, you definitely need to increase it too,
+if you're going to be a mage. You usually want a strength of at least 30 and
+an intelligence above 50, preferably above 60, for casting spells.
+
+Ok, next, let's get you equipped for exploring. If you're lucky, someone has
+left stuff in the church bin. Go to the church:
+
+go west, go north
+
+From this point, directions will be given like this:
+
+1w, 1n
+
+Meaning, in this example, go west once, go north once.
+
+Now:
+
+look in bin
+
+Hopefully there is a bunch of stuff in there but if someone else got 
+there first, you will need to get equipped on your own, without the
+church's charity. For the purpose of this guide, we'll assume you didn't
+find anything there.
+
+Let's get started with your first quest: Cave Explorer I
+
+Go from the church to the Adventurers' Guild:
+
+1s, 2e, 1s
+
+This is where you go to get info on questing and other stuff. There is
+a charity bin here too, check it for helpful items. The important thing
+to do here, though, is:
+
+read list
+
+This tells you the list of quests available. Did you see Cave Explorer I?
+We're going to go solve that one right now! 
+
+1n, 5w, 26n, enter cave
+
+You'll notice that you walked through a big forest just then. Don't try
+to explore the forest yet, you could get lost. Just go straight north,
+and go fast, because if you accidentally run into an orc, you do *not*
+want to hang around and wait for him to start hitting you.
+
+If you goof up here and do get killed by an orc, well, we might as well talk
+about death now. Death takes away a few of your experience points, which
+isn't good because you need them to go up in levels. Definitely avoid
+death. You can avoid losing those experience points by being resurrected,
+but that takes getting the help of another player and we can discuss that
+another time.
+
+For now, just know that if you get killed, you need to: regenerate
+And you will rematerialize in the start room.
+
+Anyway, hopefully you did not die and you are now inside the secret cave
+in the forest, and you have completed your very first quest. That was
+easy, right? You might even have automatically advanced a level or
+two. Congratulations! The next quest will be harder, and it is the Orc
+Slayer quest.
+
+

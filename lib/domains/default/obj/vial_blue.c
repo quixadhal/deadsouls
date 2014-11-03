@@ -34,17 +34,24 @@ varargs mixed eventInstall(object what, object where, int auto){
 
 varargs mixed eventUninstall(object what, mixed auto){
     int success;
-    object env = environment(this_object());
+    object contenv, env = environment(this_object());
     if(!env || base_name(env) != "/domains/default/obj/generator"){
         write("It's not installed.");
         return 0;
     }
-    if(!environment(env) || environment(env) != this_player() ||
-            !environment(this_player()) || 
-            environment(env) !=  environment(this_player())){
+
+    if(!env || !environment(env) || env == this_player()){
+        write("That doesn't seem to be installed anywhere.");
+        return 0;
+    }
+
+    contenv = environment(env);
+
+    if(contenv != this_player() && contenv != environment(this_player())){
         write("That's not yours to uninstall.");
         return 0;
     }
+
     success = this_object()->eventMove(this_player());
     if(!success){
         write("You fail to uninstall it.");

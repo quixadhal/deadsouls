@@ -29,10 +29,10 @@ void reset() {
         new("/domains/Praxis/obj/mon/horace")->move(this_object());
 }
 
-    string shop_long(string str) {
-        if(query_night()) 
-            return "Horace's is now closed.";
-    }
+string shop_long(string str) {
+    if(query_night()) 
+        return "Horace's is now closed.";
+}
 
 void shop_closing(string str) {
     object ob;

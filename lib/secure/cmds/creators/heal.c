@@ -23,6 +23,10 @@ mixed cmd(string args) {
         write("That being is unavailable."); 
         return 1;
     }
+    if((who && who->GetGhost()) ) {
+        write("You can't heal the dead.");
+        return 1;
+    }
     if(!self){
         previous_object()->eventPrint("You heal " + who->GetName() + ".");
         who->eventPrint(previous_object()->GetCapName() + " heals you.");

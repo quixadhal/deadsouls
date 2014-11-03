@@ -262,19 +262,19 @@ string pluralize(mixed single) {
         switch(tmp) {
             case "ch": case "sh":
                 ret = sprintf("%ses", clean_str);
-            break;
+                break;
             case "ff": case "fe":
                 ret = sprintf("%sves", clean_str[0..x-3]);
-            break;
+                break;
             case "us":
                 ret = sprintf("%si", clean_str[0..x-3]);
-            break;
+                break;
             case "um":
                 ret = sprintf("%sa", clean_str[0..x-3]);
-            break;
+                break;
             case "ef":
                 ret = sprintf("%ss", clean_str);
-            break;
+                break;
         }
     }
 
@@ -282,16 +282,16 @@ string pluralize(mixed single) {
     switch(tmp) {
         case "o": case "x": case "s":
             ret = sprintf("%ses", clean_str);
-        break;
+            break;
         case "f":
             ret = sprintf("%sves", clean_str[0..x-2]);
-        break;
+            break;
         case "y":
             if(member_array(clean_str[x-2..x-2],VOWELS)!=-1)
                 ret = sprintf("%ss",clean_str);
             else
                 ret = sprintf("%sies", clean_str[0..x-2]);
-        break;
+            break;
     }
     if(sizeof(ret)){
         if(reset){

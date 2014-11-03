@@ -56,8 +56,8 @@ int CompleteQuest(object ob){
     if(!ob->GetQuest("Orc Slayer Quest")){
         ob->AddQuest("the Orc Slayer","Orc Slayer Quest");
         eventForce("say You have solved the Orc Slayer Quest. Congratulations!");
-        eventForce("say I hereby award you 10 quest points, and 2000 experience points!");
-        ob->AddQuestPoints(10);
+        eventForce("say I hereby award you 7 quest points, and 2000 experience points!");
+        ob->AddQuestPoints(7);
         ob->AddExperiencePoints(2000);
         if(sword) sword->eventDestruct();
         reload("/domains/town/room/valley",0,1);

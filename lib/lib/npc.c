@@ -238,6 +238,7 @@ int eventCompleteMove(mixed dest){
 
 int eventDestruct(){
     mixed array worn = ({});
+    if(!valid_event(previous_object(), this_object())) return 0;
     if(room_environment() && room_environment()->GetPersistent()){
         if(!Equipped) Equipped = ([]);
         worn = this_object()->GetWorn();
@@ -247,7 +248,7 @@ int eventDestruct(){
             if(!thing || !objectp(thing)) continue;
             if(Equipped[file_name(thing)]) continue;
             Equipped[file_name(thing)] =
-              ([ "object" : thing, "where" : thing->GetWorn() ]);
+                ([ "object" : thing, "where" : thing->GetWorn() ]);
         }
     }
     chat::eventDestruct();
@@ -477,24 +478,24 @@ int GetCustomXP(){
     return CustomXP;
 }
 
-    int SetMagicPoints(int x){
-        if( x > GetMaxMagicPoints() )
-            SetStat("intelligence", (x-50)/10, GetStatClass("intelligence"));
-        AddMagicPoints( x - GetMagicPoints() );
-        return GetMagicPoints();
-    }
+int SetMagicPoints(int x){
+    if( x > GetMaxMagicPoints() )
+        SetStat("intelligence", (x-50)/10, GetStatClass("intelligence"));
+    AddMagicPoints( x - GetMagicPoints() );
+    return GetMagicPoints();
+}
 
 int SetMaxMagicPoints(int x){
     SetStat("intelligence", (x-50)/10, GetStatClass("intelligence"));
     return GetMaxMagicPoints();
 }
 
-    float SetStaminaPoints(float x){
-        if( x > GetMaxStaminaPoints() )
-            SetStat("agility", to_int((x-50.0)/10.0), GetStatClass("agility"));
-        AddStaminaPoints( x - GetStaminaPoints() );
-        return to_float(GetStaminaPoints());
-    }
+float SetStaminaPoints(float x){
+    if( x > GetMaxStaminaPoints() )
+        SetStat("agility", to_int((x-50.0)/10.0), GetStatClass("agility"));
+    AddStaminaPoints( x - GetStaminaPoints() );
+    return to_float(GetStaminaPoints());
+}
 
 float SetMaxStaminaPoints(float x){
     SetStat("agility", (x-50.0)/10.0, GetStatClass("agility"));

@@ -86,15 +86,21 @@ static mixed Report(){
         }
     }
     all_dirs = sort_array(all_dirs,1);
+    reset_eval_cost();
     all_dirs = distinct_array(all_dirs);
+    reset_eval_cost();
     all_files = sort_array(all_files,1);
+    reset_eval_cost();
     all_files = distinct_array(all_files);
+    reset_eval_cost();
     rm("/secure/tmp/dirs.txt");
     rm("/secure/tmp/files.txt");
     foreach(string dir in all_dirs){
+        reset_eval_cost();
         write_file("/secure/tmp/dirs.txt",dir+"\n");
     }
     foreach(string dir in all_files){
+        reset_eval_cost();
         write_file("/secure/tmp/files.txt",dir+"\n");
     }
     return 1;

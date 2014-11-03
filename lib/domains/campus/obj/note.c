@@ -26,5 +26,5 @@ void create(){
     SetRead((: TestFunc :));
 }
 void init(){
-::init();
+    ::init();
 }

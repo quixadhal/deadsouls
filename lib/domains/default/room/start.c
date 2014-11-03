@@ -23,16 +23,16 @@ void create() {
     SetNoModify(1);
     SetCoordinates("5000,5000,0");
     SetItems( ([
-      "tutorial" : "A set of rooms to get familiar with this environment.",
-      "town" : "The main town.",
-   ]) );
+                "tutorial" : "A set of rooms to get familiar with this environment.",
+                "town" : "The main town.",
+                ]) );
     SetEnters( ([
-      //"tutorial" : "/domains/tutorial/room/start",
-      "town" : "/domains/town/room/start",
-   ]) );
-   if(tutorial){
-       AddEnter("tutorial", "/domains/tutorial/room/start");
-   }
+                //"tutorial" : "/domains/tutorial/room/start",
+                "town" : "/domains/town/room/start",
+                ]) );
+    if(tutorial){
+        AddEnter("tutorial", "/domains/tutorial/room/start");
+    }
 }
 
 void init(){

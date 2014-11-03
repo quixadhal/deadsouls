@@ -18,8 +18,8 @@ static void create(){
     SetProtection(KNIFE,1);
     SetArmorType(A_COLLAR);
     SetItems(([
-      ({"locket"}) : "It bears the name of the man that Brandy loved.",
-   ])); 
+                ({"locket"}) : "It bears the name of the man that Brandy loved.",
+                ])); 
 }
 
 void init(){

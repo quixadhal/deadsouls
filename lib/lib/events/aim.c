@@ -24,7 +24,7 @@ varargs mixed eventAim(object who, mixed target, string dir, string whom){
     }
     if(!stringp(tmp)) tmp = "something";
     if(target) write("You aim the "+this_object()->GetShort()+" at "+
-      target+".");
+            target+".");
     targ = target;
     return 1;
 }

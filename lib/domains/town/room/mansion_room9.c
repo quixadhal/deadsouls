@@ -2,15 +2,8 @@
 inherit LIB_ROOM;
 
 int revealed;
-int PreExit(){
-    object ob = present("thief in a bathtowel",this_object());
-    if(ob && base_name(ob) != "/lib/std/corpse"){
-        write("The wet thief bars your way!");
-        return 0;
-    }
-    return 1;
-}
-static void create() {
+
+static void create(){
     room::create();
     SetClimate("indoors");
     SetAmbientLight(30);
@@ -45,7 +38,7 @@ int RevealDoor(){
     revealed = 1;
 
     tell_room(this_object(),"A trapdoor is revealed!");
-    AddExit("down","/domains/town/room/mansion_room12", (: PreExit :));
+    AddExit("down","/domains/town/room/mansion_room12");
     SetDoor("down","/domains/town/doors/trapdoor");
     return 1;
 }

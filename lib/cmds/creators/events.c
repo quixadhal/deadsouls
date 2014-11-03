@@ -68,11 +68,11 @@ int cmd(string str) {
     return 0;
 }
 
-    string GetHelp() {
-        if(archp(this_player())) 
-            return ("Syntax: events [creator]\n\n"
-                    "Gives a list of all pending mud events or all events pending for the specified creator.");
-        else
-            return ("Syntax: events\n\n"
-                    "Gives a list of your pending events.");
-    }
+string GetHelp() {
+    if(archp(this_player())) 
+        return ("Syntax: events [creator]\n\n"
+                "Gives a list of all pending mud events or all events pending for the specified creator.");
+    else
+        return ("Syntax: events\n\n"
+                "Gives a list of your pending events.");
+}

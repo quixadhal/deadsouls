@@ -54,6 +54,7 @@ void eventReconnect(){
 }
 
 int eventDestruct(){
+    if(!valid_event(previous_object(), this_object())) return 0;
     if(CHAT_D->eventRemoveMember(keys((Channels || ([]))))) return 1;
     else return 0;
 }
@@ -194,24 +195,24 @@ int SetGagged(string type, mixed x){
     switch(type){
         case "local" :
             ret = GagMutes["local_gag"];
-        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
-        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
-        GagMutes["local_gag"] = ret;
-        break;
+            if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+            else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+            GagMutes["local_gag"] = ret;
+            break;
         case "remote" :
             ret = GagMutes["remote_gag"];
-        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
-        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
-        GagMutes["remote_gag"] = ret;
-        break;
+            if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+            else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+            GagMutes["remote_gag"] = ret;
+            break;
         case "all" :
             ret = GagMutes["local_gag"];
-        ret = (ret > GagMutes["remote_gag"] ? ret : GagMutes["remote_gag"]);
-        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
-        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
-        GagMutes["local_gag"] = ret;
-        GagMutes["remote_gag"] = ret;
-        break;
+            ret = (ret > GagMutes["remote_gag"] ? ret : GagMutes["remote_gag"]);
+            if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+            else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+            GagMutes["local_gag"] = ret;
+            GagMutes["remote_gag"] = ret;
+            break;
     }
     return ret;
 }
@@ -225,24 +226,24 @@ int SetMuted(string type, mixed x){
     switch(type){
         case "local" :
             ret = GagMutes["local_mute"];
-        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
-        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
-        GagMutes["local_mute"] = ret;
-        break;
+            if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+            else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+            GagMutes["local_mute"] = ret;
+            break;
         case "remote" :
             ret = GagMutes["remote_mute"];
-        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
-        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
-        GagMutes["remote_mute"] = ret;
-        break;
+            if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+            else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+            GagMutes["remote_mute"] = ret;
+            break;
         case "all" :
             ret=GagMutes["local_mute"];
-        ret=(ret > GagMutes["remote_mute"] ? ret : GagMutes["remote_mute"]);
-        if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
-        else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
-        GagMutes["local_mute"] = ret;
-        GagMutes["remote_mute"] = ret;
-        break;
+            ret=(ret > GagMutes["remote_mute"] ? ret : GagMutes["remote_mute"]);
+            if(x > 0) ret = ((ret != 2) ? (adminp(prev) ? 2 : 1) : 2);
+            else ret = ((ret == 2) ? (adminp(prev) ? 0 : 2) : 0);
+            GagMutes["local_mute"] = ret;
+            GagMutes["remote_mute"] = ret;
+            break;
     }
     return ret;
 }

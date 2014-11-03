@@ -119,11 +119,11 @@ mixed CanDrink(object ob){
     return 1;
 }
 
-    mixed CanEat(object ob){
-        if( (ob->GetStrength() + GetFood()) > 100 )
-            return "This is more food than you can handle right now.";
-        else return 1;
-    }
+mixed CanEat(object ob){
+    if( (ob->GetStrength() + GetFood()) > 100 )
+        return "This is more food than you can handle right now.";
+    else return 1;
+}
 
 varargs int eventDie(mixed agent){
     int x;
@@ -222,14 +222,14 @@ varargs void SetStat(string stat, int level, int classes){
     switch(stat){
         case "durability":
             eventCompleteHeal(healthPoints = GetMaxHealthPoints());
-        eventHealDamage(healthPoints);
-        break;
+            eventHealDamage(healthPoints);
+            break;
         case "intelligence":
             AddMagicPoints(GetMaxMagicPoints());
-        break;
+            break;
         case "agility":
             AddStaminaPoints(GetMaxStaminaPoints());
-        break;
+            break;
     }
 }
 

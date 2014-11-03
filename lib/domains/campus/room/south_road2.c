@@ -14,17 +14,17 @@ static void create() {
     SetShort("South Old Saquivor Road");
     SetLong("This is a cobblestone road, leading south to some sort of University campus.");
     SetItems( ([
-        ({"road","cobblestone road"}) : "A "
-        "cobblestone road, south.",
-        //"sign":"A large sign on the road. To read it, 'read sign'.",
-        ({"grate","drainage grate","sewer","sewer grate"}) : "A grate that "+
-        "seems to lead into sewers. It can't be opened from here.",
-      ]) );
+                ({"road","cobblestone road"}) : "A "
+                "cobblestone road, south.",
+                //"sign":"A large sign on the road. To read it, 'read sign'.",
+                ({"grate","drainage grate","sewer","sewer grate"}) : "A grate that "+
+                "seems to lead into sewers. It can't be opened from here.",
+                ]) );
     //SetSkyDomain("town");
     AddTerrainType(T_ROAD);
     SetExits( ([
-        "south" : "/domains/campus/room/npath2.c",
-      ]) );
+                "south" : "/domains/campus/room/npath2.c",
+                ]) );
     if(file_exists("/domains/campus/doors/grate.c")){
         AddExit("down", "/domains/campus/room/sewer3");
         SetDoor("down","/domains/campus/doors/grate");
@@ -33,7 +33,7 @@ static void create() {
         //AddExit("north", "/domains/town/room/south_road1");
     }
     SetInventory(([
-      ]));
+                ]));
     //SetRead("sign", (: readSign :) );
     //AddItem(new("/domains/town/obj/lamp"));
 }

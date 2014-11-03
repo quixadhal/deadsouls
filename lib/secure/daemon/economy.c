@@ -90,8 +90,8 @@ float __Query(string type, string key) {
     else return Currencies[type][key];
 }
 
-    string *__QueryCurrencies() { 
-        if(sizeof(Currencies))
-            return keys(Currencies); 
-        else return ({});
-    }
+string *__QueryCurrencies() { 
+    if(sizeof(Currencies))
+        return keys(Currencies); 
+    else return ({});
+}

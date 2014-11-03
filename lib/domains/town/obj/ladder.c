@@ -11,7 +11,12 @@ int LadderClimb(){
         eventClimb(this_player(),CLIMB_UP,"/domains/town/room/mansion_uhall1");
         return 1;
     }
-    write("This ladder seems made specifically for one place, and it looks like this isn't it.");
+    if(base_name(environment()) == "/domains/amigara/room/passage1"){
+        write("You climb up the ladder to the higher level of the cave.");
+        eventClimb(this_player(),CLIMB_UP,"/domains/amigara/room/cave");
+        return 1;
+    }
+    write("This ladder doesn't seem usable here.");
     return 0;
 }
 

@@ -19,7 +19,7 @@ int FlatterResponse(mixed args...){
         args[0]->AddExperiencePoints(300);
     }
     this_object()->eventForce("say Thank you, "+args[0]->GetName()+". Feel free to ask me "+
-      "for my special menu.");
+            "for my special menu.");
     return 1;
 }
 
@@ -34,25 +34,26 @@ static void create() {
     SetShort("Brandy the barmaid");
     SetLevel(1);
     SetLong("With eyes that could steal a sailor from the sea, Brandy "
-      "works in this harbor town laying whiskey down, fetching round "
-      "after round for her fiercely loyal clientele. Word is she's receptive "
-      "to flattery.");
+            "works in this harbor town laying whiskey down, fetching round "
+            "after round for her fiercely loyal clientele. Word is she's receptive "
+            "to flattery.");
     SetMenuItems(([
                 ({ "guinness","beer","stein" }) : "/domains/town/meals/stein",
                 ({ "wine","bottle of wine" }) : "/domains/town/meals/winebottle",
                 ({ "whiskey","bottle of whiskey" }) : "/domains/town/meals/rebel_yell",
                 ]));
     SetSpecialMenuItems(([
-        "javarin" : "/domains/town/meals/javarin",
-        "speedalin" : "/domains/town/meals/speedalin",
-        "spazalin" : "/domains/town/meals/spazalin",
-        //"somnitol" : "/domains/town/meals/potion_healing",
-        //"phoqitol" : "/domains/town/meals/potion_healing",
-        //"comatol" : "/domains/town/meals/potion_healing",
-        "red spice" : "/domains/town/meals/red_spice",
-        "green spice" : "/domains/town/meals/green_spice",
-        "blue spice" : "/domains/town/meals/blue_spice",
-    ]));
+                "javarin" : "/domains/town/meals/javarin",
+                "speedalin" : "/domains/town/meals/speedalin",
+                "spazalin" : "/domains/town/meals/spazalin",
+                //"somnitol" : "/domains/town/meals/potion_healing",
+                //"phoqitol" : "/domains/town/meals/potion_healing",
+                //"comatol" : "/domains/town/meals/potion_healing",
+                "red spice" : "/domains/town/meals/red_spice",
+                "green spice" : "/domains/town/meals/green_spice",
+                "blue spice" : "/domains/town/meals/blue_spice",
+                "eve tonic" : "/domains/town/meals/mana_tonic",
+                ]));
     SetGender("female");
     SetMorality(40);
     SetRace("human");
@@ -65,16 +66,16 @@ static void create() {
     SetLanguage("common", 100);
     SetDefaultLanguage("common");
     SetInventory(([
-      "/domains/town/armor/locket" : "wear necklace",
-      "/domains/town/armor/barsmock" : "wear smock",
-    ]));
+                "/domains/town/armor/locket" : "wear necklace",
+                "/domains/town/armor/barsmock" : "wear smock",
+                ]));
     SetTalkResponses( ([
-        "randy, you're a fine girl" : (: FlatterResponse :),
-        "randy, youre a fine girl" : (: FlatterResponse :),
-        "randy you're a fine girl" : (: FlatterResponse :),
-        "randy youre a fine girl" : (: FlatterResponse :),
-        "what a good wife you would be" : (: FlatterResponse :),
-    ]));
+                "randy, you're a fine girl" : (: FlatterResponse :),
+                "randy, youre a fine girl" : (: FlatterResponse :),
+                "randy you're a fine girl" : (: FlatterResponse :),
+                "randy youre a fine girl" : (: FlatterResponse :),
+                "what a good wife you would be" : (: FlatterResponse :),
+                ]));
 }
 
 void init(){
@@ -82,21 +83,21 @@ void init(){
 }
 
 mixed eventSell(object who, string args){
-    tc("flatterers: "+identify(flatterers));
+    //tc("flatterers: "+identify(flatterers));
     if(member_array(args, GetSpecials()) != -1 &&
-      member_array(who->GetKeyName(), flatterers) == -1){
+            member_array(who->GetKeyName(), flatterers) == -1){
         eventForce("say I don't feel comfortable selling that to you, "+
-        who->GetName()+".");
-      return 1;
+                who->GetName()+".");
+        return 1;
     }
     return ::eventSell(who, args);
 }
 
 varargs int eventSpecialList(object who, string what){
     if(member_array(who->GetKeyName(), flatterers) == -1){
-      eventForce("say I'm not sure I have a special menu for you, "+
-        who->GetName()+".");
-      return 1;
+        eventForce("say I'm not sure I have a special menu for you, "+
+                who->GetName()+".");
+        return 1;
     }
     return ::eventSpecialList(who, what);
 }

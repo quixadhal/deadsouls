@@ -18,5 +18,5 @@ int eventStart(object who, string language);
 int eventContinue(object who, string language, int x);
 int eventComplete(object who, string language);
 
-#define TEACHING_WAIT 10
+#define TEACHING_WAIT 2
 #endif __trainer_h__

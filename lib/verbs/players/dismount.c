@@ -16,10 +16,10 @@ static void create() {
             "See also: mount, befriend, abandon");
 }
 
-    mixed can_dismount_liv() {
-        if(this_player()->CanManipulate()) 
-            return bool_reverse(this_player()->GetParalyzed());
-    }
+mixed can_dismount_liv() {
+    if(this_player()->CanManipulate()) 
+        return bool_reverse(this_player()->GetParalyzed());
+}
 
 mixed can_dismount_from_liv() {
     return can_dismount_liv();

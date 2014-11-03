@@ -38,19 +38,19 @@ inherit LIB_PERSIST;
 
 private int HealthPoints, MagicPoints, ExperiencePoints, ExperienceDebt;
 private int melee, godmode;
-private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping, DeathEvents;
+private int Alcohol, Caffeine, Food, Drink, Poison, Sleeping;
 private float StaminaPoints;
 private string Torso, Biter, keepalive;
 private mapping Fingers, Limbs, MissingLimbs;
-private static int Dying, LastHeal, Encumbrance;
+private static int Dying, LastHeal, Encumbrance, DeathEvents;
 private static function Protect;
 private static mapping WornItems;
 private static class MagicProtection *Protection;
 static private int HeartModifier = 0;
 private static string PoliticalParty, BodyComposition;
-private static int Pacifist, globalint1;
+private static int Pacifist, wearbit;
 private static mapping Dimensions = ([]);
-private int firearms_wounds;
+private int firearms_wounds, Falling, FallCount = 1;
 string *ExtraChannels;
 mixed Agent;
 
@@ -240,7 +240,9 @@ void eventCheckEnvironment(){
             this_object()->GetPosition() != POSITION_FLYING){
         if(!(this_object()->CanFly())){
             this_object()->SetPosition(POSITION_FLOATING);
-            call_out("eventFall", 1);
+            if(find_call_out("eventFall") == -1){
+                call_out("eventFall", 1);
+            }
         }
         else this_object()->eventFly();
     }
@@ -472,6 +474,7 @@ void eventCheckHealing(){
                             ({ this_object() }));
                 }
             }
+            if( Poison > 0 && !random(17)) Poison--;
             if( Caffeine > 0 ) Caffeine--;
             if( Food > 0 ) Food--;
             if( Drink > 0 ) Drink--;
@@ -485,44 +488,49 @@ void eventCompleteHeal(int x){
     AddStaminaPoints(x);
 }
 
+int GetFalling(){
+    return Falling;
+}
+
+int SetFalling(int i){
+    return Falling = i;
+}
+
 mixed eventFall(){
     object env = environment();
     object *riders;
     string dest;
+    int p = 0;
+
+    Falling = 1;
+    FallCount++;
 
     if( !env ){
         return 0;
     }
-    if( GetPosition() == POSITION_LYING ){
-        return 0;
-    }
     if( env->GetMedium() == MEDIUM_AIR ){
-        return position::eventFall();
+        ::eventFall();
     }
+    env = environment();
     dest = env->GetGround();
-    if(!dest){
-        int p;
-        int was_undead = GetUndead();
 
-        eventMove(dest);
+    if(!dest || env->GetMedium() != MEDIUM_AIR){
+        Falling = 0;
         this_object()->eventCollapse();
-        foreach(string limb in GetLimbs()){
-            int hp = GetHealthPoints(limb);
 
-            p = random(hp);
-            this_object()->eventReceiveDamage("Deceleration sickness", BLUNT, p, 0, ({ limb }));
-            if( Dying || (was_undead != GetUndead()) ){
-                break;
-            }
-        }
         riders = get_livings(this_object());
         if(sizeof(riders)){
             foreach(object passenger in riders){
-                passenger->eventReceiveDamage("Deceleration sickness", BLUNT, p, 0,
-                        ({ passenger->GetTorso() }));
+                p = ( (passenger->GetMass()) * 0.04) * FallCount;
+                passenger->eventReceiveDamage("Deceleration sickness", BLUNT, p, 1);
             } 
         }
+        p = ( (this_object()->GetMass()) * 0.04) * FallCount;
+        this_object()->eventReceiveDamage("Deceleration sickness", BLUNT, p, 1);
+        FallCount = 1;
+        remove_call_out("eventFall");
     }
+    return p;
 }
 
 /* varargs int eventHealDamage(int x, int internal, mixed limbs)
@@ -666,7 +674,9 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
                 if( !AddHealthPoints(-z, limbs[i], (agent || agentname)) ){
                     call_out("RemoveLimb",0,limbs[i], (agent || agentname));
                 }
-                AddStaminaPoints(-z/2);
+                if(this_object()->GetClass() != "fighter"){
+                    AddStaminaPoints(-z/2);
+                }
             }
             else {
                 while(j--){
@@ -684,7 +694,9 @@ varargs int eventReceiveDamage(mixed agent, int type, int x, int internal,
                 if(!AddHealthPoints(-y, 0, (agent || agentname))){
                     call_out("RemoveLimb",0,limbs[i], (agent || agentname));
                 }
-                AddStaminaPoints(-y/2);
+                if(this_object()->GetClass() != "fighter"){
+                    AddStaminaPoints(-y/2);
+                }
             }
             return y;
         }
@@ -798,7 +810,6 @@ varargs int eventDie(mixed agent){
     int x;
     string killer, death_annc;
     object crime_scene;
-
     if(DeathEvents) return 1;
     DeathEvents = 1;
 
@@ -953,14 +964,14 @@ string *GetEquippedLimbs(){
     return equipped_limbs;
 }
 /************     /lib/body.c Data manipulation functions      *************/
-    void NewBody(string race){
-        if(!race)
-            Limbs = ([ (Torso = "ooze") : ([ "parent" : 0, "children" : ({}),
-                        "health" : 50, "class" : 1, "armors" : 0 ]) ]);
-        else Limbs = ([]);
-        MissingLimbs = ([]);
-        Fingers = ([]);
-    }
+void NewBody(string race){
+    if(!race)
+        Limbs = ([ (Torso = "ooze") : ([ "parent" : 0, "children" : ({}),
+                    "health" : 50, "class" : 1, "armors" : 0 ]) ]);
+    else Limbs = ([]);
+    MissingLimbs = ([]);
+    Fingers = ([]);
+}
 
 /* int CanWear(object armor, string *limbs)
  * object armor - the piece of armor being checked
@@ -1055,9 +1066,9 @@ mixed CanWear(object ob, string *limbs){
                 }
                 return ret;
             }
-            globalint1 = Limbs[limb]["armors"];
+            wearbit = Limbs[limb]["armors"];
             if( !Limbs[limb] ) return "You have no " + limb + ".";
-            if( !(globalint1 & type) ){
+            if( !(wearbit & type) ){
                 if( type & A_WEAPON )
                     return "You cannot wield with " + limb + ".";
                 else return "You cannot wear " + short + " on your " + limb + ".";
@@ -1786,7 +1797,7 @@ float GetMaxStaminaPoints(){  return 0; }
 int AddExperiencePoints(mixed x){
     if( !intp(x)) error("Bad argument 1 to AddExperiencePoints().\n");
     x -= DEVIATION_D->GetDeviationCost(this_object(), x);
-    
+
     if( ExperienceDebt > 0 ) {
         if( (ExperienceDebt -= x) < 0 ) {
             ExperiencePoints -= ExperienceDebt;
@@ -1835,14 +1846,32 @@ int AddMagicProtection(class MagicProtection cl){
 
 class MagicProtection array GetMagicProtection(){ return Protection; }
 
-int RemoveMagicProtection(int i){
-    if( i > sizeof(Protection) - 1 ) return 0;
-    if( Protection[i]->end ){
-        if( !(functionp(Protection[i]->end) & FP_OWNER_DESTED) ){
-            evaluate(Protection[i]->end, this_object());
+int RemoveMagicProtection(mixed i){
+    if(intp(i)){
+        if( i > sizeof(Protection) - 1 ) return 0;
+        if( Protection[i]->end ){
+            if( !(functionp(Protection[i]->end) & FP_OWNER_DESTED) ){
+                evaluate(Protection[i]->end, this_object());
+            }
+        }
+        Protection -= ({ Protection[i] });
+        return 1;
+    }
+    if(stringp(i)){
+        string filename = i;
+        i = -1;
+        foreach(class MagicProtection tmp in Protection){
+            i++;
+            if(!tmp->obname) continue;
+            if(tmp->obname == filename){
+                if(!(functionp(tmp->hit) & FP_OWNER_DESTED)){
+                    evaluate(Protection[i]->end, this_object());
+                    Protection -= ({ Protection[i] });
+                    return 1;
+                }
+            }
         }
     }
-    Protection -= ({ Protection[i] });
     return 1;
 }
 

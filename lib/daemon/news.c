@@ -64,31 +64,31 @@ void ClassNews(string cl) {
         switch(cl) {
             case "cleric":
                 cl = "fighter";
-            break;
+                break;
 
             case "fighter":
                 cl = "fisher";
-            break;
+                break;
 
             case "fisher":
                 cl = "kataan";
-            break;
+                break;
 
             case "kataan":
                 cl = "mage";
-            break;
+                break;
 
             case "mage":
                 cl = "monk";
-            break;
+                break;
 
             case "monk":
                 cl = "rogue";
-            break;
+                break;
 
             case "rogue":
                 HighMortalNews();
-            return;
+                return;
         }
     }
     if( player->ClassMember(cl) && file_exists(DIR_NEWS "/"+cl) ) {
@@ -206,31 +206,31 @@ string GetNews(string type) {
     switch(type) {
         case "admin":
             file = NEWS_ADMIN;
-        break;
+            break;
 
         case "avatar":
             file = NEWS_AVATAR;
-        break;
+            break;
 
         case "creator":
             file = NEWS_CREATOR;
-        break;
+            break;
 
         case "general":
             file = NEWS_GENERAL;
-        break;
+            break;
 
         case "hm":
             file = NEWS_HM;
-        break;
+            break;
 
         case "newbie":
             file = NEWS_NEWBIE;
-        break;
+            break;
 
         default:
-        file = DIR_NEWS "/" + type;
-        break;
+            file = DIR_NEWS "/" + type;
+            break;
     }
     if( !file_exists(file) ) return "No " + type + " news.";
     file = read_file(file) || ("No " + type + " news.");

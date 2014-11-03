@@ -28,14 +28,14 @@ int cmd(){
     return 1;
 }
 
-    int sort_names(string name1, string name2){
-        if (name1 == name2)
-            return 0;
-        if (name1 < name2)
-            return -1;
-        else
-            return 1;
-    }
+int sort_names(string name1, string name2){
+    if (name1 == name2)
+        return 0;
+    if (name1 < name2)
+        return -1;
+    else
+        return 1;
+}
 
 string GetHelp(){
     return "Syntax: users\n\n"

@@ -2,14 +2,14 @@
 
 inherit LIB_DAEMON;
 
-    mixed cmd(string str) {
-        if( !sizeof(str) )
-            return "Syntax: speakcolor <color>";
-        this_player()->SetSpeakColor(str);
-        write("%^BOLD%^"+this_player()->GetSpeakColor()+"This is your current color for "+
-                "receiving spoken messages.");
-        return 1;
-    }
+mixed cmd(string str) {
+    if( !sizeof(str) )
+        return "Syntax: speakcolor <color>";
+    this_player()->SetSpeakColor(str);
+    write("%^BOLD%^"+this_player()->GetSpeakColor()+"This is your current color for "+
+            "receiving spoken messages.");
+    return 1;
+}
 
 string GetHelp() {
     return ("Syntax: speakcolor [ cyan | red | green | orange | yellow | blue | magenta | black | white ]\n"

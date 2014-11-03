@@ -11,7 +11,7 @@ static void create(){
     SetLong("This is a long white lab coat of the type used by scientists "+
             "to avoid getting experimental results on themselves.");
     SetMass(75);
-    SetDollarCost(100);
+    SetDollarCost(20);
     SetArmorType(A_CLOAK);
 }
 void init(){

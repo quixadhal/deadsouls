@@ -50,6 +50,7 @@ mixed SendFiles(string *arr){
     }
     validate();
     foreach(string sub in arr){
+        reset_eval_cost();
         load_object("/secure/cmds/creators/showfuns")->cmd(sub);
     }
     return 1;
@@ -62,6 +63,7 @@ mixed SendFiles2(string *arr){
     int err;
 
     foreach(string element in arr){
+        reset_eval_cost();
         if(!strsrch(element, "/lib/")){
             prefix = path_prefix(element);
             file = replace_string(element, prefix, "");
@@ -106,9 +108,8 @@ mixed ReadFuns(string str){
     files = filter(files, (: (!sizeof(FunctionCache[$1]) || 
                     ((sizeof(stat($1)) > 1) ? stat($1)[0] : FileSize[$1]) 
                     != FileSize[$1]) :) ); 
-    foreach(string file in files){
-    }
     while(sizeof(files) > 0){
+        reset_eval_cost();
         interval++;
         subfiles = ({ files[0] }) ;
         files -= subfiles;
@@ -129,10 +130,6 @@ static void create() {
     validate();
     TmpMap = ([]);
     call_out((: ReadFuns,"/lib/" :), 1);
-    //call_out((: ReadFuns,"/secure/sefun/" :), 30);
-    //call_out((: ReadFuns,"/secure/lib/" :), 60);
-    //call_out((: ReadFuns,"/verbs" :), 90);
-    //call_out((: ReadFuns,"/spells" :), 120);
     set_heart_beat(1);
 }
 

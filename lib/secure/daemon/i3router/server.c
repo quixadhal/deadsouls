@@ -485,8 +485,6 @@ varargs void clean_ghosts(int force){
     mixed *legit_socks = keys(this_object()->query_socks());
     legit_socks += keys(this_object()->query_irn_sockets());
 
-    tc("clean_ghosts("+force+")");
-
     if(!rsockd && !ssockd) return;
 
     tmp=sizeof(socket_status())-1;
@@ -501,7 +499,6 @@ varargs void clean_ghosts(int force){
                 // they're the reconnecting kind.
                 if(member_array(ip, blacklisted_muds) != -1) continue;
             }                
-            tc("closing: "+i);
             this_object()->close_connection(i);
         }
     }
@@ -524,7 +521,7 @@ void clean_chans(){
         mixed *tmp_chan = ({});
         if(sizeof(val) == 3){
             tmp_chan = ({ (intp(val[0]) ? val[0] : 0), 
-              val[1], distinct_array(val[2]) });
+                    val[1], distinct_array(val[2]) });
             channels[key] = tmp_chan;
         }
     }
@@ -539,9 +536,7 @@ varargs void clear_discs(mixed arg){
     int i = 1;
 
     validate();
-    //tc("arg: "+identify(arg));
     if(arg){
-        //tc("WHAAA");
         if(stringp(arg)) arg = ({ arg });
         if(arrayp(arg)) disclist = arg;
     }
@@ -558,15 +553,11 @@ varargs void clear_discs(mixed arg){
             object imc2d = find_object(IMC2_SERVER_D);
             mixed data;
             gtargets = ([]);
-            tc("NOT CONNECTED?: "+mudname);
             if(ssock && imc2d){
                 mixed tmparr = keys(ssock->query_socks());
-                //tc("baa");
                 filter(tmparr, (: gtargets[itoa($1)] = $1 :));
-                //tc("humbucket");
                 data = "*@" + my_name + " " + time() + " " + my_name +
-                  " close-notify *@* host=" + replace_string(mudname," ","_");
-                //tc("moo? "+identify(data));
+                    " close-notify *@* host=" + replace_string(mudname," ","_");
                 imc2d->broadcast_data(gtargets, data);
             }
         }
@@ -582,7 +573,7 @@ varargs void clear_discs(mixed arg){
                         mudinfo[mudname]["connect_time"] = 0;
                 }
             }
-    
+
             if(!mudinfo[mudname]["disconnect_time"]) continue;
             trr("%^B_BLACK%^"+mudname+": "+ctime((mudinfo[mudname]["disconnect_time"]) || time()),"white");
             trr("%^B_BLACK%^dead age: "+time_elapsed(deadsince),"white");

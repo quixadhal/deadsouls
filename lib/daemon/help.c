@@ -33,14 +33,14 @@ int CanAccess(object who, string index) {
             return archp(who);
 
         case "creator commands": case "creator documents":
-            case "library objects": case "daemon objects":
+        case "library objects": case "daemon objects":
             return creatorp(who);
 
         case "builder commands":  
             return builderp(who);
 
         default:
-        return 1;
+            return 1;
     }
 }
 
@@ -232,7 +232,7 @@ string GetHelpByIndex(string index, string topic) {
     }
     switch(index) {
         case "admin commands": case "creator commands": case "undead commands":
-            case "commands": case "builder commands" :
+        case "commands": case "builder commands" :
             switch(index) {
                 case "admin commands":
                     if( file_exists( DIR_ADMIN_VERBS + "/" + topic + ".c") )
@@ -240,7 +240,7 @@ string GetHelpByIndex(string index, string topic) {
                     else if( file_exists( DIR_ADMIN_CMDS + "/" + topic + ".c") )
                         file = DIR_ADMIN_CMDS + "/" + topic;
                     else file = DIR_SECURE_ADMIN_CMDS + "/" + topic;
-                break;
+                    break;
 
                 case "creator commands":
                     if( file_exists( DIR_CREATOR_VERBS + "/" + topic + ".c") )
@@ -248,7 +248,7 @@ string GetHelpByIndex(string index, string topic) {
                     else if( file_exists(DIR_CREATOR_CMDS + "/" + topic + ".c") )
                         file = DIR_CREATOR_CMDS + "/" + topic;
                     else file = DIR_SECURE_CREATOR_CMDS + "/" + topic;
-                break;      
+                    break;      
 
                 case "builder commands":
                     if( file_exists( DIR_BUILDER_VERBS + "/" + topic + ".c") )
@@ -256,7 +256,7 @@ string GetHelpByIndex(string index, string topic) {
                     else if( file_exists(DIR_BUILDER_CMDS + "/" + topic + ".c") )
                         file = DIR_BUILDER_CMDS + "/" + topic;
                     else file = DIR_SECURE_BUILDER_CMDS + "/" + topic;
-                break;
+                    break;
 
                 case "commands":
                     foreach(string directory in ({ DIR_COMMON_VERBS,
@@ -273,57 +273,57 @@ string GetHelpByIndex(string index, string topic) {
                             break;
                         }
                     }
-                break;
+                    break;
 
                 case "undead commands":
                     file = DIR_UNDEAD_VERBS + "/" + topic;
-                break;      
+                    break;      
             }
-        if( !file_exists(file + ".c") ) {
-            Error = "No such " + index[0..<2] + " exists.";
-            return 0;
-        }
-        if( catch(help = file->GetHelp(topic)) ) {
-            Error = "An error occurred in attempting to access help.";
-            return 0;
-        }
-        if( !help ) {
-            string *syn, *pd;
-            string line;
-
-            pd = regexp(explode(parse_dump(), "\n"), file[1..]);
-            syn = ({});
-            foreach(line in pd) {
-                sscanf(line, "%*s"+file[1..]+") %s", tmpstr);
-                syn += ({ tmpstr });
-            }
-            if( !sizeof(syn) ) {
-                if( function_exists("help", load_object(file)) ) {
-                    Error = " ";
-                    file->help();
-                    write(SeeAlso);
-                    SeeAlso = "";
-                    return 0;
-                }
-                Error = "Unable to locate any syntax information on " +
-                    topic + ".";
+            if( !file_exists(file + ".c") ) {
+                Error = "No such " + index[0..<2] + " exists.";
                 return 0;
             }
-            help = "Syntax: " + topic + " " + syn[0] + "\n";
-            if( sizeof(syn) == 1 ) help += "\n";
-            else {
-                foreach(line in syn[1..])
-                    help += "        " + topic + " " + line + "\n";
-                help += "\n";
+            if( catch(help = file->GetHelp(topic)) ) {
+                Error = "An error occurred in attempting to access help.";
+                return 0;
             }
-            help += "No detailed documentation exists for this command.";
-        }
-        help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
-            "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
-        return help;
+            if( !help ) {
+                string *syn, *pd;
+                string line;
+
+                pd = regexp(explode(parse_dump(), "\n"), file[1..]);
+                syn = ({});
+                foreach(line in pd) {
+                    sscanf(line, "%*s"+file[1..]+") %s", tmpstr);
+                    syn += ({ tmpstr });
+                }
+                if( !sizeof(syn) ) {
+                    if( function_exists("help", load_object(file)) ) {
+                        Error = " ";
+                        file->help();
+                        write(SeeAlso);
+                        SeeAlso = "";
+                        return 0;
+                    }
+                    Error = "Unable to locate any syntax information on " +
+                        topic + ".";
+                    return 0;
+                }
+                help = "Syntax: " + topic + " " + syn[0] + "\n";
+                if( sizeof(syn) == 1 ) help += "\n";
+                else {
+                    foreach(line in syn[1..])
+                        help += "        " + topic + " " + line + "\n";
+                    help += "\n";
+                }
+                help += "No detailed documentation exists for this command.";
+            }
+            help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
+                "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
+            return help;
 
         case "player documents": case "creator documents":
-            case "law": case "lpc":
+        case "law": case "lpc":
             switch(index) {
                 case "player documents":
                     if( topic == "soul" ) {
@@ -332,151 +332,151 @@ string GetHelpByIndex(string index, string topic) {
                             "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
                         return help;
                     }
-                file = DIR_PLAYER_HELP "/" + topic;
-                break;
+                    file = DIR_PLAYER_HELP "/" + topic;
+                    break;
 
                 case "creator documents":
                     file = DIR_CREATOR_HELP "/" + topic;
-                break;
+                    break;
 
                 case "law":
                     file = DIR_LAW_HELP "/" + topic;
-                break;
+                    break;
 
                 case "lpc":
                     file = DIR_CONCEPTS_HELP "/" + topic;
-                if( !file_exists(file) )
-                    file = DIR_CONSTRUCTS_HELP "/" + topic;
-                break;
+                    if( !file_exists(file) )
+                        file = DIR_CONSTRUCTS_HELP "/" + topic;
+                    break;
             }
-        if( !file_exists(file) ) {
-            Error = "No such " + index[0..<2] + " is available.";
-            return 0;
-        }
-        if( !(help = read_file(file)) ) {
-            Error = "The document " + topic + " was empty.";
-            return 0;
-        }
-        help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
-            "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
-        return help;
+            if( !file_exists(file) ) {
+                Error = "No such " + index[0..<2] + " is available.";
+                return 0;
+            }
+            if( !(help = read_file(file)) ) {
+                Error = "The document " + topic + " was empty.";
+                return 0;
+            }
+            help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
+                "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
+            return help;
 
         case "feelings":
             help = SOUL_D->GetHelp(topic);
-        if( !help ) {
-            Error = "No such " + index[0..<2] + " is available.";
-            return 0;
-        }
-        help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
-            "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
-        return help;;
+            if( !help ) {
+                Error = "No such " + index[0..<2] + " is available.";
+                return 0;
+            }
+            help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
+                "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
+            return help;;
 
         case "library objects":
             topic = GetTopic(index, topic);
-        if( !file_exists(topic+".c") ){
-            Error = "No such topic found.";
-            return 0;
-        }
-        if(  catch(help = topic->GetHelp(topic)) ) {
-            Error = "An error occurred in attempting to access help.";
-            return 0;
-        }
-        if( !help ) {
-            help = "No synopsis available for this object.\n\n";
-        }
-        else {
-            help = "Synopsis:\n" + help + "\n\n";
-        }
-        tmparr = stat(topic + ".c");
-        tmpstr = "Object: " + topic + "\n"
-            "Last Modified: " + ctime(tmparr[1]) + "\n";
-        if( tmparr[2] ) {
-            tmpstr += "Last Loaded: " + ctime(tmparr[2]) + "\n\n";
-        }
-        tmparr = inherit_list(ob = find_object(topic));
-        if( !sizeof(tmparr) ) {
-            tmpstr += "No inherited objects\n\n";
-        }
-        else {
-            tmpstr += "Inherits:\n" + format_page(tmparr, 4) + "\n";
-        }
-        tmparr = functions(ob, 1);
-        tmpmap = ([]);
-        foreach(fun in tmparr) {
-            if( function_exists(fun[0], ob) != topic ) {
-                continue;
+            if( !file_exists(topic+".c") ){
+                Error = "No such topic found.";
+                return 0;
             }
-            if( fun[0] == "#global_init#" ) {
-                continue;
+            if(  catch(help = topic->GetHelp(topic)) ) {
+                Error = "An error occurred in attempting to access help.";
+                return 0;
             }
-            if( tmpmap[fun[0]] ) {
-                continue;
+            if( !help ) {
+                help = "No synopsis available for this object.\n\n";
             }
             else {
-                tmpmap[fun[0]] = ([ "type" : fun[2],
-                        "args" : (fun[1] ? fun[3..] : ({})) ]);
+                help = "Synopsis:\n" + help + "\n\n";
             }
-        }
-        help = tmpstr + help;
-        if( !sizeof(tmparr) ) {
-            help += "No functions\n\n";
-        }
-        else {
-            string fnc;
+            tmparr = stat(topic + ".c");
+            tmpstr = "Object: " + topic + "\n"
+                "Last Modified: " + ctime(tmparr[1]) + "\n";
+            if( tmparr[2] ) {
+                tmpstr += "Last Loaded: " + ctime(tmparr[2]) + "\n\n";
+            }
+            tmparr = inherit_list(ob = find_object(topic));
+            if( !sizeof(tmparr) ) {
+                tmpstr += "No inherited objects\n\n";
+            }
+            else {
+                tmpstr += "Inherits:\n" + format_page(tmparr, 4) + "\n";
+            }
+            tmparr = functions(ob, 1);
+            tmpmap = ([]);
+            foreach(fun in tmparr) {
+                if( function_exists(fun[0], ob) != topic ) {
+                    continue;
+                }
+                if( fun[0] == "#global_init#" ) {
+                    continue;
+                }
+                if( tmpmap[fun[0]] ) {
+                    continue;
+                }
+                else {
+                    tmpmap[fun[0]] = ([ "type" : fun[2],
+                            "args" : (fun[1] ? fun[3..] : ({})) ]);
+                }
+            }
+            help = tmpstr + help;
+            if( !sizeof(tmparr) ) {
+                help += "No functions\n\n";
+            }
+            else {
+                string fnc;
 
-            help += "Functions:\n";
-            tmparr = sort_array(keys(tmpmap), 1);
-            foreach(fnc in tmparr) {
-                help += tmpmap[fnc]["type"] + fnc + "(" +
-                    implode(tmpmap[fnc]["args"], ", ") + ")\n";
+                help += "Functions:\n";
+                tmparr = sort_array(keys(tmpmap), 1);
+                foreach(fnc in tmparr) {
+                    help += tmpmap[fnc]["type"] + fnc + "(" +
+                        implode(tmpmap[fnc]["args"], ", ") + ")\n";
+                }
             }
-        }
-        help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
-            "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
-        return help;
+            help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
+                "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
+            return help;
 
         case "daemon objects":
             topic = GetTopic(index, topic);
-        if( !topic || catch(help = topic->GetHelp(topic)) ) {
-            Error = "An error occurred in attempting to access help for that.";
-            return 0;
-        }
-        if( !help ) {
-            help = "No synopsis available for this object.\n\n";
-        }
-        else {
-            help = "Synopsis:\n" + help + "\n\n";
-        }
-        tmparr = stat(topic + ".c");
-        tmpstr = "Object: " + topic + "\n"
-            "Last Modified: " + ctime(tmparr[1]) + "\n";
-        if( tmparr[2] ) tmpstr += "Last Loaded: " + ctime(tmparr[2]) + "\n\n";
-        tmparr = inherit_list(ob = find_object(topic));
-        if( !sizeof(tmparr) ) tmpstr += "No inherited objects\n\n";
-        else tmpstr += "Inherits:\n" + format_page(tmparr, 4) + "\n";
-        tmparr = functions(ob, 1);
-        tmpmap = ([]);
-        foreach(fun in tmparr) {
-            if( function_exists(fun[0], ob) != topic ) continue;
-            if( fun[0] == "#global_init#" ) continue;
-            if( tmpmap[fun[0]] ) continue;
-            else tmpmap[fun[0]] = ([ "type" : fun[2],
-                    "args" : (fun[1] ?  fun[3..] : ({})) ]);
-        }
-        help = tmpstr + help;
-        if( !sizeof(tmparr) ) help += "No functions\n\n";
-        else {
-            string fnc;
+            if( !topic || catch(help = topic->GetHelp(topic)) ) {
+                Error = "An error occurred in attempting to access help for that.";
+                return 0;
+            }
+            if( !help ) {
+                help = "No synopsis available for this object.\n\n";
+            }
+            else {
+                help = "Synopsis:\n" + help + "\n\n";
+            }
+            tmparr = stat(topic + ".c");
+            tmpstr = "Object: " + topic + "\n"
+                "Last Modified: " + ctime(tmparr[1]) + "\n";
+            if( tmparr[2] ) tmpstr += "Last Loaded: " + ctime(tmparr[2]) + "\n\n";
+            tmparr = inherit_list(ob = find_object(topic));
+            if( !sizeof(tmparr) ) tmpstr += "No inherited objects\n\n";
+            else tmpstr += "Inherits:\n" + format_page(tmparr, 4) + "\n";
+            tmparr = functions(ob, 1);
+            tmpmap = ([]);
+            foreach(fun in tmparr) {
+                if( function_exists(fun[0], ob) != topic ) continue;
+                if( fun[0] == "#global_init#" ) continue;
+                if( tmpmap[fun[0]] ) continue;
+                else tmpmap[fun[0]] = ([ "type" : fun[2],
+                        "args" : (fun[1] ?  fun[3..] : ({})) ]);
+            }
+            help = tmpstr + help;
+            if( !sizeof(tmparr) ) help += "No functions\n\n";
+            else {
+                string fnc;
 
-            help += "Functions:\n";
-            tmparr = sort_array(keys(tmpmap), 1);
-            foreach(fnc in tmparr)
-                help += tmpmap[fnc]["type"] + fnc + "(" +
-                implode(tmpmap[fnc]["args"], ", ") + ")\n";
-        }
-        help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
-            "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
-        return help;    
+                help += "Functions:\n";
+                tmparr = sort_array(keys(tmpmap), 1);
+                foreach(fnc in tmparr)
+                    help += tmpmap[fnc]["type"] + fnc + "(" +
+                    implode(tmpmap[fnc]["args"], ", ") + ")\n";
+            }
+            help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
+                "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
+            return help;    
 
         case "religons": case "religion":
             if( file_exists(DIR_RELIGION_HELP "/" + topic) ) {
@@ -485,8 +485,8 @@ string GetHelpByIndex(string index, string topic) {
                     "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
                 return help;
             }
-        Error = "No such religion exists.";
-        return 0;
+            Error = "No such religion exists.";
+            return 0;
 
         case "races":
             if( help = RACES_D->GetHelp(topic) ) {
@@ -498,22 +498,22 @@ string GetHelpByIndex(string index, string topic) {
                 help = read_file(DIR_RACE_HELP + "/" + topic);
                 return help;
             }
-        Error = "There is no such race.";
-        return 0;
+            Error = "There is no such race.";
+            return 0;
 
         case "spells": case "prayers":
             ob = SPELLS_D->GetSpell(topic);
-        if( !ob ) {
-            Error = "No such spell exists.";
-            return 0;
-        }
-        if( !(help = ob->GetHelp(topic)) ) {
-            Error = "No help is available for that spell.";
-            return 0;
-        }
-        help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
-            "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
-        return help;
+            if( !ob ) {
+                Error = "No such spell exists.";
+                return 0;
+            }
+            if( !(help = ob->GetHelp(topic)) ) {
+                Error = "No help is available for that spell.";
+                return 0;
+            }
+            help = "Index: %^GREEN%^" + index + "%^RESET%^\n" +
+                "Topic: %^GREEN%^" + topic + "%^RESET%^\n\n" + help;
+            return help;
 
         case "classes":
             if( help = CLASSES_D->GetHelp(topic) ) {
@@ -523,12 +523,12 @@ string GetHelpByIndex(string index, string topic) {
                     help += read_file(DIR_CLASS_HELP + "/" + topic);
                 return help;
             }
-        Error = "No such class exists.";
-        return 0;
+            Error = "No such class exists.";
+            return 0;
 
         default:
-        Error = "No help exists for the index " + index + ".";
-        return 0;
+            Error = "No help exists for the index " + index + ".";
+            return 0;
     }
 }
 

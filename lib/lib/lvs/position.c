@@ -29,37 +29,6 @@ int SetPosition(int x){
     Position = x;
 }
 
-mixed eventFall(){
-    return fall::eventFall();
-}
-
-#if 0
-mixed eventFall(){
-    object env = environment();
-    mixed rumbo;
-    if(!env || !(rumbo = env->GetExit("down"))) return 0;
-    if(env->GetMedium() != MEDIUM_AIR){
-        send_messages("fall", "$agent_name $agent_verb to the ground.",
-                this_object(), 0, environment());
-        Position = POSITION_LYING;
-        return 1;
-    }
-    else {
-        rumbo = load_object(rumbo);
-        if(!rumbo) return 0; 
-        say(this_object()->GetName()+" plummets in from above.");
-        write("You plummet downward!");
-        if(this_object()->eventMove(rumbo)){
-            env->eventPrint(this_object()->GetName()+" continues "+
-                    possessive(this_object())+" fall downward.", MSG_ENV);
-            call_out( "eventFall", 1);
-        }
-        return 1;
-    }
-    return 0;
-}
-#endif
-
 varargs mixed eventLay(object target){
     mixed tmp;
 
@@ -104,22 +73,6 @@ varargs mixed eventKneel(object target){
         Position = POSITION_KNEELING;
         return 1;
     }
-#if 0
-    tmp = target->eventReceiveLay(this_object());
-    if( tmp != 1 ){
-        if( !tmp ){
-            eventPrint("You cannot lie there!");
-        }
-        else {
-            eventPrint(tmp);
-        }
-        return 1;
-    }
-    send_messages("lie", "$agent_name $agent_verb down on " +
-            target->GetShort() + ".", this_object(), 0, environment());
-    Position = POSITION_LYING;
-    Chair = target;
-#endif
     return 1;
 }
 

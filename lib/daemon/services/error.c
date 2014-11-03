@@ -31,8 +31,8 @@ void eventReceiveError(mixed *packet) {
             return;
         case "unk-user":
             if( !ob ) return;
-        message("system", (msg ? msg : "Unknown user reported from " + mud +
-                    "."), ob);
-        return;
+            message("system", (msg ? msg : "Unknown user reported from " + mud +
+                        "."), ob);
+            return;
     }
 }

@@ -14,18 +14,18 @@ void create(){
     SetBaseCost("gold",3);
     SetVendorType(VT_DRINK);
     SetFlaskContents("whiskey");
-    SetFlaskUses(10);
+    SetFlaskUses(8);
     SetStrength(30);
     SetMaxFlask(10); 
     SetMealType(MEAL_ALCOHOL);
     SetItems(([
-      "label" : "It is attached to the bottle and has a picture of "+
-        "a mounted soldier in a gray uniform, on a rearing horse, "+
-        "sword raised.",
-    ]));
+                "label" : "It is attached to the bottle and has a picture of "+
+                "a mounted soldier in a gray uniform, on a rearing horse, "+
+                "sword raised.",
+                ]));
     SetReads(([
-      "label" : "REBEL YELL",
-    ]));
+                "label" : "REBEL YELL",
+                ]));
 }
 void init(){
     ::init();

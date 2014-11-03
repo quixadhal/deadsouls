@@ -136,6 +136,10 @@ mixed direct_climb_out_of_obj(object ob){
     return CanClimb(this_player(), CLIMB_OUT);
 }
 
+mixed direct_climb_out(object ob){
+    return CanClimb(this_player(), CLIMB_OUT);
+}
+
 mixed direct_climb_word_obj(string word, object ob){
     if( !Climb ){
         return 0;
@@ -157,6 +161,10 @@ mixed direct_climb_word_obj(string word, object ob){
             return CanClimb(this_player(), CLIMB_THROUGH);
 
         default:
-        return 0;
+            return 0;
     }
+}
+
+mixed direct_climb_word(string word){
+    return direct_climb_word_obj(word, this_object());
 }

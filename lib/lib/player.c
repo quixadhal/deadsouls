@@ -16,7 +16,7 @@
 #include "include/player.h"
 
 #undef LIB_PLAYER_SKILL_LOSS
-#define PERCENT_XP 0.20
+#define PERCENT_XP 0.02
 #define PERCENT_SP 0.70
 #define PERCENT_MP 0.95
 #define PERCENT_HP 0.70
@@ -162,8 +162,9 @@ varargs int eventDie(mixed agent){
     if(stringp(agent)) agentname = agent;
     else agentname = agent->GetName();
 
-    if( (x = living::eventDie(agent)) != 1 ) return x;
-
+    if( (x = living::eventDie(agent)) != 1 ){
+        return x;
+    }
     if(!Deaths || !sizeof(Deaths)) 
         Deaths = ({([ "date" : ctime(time()), "enemy" : agentname ])});
     else Deaths += ({ ([ "date" : ctime(time()), "enemy" : agentname ]) });
@@ -222,7 +223,7 @@ varargs void eventRevive(int nopenalty){
     if(!nopenalty && newbiep(this_object())) {
         nopenalty = 1;
         write("As a newbie you don't incur an experience penalty"
-              " for this death.\n");
+                " for this death.\n");
     }
     if(!nopenalty){
         int expee, subexpee;
@@ -412,20 +413,20 @@ int Setup(){
 
 /* ***************** /lib/player.c data functions  ***************** */
 
-    int AddCurrency(string type, int amount){
-        if( currency_value(amount, type) > 999 )
-            log_file("currency", GetCapName() + " received "+amount+" "+type+
-                    " "+ctime(time())+"\n"+identify(previous_object(-1))+"\n");
-        return living::AddCurrency(type, amount);
-    }
+int AddCurrency(string type, int amount){
+    if( currency_value(amount, type) > 999 )
+        log_file("currency", GetCapName() + " received "+amount+" "+type+
+                " "+ctime(time())+"\n"+identify(previous_object(-1))+"\n");
+    return living::AddCurrency(type, amount);
+}
 
-    int AddBank(string bank, string type, int amount){
-        if( currency_value(amount, type) > 999 )
-            log_file("bank", GetCapName() + " deposited "+amount+" "+type+
-                    " "+ctime(time())+" into bank: "+bank+"\n" +
-                    identify(previous_object(-1))+"\n");
-        return living::AddBank(bank, type, amount);
-    }
+int AddBank(string bank, string type, int amount){
+    if( currency_value(amount, type) > 999 )
+        log_file("bank", GetCapName() + " deposited "+amount+" "+type+
+                " "+ctime(time())+" into bank: "+bank+"\n" +
+                identify(previous_object(-1))+"\n");
+    return living::AddBank(bank, type, amount);
+}
 
 string *GetMuffed(){
     return Muffed;

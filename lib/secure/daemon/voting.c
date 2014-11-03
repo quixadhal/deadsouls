@@ -50,28 +50,28 @@ mixed eventSave() {
     return VOTE_SUCCESS;
 }
 
-    mixed eventStartVoting() {
-        if( GetStatus() == VOTE_RUNNING )
-            return VOTE_ALREADY_RUNNING;
+mixed eventStartVoting() {
+    if( GetStatus() == VOTE_RUNNING )
+        return VOTE_ALREADY_RUNNING;
 
-        mapVoting["candidates"] = ([]);
-        mapVoting["votes"] = ([]);
-        mapVoting["voted"] = ({});
-        foreach( string sClass in CLASSES_D->GetClasses() ) {
-            mapVoting["candidates"][sClass] = ({});
-            mapVoting["votes"][sClass] = ([]);
-        }
-
-        mapVoting["status"] = VOTE_RUNNING;
-        mapVoting["mode"] = VOTE_MODE_CANDIDATES;
-        mapVoting["daycount"] = VOTE_DAY_COUNT;
-        call_out( (: eventNextDay :), DAY );
-        message("shout", "%^YELLOW%^Election announcement:%^RESET%^ " +
-                "Class elections have now begun! Go to the voting booth " +
-                "and nominate candidates.", users() );
-        eventSave();
-        return VOTE_SUCCESS;
+    mapVoting["candidates"] = ([]);
+    mapVoting["votes"] = ([]);
+    mapVoting["voted"] = ({});
+    foreach( string sClass in CLASSES_D->GetClasses() ) {
+        mapVoting["candidates"][sClass] = ({});
+        mapVoting["votes"][sClass] = ([]);
     }
+
+    mapVoting["status"] = VOTE_RUNNING;
+    mapVoting["mode"] = VOTE_MODE_CANDIDATES;
+    mapVoting["daycount"] = VOTE_DAY_COUNT;
+    call_out( (: eventNextDay :), DAY );
+    message("shout", "%^YELLOW%^Election announcement:%^RESET%^ " +
+            "Class elections have now begun! Go to the voting booth " +
+            "and nominate candidates.", users() );
+    eventSave();
+    return VOTE_SUCCESS;
+}
 
 mixed eventEndVoting() {
     mapVoting["status"] = VOTE_NOT_RUNNING;
@@ -267,16 +267,16 @@ int GetVoteStatus( object ob ) {
 
 string GetVoteRoom() { return VOTE_ROOM; }
 
-    int IsCouncilMember( object ob ) {
-        foreach( string sClass in CLASSES_D->GetClasses() )
-            if( mapCouncil[sClass] == convert_name(ob->GetName()) )
-                return 1;
-        return 0;
-    }
+int IsCouncilMember( object ob ) {
+    foreach( string sClass in CLASSES_D->GetClasses() )
+        if( mapCouncil[sClass] == convert_name(ob->GetName()) )
+            return 1;
+    return 0;
+}
 
-    mixed GetTest() {
-        foreach( string sClass in CLASSES_D->GetClasses() )
-            this_player()->eventPrint( sClass + " : " + mapCouncil[sClass] );
-        return 1;
-    }
+mixed GetTest() {
+    foreach( string sClass in CLASSES_D->GetClasses() )
+        this_player()->eventPrint( sClass + " : " + mapCouncil[sClass] );
+    return 1;
+}
 

@@ -77,11 +77,12 @@ varargs mixed eventScore(string arg) {
     str += ({ capitalize(poss)+" native town is "+who->GetTown()+", and "+
             prn+" "+be+" "+ (who->GetReligion() ||
                 "agnostic") + " in faith." });
-    str += ({ sprintf(capitalize(prn)+" "+haben+" solved %s, and "+haben+" %s.",
+    str += ({ sprintf(capitalize(prn)+" "+haben+" solved %s, and "+haben+" %s."+
+                " (%d Quest Points)",
                 consolidate(sizeof(who->GetQuests()),
                     "one quest"),
                 consolidate(sizeof(who->GetTitles()),
-                    "one title") ) });
+                    "one title"), who->GetQuestPoints() ) });
     birth = who->GetBirth();
     age = ( query_year(time()) - query_year(birth) );
     str += ({ sprintf(capitalize(prn)+" "+past+
@@ -121,7 +122,7 @@ varargs mixed eventScore(string arg) {
 
     if(dbt){
         str += ({ capitalize(prn)+" have "+dbt+" points of "+
-                  "experience debt." });
+                "experience debt." });
     }
 
     if(lev){

@@ -5,13 +5,33 @@ some lines can still be read:
 the old abandoned mansion southwest of the church.
 Quest Points: 2
 
+* Cave Explorer I: Was a strange and ancient machine was discovered in
+a cave deep in the northwest woods? 
+Quest Points: 3
+
+* The Postman: Warrior Queen Kasa has been waiting for weeks for word from 
+her beloved. Roshd Burlyneck is on the lookout for anyone with news he
+can pass along to Kasa. Can you bring news to Roshd he can pass along,
+so that his queen may at last have peace of mind?
+Quest Points: 5
+
 * Town Well: The town is thirsty! Nobody wants to venture to
 the river, but none can figure out why the well is dry.
 Quest Points: 7
 
 * Orcslayer: Find the famed Orcslayer sword and return it to
 Leo the archwizard. Leo was last seen going into the church.
-Quest Points: 10
+Quest Points: 7
+
+* Orcmaster: The pesky orc gang west of the town has been stealing from
+guildmasters again! Roshd saw them make off with his helmet but he's too
+busy to teach them what's what. Return Roshd his helmet.
+Quest points: 7
 
 * Princess Daphne: Dirk is lonely! Bring him Princess Daphne.
 Quest Points: 10
+
+* Cave Explorer II: Spies tell us that an Orc invasion force is gathering 
+under our town! Defeat their commander in combat to foil their plans.
+Quest points: 12
+

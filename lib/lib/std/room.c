@@ -69,6 +69,7 @@ private int		TerrainType	= T_OUTDOORS;
 private int		RespirationType;
 private int		Medium  	= MEDIUM_LAND;
 private mapping         ActionsMap      = ([]);
+private int             NoSink          = 0;
 private string          SinkRoom        = "";
 private string          FlyRoom         = "";
 private string          SkyDomain       = "";
@@ -1144,10 +1145,8 @@ int GenerateObviousExits(){
 int eventReceiveObject(object ob){
     this_object()->SetSky();
     if(this_object() && ob && (living(ob) || ob->GetMapper())){
-        //tc("1");
         if(MASTER_D->GetPerfOK()){
             int array Coords = ROOMS_D->SetRoom(this_object(), ob);
-            //tc("2: "+identify(Coords));
             this_object()->CompileNeighbors(Coords);
         }
     }
@@ -1174,6 +1173,14 @@ string SetSinkRoom(string str){
 
 string GetSinkRoom(){
     return SinkRoom;
+}
+
+int SetNoSink(int i){
+    return NoSink = i;
+}
+
+int GetNoSink(){
+    return NoSink;
 }
 
 string SetSkyDomain(string str){
@@ -1301,7 +1308,7 @@ void SetSky(){
         mixed coords = this_object()->GetCoords();
         if(!sizeof(coords)) return;
         SetFlyRoom("/domains/"+SkyDomain+"/virtual/sky/"+
-          coords[0]+","+coords[1]+","+(coords[2]+1));
+                coords[0]+","+coords[1]+","+(coords[2]+1));
         if(sizeof(FlyRoom)){
             catch(load_object(FlyRoom)->SetSinkRoom(base_name(this_object())));
         }

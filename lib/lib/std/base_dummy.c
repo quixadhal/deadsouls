@@ -21,6 +21,7 @@ inherit LIB_SMELL;
 inherit LIB_TOUCH;
 inherit LIB_KNOCK;
 inherit LIB_SCRATCH;
+inherit LIB_SINK;
 
 /* ***************** dummy.c attributes ***************** */
 
@@ -59,6 +60,8 @@ static int Destruct(){
 mixed eventMove(mixed dest){
     object ob;
     string str;
+
+    if(!valid_event(previous_object(), this_object())) return 0;
 
     str = "I am "+file_name(this_object())+", named "+identify(GetId())+", ";
     str += "and I have been asked to move ";
@@ -100,6 +103,7 @@ varargs static void create(string array id, mixed long, string array adj){
     if(environment()) str += "\nMy current environment is "+file_name(environment())+".";
     else str += "\nI currently have no environment.";
     str += "\nCall stack: "+get_stack();
+    SetNoSink(1);
 
     enter::create();
     parse_init();

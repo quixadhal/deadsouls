@@ -65,6 +65,20 @@ mkdir $OLDLIB/lib/domains/cave/virtual
 mkdir $OLDLIB/lib/domains/cave/weap
 mkdir $OLDLIB/lib/doc/phints
 mkdir $OLDLIB/lib/domains/campus/chamber
+mkdir $OLDLIB/lib/domains/amigara
+mkdir $OLDLIB/lib/domains/amigara/adm
+mkdir $OLDLIB/lib/domains/amigara/armor
+mkdir $OLDLIB/lib/domains/amigara/doors
+mkdir $OLDLIB/lib/domains/amigara/etc
+mkdir $OLDLIB/lib/domains/amigara/meals
+mkdir $OLDLIB/lib/domains/amigara/npc
+mkdir $OLDLIB/lib/domains/amigara/obj
+mkdir $OLDLIB/lib/domains/amigara/room
+mkdir $OLDLIB/lib/domains/amigara/save
+mkdir $OLDLIB/lib/domains/amigara/txt
+mkdir $OLDLIB/lib/domains/amigara/virtual
+mkdir $OLDLIB/lib/domains/amigara/weap
+mkdir $OLDLIB/lib/doc/cheats
 
 if [ $3 ]
 then

@@ -140,16 +140,18 @@ int eventPowerOff(){
     power = 0;
     if(env) env->eventUninstallModule(this_object(),1);
     else return 0;
-    if(!whom){
-        if(env && environment(env) && whom = environment(env) && living(whom)){
+    if(!whom) whom = environment(env);
+    if(!whom) return 0;
+    else {
+        if(living(whom)){
             if(whom->GetInvis() && !creatorp(whom)){
-                write("Your wrist computer makes a croaking noise, and you become visible.");
-                say(whom->GetName()+"'s wrist computer makes a croaking noise, and "+
-                        capitalize(whom->GetKeyName())+" fades into view.");
+                whom->SetInvis(0);
+                tell_object(whom, "Your wrist computer makes a croaking noise, and you become visible.");
+                tell_room(environment(whom),whom->GetName()+"'s wrist computer makes a croaking noise, and "+
+                        capitalize(whom->GetKeyName())+" fades into view.", whom);
             }
         }
     }
-    if(whom) whom->SetInvis(0);
     return 1;
 }
 

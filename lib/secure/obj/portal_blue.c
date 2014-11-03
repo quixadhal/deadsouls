@@ -73,8 +73,8 @@ mixed eventDescribeEndpoint() {
     int i;
     string file, str;
     object env, *livings, *items;
-    dest = PORTAL_D->GetOrangePortal();
 
+    dest = PORTAL_D->GetOrangePortal();
     str = "in the portal";
     env = dest;
     if(dest) file = base_name(dest)+".c";

@@ -168,21 +168,21 @@ int GetCommandNumber(){
     return CommandNumber;
 }
 
-    string GetHistory(mixed val){
-        if(!this_player() || this_player() != this_object()
-                || this_player()->GetForced()) return "";
-        if( intp(val) ){
-            if( !History[val] ) return "";
-            return History[val];
-        }
-        else if( stringp(val) ){
-            foreach(mixed key, mixed what in History){
-                if( strsrch(what, val) == 0 ) return what;
-            }
-            return "";
-        }
-        else error("Invalid argument to GetHistory().\n");
+string GetHistory(mixed val){
+    if(!this_player() || this_player() != this_object()
+            || this_player()->GetForced()) return "";
+    if( intp(val) ){
+        if( !History[val] ) return "";
+        return History[val];
     }
+    else if( stringp(val) ){
+        foreach(mixed key, mixed what in History){
+            if( strsrch(what, val) == 0 ) return what;
+        }
+        return "";
+    }
+    else error("Invalid argument to GetHistory().\n");
+}
 
 mapping GetHistoryList(){
     if( !(master()->valid_apply(({ GetKeyName() }))) ) return ([]);
@@ -193,14 +193,14 @@ mapping GetCommandHist(){
     return GetHistoryList();
 }
 
-    int SetHistorySize(int x){
-        if( !(master()->valid_apply(({ GetKeyName() }))) )
-            return HistorySize;    
-        if( x == HistorySize ) return HistorySize;
-        if( x > MAX_HISTORY_SIZE ) return HistorySize;
-        else if( x < MIN_HISTORY_SIZE ) return HistorySize;
-        return (HistorySize = x);
-    }
+int SetHistorySize(int x){
+    if( !(master()->valid_apply(({ GetKeyName() }))) )
+        return HistorySize;    
+    if( x == HistorySize ) return HistorySize;
+    if( x > MAX_HISTORY_SIZE ) return HistorySize;
+    else if( x < MIN_HISTORY_SIZE ) return HistorySize;
+    return (HistorySize = x);
+}
 
 string GetLastCommand(){
     if(!this_object()->GetForced() && 

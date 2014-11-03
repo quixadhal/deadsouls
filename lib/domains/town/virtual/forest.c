@@ -131,6 +131,7 @@ varargs void SetLongAndItems(int x, int y, int z) {
     if(y == max_south) str += " The forest is impassably thick southward.";
     if(x == -4 && y == 1) str += "\n%^GREEN%^There is a sign here you can read.%^RESET%^";
     if(x == -4 && y == 25) str += "\n%^GREEN%^There is a cave entrance in the cliff wall.%^RESET%^";
+    if(x == -3 && y == 25) str += "\n%^GREEN%^There is a cave entrance in the cliff wall.%^RESET%^";
     SetItems( ([ "forest" : "It is so vast.",
                 ({"woods","trees","vegetation","plants"}) : "Thick, foreboding and "
                 "oppressive, these seem to add to an air of danger and claustrophobia.", 
@@ -160,9 +161,19 @@ varargs void SetLongAndItems(int x, int y, int z) {
         RemoveExit("northwest");
     }
 
+    if(x == -3 && y == 25) {
+        AddItem(({"cave","opening","entrance","cave entrance"}) ,
+                "This is a dark opening in the cliff wall, leading "
+                "north into the ground.");
+        AddEnter("cave","/domains/amigara/room/cave");
+        RemoveExit("north");
+        RemoveExit("northeast");
+        RemoveExit("northwest");
+    }
+
     if(x == -4 && y == 1) {
         if(random(99) > 95) lupus = "Bad Wolf!";
-        else lupus = "Beware th";
+        else lupus = "Straight on! Beware th";
         AddItem("sign" , "This is a hastily-lettered sign planted on the ground.");
         SetRead( ({"sign"}) , lupus);
     }

@@ -104,6 +104,24 @@ int JoinGuild(object ob, string verb, string what){
     return 1;
 }
 
+int CompleteQuest2(object ob){
+    string *quests;
+    object hat = present_file("/domains/town/armor/orc_helmet", this_object());
+    quests = ob->GetQuests();
+    if(!ob->GetQuest("Orc Master Quest")){
+        ob->AddQuest("the Orc Master","Orc Master Quest");
+        eventForce("say You have solved the Orc Master Quest. Congratulations!");
+        eventForce("say I hereby award you 7 quest points, and 2000 experience points!");
+        ob->AddQuestPoints(7);
+        ob->AddExperiencePoints(2000);
+        if(hat) hat->eventDestruct();
+        reload("/domains/town/room/valley",0,1);
+        reload("/domains/town/room/orc_fortress",0,1);
+        reload("/domains/town/room/orc_temple",0,1);
+    }
+    return 1;
+}
+
 int eventReceiveObject(object foo){
     int ret;
     object ob, player;
@@ -113,6 +131,9 @@ int eventReceiveObject(object foo){
     if( !ob || !(ret = ::eventReceiveObject(foo)) ) return 0;
     if(base_name(ob) == quest_object){
         call_out("EnableJoin", 0, player, ob);
+    }
+    if(base_name(ob) == "/domains/cave/obj/letter" && interactive(player)){
+        call_out("CompleteQuest", 0, player);
     }
     return ret;
 }
@@ -140,6 +161,7 @@ mixed EnableJoin(object player, object thing){
             eventForce("say If you want, you may now ask to join the "+
                     "fighter's guild: ask roshd to join");
         }
+        call_out("CompleteQuest2", 0, player);
     }
     else {
         eventForce("say I think we went through this already.");
@@ -148,6 +170,28 @@ mixed EnableJoin(object player, object thing){
     return 1;
 }
 
+int CompleteQuest(object ob){
+    string *quests;
+    object letter = present("kletter", this_object());
+    quests = ob->GetQuests();
+    if(!ob->GetQuest("A Soldier's Lament")){
+        ob->AddQuest("the Postman","A Soldier's Lament");
+        eventForce("read letter");
+        eventForce("cry");
+        eventForce("say However you got this, I thank you, and Kasatka thanks you.")
+            ;
+        eventForce("say I hereby award you 5 quest points, and 800 experience 
+                points.");
+        ob->AddQuestPoints(5);
+        ob->AddExperiencePoints(800);
+        if(letter) letter->eventDestruct();
+        reload("/domains/cave/room/kurogane",0,1);
+    }
+    return 1;
+}
+
 void init(){
     ::init();
 }
+
+

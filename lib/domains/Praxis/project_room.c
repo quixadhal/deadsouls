@@ -44,9 +44,9 @@ int start_fun(string group) {
     return 1;
 }
 
-    int list_fun(string which) {
-        if(!which)
-            return notify_fail("List what?\n");
-        if(which == "groups")
-            return;
-    }
+int list_fun(string which) {
+    if(!which)
+        return notify_fail("List what?\n");
+    if(which == "groups")
+        return;
+}

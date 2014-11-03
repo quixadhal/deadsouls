@@ -12,12 +12,12 @@ inherit LIB_DAEMON;
 
 void eventInventory();
 
-    mixed cmd(string args) {
-        if( this_player()->GetInCombat() )
-            this_player()->SetAttack(0, (: eventInventory :), ROUND_OTHER);
-        else eventInventory();
-        return 1;
-    }
+mixed cmd(string args) {
+    if( this_player()->GetInCombat() )
+        this_player()->SetAttack(0, (: eventInventory :), ROUND_OTHER);
+    else eventInventory();
+    return 1;
+}
 
 void eventInventory() {
     mapping borg;

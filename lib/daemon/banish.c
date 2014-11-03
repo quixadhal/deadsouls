@@ -84,7 +84,6 @@ void setup_blacklist(){
         __Sites += read_big_file(CFG_IP_BLACKLIST);
         __Sites = distinct_array(__Sites);
     }
-    //tc("Number of banished ip's: "+sizeof(__Sites));
     save_banish();
 }
 

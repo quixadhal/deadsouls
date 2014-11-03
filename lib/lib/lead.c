@@ -97,11 +97,11 @@ varargs mixed CanLead(object ob){
     return 1;
 }
 
-    varargs mixed CanEvade(object ob){
-        if( ob && !ob->IsFollowing(this_object()) )
-            return ob->GetName() + " is not following you.";
-        return 1;
-    }
+varargs mixed CanEvade(object ob){
+    if( ob && !ob->IsFollowing(this_object()) )
+        return ob->GetName() + " is not following you.";
+    return 1;
+}
 
 int eventMoveFollowers(object dest){
     mapping follower;

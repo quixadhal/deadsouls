@@ -323,11 +323,11 @@ mixed indirect_judge_obj_to_obj(){
     return 1;
 }
 
-    mixed direct_use_obj_to_str(){
-        if( environment() != this_player() )
-            return "#You need better access to it.";
-        else return 1;
-    }
+mixed direct_use_obj_to_str(){
+    if( environment() != this_player() )
+        return "#You need better access to it.";
+    else return 1;
+}
 
 mixed direct_use_obj(){
     return direct_use_obj_to_str();

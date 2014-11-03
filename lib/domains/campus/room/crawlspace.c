@@ -2,6 +2,7 @@
 inherit LIB_ROOM;
 static void create() {
     room::create();
+    SetCoordinates("3999,4000,-2");
     SetClimate("indoors");
     SetAmbientLight(30);
     SetShort("a tiny crawlspace");

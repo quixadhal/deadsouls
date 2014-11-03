@@ -10,6 +10,8 @@
 #include <function.h>
 #include <talk_type.h>
 #include <message_class.h>
+#include <position.h>
+#include <daemons.h>
 
 
 inherit LIB_NPC;
@@ -374,14 +376,21 @@ mixed eventTalkRespond(object who, object targ, int cls, string msg, string lang
 mixed eventWander(){
     int fp;
     object env = environment();
-    mixed outs;
 
-    if(!env || !(outs = env->GetExits())) return 0;
+    if(!env) return 0;
 
     if( !sizeof(WanderPath) ){
+        mixed outs;
         string *sorties;
         string tmp;
 
+        if(this_object()->GetPosition() == POSITION_FLOATING){
+            if(!RACES_D->CanSwim(this_player()->GetRace())){
+                eventForce("climb out");
+            }
+        }            
+
+        outs = env->GetExits();
         sorties = ({});
         foreach(tmp in outs){
             string dest, door;

@@ -41,7 +41,7 @@ string architecture() { return __ARCH__; }
 
 string mudlib() { return "Dead Souls"; }
 
-string mudlib_version() { return "3.8.2"; }
+string mudlib_version() { return "3.8.6"; }
 
 int query_host_port() { return __PORT__; }
 
@@ -71,8 +71,8 @@ int query_windows(){
     return 0;
 }
 
-    string query_intermud_ip(){
-        if(INTERMUD_D->GetMudList()[mud_name()])
-            return INTERMUD_D->GetMudList()[mud_name()][1];
-        else return "";
-    }
+string query_intermud_ip(){
+    if(INTERMUD_D->GetMudList()[mud_name()])
+        return INTERMUD_D->GetMudList()[mud_name()][1];
+    else return "";
+}

@@ -20,14 +20,14 @@ static void create() {
     ob->SetShort("a dusty chalkboard");
     ob->eventMove(this_object());
     SetItems( ([
-        ({"sign"}) : "A sign you can read.",
-      ]) );
+                ({"sign"}) : "A sign you can read.",
+                ]) );
     SetExits( ([ 
-        "north" : "/domains/town/room/adv_guild",
-      ]) );
+                "north" : "/domains/town/room/adv_guild",
+                ]) );
     SetInventory(([
-        "/domains/default/obj/couch" : 1,
-      ]));
+                "/domains/default/obj/couch" : 1,
+                ]));
 }
 
 int CanReceive(object sneak) {
@@ -35,7 +35,7 @@ int CanReceive(object sneak) {
     if(!living_stack || !arrayp(living_stack)) living_stack = ({ sneak });
     foreach(object ob in living_stack){
         if(playerp(ob) && !builderp(ob) && !present("testchar badge",ob) &&
-          !member_group(ob,"TEST")) {
+                !member_group(ob,"TEST")) {
             message("info","Staff only, sorry.", ob);
             return 0;
         }

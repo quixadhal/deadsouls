@@ -783,15 +783,15 @@ private void eventCmdType(string arg){
     switch(arg){
         case "a":
             Session->binary = 0;
-        eventWrite("200 Type set to A.\n",0);
-        return;
+            eventWrite("200 Type set to A.\n",0);
+            return;
         case "i":
             Session->binary = 1;
-        eventWrite("200 Type set to I.\n",0);
-        return;
+            eventWrite("200 Type set to I.\n",0);
+            return;
         default:
-        eventWrite("550 Unknown file type.\n",0);
-        return;
+            eventWrite("550 Unknown file type.\n",0);
+            return;
     }
 }
 
@@ -932,19 +932,19 @@ void eventRead(string data){
         switch(cmd){
             case "user":
                 eventCmdUser(arg);
-            return;
+                return;
             case "pass":
                 eventCmdPswd(arg);
-            return;
+                return;
             case "quit":
                 eventCmdQuit(arg);
-            return;
+                return;
             case "noop":
                 eventCmdNoop(arg);
-            return;
+                return;
             default:
-            eventWrite("503 Log in with USER first.\n",0);
-            return;
+                eventWrite("503 Log in with USER first.\n",0);
+                return;
         }    
     }
     Session->idleTime = 0;

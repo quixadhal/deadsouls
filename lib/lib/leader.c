@@ -43,30 +43,30 @@ mixed eventAsk(object who, string str){
     switch(cmd){
         case "describe": case "preview": case "explain":
             eventPreview(who, args);
-        break;
+            break;
 
         case "convert":
             eventConvert(who, args);
-        break;
+            break;
 
         case "join": case "become": case "be":
             eventJoin(who, args);
-        break;
+            break;
 
         case "teach":
             eventTeachPlayer(who, args);
-        break;
+            break;
 
         default:
-        eventForce("speak I am not sure what you want");
-        if( who->GetClass() ){
-            eventForce("speak do you mean to ask me to teach a spell?");
-        }
-        else {
-            eventForce("speak do you mean to ask me to describe " +
-                    pluralize((GetClass()||"thing")) + "?");
-        }
-        break;
+            eventForce("speak I am not sure what you want");
+            if( who->GetClass() ){
+                eventForce("speak do you mean to ask me to teach a spell?");
+            }
+            else {
+                eventForce("speak do you mean to ask me to describe " +
+                        pluralize((GetClass()||"thing")) + "?");
+            }
+            break;
     }
     return 1;
 }

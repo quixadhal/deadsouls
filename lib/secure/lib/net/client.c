@@ -145,7 +145,7 @@ int eventDestruct() {
     return daemon::eventDestruct();
 }
 
-    static void eventSocketError(string str, int x) { 
-        if( LogFile ) 
-            log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
-    }
+static void eventSocketError(string str, int x) { 
+    if( LogFile ) 
+        log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
+}

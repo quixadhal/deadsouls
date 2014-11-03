@@ -10,25 +10,25 @@ inherit LIB_DAEMON;
 
 string GetHelp();
 
-    mixed cmd(string str) {
-        if( !str )
-        {
-            return GetHelp();
-        }
-        str = absolute_path(this_player()->query_cwd(), str);
-        if( file_size(str) != -1 )
-        {
-            notify_fail("mkdir: "+str+": file already exists.\n");
-            return 0;
-        }
-        if( master()->valid_write(str, previous_object(), "rmdir") == 0 )
-        {
-            notify_fail(str+": Permission denied.\n");
-            return 0;
-        }
-        write(mkdir(str) ? "Ok.\n" : str+": couldn't make directory.\n");
-        return 1;
+mixed cmd(string str) {
+    if( !str )
+    {
+        return GetHelp();
     }
+    str = absolute_path(this_player()->query_cwd(), str);
+    if( file_size(str) != -1 )
+    {
+        notify_fail("mkdir: "+str+": file already exists.\n");
+        return 0;
+    }
+    if( master()->valid_write(str, previous_object(), "rmdir") == 0 )
+    {
+        notify_fail(str+": Permission denied.\n");
+        return 0;
+    }
+    write(mkdir(str) ? "Ok.\n" : str+": couldn't make directory.\n");
+    return 1;
+}
 
 string GetHelp(){
     return ("Syntax: mkdir <directory>\n\n"

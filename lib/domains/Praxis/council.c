@@ -72,19 +72,19 @@ void create()
                 "forlock" : "The Great Enforcer, donning a great black robe "
                 "lined with a deep red sheath.  The deep stare of "
                 "Forlock fills you with all that is good and just.",
-                                           "descartes" : "Descartes of Borg, in his most noble position "
-                                               "upon a great white horse, is the embodiment of "
-                                               "great wisdom and knowlege.",
-                                           "lassondra" : "Long, black wavy hair drape down upon a "
-                                               "great green cloak upon her broad sholders.  "
-                                               "The warm smile and loving eyes depict equality "
-                                               "and fairness for all.",
-                                           "shadowwolf" : "Donning a long hooded robe, Shadowwolf is "
-                                               "perhaps the most mysterious of the four.  "
-                                               "Shadowwolf's eyes faintly pierce the darkness "
-                                               "that surrounds him, seemingly staring "
-                                               "directly at you."
-                                               ]) );
+                    "descartes" : "Descartes of Borg, in his most noble position "
+                        "upon a great white horse, is the embodiment of "
+                        "great wisdom and knowlege.",
+                    "lassondra" : "Long, black wavy hair drape down upon a "
+                        "great green cloak upon her broad sholders.  "
+                        "The warm smile and loving eyes depict equality "
+                        "and fairness for all.",
+                    "shadowwolf" : "Donning a long hooded robe, Shadowwolf is "
+                        "perhaps the most mysterious of the four.  "
+                        "Shadowwolf's eyes faintly pierce the darkness "
+                        "that surrounds him, seemingly staring "
+                        "directly at you."
+                        ]) );
 }
 
 void init()
@@ -292,7 +292,7 @@ int cmd_cast( string arg )
         case "abs":
             policies[title]["Abs"] += ({ name }); break;
         default:
-        return notify_fail( "You vote must be 'aye', 'nay' or 'abs'.\n" );
+            return notify_fail( "You vote must be 'aye', 'nay' or 'abs'.\n" );
     }
     policies[title]["Voted"][name] = capitalize( vote );
     if( policies[title]["Repeal"] )

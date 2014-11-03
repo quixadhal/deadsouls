@@ -31,6 +31,10 @@ int eventDematerialize(){
     return 1;
 }
 
+int eventDispel(){
+    return eventDematerialize();
+}
+
 static void create() {
     item::create();
     AddSave( ({ "Duration" }) );

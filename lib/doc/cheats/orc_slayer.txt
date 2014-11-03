@@ -1,0 +1,270 @@
+You should now be standing in the secret cave in the woods, having
+just completed the Cave Explorer I quest. Now things get complicated,
+because the next quest is Orc Slayer, and as a weak human there is
+absolutely no way you can fight your way through this quest. You will
+have to sneak around, so pay attention to all the details here.
+
+The first thing you need to do is find a way to become invisible so
+that you can sneak by some orcs later. There happens to be an invisibility
+device available to you, but it is far away. You can't walk to it. You have 
+to teleport to it. The good news is that there is a teleportation device
+in this secret cave you're standing in! It's called a stargate and you
+can dial different destinations on it to reach other stargates. Type:
+
+dial campus lab
+enter gate
+
+See doctor Kleiner? He is wearing a badge you need, but you can't kill
+him for it, he will escape if you try. So leave him alone for now. We need
+to get you some other loot.
+
+1s, 1e, 1n, 3e, open door, 1s
+
+You are now in the Virtual Campus admissions room, and there is a robot
+here named Jenny who will give you an introduction to the game, but more
+importantly, she will give you some valuable loot you can sell at the
+campus store. You'll see why you need to get this loot, just trust me 
+for now. type:
+
+activate bot
+
+And when you're done reading what she says, type:
+
+next tip
+
+Until she's done giving you tips. At the end she will give you a hat and
+some other goodies. When you have the loot, go:
+
+1n, 2e, 1n
+
+To the campus bookstore, and type: 
+
+sell hat to kim
+
+This should get you a bunch of dollars. Now type:
+
+buy coat from kim
+
+And she will give you a lab coat. You see, Dr. Kleiner is looking for
+his lab coat, and you will give this to him. Go back to Kleiner:
+
+1s, 5w, 1s, 1w, 1n
+
+give coat to kleiner
+
+Note that while Kleiner is putting on the coat, he drops the badge! Grab
+it quick:
+
+get badge
+wear badge
+
+Now you can enter the room with the invisibility device. You hadn't forgot
+about that, had you? 
+
+2s
+
+get computer from bench
+get module from bench
+wear computer
+activate computer
+open computer
+install module in computer
+close computer
+
+Now you're ready to do some serious sneaking around. You're not 
+invisible yet, but we're going to hold off on that for now. Being invisible
+uses up your stamina points, so we're going to save it for when you
+really need it. Let's get back to the main village and get some other
+stuff you really need.
+
+2n
+dial cave
+enter gate
+26s, 2e, 1s
+
+Now, here you may run into a problem. If you went up a few levels already,
+you won't be able to get past this guard, because he only ignores total
+newbies. So you'll have to sneak by him:
+
+cloak
+1s
+decloak
+
+Remember to decloak. If you walk around cloaked (invisible) all the time
+you will run out of stamina and that's no fun. Now, let's look around:
+
+look
+look at window
+
+1w, 1n
+get all
+1s, 1e
+drop ladder
+
+The mansion door is locked so the only way in is to:
+
+climb ladder
+
+You're now in the old abandoned mansion. Time to grab some stuff you'll need:
+
+1w
+search
+
+You should now see a complex key. You'll need it for opening a safe later.
+
+get key
+1e, 2s, 1d, 2n
+cloak
+1e
+
+Here you see a thief that has been using the abandoned mansion as his
+own home. If he sees you he will attack, so you really should sneak by
+him instead. Notice the rug here? Doesn't it seem strange that it was
+so obvious? Is anything underneath it?
+
+move rug
+open door
+1d
+turn on flashlight
+look
+open chest
+get all from chest
+get all from bag
+1u, 1w
+decloak
+
+Ok, so let's review what we've done so far. We found an invisibility device,
+used it to get past a gate guard, used a ladder to climb into a mansion,
+found a key, snuck past a thief to find another key, and now we have
+a bunch of loot and money, and you're possibly at level 5 now!
+
+score
+
+Pretty cool! But we haven't solved the orcslayer quest yet, so let's keep
+going. 
+
+2s, u
+unlock door with silver key
+open door
+1s
+
+Ok, notice some other obvious things here? A bed and a wardrobe? We'll
+get to the wardrobe later, for now let's see if there's anything behind this
+big bed:
+
+move bed
+
+Well well well! Let's explore further:
+
+enter passageway
+unlock safe with complex key
+open safe
+get all from safe
+drop complex key
+
+Goodness gracious! That's quite a lot of good loot! A grenade?!? Well don't
+use it yet, this is exactly what we will need to solve the orc slayer
+quest. We're almost there. Now, you don't need the plastic flashlight 
+since you got a big maglite flashlight from the secret chamber downstairs.
+
+drop plastic flashlight
+4n, 1d, 2n, 2w, 1sw
+
+Ok here's where things get tricky. We'll need to sneak by a bunch of orcs,
+but we don't want to waste stamina doing it, so we want to be efficient. We
+also want to make sure that we don't make mistakes because we'll need to
+move quickly. 
+
+First, let's get where we're going:
+
+cloak
+1w, 1n, 1w
+
+It's a good thing you're cloaked because you would have been attacked
+by all those orcs you snuck past. You're now in the temple of the orc
+shaman. If it's too dark to see, turn on the maglite:
+
+turn on maglite
+
+Now we're going to plan things out to make sure we don't make any 
+mistakes. The game has a way for you to bind keys to specific commands.
+For example type:
+
+alias 1 smile
+
+Now if you type the number 1 and hit enter, the game will act as if you
+typed out the command "smile". This is important because there are
+some commands that need to be typed quickly but cannot be misspelled.
+Using keyboard aliases helps in these time-sensitive situations.
+
+We're about to have a time sensitive situation. Make some aliases:
+
+alias 1 pull pin on grenade
+alias 2 drop grenade
+alias 3 go east
+
+Make sure you have those aliases entered correctly. Especially make sure you
+made number 3 be go east, not the letter e, because e is itself an alias and
+aliases can't refer to aliases. Now go ahead:
+
+1
+2
+3
+
+And wait 10 seconds. Don't go back west too soon or you'll be in the room
+when the grenade goes off! To be sure it's safe, try to look into the
+next room:
+
+peer west
+
+Is the shaman blown up? Good, go back and get that sword from him.
+
+get sword from corpse
+get helmet from corpse
+
+You don't need the helmet right this minute, but you will later, so get
+it if you can. Now let's go back to the church:
+
+1e, 1s, 1e
+decloak
+1ne, 3e, 1n
+
+All righty, we're almost done! Did you notice that the church has an 
+elevator? Let's find out what's in the basement.
+
+push button
+1w
+push b button
+1e
+
+This is Leo the archwizard. Don't worry, he's not named after anyone you
+know, he's been around a long long time. See how he's complaining he lost 
+the orcslayer? Take a look at the sword you got from the shaman.
+
+exa sword
+
+Interesting huh? What if this is what Leo is looking for?
+
+give sword to leo
+
+Ta-daa! Now you have solved the orc slayer quest, and Herkimer will
+allow you to join the mages guild:
+
+push button
+1w
+push 1 button
+1e
+1s, 1e, 1s, 1w, 1s
+ask herkimer to join
+ask herkimer to teach whip
+ask herkimer to teach buffer
+ask herkimer to teach missile
+ask herkimer to teach meditate
+ask herkimer to teach light
+
+And now try out some of your new spells:
+
+cast whip
+cast buffer
+
+

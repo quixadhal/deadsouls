@@ -70,11 +70,11 @@ mixed cmd(string args) {
         lines += ({ center("Training Points: " + ob->GetTrainingPoints() +
                     "    " +
                     "Quest Points: "+ ob->GetQuestPoints(),cols)
-                 });
+                });
         lines += ({ center("Experience Points: " + ob->GetExperiencePoints() +
                     "    " +
                     "Experience Debt: "+ dbt,cols)
-                 });
+                });
     } else {
         lines += ({ center("Training Points: " + ob->GetTrainingPoints() +
                     "    " +

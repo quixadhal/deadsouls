@@ -183,33 +183,33 @@ void write_data(int fd, mixed data){
 void broadcast_data(mapping targets, mixed data){
     validate();
     yenta("SSOCK: broadcast_data("+identify(targets)+", "+identify(data));
-    foreach(int *arr in unique_array(values(targets), (: $1 :))){
-        write_data(arr[0], data);
-    }
-}
+            foreach(int *arr in unique_array(values(targets), (: $1 :))){
+            write_data(arr[0], data);
+            }
+            }
 
-static void setup(){
-    int router_port;
+            static void setup(){
+            int router_port;
 
-    if(!find_object(IMC2_SERVER_D)) return;
+            if(!find_object(IMC2_SERVER_D)) return;
 
-    router_port = atoi(IMC2_SERVER_D->GetRouterPort());
-    server_log("ssocket setup got called","ssocket");
-    if ((router_socket = socket_create(STREAM, "read_callback", "close_callback")) < 0){
-        server_log("setup: Failed to create socket.","ssocket");
-        return;
-    }
-    if (socket_bind(router_socket, router_port) < 0) {
-        socket_close(router_socket);
-        server_log("setup: Failed to bind socket to port.","ssocket");
-        return;
-    }
-    if (socket_listen(router_socket, "listen_callback") < 0) {
-        socket_close(router_socket);
-        server_log("setup: Failed to listen to socket.","ssocket");
-    }
-    server_log("ssocket setup ended","ssocket");
-}
+            router_port = atoi(IMC2_SERVER_D->GetRouterPort());
+            server_log("ssocket setup got called","ssocket");
+            if ((router_socket = socket_create(STREAM, "read_callback", "close_callback")) < 0){
+            server_log("setup: Failed to create socket.","ssocket");
+            return;
+            }
+            if (socket_bind(router_socket, router_port) < 0) {
+            socket_close(router_socket);
+            server_log("setup: Failed to bind socket to port.","ssocket");
+            return;
+            }
+            if (socket_listen(router_socket, "listen_callback") < 0) {
+                socket_close(router_socket);
+                server_log("setup: Failed to listen to socket.","ssocket");
+            }
+            server_log("ssocket setup ended","ssocket");
+            }
 
 void complete_socket_handoff(int i){
 

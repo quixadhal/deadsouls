@@ -4,6 +4,16 @@
 #include <medium.h>
 #include <message_class.h>
 
+int NoSink;
+
+int SetNoSink(int i){
+    return NoSink = i;
+}
+
+int GetNoSink(){
+    return NoSink;
+}
+
 mixed eventSink(){
     int err;
     string rvoid = ROOMS_D->GetVoid(this_object());
@@ -15,6 +25,7 @@ mixed eventSink(){
 
     if(!env || ( !(rumbo = env->GetExit("down")) && 
                 !(sizeof(rumbo = env->GetSinkRoom())))) return 0;
+    if(NoSink || env->GetNoSink()) return 0;
     if(env == rumbo) return 0;
     if(this_object()->GetPosition() == POSITION_SWIMMING){
         return 2;

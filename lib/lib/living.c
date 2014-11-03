@@ -258,16 +258,16 @@ mixed indirect_steal_obj_from_liv(object item, mixed args...){
     return 1;
 }
 
-    mixed direct_backstab_liv(){
-        if( this_object() == this_player() )
-            return "That would be messy.";
-        if( member_array(this_object(), this_player()->GetEnemies()) != -1 )
-            return "%^RED%^You have lost the element of surprise.";
-        if( environment()->GetProperty("no attack") ||
-                GetProperty("no backstab") )
-            return "A mysterious forces stays your hand.";
-        return 1;
-    }
+mixed direct_backstab_liv(){
+    if( this_object() == this_player() )
+        return "That would be messy.";
+    if( member_array(this_object(), this_player()->GetEnemies()) != -1 )
+        return "%^RED%^You have lost the element of surprise.";
+    if( environment()->GetProperty("no attack") ||
+            GetProperty("no backstab") )
+        return "A mysterious forces stays your hand.";
+    return 1;
+}
 
 mixed direct_heal_str_of_liv(string limb){
     string array limbs = GetLimbs();
@@ -331,13 +331,13 @@ mixed direct_portal_to_liv(){
     return direct_teleport_to_liv();
 }
 
-    mixed direct_resurrect_liv(){
-        if( this_player() == this_object() )
-            return "You cannot resurrect yourself.";
-        if( !GetUndead() ) 
-            return GetName() + " is not dead!";
-        return CanReceiveMagic(0, "resurrect");
-    }
+mixed direct_resurrect_liv(){
+    if( this_player() == this_object() )
+        return "You cannot resurrect yourself.";
+    if( !GetUndead() ) 
+        return GetName() + " is not dead!";
+    return CanReceiveMagic(0, "resurrect");
+}
 
 mixed direct_scry_liv(){
     object env = environment();
@@ -796,22 +796,22 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
     if( !GetUndead() ) switch( newclim ){
         case "arid":
             if(!creatorp(this_object())) AddStaminaPoints(-0.3);
-        break;
+            break;
         case "tropical":
             if(!creatorp(this_object())) AddStaminaPoints(-0.3);
-        break;
+            break;
         case "sub-tropical":
             if(!creatorp(this_object())) AddStaminaPoints(-0.2);
-        break;
+            break;
         case "sub-arctic":
             if(!creatorp(this_object())) AddStaminaPoints(-0.2);
-        break;
+            break;
         case "arctic":
             if(!creatorp(this_object())) AddStaminaPoints(-0.3);	  
-        break;
+            break;
         default:
-        if(!creatorp(this_object())) AddStaminaPoints(-0.1);	  
-        break;	    
+            if(!creatorp(this_object())) AddStaminaPoints(-0.1);	  
+            break;	    
     }
     if( prevclim != newclim && prevclim != "indoors" && newclim != "indoors" ){
         switch(prevclim){
@@ -821,14 +821,14 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
                             this_object());
                 else message("environment", "The air is getting a bit cooler.",
                         this_object());
-            break;
+                break;
             case "tropical":
                 if( newclim != "arid" )
                     message("environment", "The air is not quite as humid.",
                             this_object());
                 else message("environment", "The air has become suddenly dry.",
                         this_object());
-            break;
+                break;
             case "sub-tropical":
                 if( newclim == "arid" )
                     message("environment", "The air has become suddenly dry.",
@@ -838,7 +838,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
                             this_object());
                 else message("environment", "The air is not quite as humid.",
                         this_object());
-            break;
+                break;
             case "temperate":
                 if( newclim == "arid" )
                     message("environment", "The air is a bit drier and warmer.",
@@ -851,7 +851,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
                             this_object());
                 else message("environment", "The air is a bit colder now.",
                         this_object());
-            break;
+                break;
             case "sub-arctic":
                 if( newclim == "arid" || newclim == "tropical" ||
                         newclim == "sub-tropical" )
@@ -862,7 +862,7 @@ varargs int eventMoveLiving(mixed dest, string omsg, string imsg, mixed dir){
                             this_object());
                 else message("environment", "It is not quite as cold as "
                         "before.", this_object());
-            break;
+                break;
             case "arctic":
                 if( newclim == "sub-arctic" )
                     message("environment", "It is not quite as cold now.",

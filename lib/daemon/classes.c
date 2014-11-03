@@ -41,10 +41,10 @@ static void create() {
     SaveObject(SaveFile);
 }
 
-    static private void validate() {
-        if( !(master()->valid_apply(({ PRIV_ASSIST }))) )
-            error("Illegal attempt to modify class data");
-    }
+static private void validate() {
+    if( !(master()->valid_apply(({ PRIV_ASSIST }))) )
+        error("Illegal attempt to modify class data");
+}
 
 int ClassMember(string my_class, string query_class) {
     mapping cls;

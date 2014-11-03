@@ -153,20 +153,20 @@ object *clone_guards(int num) {
     return obs;
 }
 
-    string death_by_hanging(object who) {
-        if(member_array(who, __Prisoners) == -1) 
-            return who->query_cap_name()+" is not a prisoner.";
-        message("say", "%^RED%^You hear the rythmic pounding of "
-                "the city guard approaching the door.  Two large, burly "
-                "men in blue step through the door and, without emotion, "
-                "bind you hands tightly together with thick rope.",
-                who);
-        shout("%^BOLD%^%^RED%^Distant bells ring thrice, "
-                "signaling the pending execution of "+who->query_cap_name()+
-                ".");
-        call_out("hanging_part_two", 2, who);
-        return "The execution has begun.";
-    }
+string death_by_hanging(object who) {
+    if(member_array(who, __Prisoners) == -1) 
+        return who->query_cap_name()+" is not a prisoner.";
+    message("say", "%^RED%^You hear the rythmic pounding of "
+            "the city guard approaching the door.  Two large, burly "
+            "men in blue step through the door and, without emotion, "
+            "bind you hands tightly together with thick rope.",
+            who);
+    shout("%^BOLD%^%^RED%^Distant bells ring thrice, "
+            "signaling the pending execution of "+who->query_cap_name()+
+            ".");
+    call_out("hanging_part_two", 2, who);
+    return "The execution has begun.";
+}
 
 void hanging_part_two(object who) {
     message("say", "\n%^CYAN%^The guard whispers to you: "
@@ -385,16 +385,16 @@ void squad_part_seven(object place) {
     if(thing=present("pole", place)) thing->destruct();
 }
 
-    string death_by_torture(object who) {
-        if(member_array(who, __Prisoners) == -1) 
-            return who->query_cap_name()+" is not a prisoner.";
-        message("say", "%^RED%^A large guard enters your cell and ties "
-                "your hands with a large rope.  Saying nothing, he drags you "
-                "out of the room.", who);
-        new("/"+__DIR__+"obj/misc/handcuffs")->move(who);
-        call_out("torture_part_two", 3, who);
-        return "The execution has begun.";
-    }
+string death_by_torture(object who) {
+    if(member_array(who, __Prisoners) == -1) 
+        return who->query_cap_name()+" is not a prisoner.";
+    message("say", "%^RED%^A large guard enters your cell and ties "
+            "your hands with a large rope.  Saying nothing, he drags you "
+            "out of the room.", who);
+    new("/"+__DIR__+"obj/misc/handcuffs")->move(who);
+    call_out("torture_part_two", 3, who);
+    return "The execution has begun.";
+}
 
 void torture_part_two(object who) {
     who->eventMoveLiving("/"+__DIR__+"torture_room");
@@ -488,21 +488,21 @@ void torture_part_nine(object who) {
     who->die();
 }
 
-    string death_by_the_pit(object who) {
-        if(member_array(who, __Prisoners) == -1)
-            return who->query_cap_name()+" is not a prisoner.";
-        message("say", "%^RED%^A large, burly guard enters the cell and "
-                "securly ties your hands with a peice of rope.", who);
-        message("say", "\n%^RED%^%^BOLD%^The guard tells you:%^RESET%^ It's "
-                "to the pit with your sorry self.  Hehehe.", who);
-        message("say", "\n%^RED%^The guard drags you out of the building "
-                "towards the dreaded pit...", who);
-        shout("%^RED%^Distant bells signal the pending death "
-                "of "+who->query_cap_name()+" in the dreaded Pit of Spiders.");
-        new("/"+__DIR__+"obj/misc/handcuffs")->move(who);
-        call_out("pit_part_two", 5, who);
-        return "The execution has begun.";
-    }
+string death_by_the_pit(object who) {
+    if(member_array(who, __Prisoners) == -1)
+        return who->query_cap_name()+" is not a prisoner.";
+    message("say", "%^RED%^A large, burly guard enters the cell and "
+            "securly ties your hands with a peice of rope.", who);
+    message("say", "\n%^RED%^%^BOLD%^The guard tells you:%^RESET%^ It's "
+            "to the pit with your sorry self.  Hehehe.", who);
+    message("say", "\n%^RED%^The guard drags you out of the building "
+            "towards the dreaded pit...", who);
+    shout("%^RED%^Distant bells signal the pending death "
+            "of "+who->query_cap_name()+" in the dreaded Pit of Spiders.");
+    new("/"+__DIR__+"obj/misc/handcuffs")->move(who);
+    call_out("pit_part_two", 5, who);
+    return "The execution has begun.";
+}
 
 
 void pit_part_two(object who) {
@@ -573,19 +573,19 @@ int prevent_down() {
     return 0;
 }
 
-    string death_by_stoning(object who) {
-        if(member_array(who, __Prisoners) == -1) 
-            return who->query_cap_name()+" is not a prisoner.";
-        message("say", "%^RED%^A guard enters and ties your hands together "
-                "with a thick rope.", who);
-        message("say", "\n%^BOLD%^%^RED%^A guard tells you:%^RESET%^ Right "
-                "this way, you scumbag.", who);
-        message("say", "\n%^RED%^The guard grabs you by the arm and drags you "
-                "towards the town square.", who);
-        // shout("%^RED%^Distant bells sound, signaling the execution "
-        // "of "+who->query_cap_name()+" by stoning in the town square.");
-        call_out("stoning_part_two", 5, who);
-    }
+string death_by_stoning(object who) {
+    if(member_array(who, __Prisoners) == -1) 
+        return who->query_cap_name()+" is not a prisoner.";
+    message("say", "%^RED%^A guard enters and ties your hands together "
+            "with a thick rope.", who);
+    message("say", "\n%^BOLD%^%^RED%^A guard tells you:%^RESET%^ Right "
+            "this way, you scumbag.", who);
+    message("say", "\n%^RED%^The guard grabs you by the arm and drags you "
+            "towards the town square.", who);
+    // shout("%^RED%^Distant bells sound, signaling the execution "
+    // "of "+who->query_cap_name()+" by stoning in the town square.");
+    call_out("stoning_part_two", 5, who);
+}
 
 void stoning_part_two(object who) {
     object *townsfolk, *homes;
@@ -653,20 +653,20 @@ void stoning_part_three(mixed *townsfolk) {
         townsfolk[0][x]->eventMoveLiving(townsfolk[1][x]);
 }
 
-    string death_by_beheading(object who) {
-        if(member_array(who, __Prisoners) == -1) 
-            return who->query_cap_name()+" is not a prisoner.";
-        message("say", "%^RED%^A large, burly guard enters your cell and securly "
-                "ties your hands with a thick rope.  He grabs your arm and pulls "
-                "you towards the exit of the prison, in the direction of the town "
-                "square.", who);
-        shout("%^RED%^Distant bells ring thrice, signaling the "
-                "public beheading of "+who->query_cap_name()+" at the town "
-                "square");
-        new("/"+__DIR__+"obj/misc/handcuffs")->move(who);
-        call_out("beheading_part_two", 2, who);
-        return "The execution has begun";
-    }
+string death_by_beheading(object who) {
+    if(member_array(who, __Prisoners) == -1) 
+        return who->query_cap_name()+" is not a prisoner.";
+    message("say", "%^RED%^A large, burly guard enters your cell and securly "
+            "ties your hands with a thick rope.  He grabs your arm and pulls "
+            "you towards the exit of the prison, in the direction of the town "
+            "square.", who);
+    shout("%^RED%^Distant bells ring thrice, signaling the "
+            "public beheading of "+who->query_cap_name()+" at the town "
+            "square");
+    new("/"+__DIR__+"obj/misc/handcuffs")->move(who);
+    call_out("beheading_part_two", 2, who);
+    return "The execution has begun";
+}
 
 void beheading_part_two(object who) {
     (DIR_STANDARD_DOMAIN+"/square")->SetProperty("no bump", 1);

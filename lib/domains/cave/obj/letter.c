@@ -31,7 +31,7 @@ string ReadFun(){
 void create(){
     ::create();
     SetKeyName("letter");
-    SetId(({"letter","sheet","paper","sheet of paper"}));
+    SetId(({"letter","sheet","paper","sheet of paper","kletter"}));
     SetAdjectives(({"small"}));
     SetShort("a letter");
     SetLong("This is a sheet of paper with a message printed on it. ");

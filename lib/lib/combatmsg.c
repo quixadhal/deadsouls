@@ -111,13 +111,13 @@ mixed GetCombatVerbs(string type, int damage){
     switch(type){
         case "knife": case "blade":
             ptr = BLADE_DEGREES;
-        break;
+            break;
         case "projectile":
             ptr = PROJECTILE_DEGREES;
-        break;
+            break;
         default:
-        ptr = BLUNT_DEGREES;
-        break;
+            ptr = BLUNT_DEGREES;
+            break;
     }
     if( !sizeof(ptr) || !arrayp(ptr))
         return ({ ({ "hit", "hits" }), ({ "solidly" }) });

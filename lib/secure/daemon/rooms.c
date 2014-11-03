@@ -454,101 +454,101 @@ varargs mixed SetRoom(object arg_ob, object player, string manual){
             last_exit = key;
             switch(key){
                 case "north" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"];
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"] - 1;
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"];
-                breakout = 1;
-                break;
+                               WorldMap[sub_pre][sub_name]["coords"]["x"];
+                               WorldMap[prefix][room_name]["coords"]["y"] =
+                                   WorldMap[sub_pre][sub_name]["coords"]["y"] - 1;
+                               WorldMap[prefix][room_name]["coords"]["z"] =
+                                   WorldMap[sub_pre][sub_name]["coords"]["z"];
+                               breakout = 1;
+                               break;
                 case "south" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"];
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"] + 1;
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"];
-                breakout = 1;
-                break;
+                               WorldMap[sub_pre][sub_name]["coords"]["x"];
+                               WorldMap[prefix][room_name]["coords"]["y"] =
+                                   WorldMap[sub_pre][sub_name]["coords"]["y"] + 1;
+                               WorldMap[prefix][room_name]["coords"]["z"] =
+                                   WorldMap[sub_pre][sub_name]["coords"]["z"];
+                               breakout = 1;
+                               break;
                 case "east" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"] - 1;
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"];
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"];
-                breakout = 1;
-                break;
+                              WorldMap[sub_pre][sub_name]["coords"]["x"] - 1;
+                              WorldMap[prefix][room_name]["coords"]["y"] =
+                                  WorldMap[sub_pre][sub_name]["coords"]["y"];
+                              WorldMap[prefix][room_name]["coords"]["z"] =
+                                  WorldMap[sub_pre][sub_name]["coords"]["z"];
+                              breakout = 1;
+                              break;
                 case "west" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"] + 1;
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"];
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"];
-                breakout = 1;
-                break;
+                              WorldMap[sub_pre][sub_name]["coords"]["x"] + 1;
+                              WorldMap[prefix][room_name]["coords"]["y"] =
+                                  WorldMap[sub_pre][sub_name]["coords"]["y"];
+                              WorldMap[prefix][room_name]["coords"]["z"] =
+                                  WorldMap[sub_pre][sub_name]["coords"]["z"];
+                              breakout = 1;
+                              break;
                 case "northeast" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"] - 1;
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"] - 1;
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"];
-                breakout = 1;
-                break;
+                                   WorldMap[sub_pre][sub_name]["coords"]["x"] - 1;
+                                   WorldMap[prefix][room_name]["coords"]["y"] =
+                                       WorldMap[sub_pre][sub_name]["coords"]["y"] - 1;
+                                   WorldMap[prefix][room_name]["coords"]["z"] =
+                                       WorldMap[sub_pre][sub_name]["coords"]["z"];
+                                   breakout = 1;
+                                   break;
                 case "northwest" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"] + 1;
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"] - 1;
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"];
-                breakout = 1;
-                break;
+                                   WorldMap[sub_pre][sub_name]["coords"]["x"] + 1;
+                                   WorldMap[prefix][room_name]["coords"]["y"] =
+                                       WorldMap[sub_pre][sub_name]["coords"]["y"] - 1;
+                                   WorldMap[prefix][room_name]["coords"]["z"] =
+                                       WorldMap[sub_pre][sub_name]["coords"]["z"];
+                                   breakout = 1;
+                                   break;
                 case "southeast" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"] - 1;
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"] + 1;
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"];
-                breakout = 1;
-                break;
+                                   WorldMap[sub_pre][sub_name]["coords"]["x"] - 1;
+                                   WorldMap[prefix][room_name]["coords"]["y"] =
+                                       WorldMap[sub_pre][sub_name]["coords"]["y"] + 1;
+                                   WorldMap[prefix][room_name]["coords"]["z"] =
+                                       WorldMap[sub_pre][sub_name]["coords"]["z"];
+                                   breakout = 1;
+                                   break;
                 case "southwest" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"] + 1;
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"] + 1;
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"];
-                breakout = 1;
-                break;
+                                   WorldMap[sub_pre][sub_name]["coords"]["x"] + 1;
+                                   WorldMap[prefix][room_name]["coords"]["y"] =
+                                       WorldMap[sub_pre][sub_name]["coords"]["y"] + 1;
+                                   WorldMap[prefix][room_name]["coords"]["z"] =
+                                       WorldMap[sub_pre][sub_name]["coords"]["z"];
+                                   breakout = 1;
+                                   break;
                 case "up" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"];
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"];
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"] - 1;
-                breakout = 1;
-                break;
+                            WorldMap[sub_pre][sub_name]["coords"]["x"];
+                            WorldMap[prefix][room_name]["coords"]["y"] =
+                                WorldMap[sub_pre][sub_name]["coords"]["y"];
+                            WorldMap[prefix][room_name]["coords"]["z"] =
+                                WorldMap[sub_pre][sub_name]["coords"]["z"] - 1;
+                            breakout = 1;
+                            break;
                 case "down" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"];
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"];
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"] + 1;
-                breakout = 1;
-                break;
+                              WorldMap[sub_pre][sub_name]["coords"]["x"];
+                              WorldMap[prefix][room_name]["coords"]["y"] =
+                                  WorldMap[sub_pre][sub_name]["coords"]["y"];
+                              WorldMap[prefix][room_name]["coords"]["z"] =
+                                  WorldMap[sub_pre][sub_name]["coords"]["z"] + 1;
+                              breakout = 1;
+                              break;
                 case "fly" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"];
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"];
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"] - 1;
-                breakout = 1;
-                break;
+                             WorldMap[sub_pre][sub_name]["coords"]["x"];
+                             WorldMap[prefix][room_name]["coords"]["y"] =
+                                 WorldMap[sub_pre][sub_name]["coords"]["y"];
+                             WorldMap[prefix][room_name]["coords"]["z"] =
+                                 WorldMap[sub_pre][sub_name]["coords"]["z"] - 1;
+                             breakout = 1;
+                             break;
                 case "sink" : WorldMap[prefix][room_name]["coords"]["x"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["x"];
-                WorldMap[prefix][room_name]["coords"]["y"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["y"];
-                WorldMap[prefix][room_name]["coords"]["z"] =
-                    WorldMap[sub_pre][sub_name]["coords"]["z"] + 1;
-                breakout = 1;
-                break;
+                              WorldMap[sub_pre][sub_name]["coords"]["x"];
+                              WorldMap[prefix][room_name]["coords"]["y"] =
+                                  WorldMap[sub_pre][sub_name]["coords"]["y"];
+                              WorldMap[prefix][room_name]["coords"]["z"] =
+                                  WorldMap[sub_pre][sub_name]["coords"]["z"] + 1;
+                              breakout = 1;
+                              break;
             }
         }
         if(breakout) break;

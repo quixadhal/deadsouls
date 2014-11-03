@@ -1,3 +1,18 @@
+---- 3.8.6 ---
+- Released 2014-11-03
+- Fixed poison never wearing off.
+- Added a few quests.
+- Added Get/SetNoSink to rooms and items in case something shouldn't sink.
+- Fixed some wonky stuff regarding falling and climbing.
+- Added command: dispel
+- Added valid_event() sefun.
+- Miscellaneous tweaks and fixes.
+- Shortened training and teaching times.
+- Lowered XP cost for death.
+- Added quest cheat sheets (/doc/cheats)
+- Fixed some eval cost problems in the file and function indexing daemons
+  that were causing lag for some people.
+
 ---- 3.8.2 ---
 - Released 2014-09-28
 - FluffOS driver now 2.23-ds03, improving Wolfpaw detection.

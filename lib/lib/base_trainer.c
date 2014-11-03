@@ -55,18 +55,18 @@ int GetNoSpells(){
 
 /**** data manipulation ****/
 
-    mixed AddTrainingSkills(string *args){
-        if( !args ) 
-            error("Bad argument 1 to AddTrainingSkills.");
-        return (TrainingSkills = distinct_array(TrainingSkills + args));
-    }
+mixed AddTrainingSkills(string *args){
+    if( !args ) 
+        error("Bad argument 1 to AddTrainingSkills.");
+    return (TrainingSkills = distinct_array(TrainingSkills + args));
+}
 
-    mixed RemoveTrainingSkills(string *args){
-        if( !args || !arrayp(args) ) 
-            error("Bad argument 1 to RemoveTrainingSkills.");
-        TrainingSkills -= args;
-        return TrainingSkills;
-    }
+mixed RemoveTrainingSkills(string *args){
+    if( !args || !arrayp(args) ) 
+        error("Bad argument 1 to RemoveTrainingSkills.");
+    TrainingSkills -= args;
+    return TrainingSkills;
+}
 
 string array GetTrainingSkills(){ return copy(TrainingSkills); }
 
@@ -207,7 +207,7 @@ int eventTrain(object who, string verb, string skill){
 static int ContinueTraining(object who, string skill, int x){
     if( !who || !Students[who->GetKeyName()] ) return 0;
     if( !present(who, environment()) ||
-      member_array(who, this_object()->GetEnemies()) != -1){
+            member_array(who, this_object()->GetEnemies()) != -1){
         map_delete(Students, who->GetKeyName());
         return 0;
     }

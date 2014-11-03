@@ -36,7 +36,7 @@
     "sasikumea","zakila","txakurra","soustat","irrumator",\
     "mentula","koproskilo","malakas","la'a'za'zel","zayin",\
     "haakskeekah","noko","shizzle","nizzle","hizzle",\
-    "desu","desu","desu","desu","desu","desu",\
+    "desu","desu","desu","desu","desu","desu","a858de45f56d9bc9",\
     "desu","desu","desu","desu","desu","desu",\
     "desu","desu","desu","desu","desu","desu",\
     "UNITINU","STENDEC","CROATOAN","LATUALATUKA",\
@@ -45,7 +45,7 @@
     "addictis","XYNTA","durian","adzuki","flocka",\
     "ХУИТА", "NIBIRU", "tatonka","tralfamadore",\
     "sihulm","koyaanisqatsi","tanstaafl","misunderestimate",\
-    "ar","ot","ti","fi","na",\
+    "ar","ot","ti","fi","na", "markovian parallax denigrate",\
     "ar","ot","ti","fi","na",\
     "ar","ot","ti","fi","na",\
     "ar","ot","ti","fi","na",\

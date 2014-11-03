@@ -105,13 +105,13 @@ mapping string_to_mapping(string str){
         sscanf(rest, "%s=%s", what, rest);
         /*
            write("what="+what+", rest="+rest+"\n");
-           */
+         */
         // At this point, what is the key, rest is value plus rest.
         if(rest[0]==34){ // value is in quotes, tons of fun!
             // find first quote without a backslash in front?
             /*
                write("rest begings with a quote\n");
-               */
+             */
             i = 1;
             while(((rest[i]!=34) || (rest[i-1]==92)) && (i<sizeof(rest))){ // 34 = ", 92 = \
                 // While this is not a quote, or if this is an escaped quote, keep looking.
@@ -321,8 +321,8 @@ varargs void write_data(int fd, mixed data, int startack, float vers){
         if(sizeof(data) < 6){
             int spew;
             if(sizeof(data) > 2){
-               //tc("data packet size: "+sizeof(data));
-               spew = 1;
+                //tc("data packet size: "+sizeof(data));
+                spew = 1;
             }
             foreach(mixed element in data){
                 float vv;
@@ -331,7 +331,7 @@ varargs void write_data(int fd, mixed data, int startack, float vers){
                 if(vers && vers > 2) proper = 1;
                 else {
                     if(minfo[targetmud] && minfo[targetmud]["other_data"] &&
-                      vv = minfo[targetmud]["other_data"]["imc_version"]){
+                            vv = minfo[targetmud]["other_data"]["imc_version"]){
                         if(vv > 2) proper = 1;
                     }
                 }
@@ -346,9 +346,9 @@ varargs void write_data(int fd, mixed data, int startack, float vers){
                     element = clean_str(element)+"\n\r";
                 }
                 if(spew){
-                lfcr = replace_string(element,"\n","(LF)");
-                lfcr = replace_string(lfcr,"\r","(CR)");
-                tc("writing to "+fd+": "+identify(lfcr)+"\n","yellow");
+                    lfcr = replace_string(element,"\n","(LF)");
+                    lfcr = replace_string(lfcr,"\r","(CR)");
+                    tc("writing to "+fd+": "+identify(lfcr)+"\n","yellow");
                 }
                 SSOCKET_D->write_data(fd, element);
             }
@@ -423,13 +423,13 @@ varargs void construct_startup(mixed fd, mixed info, string client){
     scan = sscanf(info,"PW %s %s %s %s %s", s1, s2, s3, s4, s5);
     if(scan != 5) scan = sscanf(info,"PW %s %s %s %s", s1, s2, s3, s4);
     if(scan < 4) scan = sscanf(info,"PW %s %s %s", s1, s2, s3);
-        trr("info: "+identify(info));
-        trr("client: "+identify(client));
-        trr("s1: "+s1);
-        trr("s2: "+s2);
-        trr("s3: "+s3);
-        trr("s4: "+s4);
-        trr("s5: "+s5);
+    trr("info: "+identify(info));
+    trr("client: "+identify(client));
+    trr("s1: "+s1);
+    trr("s2: "+s2);
+    trr("s3: "+s3);
+    trr("s4: "+s4);
+    trr("s5: "+s5);
     if(scan < 3 || (!mudinfo[s1] && scan != 5)){
         trr("\nwrong size packet\n");
         return;

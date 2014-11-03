@@ -25,6 +25,7 @@ mixed eventFall(){
         send_messages("crash", "$agent_name $agent_verb down!",
                 this_object(), 0, env);
         if(living(this_object())) this_object()->SetPosition(POSITION_LYING);
+        remove_call_out("eventFall");
         return 1;
     }
     else {
@@ -54,7 +55,9 @@ mixed eventFall(){
                     possessive(this_object())+" fall downward.", ({ this_object() }));
 
             if(rumbo->GetMedium() == MEDIUM_AIR && !(this_object()->CanFly())){ 
-                call_out( "eventFall", 1);
+                if(!this_object()->GetFalling() && find_call_out("eventFall") == -1){
+                    call_out( "eventFall", 1);
+                }
             }
         }
         return 1;

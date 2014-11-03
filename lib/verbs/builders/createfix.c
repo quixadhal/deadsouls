@@ -17,11 +17,11 @@ static void create() {
             "\nSee also: initfix, copy, create, delete, modify, reload, add");
 }
 
-    mixed can_createfix_obj(string str) { 
-        if(!creatorp(this_player())) 
-            return "This command is only available to builders and creators.";
-        else return 1;
-    }
+mixed can_createfix_obj(string str) { 
+    if(!creatorp(this_player())) 
+        return "This command is only available to builders and creators.";
+    else return 1;
+}
 
 mixed can_createfix_word(string str) { return can_createfix_obj("foo"); }
 

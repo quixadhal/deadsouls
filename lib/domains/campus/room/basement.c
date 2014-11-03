@@ -4,7 +4,7 @@ inherit LIB_ROOM;
 static void create() {
     room::create();
     SetClimate("indoors");
-    SetAmbientLight(30);
+    SetAmbientLight(29);
     SetShort("the basement");
     SetLong("You are in the basement of the LPC University administrative building. It "+
             "is very dark here, and rather damp. The fluorescent lighting seems to be "+

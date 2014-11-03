@@ -95,11 +95,11 @@ string GetReverseDirection(string dir){
             "up":"down","down":"up" ])[dir];
 }
 
-    varargs mixed GetMapType(int x, int y, int z){
-        if(!objectp(Map_Master) || nullp(x) ||nullp(y) || nullp(z) ) 
-            return 0;
-        return Map_Master->GetAreaMap(x,y,z);
-    }
+varargs mixed GetMapType(int x, int y, int z){
+    if(!objectp(Map_Master) || nullp(x) ||nullp(y) || nullp(z) ) 
+        return 0;
+    return Map_Master->GetAreaMap(x,y,z);
+}
 
 mapping SetSurroundAreas(int x, int y, int z){
     mapping surrounds = ([]);

@@ -231,7 +231,7 @@ string displayShort(){
         case "idle":
             return "an idle stargate";
         default:
-        return "a broken stargate";
+            return "a broken stargate";
     }
 }
 

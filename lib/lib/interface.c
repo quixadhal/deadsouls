@@ -89,7 +89,7 @@ varargs void eventReceive(string message, int noprompt, int noerase){
             this_object()->erase_prompt();
         }
         receive(message);
-        
+
         //This check is so that players whose charmode is temporarily
         //suspended (so that they can be in the pager) don't have their
         //charmode prematurely re-enabled.
@@ -132,52 +132,52 @@ void receive_message(mixed msg_class, string msg){
     switch(msg_class){
         case "smell": case "sound": case "touch": 
             cl |= MSG_ENV;
-        break;
+            break;
 
         case "receive":
             cl |= MSG_RECEIVE;
-        break;
+            break;
 
         case "snoop":
             cl |= MSG_SYSTEM | MSG_NOCOLOUR;
 
         case "broadcast":
             cl |= MSG_SYSTEM;
-        break;
+            break;
 
         case "editor":
             cl |= MSG_EDIT;
-        break;
+            break;
 
         case "tell": case "shout":
             cl |= MSG_CONV;
-        break;
+            break;
 
         case "come": case "leave": case "telout": case "telin":
             cl |= MSG_ENV;
-        break;
+            break;
 
         case "living_item": case "inanimate_item":
             cl |= MSG_ROOMDESC;
-        break;
+            break;
 
         case "system": case "more":
             cl |= MSG_SYSTEM;
-        break;
+            break;
 
         case "prompt":
             cl = MSG_PROMPT;
-        break;
+            break;
 
         case "error":
             cl |= MSG_ERROR;
-        break;
+            break;
 
         case "help":
             cl |= MSG_HELP;
 
         default:
-        cl |= MSG_ENV;
+            cl |= MSG_ENV;
 
     }
     eventPrint(msg, cl);
@@ -384,20 +384,20 @@ int *GetScreen(){ return Screen; }
 string SetTerminal(string terminal){ 
     switch( terminal ){
         case "iris-ansi-net": case "vt100": case "vt220": case "vt102":
-            case "vt300": case "dec-vt100":
+        case "vt300": case "dec-vt100":
             terminal = "ansi";
-        break;
+            break;
         case "unknown": case "ansi": case "freedom": case "ansi-status":
-            case "xterm": 
+        case "xterm": 
             break;
         case "console": case "ibm-3278-2":
             terminal = "unknown";
-        break;
+            break;
         case "html" : terminal = "html"; break;
         default:
-        log_file("terminals", "Unknown terminal type: " + terminal + "\n");
-        terminal = Terminal;
-        break;
+                      log_file("terminals", "Unknown terminal type: " + terminal + "\n");
+                      terminal = Terminal;
+                      break;
     }
     if( terminal != Terminal ) 
         TermInfo = TERMINAL_D->query_term_info(terminal);

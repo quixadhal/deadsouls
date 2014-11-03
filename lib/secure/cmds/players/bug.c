@@ -74,9 +74,9 @@ varargs static void MainMenu(string str) {
             case "p": View(({}), 1); return;
             case "v": View(({})); return;
             case "q": 
-                message("system", "Exiting the bug tracking system.", 
-                        this_player());
-            return;
+                      message("system", "Exiting the bug tracking system.", 
+                              this_player());
+                      return;
         }
     }
     cols = ((int *)this_player()->GetScreen())[0] || 80;

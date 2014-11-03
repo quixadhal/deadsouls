@@ -3,11 +3,11 @@
 
 inherit LIB_DAEMON;
 
-    mixed cmd(string str) {
-        if( !sizeof(str) )
-            return "Syntax: mudinfo <mudname>";
-        return MUDINFO_D->PrintMudInfo(str);
-    }
+mixed cmd(string str) {
+    if( !sizeof(str) )
+        return "Syntax: mudinfo <mudname>";
+    return MUDINFO_D->PrintMudInfo(str);
+}
 
 string GetHelp() {
     return ("Syntax: mudinfo <mudname>\n\n"

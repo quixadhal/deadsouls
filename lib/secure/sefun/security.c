@@ -22,11 +22,11 @@ string file_privs(string file) {
         case "verbs": return PRIV_CMDS;
         case "www": return PRIV_GENERAL;
         case "realms":
-            if(sizeof(path) > 1) return lower_case(path[1]);
-            else return 0;
+                    if(sizeof(path) > 1) return lower_case(path[1]);
+                    else return 0;
         case "domains":
-            if(sizeof(path) > 1) return capitalize(lower_case(path[1]));
-            else return 0;
+                    if(sizeof(path) > 1) return capitalize(lower_case(path[1]));
+                    else return 0;
         default: return 0;
     }
 }

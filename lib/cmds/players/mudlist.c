@@ -39,16 +39,16 @@ mixed cmd(string str) {
             switch(opt) {
                 case "a":
                     all = 1;
-                break;
+                    break;
                 case "m":
                     x = 5;
-                break;
+                    break;
                 case "d":
                     x = 7;
-                break;
+                    break;
                 case "n":
                     x = 0;
-                break;
+                    break;
             }
             tmpstr = (x ? info[x] : mud);
             z = strlen(str);

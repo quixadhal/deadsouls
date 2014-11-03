@@ -32,15 +32,15 @@ string absolute_path(string curr, string newp) {
                 newp = user_path( name ) + rest;
             else
                 newp = user_path( newp[1..len] )[0..<2];
-        break;
+            break;
         case "^":
             newp = "/domains/" + newp[1..len];
-        break;
+            break;
         case "/":
             break;
         default:
-        if( curr != "/" ) newp = curr + "/" + newp;
-        else newp = curr + newp;
+            if( curr != "/" ) newp = curr + "/" + newp;
+            else newp = curr + newp;
     }
 
     if( -1 == strsrch( newp, ".." ) ) return newp;

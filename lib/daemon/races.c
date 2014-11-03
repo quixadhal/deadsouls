@@ -61,10 +61,10 @@ static void create() {
     SaveObject(SaveFile);
 }
 
-    static private void validate() {
-        if( !(master()->valid_apply(({ PRIV_ASSIST }))) )
-            error("Illegal attempt to modify race data");
-    }
+static private void validate() {
+    if( !(master()->valid_apply(({ PRIV_ASSIST }))) )
+        error("Illegal attempt to modify race data");
+}
 
 int CanFly(string str){
     if( !Races[str] ) return 0;
@@ -240,106 +240,106 @@ void AddRace(string file, int player) {
             string type = "";
 
             case "FLYING_RACE":
-                line = trim(replace_string(line, "FLYING_RACE", ""));
+            line = trim(replace_string(line, "FLYING_RACE", ""));
             if(sizeof(line) && atoi(line) < 1) break;
             else SetFlyingRace(race);
             break;
 
             case "NOT_MEAT":
-                line = trim(replace_string(line, "NOT_MEAT", ""));
+            line = trim(replace_string(line, "NOT_MEAT", ""));
             if(sizeof(line) && atoi(line) < 1) break;
             else SetNonMeatRace(race);
             break;
 
             case "LIMBLESS_RACE":
-                line = trim(replace_string(line, "LIMBLESS_RACE", ""));
+            line = trim(replace_string(line, "LIMBLESS_RACE", ""));
             if(sizeof(line) && atoi(line) < 1) break;
             else SetLimblessRace(race);
             break;
 
             case "LIMBLESS_COMBAT_RACE":
-                line = trim(replace_string(line, "LIMBLESS_COMBAT_RACE", ""));
+            line = trim(replace_string(line, "LIMBLESS_COMBAT_RACE", ""));
             if(sizeof(line) && atoi(line) < 1) break;
             else SetLimblessCombatRace(race);
             break;
 
             case "NONBITING_RACE":
-                line = trim(replace_string(line, "NONBITING_RACE", ""));
+            line = trim(replace_string(line, "NONBITING_RACE", ""));
             if(sizeof(line) && atoi(line) < 1) break;
             else SetNonBitingRace(race);
             break;
 
             case "SWIMMING_RACE":
-                line = trim(replace_string(line, "SWIMMING_RACE", ""));
+            line = trim(replace_string(line, "SWIMMING_RACE", ""));
             if(sizeof(line) && atoi(line) < 1) break;
             else SetSwimmingRace(race);
             break;
 
             case "RACE":
-                race = replace_string(line, "RACE ", "");
+            race = replace_string(line, "RACE ", "");
             if( Races[race] ) error(race+": Race already exists");
             break;
 
             case "SENSITIVITY":
-                line = replace_string(line, "SENSITIVITY ", "");
+            line = replace_string(line, "SENSITIVITY ", "");
             tmp_vision = map(explode(line, ":"), (: to_int :));
             res["Sensitivity"] = ({ tmp_vision[0], tmp_vision[1] * 10 });
             break;
 
             case "PLAYER_RACE":
-                line = replace_string(line, "PLAYER_RACE ", "");
+            line = replace_string(line, "PLAYER_RACE ", "");
             if(player || atoi(line) > 0) player = 1;
             else player = 0;
             break;
 
             case "LANGUAGE":
-                //TODO: This should be a Language array to handle multiple 
-                //languages but further research is required first.
-                res["Language"] = replace_string(line, "LANGUAGE ", "");
+            //TODO: This should be a Language array to handle multiple 
+            //languages but further research is required first.
+            res["Language"] = replace_string(line, "LANGUAGE ", "");
             break;
 
             case "RESISTANCE":			  
-                tmp = explode(replace_string(line, "RESISTANCE ", ""), ":");
+            tmp = explode(replace_string(line, "RESISTANCE ", ""), ":");
             x = to_int(tmp[0]);
             if( x == 0 && tmp[0] != "0" ) x = this_object()->GetResistance(tmp[0]);
             res["Resistance"][x] = tmp[1];
             break;
 
             case "SKILL":      
-                tmp = explode(replace_string(line, "SKILL ", ""), ":");
+            tmp = explode(replace_string(line, "SKILL ", ""), ":");
             res["Skills"][tmp[0]] = ({ tmp[1], tmp[2], tmp[3], tmp[4] });
             SKILLS_D->SetSkill(tmp[0], race, tmp[2], 1);
             break;
 
             case "MASS":
-                x = 0;
+            x = 0;
             sscanf(line, "MASS %d",x);
             if(x) res["Mass"] = x;
             break;
 
             case "SIZE":
-                type = "";
+            type = "";
             x = 0;
             if(sscanf(line, "SIZE %s",type)) res["Size"] = this_object()->GetSize(type);
             else res["Size"] = x;
             break;
 
             case "BODY_TYPE":
-                type = "";
+            type = "";
             x = 0;
             if(sscanf(line, "BODY_TYPE %s",type)) res["Btype"] = this_object()->GetBodyType(type);
             else res["Btype"] = x;
             break;
 
             case "RESPIRATION_TYPE":
-                type = "";
+            type = "";
             x = 0;
             if(sscanf(line, "RESPIRATION_TYPE %s",type)) res["Rtype"] = this_object()->GetRespirationType(type);
             else res["Rtype"] = x;
             break;
 
             case "STATS":
-                tmp = ({});
+            tmp = ({});
             s = ([]);
             tmp = explode(replace_string(line, "STATS ",""), ":");
             s["Average"] = copy(to_int(tmp[1]));
@@ -349,7 +349,7 @@ void AddRace(string file, int player) {
             break;
 
             case "MOUTH":
-                type = "";
+            type = "";
             x = 0;
             if(sscanf(line, "MOUTH %s",type)){
                 res["Mouthtype"] = this_object()->GetMouthType(type);
@@ -357,7 +357,7 @@ void AddRace(string file, int player) {
             break;
 
             case "LIMB":
-                limb = ({ ({}), ({}), ({}), ({}) });
+            limb = ({ ({}), ({}), ({}), ({}) });
             tmp_limb = explode(replace_string(line, "LIMB ",""), ":");
             limb[0] = tmp_limb[0];
             limb[1] = (tmp_limb[1] == "0" ? 0 : tmp_limb[1]);
@@ -373,7 +373,7 @@ void AddRace(string file, int player) {
             break;
 
             case "HAND":
-                parts = explode(replace_string(line, "HAND ",""), ":");
+            parts = explode(replace_string(line, "HAND ",""), ":");
             res["Fingers"][parts[0]] = to_int(parts[1]);
             break;
 

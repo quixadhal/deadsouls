@@ -49,26 +49,26 @@ varargs mixed eventShoot(object shooter, mixed target, string direction){
 
     if(sizeof(inv)){
         write("The zero-point energy manipulator is already actively "+
-          "manipulating "+inv->GetShort()+".");
+                "manipulating "+inv->GetShort()+".");
         return 1;
     }
 
     if(living(target)){
         if(!(RACES_D->GetNonMeatRace(target->GetRace()))){
             write("The zero-point energy manipulator does not work "+
-              "well on meat-based objects.");
+                    "well on meat-based objects.");
             return 1;
         }
     }
 
     if(base_name(target) == LIB_CORPSE || base_name(target) == LIB_LIMB){
         write("The zero-point energy manipulator does not work "+
-              "well on meat-based objects.");
+                "well on meat-based objects.");
         return 1;
     }
 
     if(target->isDummy() || target->GetMass() > 5000 ||
-        target->GetPreventGet()){
+            target->GetPreventGet()){
         write("The zero-point energy manipulator clicks and whines.");
         return 1;
     }
@@ -111,13 +111,13 @@ int eventTurnOff(){
         inv->eventMove(room_environment(this_object()));
         foreach(object ob in inv){
             tell_object(ob, "You are released from "+this_player()->GetName()+
-              "'s zero-point energy manipulator.");
+                    "'s zero-point energy manipulator.");
             tell_room(environment(this_player()), capitalize(ob->GetShort())+
-              " is "+
-              "released from "+this_player()->GetName()+"'s zero-point "+
-              "energy manipulator.", ({ ob, this_player() }) );
+                    " is "+
+                    "released from "+this_player()->GetName()+"'s zero-point "+
+                    "energy manipulator.", ({ ob, this_player() }) );
             write("You release "+ob->GetShort()+" from your zero-point "+
-              "energy manipulator.");
+                    "energy manipulator.");
         }
     }
     return 1;
@@ -130,7 +130,7 @@ int eventTurnOn(){
     }
     write("You activate the zero-point energy manipulator.");
     say(this_player()->GetName()+" activates "+possessive(this_player())+
-      " zero-point energy manipulator.");
+            " zero-point energy manipulator.");
     active = 1;
     return 1;
 }

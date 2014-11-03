@@ -139,35 +139,35 @@ int convert_time(string str)
         switch(times[2 * i + 1])
         {
             case "seconds":
-                case "second":
+            case "second":
                 j = j * SECOND;
-            break;
+                break;
             case "minutes":
-                case "minute":
+            case "minute":
                 j = j * MINUTE;
-            break;
+                break;
             case "hours":
-                case "hour":
+            case "hour":
                 j = j * HOUR;
-            break;
+                break;
             case "days":
-                case "day":
+            case "day":
                 j = j * DAY;
-            break;
+                break;
             case "week":
-                case "weeks":
+            case "weeks":
                 j = j * WEEK;
-            break;
+                break;
             case "month":
-                case "months":
+            case "months":
                 j = j * MONTH;
-            break;
+                break;
             case "year":
-                case "years":
+            case "years":
                 j = j * YEAR;
-            break;
+                break;
             default:
-            return 0;
+                return 0;
         }
         ret += j;
     }

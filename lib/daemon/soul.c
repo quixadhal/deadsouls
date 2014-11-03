@@ -347,48 +347,48 @@ varargs mixed do_verb_rule(string verb, string rle, mixed args...) {
     switch( rle ) {
         case "":
             args = 0;
-        adv = 0;
-        break;
+            adv = 0;
+            break;
 
         case "LIV": case "at LIV": case "with LIV": case "to LIV":
-            case "around LIV": case "on LIV":
-            case "OBJ": case "at OBJ": case "with OBJ": case "to OBJ":
-            case "LVS": case "at LVS": case "with LVS": case "to LVS":
-            case "around LVS": case "on LVS":
+        case "around LIV": case "on LIV":
+        case "OBJ": case "at OBJ": case "with OBJ": case "to OBJ":
+        case "LVS": case "at LVS": case "with LVS": case "to LVS":
+        case "around LVS": case "on LVS":
             args = args[0];
-        adv = 0;
-        break;
+            adv = 0;
+            break;
 
         case "STR": case "for STR": case "about STR":
             adv = args[0];
-        args = 0;
-        break;
+            args = 0;
+            break;
 
         case "STR LIV": case "STR at LIV": case "STR with LIV":
-            case "STR around LIV": case "STR on LIV":
-            case "for STR LIV": case "for STR to LIV":
-            case "STR OBJ": case "STR at OBJ": case "STR with OBJ":
-            case "STR LVS": case "STR at LVS": case "STR with LVS":
-            case "STR around LVS": case "STR on LVS":
-            case "for STR LVS": case "for STR to LVS":
+        case "STR around LIV": case "STR on LIV":
+        case "for STR LIV": case "for STR to LIV":
+        case "STR OBJ": case "STR at OBJ": case "STR with OBJ":
+        case "STR LVS": case "STR at LVS": case "STR with LVS":
+        case "STR around LVS": case "STR on LVS":
+        case "for STR LVS": case "for STR to LVS":
             adv = args[0];
-        args = args[1];
-        break;
+            args = args[1];
+            break;
 
         case "LIV STR": case "at LIV STR": case "LIV of STR": case "with LIV STR":
-            case "around LIV STR": case "on LIV STR":
-            case "LIV for STR": case "to LIV for STR":
-            case "OBJ STR": case "at OBJ STR": case "OBJ of STR": case "with OBJ STR":
-            case "LVS STR": case "at LVS STR": case "LVS of STR": case "with LVS STR":
-            case "around LVS STR": case "on LVS STR":
-            case "LVS for STR": case "to LVS for STR":
+        case "around LIV STR": case "on LIV STR":
+        case "LIV for STR": case "to LIV for STR":
+        case "OBJ STR": case "at OBJ STR": case "OBJ of STR": case "with OBJ STR":
+        case "LVS STR": case "at LVS STR": case "LVS of STR": case "with LVS STR":
+        case "around LVS STR": case "on LVS STR":
+        case "LVS for STR": case "to LVS for STR":
             adv = args[1];
-        args = args[0];
-        break;
+            args = args[0];
+            break;
 
         default:
-        this_player()->eventPrint("Unknown soul syntax.");
-        return 1;
+            this_player()->eventPrint("Unknown soul syntax.");
+            return 1;
     }
     if( arrayp(args) ) {
         args = filter(args, (: objectp :));

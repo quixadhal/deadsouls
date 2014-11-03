@@ -36,7 +36,7 @@ static mixed ResetGrid(){
     int err = 0;
     drones = findobs("/domains/default/npc/drone3");
     starts = ({ROOM_START+".c", "/domains/Ylsrim/room/tower.c",
-      "/domains/Praxis/square.c", "/domains/campus/room/tunnel"});
+            "/domains/Praxis/square.c", "/domains/campus/room/tunnel"});
     foreach(mixed arr in get_dir("/domains/", -1)){
         if(arr[1] == -2) start = "/domains/"+arr[0]+"/room/start.c";
         if(sizeof(start) && file_exists(start)) starts += ({ start });

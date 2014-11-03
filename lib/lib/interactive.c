@@ -209,6 +209,7 @@ int eventDestruct(){
     int ret, inter = interactive(), arc = archp();
     int invis = this_object()->GetInvis();
     string name = GetCapName(), stack = get_stack();
+    if(!valid_event(previous_object(), this_object())) return 0;
     interface::eventDestruct();
     foreach(ob in deep_inventory(this_object())){
         if( ob ) catch(ob->eventDestruct());

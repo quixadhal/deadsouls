@@ -492,6 +492,27 @@ int destruct(object ob) {
     else return 0;
 }
 
+int valid_event(object dester, object dested){
+    string desterbase, destedbase, topdester, topdested;
+    string contextdester, contextdested;
+    int i;
+    if(!dester || !dested) return 0;
+    desterbase = base_name(dester);
+    destedbase = base_name(dested);
+    i = sscanf(desterbase,"/%s/%s/%*s", topdester, contextdester);
+    //tc("dester i: "+i);
+    //i = sscanf(desterbase,"/%s/%*s", topdester);
+    //tc("dester: "+identify(dester));
+    if(topdester != "realms" && topdester != "open") return 1;
+    i = sscanf(destedbase,"/%s/%s/%*s", topdested, contextdested);
+    //tc("dested i: "+i);
+    if(contextdested && contextdester && contextdested == contextdester){ 
+        return 1;
+    }
+    return 0;
+}
+
+
 static void shutdown_logic(int code){
     efun::shutdown(code);
 }
@@ -546,11 +567,11 @@ varargs object snoop(object who, object target) {
     else return efun::snoop(who, target);
 }
 
-    object query_snoop(object ob) {
-        if(base_name(previous_object()) != SNOOP_D)
-            return 0;
-        return efun::query_snoop(ob);
-    }
+object query_snoop(object ob) {
+    if(base_name(previous_object()) != SNOOP_D)
+        return 0;
+    return efun::query_snoop(ob);
+}
 
 object query_snooping(object ob) {
     if(!(master()->valid_apply(({})))) return 0;
@@ -651,10 +672,10 @@ int in_pager(object ob){
     else globalob = previous_object();
     if(in_edit(globalob) || in_input(globalob)) return 1;
     if(globalob->GetProperty("was_charmode") && 
-      !query_charmode(globalob)){
-    //Ok, a bit counterintuitive, but the deal is that if you WERE in
-    //charmode, and aren't anymore, the only reason for this is that
-    //charmode is temporarily suspended so you can navigate a pager.
+            !query_charmode(globalob)){
+        //Ok, a bit counterintuitive, but the deal is that if you WERE in
+        //charmode, and aren't anymore, the only reason for this is that
+        //charmode is temporarily suspended so you can navigate a pager.
         return 1;
     }
     return 0;

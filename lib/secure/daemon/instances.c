@@ -378,25 +378,25 @@ static void ReceiveICPData(mixed data, string addy, int port, int fd){
         case "startup-req" :
             if(data[6] != INSTANCE_PW) return;
             else ProcessStartup(data, addy, port, fd);
-        break;
+            break;
         case "channel-p" :
             CHAT_D->eventSendChannel(data[6]...);
-        break;
+            break;
         case "who-update":
             ProcessWhoUpdate(data);
-        break;
+            break;
         case "tell":
             ProcessTell(data);
-        break;
+            break;
         case "shout":
             ProcessShout(data);
-        break;
+            break;
         case "close-req" :
             ProcessClose(name);
-        break;
+            break;
 
         default :
-        break;
+            break;
     }
     if(undefinedp(InstData[name]["fd"])) InstData[name]["fd"] = fd;
 }

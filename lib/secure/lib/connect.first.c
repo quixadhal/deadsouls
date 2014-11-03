@@ -36,20 +36,20 @@ static void CheckBlind(string str){
     input_to((: InputPassword :), I_NOECHO | I_NOESC);
 }
 
-    static void InputName(string str) {
-        if( !(BANISH_D->valid_name(Name = convert_name(CapName = str))) 
-                || lower_case(str) == "guest") {
-            receive("That is not a valid name.\n");
-            receive("Name: ");
-            input_to((: InputName :));
-            return;
-        }
-        Admin = master()->player_object(Name);
-        Admin->SetKeyName(Name);
-        mkdir(DIR_PLAYERS "/" + Name[0..0]);
-        receive("\nDo you use a screen reader for the visually impaired? (y/n)\n");
-        input_to((: CheckBlind :), I_NOESC);
+static void InputName(string str) {
+    if( !(BANISH_D->valid_name(Name = convert_name(CapName = str))) 
+            || lower_case(str) == "guest") {
+        receive("That is not a valid name.\n");
+        receive("Name: ");
+        input_to((: InputName :));
+        return;
     }
+    Admin = master()->player_object(Name);
+    Admin->SetKeyName(Name);
+    mkdir(DIR_PLAYERS "/" + Name[0..0]);
+    receive("\nDo you use a screen reader for the visually impaired? (y/n)\n");
+    input_to((: CheckBlind :), I_NOESC);
+}
 
 static void ConfirmPassword(string str);
 

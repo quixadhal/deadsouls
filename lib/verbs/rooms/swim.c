@@ -37,6 +37,9 @@ mixed can_swim(){
     }
     if(this_player()->GetPosition() == POSITION_SWIMMING) 
         return "You are already swimming.";
+    if(!RACES_D->CanSwim(this_player()->GetRace())){
+        return capitalize(pluralize(this_player()->GetRace()))+" cannot swim.";
+    }
     if(env->CanSwim(this_player())) return this_player()->CanSwim();
     return "You can't swim here.";
 }

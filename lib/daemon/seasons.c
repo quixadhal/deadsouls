@@ -570,11 +570,11 @@ string GetLong(string arg) {
                 return tmp;
             }
         default:
-        if( Moons[arg] ) return ((class moon)Moons[arg])->Description;
-        arr = map(mn = keys(Moons), (: ((class moon)Moons[$1])->Id :));
-        if( (i = member_array(arg, arr)) != -1 )
-            return ((class moon)Moons[mn[i]])->Description;
-        else return 0;
+            if( Moons[arg] ) return ((class moon)Moons[arg])->Description;
+            arr = map(mn = keys(Moons), (: ((class moon)Moons[$1])->Id :));
+            if( (i = member_array(arg, arr)) != -1 )
+                return ((class moon)Moons[mn[i]])->Description;
+            else return 0;
     }
 }
 

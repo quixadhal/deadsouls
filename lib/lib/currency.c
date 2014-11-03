@@ -96,9 +96,9 @@ varargs int GetNetWorth(string benjamins){
                 case "last trans": case "last time": case "audit": case "open":
                     break;
                 default:
-                if( (tmp = currency_rate(curr)) < 1 ) break;
-                net_worth += amt * tmp;
-                break;
+                    if( (tmp = currency_rate(curr)) < 1 ) break;
+                    net_worth += amt * tmp;
+                    break;
             }
         }
     }

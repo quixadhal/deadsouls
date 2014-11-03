@@ -171,5 +171,5 @@ echo "cp -f /contrib/indentall next/extra/crat/" >> copyfiles3
 #\cp -f $NEWLIB.zip /mnt/media/open/
 #\cp -f $NEWLIB.zip /export/home/$HOME/mud/
 
-./diff.sh.1 > /tmp/foo/diff.out
+bash ./diff.sh.1 > /tmp/foo/diff.out
 

@@ -115,6 +115,7 @@ int detonate(){
     if(detonated !=2) tell_room(environment(this_object()), "\nKABOOM! The grenade detonates!\n");
     if(!sizeof(get_livings(ob))) ob = environment(ob);
     if(ob && sizeof(whom = scramble_array(get_livings(ob)[0..12]))){
+        tc("whom: "+identify(whom));
         foreach(object victim in whom){
             this_object()->HitLivings(victim);
         }
@@ -135,6 +136,7 @@ void analyze(string str){
 int HitLivings(object ob){
     object env = environment();
     int dam;
+    tc("victim: "+identify(ob));
     radius++;
     if(radius < 6) dam = random(1000)+500;
     else dam = (random(1000)+500) - (radius * 100);

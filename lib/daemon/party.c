@@ -39,7 +39,7 @@ static void eventDestroyParty(string party){
     }
     if(member_array(party, CHAT_D->GetLocalChannels()) != -1){
         CHAT_D->eventSendChannel("System", party, "The party " + party + 
-          " has been disbanded.");
+                " has been disbanded.");
         CHAT_D->RemoveLocalChannel(party);
     }
     map_delete(Parties, party);

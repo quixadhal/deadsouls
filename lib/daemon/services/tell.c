@@ -25,7 +25,7 @@ void eventReceiveTell(mixed *packet) {
     nopriv = (!creatorp(find_player(who)) && !PLAYER_INTERTELL_ALLOWED);
     INSTANCES_D->SendTell(who, packet[7], packet[6] + "@" + packet[2]);
     if( nopriv || (!(ob = find_player(who)) || ob->GetInvis() ||
-      (nopriv = (RESTRICTED_INTERMUD && !imud_privp(lower_case(who)))) )) {
+                (nopriv = (RESTRICTED_INTERMUD && !imud_privp(lower_case(who)))) )) {
         INTERMUD_D->eventWrite(({ "error", 5, mud_name(), 0, packet[2],
                     packet[3], "unk-user", 
                     capitalize(packet[5]) + " is nowhere to "
@@ -76,7 +76,7 @@ void eventSendTell(string who, string where, string msg) {
     }
     if(!PLAYER_INTERTELL_ALLOWED && !creatorp(this_player())){ 
         this_player()->eventPrint("You lack the authority to send tells to other worlds.", MSG_CONV);
-            return;
+        return;
     }
 
     INTERMUD_D->eventWrite(({ "tell", 5, mud_name(), pl, where, 

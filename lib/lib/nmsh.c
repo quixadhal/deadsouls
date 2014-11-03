@@ -461,26 +461,26 @@ nomask static void process_request(string request, string xtra){
                     "[se,go southeast] [u,go up] [d,go down] [i,inventory] "
                     "[bio,biography] [exa,look at $*] [$',say $*] "
                     "[$:,emote $*] [l,look]\n");
-        break;
+            break;
         case "NICKNAME": receive("<NICKNAME>\n"); break;
         case "USERS":
-            receive("<USERS>"+implode(map_array(filter(users(), 
-                                "request_vis", this_object()), "user_names", this_object()), 
-                        ", ")+"\n");
-        break;
+                         receive("<USERS>"+implode(map_array(filter(users(), 
+                                             "request_vis", this_object()), "user_names", this_object()), 
+                                     ", ")+"\n");
+                         break;
         case "ROOM":
-            receive("<ROOM>"+
-                    environment(this_object())->GetShort()+"\n");
-        break;
+                         receive("<ROOM>"+
+                                 environment(this_object())->GetShort()+"\n");
+                         break;
         case "PRESENT":
-            receive("<PRESENT>"+
-                    implode(map_array(filter(all_inventory(environment(this_object())),
-                                "request_vis", this_object()), "user_names", this_object()),
-                        ", ")+"\n");
-        break;
+                         receive("<PRESENT>"+
+                                 implode(map_array(filter(all_inventory(environment(this_object())),
+                                             "request_vis", this_object()), "user_names", this_object()),
+                                     ", ")+"\n");
+                         break;
         default:
-        receive("<error>Request not supported.\n");
-        break;
+                         receive("<error>Request not supported.\n");
+                         break;
     }
 }
 
@@ -988,32 +988,32 @@ static int rArrow(string str){
     switch(str){
         case "up" :
             charbuffer = RecalculateHist(0);
-        histmatch = -1;
-        this_object()->SetCharbuffer(charbuffer);
-        erase_prompt();
-        write_prompt();
-        break;
+            histmatch = -1;
+            this_object()->SetCharbuffer(charbuffer);
+            erase_prompt();
+            write_prompt();
+            break;
         case "down" :
             charbuffer = RecalculateHist(1);
-        histmatch = -1;
-        this_object()->SetCharbuffer(charbuffer);
-        erase_prompt();
-        write_prompt();
-        break;
+            histmatch = -1;
+            this_object()->SetCharbuffer(charbuffer);
+            erase_prompt();
+            write_prompt();
+            break;
         case "left" :
             recalled_command_sub = "";
 #if CMD_EDITING
-        this_object()->eventReceive("\e[D", 1, 1);
-        this_object()->eventReceive("\e[6n", 1, 1);
+            this_object()->eventReceive("\e[D", 1, 1);
+            this_object()->eventReceive("\e[6n", 1, 1);
 #endif
-        break;
+            break;
         case "right" :
             recalled_command_sub = "";
 #if CMD_EDITING
-        this_object()->eventReceive("\e[C", 1, 1);
-        this_object()->eventReceive("\e[6n", 1, 1);
+            this_object()->eventReceive("\e[C", 1, 1);
+            this_object()->eventReceive("\e[6n", 1, 1);
 #endif
-        break;
+            break;
     }
     return 0;
 }

@@ -32,8 +32,8 @@ varargs int total_light(object ob) {
     switch(SEASONS_D->query_time_of_day()) {
         case "day": return x;
         case "night":
-            x += SEASONS_D->GetMoonLight();
-        return x;
+                    x += SEASONS_D->GetMoonLight();
+                    return x;
         case "dawn": case "twilight": return (x-1);
         default: return x;
     }

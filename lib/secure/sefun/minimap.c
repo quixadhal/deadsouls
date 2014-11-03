@@ -39,8 +39,8 @@ varargs string simple_map(mixed arg){
             case "northwest" : line1[1..1] = query_door(arg, element); line2[2..2] = "\\";break;
             case "southeast" : line5[7..7] = query_door(arg, element); line4[6..6] = "\\";break;
             case "southwest" : line5[1..1] = query_door(arg, element); line4[2..2] = "/";break;
-            //case "up" : extra_desc += ({ "up" });break;
-            //case "down" : extra_desc += ({ "down" });break;
+                               //case "up" : extra_desc += ({ "up" });break;
+                               //case "down" : extra_desc += ({ "down" });break;
             default : extra_desc += ({ element });break;
         }
     }

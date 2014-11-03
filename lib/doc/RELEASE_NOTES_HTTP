@@ -1,12 +1,27 @@
 HTTP/1.1 200 OK
-Date: Sun, 21 Sep 2014 19:48:28 GMT
-Server: Apache/2.2.9 (Ubuntu) PHP/5.2.6-2ubuntu4.6 with Suhosin-Patch proxy_html/3.0.0
-Last-Modified: Sun, 21 Jul 2013 14:55:40 GMT
-ETag: "d928d-1e77c-4e206c0d97300"
+Date: Mon, 03 Nov 2014 15:05:44 GMT
+Server: Apache/2.4.7 (Ubuntu)
+Last-Modified: Sun, 28 Sep 2014 10:36:03 GMT
+ETag: "1e9ca-5041db78a0d35"
 Accept-Ranges: bytes
-Content-Length: 124796
+Content-Length: 125386
 Connection: close
-Content-Type: text/plain
+
+---- 3.8.2 ---
+- Released 2014-09-28
+- FluffOS driver now 2.23-ds03, improving Wolfpaw detection.
+- Added sefun: read_big_file()
+- Updated i3 router code.
+- Added GUEST_ALLOWED to config.h and "guestallowed" token to mudconfig.
+- Added PLAYER_INTERTELL_ALLOWED to config.h and "playerintertell"
+  token to mudconfig.
+- Added Quixadhal's fix to outgoing intermud tells.
+- Added a block of incoming intermud tells to players without intermud privs.
+- Miscellaneous minor and typo fixes.
+
+---- 3.8.1 ---
+- Released 2013-08-07
+- FluffOS driver now 2.23-ds02, including fix for socket crasher.
 
 ---- 3.8 ---
 - Released 2013-07-20

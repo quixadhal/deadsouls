@@ -21,5 +21,5 @@ int eventStart(object who, string skill);
 int eventContinue(object who, string skill, int x);
 int eventComplete(object who, string skill);
 
-#define TRAINING_WAIT 10
+#define TRAINING_WAIT 2
 #endif __trainer_h__

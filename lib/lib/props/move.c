@@ -36,6 +36,9 @@ int eventMove(mixed dest){
     int depth;
     mixed tmp, ret;
 
+    if(!interactive(this_object()) &&
+            !valid_event(previous_object(), this_object())) return 0;
+
     if(anchored && living()){
         if(env){
             int ok;
@@ -150,7 +153,9 @@ int eventMove(mixed dest){
     if(environment()->GetMedium() == MEDIUM_AIR &&
             me->GetPosition() != POSITION_FLYING){
         if(!(me->CanFly())){
-            call_out("eventFall", 1);
+            if(!interactive(me)){
+                call_out("eventFall", 1);
+            }
         }
         else me->eventFly();
     }

@@ -173,17 +173,17 @@ varargs mixed GetMap(mixed args, int size, int forced){
                             case "north" : 
                                 if(Lines[line-1])
                                     Lines[line-1][xcount+2] = '|';
-                            break;
+                                break;
                             case "south" :
                                 if(Lines[line+1])
                                     Lines[line+1][xcount+2] = '|';
-                            break;
+                                break;
                             case "east" :
                                 Lines[line][xcount+3] = '-';
-                            break;
+                                break;
                             case "west" :
                                 Lines[line][xcount+1] = '-';
-                            break;
+                                break;
                             case "northeast" :
                                 if(Lines[line-1]){
                                     if(Lines[line-1][xcount+3] == '\\')
@@ -191,7 +191,7 @@ varargs mixed GetMap(mixed args, int size, int forced){
                                     else
                                         Lines[line-1][xcount+3] = '/';
                                 }
-                            break;
+                                break;
                             case "northwest" :
                                 if(Lines[line-1]){
                                     if(Lines[line-1][xcount+1] == '/')
@@ -199,7 +199,7 @@ varargs mixed GetMap(mixed args, int size, int forced){
                                     else
                                         Lines[line-1][xcount+1] = '\\';
                                 }
-                            break;
+                                break;
                             case "southeast" :
                                 if(Lines[line+1]){
                                     if(Lines[line+1][xcount+3] == '/')
@@ -207,7 +207,7 @@ varargs mixed GetMap(mixed args, int size, int forced){
                                     else
                                         Lines[line+1][xcount+3] = '\\';
                                 }
-                            break;
+                                break;
                             case "southwest" :
                                 if(Lines[line+1]){
                                     if(Lines[line+1][xcount+1] == '\\')
@@ -215,7 +215,7 @@ varargs mixed GetMap(mixed args, int size, int forced){
                                     else
                                         Lines[line+1][xcount+1] = '/';
                                 }
-                            break;
+                                break;
                         }
                     }
                 }        

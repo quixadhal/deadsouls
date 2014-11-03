@@ -89,13 +89,13 @@ varargs void eventSendData(mixed arg, int buff){
         eventWrite(MakeHeader(sizeof(b)));
     }
     else {
-    str = strip_colours(arg);
-    len = strlen(str);
-    str = "HTTP/1.0 200 OK\nContent-Type: text/html\r\n\r\n"+str;
-    b = allocate_buffer(strlen(str));
-    for(i=0; i<strlen(str); i++) {
-        b[i] = str[i];
-    }
+        str = strip_colours(arg);
+        len = strlen(str);
+        str = "HTTP/1.0 200 OK\nContent-Type: text/html\r\n\r\n"+str;
+        b = allocate_buffer(strlen(str));
+        for(i=0; i<strlen(str); i++) {
+            b[i] = str[i];
+        }
     }
     eventWrite(b, 1);
 }
@@ -356,14 +356,14 @@ int eventRead(buffer data) {
     switch(lower_case(cmd)) {
         string junk;
         case "get":
-            eventGetFile(read_args);
+        eventGetFile(read_args);
         return 1;
 
         case "post":
-            if(!ENABLE_CGI){
-                eventError(FILE_BAD_CMD);
-                return 1;
-            }
+        if(!ENABLE_CGI){
+            eventError(FILE_BAD_CMD);
+            return 1;
+        }
         if(!gateway) sscanf(read_args,"%s HTTP%s",gateway,junk);
 
         if(boundary_count && boundary_count > 1){

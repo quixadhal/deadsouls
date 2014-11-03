@@ -30,17 +30,17 @@ int indirect_sell_obs_to_liv(){ return 1; }
 
 int CanCarry(int amount){ return 1; }
 
-    mixed CanBuy(object who, object *obs){
-        if( !load_object(StorageRoom) ) 
-            return "There is a bug with the vendor's storage, please report it.";
-        return 1;
-    }
+mixed CanBuy(object who, object *obs){
+    if( !load_object(StorageRoom) ) 
+        return "There is a bug with the vendor's storage, please report it.";
+    return 1;
+}
 
-    mixed CanSell(object who, string what){
-        if( !load_object(StorageRoom) ) 
-            return "There is a bug with the vendor's storage, please report it.";
-        return 1;
-    }
+mixed CanSell(object who, string what){
+    if( !load_object(StorageRoom) ) 
+        return "There is a bug with the vendor's storage, please report it.";
+    return 1;
+}
 
 mixed eventBuy(object who, object *obs){
     object *tmp;
@@ -236,62 +236,62 @@ int cmdBrowse(object who, string args){
         switch(args){
             case "all": ok = 1; break;
             case "weapon": case "weapons":
-                break;
+                        break;
             case "armor": case "armors":
-                if(obs2[ii]->GetVendorType() == 8){
-                    ok = 1;
-                }
-            break;
+                        if(obs2[ii]->GetVendorType() == 8){
+                            ok = 1;
+                        }
+                        break;
             case "bag": case "bags":
-                ok = obs2[ii]->GetProperty("bag");
-            break;
+                        ok = obs2[ii]->GetProperty("bag");
+                        break;
             case "ring": case "rings":
-                ok = gat & A_RING;
-            break;
+                        ok = gat & A_RING;
+                        break;
             case "glove": case "gloves":
-                ok = gat & (A_GLOVE | A_LONG_GLOVE);
-            break;
+                        ok = gat & (A_GLOVE | A_LONG_GLOVE);
+                        break;
             case "boot": case "boots":
-                ok = gat & (A_BOOT | A_LONG_BOOT);
-            break;
+                        ok = gat & (A_BOOT | A_LONG_BOOT);
+                        break;
             case "sock": case "socks":
-                ok = gat & (A_SOCK | A_LONG_SOCK);
-            break;
+                        ok = gat & (A_SOCK | A_LONG_SOCK);
+                        break;
             case "helm": case "helmet":
-                ok = gat & A_HELMET;
-            break;
+                        ok = gat & A_HELMET;
+                        break;
             case "visor": case "visors":
-                ok = gat & A_VISOR;
-            break;
+                        ok = gat & A_VISOR;
+                        break;
             case "pants":
-                ok = gat & A_PANTS;
-            break;
+                        ok = gat & A_PANTS;
+                        break;
             case "shirt": case "shirts":
-                ok = gat & A_SHIRT;
-            break;
+                        ok = gat & A_SHIRT;
+                        break;
             case "cloak": case "cloaks":
-                ok = gat & A_CLOAK;
-            break;
+                        ok = gat & A_CLOAK;
+                        break;
             case "belt": case "belts":
-                ok = gat & A_BELT;
-            break;
+                        ok = gat & A_BELT;
+                        break;
             case "vest": case "vests":
-                ok = gat & A_VEST;
-            break;
+                        ok = gat & A_VEST;
+                        break;
             case "shield": case "shields":
-                ok = gat & A_SHIELD;
-            break;
+                        ok = gat & A_SHIELD;
+                        break;
             case "body armor": case "body armors":
-                ok = gat & A_BODY_ARMOR;
-            break;
+                        ok = gat & A_BODY_ARMOR;
+                        break;
             case "blunt": case "knife": case "blade": case "projectile":
-                case "blunts": case "knives": case "blades": case "projectiles":
-                ok = (obs2[ii]->GetWeaponType() == args) ||
-                (pluralize((obs2[ii]->GetWeaponType() || "")) == args);
-            break;
+            case "blunts": case "knives": case "blades": case "projectiles":
+                        ok = (obs2[ii]->GetWeaponType() == args) ||
+                            (pluralize((obs2[ii]->GetWeaponType() || "")) == args);
+                        break;
             default:
-            ok = obs2[ii]->id(args);
-            break;
+                        ok = obs2[ii]->id(args);
+                        break;
         }
         if( !ok ) continue;
         ok = GetCost(obs2[ii], who);
@@ -432,7 +432,7 @@ mixed eventAsk(object who, string str){
                 }
                 obs = ({ ob });
             }
-        return eventBuy(who, obs);
+            return eventBuy(who, obs);
 
         case "price":
             return cmdPrice(who, args);
@@ -448,9 +448,9 @@ mixed eventAsk(object who, string str){
             return cmdShow(who, args);
 
         default:
-        //Thx Raudhrskal
-        if(!sentient::eventAsk(who,orig))
-            eventForce("say I am not quite sure what you want from me");
+            //Thx Raudhrskal
+            if(!sentient::eventAsk(who,orig))
+                eventForce("say I am not quite sure what you want from me");
     }
 }
 

@@ -74,6 +74,12 @@ int AddDuration(int x){
     return duration += x;
 }
 
+int eventDispel(){
+    counter = (30 + duration);
+    heart_beat();
+    return 1;
+}
+
 mixed CanGet(object ob) { return " ";}
 mixed CanDrop(object ob) { return " ";}
 

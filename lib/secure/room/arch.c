@@ -174,9 +174,9 @@ static void create() {
                 ({"label","stamped label"}) : "A stamped metal label. The label "
                 "reads: 'HAL 9000'.",
                 ({"plate","metallic plate","identification plate"}) : "This "
-                                                                       "appears to be an identification plate of some sort, designed "
-                                                                           "to accomodate a human hand.",
-                                                                       "portal" : "A portal to another place." ]) );
+                    "appears to be an identification plate of some sort, designed "
+                        "to accomodate a human hand.",
+                    "portal" : "A portal to another place." ]) );
     SetExits( ([
                 "north" : "/domains/default/room/wiz_hall",
                 "down" : "/secure/room/network.c",

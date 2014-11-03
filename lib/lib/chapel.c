@@ -43,15 +43,15 @@ mixed CanMarry(object who, object spouse1, object spouse2){
     return 1;
 }
 
-    mixed CanSacrifice(object who, object what, string deus){
-        if( who->GetReligion(1) != Religion[1] )
-            return "You must hold the beliefs of " + Religion[1] + " to do that.";
-        if( !(what->GetVendorType() & SacrificeType) )
-            return "You cannot sacrifice that here.";
-        if( member_array(deus, DeityIds) == -1 )
-            return "You do not worship anything called \"" + deus + "\".";
-        return AllowSacrifice;
-    }
+mixed CanSacrifice(object who, object what, string deus){
+    if( who->GetReligion(1) != Religion[1] )
+        return "You must hold the beliefs of " + Religion[1] + " to do that.";
+    if( !(what->GetVendorType() & SacrificeType) )
+        return "You cannot sacrifice that here.";
+    if( member_array(deus, DeityIds) == -1 )
+        return "You do not worship anything called \"" + deus + "\".";
+    return AllowSacrifice;
+}
 
 mixed eventMarry(object who, object spouse1, object spouse2){
     mixed tmp;

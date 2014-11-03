@@ -38,11 +38,11 @@ mixed can_body() {
     return 1;
 }
 
-    mixed can_body_liv() {
-        if( !creatorp(this_player()) )
-            return "Try: help body";
-        return 1;
-    }
+mixed can_body_liv() {
+    if( !creatorp(this_player()) )
+        return "Try: help body";
+    return 1;
+}
 
 mixed do_body() {
     message("other_action", this_player()->GetName()+" checks "+
@@ -120,14 +120,14 @@ varargs void eventCheckBody(object ob, object receiver) {
     return;
 }
 
-    string GetHelp(string str) {
-        if( creatorp(this_player()) )
-            return "Syntax: body [LIVING]\n\n"
-                "This command will display the current limb damage "
-                "statistics of the living object named.";
-        else
-            return "Syntax: body\n\n"
-                "This command will display your current limb damage "
-                "statistics.  The limbs will be displayed in order "
-                "of the most damaged to the least.";
-    }
+string GetHelp(string str) {
+    if( creatorp(this_player()) )
+        return "Syntax: body [LIVING]\n\n"
+            "This command will display the current limb damage "
+            "statistics of the living object named.";
+    else
+        return "Syntax: body\n\n"
+            "This command will display your current limb damage "
+            "statistics.  The limbs will be displayed in order "
+            "of the most damaged to the least.";
+}

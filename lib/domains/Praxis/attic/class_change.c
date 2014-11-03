@@ -79,12 +79,12 @@ int changing(string str)
     switch(str)
     {
         case "fighter":
-            case "cleric":
-            case "rogue":
-            case "mage":
-            case "monk":
+        case "cleric":
+        case "rogue":
+        case "mage":
+        case "monk":
             i=1;
-        break;
+            break;
         default: i=0;
     }
     if(!i)

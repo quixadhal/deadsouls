@@ -109,12 +109,12 @@ mixed AddTeachingLanguages(string *args){
     return (TeachingLanguages = distinct_array(TeachingLanguages + tmp_array));
 }
 
-    mixed RemoveTeachingLanguages(string *args...){
-        if( !args || !arrayp(args) ) 
-            error("Bad argument 1 to RemoveTeachingLanguages.");
-        TeachingLanguages -= args;
-        return TeachingLanguages;
-    }
+mixed RemoveTeachingLanguages(string *args...){
+    if( !args || !arrayp(args) ) 
+        error("Bad argument 1 to RemoveTeachingLanguages.");
+    TeachingLanguages -= args;
+    return TeachingLanguages;
+}
 
 string array GetTeachingLanguages(){ return copy(TeachingLanguages); }
 
@@ -190,7 +190,7 @@ static int ContinueTeaching(object who, string language, int x){
     language = capitalize(language);
     if( !who || !Students[who->GetKeyName()] ) return 0;
     if( !present(who, environment()) ||
-      member_array(who, this_object()->GetEnemies()) != -1){
+            member_array(who, this_object()->GetEnemies()) != -1){
         map_delete(Students, who->GetKeyName());
         return 0;
     }

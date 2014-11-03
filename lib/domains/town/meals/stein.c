@@ -17,7 +17,7 @@ void create(){
     SetFlaskUses(10);
     SetStrength(10);
     SetMaxFlask(10); 
-    SetMealType(MEAL_ALCOHOL|MEAL_DRINK);
+    SetMealType(MEAL_ALCOHOL|MEAL_DRINK|MEAL_FOOD);
 }
 void init(){
     ::init();

@@ -138,16 +138,16 @@ int cmd_verdict( string arg )
     switch( arg )
     {
         case "innocent":
-            case "free":
-            case "insufficient evidence":
+        case "free":
+        case "insufficient evidence":
             say( "VERDICT: the defendant is found to be Not Guilty.\n" );
-        defendant-> set_outlaw( 0 );
-        defendant = 0;
-        break;
+            defendant-> set_outlaw( 0 );
+            defendant = 0;
+            break;
         case "guilty":
             say( "VERDICT: the defendant is Guilty.\n" );
-        defendant-> set_outlaw( 1 );
-        break;
+            defendant-> set_outlaw( 1 );
+            break;
         case "none":
         default:
             say( "VERDICT: no change in the defendant's status\n" );

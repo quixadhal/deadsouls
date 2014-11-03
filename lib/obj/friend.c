@@ -28,34 +28,34 @@ void SetType(string what) {
     switch(what) {
         case "rodent":
             SetLong("A cute little chipmunk.");
-        SetShort("a chipmunk");
-        SetKeyName("chipmunk");
-        SetId(({"chipmunk"}));
-        break;
+            SetShort("a chipmunk");
+            SetKeyName("chipmunk");
+            SetId(({"chipmunk"}));
+            break;
         case "bear":
             SetLong("A big black bear.");
-        SetShort("a bear");
-        SetId(({"bear"}));
-        SetKeyName("bear");
-        break;
+            SetShort("a bear");
+            SetId(({"bear"}));
+            SetKeyName("bear");
+            break;
         case "golem":
             SetLong("A threatening looking golem.");
-        SetShort("a golem");
-        SetId(({"golem"}));
-        SetKeyName("golem");
-        break;
+            SetShort("a golem");
+            SetId(({"golem"}));
+            SetKeyName("golem");
+            break;
         case "unicorn":
             SetLong("A noble unicorn.");
-        SetShort("a unicorn");
-        SetId(({"unicorn"}));
-        SetKeyName("unicorn");
-        break;
+            SetShort("a unicorn");
+            SetId(({"unicorn"}));
+            SetKeyName("unicorn");
+            break;
         case "dragon":
             SetLong("A huge dragon with a threatening visage.");
-        SetShort("a dragon");
-        SetId(({"dragon"}));
-        SetKeyName("dragon");
-        break;
+            SetShort("a dragon");
+            SetId(({"dragon"}));
+            SetKeyName("dragon");
+            break;
     }
 }
 

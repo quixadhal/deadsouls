@@ -19,11 +19,11 @@ void create(){
     SetMaxFlask(10); 
     SetMealType(MEAL_ALCOHOL);
     SetItems(([
-      "label" : "It is attached to the bottle and is meant to be read.",
-    ]));
+                "label" : "It is attached to the bottle and is meant to be read.",
+                ]));
     SetReads(([
-      "label" : "It's too stained to read, all right.",
-    ]));
+                "label" : "It's too stained to read, all right.",
+                ]));
 }
 void init(){
     ::init();

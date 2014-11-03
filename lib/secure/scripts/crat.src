@@ -62,6 +62,15 @@ alias dweapon cd /domains/default/weap
 alias dnpc cd /domains/default/npc
 alias droom cd /domains/default/room
 alias ddoor cd /domains/default/doors
+alias ami cd /domains/amigara
+alias aobj cd /domains/amigara/obj
+alias aarm cd /domains/amigara/armor
+alias aarmor cd /domains/amigara/armor
+alias aweap cd /domains/amigara/weap
+alias aweapon cd /domains/amigara/weap
+alias anpc cd /domains/amigara/npc
+alias aroom cd /domains/amigara/room
+alias adoor cd /domains/amigara/door
 alias fort cd /domains/fort
 alias fobj cd /domains/fort/obj
 alias farm cd /domains/fort/armor

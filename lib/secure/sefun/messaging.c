@@ -51,24 +51,24 @@ string create_message(int pov, string array verb, string message,
                 switch(words[i]) {
                     case "$agent_verb":
                         words[i] = verb[verb_count++];
-                    break;
+                        break;
 
                     case "$agent_name": case "$agent_nominative":
-                        case "$agent_objective":
+                    case "$agent_objective":
                         words[i] = "you";
-                    break;
+                        break;
 
                     case "$agent_possessive_noun":
                         words[i] = "your";
-                    break;
+                        break;
 
                     case "$agent_possessive":
                         words[i] = "your";
-                    break;
+                        break;
 
                     case "$agent_reflexive":
                         words[i] = "yourself";
-                    break;
+                        break;
 
                     case "$target_verb":
                         if( targets == subject ) {
@@ -82,8 +82,8 @@ string create_message(int pov, string array verb, string message,
                                 words[i] = pluralize(verb[verb_count]);
                             }
                         }
-                    verb_count++;
-                    break;
+                        verb_count++;
+                        break;
 
                     case "$target_name":
                         if( subject == targets ) { // subject? object?
@@ -106,7 +106,7 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = targets;
                         }
-                    break;
+                        break;
 
                     case "$target_nominative":
                         if( subject == targets ) {
@@ -123,7 +123,7 @@ string create_message(int pov, string array verb, string message,
                                 words[i] = nominative(target_gen);
                             }
                         }
-                    break;
+                        break;
 
                     case "$target_objective":
                         if( subject == targets ) {
@@ -140,7 +140,7 @@ string create_message(int pov, string array verb, string message,
                                 words[i] = objective(target_gen);
                             }
                         }
-                    break;
+                        break;
 
                     case "$target_possessive_noun":
                         if( subject == targets ) {
@@ -157,7 +157,7 @@ string create_message(int pov, string array verb, string message,
                                 words[i] = possessive_noun(targets);
                             }
                         }
-                    break;
+                        break;
 
                     case "$target_possessive":
                         if( subject == targets ) {
@@ -174,7 +174,7 @@ string create_message(int pov, string array verb, string message,
                                 words[i] = possessive(target_gen);
                             }
                         }
-                    break;
+                        break;
 
                     case "$target_reflexive":
                         if( subject == targets ) {
@@ -191,12 +191,12 @@ string create_message(int pov, string array verb, string message,
                                 words[i] = reflexive(target_gen);
                             }
                         }
-                    break;
+                        break;
 
                     default:
-                    if( special[words[i]] ) {
-                        words[i] = special[words[i]];
-                    }
+                        if( special[words[i]] ) {
+                            words[i] = special[words[i]];
+                        }
                 }
                 words[i] = words[i] + punctuation;
             }
@@ -235,11 +235,11 @@ string create_message(int pov, string array verb, string message,
                 switch(words[i]) {
                     case "$agent_verb":
                         words[i] = pluralize(verb[verb_count++]);
-                    break;
+                        break;
 
                     case "$agent_name":
                         words[i] = subject;
-                    break;
+                        break;
 
                     case "$agent_nominative":
                         if( !subject_gen ) {
@@ -248,7 +248,7 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = nominative(subject_gen);
                         }
-                    break;
+                        break;
 
                     case "$agent_objective":
                         if( !subject_gen ) {
@@ -257,11 +257,11 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = objective(subject_gen);
                         }
-                    break;
+                        break;
 
                     case "$agent_possessive_noun":
                         words[i] = possessive_noun(subject);
-                    break;
+                        break;
 
                     case "$agent_possessive":
                         if( !subject_gen ) {
@@ -270,7 +270,7 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = possessive(subject_gen);
                         }
-                    break;
+                        break;
 
                     case "$agent_reflexive":
                         if( !subject_gen ) {
@@ -279,33 +279,33 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = reflexive(subject_gen);
                         }
-                    break;
+                        break;
 
                     case "$target_verb":
                         words[i] = verb[verb_count++];
-                    break;
+                        break;
 
                     case "$target_name": case "$target_nominative":
-                        case "$target_objective":
+                    case "$target_objective":
                         words[i] = "you";
-                    break;
+                        break;
 
                     case "$target_possessive_noun":
                         words[i] = "your";
-                    break;
+                        break;
 
                     case "$target_possessive":
                         words[i] = "your";
-                    break;
+                        break;
 
                     case "$target_reflexive":
                         words[i] = "yourself";
-                    break;
+                        break;
 
                     default:
-                    if( special[words[i]] ) {
-                        words[i] = special[words[i]];
-                    }
+                        if( special[words[i]] ) {
+                            words[i] = special[words[i]];
+                        }
                 }
                 words[i] = words[i] + punctuation;
             }
@@ -345,11 +345,11 @@ string create_message(int pov, string array verb, string message,
                     case "$agent_verb":
                         //Following fixed line provided by Aransus @ Pyloros
                         words[i] = ""+pluralize(verb[verb_count++]);
-                    break;
+                        break;
 
                     case "$agent_name":
                         words[i] = subject;
-                    break;
+                        break;
 
                     case "$agent_nominative":
                         if( !subject_gen ) {
@@ -358,7 +358,7 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = nominative(subject_gen);
                         }
-                    break;
+                        break;
 
                     case "$agent_objective":
                         if( !subject_gen ) {
@@ -367,11 +367,11 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = objective(subject_gen);
                         }
-                    break;
+                        break;
 
                     case "$agent_possessive_noun":
                         words[i] = possessive_noun(subject);
-                    break;
+                        break;
 
                     case "$agent_possessive":
                         if( !subject_gen ) {
@@ -380,7 +380,7 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = possessive(subject_gen);
                         }
-                    break;
+                        break;
 
                     case "$agent_reflexive":
                         if( !subject_gen ) {
@@ -389,7 +389,7 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = reflexive(subject_gen);
                         }
-                    break;
+                        break;
 
                     case "$target_verb":
                         if( target_gen != "plural" ) {
@@ -398,12 +398,12 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = verb[verb_count];
                         }
-                    verb_count++;
-                    break;
+                        verb_count++;
+                        break;
 
                     case "$target_name": 
                         words[i] = targets;
-                    break;
+                        break;
 
                     case "$target_nominative":
                         if( !target_gen ) {
@@ -415,7 +415,7 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = nominative(target_gen);
                         }
-                    break;
+                        break;
 
                     case "$target_objective":
                         if( !target_gen ) {
@@ -427,7 +427,7 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = objective(target_gen);
                         }
-                    break;
+                        break;
 
                     case "$target_possessive_noun":
                         if( !target_gen ) {
@@ -439,7 +439,7 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = possessive_noun(targets);
                         }
-                    break;
+                        break;
 
                     case "$target_possessive":
                         if( !target_gen ) {
@@ -451,7 +451,7 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = possessive(target_gen);
                         }
-                    break;
+                        break;
 
                     case "$target_reflexive":
                         if( !target_gen ) {
@@ -463,12 +463,12 @@ string create_message(int pov, string array verb, string message,
                         else {
                             words[i] = reflexive(target_gen);
                         }
-                    break;
+                        break;
 
                     default:
-                    if( special[words[i]] ) {
-                        words[i] = special[words[i]];
-                    }
+                        if( special[words[i]] ) {
+                            words[i] = special[words[i]];
+                        }
                 }
                 words[i] = words[i] + punctuation;
             }

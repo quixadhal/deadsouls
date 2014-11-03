@@ -17,11 +17,11 @@ static void create() {
             "See also: wizunlock");
 }
 
-    mixed can_wizunlock_obj(string str) { 
-        if(!creatorp(this_player()))
-            return "This command is only available to creators.";
-        else return 1;
-    }
+mixed can_wizunlock_obj(string str) { 
+    if(!creatorp(this_player()))
+        return "This command is only available to creators.";
+    else return 1;
+}
 
 mixed do_wizunlock_obj(object ob){
     string name;

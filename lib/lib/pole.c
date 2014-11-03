@@ -18,11 +18,11 @@ static void create(){
     AddSave( ({ "PoleStrength", "CatchChance" }) +  bait_save );
 }
 
-    mixed direct_cast_obj(){
-        if( environment() != this_player() )
-            return "#You must have it to cast it.";
-        return 1;
-    }
+mixed direct_cast_obj(){
+    if( environment() != this_player() )
+        return "#You must have it to cast it.";
+    return 1;
+}
 
 mixed direct_fish_with_obj(){
     mixed err;
@@ -38,11 +38,11 @@ int eventBreak(){
     return 1;
 }
 
-    mixed CanCast(object who){
-        if( GetBroken() )
-            return "You cannot cast a broken " + strip_article(GetShort()) + "!";
-        else return 1;
-    }
+mixed CanCast(object who){
+    if( GetBroken() )
+        return "You cannot cast a broken " + strip_article(GetShort()) + "!";
+    else return 1;
+}
 
 mixed eventCatch(object who, string fish){
     int mass;

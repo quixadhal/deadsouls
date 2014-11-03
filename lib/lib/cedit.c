@@ -489,14 +489,14 @@ static int rArrow(string str){
         int lasty;
         case "up" : ScreenData["row"]--; break;
         case "down" : 
-            if((ScreenData["row"] > (ScreenData["maxrow"] - 2) )){
-                lasty = sort_array(keys(FileData["map"]), 1)[<1];
-                if((FileData["topline"] > (lasty - ScreenData["maxrow"]) + 1)){
+                    if((ScreenData["row"] > (ScreenData["maxrow"] - 2) )){
+                        lasty = sort_array(keys(FileData["map"]), 1)[<1];
+                        if((FileData["topline"] > (lasty - ScreenData["maxrow"]) + 1)){
+                            break;
+                        }
+                    }
+                    ScreenData["row"]++; 
                     break;
-                }
-            }
-        ScreenData["row"]++; 
-        break;
         case "left" : ScreenData["col"]--; break;
         case "right" : ScreenData["col"]++; break;
     }

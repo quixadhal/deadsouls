@@ -20,11 +20,11 @@ static void create() {
             "See also: zap, dest");
 }
 
-    mixed can_resurrect_obj(string str) { 
-        if(!creatorp(this_player())) 
-            return "This command is only available to creators.";
-        else return 1;
-    }
+mixed can_resurrect_obj(string str) { 
+    if(!creatorp(this_player())) 
+        return "This command is only available to creators.";
+    else return 1;
+}
 
 mixed do_resurrect_obj(object ob) {
     int corpse;

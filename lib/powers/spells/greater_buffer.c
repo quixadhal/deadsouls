@@ -78,12 +78,12 @@ int eventCast(object who, int level, string race, object array targets) {
     protection->name = "greater magical buffer";
     target->AddMagicProtection(protection);
     if( target == who ) {
-        send_messages("", "A %^BOLD%^CYAN%^translucent magical shield%^RESET%^ "
+        send_messages("", "A %^BOLD%^BLUE%^translucent magical shield%^RESET%^ "
                 "suddenly appears around $agent_possessive_noun body.", who, 0,
                 environment(target));
     }
     else {
-        send_messages("", "A %^BOLD%^CYAN%^translucent magical shield%^RESET%^ "
+        send_messages("", "A %^BOLD%^BLUE%^translucent magical shield%^RESET%^ "
                 "suddenly appears around $target_possessive_noun body.", who,
                 target, environment(target));
     }
@@ -111,7 +111,7 @@ int hitCallback(object who, object agent, int x, class MagicProtection cl) {
 
 void endCallback(object who) {
     if( who ) {
-        send_messages("", "The %^BOLD%^CYAN%^magical shield%^RESET%^ around "
+        send_messages("", "The %^BOLD%^BLUE%^magical shield%^RESET%^ around "
                 "$agent_name shatters into nothingness.", who, 0, environment(who));
     }
 }

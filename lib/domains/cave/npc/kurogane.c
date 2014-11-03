@@ -49,3 +49,23 @@ void heart_beat(){
         eventForce("go east");
     }
 }
+
+int eventDie(mixed agent){
+    object player;
+    string *quests;
+    if(!objectp(player = agent) || !interactive(player)){
+        return ::eventDie(agent);
+    }
+    if(!player->GetQuest("Orc Commander Assassination")){
+        player->AddQuest("Cave Explorer II","Orc Commander Assassination");
+        write("%^BOLD%^%^RED%^\n\nCONGRATULATIONS!\n%^RESET%^");
+        write("%^BOLD%^%^RED%^You have defeated the evil and cruel "+
+                "Orc Commander! You have "+
+                "earned 12 quest points, and 9500 experience "+
+                "points. Nice job!\n\n%^RESET%^");
+        player->AddQuestPoints(12);
+        player->AddExperiencePoints(9500);
+    }
+    return ::eventDie(agent);
+}
+

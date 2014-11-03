@@ -8,7 +8,7 @@ varargs int CheckOrc(object who, mixed where);
 static void create(){
     armor::create();
     SetKeyName("orc helmet");
-    SetId(({"helmet"}));
+    SetId(({"helmet","skull"}));
     SetAdjectives(({"bear","bone","skull","orc"}));
     SetShort("a bear skull helmet");
     SetLong("This is a helmet made of the hard bone of a bear, "+

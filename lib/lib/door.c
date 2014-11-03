@@ -316,11 +316,11 @@ mapping GetSide(string side){
     return copy(RetMap);
 }
 
-    int SetLockable(string side, int x){
-        if( !Sides[side] )
-            Sides[side] = ([ "Rooms" : ({}) ]);
-        return Sides[side]["Lockable"] = x; 
-    }
+int SetLockable(string side, int x){
+    if( !Sides[side] )
+        Sides[side] = ([ "Rooms" : ({}) ]);
+    return Sides[side]["Lockable"] = x; 
+}
 
 int GetLockable(string side){
     return Sides[side]["Lockable"];
@@ -341,11 +341,11 @@ string *GetId(string side){
     return Sides[side]["Ids"];
 }
 
-    mixed SetShort(string side, mixed short){
-        if( !Sides[side] )
-            Sides[side] = ([ "Rooms" : ({}) ]);
-        return Sides[side]["Short"] = short;
-    }
+mixed SetShort(string side, mixed short){
+    if( !Sides[side] )
+        Sides[side] = ([ "Rooms" : ({}) ]);
+    return Sides[side]["Short"] = short;
+}
 
 varargs string GetShort(string side){
     if( !side){ /* let's hack a side */
@@ -369,11 +369,11 @@ string GetDefiniteShort(){
     return add_article(tmp, 1);
 }
 
-    mixed SetLong(string side, mixed long){
-        if( !Sides[side] )
-            Sides[side] = ([ "Rooms" : ({}) ]);
-        return Sides[side]["Long"] = long;
-    }
+mixed SetLong(string side, mixed long){
+    if( !Sides[side] )
+        Sides[side] = ([ "Rooms" : ({}) ]);
+    return Sides[side]["Long"] = long;
+}
 
 string GetLong(string side){
     string tmp;

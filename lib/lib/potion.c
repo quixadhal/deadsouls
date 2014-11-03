@@ -50,7 +50,6 @@ int GetDuration(){
 
 mixed eventDrink(object who){
     object ob=new(LIB_BONUS);
-    tc("2");
     ob->SetPoints(Points); 
     ob->SetStats(Stats); 
     ob->SetSkills(Skills); 
@@ -61,7 +60,6 @@ mixed eventDrink(object who){
 
 mixed eventEat(object who){
     object ob=new(LIB_BONUS);
-    tc("1");
     ob->SetPoints(Points);
     ob->SetStats(Stats);
     ob->SetSkills(Skills);

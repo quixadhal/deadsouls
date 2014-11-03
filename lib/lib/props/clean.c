@@ -60,6 +60,7 @@ static int Destruct(){
 }
 
 int eventDestruct(){
+    if(!valid_event(previous_object(), this_object())) return 0;
     save::eventDestruct();
     return unguarded( (: Destruct() :) );
 }
