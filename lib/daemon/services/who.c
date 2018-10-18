@@ -63,8 +63,11 @@ void eventReceiveWhoRequest(mixed *packet) {
     }
     ret = truncate(ret,2);
     tn("eventReceiveWhoRequest: "+identify(packet),"blue");
-    CHAT_D->eventSendChannel("SYSTEM","intermud","[" + capitalize(packet[3])+"@"+packet[2]+
-            " requests the who list]",0);
+    //SYSTEM <intermud> [Imud_wholist_scanner@Final Realms requests the who list]
+    if( capitalize(packet[3]) != "Imud_wholist_scanner" ) {
+        CHAT_D->eventSendChannel("SYSTEM","intermud","[" + capitalize(packet[3])+"@"+packet[2]+
+                " requests the who list]",0);
+    }
 }
 
 varargs void eventSendWhoRequest(string mud) {
